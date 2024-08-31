@@ -1,139 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
+<link href='https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic' rel='stylesheet' type='text/css'>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - CV Portfolio</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to an external stylesheet -->
-    <!-- Optional: Add a Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <style>
-        /* Basic CSS for styling (you can move this to a separate CSS file) */
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2, h3 {
-            color: #333;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            border-bottom: 2px solid #333;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .experience, .education, .projects, .skills, .contact {
-            margin-bottom: 20px;
-        }
-
-        ul {
-            padding-left: 20px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <img src="your-photo.jpg" alt="Your Name" class="profile-img"> <!-- Add your profile photo here -->
-            <h1>Your Name</h1>
-            <p>Job Title | Location | [LinkedIn](#) | [GitHub](#)</p>
-        </header>
-
-        <!-- Profile Section -->
-        <section class="section profile">
-            <h2 class="section-title">Profile</h2>
-            <p>Passionate and experienced professional with a strong background in [your field]. Skilled in [your skills], with a proven track record of [mention key achievements or work experience]. Seeking to leverage my skills and experience to [your goal].</p>
-        </section>
-
-        <!-- Work Experience Section -->
-        <section class="section experience">
-            <h2 class="section-title">Work Experience</h2>
-            <h3>Job Title, Company Name</h3>
-            <p>Location | Date - Date</p>
+<!-- MAIN CONTAINER -->
+		<div id="main_container">
+      <!-- HEADER -->
+      <div id="header">
+        <!-- LOGOTYPE/NAME -->
+        <div class="header_logotype_container">
+          <h1 class="logotype_name">Javier <span class="purple">Latorre</span></h1>
+          <h2 class="logotype_occupation">Frontend Web Developer</h2>
+        </div>
+        <!-- MAIN MENU -->
+        <div class="header_menu_container">
+          <ul class="download_print_buttons horizontal_list">
+            <li><a href="#"><span class="icon entypo-download"></span>Download CV</a></li>
+            <li><a href="#"><span class="icon entypo-print"></span>Print CV</a></li>
+          </ul>
+          <div class="clear"></div>
+          <ul class="header_menu horizontal_list">
+            <li><a class="no_border purple" href="#">Profile</a></li>
+            <li><a href="#">Education</a></li>
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Work Experience</a></li>
+            <li><a href="#">Featured Projects</a></li>
+            <li><a href="#">Awards</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- LEFT COL -->
+      <div id="left_col">
+        <div class="profile_frame">
+          <div class="profile_picture"></div>
+          <!-- <img src="images/javier_latorre.jpg" alt="profile picture"> -->
+        </div>
+        <div class="hello_content">
+          <h2>Hello!</h2>
+          <p>I'm passionate about technology and human behavior, hardworker and a fast-learner with experience in around 10 different countries studying, working and volunteering.</p>
+        </div>
+        <div class="contact_details_content">
+          <h2>Contact details</h2>
+          <p class="purple">Phone:</p>
+          <p>+34 123 456 789</p>
+          <p class="purple">Email:</p>
+          <p>jlalovi@gmail.com</p>
+          <p class="purple">Adress:</p>
+          <p>Someplace, 5</p>
+          <p>Jaén, Spain</p>
+          <p>23001</p>
+        </div>
+        <a href="mailto:jlalovi@gmail.com" class="send_message_button">
+          <span class="cut1"></span>
+          <span class="cut2"></span>
+          <span class="content">Send me a message <span class="fontawesome-double-angle-right"></span></span>
+        </a>
+        <div class="get_social_content">
+          <h2>Get social</h2>
+          <ul class="social_icons horizontal_list">
+            <li><a class="facebook" href="https://www.facebook.com/jlalovi"><span class="entypo-facebook-circled"></span><span class="invisible">Facebook</span></a></li>
+            <li><a class="twitter" href="https://twitter.com/jlalovi"><span class="entypo-twitter-circled"></span><span class="invisible">Twitter</span></a></li>
+            <li><a class="linkedin" href="https://www.linkedin.com/in/jlalovi/en"><span class="entypo-linkedin-circled"></span><span class="invisible">LinkedIn</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- PROFILE CONTENT -->
+      <div id="content_container">				
+        <div class="block">
+          <h1>Profile</h1>
+          <blockquote class="profile_quote">
+            <p>"There is no end to education. It is not that you read a book, pass an examination, and finish with education. The whole of life, from the moment you are born to the moment you die, is a process of learning."</p>
+            <p>Jiddu Krishnamurti.</p>
+            <span class="entypo-quote"></span>
+          </blockquote>
+        </div>
+        <div class="block">
+          <h2>A few words about me</h2>
+          <p>Until now, in my life, I change from active moments with a lot of variety, challenges and improvisations, to moments of tranquility and stability, being difficult to stay in a place during a long time. I consider myself a tolerant and respectful person with open mind and quite honest. I really like to listen people stories and backgrounds and their different experiences around the world.</p>				
+        </div>
+        <div class="horizontal_line">
+          <div class="line_left"></div>
+          <div class="left_circle"></div>
+          <div class="central_circle"></div>
+          <div class="right_circle"></div>
+          <div class="line_right"></div>
+        </div>
+        <div class="block">
+          <h2>Philosophy</h2>
+          <p>I belive in ethic and moral not in imposed rules that you "have to" do or follow.</p>
+          <div class="philosophy_content">
+            <p>I believe life is made from different shades of grey, not from black and white. Furthermore, as a human being with rationality, I think it is our duty to take care of the world and treat others as one would like others to treat oneself. This way of perceiving reality affects my beliefs and my way of behaving. Summarizing on several points:</p>
             <ul>
-                <li>Key responsibility or achievement #1</li>
-                <li>Key responsibility or achievement #2</li>
-                <li>Key responsibility or achievement #3</li>
+              <li>Pragmatic</li>
+              <li>Honest</li>
+              <li>Respectful</li>
+              <li>Open-minded</li>
+              <li>Coherent</li>
             </ul>
-            <h3>Previous Job Title, Previous Company Name</h3>
-            <p>Location | Date - Date</p>
-            <ul>
-                <li>Key responsibility or achievement #1</li>
-                <li>Key responsibility or achievement #2</li>
-            </ul>
-        </section>
-
-        <!-- Education Section -->
-        <section class="section education">
-            <h2 class="section-title">Education</h2>
-            <h3>Degree, Major</h3>
-            <p>University Name, Location | Year of Graduation</p>
-            <p>Brief description of achievements or relevant coursework.</p>
-        </section>
-
-        <!-- Skills Section -->
-        <section class="section skills">
-            <h2 class="section-title">Skills</h2>
-            <ul>
-                <li>Skill 1</li>
-                <li>Skill 2</li>
-                <li>Skill 3</li>
-                <li>Skill 4</li>
-            </ul>
-        </section>
-
-        <!-- Projects Section -->
-        <section class="section projects">
-            <h2 class="section-title">Projects</h2>
-            <h3>Project Title</h3>
-            <p>Short description of the project. [Link to project](#)</p>
-            <h3>Another Project Title</h3>
-            <p>Short description of the project. [Link to project](#)</p>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="section contact">
-            <h2 class="section-title">Contact</h2>
-            <p>Email: [your-email@example.com]</p>
-            <p>Phone: [Your Phone Number]</p>
-            <p>LinkedIn: [LinkedIn Profile Link]</p>
-        </section>
-    </div>
-</body>
-
-</html>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="horizontal_line">
+          <div class="line_left"></div>
+          <div class="left_circle"></div>
+          <div class="central_circle"></div>
+          <div class="right_circle"></div>
+          <div class="line_right"></div>
+        </div>
+        <div class="last block">
+          <h2>Interests & Hobbies</h2>
+          <p>I'm passionate about technology and human behavior, both determine almost all my interests and hobbies:</p>
+          <ul>
+            <li>Visiting new places</li>
+            <li>Meeting people</li>
+            <li>Having new experiences</li>
+            <li>Hiking and Biking</li>
+            <li>Web Developing</li>
+            <li>Computer Gamming</li>
+            <li>Manga and Anime</li>
+          </ul>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <!-- FOOTER -->
+      <div id="footer">
+        <p class="footer_name">Javier Latorre CV 2015</p>
+      </div>
+		</div>
