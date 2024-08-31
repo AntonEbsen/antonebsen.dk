@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Name - CV</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to an external stylesheet -->
-    <!-- Optional: Add a Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         /* Basic CSS for styling (you can move this to a separate CSS file) */
@@ -44,6 +43,40 @@
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .toc {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 200px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+
+        .toc a {
+            display: block;
+            padding: 5px 0;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .toc a.active {
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
         }
 
         h1, h2, h3 {
@@ -96,6 +129,17 @@
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <a href="#profile">Profile</a>
+            <a href="#experience">Work Experience</a>
+            <a href="#education">Education</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+
         <!-- Header -->
         <header>
             <img src="your-photo.jpg" alt="Your Name" class="profile-img"> <!-- Add your profile photo here -->
@@ -104,13 +148,13 @@
         </header>
 
         <!-- Profile Section -->
-        <section class="section profile">
+        <section class="section profile" id="profile">
             <h2 class="section-title">Profile</h2>
             <p>Passionate and experienced professional with a strong background in [your field]. Skilled in [your skills], with a proven track record of [mention key achievements or work experience]. Seeking to leverage my skills and experience to [your goal].</p>
         </section>
 
         <!-- Work Experience Section -->
-        <section class="section experience">
+        <section class="section experience" id="experience">
             <h2 class="section-title">Work Experience</h2>
             <h3>Job Title, Company Name</h3>
             <p>Location | Date - Date</p>
@@ -128,7 +172,7 @@
         </section>
 
         <!-- Education Section -->
-        <section class="section education">
+        <section class="section education" id="education">
             <h2 class="section-title">Education</h2>
             <h3>Degree, Major</h3>
             <p>University Name, Location | Year of Graduation</p>
@@ -136,7 +180,7 @@
         </section>
 
         <!-- Skills Section -->
-        <section class="section skills">
+        <section class="section skills" id="skills">
             <h2 class="section-title">Skills</h2>
             <ul>
                 <li>Skill 1</li>
@@ -147,7 +191,7 @@
         </section>
 
         <!-- Projects Section -->
-        <section class="section projects">
+        <section class="section projects" id="projects">
             <h2 class="section-title">Projects</h2>
             <h3>Project Title</h3>
             <p>Short description of the project. <a href="#">Link to project</a></p>
@@ -156,13 +200,30 @@
         </section>
 
         <!-- Contact Section -->
-        <section class="section contact">
+        <section class="section contact" id="contact">
             <h2 class="section-title">Contact</h2>
             <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
             <p>Phone: Your Phone Number</p>
             <p>LinkedIn: <a href="#">LinkedIn Profile Link</a></p>
         </section>
     </div>
+
+    <script>
+        // JavaScript to handle scrolling and ToC activation
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocLinks = document.querySelectorAll('.toc a');
+            const sections = Array.from(tocLinks).map(link => document.querySelector(link.getAttribute('href')));
+
+            window.addEventListener('scroll', function() {
+                let index = sections.length;
+
+                while (--index && window.scrollY + 50 < sections[index].offsetTop) {}
+
+                tocLinks.forEach(link => link.classList.remove('active'));
+                if (index >= 0) tocLinks[index].classList.add('active');
+            });
+        });
+    </script>
 </body>
 
 </html>
