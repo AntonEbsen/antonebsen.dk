@@ -44,6 +44,40 @@
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .toc {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 200px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+
+        .toc a {
+            display: block;
+            padding: 5px 0;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .toc a.active {
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
         }
 
         h1, h2, h3 {
@@ -74,10 +108,6 @@
             font-weight: 700;
         }
 
-        .experience, .education, .projects, .skills, .contact {
-            margin-bottom: 20px;
-        }
-
         ul {
             padding-left: 20px;
         }
@@ -97,21 +127,28 @@
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>Indholdsfortegnelse</h2>
+            <a href="#introduction">Introduktion</a>
+            <a href="#overview">Oversigt</a>
+        </div>
+
         <!-- Header -->
         <header>
             <img src="your-photo.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img"> <!-- Add your profile photo here -->
-            <h1>Your Name</h1>
-            <p>Økonomistuderende | København S | <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | <a href="#">GitHub</a></p>
+            <h1>Anton Meier Ebsen Jørgensen</h1>
+            <p>Økonomistuderende | København S | <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | <a href="https://github.com/AntonEbsen">GitHub</a></p>
         </header>
 
         <!-- Introduction Section -->
-        <section class="section profile">
+        <section class="section profile" id="introduction">
             <h2 class="section-title">Velkommen til min CV-hjemmeside</h2>
-            <p>Hej! Mit navn er Anton, en økonomistuderende. Denne hjemmeside indeholder </p>
+            <p>Hej! Mit navn er Anton, en økonomistuderende. Denne hjemmeside indeholder...</p>
         </section>
 
         <!-- Overview of Sections -->
-        <section class="section overview">
+        <section class="section overview" id="overview">
             <h2 class="section-title">Explore</h2>
             <p>
                 - <a href="cv.html">Se mit CV</a> for at se min faglige erfaring, uddannelse, færdigheder og kompetencer.<br>
@@ -121,6 +158,23 @@
             </p>
         </section>
     </div>
+
+    <script>
+        // JavaScript to handle scrolling and ToC activation
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocLinks = document.querySelectorAll('.toc a');
+            const sections = Array.from(tocLinks).map(link => document.querySelector(link.getAttribute('href')));
+
+            window.addEventListener('scroll', function() {
+                let index = sections.length;
+
+                while (--index && window.scrollY + 50 < sections[index].offsetTop) {}
+
+                tocLinks.forEach(link => link.classList.remove('active'));
+                if (index >= 0) tocLinks[index].classList.add('active');
+            });
+        });
+    </script>
 </body>
 
 </html>
