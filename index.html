@@ -126,6 +126,33 @@
         ul {
             padding-left: 20px;
         }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links, .footer-social, .footer-legal, .footer-contact {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a, .footer-legal a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover, .footer-legal a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -181,6 +208,36 @@
             </p>
         </section>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <nav>
+                    <a href="index.html">Hjem</a> |
+                    <a href="cv.html">CV</a> |
+                    <a href="portfolio.html">Portefølje</a> |
+                    <a href="faq.html">FAQ</a> |
+                    <a href="blog.html">Blog</a> |
+                    <a href="contact.html">Kontakt</a>
+                </nav>
+            </div>
+            <div class="footer-social">
+                <p>Følg mig: 
+                    <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | 
+                    <a href="https://github.com/AntonEbsen">GitHub</a> | 
+                    <a href="https://twitter.com/AntonEbsen">Twitter</a>
+                </p>
+            </div>
+            <div class="footer-legal">
+                <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+                <p>&copy; 2024 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+            </div>
+            <div class="footer-contact">
+                <p>Kontakt: <a href="mailto:dinemail@eksempel.com">dinemail@eksempel.com</a> | Telefon: +45 12 34 56 78</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // JavaScript to handle scrolling and ToC activation
