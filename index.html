@@ -22,6 +22,7 @@
             background-color: #333;
             padding: 10px 0;
             text-align: center;
+            position: relative; /* Allows the flag button to be positioned */
         }
 
         .navbar a {
@@ -35,6 +36,20 @@
         .navbar a:hover {
             background-color: #555;
             border-radius: 5px;
+        }
+
+        .flag-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .flag-btn img {
+            width: 30px;
+            height: 20px;
         }
 
         .container {
@@ -124,6 +139,11 @@
         <a href="faq.html">FAQ</a>
         <a href="blog.html">Blog</a>
         <a href="contact.html">Kontakt</a>
+
+        <!-- English Flag Button -->
+        <button class="flag-btn" onclick="window.location.href='en/index.html'">
+            <img src="images/english-flag.png" alt="English">
+        </button>
     </nav>
 
     <!-- Main Content -->
@@ -155,8 +175,8 @@
                 - <a href="cv.html">Se mit CV</a> for at se min faglige erfaring, uddannelse, færdigheder og kompetencer.<br>
                 - Se min <a href="portfolio.html">portefølje</a> for at se mine seneste projekter.<br>
                 - Besøg min <a href="blog.html">Blog</a> hvor jeg deler mine tanker om forskellige emner.<br>
-                - <a href="referencer.html">Referencer<\a>
-                - <a href="faq.html">FAQ<\a>
+                - <a href="referencer.html">Referencer</a><br>
+                - <a href="faq.html">FAQ</a><br>
                 - <a href="contact.html">Kontakt mig</a>, hvis du gerne vil samarbejde eller bare sige hej.
             </p>
         </section>
