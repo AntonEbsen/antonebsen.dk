@@ -38,7 +38,6 @@
 
         .flag-btn {
             position: absolute;
-            right: 10px;
             top: 15px;
             background: none;
             border: none;
@@ -48,6 +47,14 @@
         .flag-btn img {
             width: 30px;
             height: 20px;
+        }
+
+        .flag-btn:first-of-type {
+            right: 50px; /* Position of the English flag button */
+        }
+
+        .flag-btn:last-of-type {
+            right: 10px; /* Position of the German flag button */
         }
 
         .container {
@@ -112,7 +119,7 @@
             border: none;
             width: 200px;
             font-size: 14px;
-            z-index: 1001; /* Ensure button is above other elements */
+            z-index: 1001;
         }
 
         h1, h2, h3 {
@@ -186,8 +193,14 @@
         <a href="blog.html">Blog</a>
         <a href="contact.html">Kontakt</a>
 
+        <!-- English flag button -->
         <button class="flag-btn" onclick="window.location.href='en/index.html'">
             <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+
+        <!-- German flag button -->
+        <button class="flag-btn" onclick="window.location.href='de/index.html'">
+            <img src="billeder/tysk-flag.png" alt="Deutsch">
         </button>
     </nav>
 
