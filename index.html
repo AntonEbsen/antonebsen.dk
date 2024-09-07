@@ -7,6 +7,10 @@
     <title>Anton Meier Ebsen Jørgensen - CV Portefølje</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -180,6 +184,18 @@
         .footer-links a:hover, .footer-legal a:hover {
             text-decoration: underline;
         }
+
+        .footer-social a {
+            color: #fff;
+            margin-right: 10px;
+            font-size: 18px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #00aced;
+        }
     </style>
 </head>
 
@@ -252,9 +268,15 @@
             </div>
             <div class="footer-social">
                 <p>Følg mig: 
-                    <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | 
-                    <a href="https://github.com/AntonEbsen">GitHub</a> | 
-                    <a href="https://twitter.com/AntonEbsen">Twitter</a>
+                    <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/AntonEbsen" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://twitter.com/AntonEbsen" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
                 </p>
             </div>
             <div class="footer-legal">
