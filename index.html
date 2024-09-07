@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anton Meier Ebsen Jørgensen - CV Portefølje</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link til ekstern stylesheet -->
-    <!-- Valgfrit: Tilføj en Google Font -->
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
-        /* Grundlæggende CSS til styling (kan flyttes til en separat CSS-fil) */
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
@@ -22,7 +20,7 @@
             background-color: #333;
             padding: 10px 0;
             text-align: center;
-            position: relative; /* Tillader flagknappen at blive positioneret */
+            position: relative;
         }
 
         .navbar a {
@@ -40,8 +38,8 @@
 
         .flag-btn {
             position: absolute;
-            right: 10px; /* Flytter flagknappen længere til højre */
-            top: 15px; /* Justerer afstand fra toppen */
+            right: 10px;
+            top: 15px;
             background: none;
             border: none;
             cursor: pointer;
@@ -65,13 +63,21 @@
         .toc {
             position: fixed;
             right: 20px;
-            top: 80px; /* Justerer top afstand for at undgå overlap */
+            top: 80px;
             width: 200px;
             background: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 10px;
             border-radius: 5px;
             z-index: 1000;
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+            max-height: 500px; /* Start with visible state */
+        }
+
+        .toc.collapsed {
+            max-height: 0;
+            padding: 0;
         }
 
         .toc h2 {
@@ -93,6 +99,19 @@
 
         .toc a:hover {
             text-decoration: underline;
+        }
+
+        .collapse-btn {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            cursor: pointer;
+            padding: 5px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            width: 100%;
+            font-size: 14px;
         }
 
         h1, h2, h3 {
@@ -157,7 +176,6 @@
 </head>
 
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar">
         <a href="index.html">Hjem</a>
         <a href="cv.html">CV</a>
@@ -167,35 +185,30 @@
         <a href="blog.html">Blog</a>
         <a href="contact.html">Kontakt</a>
 
-        <!-- English Flag Button -->
         <button class="flag-btn" onclick="window.location.href='en/index.html'">
             <img src="billeder/britisk-flag.png" alt="English">
         </button>
     </nav>
 
-    <!-- Main Content -->
     <div class="container">
-        <!-- Table of Contents -->
-        <div class="toc">
+        <div class="toc" id="toc">
+            <button class="collapse-btn" onclick="toggleToc()">Vis/Skjul Indholdsfortegnelse</button>
             <h2>Indholdsfortegnelse</h2>
             <a href="#introduction">Introduktion</a>
             <a href="#overview">Oversigt over min hjemmeside</a>
         </div>
 
-        <!-- Header -->
         <header>
-            <img src="your-photo.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img"> <!-- Tilføj dit profilfoto her -->
+            <img src="your-photo.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
             <h1>Anton Meier Ebsen Jørgensen</h1>
             <p>Økonomistuderende | København S | <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | <a href="https://github.com/AntonEbsen">GitHub</a></p>
         </header>
 
-        <!-- Introduction Section -->
         <section class="section profile" id="introduction">
             <h2 class="section-title">Velkommen til min CV-hjemmeside</h2>
             <p>Hej! Mit navn er Anton, en økonomistuderende. Denne hjemmeside indeholder...</p>
         </section>
 
-        <!-- Overview of Sections -->
         <section class="section overview" id="overview">
             <h2 class="section-title">Oversigt over min hjemmeside</h2>
             <p>
@@ -209,7 +222,6 @@
         </section>
     </div>
 
-    <!-- Footer Section -->
     <footer>
         <div class="footer-container">
             <div class="footer-links">
@@ -254,6 +266,12 @@
                 if (index >= 0) tocLinks[index].classList.add('active');
             });
         });
+
+        // Function to toggle the collapsible ToC
+        function toggleToc() {
+            const toc = document.getElementById('toc');
+            toc.classList.toggle('collapsed');
+        }
     </script>
 </body>
 
