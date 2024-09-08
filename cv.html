@@ -19,12 +19,12 @@
         <a href="blog.html">Blog</a>
         <a href="contact.html">Kontakt</a>
 
-        <!-- English flag button -->
+        <!-- Knap med britisk flag -->
         <button class="flag-btn" onclick="window.location.href='en/index.html'">
             <img src="billeder/britisk-flag.png" alt="English">
         </button>
 
-        <!-- German flag button -->
+        <!-- Knap med tysk flag  -->
         <button class="flag-btn" onclick="window.location.href='de/index.html'">
             <img src="billeder/tysk-flag.png" alt="Deutsch">
         </button>
@@ -33,9 +33,9 @@
     <!-- Toggle Button for ToC -->
     <button class="collapse-btn" onclick="toggleToc()">Vis/Skjul Indholdsfortegnelse</button>
     
-    <!-- Main Content -->
+    <!-- Hovedindhold -->
     <div class="container">
-        <!-- Table of Contents -->
+        <!-- Indholdsfortegnelse -->
         <div class="toc">
             <h2>Table of Contents</h2>
             <a href="#profile">Profile</a>
@@ -46,46 +46,86 @@
             <a href="#contact">Contact</a>
         </div>
 
-        <!-- Header -->
+        <!-- Sidehoved -->
         <header>
-            <img src="your-photo.jpg" alt="Your Name" class="profile-img"> <!-- Add your profile photo here -->
-            <h1>Your Name</h1>
-            <p>Job Title | Location | <a href="#">LinkedIn</a> | <a href="#">GitHub</a></p>
+            <img src="your-photo.jpg" alt="Your Name" class="profile-img">
+            <h1>Anton Meier Ebsen Jørgensen</h1>
+            <p>Økonomistuderende | København S | <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | <a href="https://github.com/AntonEbsen">GitHub</a></p>
         </header>
 
-        <!-- Profile Section -->
+        <!-- Profilsektion -->
         <section class="section profile" id="profile">
-            <h2 class="section-title">Profile</h2>
+            <h2 class="section-title">Profil</h2>
             <p>Passionate and experienced professional with a strong background in [your field]. Skilled in [your skills], with a proven track record of [mention key achievements or work experience]. Seeking to leverage my skills and experience to [your goal].</p>
         </section>
 
         <!-- Work Experience Section -->
         <section class="section experience" id="experience">
-            <h2 class="section-title">Work Experience</h2>
-            <h3>Job Title, Company Name</h3>
-            <p>Location | Date - Date</p>
+            <h2 class="section-title">Erhverserfaring</h2>
+            <h3>Studenterunderviser, Djøf</h3>
+            <p>København K | juni 2023 - nu</p>
             <ul>
-                <li>Key responsibility or achievement #1</li>
-                <li>Key responsibility or achievement #2</li>
-                <li>Key responsibility or achievement #3</li>
+                <li>Underviser i Excel #1</li>
+                <li>Underviser i Excel VBA #2</li>
+                <li>Udvikling af kursusmateriale #3</li>
             </ul>
-            <h3>Previous Job Title, Previous Company Name</h3>
+            <h3>Rengøringsassistent, Novasol Dansommer A/S</h3>
             <p>Location | Date - Date</p>
             <ul>
-                <li>Key responsibility or achievement #1</li>
-                <li>Key responsibility or achievement #2</li>
+                <li>Rengøring af sommerhuse #1</li>
+                <li>Klargøring af sommerhuse #2</li>
             </ul>
         </section>
 
         <!-- Education Section -->
         <section class="section education" id="education">
-            <h2 class="section-title">Education</h2>
-            <h3>Degree, Major</h3>
-            <p>University Name, Location | Year of Graduation</p>
+            <h2 class="section-title">Uddannelse</h2>
+            <h3>Kandidatgrad, økonomi (cand.polit)</h3>
+            <p>Københavns Universitet, København K | september 2024-juni 2027</p>
+            <p>Brief description of achievements or relevant coursework.</p>
+            <h3>Bachelorgrad, økonomi (ba.polit)</h3>
+            <p>Københavns Universitet, København K | september 2021-juni 2024</p>
             <p>Brief description of achievements or relevant coursework.</p>
         </section>
 
-        <!-- Skills Section -->
+        <section class="section courses" id="courses">
+            <h2 class="section-title">Kurser</h2>
+            <h3>Makroøkonomi</h3>
+            <p>Økonomi i Samfundet</p>
+            <p>Økonomiske Principper B</p>
+            <p>The Economic History of Europe</p>
+            <p>Makroøkonomi I</p>
+            <p>Makroøkonomi II</p>
+            <p>Macroeconomics III</p>
+            <p>Økonomisk historie</p>
+            <h3>Økonometri</h3>
+            <p>Sandsynlighedsteori og statistik</p>
+            <p>Økonometri I</p>
+            <p>Økonometri II</p>
+            <p>Introduction to Programming and Numerical Analysis</p>
+            <p>Advanced Macroeconomics: Structural Vector Autoregressive Analysis (F)</p>
+            <h3>Mikroøkonomi</h3>
+            <p>Økonomiske Principper A</p>
+            <p>Mikroøkonomi I</p>
+            <p>Mikroøkonomi II</p>
+            <p>Microeconomics III</p>
+            <h3>Finance</h3>
+            <p>Virksomhedsøkonomi A</p>
+            <p>Erhvervsøkonomi</p>
+            <p>Finansiering C</p>
+            <p>Det finansielle system (F)</p>
+            <h3>Offentlig økonomi</h3>
+            <p>Samfundsbeskrivelse A</p>
+            <p>Samfundsbeskrivelse B</p>
+            <h3>Matematik</h3>
+            <p>Matematik A</p>
+            <p>Matematik B</p>
+            <h3>Other</h3>
+            Organization Theory
+            Informatik C
+        </section>
+        
+        <!-- Færdighedsafsnit -->
         <section class="section skills" id="skills">
             <h2 class="section-title">Skills</h2>
             <ul>
@@ -96,40 +136,27 @@
             </ul>
         </section>
 
-        <!-- Projects Section -->
+        <!-- Projektafsnit -->
         <section class="section projects" id="projects">
-            <h2 class="section-title">Projects</h2>
+            <h2 class="section-title">Projekter</h2>
             <h3>Project Title</h3>
             <p>Short description of the project. <a href="#">Link to project</a></p>
             <h3>Another Project Title</h3>
             <p>Short description of the project. <a href="#">Link to project</a></p>
         </section>
 
-        <!-- Contact Section -->
+        <!-- Kontaktafsnit -->
         <section class="section contact" id="contact">
-            <h2 class="section-title">Contact</h2>
-            <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
-            <p>Phone: Your Phone Number</p>
-            <p>LinkedIn: <a href="#">LinkedIn Profile Link</a></p>
+            <h2 class="section-title">Kontakt</h2>
+            <p>Email: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></p>
+            <p>Telefon: +4525740131</p>
+            <p>LinkedIn-profil: <a href="https://www.linkedin.com/in/antonebsen/">Link til LinkedIn-profil</a></p>
         </section>
     </div>
 
-    <script>
-        // JavaScript to handle scrolling and ToC activation
-        document.addEventListener('DOMContentLoaded', function() {
-            const tocLinks = document.querySelectorAll('.toc a');
-            const sections = Array.from(tocLinks).map(link => document.querySelector(link.getAttribute('href')));
-
-            window.addEventListener('scroll', function() {
-                let index = sections.length;
-
-                while (--index && window.scrollY + 50 < sections[index].offsetTop) {}
-
-                tocLinks.forEach(link => link.classList.remove('active'));
-                if (index >= 0) tocLinks[index].classList.add('active');
-            });
-        });
-    </script>
+    <!-- Link to external JavaScript file -->
+    <script src="scripts.js"></script>
+    
 </body>
 
 </html>
