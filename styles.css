@@ -144,6 +144,16 @@ ul {
     padding-left: 20px;
 }
 
+.certification-img {
+    width: 150px; /* Juster bredden efter behov */
+    height: auto; /* Bevarer billedets proportioner */
+    margin-bottom: 10px; /* Tilføj margin for at skabe afstand mellem billeder og tekst */
+}
+
+.certification-item {
+    margin-bottom: 20px; /* Skaber plads mellem hver certificeringssektion */
+}
+
 footer {
     background-color: #333;
     color: #fff;
