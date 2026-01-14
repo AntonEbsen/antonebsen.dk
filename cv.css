@@ -228,8 +228,38 @@ html, body {
   display: none !important;
 }
 
+/* === Mobil: giv luft i siderne + stop “helt ude til venstre” === */
 @media (max-width: 980px) {
-  .cv-page .toc { width: 100% !important; }
+  /* mere sidepadding */
+  .cv-page .cv-wrap {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    margin-top: 16px;
+  }
+
+  /* TOC og indhold får samme bredde og centreres */
+  .cv-page .toc,
+  .cv-page .cv-grid {
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* Bokse må aldrig ramme kanten */
+  .cv-page .card,
+  .cv-page .section {
+    padding: 16px !important;
+    border-radius: 14px;
+  }
 }
+
+/* Lange linjer skal wrappe pænt på mobil */
+@media (max-width: 980px) {
+  .cv-page h1, .cv-page h2, .cv-page h3,
+  .cv-page p, .cv-page li, .cv-page a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
 
 
