@@ -1,81 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Portefølje</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="portfolio.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+
+  <meta name="description" content="Portefølje med udvalgte projekter inden for makroøkonomi, økonometri, tidsrækker og økonomiske modeller. Python, SAS, GAMS og Excel/VBA." />
 </head>
 
-<body>
-    <nav class="navbar">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-        <a href="portfolio.html">Portefølje</a>
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Kontakt</a>
+<body class="portfolio-page">
 
-        <!-- English flag button -->
-        <button class="flag-btn" onclick="window.location.href='en/index.html'">
-            <img src="billeder/britisk-flag.png" alt="English">
-        </button>
+  <nav class="navbar">
+    <a href="index.html">Hjem</a>
+    <a href="cv.html">CV</a>
+    <a class="active" href="portfolio.html" aria-current="page">Portefølje</a>
+    <a href="referencer.html">Referencer</a>
+    <a href="faq.html">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Kontakt</a>
 
-        <!-- German flag button -->
-        <button class="flag-btn" onclick="window.location.href='de/index.html'">
-            <img src="billeder/tysk-flag.png" alt="Deutsch">
-        </button>
-    </nav>
+    <button class="flag-btn" onclick="window.location.href='en/portfolio.html'" aria-label="English">
+      <img src="billeder/britisk-flag.png" alt="English">
+    </button>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <h1>Portfolio</h1>
-            <p>Explore some of the projects I have worked on, showcasing my skills and expertise in various areas.</p>
-        </header>
+    <button class="flag-btn" onclick="window.location.href='de/portfolio.html'" aria-label="Deutsch">
+      <img src="billeder/tysk-flag.png" alt="Deutsch">
+    </button>
+  </nav>
 
-        <!-- Projects Section -->
-        <section class="section projects">
-            <h2 class="section-title">Projects</h2>
-            
-            <!-- Project 1 -->
-            <div class="project-item">
-                <h3>Project Title 1</h3>
-                <p>Short description of the project, what it involved, and its purpose. Highlight key features or technologies used.</p>
-                <p><a href="#">View Project</a></p>
-            </div>
+  <main class="portfolio-wrap">
 
-            <!-- Project 2 -->
-            <div class="project-item">
-                <h3>Project Title 2</h3>
-                <p>Brief summary of this project. Explain the goals, your role, and any significant outcomes or impacts it had.</p>
-                <p><a href="#">View Project</a></p>
-            </div>
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Portefølje</p>
+        <h1>Udvalgte projekter</h1>
+        <p class="lead">
+          Her finder du projekter inden for makroøkonomi, økonometri, tidsrækker og modellering.
+          Jeg lægger især vægt på reproducerbar analyse, klare resultater og pæn formidling.
+        </p>
 
-            <!-- Project 3 -->
-            <div class="project-item">
-                <h3>Project Title 3</h3>
-                <p>A short description detailing what the project is about, the problems it solves, and how it showcases your skills.</p>
-                <p><a href="#">View Project</a></p>
-            </div>
+        <div class="cta">
+          <a class="btn" href="cv.html">Se CV</a>
+          <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
 
-            <!-- More Projects -->
-            <div class="project-item">
-                <h3>Project Title 4</h3>
-                <p>Overview of another project. You can include links to repositories, live demos, or additional information here.</p>
-                <p><a href="#">View Project</a></p>
-            </div>
+        <div class="pill-wrap">
+          <span class="pill">Makro & pengepolitik</span>
+          <span class="pill">Tidsrækker</span>
+          <span class="pill">CGE/RBC</span>
+          <span class="pill">Python</span>
+          <span class="pill">SAS</span>
+          <span class="pill">GAMS</span>
+          <span class="pill">Excel/VBA</span>
+        </div>
+      </div>
 
-            <!-- Additional Projects -->
-            <p>Check out more of my work on <a href="#">GitHub</a> or <a href="#">LinkedIn</a> for a complete list of projects.</p>
-        </section>
-    </div>
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Sådan er projekterne bygget</h2>
+          <ul class="clean-list">
+            <li>Kort problemformulering</li>
+            <li>Metode (model/økonometri)</li>
+            <li>Data & kode (hvis muligt)</li>
+            <li>Resultater og læring</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT GRID -->
+    <section class="grid">
+      <!-- Project card 1 -->
+      <article class="card project">
+        <div class="project-top">
+          <h2 class="project-title">Bachelorprojekt: Global Financial Cycle & spillovers</h2>
+          <span class="tag">Makro · Empiri</span>
+        </div>
+        <p class="muted">
+          Analyse af spillover-effekter fra amerikansk pengepolitik til global økonomi.
+          Fokus på mekanismer, robusthed og tydelig formidling.
+        </p>
+        <div class="project-meta">
+          <span><strong>Værktøjer:</strong> Python / Stata (tilpas)</span>
+          <span><strong>Output:</strong> rapport + figurer</span>
+        </div>
+        <div class="project-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Projekt (kommer)</a>
+          <a class="btn ghost" href="#" aria-disabled="true">Kode (kommer)</a>
+        </div>
+      </article>
+
+      <!-- Project card 2 -->
+      <article class="card project">
+        <div class="project-top">
+          <h2 class="project-title">RBC-model: Steady state & model-setup</h2>
+          <span class="tag">Model</span>
+        </div>
+        <p class="muted">
+          Implementering og forklaring af steady state i en simpel RBC-ramme. Fokus på klar struktur og reproducerbarhed.
+        </p>
+        <div class="project-meta">
+          <span><strong>Værktøjer:</strong> MATLAB / Python (tilpas)</span>
+          <span><strong>Output:</strong> modelnoter + resultater</span>
+        </div>
+        <div class="project-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Projekt (kommer)</a>
+          <a class="btn ghost" href="#" aria-disabled="true">Kode (kommer)</a>
+        </div>
+      </article>
+
+      <!-- Project card 3 -->
+      <article class="card project">
+        <div class="project-top">
+          <h2 class="project-title">ECB-projekt: Asymmetriske effekter på tværs af lande</h2>
+          <span class="tag">Pengepolitik</span>
+        </div>
+        <p class="muted">
+          Projekt om forskelle i transmissionen af ECB’s pengepolitik mellem medlemslande. Fokus på heterogenitet og metodevalg.
+        </p>
+        <div class="project-meta">
+          <span><strong>Værktøjer:</strong> SAS / Stata (tilpas)</span>
+          <span><strong>Output:</strong> rapport + tabel/figurer</span>
+        </div>
+        <div class="project-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Projekt (kommer)</a>
+          <a class="btn ghost" href="#" aria-disabled="true">Kode (kommer)</a>
+        </div>
+      </article>
+
+      <!-- Project card 4 -->
+      <article class="card project">
+        <div class="project-top">
+          <h2 class="project-title">Excel/VBA: Undervisningscases og templates</h2>
+          <span class="tag">Formidling</span>
+        </div>
+        <p class="muted">
+          Udvalgte cases og templates til Excel (og VBA), bygget til undervisning og praktiske workflows.
+        </p>
+        <div class="project-meta">
+          <span><strong>Værktøjer:</strong> Excel · VBA</span>
+          <span><strong>Output:</strong> øvelser + materialer</span>
+        </div>
+        <div class="project-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Materiale (kommer)</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer card -->
+    <section class="card">
+      <h2 class="section-title">Mere</h2>
+      <p class="muted">
+        Jeg opdaterer løbende porteføljen. Du kan også finde mere på
+        <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">GitHub</a>
+        og
+        <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>.
+      </p>
+    </section>
+
+  </main>
+
 </body>
-
 </html>
