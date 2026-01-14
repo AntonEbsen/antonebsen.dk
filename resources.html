@@ -24,7 +24,6 @@
         <a href="cv.html">CV</a>
 
         <div class="nav-item has-dropdown">
-          <!-- Gør Portefølje aktiv når du er på en underside under Portefølje -->
           <a href="portfolio.html" class="nav-link active" aria-current="page">Portefølje</a>
           <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
             <a href="portfolio.html#projects" role="menuitem">Projekter</a>
@@ -71,6 +70,7 @@
 
   <main class="resources-wrap">
 
+    <!-- HERO -->
     <section class="card hero">
       <div>
         <p class="eyebrow">Ressourcer</p>
@@ -90,6 +90,9 @@
 
         <div class="cta">
           <a class="btn" href="#downloads">Se downloads</a>
+          <a class="btn ghost" href="kursusstatistik.html">
+            <i class="fa-solid fa-chart-column"></i> Se kursusstatistik
+          </a>
           <a class="btn ghost" href="contact.html">Spørg om noget specifikt</a>
         </div>
       </div>
@@ -107,12 +110,36 @@
       </div>
     </section>
 
+    <!-- DOWNLOADS -->
     <section class="card" id="downloads">
       <h2 class="section-title">Downloads</h2>
       <p class="muted">Placér filer i mappen <code>assets/downloads/</code> og link dem her.</p>
 
       <div class="dl-grid">
 
+        <!-- NEW: Kursusstatistik -->
+        <article class="dl" id="dl-kursusstatistik">
+          <div class="dl-top">
+            <h3 class="dl-title">Kursusstatistik: evalueringer & nøgletal</h3>
+            <span class="tag">Undervisning</span>
+          </div>
+          <p class="dl-meta">Webside · opdateret: (indsæt dato)</p>
+          <p class="muted">
+            Overblik over kursusevalueringer og statistik på tværs af hold. Kort, konkret og let at skimme.
+          </p>
+          <div class="dl-actions">
+            <a class="btn" href="kursusstatistik.html">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Se side
+            </a>
+
+            <!-- VALGFRI: hvis du lægger Excel-filen i assets/downloads/ -->
+            <a class="btn ghost" href="assets/downloads/kursusevalueringer-statistik.xlsx" download>
+              <i class="fa-solid fa-download"></i> Download data
+            </a>
+          </div>
+        </article>
+
+        <!-- Download card 1 -->
         <article class="dl">
           <div class="dl-top">
             <h3 class="dl-title">Excel: Budget & model-skabelon</h3>
@@ -128,6 +155,7 @@
           </div>
         </article>
 
+        <!-- Download card 2 -->
         <article class="dl">
           <div class="dl-top">
             <h3 class="dl-title">VBA: Snippets (hurtige genveje)</h3>
@@ -145,6 +173,7 @@
           </div>
         </article>
 
+        <!-- Download card 3 -->
         <article class="dl">
           <div class="dl-top">
             <h3 class="dl-title">Python: Data-cleaning checklist</h3>
@@ -163,6 +192,7 @@
       </div>
     </section>
 
+    <!-- CTA -->
     <section class="card">
       <h2 class="section-title">Vil du have noget specifikt?</h2>
       <p class="muted">
@@ -207,6 +237,5 @@
       </div>
     </div>
   </footer>
-
 </body>
 </html>
