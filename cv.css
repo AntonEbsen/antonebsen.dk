@@ -174,3 +174,33 @@
     display: none;
   }
 }
+
+/* === Stop horisontal scroll === */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Sikrer at grid/flex elementer ikke skubber ud over bredden */
+.cv-page .cv-wrap,
+.cv-page .cv-grid,
+.cv-page .cv-side,
+.cv-page .cv-main,
+.cv-page .card,
+.cv-page .section {
+  min-width: 0;
+}
+
+/* Lange links/ord må gerne wrappe */
+.cv-page a,
+.cv-page p,
+.cv-page li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Billeder må aldrig være bredere end deres container */
+.cv-page img {
+  max-width: 100%;
+  height: auto;
+}
+
