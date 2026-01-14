@@ -268,4 +268,17 @@ footer {
   }
 }
 
+.navbar { overflow: visible; }
+
+.nav-item.has-dropdown { position: relative; }
+
+/* usynlig bro mellem link og dropdown */
+.nav-item.has-dropdown::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:100%;
+  width:100%;
+  height:12px;
+}
 
