@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
   <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
-
   <meta name="description" content="CV: Anton Meier Ebsen Jørgensen – økonomistuderende med fokus på makroøkonomi, økonometri og økonomiske modeller." />
 </head>
 
 <body class="cv-page">
+
   <nav class="navbar" aria-label="Primær navigation">
     <a href="index.html">Hjem</a>
     <a class="active" href="cv.html" aria-current="page">CV</a>
@@ -26,35 +26,51 @@
     <button class="flag-btn" onclick="window.location.href='en/cv.html'" aria-label="English version">
       <img src="billeder/britisk-flag.png" alt="English">
     </button>
-
     <button class="flag-btn" onclick="window.location.href='de/cv.html'" aria-label="Deutsche Version">
       <img src="billeder/tysk-flag.png" alt="Deutsch">
     </button>
   </nav>
 
-  <button class="collapse-btn" onclick="toggleToc()" type="button">Vis/Skjul Indholdsfortegnelse</button>
-
   <main class="cv-wrap">
     <!-- TOC -->
     <aside class="toc" id="toc" aria-label="Indholdsfortegnelse">
-      <h2>Indhold</h2>
-      <a href="#profile">Profil</a>
-      <a href="#experience">Erhvervserfaring</a>
-      <a href="#education">Uddannelse</a>
-      <a href="#projects">Projekter</a>
-      <a href="#skills">Kompetencer</a>
-      <a href="#languages">Sprog</a>
-      <a href="#volunteer">Frivilligt</a>
-      <a href="#certifications">Certificeringer</a>
-      <a href="#contact">Kontakt</a>
+      <div class="toc-header">
+        <button
+          id="tocToggle"
+          class="toc-toggle"
+          type="button"
+          onclick="toggleToc()"
+          aria-expanded="true"
+          aria-controls="tocNav"
+          aria-label="Vis/skjul indholdsfortegnelse"
+          title="Vis/skjul indholdsfortegnelse"
+        >
+          <span class="hamburger" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <nav id="tocNav" class="toc-nav">
+        <a href="#profile">Profil</a>
+        <a href="#experience">Erhvervserfaring</a>
+        <a href="#education">Uddannelse</a>
+        <a href="#projects">Projekter</a>
+        <a href="#skills">Kompetencer</a>
+        <a href="#languages">Sprog</a>
+        <a href="#volunteer">Frivilligt</a>
+        <a href="#certifications">Certificeringer</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
     </aside>
 
-    <!-- CV grid -->
+    <!-- CV grid (sidebar + main) -->
     <section class="cv-grid" aria-label="CV indhold">
+
       <!-- Sidebar -->
       <aside class="cv-side">
+
         <div class="card profile-card">
           <img src="billeder/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
+
           <div class="profile-head">
             <h1>Anton Meier Ebsen Jørgensen</h1>
             <p class="subtitle">Økonomistuderende (cand.polit.) · Makroøkonomi · Økonometri · Økonomiske modeller</p>
@@ -64,7 +80,7 @@
             <div class="meta-row">
               <span class="meta-label">Lokation</span>
               <span class="meta-value">
-                <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn+K" target="_blank" rel="noopener">København</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn" target="_blank" rel="noopener">København</a>
               </span>
             </div>
             <div class="meta-row">
@@ -85,11 +101,10 @@
             </div>
           </div>
 
-          <!-- Optional: link til PDF -->
           <div class="cta-row">
             <a class="btn" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">Download CV (PDF)</a>
           </div>
-          <p class="note">Tip: læg PDF’en i <code>assets/Anton-CV.pdf</code> (eller ret linket).</p>
+          <p class="note">Læg din PDF i <code>assets/Anton-CV.pdf</code> (eller ret linket).</p>
         </div>
 
         <div class="card" id="skills">
@@ -110,8 +125,8 @@
           <ul class="clean-list">
             <li>Makroøkonomi & pengepolitik</li>
             <li>Økonometri & tidsrækker</li>
-            <li>Nationalregnskab & dataarbejde</li>
-            <li>Økonomiske modeller (inkl. CGE/RBC)</li>
+            <li>Databehandling & modellering</li>
+            <li>Formidling/undervisning</li>
           </ul>
         </div>
 
@@ -120,24 +135,25 @@
           <ul class="clean-list">
             <li><strong>Dansk</strong> – modersmål</li>
             <li><strong>Engelsk</strong> – flydende i skrift og tale</li>
-            <li><strong>Tysk</strong> – praktisk niveau (lidt rustent)</li>
+            <li><strong>Tysk</strong> – praktisk niveau</li>
           </ul>
         </div>
+
       </aside>
 
       <!-- Main content -->
       <div class="cv-main">
+
         <section class="section" id="profile">
           <h2 class="section-title">Profil</h2>
           <p>
             Engageret økonomistuderende på kandidatuddannelsen ved Københavns Universitet med særligt fokus på
             makroøkonomi, økonometri og økonomiske modeller. Jeg har erfaring med programmering og databehandling
-            gennem kurser i Python, tidsrækkemodeller (SAS) og CGE-modeller, samt to års undervisning i Excel og VBA.
-            :contentReference[oaicite:1]{index=1}
+            gennem kurser i Python, tidsrækkemodeller (SAS) og CGE-modeller, samt undervisning i Excel og VBA.
           </p>
           <p>
             Jeg trives med at arbejde med tal og komplekse datasæt og med at omsætte analyser til resultater, der kan
-            bruges som solidt grundlag for beslutninger. :contentReference[oaicite:2]{index=2}
+            bruges som solidt grundlag for beslutninger.
           </p>
         </section>
 
@@ -151,10 +167,9 @@
             </div>
             <ul>
               <li>Undervisning i Excel og VBA</li>
-              <li>Udvikling af nyt kursusmateriale</li>
+              <li>Udvikling af kursusmateriale</li>
               <li>Formidling, samarbejde og præsentation</li>
             </ul>
-            <p class="source">:contentReference[oaicite:3]{index=3}</p>
           </article>
 
           <article class="item">
@@ -163,11 +178,10 @@
               <span class="item-meta">Lübeck, Tyskland · oktober 2019</span>
             </div>
             <ul>
-              <li>Skrev turistguides</li>
+              <li>Udarbejdelse af turistguides</li>
               <li>Scanning og print</li>
-              <li>Bearbejdning af information (tysk i praksis)</li>
+              <li>Informationsbearbejdning</li>
             </ul>
-            <p class="source">:contentReference[oaicite:4]{index=4}</p>
           </article>
         </section>
 
@@ -179,15 +193,17 @@
               <h3>Bachelor & kandidat i økonomi (ba.polit. / cand.polit.) · Københavns Universitet</h3>
               <span class="item-meta">København K · 2021 – igangværende</span>
             </div>
-
-            <p><strong>Udvalgte valgfag:</strong> Introduction to Programming and Numerical Analysis; Advanced Macroeconomics: Structural Vector Autoregressive Analysis; Advanced Macroeconomics: Business Cycles. :contentReference[oaicite:5]{index=5}</p>
+            <p class="muted">
+              Udvalgte valgfag: Introduction to Programming and Numerical Analysis; Advanced Macroeconomics: Structural Vector Autoregressive Analysis;
+              Advanced Macroeconomics: Business Cycles.
+            </p>
 
             <details class="details">
               <summary>Udvalgte projekter (klik)</summary>
-              <ul>
-                <li><strong>Bachelorprojekt:</strong> “The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy” :contentReference[oaicite:6]{index=6}</li>
-                <li><strong>Model-eksamensprojekt (IPNA):</strong> “Steady State in a simple RBC model” :contentReference[oaicite:7]{index=7}</li>
-                <li><strong>Seminarprojekt:</strong> “One Rule to Rule Them All? … Asymmetric Effects of the ECB’s Monetary Policy” :contentReference[oaicite:8]{index=8}</li>
+              <ul class="clean-list">
+                <li><strong>Bachelorprojekt:</strong> “The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy”</li>
+                <li><strong>Modelprojekt (IPNA):</strong> “Steady State in a simple RBC model”</li>
+                <li><strong>Seminarprojekt:</strong> “One Rule to Rule Them All? … Asymmetric Effects of the ECB’s Monetary Policy”</li>
               </ul>
             </details>
           </article>
@@ -197,8 +213,9 @@
               <h3>Højere Handelseksamen (HHX) · Handelsgymnasiet Lolland-Falster</h3>
               <span class="item-meta">Nykøbing Falster · 2018 – 2021</span>
             </div>
-            <p><strong>Studieretning:</strong> Økonomilinjen · <strong>Hovedfag (A-niveau):</strong> International økonomi & virksomhedsøkonomi. :contentReference[oaicite:9]{index=9}</p>
-            <p><strong>SOP:</strong> “Fremtiden af Det Internationale Monetære System: En Analyse af Bitcoins Kursudvikling og Den Digitale Euro”. :contentReference[oaicite:10]{index=10}</p>
+            <p class="muted">
+              Studieretning: Økonomilinjen · Hovedfag (A): International økonomi & virksomhedsøkonomi.
+            </p>
           </article>
         </section>
 
@@ -210,11 +227,9 @@
               <h3>Bachelorprojekt: Global Financial Cycle & spillovers</h3>
               <span class="item-meta">Empirisk makro · USA pengepolitik → global økonomi</span>
             </div>
-            <p>
-              “The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy”.
-              :contentReference[oaicite:11]{index=11}
+            <p class="muted">
+              Undersøger spillover-effekter fra amerikansk pengepolitik til den globale økonomi.
             </p>
-            <p class="muted">Tip: link gerne til en PDF/side, når du har den publicerbar.</p>
           </article>
 
           <article class="item">
@@ -222,27 +237,27 @@
               <h3>RBC-model: steady state</h3>
               <span class="item-meta">Numerisk analyse · modellering</span>
             </div>
-            <p>“Steady State in a simple RBC model”. :contentReference[oaicite:12]{index=12}</p>
+            <p class="muted">Steady state-løsning og model-setup i en simpel RBC-ramme.</p>
           </article>
 
           <article class="item">
             <div class="item-head">
               <h3>ECB: asymmetriske effekter på tværs af lande</h3>
-              <span class="item-meta">Pengepolitik · cross-country heterogenitet</span>
+              <span class="item-meta">Pengepolitik · heterogenitet</span>
             </div>
-            <p>“One Rule to Rule Them All? … Asymmetric Effects of the ECB’s Monetary Policy”. :contentReference[oaicite:13]{index=13}</p>
+            <p class="muted">Analyse af forskelle i ECB’s pengepolitiske effekter mellem lande.</p>
           </article>
         </section>
 
         <section class="section" id="volunteer">
-          <h2 class="section-title">Frivilligt arbejde</h2>
+          <h2 class="section-title">Frivilligt</h2>
 
           <article class="item">
             <div class="item-head">
               <h3>Forperson · Socialøkonomisk Samfund</h3>
               <span class="item-meta">København K · 2024 – nu</span>
             </div>
-            <p class="source">:contentReference[oaicite:14]{index=14}</p>
+            <p class="muted">Planlægning/koordinering af aktiviteter og arrangementer.</p>
           </article>
         </section>
 
@@ -254,15 +269,23 @@
               <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
                 <img src="billeder/matlab-onramp.PNG" alt="MATLAB Onramp certifikat" class="cert-img">
               </a>
-              <h3><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">MATLAB Onramp</a></h3>
-              <p class="muted">Matlab fundamentals og workflows.</p>
+              <h3>
+                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
+                  MATLAB Onramp
+                </a>
+              </h3>
+              <p class="muted">MATLAB fundamentals og workflows.</p>
             </div>
 
             <div class="cert">
               <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
                 <img src="billeder/calculations-with-vectors-and-matrices.PNG" alt="Vectors & Matrices certifikat" class="cert-img">
               </a>
-              <h3><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">Vectors & Matrices</a></h3>
+              <h3>
+                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
+                  Calculations with Vectors and Matrices
+                </a>
+              </h3>
               <p class="muted">Lineær algebra i praksis.</p>
             </div>
           </div>
@@ -276,6 +299,7 @@
             <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener">GitHub</a>
           </div>
         </section>
+
       </div>
     </section>
   </main>
@@ -307,6 +331,38 @@
     </div>
   </footer>
 
+  <!-- TOC toggle (safe-guard: only defines if not already defined in scripts.js) -->
+  <script>
+    (function () {
+      if (typeof window.applyTocStateFromStorage !== "function") {
+        window.applyTocStateFromStorage = function () {
+          const wrap = document.querySelector(".cv-wrap");
+          const btn = document.getElementById("tocToggle");
+          if (!wrap || !btn) return;
+
+          const collapsed = localStorage.getItem("tocCollapsed") === "1";
+          wrap.classList.toggle("is-toc-collapsed", collapsed);
+          btn.setAttribute("aria-expanded", String(!collapsed));
+        };
+      }
+
+      if (typeof window.toggleToc !== "function") {
+        window.toggleToc = function () {
+          const wrap = document.querySelector(".cv-wrap");
+          const btn = document.getElementById("tocToggle");
+          if (!wrap || !btn) return;
+
+          const nowCollapsed = wrap.classList.toggle("is-toc-collapsed");
+          btn.setAttribute("aria-expanded", String(!nowCollapsed));
+          localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
+        };
+      }
+
+      document.addEventListener("DOMContentLoaded", window.applyTocStateFromStorage);
+    })();
+  </script>
+
+  <!-- Behold din eksisterende scripts.js, hvis du bruger den andre steder -->
   <script src="scripts.js"></script>
 </body>
 </html>
