@@ -1,131 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anton Meier Ebsen Jørgensen - CV Portefølje</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Økonomi, makro & data</title>
 
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="hjem.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 
-    <!-- Favicon -->
-    <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Erfaring med Python, SAS, GAMS og Excel/VBA." />
 </head>
 
-<body>
-    <nav class="navbar">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-        <a href="portfolio.html">Portefølje</a>
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Kontakt</a>
+<body class="home-page">
+  <nav class="navbar">
+    <a class="active" href="index.html">Hjem</a>
+    <a href="cv.html">CV</a>
+    <a href="portfolio.html">Portefølje</a>
+    <a href="referencer.html">Referencer</a>
+    <a href="faq.html">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Kontakt</a>
 
-        <!-- English flag button -->
-        <button class="flag-btn" onclick="window.location.href='en/index.html'">
-            <img src="billeder/britisk-flag.png" alt="English">
-        </button>
+    <button class="flag-btn" onclick="window.location.href='en/index.html'" aria-label="English">
+      <img src="billeder/britisk-flag.png" alt="English">
+    </button>
+    <button class="flag-btn" onclick="window.location.href='de/index.html'" aria-label="Deutsch">
+      <img src="billeder/tysk-flag.png" alt="Deutsch">
+    </button>
+  </nav>
 
-        <!-- German flag button -->
-        <button class="flag-btn" onclick="window.location.href='de/index.html'">
-            <img src="billeder/tysk-flag.png" alt="Deutsch">
-        </button>
-    </nav>
+  <main class="home-wrap">
+    <!-- HERO -->
+    <section class="card hero">
+      <div class="hero-left">
+        <p class="eyebrow">Økonomistuderende (cand.polit.) · København</p>
+        <h1>Makroøkonomi, økonometri og økonomiske modeller – med stærk data- og kodeprofil.</h1>
+        <p class="lead">
+          Jeg bygger analyser og modeller, der kan bruges i praksis: pengepolitik, tidsrækker, modellering og formidling.
+          Erfaring fra undervisning i Excel/VBA og arbejde med Python, SAS og GAMS.
+        </p>
 
-    <!-- Toggle Button for ToC -->
-    <button class="collapse-btn" onclick="toggleToc()">Vis/Skjul Indholdsfortegnelse</button>
-
-    <div class="container">
-        <div class="toc" id="toc">
-            <h2>Indholdsfortegnelse</h2>
-            <a href="#introduction">Introduktion</a>
-            <a href="#overview">Oversigt over min hjemmeside</a>
+        <div class="cta">
+          <a class="btn" href="cv.html">Se CV</a>
+          <a class="btn ghost" href="portfolio.html">Se portefølje</a>
+          <a class="btn ghost" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">Download PDF</a>
         </div>
 
-        <header>
-            <img src="your-photo.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
-            <h1>Anton Meier Ebsen Jørgensen</h1>
-            <p>Økonomistuderende | København S | <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | <a href="https://github.com/AntonEbsen">GitHub</a></p>
-        </header>
+        <div class="pill-wrap">
+          <span class="pill">Python</span>
+          <span class="pill">SAS</span>
+          <span class="pill">GAMS</span>
+          <span class="pill">Excel/VBA</span>
+          <span class="pill">Makro & pengepolitik</span>
+          <span class="pill">Tidsrækker</span>
+        </div>
+      </div>
 
-        <section class="section profile" id="introduction">
-            <h2 class="section-title">Velkommen til min CV-hjemmeside</h2>
-            <p>Hej! Mit navn er Anton, en økonomistuderende. Denne hjemmeside indeholder...</p>
-        </section>
+      <div class="hero-right">
+        <img src="billeder/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="hero-img">
+        <div class="hero-links">
+          <a href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope"></i> Email</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+      </div>
+    </section>
 
-        <section class="section overview" id="overview">
-            <h2 class="section-title">Oversigt over min hjemmeside</h2>
-            <p>
-                - <a href="cv.html">Se mit CV</a> for at se min faglige erfaring, uddannelse, færdigheder og kompetencer.<br>
-                - Se min <a href="portfolio.html">portefølje</a> for at se mine seneste projekter.<br>
-                - Besøg min <a href="blog.html">Blog</a> hvor jeg deler mine tanker om forskellige emner.<br>
-                - <a href="referencer.html">Referencer</a><br>
-                - <a href="faq.html">FAQ</a><br>
-                - <a href="contact.html">Kontakt mig</a>, hvis du gerne vil samarbejde eller bare sige hej.
-            </p>
-        </section>
+    <!-- HIGHLIGHTS -->
+    <section class="grid-3">
+      <div class="card">
+        <h2 class="section-title">Hvad jeg arbejder med</h2>
+        <ul class="clean-list">
+          <li>Makroøkonomi & pengepolitik (ECB/centralbanker)</li>
+          <li>Økonometri & tidsrækker (forecasting, SVAR m.m.)</li>
+          <li>Økonomiske modeller (RBC/CGE) og data pipelines</li>
+          <li>Formidling/undervisning: Excel, VBA og “hands-on” cases</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Udvalgte projekter</h2>
+        <ul class="clean-list">
+          <li><strong>Bachelorprojekt:</strong> spillovers fra amerikansk pengepolitik til global økonomi</li>
+          <li><strong>RBC-model:</strong> steady state og model-setup</li>
+          <li><strong>ECB-projekt:</strong> asymmetriske effekter på tværs af lande</li>
+        </ul>
+        <p class="muted" style="margin-top:10px;">
+          <a href="portfolio.html">Se mere i porteføljen →</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Hurtig adgang</h2>
+        <div class="quick-links">
+          <a class="btn ghost" href="cv.html">CV</a>
+          <a class="btn ghost" href="portfolio.html">Portefølje</a>
+          <a class="btn ghost" href="blog.html">Blog</a>
+          <a class="btn ghost" href="contact.html">Kontakt</a>
+        </div>
+
+        <hr class="divider">
+
+        <p class="muted" style="margin:0;">
+          Åben for samarbejde og faglige samtaler – især om centralbanker, data og modeller.
+        </p>
+      </div>
+    </section>
+
+    <!-- MINI ABOUT -->
+    <section class="card">
+      <h2 class="section-title">Kort om mig</h2>
+      <p class="muted">
+        Jeg interesserer mig særligt for, hvordan pengepolitik og økonomiske chok påvirker økonomien på tværs af lande,
+        og hvordan modeller og data kan bruges til at gøre analysen mere præcis. På siden kan du finde mit CV,
+        projekter og materiale.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+
+      <div class="footer-contact">
+        <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
+      </div>
     </div>
-
-    <footer>
-        <div class="footer-container">
-            <div class="footer-links">
-                <nav>
-                    <a href="index.html">Hjem</a> |
-                    <a href="cv.html">CV</a> |
-                    <a href="portfolio.html">Portefølje</a> |
-                    <a href="faq.html">FAQ</a> |
-                    <a href="blog.html">Blog</a> |
-                    <a href="contact.html">Kontakt</a>
-                </nav>
-            </div>
-            <div class="footer-social">
-                <p>Følg mig: 
-                    <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/AntonEbsen" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://twitter.com/AntonEbsen" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </p>
-            </div>
-            <div class="footer-legal">
-                <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
-                <p>&copy; 2024 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
-            </div>
-            <div class="footer-contact">
-                <p>Kontakt: <a href="mailto:dinemail@eksempel.com">dinemail@eksempel.com</a> | Telefon: +45 12 34 56 78</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tocLinks = document.querySelectorAll('.toc a');
-            const sections = Array.from(tocLinks).map(link => document.querySelector(link.getAttribute('href')));
-
-            window.addEventListener('scroll', function() {
-                let index = sections.length;
-
-                while (--index && window.scrollY + 50 < sections[index].offsetTop) {}
-
-                tocLinks.forEach(link => link.classList.remove('active'));
-                if (index >= 0) tocLinks[index].classList.add('active');
-            });
-        });
-
-        // Function to toggle the collapsible ToC
-        function toggleToc() {
-            const toc = document.getElementById('toc');
-            toc.classList.toggle('collapsed');
-        }
-    </script>
+  </footer>
 </body>
-
 </html>
