@@ -189,6 +189,306 @@ footer {
     transition: color 0.3s;
 }
 
+/* =========================
+   CV PAGE (append to styles.css)
+   ========================= */
+
+.cv-page {
+  background: #f6f7fb;
+  color: #12131a;
+  font-family: "Roboto", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+}
+
+.navbar a.active {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.cv-wrap {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px 32px;
+}
+
+.cv-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.toc h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.toc a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.toc a:hover {
+  background: #f0f2ff;
+}
+
+.collapse-btn {
+  display: none;
+  margin: 14px auto 0;
+}
+
+.cv-side {
+  display: grid;
+  gap: 14px;
+}
+
+.cv-main {
+  display: grid;
+  gap: 14px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.profile-card .profile-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+.profile-head h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: rgba(18, 19, 26, 0.75);
+}
+
+.meta {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.meta-label {
+  color: rgba(18, 19, 26, 0.65);
+}
+
+.meta-value a {
+  text-decoration: none;
+}
+
+.meta-value a:hover {
+  text-decoration: underline;
+}
+
+.cta-row {
+  margin-top: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.btn:hover { opacity: 0.92; }
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(17, 24, 39, 0.2);
+  color: #111827;
+}
+
+.note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: rgba(18, 19, 26, 0.7);
+}
+
+.pill-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pill {
+  padding: 6px 10px;
+  background: #f1f3ff;
+  border: 1px solid rgba(99,102,241,0.18);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  margin: 14px 0;
+}
+
+.section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.item {
+  padding: 12px 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.item:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.item-head {
+  display: grid;
+  gap: 4px;
+}
+
+.item-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.item-meta {
+  font-size: 13px;
+  color: rgba(18, 19, 26, 0.7);
+}
+
+.clean-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.muted {
+  color: rgba(18, 19, 26, 0.7);
+  font-size: 14px;
+}
+
+.source {
+  margin: 6px 0 0;
+  font-size: 0; /* skjuler “kilde-linjen” visuelt men bevarer plads hvis du vil */
+}
+
+.details summary {
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.cert {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.cert-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .cv-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toc {
+    position: relative;
+    top: 0;
+  }
+
+  .collapse-btn {
+    display: block;
+  }
+
+  .toc.is-hidden {
+    display: none;
+  }
+
+  .profile-card .profile-img {
+    height: 240px;
+  }
+
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print-friendly */
+@media print {
+  .navbar, .collapse-btn, .toc, footer { display: none !important; }
+  .cv-page { background: #fff; }
+  .cv-wrap { max-width: none; margin: 0; padding: 0; }
+  .cv-grid { grid-template-columns: 1fr; }
+  .card, .section { box-shadow: none; border: 1px solid rgba(0,0,0,0.12); }
+  a { color: #000; text-decoration: none; }
+}
+
+
 .footer-social a:hover {
     color: #00aced;
 }
