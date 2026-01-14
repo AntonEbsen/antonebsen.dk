@@ -154,6 +154,17 @@
   .faq-page .toc { position: relative !important; top: 0; }
 }
 
+/* Kategori-overskrifter i FAQ */
+.faq-page .faq-cat {
+  margin: 18px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(18,19,26,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+
 /* Safety */
 html, body { overflow-x: hidden; }
 a, p, li { overflow-wrap: anywhere; word-break: break-word; }
