@@ -1,105 +1,199 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anton Meier Ebsen Jørgensen - Kontakt</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Kontakt</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="contact.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (til footer-ikoner) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Kontakt Anton Meier Ebsen Jørgensen – samarbejde, jobmuligheder, undervisning og spørgsmål." />
 </head>
 
-<body>
-    <nav class="navbar">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-        <a href="portfolio.html">Portefølje</a>
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Kontakt</a>
+<body class="contact-page">
 
-        <!-- Knap med britisk flag -->
-        <button class="flag-btn" onclick="window.location.href='en/index.html'">
-            <img src="billeder/britisk-flag.png" alt="English">
-        </button>
+  <nav class="navbar">
+    <a href="index.html">Hjem</a>
+    <a href="cv.html">CV</a>
+    <a href="portfolio.html">Portefølje</a>
+    <a href="referencer.html">Referencer</a>
+    <a href="faq.html">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a class="active" href="contact.html" aria-current="page">Kontakt</a>
 
-        <!-- Knap med tysk flag -->
-        <button class="flag-btn" onclick="window.location.href='de/index.html'">
-            <img src="billeder/tysk-flag.png" alt="Deutsch">
-        </button>
-    </nav>
+    <button class="flag-btn" onclick="window.location.href='en/contact.html'" aria-label="English">
+      <img src="billeder/britisk-flag.png" alt="English">
+    </button>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <h1>Kontakt mig</h1>
-            <p>Hvis du har spørgsmål, så er du velkommen til at kontakte mig gennem kontaktformularen nedenfor eller ved at bruge de angivne kontaktoplysninger.</p>
-        </header>
+    <button class="flag-btn" onclick="window.location.href='de/contact.html'" aria-label="Deutsch">
+      <img src="billeder/tysk-flag.png" alt="Deutsch">
+    </button>
+  </nav>
 
-        <!-- Afsnit for kontaktoplysninger -->
-        <section class="section contact-details">
-            <h2 class="section-title">Kontaktoplysninger</h2>
-            <p><strong>Email:</strong> anton.ebsen@gmail.com</p>
-            <p><strong>Telefon:</strong> +4525740131</p>
-            <p><strong>LinkedIn-profil:</strong> <a href="https://www.linkedin.com/in/antonebsen/" target="_blank">Your LinkedIn Profile</a></p>
-        </section>
+  <main class="contact-wrap">
 
-        <!-- Afsnit for kontaktForm -->
-        <section class="section contact-form">
-            <h2 class="section-title">Send en besked</h2>
-            <form action="#" method="post"> <!-- Replace # with your form handling script -->
-                <label for="name">Navn</label>
-                <input type="text" id="name" name="name" required>
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Kontakt</p>
+        <h1>Kontakt mig</h1>
+        <p class="lead">
+          Har du en mulighed, et samarbejde eller et spørgsmål? Skriv gerne — jeg svarer typisk inden for 24–48 timer på hverdage.
+        </p>
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="message">Besked</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-
-                <button type="submit">Send besked</button>
-            </form>
-        </section>
-    </div>
-</body>
-
-    <footer>
-        <div class="footer-container">
-            <div class="footer-links">
-                <nav>
-                    <a href="index.html">Hjem</a> |
-                    <a href="cv.html">CV</a> |
-                    <a href="portfolio.html">Portefølje</a> |
-                    <a href="faq.html">FAQ</a> |
-                    <a href="blog.html">Blog</a> |
-                    <a href="contact.html">Kontakt</a>
-                </nav>
-            </div>
-            <div class="footer-social">
-                <p>Følg mig: 
-                    <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/AntonEbsen" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://twitter.com/AntonEbsen" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </p>
-            </div>
-            <div class="footer-legal">
-                <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
-                <p>&copy; 2024 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
-            </div>
-            <div class="footer-contact">
-                <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +4525740131</p>
-            </div>
+        <div class="cta">
+          <a class="btn" href="mailto:anton.ebsen@gmail.com">Send mail</a>
+          <a class="btn ghost" href="cv.html">Se CV</a>
+          <a class="btn ghost" href="portfolio.html">Se portefølje</a>
         </div>
-    </footer>
-    
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hurtigt overblik</h2>
+          <ul class="clean-list">
+            <li><strong>Lokation:</strong> København</li>
+            <li><strong>Email:</strong> <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></li>
+            <li><strong>Telefon:</strong> <a href="tel:+4525740131">+45 25 74 01 31</a></li>
+            <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">/in/antonebsen</a></li>
+            <li><strong>GitHub:</strong> <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">AntonEbsen</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRID -->
+    <section class="contact-grid" aria-label="Kontaktindhold">
+
+      <!-- Left: details -->
+      <section class="card">
+        <h2 class="section-title">Kontaktoplysninger</h2>
+
+        <div class="info-list">
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Telefon</span>
+            <span class="info-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">LinkedIn</span>
+            <span class="info-value">
+              <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">linkedin.com/in/antonebsen</a>
+            </span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">GitHub</span>
+            <span class="info-value">
+              <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">github.com/AntonEbsen</a>
+            </span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <h3 class="subhead">Hvad jeg typisk kan hjælpe med</h3>
+        <ul class="clean-list">
+          <li>Studentermedhjælper / research assistant</li>
+          <li>Dataanalyse og modelarbejde (økonomi/økonometri)</li>
+          <li>Excel/VBA undervisning og materialer</li>
+          <li>Præsentationer, formidling og struktur</li>
+        </ul>
+      </section>
+
+      <!-- Right: form -->
+      <section class="card">
+        <h2 class="section-title">Send en besked</h2>
+        <p class="muted" style="margin-top:-6px;">
+          Udfyld formularen — eller send en mail direkte, hvis du foretrækker det.
+        </p>
+
+        <!-- OBS: Statisk HTML kan ikke sende mails uden backend.
+             Hvis du ikke har en server, kan vi senere skifte til Formspree/Netlify Forms. -->
+        <form class="form" action="#" method="post">
+          <div class="field">
+            <label for="name">Navn</label>
+            <input type="text" id="name" name="name" placeholder="Dit navn" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="din@email.dk" required>
+          </div>
+
+          <div class="field">
+            <label for="subject">Emne</label>
+            <input type="text" id="subject" name="subject" placeholder="Hvad handler henvendelsen om?">
+          </div>
+
+          <div class="field">
+            <label for="message">Besked</label>
+            <textarea id="message" name="message" rows="6" placeholder="Skriv din besked..." required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn" type="submit">Send besked</button>
+            <a class="btn ghost" href="mailto:anton.ebsen@gmail.com?subject=Kontakt%20via%20hjemmesiden">Send via mail</a>
+          </div>
+
+          <p class="muted small">
+            Tip: Hvis du foreslår et samarbejde/job, så skriv gerne tidshorisont, forventet omfang og evt. data/tema.
+          </p>
+        </form>
+      </section>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://twitter.com/AntonEbsen" aria-label="Twitter" target="_blank" rel="noopener">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+
+      <div class="footer-contact">
+        <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
 </html>
