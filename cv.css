@@ -204,3 +204,32 @@ html, body {
   height: auto;
 }
 
+/* === Spacing mellem bokse i venstre/højre kolonne === */
+.cv-page .cv-side,
+.cv-page .cv-main {
+  display: grid;
+  gap: 14px;
+}
+
+/* === Nulstil gammel global .toc (styles.css) på CV-siden === */
+.cv-page .toc {
+  right: auto !important;
+  left: auto !important;
+  width: auto !important;
+
+  max-height: none !important;
+  overflow: visible !important;
+
+  transition: none !important; /* styles.css har transition/max-height trick */
+}
+
+/* Skjul den gamle collapse-btn hvis den findes fra styles.css */
+.cv-page .collapse-btn {
+  display: none !important;
+}
+
+@media (max-width: 980px) {
+  .cv-page .toc { width: 100% !important; }
+}
+
+
