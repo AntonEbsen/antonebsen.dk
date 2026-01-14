@@ -1,133 +1,194 @@
-/* =========================
-   CV layout: TOC + content side-by-side (no overlap)
-   ========================= */
-
-.cv-page .cv-wrap {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 16px 32px;
-
-  display: grid;
-  grid-template-columns: 280px 1fr; /* TOC | resten */
-  gap: 22px; /* <-- afstand mellem kolonner */
-  align-items: start;
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
-/* Sørg for at TOC IKKE arver “fixed/absolute” fra andre sider */
-.cv-page .toc {
-  position: sticky !important;
-  top: 12px;
-  left: auto !important;
-  right: auto !important;
-
-  padding: 14px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-
-  z-index: 2;
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
 }
 
-/* Header med hamburger */
-.cv-page .toc-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+    font-weight: bold;
 }
 
-.cv-page .toc-toggle {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: #fff;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
+.navbar a:hover {
+    background-color: #555;
+    border-radius: 5px;
 }
 
-.cv-page .toc-toggle:hover {
-  background: #f5f7ff;
+.flag-btn {
+    position: absolute;
+    top: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-/* Hamburger ikon (3 streger) */
-.cv-page .hamburger {
-  width: 18px;
-  height: 2px;
-  background: #111827;
-  border-radius: 2px;
-  position: relative;
-  display: block;
+.flag-btn img {
+    width: 30px;
+    height: 20px;
 }
 
-.cv-page .hamburger::before,
-.cv-page .hamburger::after {
-  content: "";
-  width: 18px;
-  height: 2px;
-  background: #111827;
-  border-radius: 2px;
-  position: absolute;
-  left: 0;
+.flag-btn:first-of-type {
+    right: 50px; /* Position of the English flag button */
 }
 
-.cv-page .hamburger::before { top: -6px; }
-.cv-page .hamburger::after  { top: 6px; }
-
-/* TOC links */
-.cv-page .toc-nav a {
-  display: block;
-  padding: 8px 10px;
-  border-radius: 10px;
-  color: inherit;
-  text-decoration: none;
+.flag-btn:last-of-type {
+    right: 10px; /* Position of the German flag button */
 }
 
-.cv-page .toc-nav a:hover {
-  background: #f0f2ff;
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
-/* Kollapset TOC: smal kolonne + skjul links */
-.cv-page .cv-wrap.is-toc-collapsed {
-  grid-template-columns: 72px 1fr;
+.toc {
+    position: fixed;
+    right: 20px;
+    top: 120px;
+    width: 200px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+    max-height: 500px;
 }
 
-.cv-page .cv-wrap.is-toc-collapsed .toc {
-  padding: 12px;
+.toc.collapsed {
+    max-height: 0;
+    padding: 0;
 }
 
-.cv-page .cv-wrap.is-toc-collapsed .toc-nav {
-  display: none;
+.toc h2 {
+    margin-top: 0;
+    font-size: 16px;
 }
 
-/* Responsive: på små skærme stacker vi og lader TOC være “topbar” */
-@media (max-width: 980px) {
-  .cv-page .cv-wrap {
-    grid-template-columns: 1fr;
-  }
-
-  .cv-page .toc {
-    position: relative !important;
-    top: 0;
-  }
-
-  /* Når den er collapsed på mobil: skjul hele TOC-blokken (kun knappen giver ikke mening alene her) */
-  .cv-page .cv-wrap.is-toc-collapsed .toc {
-    display: none;
-  }
+.toc a {
+    display: block;
+    padding: 5px 0;
+    text-decoration: none;
+    color: #333;
 }
 
-.cv-page .cv-grid{
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 22px;
-  align-items: start;
+.toc a.active {
+    font-weight: bold;
+    color: #0066cc;
 }
 
-.cv-page .cv-side,
-.cv-page .cv-main{
-  min-width: 0;
+.toc a:hover {
+    text-decoration: underline;
 }
 
+.collapse-btn {
+    position: fixed;
+    right: 20px;
+    top: 80px;
+    cursor: pointer;
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    width: 200px;
+    font-size: 14px;
+    z-index: 1001;
+}
 
+h1, h2, h3 {
+    color: #333;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+.certification-img {
+    width: 500px; /* Juster bredden efter behov */
+    height: auto; /* Bevarer billedets proportioner */
+    margin-bottom: 10px; /* Tilføj margin for at skabe afstand mellem billeder og tekst */
+}
+
+.certification-item {
+    margin-bottom: 20px; /* Skaber plads mellem hver certificeringssektion */
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-links, .footer-social, .footer-legal, .footer-contact {
+    margin-bottom: 10px;
+}
+
+.footer-links a, .footer-legal a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-links a:hover, .footer-legal a:hover {
+    text-decoration: underline;
+}
+
+.footer-social a {
+    color: #fff;
+    margin-right: 10px;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-social a:hover {
+    color: #00aced;
+}
