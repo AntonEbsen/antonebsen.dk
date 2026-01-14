@@ -1,255 +1,312 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anton Meier Ebsen Jørgensen - CV</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – CV</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+
+  <meta name="description" content="CV: Anton Meier Ebsen Jørgensen – økonomistuderende med fokus på makroøkonomi, økonometri og økonomiske modeller." />
 </head>
 
-<body>
-    <nav class="navbar">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-        <a href="portfolio.html">Portefølje</a>
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Kontakt</a>
+<body class="cv-page">
+  <nav class="navbar" aria-label="Primær navigation">
+    <a href="index.html">Hjem</a>
+    <a class="active" href="cv.html" aria-current="page">CV</a>
+    <a href="portfolio.html">Portefølje</a>
+    <a href="referencer.html">Referencer</a>
+    <a href="faq.html">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Kontakt</a>
 
-        <!-- Knap med britisk flag -->
-        <button class="flag-btn" onclick="window.location.href='en/index.html'">
-            <img src="billeder/britisk-flag.png" alt="English">
-        </button>
+    <!-- Sprog -->
+    <button class="flag-btn" onclick="window.location.href='en/cv.html'" aria-label="English version">
+      <img src="billeder/britisk-flag.png" alt="English">
+    </button>
 
-        <!-- Knap med tysk flag  -->
-        <button class="flag-btn" onclick="window.location.href='de/index.html'">
-            <img src="billeder/tysk-flag.png" alt="Deutsch">
-        </button>
-    </nav>
+    <button class="flag-btn" onclick="window.location.href='de/cv.html'" aria-label="Deutsche Version">
+      <img src="billeder/tysk-flag.png" alt="Deutsch">
+    </button>
+  </nav>
 
-    <!-- Toggle Button for ToC -->
-    <button class="collapse-btn" onclick="toggleToc()">Vis/Skjul Indholdsfortegnelse</button>
-    
-    <!-- Hovedindhold -->
-    <div class="container">
-        <!-- Indholdsfortegnelse -->
-        <div class="toc">
-            <h2>Indholdsfortegnelse</h2>
-            <a href="#profile">Profil</a>
-            <a href="#experience">Erhvervserfaring</a>
-            <a href="#education">Uddannelse</a>
-            <a href="#skills">Færdigheder</a>
-            <a href="#projects">Projekter</a>
-            <a href="#contact">Kontakter</a>
-        </div>
+  <button class="collapse-btn" onclick="toggleToc()" type="button">Vis/Skjul Indholdsfortegnelse</button>
 
-        <!-- Sidehoved -->
-        <header>
-            <img src="billeder/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
+  <main class="cv-wrap">
+    <!-- TOC -->
+    <aside class="toc" id="toc" aria-label="Indholdsfortegnelse">
+      <h2>Indhold</h2>
+      <a href="#profile">Profil</a>
+      <a href="#experience">Erhvervserfaring</a>
+      <a href="#education">Uddannelse</a>
+      <a href="#projects">Projekter</a>
+      <a href="#skills">Kompetencer</a>
+      <a href="#languages">Sprog</a>
+      <a href="#volunteer">Frivilligt</a>
+      <a href="#certifications">Certificeringer</a>
+      <a href="#contact">Kontakt</a>
+    </aside>
+
+    <!-- CV grid -->
+    <section class="cv-grid" aria-label="CV indhold">
+      <!-- Sidebar -->
+      <aside class="cv-side">
+        <div class="card profile-card">
+          <img src="billeder/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
+          <div class="profile-head">
             <h1>Anton Meier Ebsen Jørgensen</h1>
-            <p>Økonomistuderende | 
-                <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn+S" target="_blank">København S</a> | 
-                <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> | 
-                <a href="https://github.com/AntonEbsen">GitHub</a>
+            <p class="subtitle">Økonomistuderende (cand.polit.) · Makroøkonomi · Økonometri · Økonomiske modeller</p>
+          </div>
+
+          <div class="meta">
+            <div class="meta-row">
+              <span class="meta-label">Lokation</span>
+              <span class="meta-value">
+                <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn+K" target="_blank" rel="noopener">København</a>
+              </span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Email</span>
+              <span class="meta-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Telefon</span>
+              <span class="meta-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">LinkedIn</span>
+              <span class="meta-value"><a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">/in/antonebsen</a></span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">GitHub</span>
+              <span class="meta-value"><a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">AntonEbsen</a></span>
+            </div>
+          </div>
+
+          <!-- Optional: link til PDF -->
+          <div class="cta-row">
+            <a class="btn" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">Download CV (PDF)</a>
+          </div>
+          <p class="note">Tip: læg PDF’en i <code>assets/Anton-CV.pdf</code> (eller ret linket).</p>
+        </div>
+
+        <div class="card" id="skills">
+          <h2>Kompetencer</h2>
+          <div class="pill-wrap">
+            <span class="pill">Excel</span>
+            <span class="pill">Excel VBA</span>
+            <span class="pill">Python</span>
+            <span class="pill">SAS</span>
+            <span class="pill">Stata</span>
+            <span class="pill">MATLAB</span>
+            <span class="pill">GAMS</span>
+          </div>
+
+          <hr class="divider">
+
+          <h3>Fokusområder</h3>
+          <ul class="clean-list">
+            <li>Makroøkonomi & pengepolitik</li>
+            <li>Økonometri & tidsrækker</li>
+            <li>Nationalregnskab & dataarbejde</li>
+            <li>Økonomiske modeller (inkl. CGE/RBC)</li>
+          </ul>
+        </div>
+
+        <div class="card" id="languages">
+          <h2>Sprog</h2>
+          <ul class="clean-list">
+            <li><strong>Dansk</strong> – modersmål</li>
+            <li><strong>Engelsk</strong> – flydende i skrift og tale</li>
+            <li><strong>Tysk</strong> – praktisk niveau (lidt rustent)</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="cv-main">
+        <section class="section" id="profile">
+          <h2 class="section-title">Profil</h2>
+          <p>
+            Engageret økonomistuderende på kandidatuddannelsen ved Københavns Universitet med særligt fokus på
+            makroøkonomi, økonometri og økonomiske modeller. Jeg har erfaring med programmering og databehandling
+            gennem kurser i Python, tidsrækkemodeller (SAS) og CGE-modeller, samt to års undervisning i Excel og VBA.
+            :contentReference[oaicite:1]{index=1}
+          </p>
+          <p>
+            Jeg trives med at arbejde med tal og komplekse datasæt og med at omsætte analyser til resultater, der kan
+            bruges som solidt grundlag for beslutninger. :contentReference[oaicite:2]{index=2}
+          </p>
+        </section>
+
+        <section class="section" id="experience">
+          <h2 class="section-title">Erhvervserfaring</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Studenterunderviser i Excel og VBA · Djøf</h3>
+              <span class="item-meta">København K · 2023 – nu</span>
+            </div>
+            <ul>
+              <li>Undervisning i Excel og VBA</li>
+              <li>Udvikling af nyt kursusmateriale</li>
+              <li>Formidling, samarbejde og præsentation</li>
+            </ul>
+            <p class="source">:contentReference[oaicite:3]{index=3}</p>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Kontorassistent · Handwerkskammer Lübeck</h3>
+              <span class="item-meta">Lübeck, Tyskland · oktober 2019</span>
+            </div>
+            <ul>
+              <li>Skrev turistguides</li>
+              <li>Scanning og print</li>
+              <li>Bearbejdning af information (tysk i praksis)</li>
+            </ul>
+            <p class="source">:contentReference[oaicite:4]{index=4}</p>
+          </article>
+        </section>
+
+        <section class="section" id="education">
+          <h2 class="section-title">Uddannelse</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Bachelor & kandidat i økonomi (ba.polit. / cand.polit.) · Københavns Universitet</h3>
+              <span class="item-meta">København K · 2021 – igangværende</span>
+            </div>
+
+            <p><strong>Udvalgte valgfag:</strong> Introduction to Programming and Numerical Analysis; Advanced Macroeconomics: Structural Vector Autoregressive Analysis; Advanced Macroeconomics: Business Cycles. :contentReference[oaicite:5]{index=5}</p>
+
+            <details class="details">
+              <summary>Udvalgte projekter (klik)</summary>
+              <ul>
+                <li><strong>Bachelorprojekt:</strong> “The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy” :contentReference[oaicite:6]{index=6}</li>
+                <li><strong>Model-eksamensprojekt (IPNA):</strong> “Steady State in a simple RBC model” :contentReference[oaicite:7]{index=7}</li>
+                <li><strong>Seminarprojekt:</strong> “One Rule to Rule Them All? … Asymmetric Effects of the ECB’s Monetary Policy” :contentReference[oaicite:8]{index=8}</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Højere Handelseksamen (HHX) · Handelsgymnasiet Lolland-Falster</h3>
+              <span class="item-meta">Nykøbing Falster · 2018 – 2021</span>
+            </div>
+            <p><strong>Studieretning:</strong> Økonomilinjen · <strong>Hovedfag (A-niveau):</strong> International økonomi & virksomhedsøkonomi. :contentReference[oaicite:9]{index=9}</p>
+            <p><strong>SOP:</strong> “Fremtiden af Det Internationale Monetære System: En Analyse af Bitcoins Kursudvikling og Den Digitale Euro”. :contentReference[oaicite:10]{index=10}</p>
+          </article>
+        </section>
+
+        <section class="section" id="projects">
+          <h2 class="section-title">Projekter</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Bachelorprojekt: Global Financial Cycle & spillovers</h3>
+              <span class="item-meta">Empirisk makro · USA pengepolitik → global økonomi</span>
+            </div>
+            <p>
+              “The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy”.
+              :contentReference[oaicite:11]{index=11}
             </p>
-        </header>
+            <p class="muted">Tip: link gerne til en PDF/side, når du har den publicerbar.</p>
+          </article>
 
-        <!-- Profilsektion -->
-        <section class="section profile" id="profile">
-            <h2 class="section-title">Profil</h2>
-            <p>En engageret og nysgerig økonomistuderende, især interesseret i makroøkonomi, herunder pengepolitik. Dygtig i databehandling og programmering.</p>
+          <article class="item">
+            <div class="item-head">
+              <h3>RBC-model: steady state</h3>
+              <span class="item-meta">Numerisk analyse · modellering</span>
+            </div>
+            <p>“Steady State in a simple RBC model”. :contentReference[oaicite:12]{index=12}</p>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>ECB: asymmetriske effekter på tværs af lande</h3>
+              <span class="item-meta">Pengepolitik · cross-country heterogenitet</span>
+            </div>
+            <p>“One Rule to Rule Them All? … Asymmetric Effects of the ECB’s Monetary Policy”. :contentReference[oaicite:13]{index=13}</p>
+          </article>
         </section>
 
-        <!-- Afsnit for erhvervserfaring -->
-        <section class="section experience" id="experience">
-            <h2 class="section-title">Erhverserfaring</h2>
-            <h3>Studenterunderviser, Djøf</h3>
-            <p>København K | juni 2023 - nu</p>
-            <ul>
-                <li>Underviser i Excel</li>
-                <li>Underviser i Excel VBA</li>
-                <li>Udvikling af kursusmateriale</li>
-            </ul>
-            <h3>Rengøringsassistent, Novasol Dansommer A/S</h3>
-            <p>Location | Date - Date</p>
-            <ul>
-                <li>Rengøring af sommerhuse</li>
-                <li>Klargøring af sommerhuse</li>
-            </ul>
+        <section class="section" id="volunteer">
+          <h2 class="section-title">Frivilligt arbejde</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Forperson · Socialøkonomisk Samfund</h3>
+              <span class="item-meta">København K · 2024 – nu</span>
+            </div>
+            <p class="source">:contentReference[oaicite:14]{index=14}</p>
+          </article>
         </section>
 
-        <!-- Afsnit for uddannelse -->
-        <section class="section education" id="education">
-            <h2 class="section-title">Uddannelse</h2>
-            <h3>Kandidatgrad, økonomi (cand.polit)</h3>
-            <p>Københavns Universitet, København K | september 2024-juni 2027</p>
-            <p>Brief description of achievements or relevant coursework.</p>
-            <h3>Bachelorgrad, økonomi (ba.polit)</h3>
-            <p>Københavns Universitet, København K | september 2021-juni 2024</p>
-            <p>Brief description of achievements or relevant coursework.</p>
+        <section class="section" id="certifications">
+          <h2 class="section-title">Certificeringer</h2>
+
+          <div class="cert-grid">
+            <div class="cert">
+              <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
+                <img src="billeder/matlab-onramp.PNG" alt="MATLAB Onramp certifikat" class="cert-img">
+              </a>
+              <h3><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">MATLAB Onramp</a></h3>
+              <p class="muted">Matlab fundamentals og workflows.</p>
+            </div>
+
+            <div class="cert">
+              <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
+                <img src="billeder/calculations-with-vectors-and-matrices.PNG" alt="Vectors & Matrices certifikat" class="cert-img">
+              </a>
+              <h3><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">Vectors & Matrices</a></h3>
+              <p class="muted">Lineær algebra i praksis.</p>
+            </div>
+          </div>
         </section>
 
-    <section class="section courses" id="courses">
-        <h2 class="section-title">Kurser</h2>
-        <h3>Makroøkonomi</h3>
-        <p>
-            <a href="https://kurser.ku.dk/course/a%C3%98kb20032u/" target="_blank">Økonomi i Samfundet</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08002u" target="_blank">Økonomiske Principper B</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08214u/" target="_blank">The Economic History of Europe</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08017u" target="_blank">Makroøkonomi I</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08018u/" target="_blank">Makroøkonomi II</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08006u/" target="_blank">Macroeconomics III</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08002u/" target="_blank">Økonomisk historie</a>
-            <a href="https://www.ug.dk/uddannelser/gymnasialeuddannelser/hoejere-handelseksamen-hhx/international-oekonomi-hhx" target="_blank">International økonomi A</a>
-        </p>
-        <h3>Økonometri</h3>
-        <p>
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08019u" target="_blank">Sandsynlighedsteori og statistik</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08020u/" target="_blank">Økonometri I</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08007u" target="_blank">Økonometri II</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08232u/" target="_blank">Introduction to Programming and Numerical Analysis</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kk08379u/" target="_blank">Advanced Macroeconomics: Structural Vector Autoregressive Analysis (F)</a>
-        </p>
-        <h3>Mikroøkonomi</h3>
-        <p>
-            <a href="https://kurser.ku.dk/course/a%C3%98kb20001u/" target="_blank">Økonomiske Principper A</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08015u" target="_blank">Mikroøkonomi I</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08016u/" target="_blank">Mikroøkonomi II</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08005u" target="_blank">Microeconomics III</a>
-        </p>
-        <h3>Finance</h3>
-        <p>
-            <a href="https://www.ug.dk/uddannelser/gymnasialeuddannelser/hoejere-handelseksamen-hhx/virksomhedsoekonomi-hhx" target="_blank">Virksomhedsøkonomi A</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb20005u/" target="_blank">Erhvervsøkonomi</a>, 
-            <a href="https://www.ug.dk/uddannelser/gymnasialeuddannelser/hoejere-forberedelseseksamen-hf/finansiering-c-valgfag" target="_blank">Finansiering C</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kk08440u/" target="_blank">Det finansielle system (F)</a>
-        </p>
-        <h3>Offentlig økonomi</h3>
-        <p>
-            <a href="https://kurser.ku.dk/course/a%C3%98kb20003u/" target="_blank">Samfundsbeskrivelse A</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb20004u/" target="_blank">Samfundsbeskrivelse B</a>
-        </p>
-        <h3>Matematik</h3>
-        <p>
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08006u" target="_blank">Matematik A</a>, 
-            <a href="https://kurser.ku.dk/course/a%C3%98kb08007u" target="_blank">Matematik B</a>
-        </p>
-        <h3>Andre</h3>
-        <p>
-            <a href="https://kurser.ku.dk/course/a%C3%98ka08026u/" target="_blank">Organization Theory</a>, 
-            <a href="https://www.ug.dk/uddannelser/gymnasialeuddannelser/merkantil-studentereksamen-hhx/informatik-c-hhx-htx-og-stx" target="_blank">Informatik C</a>
-        </p>
+        <section class="section" id="contact">
+          <h2 class="section-title">Kontakt</h2>
+          <div class="contact-row">
+            <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>
+            <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </section>
+      </div>
     </section>
+  </main>
 
-        <!-- Afsnit for certificeringer -->
-        <section class="section certifications" id="certifications">
-        <h2 class="section-title">Certificeringer</h2>
-        
-        <div class="certifications">
-            <h3>Python</h3>
-            <div class="certification-item">
-                <a href="URL_TIL_CERTIFIKAT_1" target="_blank">
-                    <img src="billeder/certifikat_1.jpg" alt="Certifikat 1" class="certification-img">
-                </a>
-                <h4><a href="URL_TIL_CERTIFIKAT_1" target="_blank">Certifikat 1</a></h4>
-                <p>Beskrivelse af, hvad du har lært gennem denne certificering. For eksempel: Lærte avancerede Excel-teknikker, herunder makroer, VBA-programmering og dataanalysemetoder.</p>
-            </div>
-            <div class="certification-item">
-                <a href="URL_TIL_CERTIFIKAT_2" target="_blank">
-                    <img src="billeder/certifikat_2.jpg" alt="Certifikat 2" class="certification-img">
-                </a>
-                <h4><a href="URL_TIL_CERTIFIKAT_2" target="_blank">Certifikat 2</a></h4>
-                <p>Beskrivelse</p>
-            </div>
-            <h3>MATLAB</h3>
-            <div class="certification-item">
-                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank">
-                    <img src="billeder/matlab-onramp.PNG" alt="MATLAB Onramp Certifikat" class="certification-img">
-                </a>
-                <h4><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank">MATLAB Onramp Certifikat</a></h4>
-                <p>Beskrivelse</p>
-            </div>
-            <div class="certification-item">
-                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank">
-                    <img src="billeder/calculations-with-vectors-and-matrices.PNG" alt="Calculations with Vectors and Matrices Certifikat" class="certification-img">
-                </a>
-                <h4><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank">Calculations with Vectors and Matrices certifikat</a></h4>
-                <p>Beskrivelse</p>
-            </div>
-        </div>
-    </section>
-        
-        <!-- Færdighedsafsnit -->
-        <section class="section skills" id="skills">
-            <h2 class="section-title">Færdigheder</h2>
-            <ul>
-                <li>Skill 1</li>
-                <li>Skill 2</li>
-                <li>Skill 3</li>
-                <li>Skill 4</li>
-            </ul>
-        </section>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
 
-        <!-- Projektafsnit -->
-        <section class="section projects" id="projects">
-            <h2 class="section-title">Projekter</h2>
-            <h3>Bachelorprojekt - The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy</h3>
-            <p>Short description of the project. <a href="#">Link to project</a></p>
-            <h3>Another Project Title</h3>
-            <p>Short description of the project. <a href="#">Link to project</a></p>
-        </section>
+      <div class="footer-social">
+        <p>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a> ·
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">GitHub</a>
+        </p>
+      </div>
 
-        <!-- Kontaktafsnit -->
-        <section class="section contact" id="contact">
-            <h2 class="section-title">Kontakt</h2>
-            <p>Email: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></p>
-            <p>Telefon: +4525740131</p>
-            <p>LinkedIn-profil: <a href="https://www.linkedin.com/in/antonebsen/">Link til LinkedIn-profil</a></p>
-        </section>
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
     </div>
+  </footer>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-links">
-                <nav>
-                    <a href="index.html">Hjem</a> |
-                    <a href="cv.html">CV</a> |
-                    <a href="portfolio.html">Portefølje</a> |
-                    <a href="faq.html">FAQ</a> |
-                    <a href="blog.html">Blog</a> |
-                    <a href="contact.html">Kontakt</a>
-                </nav>
-            </div>
-            <div class="footer-social">
-                <p>Følg mig: 
-                    <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/AntonEbsen" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://twitter.com/AntonEbsen" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </p>
-            </div>
-            <div class="footer-legal">
-                <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
-                <p>&copy; 2024 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
-            </div>
-            <div class="footer-contact">
-                <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +4525740131</p>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- Link to external JavaScript file -->
-    <script src="scripts.js"></script>
-    
+  <script src="scripts.js"></script>
 </body>
-
 </html>
