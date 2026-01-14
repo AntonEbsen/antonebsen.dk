@@ -1,122 +1,183 @@
 <!DOCTYPE html>
 <html lang="da">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anton Meier Ebsen Jørgensen - FAQ</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – FAQ</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="faq.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (til footer-ikoner) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="FAQ – ofte stillede spørgsmål om min baggrund, projekter og samarbejde." />
 </head>
 
-<body>
-    <nav class="navbar">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-        <a href="portfolio.html">Portefølje</a>
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Kontakt</a>
+<body class="faq-page">
 
-        <!-- Knap med britisk flag -->
-        <button class="flag-btn" onclick="window.location.href='en/index.html'">
-            <img src="billeder/britisk-flag.png" alt="Link til engelsk version af siden">
-        </button>
+  <nav class="navbar">
+    <a href="index.html">Hjem</a>
+    <a href="cv.html">CV</a>
+    <a href="portfolio.html">Portefølje</a>
+    <a href="referencer.html">Referencer</a>
+    <a class="active" href="faq.html" aria-current="page">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Kontakt</a>
 
-        <!-- Knap med tysk flag -->
-        <button class="flag-btn" onclick="window.location.href='de/index.html'">
-            <img src="billeder/tysk-flag.png" alt="Link til tysk version af siden">
-        </button>
-    </nav>
+    <button class="flag-btn" onclick="window.location.href='en/faq.html'" aria-label="English">
+      <img src="billeder/britisk-flag.png" alt="English">
+    </button>
+    <button class="flag-btn" onclick="window.location.href='de/faq.html'" aria-label="Deutsch">
+      <img src="billeder/tysk-flag.png" alt="Deutsch">
+    </button>
+  </nav>
 
-    <!-- Hovedindhold -->
-    <div class="container">
-        <!-- Indholdsfortegnelse -->
-        <div class="toc">
-            <h2>Indholdsfortegnelse</h2>
-            <a href="#q1">Q1: Hvad er formålet med denne hjemmeside?</a>
-            <a href="#q2">Q2: Hvordan kan jeg kontakte dig for samarbejde eller jobmuligheder?</a>
-            <a href="#q3">Q3: Hvilke projekter har du arbejdet på?</a>
-            <a href="#q4">Q4: Kan jeg se en kopi af dit fulde CV?</a>
-            <a href="#q5">Q5: Tilbyder du freelance tjenester?</a>
+  <main class="faq-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">FAQ</p>
+        <h1>Ofte stillede spørgsmål</h1>
+        <p class="lead">
+          Kort og konkret: hvem jeg er, hvad jeg arbejder med, og hvordan du bedst kontakter mig.
+        </p>
+        <div class="cta">
+          <a class="btn" href="contact.html">Kontakt</a>
+          <a class="btn ghost" href="cv.html">Se CV</a>
+          <a class="btn ghost" href="portfolio.html">Se portefølje</a>
         </div>
+      </div>
 
-        <!-- FAQ-afsnit -->
-        <section class="faq-section">
-            <h1 class="faq-title">Ofte Stillede Spørgsmål</h1>
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hurtig navigation</h2>
+          <nav class="toc-nav" aria-label="Indholdsfortegnelse">
+            <a href="#q1">Formål</a>
+            <a href="#q2">Kontakt</a>
+            <a href="#q3">Projekter</a>
+            <a href="#q4">CV</a>
+            <a href="#q5">Freelance</a>
+          </nav>
+        </div>
+      </div>
+    </section>
 
-            <!-- FAQ nummer 1 -->
-            <div class="faq-item" id="q1">
-                <p class="faq-question">Q1: Hvad er formålet med denne hjemmeside?</p>
-                <p class="faq-answer">Denne hjemmeside fungerer som min professionelle CV-portefølje, hvor jeg fremviser min baggrund, arbejdserfaring, kompetencer og projekter. Den indeholder også en blog, hvor jeg deler mine tanker om forskellige emner relateret til økonomi, teknologi og mere.</p>
+    <!-- CONTENT: left toc + right faq -->
+    <section class="faq-grid">
+      <!-- Sticky TOC (desktop) -->
+      <aside class="toc card" aria-label="Indholdsfortegnelse">
+        <div class="toc-head">
+          <h2 class="section-title" style="margin-bottom:10px;">Indhold</h2>
+        </div>
+        <nav class="toc-nav">
+          <a href="#q1">Hvad er formålet med hjemmesiden?</a>
+          <a href="#q2">Hvordan kontakter man dig?</a>
+          <a href="#q3">Hvilke projekter har du lavet?</a>
+          <a href="#q4">Kan jeg se dit fulde CV?</a>
+          <a href="#q5">Tilbyder du freelance?</a>
+        </nav>
+      </aside>
+
+      <!-- FAQ -->
+      <div class="faq-main">
+        <section class="card">
+          <h2 class="section-title">Spørgsmål</h2>
+
+          <details class="faq-item" id="q1" open>
+            <summary>Hvad er formålet med denne hjemmeside?</summary>
+            <div class="faq-body">
+              Denne hjemmeside fungerer som min professionelle CV-portefølje, hvor jeg fremviser min baggrund,
+              arbejdserfaring, kompetencer og projekter. Den indeholder også en blog med refleksioner om økonomi, data og modeller.
             </div>
+          </details>
 
-            <!-- FAQ nummer 2 -->
-            <div class="faq-item" id="q2">
-                <p class="faq-question">Q2: Hvordan kan jeg kontakte dig for samarbejde eller jobmuligheder?</p>
-                <p class="faq-answer">Du kan kontakte mig via kontaktformularen på <a href="contact.html">Kontakt</a>-siden eller direkte via e-mail på <a href="mailto:your-email@example.com">your-email@example.com</a>. Jeg er altid åben for nye muligheder og samarbejder!</p>
+          <details class="faq-item" id="q2">
+            <summary>Hvordan kan jeg kontakte dig for samarbejde eller jobmuligheder?</summary>
+            <div class="faq-body">
+              Du kan kontakte mig via <a href="contact.html">Kontakt</a>-siden eller direkte på
+              <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>.
+              Jeg er åben for relevante muligheder og faglige samarbejder.
             </div>
+          </details>
 
-            <!-- FAQ nummer 3 -->
-            <div class="faq-item" id="q3">
-                <p class="faq-question">Q3: Hvilke projekter har du arbejdet på?</p>
-                <p class="faq-answer">Jeg har arbejdet på forskellige projekter, der spænder fra dataanalyse, økonomisk modellering og softwareudvikling. Du kan finde detaljerede beskrivelser af disse projekter på min <a href="portfolio.html">Portefølje</a>-side.</p>
+          <details class="faq-item" id="q3">
+            <summary>Hvilke projekter har du arbejdet på?</summary>
+            <div class="faq-body">
+              Jeg arbejder især med projekter inden for dataanalyse, økonometri/tidsrækker og økonomisk modellering.
+              Du kan se udvalgte projekter på min <a href="portfolio.html">Portefølje</a>-side.
             </div>
+          </details>
 
-            <!-- FAQ nummer 4 -->
-            <div class="faq-item" id="q4">
-                <p class="faq-question">Q4: Kan jeg se en kopi af dit fulde CV?</p>
-                <p class="faq-answer">Ja, du kan se mit detaljerede CV på <a href="cv.html">CV</a>-siden. Det inkluderer information om min uddannelse, arbejdserfaring, kompetencer og mere.</p>
+          <details class="faq-item" id="q4">
+            <summary>Kan jeg se en kopi af dit fulde CV?</summary>
+            <div class="faq-body">
+              Ja. Du finder mit CV på <a href="cv.html">CV</a>-siden, og du kan også downloade en PDF derfra.
             </div>
+          </details>
 
-            <!-- FAQ nummer 5 -->
-            <div class="faq-item" id="q5">
-                <p class="faq-question">Q5: Tilbyder du freelance tjenester?</p>
-                <p class="faq-answer">Ja, jeg er tilgængelig for freelance-arbejde afhængigt af projektet. Kontakt mig venligst med detaljer, så vi kan drøfte videre.</p>
+          <details class="faq-item" id="q5">
+            <summary>Tilbyder du freelance tjenester?</summary>
+            <div class="faq-body">
+              Ja, afhængigt af projektets indhold og tidsramme. Send gerne en kort beskrivelse,
+              så kan vi tage en afklaring.
             </div>
+          </details>
+
         </section>
+
+        <section class="card">
+          <h2 class="section-title">Ikke fundet dit spørgsmål?</h2>
+          <p class="muted">
+            Skriv gerne – så tilføjer jeg det til FAQ’en, hvis det giver mening.
+          </p>
+          <div class="cta">
+            <a class="btn" href="mailto:anton.ebsen@gmail.com">Send en mail</a>
+            <a class="btn ghost" href="contact.html">Kontakt-side</a>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://twitter.com/AntonEbsen" aria-label="Twitter" target="_blank" rel="noopener">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </p>
+      </div>
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+      <div class="footer-contact">
+        <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
+      </div>
     </div>
+  </footer>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-links">
-                <nav>
-                    <a href="index.html">Hjem</a> |
-                    <a href="cv.html">CV</a> |
-                    <a href="portfolio.html">Portefølje</a> |
-                    <a href="faq.html">FAQ</a> |
-                    <a href="blog.html">Blog</a> |
-                    <a href="contact.html">Kontakt</a>
-                </nav>
-            </div>
-            <div class="footer-social">
-                <p>Følg mig: 
-                    <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/AntonEbsen" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://twitter.com/AntonEbsen" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </p>
-            </div>
-            <div class="footer-legal">
-                <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
-                <p>&copy; 2024 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
-            </div>
-            <div class="footer-contact">
-                <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
-            </div>
-        </div>
-    </footer>
-        
-    <!-- Link til ekstern JavaScript-fil -->
-    <script src="scripts.js"></script>
 </body>
-
 </html>
