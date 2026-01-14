@@ -1,218 +1,140 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+/* =========================
+   Base
+   ========================= */
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: rgba(17,24,39,0.72);
+  --nav: #333;
+  --navHover: #555;
+  --shadow: 0 10px 30px rgba(0,0,0,0.06);
+  --radius: 16px;
 }
 
-.navbar {
-    background-color: #333;
-    padding: 10px 0;
-    text-align: center;
-    position: relative;
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* stop side-scroll hvis noget stikker ud */
 }
 
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    display: inline-block;
-    font-weight: bold;
+body{
+  font-family: "Roboto", sans-serif;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.navbar a:hover {
-    background-color: #555;
-    border-radius: 5px;
+img{ max-width: 100%; height: auto; display: block; }
+a, p, li{ overflow-wrap: anywhere; word-break: break-word; }
+
+h1, h2, h3{ color: #333; margin: 0 0 10px; }
+
+
+/* =========================
+   Navbar (flex + dropdown)
+   ========================= */
+.navbar{
+  background: var(--nav);
+  padding: 10px 16px;
+  position: relative;
+  overflow: visible; /* dropdown må gerne stikke ud */
 }
 
-.flag-btn {
-    position: absolute;
-    top: 15px;
-    background: none;
-    border: none;
-    cursor: pointer;
+.navbar .nav-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.flag-btn img {
-    width: 30px;
-    height: 20px;
+.navbar .nav-left{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
 }
 
-.flag-btn:first-of-type {
-    right: 50px; /* Position of the English flag button */
+.navbar .nav-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.flag-btn:last-of-type {
-    right: 10px; /* Position of the German flag button */
+.navbar a,
+.navbar .nav-link{
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  border-radius: 10px;
 }
 
-.container {
-    width: 90%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
+.navbar a:hover,
+.navbar .nav-link:hover{
+  background: var(--navHover);
 }
 
-.toc {
-    position: fixed;
-    right: 20px;
-    top: 120px;
-    width: 200px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
-    transition: max-height 0.3s ease-out;
-    overflow: hidden;
-    max-height: 500px;
+.navbar a.active{
+  background: rgba(255,255,255,0.14);
 }
 
-.toc.collapsed {
-    max-height: 0;
-    padding: 0;
+/* Flags */
+.flag-btn{
+  position: static;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.toc h2 {
-    margin-top: 0;
-    font-size: 16px;
+.flag-btn:hover{ background: rgba(255,255,255,0.12); }
+
+.flag-btn img{
+  width: 30px;
+  height: 20px;
 }
 
-.toc a {
-    display: block;
-    padding: 5px 0;
-    text-decoration: none;
-    color: #333;
+/* Dropdown container */
+.navbar .nav-item{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
-.toc a.active {
-    font-weight: bold;
-    color: #0066cc;
-}
-
-.toc a:hover {
-    text-decoration: underline;
-}
-
-.collapse-btn {
-    position: fixed;
-    right: 20px;
-    top: 80px;
-    cursor: pointer;
-    padding: 5px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    width: 200px;
-    font-size: 14px;
-    z-index: 1001;
-}
-
-h1, h2, h3 {
-    color: #333;
-}
-
-header {
-    text-align: center;
-    padding: 20px 0;
-}
-
-.profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto;
-}
-
-.section {
-    margin-bottom: 30px;
-}
-
-.section-title {
-    border-bottom: 2px solid #333;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-ul {
-    padding-left: 20px;
-}
-
-.certification-img {
-    width: 500px; /* Juster bredden efter behov */
-    height: auto; /* Bevarer billedets proportioner */
-    margin-bottom: 10px; /* Tilføj margin for at skabe afstand mellem billeder og tekst */
-}
-
-.certification-item {
-    margin-bottom: 20px; /* Skaber plads mellem hver certificeringssektion */
-}
-
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-    margin-top: 20px;
-}
-
-.footer-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-links, .footer-social, .footer-legal, .footer-contact {
-    margin-bottom: 10px;
-}
-
-.footer-links a, .footer-legal a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.footer-links a:hover, .footer-legal a:hover {
-    text-decoration: underline;
-}
-
-.footer-social a {
-    color: #fff;
-    margin-right: 10px;
-    font-size: 18px;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.footer-social a:hover {
-    color: #00aced;
-}
-
-/* Dropdown nav (hover + keyboard friendly) */
-.navbar {
+.nav-item.has-dropdown{
   position: relative;
 }
 
-.navbar .nav-item {
-  display: inline-block;
-  position: relative;
-}
-
-.navbar .nav-link {
-  display: inline-block;
+/* usynlig bro mellem link og dropdown (forhindrer “forsvind” når du flytter musen ned) */
+.nav-item.has-dropdown::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:100%;
+  width:100%;
+  height:12px;
 }
 
 /* Dropdown box */
-.navbar .dropdown {
+.navbar .dropdown{
   position: absolute;
   top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
+
   min-width: 220px;
   background: #fff;
   border-radius: 12px;
@@ -227,8 +149,7 @@ footer {
   transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
 }
 
-/* Links in dropdown */
-.navbar .dropdown a {
+.navbar .dropdown a{
   display: block;
   padding: 10px 12px;
   border-radius: 10px;
@@ -238,47 +159,222 @@ footer {
   white-space: nowrap;
 }
 
-.navbar .dropdown a:hover {
+.navbar .dropdown a:hover{
   background: rgba(17,24,39,0.06);
 }
 
-/* Show on hover / focus */
+/* Show on hover / keyboard */
 .navbar .has-dropdown:hover .dropdown,
-.navbar .has-dropdown:focus-within .dropdown {
+.navbar .has-dropdown:focus-within .dropdown{
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateX(-50%) translateY(2px);
 }
 
-/* Mobile: disable hover dropdown (click instead via JS below) */
-@media (max-width: 980px) {
-  .navbar .dropdown {
-    left: 0;
-    transform: none;
-    width: min(92vw, 320px);
+/* Mobile nav layout */
+@media (max-width: 720px){
+  .navbar .nav-inner{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .navbar .nav-left,
+  .navbar .nav-right{
+    justify-content: center;
+  }
+  .navbar a,
+  .navbar .nav-link{
+    justify-content: center;
   }
 }
 
-@media (max-width: 980px) {
-  .navbar .has-dropdown.open .dropdown {
+/* Dropdown on mobile: shown via .open class (JS click) */
+@media (max-width: 980px){
+  .navbar .dropdown{
+    left: 0;
+    transform: none;
+    width: min(92vw, 340px);
+  }
+
+  .navbar .has-dropdown:hover .dropdown{
+    /* hover kan være weird på touch – lad click styre det */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .navbar .has-dropdown.open .dropdown{
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
   }
 }
 
-.navbar { overflow: visible; }
 
-.nav-item.has-dropdown { position: relative; }
-
-/* usynlig bro mellem link og dropdown */
-.nav-item.has-dropdown::after{
-  content:"";
-  position:absolute;
-  left:0;
-  top:100%;
-  width:100%;
-  height:12px;
+/* =========================
+   Standard container (for ældre sider)
+   ========================= */
+.container{
+  width: min(92%, 1000px);
+  margin: 22px auto;
+  padding: 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
+/* Standard section look (for ældre sider) */
+.section{
+  margin-bottom: 22px;
+}
+
+.section-title{
+  border-bottom: 2px solid #333;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+/* Header (ældre sider) */
+header{
+  text-align: center;
+  padding: 20px 0;
+}
+
+.profile-img{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+/* Lists */
+ul{ padding-left: 20px; }
+
+
+/* =========================
+   Certifikater (ældre sider)
+   ========================= */
+.certification-img{
+  width: min(500px, 100%);
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.certification-item{ margin-bottom: 20px; }
+
+
+/* =========================
+   Footer
+   ========================= */
+footer{
+  background: var(--nav);
+  color: #fff;
+  padding: 22px 0;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer-container{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-links, .footer-social, .footer-legal, .footer-contact{
+  margin-bottom: 10px;
+}
+
+.footer-links a, .footer-legal a{
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links a:hover, .footer-legal a:hover{
+  text-decoration: underline;
+}
+
+.footer-social a{
+  color: #fff;
+  margin-right: 10px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.footer-social a:hover{
+  opacity: 0.85;
+}
+
+
+/* =========================
+   Legacy ToC styles (DISABLED by default)
+   -------------------------
+   Du bruger ikke længere fixed toc + collapse-btn på de nye sider.
+   Hvis du stadig har en gammel side der bruger det,
+   kan du genaktivere ved at tilføje class="legacy-toc" på body.
+   ========================= */
+body:not(.legacy-toc) .toc,
+body:not(.legacy-toc) .collapse-btn{
+  display: none !important;
+}
+
+/* Hvis du har gamle sider der skal beholde TOC:
+   sæt <body class="legacy-toc"> på dem. */
+body.legacy-toc .toc{
+  position: fixed;
+  right: 20px;
+  top: 120px;
+  width: 200px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1000;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  max-height: 500px;
+}
+
+body.legacy-toc .toc.collapsed{
+  max-height: 0;
+  padding: 0;
+}
+
+body.legacy-toc .toc h2{
+  margin-top: 0;
+  font-size: 16px;
+}
+
+body.legacy-toc .toc a{
+  display: block;
+  padding: 5px 0;
+  text-decoration: none;
+  color: #333;
+}
+
+body.legacy-toc .toc a.active{
+  font-weight: bold;
+  color: #0066cc;
+}
+
+body.legacy-toc .toc a:hover{
+  text-decoration: underline;
+}
+
+body.legacy-toc .collapse-btn{
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  cursor: pointer;
+  padding: 8px;
+  background: #333;
+  color: #fff;
+  border: none;
+  width: 200px;
+  font-size: 14px;
+  z-index: 1001;
+  border-radius: 8px;
+}
