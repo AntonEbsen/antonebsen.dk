@@ -35,3 +35,29 @@ function toggleToc() {
 
 document.addEventListener("DOMContentLoaded", applyTocStateFromStorage);
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll(".navbar .has-dropdown > .nav-link");
+
+    items.forEach(link => {
+      link.addEventListener("click", (e) => {
+        // På desktop skal linket stadig kunne navigere normalt.
+        // På mobil toggler vi dropdown.
+        if (window.matchMedia("(max-width: 980px)").matches) {
+          e.preventDefault();
+          const parent = link.parentElement;
+          parent.classList.toggle("open");
+        }
+      });
+    });
+
+    // Luk dropdown hvis man klikker udenfor
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".navbar .has-dropdown")) {
+        document.querySelectorAll(".navbar .has-dropdown.open")
+          .forEach(x => x.classList.remove("open"));
+      }
+    });
+  });
+</script>
+
