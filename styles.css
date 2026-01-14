@@ -192,3 +192,71 @@ footer {
 .footer-social a:hover {
     color: #00aced;
 }
+
+/* Dropdown nav (hover + keyboard friendly) */
+.navbar {
+  position: relative;
+}
+
+.navbar .nav-item {
+  display: inline-block;
+  position: relative;
+}
+
+.navbar .nav-link {
+  display: inline-block;
+}
+
+/* Dropdown box */
+.navbar .dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  border: 1px solid rgba(0,0,0,0.08);
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
+}
+
+/* Links in dropdown */
+.navbar .dropdown a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #111827;
+  text-decoration: none;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.navbar .dropdown a:hover {
+  background: rgba(17,24,39,0.06);
+}
+
+/* Show on hover / focus */
+.navbar .has-dropdown:hover .dropdown,
+.navbar .has-dropdown:focus-within .dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* Mobile: disable hover dropdown (click instead via JS below) */
+@media (max-width: 980px) {
+  .navbar .dropdown {
+    left: 0;
+    transform: none;
+    width: min(92vw, 320px);
+  }
+}
+
