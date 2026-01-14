@@ -260,3 +260,12 @@ footer {
   }
 }
 
+@media (max-width: 980px) {
+  .navbar .has-dropdown.open .dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+
