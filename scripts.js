@@ -13,9 +13,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function toggleToc() {
-  const toc = document.getElementById("toc");
-  if (!toc) return;
-  toc.classList.toggle("is-hidden");
+function applyTocStateFromStorage() {
+  const wrap = document.querySelector(".cv-wrap");
+  const btn = document.getElementById("tocToggle");
+  if (!wrap || !btn) return;
+
+  const collapsed = localStorage.getItem("tocCollapsed") === "1";
+  wrap.classList.toggle("is-toc-collapsed", collapsed);
+  btn.setAttribute("aria-expanded", String(!collapsed));
 }
+
+function toggleToc() {
+  const wrap = document.querySelector(".cv-wrap");
+  const btn = document.getElementById("tocToggle");
+  if (!wrap || !btn) return;
+
+  const nowCollapsed = wrap.classList.toggle("is-toc-collapsed");
+  btn.setAttribute("aria-expanded", String(!nowCollapsed));
+  localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
+}
+
+document.addEventListener("DOMContentLoaded", applyTocStateFromStorage);
 
