@@ -118,15 +118,16 @@
   }
 }
 
-/* Sikrer at indholdet bliver en ren kolonne og ikke overlapper */
-.cv-page .cv-content {
+.cv-page .cv-grid{
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.cv-page .cv-side,
+.cv-page .cv-main{
   min-width: 0;
 }
 
-/* Hvis du stadig bruger .container inde i cv-content (eller har global CSS på .container),
-   så neutraliser på CV-siden for at undgå overlap */
-.cv-page .cv-content .container {
-  width: 100%;
-  max-width: 100%;
-}
 
