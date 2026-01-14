@@ -1,112 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anton Meier Ebsen Jørgensen - Blog</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Blog</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="blog.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (til footer-ikoner) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Blog med indlæg om makroøkonomi, pengepolitik, økonometri, modeller og data." />
 </head>
 
-<body>
-    <nav class="navbar">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-        <a href="portfolio.html">Portefølje</a>
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Kontakt</a>
+<body class="blog-page">
 
-        <!-- Knap med britisk flag -->
-        <button class="flag-btn" onclick="window.location.href='en/index.html'">
-            <img src="billeder/britisk-flag.png" alt="English">
-        </button>
+  <nav class="navbar">
+    <a href="index.html">Hjem</a>
+    <a href="cv.html">CV</a>
+    <a href="portfolio.html">Portefølje</a>
+    <a href="referencer.html">Referencer</a>
+    <a href="faq.html">FAQ</a>
+    <a class="active" href="blog.html" aria-current="page">Blog</a>
+    <a href="contact.html">Kontakt</a>
 
-        <!-- Knap med tysk flag -->
-        <button class="flag-btn" onclick="window.location.href='de/index.html'">
-            <img src="billeder/tysk-flag.png" alt="Deutsch">
-        </button>
-    </nav>
+    <button class="flag-btn" onclick="window.location.href='en/blog.html'" aria-label="English">
+      <img src="billeder/britisk-flag.png" alt="English">
+    </button>
 
-<!-- Hovedindhold -->
-<div class="container">
-    <!-- Header -->
-    <header>
-        <h1>Blog</h1>
-        <p>Velkommen til min blog! Her finder du artikler, indsigter og tanker om forskellige emner relateret til mit felt, mine interesser og erfaringer.</p>
-    </header>
+    <button class="flag-btn" onclick="window.location.href='de/blog.html'" aria-label="Deutsch">
+      <img src="billeder/tysk-flag.png" alt="Deutsch">
+    </button>
+  </nav>
 
-    <!-- Blogindlæg Sektion -->
-    <section class="section blog">
-        <h2 class="section-title">Seneste Indlæg</h2>
-        
-        <!-- Blogindlæg 1 -->
-        <div class="blog-post">
-            <h3>Blogindlæg Titel 1</h3>
-            <p><em>Opslået den: 20. august 2024</em></p>
-            <p>Introducerende uddrag af blogindlæggets indhold. Denne korte oversigt vil give læserne en idé om, hvad artiklen handler om...</p>
-            <p><a href="#" class="read-more">Læs mere</a></p>
+  <main class="blog-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Blog</p>
+        <h1>Indlæg, noter og forklaringer</h1>
+        <p class="lead">
+          Her samler jeg korte indlæg om økonomi, data, modeller og værktøjer.
+          Målet er klare forklaringer og konkrete takeaways.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="portfolio.html">Se projekter</a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn ghost" href="contact.html">Kontakt</a>
         </div>
 
-        <!-- Blogindlæg 2 -->
-        <div class="blog-post">
-            <h3>Blogindlæg Titel 2</h3>
-            <p><em>Opslået den: 15. juli 2024</em></p>
-            <p>Kort introduktion eller resume af det andet blogindlæg. Giv en engagerende indledning for at få læserne til at fortsætte med at læse...</p>
-            <p><a href="#" class="read-more">Læs mere</a></p>
+        <div class="pill-wrap" aria-label="Emner">
+          <span class="pill">Makro</span>
+          <span class="pill">Pengepolitik</span>
+          <span class="pill">Økonometri</span>
+          <span class="pill">Tidsrækker</span>
+          <span class="pill">CGE/RBC</span>
+          <span class="pill">Excel/VBA</span>
         </div>
+      </div>
 
-        <!-- Blogindlæg 3 -->
-        <div class="blog-post">
-            <h3>Blogindlæg Titel 3</h3>
-            <p><em>Opslået den: 10. juni 2024</em></p>
-            <p>En teaser eller kort beskrivelse for det tredje blogindlæg. Fremhæv nøglepunkter eller temaer, der dækkes i indlægget...</p>
-            <p><a href="#" class="read-more">Læs mere</a></p>
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Seneste</h2>
+          <p class="muted" style="margin:0;">
+            Nye indlæg kommer løbende. Hvis du vil have updates, så følg mig på LinkedIn.
+          </p>
         </div>
-
-        <!-- Flere Blogindlæg -->
-        <p>Find flere af mine artikler <a href="#">her</a> eller følg mig på <a href="https://www.linkedin.com/in/antonebsen/">LinkedIn</a> for opdateringer.</p>
+      </div>
     </section>
-</div>
-</body>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-links">
-                <nav>
-                    <a href="index.html">Hjem</a> |
-                    <a href="cv.html">CV</a> |
-                    <a href="portfolio.html">Portefølje</a> |
-                    <a href="faq.html">FAQ</a> |
-                    <a href="blog.html">Blog</a> |
-                    <a href="contact.html">Kontakt</a>
-                </nav>
-            </div>
-            <div class="footer-social">
-                <p>Følg mig: 
-                    <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/AntonEbsen" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://twitter.com/AntonEbsen" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </p>
-            </div>
-            <div class="footer-legal">
-                <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
-                <p>&copy; 2024 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
-            </div>
-            <div class="footer-contact">
-                <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +4525740131</p>
-            </div>
+    <!-- POSTS -->
+    <section class="grid" aria-label="Blogindlæg">
+
+      <!-- Post 1 -->
+      <article class="card post">
+        <div class="post-top">
+          <h2 class="post-title">Blogindlæg Titel 1</h2>
+          <span class="tag">Makro</span>
         </div>
-    </footer>
-    
+        <p class="post-meta">20. august 2024 · 5 min læsning</p>
+        <p class="muted">
+          Introducerende uddrag af blogindlæggets indhold. Denne korte oversigt giver læseren en idé om,
+          hvad artiklen handler om…
+        </p>
+        <div class="post-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+        </div>
+      </article>
+
+      <!-- Post 2 -->
+      <article class="card post">
+        <div class="post-top">
+          <h2 class="post-title">Blogindlæg Titel 2</h2>
+          <span class="tag">Data</span>
+        </div>
+        <p class="post-meta">15. juli 2024 · 4 min læsning</p>
+        <p class="muted">
+          Kort introduktion eller resume af indlægget. Giv en engagerende indledning, der gør det klart,
+          hvad man får ud af at læse videre…
+        </p>
+        <div class="post-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+        </div>
+      </article>
+
+      <!-- Post 3 -->
+      <article class="card post">
+        <div class="post-top">
+          <h2 class="post-title">Blogindlæg Titel 3</h2>
+          <span class="tag">Excel</span>
+        </div>
+        <p class="post-meta">10. juni 2024 · 6 min læsning</p>
+        <p class="muted">
+          En teaser eller kort beskrivelse for det tredje indlæg. Fremhæv nøglepunkter eller temaer, der dækkes…
+        </p>
+        <div class="post-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Flere indlæg</h2>
+      <p class="muted">
+        Jeg kan også samle en “arkiv”-side senere, når der er flere posts. Indtil da:
+        Følg mig på <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
+        for opdateringer, eller kig forbi igen.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://twitter.com/AntonEbsen" aria-label="Twitter" target="_blank" rel="noopener">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+
+      <div class="footer-contact">
+        <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
 </html>
