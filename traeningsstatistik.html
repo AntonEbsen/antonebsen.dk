@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Træningsstatistik</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="traeningsstatistik.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Træningsstatistik: volumen, sæt, reps, øvelser og udvikling over tid." />
+</head>
+
+<body class="training-page">
+
+  <!-- NAVBAR (samme struktur som dine nyere sider) -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+        <a href="cv.html">CV</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+
+            <!-- Nice to have: direkte link til statistik -->
+            <a class="active" href="traeningsstatistik.html" aria-current="page" role="menuitem">Træningsstatistik</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/traeningsstatistik.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/traeningsstatistik.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="training-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Træning</p>
+        <h1>Træningsstatistik (løbende log)</h1>
+        <p class="lead">
+          Volumen, sæt, reps og øvelse-performance. Bygget til “samme program hver uge” → perfekt til at spotte plateaus.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#uge">Se uge-overblik</a>
+          <a class="btn ghost" href="#sessions">Se sessions</a>
+          <a class="btn ghost" href="#oevelser">Se øvelser</a>
+        </div>
+
+        <div class="pill-wrap">
+          <span class="pill">PUSH/PULL/LEGS</span>
+          <span class="pill">Tonnage</span>
+          <span class="pill">Est. 1RM</span>
+          <span class="pill">Plateau watch</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Filformat</h2>
+          <p class="muted small">
+            Du opdaterer kun data ét sted: <code>TRAINING_DATA</code> i <code>traeningsstatistik.js</code>.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: Når du logger DB som <code>14,7*2</code> tæller vi total load som 29,4 kg.
+          </p>
+        </div>
+
+        <div class="mini-card" style="margin-top:12px;">
+          <h2 class="section-title">Filtre</h2>
+          <div class="filter-row">
+            <label class="small muted" for="splitFilter">Split</label>
+            <select id="splitFilter" class="select">
+              <option value="ALL">Alle</option>
+              <option value="PUSH">PUSH</option>
+              <option value="PULL">PULL</option>
+              <option value="LEGS">LEGS</option>
+            </select>
+          </div>
+
+          <div class="filter-row" style="margin-top:10px;">
+            <label class="small muted" for="searchExercise">Søg øvelse</label>
+            <input id="searchExercise" class="input" type="text" placeholder="fx Squat, Incline Press..." />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="grid-3" id="uge">
+      <div class="card">
+        <h2 class="section-title">Uge-overblik</h2>
+        <div id="weekSummary" class="muted">Indlæser…</div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">PR / Top sæt (est.)</h2>
+        <div id="prList" class="muted">Indlæser…</div>
+        <p class="muted small" style="margin-top:10px;">
+          Est. 1RM bruger Epley (best-effort). Maskiner/kabler er “indikator”, ikke gospel.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Plateau-watch</h2>
+        <div id="plateauList" class="muted">Indlæser…</div>
+        <p class="muted small" style="margin-top:10px;">
+          Viser ændring når en øvelse gentages på tværs af sessions.
+        </p>
+      </div>
+    </section>
+
+    <!-- SESSIONS -->
+    <section class="card" id="sessions">
+      <div class="section-head">
+        <h2 class="section-title">Sessions</h2>
+        <p class="muted small" style="margin:0;">Klik “detaljer” for øvelser og sætliste.</p>
+      </div>
+      <div id="sessionCards" class="session-stack">Indlæser…</div>
+    </section>
+
+    <!-- EXERCISES -->
+    <section class="card" id="oevelser">
+      <div class="section-head">
+        <h2 class="section-title">Øvelser (samlet)</h2>
+        <p class="muted small" style="margin:0;">Sortér ved at klikke på kolonneheader (valgfrit — simpelt).</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" aria-label="Øvelse oversigt">
+          <thead>
+            <tr>
+              <th>Øvelse</th>
+              <th>Sessions</th>
+              <th>Sæt</th>
+              <th>Reps</th>
+              <th>Tonnage</th>
+              <th>Bedste sæt</th>
+              <th>Est. 1RM</th>
+            </tr>
+          </thead>
+          <tbody id="exerciseTableBody">
+            <tr><td colspan="7" class="muted">Indlæser…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="muted small" style="margin-top:12px;">
+        “Tonnage” = vægt × reps (med DB *2 support). Unilateral kan sættes til x2 i data.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du gøre det endnu mere “Excel-agtigt”?</h2>
+      <p class="muted">
+        Hvis du vil, kan vi senere lave export til CSV (så du kan pivot’e i Excel og få dine PR-grafer som en sand Final Boss).
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html">Kontakt</a>
+        <a class="btn ghost" href="blog.html#cat-traening">Se træning i blog</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="traeningsstatistik.js"></script>
+</body>
+</html>
