@@ -12,3 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (index >= 0) tocLinks[index].classList.add('active');
     });
 });
+
+function toggleToc() {
+  const toc = document.getElementById("toc");
+  if (!toc) return;
+  toc.classList.toggle("is-hidden");
+}
+
