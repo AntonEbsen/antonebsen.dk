@@ -172,6 +172,22 @@
   }
 }
 
+/* === Spacing mellem bokse på Kursusstatistik === */
+.kursusstatistik-page .card + .card {
+  margin-top: 14px;
+}
+
+/* Hvis de ligger i en kolonne (sidebar) */
+.kursusstatistik-page .side > .card + .card {
+  margin-top: 14px;
+}
+
+/* Hvis de ligger i et grid – giv grid gap */
+.kursusstatistik-page .grid {
+  gap: 14px;
+}
+
+
 /* Safety: no horizontal scroll */
 html, body { overflow-x: hidden; }
 a, p, li { overflow-wrap: anywhere; word-break: break-word; }
