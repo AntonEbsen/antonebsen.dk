@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
-  <meta name="description" content="Blog med indlæg om makroøkonomi, pengepolitik, økonometri, modeller og data." />
+  <meta name="description" content="Blog med indlæg om faglige emner, træning og rejser." />
 </head>
 
 <body class="blog-page">
@@ -42,25 +42,22 @@
     <section class="card hero">
       <div>
         <p class="eyebrow">Blog</p>
-        <h1>Indlæg, noter og forklaringer</h1>
+        <h1>Indlæg og noter</h1>
         <p class="lead">
-          Her samler jeg korte indlæg om økonomi, data, modeller og værktøjer.
-          Målet er klare forklaringer og konkrete takeaways.
+          Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression)
+          og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).
         </p>
 
         <div class="cta">
-          <a class="btn" href="portfolio.html">Se projekter</a>
-          <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn ghost" href="contact.html">Kontakt</a>
+          <a class="btn" href="#cat-fagligt">Fagligt</a>
+          <a class="btn ghost" href="#cat-traening">Træning</a>
+          <a class="btn ghost" href="#cat-rejser">Rejser</a>
         </div>
 
-        <div class="pill-wrap" aria-label="Emner">
-          <span class="pill">Makro</span>
-          <span class="pill">Pengepolitik</span>
-          <span class="pill">Økonometri</span>
-          <span class="pill">Tidsrækker</span>
-          <span class="pill">CGE/RBC</span>
-          <span class="pill">Excel/VBA</span>
+        <div class="pill-wrap" aria-label="Kategorier">
+          <a class="pill-link" href="#cat-fagligt"><span class="pill">Fagligt</span></a>
+          <a class="pill-link" href="#cat-traening"><span class="pill">Træning</span></a>
+          <a class="pill-link" href="#cat-rejser"><span class="pill">Rejser</span></a>
         </div>
       </div>
 
@@ -68,72 +65,184 @@
         <div class="mini-card">
           <h2 class="section-title">Seneste</h2>
           <p class="muted" style="margin:0;">
-            Nye indlæg kommer løbende. Hvis du vil have updates, så følg mig på LinkedIn.
+            Nye indlæg kommer løbende. (Pro tip: når du har 10+ posts, kan vi lave et rigtigt filter.)
           </p>
         </div>
       </div>
     </section>
 
-    <!-- POSTS -->
-    <section class="grid" aria-label="Blogindlæg">
+    <!-- ===================== -->
+    <!-- KATEGORI: FAGLIGT -->
+    <!-- ===================== -->
+    <section class="cat" id="cat-fagligt" aria-label="Fagligt">
+      <div class="cat-head">
+        <h2 class="cat-title">Fagligt</h2>
+        <p class="muted cat-subtitle">Økonomi, data, modeller, økonometri og værktøjer.</p>
+      </div>
 
-      <!-- Post 1 -->
-      <article class="card post">
-        <div class="post-top">
-          <h2 class="post-title">Blogindlæg Titel 1</h2>
-          <span class="tag">Makro</span>
-        </div>
-        <p class="post-meta">20. august 2024 · 5 min læsning</p>
-        <p class="muted">
-          Introducerende uddrag af blogindlæggets indhold. Denne korte oversigt giver læseren en idé om,
-          hvad artiklen handler om…
-        </p>
-        <div class="post-links">
-          <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-        </div>
-      </article>
+      <div class="grid">
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Blogindlæg Titel 1</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+          <p class="post-meta">20. august 2024 · 5 min læsning</p>
+          <p class="muted">
+            Introducerende uddrag… Skriv gerne hvad læseren får ud af indlægget i én sætning.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
 
-      <!-- Post 2 -->
-      <article class="card post">
-        <div class="post-top">
-          <h2 class="post-title">Blogindlæg Titel 2</h2>
-          <span class="tag">Data</span>
-        </div>
-        <p class="post-meta">15. juli 2024 · 4 min læsning</p>
-        <p class="muted">
-          Kort introduktion eller resume af indlægget. Giv en engagerende indledning, der gør det klart,
-          hvad man får ud af at læse videre…
-        </p>
-        <div class="post-links">
-          <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-        </div>
-      </article>
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Hvordan jeg strukturerer en analyse: fra data til formidling</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+          <p class="post-meta">15. juli 2024 · 6 min læsning</p>
+          <p class="muted">
+            Et simpelt framework til at undgå “analyse-kaos”: afklar mål, dokumentér data, vælg metode, test robusthed, og skriv det klart.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
 
-      <!-- Post 3 -->
-      <article class="card post">
-        <div class="post-top">
-          <h2 class="post-title">Blogindlæg Titel 3</h2>
-          <span class="tag">Excel</span>
-        </div>
-        <p class="post-meta">10. juni 2024 · 6 min læsning</p>
-        <p class="muted">
-          En teaser eller kort beskrivelse for det tredje indlæg. Fremhæv nøglepunkter eller temaer, der dækkes…
-        </p>
-        <div class="post-links">
-          <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-        </div>
-      </article>
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Excel vs. Python: hvornår giver hvad mening?</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+          <p class="post-meta">10. juni 2024 · 4 min læsning</p>
+          <p class="muted">
+            Kort guide til værktøjsvalg: hurtige dashboards og prototyper vs. reproducerbare pipelines og større datasæt.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
+    <!-- ===================== -->
+    <!-- KATEGORI: TRÆNING -->
+    <!-- ===================== -->
+    <section class="cat" id="cat-traening" aria-label="Træning">
+      <div class="cat-head">
+        <h2 class="cat-title">Træning</h2>
+        <p class="muted cat-subtitle">Rutiner, progression, og hvad der faktisk virker i praksis.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Min simple måde at tracke progression på (uden at miste hovedet)</h3>
+            <span class="tag">Træning</span>
+          </div>
+          <p class="post-meta">— · —</p>
+          <p class="muted">
+            Et realistisk system: få nøgletal (volumen, RPE/indsats, søvn), og evaluer uge for uge – ikke dag for dag.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">6-dages split: fordele, faldgruber og hvordan man undgår overbelastning</h3>
+            <span class="tag">Træning</span>
+          </div>
+          <p class="post-meta">— · —</p>
+          <p class="muted">
+            Når volumen er høj, er restitution en “feature”, ikke en bonus. Her er de greb der gør split’et bæredygtigt.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Protein, vaner og den kedelige sandhed</h3>
+            <span class="tag">Træning</span>
+          </div>
+          <p class="post-meta">— · —</p>
+          <p class="muted">
+            Du behøver ikke en perfekt plan — du behøver en plan, du kan holde i 6 måneder.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== -->
+    <!-- KATEGORI: REJSER -->
+    <!-- ===================== -->
+    <section class="cat" id="cat-rejser" aria-label="Rejser">
+      <div class="cat-head">
+        <h2 class="cat-title">Rejser</h2>
+        <p class="muted cat-subtitle">Vandring, ruter, planlægning og erfaringer fra turene.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Vandring: min pakkeliste (det essentielle + det jeg droppede)</h3>
+            <span class="tag">Rejser</span>
+          </div>
+          <p class="post-meta">— · —</p>
+          <p class="muted">
+            Let og praktisk: det du bruger hver dag, og det du bærer uden grund. Plus små hacks, der redder fødderne.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Hvordan jeg planlægger en rute uden at over-planlægge</h3>
+            <span class="tag">Rejser</span>
+          </div>
+          <p class="post-meta">— · —</p>
+          <p class="muted">
+            En robust plan med plads til virkeligheden: energi, vejr, ben, og det man ikke kan forudsige.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+
+        <article class="card post">
+          <div class="post-top">
+            <h3 class="post-title">Camino: hvad jeg ville ønske jeg vidste før første lange dag</h3>
+            <span class="tag">Rejser</span>
+          </div>
+          <p class="post-meta">— · —</p>
+          <p class="muted">
+            De små ting: tempo, pauser, sokker, “ego-management” og hvorfor dag 3 ofte føles hårdere end dag 1.
+          </p>
+          <div class="post-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
+          </div>
+        </article>
+      </div>
     </section>
 
     <!-- CTA -->
     <section class="card">
-      <h2 class="section-title">Flere indlæg</h2>
+      <h2 class="section-title">Forslag til indlæg?</h2>
       <p class="muted">
-        Jeg kan også samle en “arkiv”-side senere, når der er flere posts. Indtil da:
-        Følg mig på <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
-        for opdateringer, eller kig forbi igen.
+        Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.
       </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com">Send en mail</a>
+        <a class="btn ghost" href="contact.html">Kontakt-side</a>
+      </div>
     </section>
 
   </main>
