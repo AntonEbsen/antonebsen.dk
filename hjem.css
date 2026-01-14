@@ -150,3 +150,11 @@
 html, body { overflow-x: hidden; }
 a, p, li { overflow-wrap: anywhere; word-break: break-word; }
 img { max-width: 100%; height: auto; }
+
+.home-wrap > .card {
+  margin-top: 14px;
+}
+.home-wrap > .card:first-child {
+  margin-top: 0;
+}
+
