@@ -18,22 +18,60 @@
 
 <body class="blog-page">
 
-  <nav class="navbar">
-    <a href="index.html">Hjem</a>
-    <a href="cv.html">CV</a>
-    <a href="portfolio.html">Portefølje</a>
-    <a href="referencer.html">Referencer</a>
-    <a href="faq.html">FAQ</a>
-    <a class="active" href="blog.html" aria-current="page">Blog</a>
-    <a href="contact.html">Kontakt</a>
+  <!-- NAVBAR (fixed + matcher din nye struktur) -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
 
-    <button class="flag-btn" onclick="window.location.href='en/blog.html'" aria-label="English">
-      <img src="billeder/britisk-flag.png" alt="English">
-    </button>
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+        <a href="cv.html">CV</a>
 
-    <button class="flag-btn" onclick="window.location.href='de/blog.html'" aria-label="Deutsch">
-      <img src="billeder/tysk-flag.png" alt="Deutsch">
-    </button>
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a class="nav-link active" href="blog.html" aria-current="page">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="traeningsstatistik.html" role="menuitem">Træningsstatistik</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/blog.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+
+        <button class="flag-btn" onclick="window.location.href='de/blog.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+
+    </div>
   </nav>
 
   <main class="blog-wrap">
@@ -132,6 +170,25 @@
       <div class="cat-head">
         <h2 class="cat-title">Træning</h2>
         <p class="muted cat-subtitle">Rutiner, progression, og hvad der faktisk virker i praksis.</p>
+      </div>
+
+      <!-- FEATURED: Træningsstatistik -->
+      <div class="card post" style="margin-bottom:14px;">
+        <div class="post-top">
+          <h3 class="post-title">Træningsstatistik (dashboard)</h3>
+          <span class="tag">Træning</span>
+        </div>
+        <p class="post-meta">Opdateres løbende · Volumen · Top sæt · Est. 1RM · Plateau-watch</p>
+        <p class="muted" style="margin:0 0 12px;">
+          Jeg logger mine sessions (PUSH/PULL/LEGS) og opsummerer nøgletal som tonnage, reps og bedste sæt.
+          Siden er lavet til et stabilt program, så udvikling og plateaus er nemme at spotte.
+        </p>
+        <div class="post-links">
+          <a class="btn" href="traeningsstatistik.html">
+            <i class="fa-solid fa-chart-line"></i> Åbn træningsstatistik
+          </a>
+          <a class="btn ghost" href="#cat-traening">Tilbage til træning</a>
+        </div>
       </div>
 
       <div class="grid">
