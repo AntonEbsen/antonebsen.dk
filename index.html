@@ -17,14 +17,40 @@
 </head>
 
 <body class="home-page">
-  <nav class="navbar">
-    <a class="active" href="index.html">Hjem</a>
-    <a href="cv.html">CV</a>
-    <a href="portfolio.html">Portefølje</a>
-    <a href="referencer.html">Referencer</a>
-    <a href="faq.html">FAQ</a>
-    <a href="blog.html">Blog</a>
-    <a href="contact.html">Kontakt</a>
+  <nav class="navbar" aria-label="Primær navigation">
+  <a class="active" href="index.html">Hjem</a>
+  <a href="cv.html">CV</a>
+
+  <div class="nav-item has-dropdown">
+    <a href="portfolio.html" class="nav-link">Portefølje</a>
+    <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+      <a href="portfolio.html#cases" role="menuitem">Projekt-cases</a>
+      <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+      <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+    </div>
+  </div>
+
+  <a href="referencer.html">Referencer</a>
+  <a href="faq.html">FAQ</a>
+
+  <div class="nav-item has-dropdown">
+    <a href="blog.html" class="nav-link">Blog</a>
+    <div class="dropdown" role="menu" aria-label="Blog undermenu">
+      <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+      <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+      <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+    </div>
+  </div>
+
+  <div class="nav-item has-dropdown">
+    <a href="contact.html" class="nav-link">Kontakt</a>
+    <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+      <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+      <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+      <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+    </div>
+  </div>
+</nav>
 
     <button class="flag-btn" onclick="window.location.href='en/index.html'" aria-label="English">
       <img src="billeder/britisk-flag.png" alt="English">
