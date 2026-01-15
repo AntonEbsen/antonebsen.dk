@@ -261,5 +261,13 @@ html, body {
   }
 }
 
-
+/* CV må ikke arve den globale .container (800px + box) */
+.cv-page .container{
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
 
