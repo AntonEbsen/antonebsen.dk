@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Erhvervserfaring</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="experience.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Erhvervserfaring: undervisning, data og analyse. Rollen, ansvar, resultater og værktøjer." />
+</head>
+
+<body class="experience-page">
+
+  <!-- NAVBAR (samme struktur som dine nyere sider) -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+
+        <!-- CV dropdown (tilføj/justér links efter hvad du har oprettet) -->
+        <div class="nav-item has-dropdown">
+          <a href="cv.html" class="nav-link">CV</a>
+          <div class="dropdown" role="menu" aria-label="CV undermenu">
+            <a href="cv.html" role="menuitem">CV (overblik)</a>
+            <a class="active" href="experience.html" aria-current="page" role="menuitem">Erhvervserfaring</a>
+            <a href="education.html" role="menuitem">Uddannelse</a>
+            <a href="certifications.html" role="menuitem">Certificeringer</a>
+            <a href="assets/Anton-CV.pdf" target="_blank" rel="noopener" role="menuitem">Download CV (PDF)</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/experience.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/experience.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="experience-wrap">
+
+    <!-- HERO -->
+    <section class="card hero" aria-label="Intro">
+      <div>
+        <p class="eyebrow">Erhvervserfaring</p>
+        <h1>Undervisning, data og leverancer – i praksis</h1>
+        <p class="lead">
+          Her er min erhvervserfaring samlet i et format, der er let at skimme:
+          rolle → ansvar → resultater → værktøjer. (No fluff, kun signal.)
+        </p>
+
+        <div class="pill-wrap" aria-label="Nøglekompetencer">
+          <span class="pill">Undervisning</span>
+          <span class="pill">Excel/VBA</span>
+          <span class="pill">Data & analyse</span>
+          <span class="pill">Formidling</span>
+          <span class="pill">Struktur & kvalitet</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#roles"><i class="fa-solid fa-briefcase"></i> Se roller</a>
+          <a class="btn ghost" href="kursusstatistik.html"><i class="fa-solid fa-chart-column"></i> Kursusstatistik</a>
+          <a class="btn ghost" href="contact.html"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Kort version</h2>
+          <ul class="clean-list muted">
+            <li>Excel/VBA-underviser med stærke evalueringer</li>
+            <li>Bygger materialer og workflows, der kan genbruges</li>
+            <li>Trives i deadlines og “delivery mode”</li>
+          </ul>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: indsæt 1–2 tal her (fx “X+ kursister”, “Y kurser”, “Z% tilfredshed”).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROLLER -->
+    <section class="card" id="roles" aria-label="Roller">
+      <h2 class="section-title">Roller</h2>
+      <p class="muted">
+        Skift hurtigt mellem rollerne her. (Recruiter brain: “scan, scan, short-list”.)
+      </p>
+
+      <div class="roles-grid">
+
+        <!-- ROLE 1 -->
+        <article class="role">
+          <div class="role-top">
+            <div>
+              <h3 class="role-title">Studenterunderviser i Excel og VBA · Djøf</h3>
+              <p class="role-meta">København K · 2023 – nu</p>
+            </div>
+            <span class="tag">Undervisning</span>
+          </div>
+
+          <ul class="role-list">
+            <li>Undervisning i Excel og VBA (praktiske cases + arbejdsgange)</li>
+            <li>Udvikling/forbedring af kursusmateriale og øvelser</li>
+            <li>Høj interaktion: Q&A, feedback, problemløsning live</li>
+          </ul>
+
+          <div class="role-highlights">
+            <div class="highlight">
+              <span class="h-label">Resultat</span>
+              <span class="h-value">Indsæt fx: “Flotte evalueringer” / “X+ kursister”</span>
+            </div>
+            <div class="highlight">
+              <span class="h-label">Værktøjer</span>
+              <span class="h-value">Excel · VBA · PowerPoint · (indsæt)</span>
+            </div>
+          </div>
+
+          <div class="role-actions">
+            <a class="btn ghost" href="kursusstatistik.html">
+              <i class="fa-solid fa-chart-column"></i> Se statistik
+            </a>
+            <a class="btn ghost" href="services.html">
+              <i class="fa-solid fa-handshake"></i> Samarbejde
+            </a>
+          </div>
+        </article>
+
+        <!-- ROLE 2 -->
+        <article class="role">
+          <div class="role-top">
+            <div>
+              <h3 class="role-title">Kontorassistent · Handwerkskammer Lübeck</h3>
+              <p class="role-meta">Lübeck, Tyskland · Oktober 2019</p>
+            </div>
+            <span class="tag">Support</span>
+          </div>
+
+          <ul class="role-list">
+            <li>Udarbejdelse af materiale (guides/tekster)</li>
+            <li>Scanning/print og praktisk drift</li>
+            <li>Informationsbearbejdning og struktur</li>
+          </ul>
+
+          <div class="role-highlights">
+            <div class="highlight">
+              <span class="h-label">Fokus</span>
+              <span class="h-value">Kvalitet · struktur · leverance</span>
+            </div>
+            <div class="highlight">
+              <span class="h-label">Sprog</span>
+              <span class="h-value">Tysk (praktisk niveau)</span>
+            </div>
+          </div>
+
+          <div class="role-actions">
+            <a class="btn ghost" href="contact.html">
+              <i class="fa-solid fa-envelope"></i> Kontakt
+            </a>
+          </div>
+        </article>
+
+        <!-- ROLE 3 (placeholder – copy/paste for flere) -->
+        <article class="role role-placeholder">
+          <div class="role-top">
+            <div>
+              <h3 class="role-title">Tilføj rolle (placeholder)</h3>
+              <p class="role-meta">Lokation · År – År</p>
+            </div>
+            <span class="tag">Kategori</span>
+          </div>
+
+          <ul class="role-list">
+            <li>Bullet 1: ansvar</li>
+            <li>Bullet 2: leverance</li>
+            <li>Bullet 3: resultat</li>
+          </ul>
+
+          <div class="role-highlights">
+            <div class="highlight">
+              <span class="h-label">Resultat</span>
+              <span class="h-value">Indsæt tal/effekt</span>
+            </div>
+            <div class="highlight">
+              <span class="h-label">Værktøjer</span>
+              <span class="h-value">Indsæt stack</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- HOW I WORK -->
+    <section class="card" aria-label="Proces">
+      <h2 class="section-title">Hvordan jeg typisk arbejder</h2>
+
+      <div class="process-grid">
+        <div class="process">
+          <h3>1) Afklar mål</h3>
+          <p class="muted">Hvad er outputtet? Hvem er modtageren? Hvad er “done”? (Oldschool, men det virker.)</p>
+        </div>
+        <div class="process">
+          <h3>2) Data & kontekst</h3>
+          <p class="muted">Input, constraints, antagelser, og hvad der *ikke* er muligt. Hellere klarhed end magi.</p>
+        </div>
+        <div class="process">
+          <h3>3) Metode</h3>
+          <p class="muted">Vælg det simplest mulige, der stadig er korrekt. Robusthed > fancy.</p>
+        </div>
+        <div class="process">
+          <h3>4) Formidling & leverance</h3>
+          <p class="muted">Tydeligt output: struktur, noter, og “hvad betyder det?” – så det kan bruges.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card" aria-label="CTA">
+      <h2 class="section-title">Vil du samarbejde?</h2>
+      <p class="muted">
+        Hvis du har et konkret behov (undervisning, templates, dataarbejde), så skriv kort hvad mål + format er.
+        Jeg svarer typisk hurtigt på hverdage.
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        <a class="btn ghost" href="services.html"><i class="fa-solid fa-handshake"></i> Samarbejde</a>
+        <a class="btn ghost" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          <i class="fa-solid fa-file-arrow-down"></i> CV (PDF)
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dropdown click på mobil (safe + simpelt) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".navbar .has-dropdown > .nav-link");
+      links.forEach(link => {
+        link.addEventListener("click", (e) => {
+          if (window.matchMedia("(max-width: 980px)").matches) {
+            e.preventDefault();
+            link.parentElement.classList.toggle("open");
+          }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".navbar .has-dropdown")) {
+          document.querySelectorAll(".navbar .has-dropdown.open")
+            .forEach(x => x.classList.remove("open"));
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
