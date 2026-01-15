@@ -1,0 +1,240 @@
+/* =========================
+   Experience page styling (scoped)
+   ========================= */
+
+.experience-page { background: #f6f7fb; }
+
+.experience-wrap{
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px 32px;
+}
+
+/* Afstand mellem store bokse (løser “klistrer sammen”) */
+.experience-wrap > .card{
+  margin-bottom: 14px;
+}
+.experience-wrap > .card:last-child{
+  margin-bottom: 0;
+}
+
+/* Cards */
+.experience-page .card{
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.experience-page .section-title{
+  margin: 0 0 12px;
+  font-size: 18px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 6px;
+}
+
+.experience-page .eyebrow{
+  margin: 0 0 8px;
+  color: rgba(18,19,26,0.75);
+  font-weight: 700;
+}
+
+.experience-page .lead{
+  margin: 0 0 14px;
+  color: rgba(18,19,26,0.80);
+  font-size: 16px;
+}
+
+.experience-page .muted{ color: rgba(18,19,26,0.75); }
+.experience-page .small{ font-size: 13px; }
+
+/* Buttons */
+.experience-page .cta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+
+.experience-page .btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.experience-page .btn:hover{ opacity: 0.92; }
+
+.experience-page .btn.ghost{
+  background: transparent;
+  border: 1px solid rgba(17,24,39,0.2);
+  color: #111827;
+}
+
+/* Pills */
+.experience-page .pill-wrap{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.experience-page .pill{
+  padding: 6px 10px;
+  background: #f1f3ff;
+  border: 1px solid rgba(99,102,241,0.18);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Hero */
+.experience-page .hero{
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.experience-page .mini-card{
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Roles grid */
+.experience-page .roles-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.experience-page .role{
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(17,24,39,0.02);
+}
+
+.experience-page .role-top{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.experience-page .role-title{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.experience-page .role-meta{
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: rgba(18,19,26,0.70);
+}
+
+.experience-page .tag{
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(17,24,39,0.15);
+  background: rgba(17,24,39,0.04);
+  white-space: nowrap;
+}
+
+.experience-page .role-list{
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.experience-page .role-highlights{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.experience-page .highlight{
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.experience-page .h-label{
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(18,19,26,0.70);
+  margin-bottom: 2px;
+}
+
+.experience-page .h-value{
+  display: block;
+  font-size: 14px;
+  color: rgba(18,19,26,0.90);
+}
+
+.experience-page .role-actions{
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Process grid */
+.experience-page .process-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.experience-page .process{
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(17,24,39,0.02);
+}
+
+.experience-page .process h3{
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+/* Lists (clean) */
+.experience-page .clean-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.experience-page .clean-list li{
+  margin: 0 0 8px;
+}
+.experience-page .clean-list li:last-child{ margin-bottom: 0; }
+
+/* Mobile */
+@media (max-width: 980px){
+  .experience-wrap{ padding-left: 14px; padding-right: 14px; }
+  .experience-page .hero{ grid-template-columns: 1fr; }
+  .experience-page .roles-grid{ grid-template-columns: 1fr; }
+  .experience-page .process-grid{ grid-template-columns: 1fr; }
+}
+
+/* Safety */
+html, body{ overflow-x: hidden; }
+a, p, li{ overflow-wrap: anywhere; word-break: break-word; }
+img{ max-width: 100%; height: auto; }
