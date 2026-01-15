@@ -188,3 +188,15 @@
   .timeline-wrap{ padding-left:14px; padding-right:14px; }
   .timeline-page .hero{ grid-template-columns:1fr; }
 }
+
+/* Spacing mellem sektioner (cards) på siden */
+.timeline-page .timeline-wrap{
+  display: grid;
+  gap: 14px;
+}
+
+/* (valgfrit) hvis du vil være helt sikker på at hero ikke dobler spacing */
+.timeline-page .hero{
+  margin-bottom: 0;
+}
+
