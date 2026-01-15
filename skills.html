@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Kompetencer</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="skills.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning." />
+</head>
+
+<body class="skills-page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+
+        <!-- CV dropdown -->
+        <div class="nav-item has-dropdown">
+          <a href="cv.html" class="nav-link">CV</a>
+          <div class="dropdown" role="menu" aria-label="CV undermenu">
+            <a href="cv.html" role="menuitem">CV (overblik)</a>
+            <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+            <a href="education.html" role="menuitem">Uddannelse</a>
+            <a class="active" href="skills.html" aria-current="page" role="menuitem">Kompetencer</a>
+            <a href="certifications.html" role="menuitem">Certificeringer</a>
+            <a href="assets/Anton-CV.pdf" target="_blank" rel="noopener" role="menuitem">Download CV (PDF)</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/skills.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/skills.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="skills-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Kompetencer</p>
+        <h1>Værktøjer, metoder og det jeg leverer</h1>
+        <p class="lead">
+          Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan,
+          <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.
+        </p>
+
+        <div class="pill-wrap" aria-label="Nøglekompetencer">
+          <span class="pill">Excel/VBA</span>
+          <span class="pill">Python</span>
+          <span class="pill">SAS</span>
+          <span class="pill">GAMS</span>
+          <span class="pill">Økonometri</span>
+          <span class="pill">Makro & pengepolitik</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#core"><i class="fa-solid fa-bolt"></i> Kernekompetencer</a>
+          <a class="btn ghost" href="#tools"><i class="fa-solid fa-screwdriver-wrench"></i> Værktøjer</a>
+          <a class="btn ghost" href="#deliverables"><i class="fa-solid fa-box-open"></i> Leverancer</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hurtig oversigt</h2>
+          <ul class="clean-list muted">
+            <li>Strukturerer data → model → output</li>
+            <li>Bygger templates og workflows der kan genbruges</li>
+            <li>Formidler komplekse ting i “menneskesprog”</li>
+          </ul>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: indsæt 2–3 konkrete “beviser” (antal kurser, evalueringer, projekter).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KERNEKOMPETENCER -->
+    <section class="card" id="core">
+      <h2 class="section-title">Kernekompetencer</h2>
+      <p class="muted">Her er de områder, jeg typisk bliver brugt til – med fokus på output.</p>
+
+      <div class="grid-3">
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>Excel & VBA</h3>
+            <span class="tag">Praktisk</span>
+          </div>
+          <p class="muted">Dashboards, modeller, automatisering og “clean” struktur.</p>
+          <ul class="skill-list">
+            <li>Modeller: inputs → beregning → output → checks</li>
+            <li>Power Query / data-cleaning (hvis relevant)</li>
+            <li>VBA: import, format, loops, performance</li>
+          </ul>
+          <div class="skill-actions">
+            <a class="btn ghost" href="resources.html"><i class="fa-solid fa-download"></i> Ressourcer</a>
+          </div>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>Økonometri & tidsrækker</h3>
+            <span class="tag">Metode</span>
+          </div>
+          <p class="muted">Estimation, identifikation og robusthed – uden at “overfitte fortællingen”.</p>
+          <ul class="skill-list">
+            <li>Regression, panel, robusthedstjek</li>
+            <li>Tidsrækker: forecasting, decomposition, diagnostic</li>
+            <li>Fortolkning + formidling</li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>Makro & pengepolitik</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+          <p class="muted">Policy-relevant analyse: regler, transmission og heterogenitet.</p>
+          <ul class="skill-list">
+            <li>Centralbanker, rente-/inflationsdynamik</li>
+            <li>Taylor-regler, empiriske rammer</li>
+            <li>Strukturerede notater og “policy-ready” output</li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>Python</h3>
+            <span class="tag">Data</span>
+          </div>
+          <p class="muted">Reproducerbare pipelines: data → analyse → figurer/tabeller.</p>
+          <ul class="skill-list">
+            <li>Pandas/NumPy workflows</li>
+            <li>Plots, rapport-output, notebooks</li>
+            <li>Ryddelig struktur + dokumentation</li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>SAS</h3>
+            <span class="tag">Tidsrække</span>
+          </div>
+          <p class="muted">Klassisk, robust værktøj til tidsrækker og statistik (og ja, det virker stadig).</p>
+          <ul class="skill-list">
+            <li>PROC ESM / UCM / VARMAX (hvis relevant)</li>
+            <li>Forecasting + model checks</li>
+            <li>Reproducerbart setup</li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>GAMS / CGE</h3>
+            <span class="tag">Modeller</span>
+          </div>
+          <p class="muted">Kalibrering, baseline-checks og stød i modelrammer.</p>
+          <ul class="skill-list">
+            <li>SAM, kalibrering, closure</li>
+            <li>Shocks + resultattabeller</li>
+            <li>Konsistenschecks (Walras, baseline)</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- VÆRKTØJER / MATRIX -->
+    <section class="card" id="tools">
+      <h2 class="section-title">Værktøjer</h2>
+      <p class="muted">En enkel matrix: hvad jeg bruger værktøjerne til. (Nemt at udvide senere.)</p>
+
+      <div class="tool-grid">
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-table"></i> Excel</h3>
+            <span class="tag">Model/BI</span>
+          </div>
+          <p class="muted small">Dashboards, finansielle modeller, scenarier, checks.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-code"></i> VBA</h3>
+            <span class="tag">Automatisering</span>
+          </div>
+          <p class="muted small">Import, formatting, templates, performance.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-brands fa-python"></i> Python</h3>
+            <span class="tag">Pipeline</span>
+          </div>
+          <p class="muted small">Data-cleaning, analyse, figurer, reproducérbarhed.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-chart-line"></i> SAS</h3>
+            <span class="tag">Tidsrække</span>
+          </div>
+          <p class="muted small">Forecasting, decomposition, klassisk statistik.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-cubes"></i> GAMS</h3>
+            <span class="tag">CGE</span>
+          </div>
+          <p class="muted small">Kalibrering, baseline, stød, resultatsammensætning.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-square-root-variable"></i> MATLAB</h3>
+            <span class="tag">Numerik</span>
+          </div>
+          <p class="muted small">Numeriske øvelser og model-simulation (hvis relevant).</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="muted small" style="margin:0;">
+          Hvis du vil: vi kan senere tilføje “niveau” (basis/intermediate/advanced) – men kun hvis du vil stå på mål for det.
+          Overvurdering = cringe. Underdrivelse = classy.
+        </p>
+      </div>
+    </section>
+
+    <!-- LEVERANCER -->
+    <section class="card" id="deliverables">
+      <h2 class="section-title">Typiske leverancer</h2>
+      <p class="muted">Det her er outputtet, man typisk kan forvente fra mig.</p>
+
+      <div class="grid-2">
+        <div class="deliverable">
+          <h3>Templates & workflows</h3>
+          <ul class="clean-list muted">
+            <li>Excel-templates (inputs/beregning/output/checks)</li>
+            <li>Standardiserede dashboards</li>
+            <li>VBA-snippets til hurtig automation</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <h3>Analyse & rapportering</h3>
+          <ul class="clean-list muted">
+            <li>Reproducerbare analyser (Python/SAS)</li>
+            <li>Tabeller/figurer klar til rapport</li>
+            <li>Fortolkning og “so what?”</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <h3>Undervisning & formidling</h3>
+          <ul class="clean-list muted">
+            <li>Kursusforløb og materiale</li>
+            <li>Øvelser/cases + feedback</li>
+            <li>Praktiske “how-to” guides</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <h3>Modelarbejde</h3>
+          <ul class="clean-list muted">
+            <li>Kalibrering og baseline checks</li>
+            <li>Scenario/shock-resultater</li>
+            <li>Output-tabeller og dokumentation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Har du et konkret behov?</h2>
+      <p class="muted">
+        Skriv format (Excel/Python/SAS) + mål (fx forecasting, dashboards, data-cleaning). Så foreslår jeg en struktur,
+        der passer – og hvad der er realistisk.
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        <a class="btn ghost" href="services.html"><i class="fa-solid fa-handshake"></i> Samarbejde</a>
+        <a class="btn ghost" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          <i class="fa-solid fa-file-arrow-down"></i> CV (PDF)
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dropdown click på mobil -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".navbar .has-dropdown > .nav-link");
+      links.forEach(link => {
+        link.addEventListener("click", (e) => {
+          if (window.matchMedia("(max-width: 980px)").matches) {
+            e.preventDefault();
+            link.parentElement.classList.toggle("open");
+          }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".navbar .has-dropdown")) {
+          document.querySelectorAll(".navbar .has-dropdown.open")
+            .forEach(x => x.classList.remove("open"));
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
