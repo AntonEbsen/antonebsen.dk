@@ -517,3 +517,44 @@ body.legacy-toc .collapse-btn{
   background: rgba(255,255,255,0.14);
 }
 
+/* =========================
+   Holiday themes (body class)
+   ========================= */
+
+/* Default (ingen ændring) */
+body {}
+
+/* Example: Christmas */
+body.theme-christmas{
+  /* små, sikre tweaks */
+  background: linear-gradient(180deg, #f6f7fb, #fff);
+}
+
+body.theme-christmas .navbar{
+  background: #0b3d2e; /* mørk grøn */
+}
+
+body.theme-christmas .navbar a:hover,
+body.theme-christmas .navbar .nav-link:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+body.theme-christmas .pill{
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+/* Optional: en lille “sne”-prik på hero/cards (diskret) */
+body.theme-christmas .card{
+  position: relative;
+  overflow: hidden;
+}
+body.theme-christmas .card::before{
+  content:"";
+  position:absolute; inset:-40px;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 2px) 0 0/28px 28px;
+  opacity: 0.18;
+  pointer-events:none;
+}
+
+
