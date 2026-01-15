@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Milepæle</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="timeline.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+
+  <meta name="description" content="Timeline med milepæle inden for økonomi, data, undervisning, projekter og omtale." />
+</head>
+
+<body class="timeline-page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+
+        <!-- CV dropdown (tilføj Timeline her) -->
+        <div class="nav-item has-dropdown">
+          <a href="cv.html" class="nav-link">CV</a>
+          <div class="dropdown" role="menu" aria-label="CV undermenu">
+            <a href="cv.html" role="menuitem">CV (oversigt)</a>
+            <a class="active" href="timeline.html" aria-current="page" role="menuitem">Milepæle (timeline)</a>
+            <a href="certificeringer.html" role="menuitem">Certificeringer</a>
+            <a href="erhvervserfaring.html" role="menuitem">Erhvervserfaring</a>
+            <a href="kompetencer.html" role="menuitem">Kompetencer</a>
+            <a href="uddannelse.html" role="menuitem">Uddannelse</a>
+            <a href="kurser.html" role="menuitem">Kurser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <!-- Hvis du allerede har “Sprog”-dropdown, så brug den i stedet -->
+        <button class="flag-btn" onclick="window.location.href='en/timeline.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/timeline.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="timeline-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Milepæle</p>
+        <h1>Min timeline</h1>
+        <p class="lead">
+          Et hurtigt overblik over udvalgte milepæle inden for studier, projekter, undervisning og omtale.
+          Kort, konkret, og opdateres løbende.
+        </p>
+
+        <div class="pill-wrap" aria-label="Filtre">
+          <button class="pill-btn is-active" type="button" data-filter="all">Alle</button>
+          <button class="pill-btn" type="button" data-filter="fagligt">Fagligt</button>
+          <button class="pill-btn" type="button" data-filter="undervisning">Undervisning</button>
+          <button class="pill-btn" type="button" data-filter="projekter">Projekter</button>
+          <button class="pill-btn" type="button" data-filter="omtale">Omtale</button>
+          <button class="pill-btn" type="button" data-filter="traening">Træning</button>
+          <button class="pill-btn" type="button" data-filter="rejser">Rejser</button>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan jeg bruger den</h2>
+          <ul class="clean-list muted">
+            <li>År / dato</li>
+            <li>Hvad skete der?</li>
+            <li>Resultat (tal/impact hvis muligt)</li>
+            <li>Link til case, artikel eller repo</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="card">
+      <h2 class="section-title">Udvalgte milepæle</h2>
+
+      <ol class="tl" aria-label="Timeline">
+
+        <!-- Eksempel -->
+        <li class="tl-item" data-cat="undervisning">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Studenterunderviser: Excel/VBA – løbende undervisning</h3>
+              <span class="tl-date">2023 – nu</span>
+            </div>
+            <p class="tl-meta">Kategori: Undervisning</p>
+            <p class="muted">
+              Kort beskrivelse af hvad du gør + evt. et resultat: evalueringer, deltagertal, kursusudvikling osv.
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="erhvervserfaring.html">Se erhvervserfaring</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl-item" data-cat="projekter">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Projekt: (indsæt titel) – data/model/rapport</h3>
+              <span class="tl-date">(år)</span>
+            </div>
+            <p class="tl-meta">Kategori: Projekter</p>
+            <p class="muted">
+              Hvad var målet, hvad gjorde du, og hvad kom der ud af det (rapport, kode, præsentation)?
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="cases.html">Se projekt-cases</a>
+              <a class="btn ghost" href="portfolio.html">Se portefølje</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl-item" data-cat="omtale">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Omtale i medier</h3>
+              <span class="tl-date">(år)</span>
+            </div>
+            <p class="tl-meta">Kategori: Omtale</p>
+            <p class="muted">
+              Kort: hvor og hvorfor. Link til artiklen (hvis du må, og hvis den stadig ligger online).
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="media.html">Media / Omtale</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl-item" data-cat="traening">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Træning: (fx nyt PR / ny rutine / ugevolumen)</h3>
+              <span class="tl-date">(dato)</span>
+            </div>
+            <p class="tl-meta">Kategori: Træning</p>
+            <p class="muted">
+              Hvis du vil holde det professionelt: fokusér på disciplin, struktur og progression (ikke “influencer vibes”).
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="traeningsstatistik.html">Træningsstatistik</a>
+            </div>
+          </div>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du foreslå en milepæl?</h2>
+      <p class="muted">
+        Hvis du mener der mangler noget (fx en publikation, et projekt eller en omtale), så skriv endelig.
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html">Kontakt</a>
+        <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">Send mail</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Tiny filter (valgfrit, men nice) -->
+  <script>
+    (function(){
+      const btns = document.querySelectorAll(".pill-btn");
+      const items = document.querySelectorAll(".tl-item");
+
+      btns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          btns.forEach(b => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+
+          const f = btn.dataset.filter;
+          items.forEach(it => {
+            const cat = it.dataset.cat;
+            it.style.display = (f === "all" || f === cat) ? "" : "none";
+          });
+        });
+      });
+    })();
+  </script>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
