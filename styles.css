@@ -486,3 +486,34 @@ body.legacy-toc .collapse-btn{
   }
 }
 
+/* =========================
+   Language dropdown (navbar)
+   ========================= */
+.lang-switch .dropdown{
+  min-width: 180px;
+}
+
+.lang-row{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang-flag{
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* Lidt mere “utility”-look i højre side */
+.navbar .nav-right .nav-link{
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.navbar .nav-right .nav-link:hover{
+  background: rgba(255,255,255,0.14);
+}
+
