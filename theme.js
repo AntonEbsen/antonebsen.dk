@@ -18,3 +18,16 @@
     document.body.classList.add("theme-christmas");
   }
 })();
+
+(function () {
+  const now = new Date();
+  const m = now.getMonth() + 1; // 1-12
+  const d = now.getDate();      // 1-31
+
+  const isValentine = (m === 2 && d === 14);
+
+  if (isValentine) {
+    document.body.classList.add("theme-valentine");
+  }
+})();
+
