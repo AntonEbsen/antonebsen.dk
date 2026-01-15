@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Organisationer</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="organizations.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+
+  <meta name="description" content="Organisationer og foreninger: roller, ansvar og engagement." />
+</head>
+
+<body class="organizations-page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+
+        <!-- CV dropdown -->
+        <div class="nav-item has-dropdown">
+          <a href="cv.html" class="nav-link">CV</a>
+          <div class="dropdown" role="menu" aria-label="CV undermenu">
+            <a href="cv.html" role="menuitem">CV (overblik)</a>
+            <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+            <a href="education.html" role="menuitem">Uddannelse</a>
+            <a href="skills.html" role="menuitem">Kompetencer</a>
+            <a class="active" href="organizations.html" aria-current="page" role="menuitem">Organisationer</a>
+            <a href="certifications.html" role="menuitem">Certificeringer</a>
+            <a href="assets/Anton-CV.pdf" target="_blank" rel="noopener" role="menuitem">Download CV (PDF)</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/organizations.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/organizations.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="organizations-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Organisationer</p>
+        <h1>Foreninger, roller og ansvar</h1>
+        <p class="lead">
+          Her samler jeg organisationer/foreninger jeg er tilknyttet – med fokus på <strong>rolle</strong>,
+          <strong>ansvar</strong> og <strong>resultat</strong>. (LinkedIn-stilen, bare mere læsbar.)
+        </p>
+
+        <div class="pill-wrap" aria-label="Tags">
+          <span class="pill">Ledelse</span>
+          <span class="pill">Frivilligt</span>
+          <span class="pill">Fagligt</span>
+          <span class="pill">Events</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#orgs"><i class="fa-solid fa-users"></i> Se organisationer</a>
+          <a class="btn ghost" href="cv.html#volunteer"><i class="fa-solid fa-file-lines"></i> Tilbage til CV</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvorfor en separat side?</h2>
+          <p class="muted small" style="margin:0;">
+            Fordi det er her man viser ansvar og “signal” uden at overfylde CV’et.
+            Og ja — det bliver også lettere for folk at linke direkte til det.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="orgs">
+      <h2 class="section-title">Organisationer</h2>
+      <p class="muted">Tip: hold det kort og konkret. 2–4 bullets per rolle er rigeligt.</p>
+
+      <div class="org-grid">
+
+        <!-- ORG CARD -->
+        <article class="org">
+          <div class="org-top">
+            <h3 class="org-title">Socialøkonomisk Samfund</h3>
+            <span class="tag">Ledelse</span>
+          </div>
+
+          <p class="org-meta">Rolle: <strong>Forperson</strong> · Periode: <strong>2024 – nu</strong> · Lokation: København</p>
+
+          <p class="muted">
+            Indsæt 1–2 linjer om formål + din vinkel (fx arrangementer, koordinering, faglig formidling).
+          </p>
+
+          <ul class="org-list">
+            <li>Planlægning/koordinering af aktiviteter og arrangementer</li>
+            <li>Samarbejde med eksterne oplægsholdere og partnere</li>
+            <li>Struktur, ansvar og eksekvering (aka: få tingene til at ske)</li>
+          </ul>
+
+          <div class="org-actions">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
+            <a class="btn ghost" href="contact.html"><i class="fa-solid fa-envelope"></i> Spørg ind</a>
+          </div>
+        </article>
+
+        <!-- TEMPLATE / PLACEHOLDER -->
+        <article class="org">
+          <div class="org-top">
+            <h3 class="org-title">[Organisation / Forening]</h3>
+            <span class="tag">Frivilligt</span>
+          </div>
+
+          <p class="org-meta">Rolle: <strong>[Titel]</strong> · Periode: <strong>[År – År]</strong> · Lokation: [By]</p>
+
+          <p class="muted">
+            1–2 linjer: hvad er organisationen, og hvorfor er din rolle relevant for din profil?
+          </p>
+
+          <ul class="org-list">
+            <li>[Ansvar 1]</li>
+            <li>[Ansvar 2]</li>
+            <li>[Resultat / output, hvis muligt]</li>
+          </ul>
+
+          <div class="org-actions">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file-lines"></i> Note</a>
+          </div>
+        </article>
+
+        <!-- TEMPLATE / PLACEHOLDER -->
+        <article class="org">
+          <div class="org-top">
+            <h3 class="org-title">[Organisation / Netværk]</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+
+          <p class="org-meta">Rolle: <strong>[Medlem / frivillig]</strong> · Periode: <strong>[År – nu]</strong> · Lokation: [—]</p>
+
+          <p class="muted">
+            Kort: hvad følger du/arbejder du med her? (Undgå romaner. Folk scroller.)
+          </p>
+
+          <ul class="org-list">
+            <li>[Aktivitet 1]</li>
+            <li>[Aktivitet 2]</li>
+          </ul>
+
+          <div class="org-actions">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
+            <a class="btn ghost" href="blog.html#cat-fagligt"><i class="fa-solid fa-pen"></i> Relateret blog</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du samarbejde?</h2>
+      <p class="muted">
+        Hvis du vil høre mere om mit arbejde i organisationer eller relevant erfaring, så skriv endelig.
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        <a class="btn ghost" href="cv.html"><i class="fa-solid fa-arrow-left"></i> CV</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dropdown click på mobil -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".navbar .has-dropdown > .nav-link");
+      links.forEach(link => {
+        link.addEventListener("click", (e) => {
+          if (window.matchMedia("(max-width: 980px)").matches) {
+            e.preventDefault();
+            link.parentElement.classList.toggle("open");
+          }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".navbar .has-dropdown")) {
+          document.querySelectorAll(".navbar .has-dropdown.open")
+            .forEach(x => x.classList.remove("open"));
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
