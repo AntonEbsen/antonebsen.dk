@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Uddannelse</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="education.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Uddannelsesprofil: cand.polit./ba.polit., relevante kurser, projekter og fokusområder." />
+</head>
+
+<body class="edu-page">
+
+  <!-- NAVBAR (samme struktur som dine nye sider) -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+
+        <!-- CV dropdown -->
+        <div class="nav-item has-dropdown">
+          <a href="cv.html" class="nav-link active" aria-current="page">CV</a>
+          <div class="dropdown" role="menu" aria-label="CV undermenu">
+            <a href="cv.html#profile" role="menuitem">Profil</a>
+            <a href="cv.html#experience" role="menuitem">Erhvervserfaring</a>
+            <a href="cv.html#education" role="menuitem">Uddannelse (kort)</a>
+            <a class="active" href="education.html" aria-current="page" role="menuitem">Uddannelse (detaljer)</a>
+            <a href="certifications.html" role="menuitem">Certificeringer</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="notes.html" role="menuitem">Publikationer/Noter</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/education.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/education.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="edu-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Uddannelse</p>
+        <h1>Kurser, projekter og faglig profil</h1>
+        <p class="lead">
+          Her samler jeg det, der ellers bliver for langt til CV’et: udvalgte kurser, projektarbejde
+          og hvad jeg konkret har lært (metoder, værktøjer, modeller).
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#ku">Københavns Universitet</a>
+          <a class="btn ghost" href="#hhx">HHX</a>
+          <a class="btn ghost" href="#courses">Kursusoversigt</a>
+          <a class="btn ghost" href="#projects">Projektarbejde</a>
+        </div>
+
+        <div class="pill-wrap">
+          <span class="pill">Makro</span>
+          <span class="pill">Økonometri</span>
+          <span class="pill">Modeller</span>
+          <span class="pill">Tidsrækker</span>
+          <span class="pill">Python/SAS/GAMS</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Kort version?</h2>
+          <p class="muted small" style="margin:0;">
+            CV-siden har den “HR-venlige” oversigt. Denne side er til dem, der faktisk læser.
+          </p>
+          <div class="cta" style="margin-top:12px;">
+            <a class="btn ghost" href="cv.html#education">Til CV-oversigt</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KU -->
+    <section class="card" id="ku">
+      <h2 class="section-title">Københavns Universitet (ba.polit./cand.polit.)</h2>
+
+      <div class="two-col">
+        <div class="mini-card">
+          <h3 class="mini-title">Program & fokus</h3>
+          <p class="muted">
+            Økonomi med fokus på makroøkonomi, pengepolitik, tidsrækker og modellering.
+            Stor vægt på praktisk dataarbejde og programmering.
+          </p>
+          <ul class="clean-list">
+            <li>Makro & pengepolitik (ECB/centralbanker)</li>
+            <li>Økonometri & tidsrækker (forecasting, SVAR, etc.)</li>
+            <li>Økonomiske modeller (RBC/CGE)</li>
+            <li>Værktøjer: Python, SAS, GAMS, Excel/VBA</li>
+          </ul>
+        </div>
+
+        <div class="mini-card">
+          <h3 class="mini-title">Nøgleværktøjer</h3>
+          <div class="pill-wrap">
+            <span class="pill">Python</span>
+            <span class="pill">SAS</span>
+            <span class="pill">GAMS</span>
+            <span class="pill">Excel/VBA</span>
+            <span class="pill">Stata</span>
+            <span class="pill">MATLAB</span>
+          </div>
+          <p class="muted small" style="margin-top:10px;">
+            (Du kan senere tilføje links til notebooks, repo’er eller “resources”.)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSE OVERVIEW -->
+    <section class="card" id="courses">
+      <h2 class="section-title">Kursusoversigt (udvalg)</h2>
+      <p class="muted">
+        Tip: hold denne liste “kurateret” (10–15 kurser). Resten kan ligge i PDF CV.
+      </p>
+
+      <div class="grid">
+        <article class="course">
+          <div class="course-top">
+            <h3 class="course-title">Advanced Macroeconomics: SVAR</h3>
+            <span class="tag">Makro</span>
+          </div>
+          <p class="course-meta">KU · (indsæt semester/år)</p>
+          <p class="muted">Metoder: identifikation, impulssvar, robusthed. Værktøj: (SAS/Stata/Python).</p>
+          <div class="course-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+            <a class="btn ghost" href="#" aria-disabled="true">Projekt</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-top">
+            <h3 class="course-title">Introduction to Programming & Numerical Analysis</h3>
+            <span class="tag">Coding</span>
+          </div>
+          <p class="course-meta">KU · (indsæt semester/år)</p>
+          <p class="muted">Numerik, model-simulering og basale workflows. Værktøj: Python/MATLAB.</p>
+          <div class="course-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-top">
+            <h3 class="course-title">CGE / Applied Economic Modelling</h3>
+            <span class="tag">Modeller</span>
+          </div>
+          <p class="course-meta">KU · (indsæt semester/år)</p>
+          <p class="muted">Kalibrering, SAM, stød, baseline checks. Værktøj: GAMS.</p>
+          <div class="course-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Case</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECT WORK -->
+    <section class="card" id="projects">
+      <h2 class="section-title">Projektarbejde (udvalg)</h2>
+
+      <div class="grid">
+        <article class="proj">
+          <div class="proj-top">
+            <h3 class="proj-title">Bachelorprojekt: Global Financial Cycle & spillovers</h3>
+            <span class="tag">Empiri</span>
+          </div>
+          <p class="proj-meta">Tema: USA pengepolitik → global økonomi</p>
+          <p class="muted">1–2 linjer: metode, data, og hvad du bidrog med.</p>
+          <div class="proj-links">
+            <a class="btn ghost" href="#" aria-disabled="true">PDF</a>
+            <a class="btn ghost" href="#" aria-disabled="true">Kode</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top">
+            <h3 class="proj-title">RBC-model: steady state</h3>
+            <span class="tag">Model</span>
+          </div>
+          <p class="proj-meta">Tema: numerik & modelsetup</p>
+          <p class="muted">1–2 linjer: hvad modellen gjorde, og hvad du lærte.</p>
+          <div class="proj-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top">
+            <h3 class="proj-title">ECB-projekt: heterogene effekter på tværs af lande</h3>
+            <span class="tag">Pengepolitik</span>
+          </div>
+          <p class="proj-meta">Tema: Taylor rules / syntetiske renter</p>
+          <p class="muted">1–2 linjer: metode og output (plots/tables).</p>
+          <div class="proj-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Slides</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HHX -->
+    <section class="card" id="hhx">
+      <h2 class="section-title">HHX (Handelsgymnasiet Lolland-Falster)</h2>
+      <p class="muted">
+        Studieretning: Økonomi. Fokus på international økonomi og virksomhedsøkonomi.
+      </p>
+      <ul class="clean-list">
+        <li>Projekter og skriftlig formidling</li>
+        <li>Grundlæggende kvantitativ metode</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du se certificeringer også?</h2>
+      <p class="muted">Certificeringer er “beviser”. Uddannelse er “forløb”. Begge styrker troværdigheden.</p>
+      <div class="cta">
+        <a class="btn" href="certifications.html">Til certificeringer</a>
+        <a class="btn ghost" href="contact.html">Kontakt</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
