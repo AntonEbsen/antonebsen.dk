@@ -75,3 +75,12 @@
 html,body{ overflow-x:hidden; }
 a,p,li{ overflow-wrap:anywhere; word-break:break-word; }
 img{ max-width:100%; height:auto; }
+
+/* Afstand mellem de store bokse/sektioner på siden */
+.edu-wrap > .card{
+  margin-bottom: 14px;
+}
+
+.edu-wrap > .card:last-child{
+  margin-bottom: 0;
+}
