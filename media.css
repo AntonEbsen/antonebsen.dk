@@ -10,6 +10,36 @@
   padding:0 16px 32px;
 }
 
+/* 1) Giver automatisk afstand mellem ALLE sektioner (cards) i main */
+.media-wrap{
+  max-width:1200px;
+  margin:24px auto;
+  padding:0 16px 32px;
+
+  display: grid;
+  gap: 16px;          /* <- justér: 14–24px */
+}
+
+/* Når vi bruger grid-gap, behøver hero ikke egen margin */
+.media-page .hero{
+  margin-bottom: 0;
+}
+
+/* 2) Lidt mere luft i grids inde i cards */
+.media-page .mentions-grid{
+  gap: 16px;          /* var 14px */
+}
+
+.media-page .press-grid{
+  gap: 16px;          /* var 14px */
+  margin-top: 16px;   /* lidt mere luft efter intro-tekst */
+}
+
+/* 3) Luft mellem press-grid og note-strip */
+.media-page .note-strip{
+  margin-top: 16px;   /* var 14px */
+}
+
 .media-page .card{
   background:#fff;
   border-radius:16px;
