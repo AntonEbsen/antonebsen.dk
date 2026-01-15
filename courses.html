@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Kurser</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="courses.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Kurser: universitetsfag, online-kurser og certificeringsforløb (Python, SAS, Matlab, økonomi m.m.)." />
+</head>
+
+<body class="courses-page">
+
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+
+        <!-- CV dropdown -->
+        <div class="nav-item has-dropdown">
+          <a href="cv.html" class="nav-link">CV</a>
+          <div class="dropdown" role="menu" aria-label="CV undermenu">
+            <a href="cv.html#profile" role="menuitem">Overblik</a>
+            <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+            <a href="education.html" role="menuitem">Uddannelse</a>
+
+            <!-- NY -->
+            <a class="active" href="courses.html" aria-current="page" role="menuitem">Kurser</a>
+
+            <a href="skills.html" role="menuitem">Kompetencer</a>
+            <a href="organizations.html" role="menuitem">Organisationer</a>
+            <a href="certifications.html" role="menuitem">Certificeringer</a>
+            <a href="video-cv.html" role="menuitem">Video-CV</a>
+            <a href="assets/Anton-CV.pdf" target="_blank" rel="noopener" role="menuitem">Download CV (PDF)</a>
+          </div>
+        </div>
+
+        <!-- Portefølje dropdown -->
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/courses.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/courses.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="courses-wrap">
+
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Kurser</p>
+        <h1>Fag, forløb og kurser</h1>
+        <p class="lead">
+          Her samler jeg alle de kurser, jeg har taget — både universitet og online. Fokus er på
+          makro, økonometri, programmering og modeller.
+        </p>
+
+        <div class="controls" aria-label="Filtre og søgning">
+          <div class="search">
+            <input id="courseSearch" type="search" placeholder="Søg (fx 'SAS', 'CGE', 'Python', 'SVAR')…" aria-label="Søg i kurser" />
+          </div>
+
+          <div class="filters" aria-label="Filtre">
+            <button class="chip active" data-filter="all" type="button">Alle</button>
+            <button class="chip" data-filter="university" type="button">Universitet</button>
+            <button class="chip" data-filter="programming" type="button">Programmering</button>
+            <button class="chip" data-filter="econometrics" type="button">Økonometri</button>
+            <button class="chip" data-filter="macro" type="button">Makro</button>
+            <button class="chip" data-filter="writing" type="button">Skrivning</button>
+          </div>
+        </div>
+
+        <p class="muted small" style="margin:10px 0 0;">
+          Pro tip: hold kort-beskrivelser korte. Hvis nogen vil nørde, klikker de videre.
+        </p>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Sådan bruger du siden</h2>
+          <p class="muted small" style="margin:0;">
+            Brug søgning og filtre. Hver “card” kan have link til pensum, kursus-side og evt. certifikat.
+            Læg dokumenter i <code>assets/courses/</code> (eller <code>assets/certificates/</code>) og link dem.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="stack">
+
+      <section class="card" aria-label="Kurser liste">
+        <h2 class="section-title">Kurser</h2>
+        <p class="muted">Redigér cards nedenfor og kopier dem for at tilføje flere.</p>
+
+        <div class="grid" id="coursesGrid">
+
+          <!-- EKSEMPEL 1 -->
+          <article class="course" data-tags="university macro">
+            <div class="course-top">
+              <h3 class="course-title">Advanced Macroeconomics: Business Cycles</h3>
+              <span class="tag">Universitet</span>
+            </div>
+            <p class="meta">Københavns Universitet · (indsæt år/semester)</p>
+            <p class="muted">Konjunkturer, DSGE/RBC intuition, og hvordan man læser modeller uden at gå kold.</p>
+
+            <div class="pill-wrap" aria-label="Tags">
+              <span class="pill">Makro</span>
+              <span class="pill">Business Cycles</span>
+              <span class="pill">Modeller</span>
+            </div>
+
+            <div class="cta">
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Kursus-side</a>
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file"></i> Pensum/Noter</a>
+            </div>
+          </article>
+
+          <!-- EKSEMPEL 2 -->
+          <article class="course" data-tags="university econometrics">
+            <div class="course-top">
+              <h3 class="course-title">Advanced Macroeconomics: Structural VAR Analysis</h3>
+              <span class="tag">Universitet</span>
+            </div>
+            <p class="meta">Københavns Universitet · (indsæt år/semester)</p>
+            <p class="muted">SVAR-identifikation, impulse responses, og praktisk tidsrække-håndværk.</p>
+
+            <div class="pill-wrap">
+              <span class="pill">Økonometri</span>
+              <span class="pill">SVAR</span>
+              <span class="pill">Tidsrækker</span>
+            </div>
+
+            <div class="cta">
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Kursus-side</a>
+            </div>
+          </article>
+
+          <!-- EKSEMPEL 3 -->
+          <article class="course" data-tags="programming econometrics">
+            <div class="course-top">
+              <h3 class="course-title">Practical Time Series Analysis (SAS)</h3>
+              <span class="tag">SAS</span>
+            </div>
+            <p class="meta">Københavns Universitet · (indsæt år/semester)</p>
+            <p class="muted">Forecasting, decomposition, og SAS workflows (PROC ESM/UCM/X12 etc.).</p>
+
+            <div class="pill-wrap">
+              <span class="pill">SAS</span>
+              <span class="pill">Forecasting</span>
+              <span class="pill">Tidsrækker</span>
+            </div>
+
+            <div class="cta">
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file"></i> Cheatsheet</a>
+            </div>
+          </article>
+
+          <!-- EKSEMPEL 4 -->
+          <article class="course" data-tags="programming">
+            <div class="course-top">
+              <h3 class="course-title">Python – Data Analysis & Automation (samling)</h3>
+              <span class="tag">Programmering</span>
+            </div>
+            <p class="meta">Online · (indsæt platform + år)</p>
+            <p class="muted">Pandas, data cleaning, plotting, reproducérbare workflows og små automatiseringer.</p>
+
+            <div class="pill-wrap">
+              <span class="pill">Python</span>
+              <span class="pill">Pandas</span>
+              <span class="pill">Data prep</span>
+            </div>
+
+            <div class="cta">
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-certificate"></i> Certifikat</a>
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Kursus-link</a>
+            </div>
+          </article>
+
+          <!-- EKSEMPEL 5 -->
+          <article class="course" data-tags="writing">
+            <div class="course-top">
+              <h3 class="course-title">Politikens Skriveakademi (for økonomistuderende)</h3>
+              <span class="tag">Skrivning</span>
+            </div>
+            <p class="meta">Politiken · (indsæt år)</p>
+            <p class="muted">Formidling, struktur og tekst, der faktisk kan læses af mennesker.</p>
+
+            <div class="pill-wrap">
+              <span class="pill">Skrivning</span>
+              <span class="pill">Formidling</span>
+            </div>
+
+            <div class="cta">
+              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file"></i> Bevis/Link</a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Vil du foreslå et kursus?</h2>
+        <p class="muted">
+          Hvis du mener der er et “must-have” kursus for min profil (makro/økonometri/data/modeller), så skriv endelig.
+        </p>
+        <div class="cta">
+          <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope"></i> Send en mail</a>
+          <a class="btn ghost" href="contact.html"><i class="fa-solid fa-message"></i> Kontakt-side</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Filter + search -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Mobile dropdown toggle
+      const links = document.querySelectorAll(".navbar .has-dropdown > .nav-link");
+      links.forEach(link => {
+        link.addEventListener("click", (e) => {
+          if (window.matchMedia("(max-width: 980px)").matches) {
+            e.preventDefault();
+            link.parentElement.classList.toggle("open");
+          }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".navbar .has-dropdown")) {
+          document.querySelectorAll(".navbar .has-dropdown.open")
+            .forEach(x => x.classList.remove("open"));
+        }
+      });
+
+      // Filter + search logic
+      const chips = document.querySelectorAll(".chip");
+      const search = document.getElementById("courseSearch");
+      const cards = Array.from(document.querySelectorAll("#coursesGrid .course"));
+
+      let activeFilter = "all";
+
+      function matchesFilter(card){
+        const tags = (card.getAttribute("data-tags") || "").toLowerCase();
+        return activeFilter === "all" || tags.includes(activeFilter);
+      }
+
+      function matchesSearch(card){
+        const q = (search.value || "").trim().toLowerCase();
+        if (!q) return true;
+        return card.textContent.toLowerCase().includes(q);
+      }
+
+      function render(){
+        cards.forEach(card => {
+          const show = matchesFilter(card) && matchesSearch(card);
+          card.style.display = show ? "" : "none";
+        });
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          chips.forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          activeFilter = chip.getAttribute("data-filter");
+          render();
+        });
+      });
+
+      search.addEventListener("input", render);
+    });
+  </script>
+</body>
+</html>
