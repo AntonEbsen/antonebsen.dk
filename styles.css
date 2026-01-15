@@ -316,8 +316,8 @@ footer{
    Hvis du stadig har en gammel side der bruger det,
    kan du genaktivere ved at tilføje class="legacy-toc" på body.
    ========================= */
-body:not(.legacy-toc) .toc,
-body:not(.legacy-toc) .collapse-btn{
+body:not(.legacy-toc):not(.cv-page) .toc,
+body:not(.legacy-toc):not(.cv-page) .collapse-btn{
   display: none !important;
 }
 
