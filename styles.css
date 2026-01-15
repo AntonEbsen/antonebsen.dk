@@ -557,4 +557,61 @@ body.theme-christmas .card::before{
   pointer-events:none;
 }
 
+/* =========================
+   Holiday theme: Valentine (Feb 14)
+   ========================= */
+
+body.theme-valentine{
+  background: linear-gradient(180deg, #f6f7fb 0%, #fff 55%, #fdf2f4 100%);
+}
+
+/* Navbar: dyb rød/burgundy (mere voksen end Barbie-pink) */
+body.theme-valentine .navbar{
+  background: #4a1020;
+}
+
+/* Hover states */
+body.theme-valentine .navbar a:hover,
+body.theme-valentine .navbar .nav-link:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+/* Active */
+body.theme-valentine .navbar a.active{
+  background: rgba(255,255,255,0.16);
+}
+
+/* Knapper: lille twist */
+body.theme-valentine .btn{
+  background: #4a1020;
+}
+body.theme-valentine .btn.ghost{
+  border-color: rgba(74,16,32,0.25);
+  color: #4a1020;
+}
+
+/* Pills: diskret highlight */
+body.theme-valentine .pill{
+  background: rgba(74,16,32,0.06);
+  border-color: rgba(74,16,32,0.18);
+}
+
+/* Optional: lille “badge” i hero/cards (meget diskret) */
+body.theme-valentine .card{
+  position: relative;
+}
+body.theme-valentine .card.valentine-badge::before{
+  content: "Sankt Valentin · 14/2";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(74,16,32,0.10);
+  border: 1px solid rgba(74,16,32,0.18);
+  color: #4a1020;
+}
+
 
