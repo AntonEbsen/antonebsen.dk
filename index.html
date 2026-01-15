@@ -16,6 +16,8 @@
   <meta name="description" content="Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Erfaring med Python, SAS, GAMS og Excel/VBA." />
 </head>
 
+<script src="search.js" defer></script>
+  
 <body class="home-page">
   <nav class="navbar" aria-label="Primær navigation">
   <div class="nav-inner">
@@ -71,6 +73,21 @@
       </div>
     </div>
 
+  <div class="nav-search" role="search">
+    <label class="sr-only" for="siteSearch">Søg på siden</label>
+    <input
+      id="siteSearch"
+      class="nav-search-input"
+      type="search"
+      placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+      autocomplete="off"
+      aria-autocomplete="list"
+      aria-controls="searchResults"
+      aria-expanded="false"
+    />
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div>
+  </div>
+    
     <div class="nav-right" aria-label="Sprog">
       <button class="flag-btn" onclick="window.location.href='en/index.html'" aria-label="English">
         <img src="billeder/britisk-flag.png" alt="English">
