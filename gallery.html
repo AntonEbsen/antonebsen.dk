@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Galleri</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="gallery.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Galleri: udvalgte billeder fra projekter, events, træning og rejser." />
+</head>
+
+<body class="gallery-page">
+
+  <!-- NAVBAR: samme struktur som dine nye sider -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+        <a href="cv.html">CV</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="gallery.html" role="menuitem" aria-current="page">Galleri</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/gallery.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/gallery.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="gallery-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Galleri</p>
+        <h1>Billeder</h1>
+        <p class="lead">
+          Et kurateret udvalg fra projekter, events, træning og rejser.
+          (Samme content som på mine sociale medier — bare samlet ét sted.)
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#grid">Se galleri</a>
+          <a class="btn ghost" href="contact.html">Foreslå et billede</a>
+        </div>
+
+        <p class="muted small" style="margin:10px 0 0;">
+          Tip: læg billeder i <code>assets/gallery/</code> og opdatér kortene nedenfor.
+        </p>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Kategorier</h2>
+          <p class="muted small" style="margin:0;">
+            Brug tags til at holde det ryddeligt: Træning, Rejser, Events, Undervisning.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <section class="card controls" aria-label="Filtre">
+      <div class="filters" role="tablist" aria-label="Kategorier">
+        <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">Alle</button>
+        <button class="chip" data-filter="traening" role="tab" aria-selected="false">Træning</button>
+        <button class="chip" data-filter="rejser" role="tab" aria-selected="false">Rejser</button>
+        <button class="chip" data-filter="events" role="tab" aria-selected="false">Events</button>
+        <button class="chip" data-filter="undervisning" role="tab" aria-selected="false">Undervisning</button>
+      </div>
+
+      <div class="search">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input id="gallerySearch" type="search" placeholder="Søg i captions…" aria-label="Søg i galleri" />
+      </div>
+    </section>
+
+    <!-- GRID -->
+    <section id="grid" class="grid" aria-label="Galleri">
+      <!-- CARD TEMPLATE: kopier og tilpas -->
+
+      <figure class="g-card" data-tags="traening" data-caption="PUSH 1 – uge 1, progression og fokus">
+        <button class="g-btn" type="button"
+          data-src="assets/gallery/sample1.jpg"
+          data-alt="Træning – billede"
+          data-title="PUSH 1 – uge 1"
+          data-text="Kort note: fokus på teknik og konsistens.">
+          <img src="assets/gallery/sample1.jpg" alt="Træning – billede" loading="lazy">
+        </button>
+        <figcaption>
+          <div class="cap-top">
+            <strong>PUSH 1 – uge 1</strong>
+            <span class="tag">Træning</span>
+          </div>
+          <p class="muted small">Progression + teknikfokus.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="g-card" data-tags="rejser" data-caption="Vandretur – rute, udsigt og tempo">
+        <button class="g-btn" type="button"
+          data-src="assets/gallery/sample2.jpg"
+          data-alt="Rejse – billede"
+          data-title="Vandretur"
+          data-text="Kort note: solid dag på ruten.">
+          <img src="assets/gallery/sample2.jpg" alt="Rejse – billede" loading="lazy">
+        </button>
+        <figcaption>
+          <div class="cap-top">
+            <strong>Vandretur</strong>
+            <span class="tag">Rejser</span>
+          </div>
+          <p class="muted small">Rute + erfaringer.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="g-card" data-tags="undervisning" data-caption="Excel-kursus – undervisning og cases">
+        <button class="g-btn" type="button"
+          data-src="assets/gallery/sample3.jpg"
+          data-alt="Undervisning – billede"
+          data-title="Excel-kursus"
+          data-text="Kort note: hands-on cases og god energi.">
+          <img src="assets/gallery/sample3.jpg" alt="Undervisning – billede" loading="lazy">
+        </button>
+        <figcaption>
+          <div class="cap-top">
+            <strong>Excel-kursus</strong>
+            <span class="tag">Undervisning</span>
+          </div>
+          <p class="muted small">Hands-on cases.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="g-card" data-tags="events" data-caption="Event – fagligt meetup og netværk">
+        <button class="g-btn" type="button"
+          data-src="assets/gallery/sample4.jpg"
+          data-alt="Event – billede"
+          data-title="Fagligt event"
+          data-text="Kort note: spændende talk + gode samtaler.">
+          <img src="assets/gallery/sample4.jpg" alt="Event – billede" loading="lazy">
+        </button>
+        <figcaption>
+          <div class="cap-top">
+            <strong>Fagligt event</strong>
+            <span class="tag">Events</span>
+          </div>
+          <p class="muted small">Meetup + netværk.</p>
+        </figcaption>
+      </figure>
+
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Billedevisning">
+    <div class="lb-backdrop" data-close></div>
+
+    <div class="lb-panel" role="document" aria-label="Billede">
+      <button class="lb-close" type="button" data-close aria-label="Luk">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <img id="lbImg" alt="" />
+      <div class="lb-meta">
+        <h2 id="lbTitle"></h2>
+        <p id="lbText" class="muted"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Filter + search
+    const chips = document.querySelectorAll(".chip");
+    const cards = Array.from(document.querySelectorAll(".g-card"));
+    const search = document.getElementById("gallerySearch");
+
+    let activeFilter = "all";
+
+    function applyFilters(){
+      const q = (search.value || "").toLowerCase().trim();
+
+      cards.forEach(card => {
+        const tags = (card.dataset.tags || "").toLowerCase();
+        const cap  = (card.dataset.caption || "").toLowerCase();
+
+        const matchesFilter = activeFilter === "all" || tags.includes(activeFilter);
+        const matchesSearch = !q || cap.includes(q);
+
+        card.style.display = (matchesFilter && matchesSearch) ? "" : "none";
+      });
+    }
+
+    chips.forEach(btn => {
+      btn.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("is-active"));
+        btn.classList.add("is-active");
+
+        activeFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    search.addEventListener("input", applyFilters);
+
+    // Lightbox
+    const lb = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbTitle = document.getElementById("lbTitle");
+    const lbText = document.getElementById("lbText");
+
+    function openLB({src, alt, title, text}){
+      lbImg.src = src;
+      lbImg.alt = alt || "";
+      lbTitle.textContent = title || "";
+      lbText.textContent = text || "";
+
+      lb.classList.add("is-open");
+      lb.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLB(){
+      lb.classList.remove("is-open");
+      lb.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      lbImg.src = "";
+    }
+
+    document.querySelectorAll(".g-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        openLB({
+          src: btn.dataset.src,
+          alt: btn.dataset.alt,
+          title: btn.dataset.title,
+          text: btn.dataset.text
+        });
+      });
+    });
+
+    lb.addEventListener("click", (e) => {
+      if (e.target.closest("[data-close]")) closeLB();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lb.classList.contains("is-open")) closeLB();
+    });
+  </script>
+
+</body>
+</html>
