@@ -271,3 +271,17 @@ html, body {
   box-shadow: none !important;
 }
 
+/* === FIX: CV-TOC må ikke skjules af global legacy-regel === */
+body.cv-page .toc { 
+  display: block !important; 
+}
+
+/* === FIX: sørg for at grid-placering altid er rigtig === */
+body.cv-page .cv-wrap > .toc { grid-column: 1; }
+body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
+
+@media (max-width: 980px){
+  body.cv-page .cv-wrap > .toc,
+  body.cv-page .cv-wrap > .cv-grid { grid-column: 1; }
+}
+
