@@ -340,4 +340,15 @@ body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
   background: rgba(17,24,39,0.06);
 }
 
+.cv-page .qr-box{
+  width: 120px;
+  height: 120px;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  display: grid;
+  place-items: center;
+}
+
 
