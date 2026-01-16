@@ -285,3 +285,59 @@ body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
   body.cv-page .cv-wrap > .cv-grid { grid-column: 1; }
 }
 
+/* ===== Ikoner (profil + kontakt) ===== */
+.cv-page .profile-icons{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cv-page .profile-icons a{
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  text-decoration: none;
+}
+
+.cv-page .profile-icons i{
+  font-size: 18px;
+  color: #111827;
+}
+
+.cv-page .profile-icons a:hover{
+  background: rgba(17,24,39,0.06);
+}
+
+/* Kontakt-ikoner i bunden */
+.cv-page .contact-row{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cv-page .contact-icon{
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  text-decoration: none;
+}
+
+.cv-page .contact-icon i{
+  font-size: 18px;
+  color: #111827;
+}
+
+.cv-page .contact-icon:hover{
+  background: rgba(17,24,39,0.06);
+}
+
+
