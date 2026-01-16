@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favoritbøger – Anton Meier Ebsen Jørgensen</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <meta name="description" content="En kurateret liste med mine favoritbøger – klassikere, faglige bøger og bøger jeg vender tilbage til." />
+
+  <style>
+    /* Scoped styling til denne side */
+    .books-page { background: #f6f7fb; }
+
+    .books-wrap{
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .books-page .card{
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .books-page .hero{
+      display: grid;
+      grid-template-columns: minmax(0,1.6fr) minmax(0,1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .books-page .eyebrow{
+      margin: 0 0 8px;
+      color: rgba(18,19,26,.75);
+      font-weight: 700;
+    }
+
+    .books-page .lead{
+      margin: 0 0 14px;
+      color: rgba(18,19,26,.85);
+      font-size: 16px;
+    }
+
+    .books-page .section-title{
+      margin: 0 0 12px;
+      font-size: 18px;
+      border-bottom: 2px solid #333;
+      padding-bottom: 6px;
+    }
+
+    .books-page .pill-wrap{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .books-page .pill{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f1f3ff;
+      border: 1px solid rgba(99,102,241,.18);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .books-page .cta{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .books-page .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:#111827;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .books-page .btn:hover{ opacity: .92; }
+
+    .books-page .btn.ghost{
+      background: transparent;
+      border: 1px solid rgba(17,24,39,.2);
+      color: #111827;
+    }
+
+    .books-page .mini-card{
+      background:#fff;
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .books-page .muted{ color: rgba(18,19,26,.75); }
+    .books-page .small{ font-size: 13px; }
+
+    /* Grid af bøger */
+    .books-page .grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .books-page .book{
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(17,24,39,.02);
+      display: grid;
+      gap: 8px;
+    }
+
+    .books-page .book-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .books-page .book-title{
+      margin:0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .books-page .tag{
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(17,24,39,.15);
+      background: rgba(17,24,39,.04);
+      white-space: nowrap;
+    }
+
+    .books-page .book-meta{
+      margin: 0;
+      font-size: 13px;
+      color: rgba(18,19,26,.70);
+    }
+
+    .books-page .book-note{
+      margin: 0;
+      color: rgba(18,19,26,.80);
+      font-size: 14px;
+    }
+
+    .books-page .book-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .books-page .divider{
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin: 14px 0;
+    }
+
+    /* Mobil */
+    @media (max-width: 980px){
+      .books-page .hero{ grid-template-columns: 1fr; }
+      .books-page .grid{ grid-template-columns: 1fr; }
+    }
+
+    html, body{ overflow-x:hidden; }
+    a, p, li{ overflow-wrap:anywhere; word-break:break-word; }
+  </style>
+</head>
+
+<body class="books-page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" aria-label="Primær navigation">
+    <div class="nav-inner">
+
+      <div class="nav-left">
+        <a href="index.html">Hjem</a>
+        <a href="cv.html">CV</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="portfolio.html" class="nav-link">Portefølje</a>
+          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+            <a href="cases.html" role="menuitem">Projekt-cases</a>
+            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+          </div>
+        </div>
+
+        <a href="services.html">Samarbejde</a>
+
+        <a href="referencer.html">Referencer</a>
+        <a href="faq.html">FAQ</a>
+
+        <div class="nav-item has-dropdown">
+          <a href="blog.html" class="nav-link">Blog</a>
+          <div class="dropdown" role="menu" aria-label="Blog undermenu">
+            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+            <a href="traeningsstatistik.html" role="menuitem">Træningsstatistik</a>
+            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+          </div>
+        </div>
+
+        <div class="nav-item has-dropdown">
+          <a href="contact.html" class="nav-link">Kontakt</a>
+          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <button class="flag-btn" onclick="window.location.href='en/favorite-books.html'" aria-label="English">
+          <img src="billeder/britisk-flag.png" alt="English">
+        </button>
+        <button class="flag-btn" onclick="window.location.href='de/lieblingsbuecher.html'" aria-label="Deutsch">
+          <img src="billeder/tysk-flag.png" alt="Deutsch">
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="books-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Om mig · Læseliste</p>
+        <h1>Mine favoritbøger</h1>
+        <p class="lead">
+          En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på,
+          eller fordi jeg vender tilbage til dem igen og igen.
+        </p>
+
+        <div class="pill-wrap" aria-label="Kategorier">
+          <span class="pill">Klassikere</span>
+          <span class="pill">Fagligt</span>
+          <span class="pill">Biografier</span>
+          <span class="pill">Tro & etik</span>
+          <span class="pill">Sprog & skrivning</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#list"><i class="fa-solid fa-book"></i> Se listen</a>
+          <a class="btn ghost" href="contact.html"><i class="fa-solid fa-envelope"></i> Anbefal en bog</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan jeg bruger listen</h2>
+          <p class="muted small" style="margin:0;">
+            Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.
+            Hvis du vil have en anbefaling, så skriv genre + hvad du vil have ud af bogen.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: Tilføj gerne <strong>årstal</strong> og <strong>min korte note</strong> — det gør listen mere personlig.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="list">
+      <h2 class="section-title">Favoritter</h2>
+      <p class="muted" style="margin-top:-6px;">
+        (Skabelon klar — udskift titlerne med dine egne. Du kan også sortere efter kategori.)
+      </p>
+
+      <div class="grid">
+
+        <!-- BOOK CARD -->
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Klassiker</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Genre</p>
+          <p class="book-note">
+            Min note: Hvad gav den mig? Én sætning. (fx “skarpt blik for menneskelig absurditet og moral”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-quote-left"></i> Citat</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-pen"></i> Mini-note</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Økonomi/Data</p>
+          <p class="book-note">
+            Min note: Hvad lærte jeg? (fx “god til intuition + konkrete eksempler, uden at blive fluff”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Link</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-notes-medical"></i> Takeaways</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Tro & etik</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Refleksion</p>
+          <p class="book-note">
+            Min note: Hvorfor betyder den noget? (fx “en bog jeg vender tilbage til i perioder”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-bookmark"></i> Favoritkapitel</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-comment"></i> Noter</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Biografi</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Person/Emne</p>
+          <p class="book-note">
+            Min note: Hvad inspirerede den? (fx “arbejdsmoral, retning, eller bare et godt livsportræt”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-star"></i> Highlights</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Skrivning</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Stil/Kommunikation</p>
+          <p class="book-note">
+            Min note: Hvilken teknik tog jeg med? (fx “klarhed, struktur, og “cut the fluff””.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-scissors"></i> Regler jeg bruger</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Klassiker</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Roman</p>
+          <p class="book-note">
+            Min note: Hvad gør den stærk? (fx “dialog, tempo, humor, og det der ligger mellem linjerne”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-masks-theater"></i> Temaer</a>
+          </div>
+        </article>
+
+      </div>
+
+      <hr class="divider">
+
+      <p class="muted small" style="margin:0;">
+        Vil du have det mere “database-agtigt”? Så kan vi lave: søgning, filter på tags, og sortering efter år/genre.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Anbefal mig en bog</h2>
+      <p class="muted">
+        Send gerne: (1) genre, (2) hvad bogen skal kunne, og (3) om du vil have klassiker vs. moderne.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a>
+        <a class="btn ghost" href="blog.html"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <nav>
+          <a href="index.html">Hjem</a> |
+          <a href="cv.html">CV</a> |
+          <a href="portfolio.html">Portefølje</a> |
+          <a href="faq.html">FAQ</a> |
+          <a href="blog.html">Blog</a> |
+          <a href="contact.html">Kontakt</a>
+        </nav>
+      </div>
+
+      <div class="footer-social">
+        <p>Følg mig:
+          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-legal">
+        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
+        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
+      </div>
+
+      <div class="footer-contact">
+        <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
