@@ -538,3 +538,55 @@ body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
   line-height: 1.2;
 }
 
+/* === Sprog: bokse med flag === */
+.cv-page .lang-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (min-width: 560px){
+  .cv-page .lang-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cv-page .lang-box{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 12px;
+  border-radius: 14px;
+
+  background: rgba(17,24,39,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.cv-page .lang-flag-sm{
+  width: 42px;
+  height: 28px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,0.12);
+  flex: 0 0 auto;
+}
+
+.cv-page .lang-text{
+  min-width: 0;
+}
+
+.cv-page .lang-name{
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.cv-page .lang-level{
+  font-size: 13px;
+  color: rgba(17,24,39,0.72);
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
