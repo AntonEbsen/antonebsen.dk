@@ -790,3 +790,27 @@ body.theme-valentine .card.valentine-badge::before{
   }
 }
 
+/* Kontakt-kolonne: stack + pæn alignment */
+.site-footer .footer-contact{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ens spacing mellem Email/Telefon/Lokation (i stedet for inline styles) */
+.site-footer .footer-address .footer-address-row{
+  margin-top: 10px;
+}
+.site-footer .footer-address .footer-address-row:first-child{
+  margin-top: 0;
+}
+
+/* Ikoner under lokation + højrejusteret (så det står “lige”) */
+.site-footer .footer-contact .footer-social{
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+
