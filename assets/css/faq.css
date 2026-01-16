@@ -1,0 +1,171 @@
+/* =========================
+   FAQ page styling (matches CV/Home vibe)
+   ========================= */
+
+.faq-page { background: #f6f7fb; }
+
+.faq-wrap {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px 32px;
+}
+
+/* Card baseline */
+.faq-page .card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.faq-page .section-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 6px;
+}
+
+.faq-page .eyebrow {
+  margin: 0 0 8px;
+  color: rgba(18,19,26,0.75);
+  font-weight: 700;
+}
+
+.faq-page .lead {
+  margin: 0 0 14px;
+  color: rgba(18,19,26,0.80);
+  font-size: 16px;
+}
+
+.faq-page .muted { color: rgba(18,19,26,0.75); }
+
+/* Buttons */
+.faq-page .cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.faq-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.faq-page .btn:hover { opacity: 0.92; }
+
+.faq-page .btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(17,24,39,0.2);
+  color: #111827;
+}
+
+/* Hero */
+.faq-page .hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.faq-page .mini-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Main layout: sticky toc + faq */
+.faq-page .faq-grid {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.faq-page .toc {
+  position: sticky !important;
+  top: 12px;
+  height: fit-content;
+}
+
+/* IMPORTANT: kill old global .toc rules from styles.css */
+.faq-page .toc {
+  right: auto !important;
+  left: auto !important;
+  width: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  transition: none !important;
+}
+
+/* TOC links */
+.faq-page .toc-nav a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.faq-page .toc-nav a:hover { background: #f0f2ff; }
+
+/* FAQ items (details) */
+.faq-page .faq-main {
+  display: grid;
+  gap: 14px;
+}
+
+.faq-page .faq-item {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  background: rgba(17,24,39,0.02);
+}
+
+.faq-page details.faq-item summary {
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+.faq-page details.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-page .faq-body {
+  margin-top: 10px;
+  color: rgba(18,19,26,0.85);
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .faq-wrap { padding-left: 14px; padding-right: 14px; }
+  .faq-page .hero { grid-template-columns: 1fr; }
+  .faq-page .faq-grid { grid-template-columns: 1fr; }
+  .faq-page .toc { position: relative !important; top: 0; }
+}
+
+/* Kategori-overskrifter i FAQ */
+.faq-page .faq-cat {
+  margin: 18px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(18,19,26,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+
+/* Safety */
+html, body { overflow-x: hidden; }
+a, p, li { overflow-wrap: anywhere; word-break: break-word; }
+img { max-width: 100%; height: auto; }

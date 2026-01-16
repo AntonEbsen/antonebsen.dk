@@ -1,0 +1,617 @@
+/* =========================
+   Base
+   ========================= */
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: rgba(17,24,39,0.72);
+  --nav: #333;
+  --navHover: #555;
+  --shadow: 0 10px 30px rgba(0,0,0,0.06);
+  --radius: 16px;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* stop side-scroll hvis noget stikker ud */
+}
+
+body{
+  font-family: "Roboto", sans-serif;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+}
+
+img{ max-width: 100%; height: auto; display: block; }
+a, p, li{ overflow-wrap: anywhere; word-break: break-word; }
+
+h1, h2, h3{ color: #333; margin: 0 0 10px; }
+
+
+/* =========================
+   Navbar (flex + dropdown)
+   ========================= */
+.navbar{
+  background: var(--nav);
+  padding: 10px 16px;
+  position: relative;
+  overflow: visible; /* dropdown må gerne stikke ud */
+}
+
+.navbar .nav-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.navbar .nav-left{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.navbar .nav-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar a,
+.navbar .nav-link{
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.navbar a:hover,
+.navbar .nav-link:hover{
+  background: var(--navHover);
+}
+
+.navbar a.active{
+  background: rgba(255,255,255,0.14);
+}
+
+/* Flags */
+.flag-btn{
+  position: static;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flag-btn:hover{ background: rgba(255,255,255,0.12); }
+
+.flag-btn img{
+  width: 30px;
+  height: 20px;
+}
+
+/* Dropdown container */
+.navbar .nav-item{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-item.has-dropdown{
+  position: relative;
+}
+
+/* usynlig bro mellem link og dropdown (forhindrer “forsvind” når du flytter musen ned) */
+.nav-item.has-dropdown::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:100%;
+  width:100%;
+  height:12px;
+}
+
+/* Dropdown box */
+.navbar .dropdown{
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  min-width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  border: 1px solid rgba(0,0,0,0.08);
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
+}
+
+.navbar .dropdown a{
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #111827;
+  text-decoration: none;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.navbar .dropdown a:hover{
+  background: rgba(17,24,39,0.06);
+}
+
+/* Show on hover / keyboard */
+.navbar .has-dropdown:hover .dropdown,
+.navbar .has-dropdown:focus-within .dropdown{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* Mobile nav layout */
+@media (max-width: 720px){
+  .navbar .nav-inner{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .navbar .nav-left,
+  .navbar .nav-right{
+    justify-content: center;
+  }
+  .navbar a,
+  .navbar .nav-link{
+    justify-content: center;
+  }
+}
+
+/* Dropdown on mobile: shown via .open class (JS click) */
+@media (max-width: 980px){
+  .navbar .dropdown{
+    left: 0;
+    transform: none;
+    width: min(92vw, 340px);
+  }
+
+  .navbar .has-dropdown:hover .dropdown{
+    /* hover kan være weird på touch – lad click styre det */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .navbar .has-dropdown.open .dropdown{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+
+/* =========================
+   Standard container (for ældre sider)
+   ========================= */
+.container{
+  width: min(92%, 1000px);
+  margin: 22px auto;
+  padding: 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Standard section look (for ældre sider) */
+.section{
+  margin-bottom: 22px;
+}
+
+.section-title{
+  border-bottom: 2px solid #333;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+/* Header (ældre sider) */
+header{
+  text-align: center;
+  padding: 20px 0;
+}
+
+.profile-img{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+/* Lists */
+ul{ padding-left: 20px; }
+
+
+/* =========================
+   Certifikater (ældre sider)
+   ========================= */
+.certification-img{
+  width: min(500px, 100%);
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.certification-item{ margin-bottom: 20px; }
+
+
+/* =========================
+   Footer
+   ========================= */
+footer{
+  background: var(--nav);
+  color: #fff;
+  padding: 22px 0;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer-container{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-links, .footer-social, .footer-legal, .footer-contact{
+  margin-bottom: 10px;
+}
+
+.footer-links a, .footer-legal a{
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links a:hover, .footer-legal a:hover{
+  text-decoration: underline;
+}
+
+.footer-social a{
+  color: #fff;
+  margin-right: 10px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.footer-social a:hover{
+  opacity: 0.85;
+}
+
+
+/* =========================
+   Legacy ToC styles (DISABLED by default)
+   -------------------------
+   Du bruger ikke længere fixed toc + collapse-btn på de nye sider.
+   Hvis du stadig har en gammel side der bruger det,
+   kan du genaktivere ved at tilføje class="legacy-toc" på body.
+   ========================= */
+body:not(.legacy-toc):not(.cv-page) .toc,
+body:not(.legacy-toc):not(.cv-page) .collapse-btn{
+  display: none !important;
+}
+
+/* Hvis du har gamle sider der skal beholde TOC:
+   sæt <body class="legacy-toc"> på dem. */
+body.legacy-toc .toc{
+  position: fixed;
+  right: 20px;
+  top: 120px;
+  width: 200px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1000;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+  max-height: 500px;
+}
+
+body.legacy-toc .toc.collapsed{
+  max-height: 0;
+  padding: 0;
+}
+
+body.legacy-toc .toc h2{
+  margin-top: 0;
+  font-size: 16px;
+}
+
+body.legacy-toc .toc a{
+  display: block;
+  padding: 5px 0;
+  text-decoration: none;
+  color: #333;
+}
+
+body.legacy-toc .toc a.active{
+  font-weight: bold;
+  color: #0066cc;
+}
+
+body.legacy-toc .toc a:hover{
+  text-decoration: underline;
+}
+
+body.legacy-toc .collapse-btn{
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  cursor: pointer;
+  padding: 8px;
+  background: #333;
+  color: #fff;
+  border: none;
+  width: 200px;
+  font-size: 14px;
+  z-index: 1001;
+  border-radius: 8px;
+}
+
+/* =========================
+   Navbar Search
+   ========================= */
+.sr-only{
+  position:absolute !important;
+  width:1px; height:1px;
+  padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0);
+  white-space:nowrap; border:0;
+}
+
+.nav-search{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 220px;
+  max-width: 420px;
+  width: clamp(220px, 28vw, 420px);
+}
+
+.nav-search-input{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.20);
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  outline: none;
+  font-weight: 600;
+}
+
+.nav-search-input::placeholder{
+  color: rgba(255,255,255,0.70);
+  font-weight: 600;
+}
+
+.nav-search-input:focus{
+  border-color: rgba(255,255,255,0.40);
+  background: rgba(255,255,255,0.14);
+}
+
+/* Dropdown results */
+.search-results{
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 8px;
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition: opacity .12s ease, transform .12s ease, visibility .12s ease;
+}
+
+.search-results.is-open{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.search-results .result{
+  display: block;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #111827;
+}
+
+.search-results .result:hover,
+.search-results .result[aria-selected="true"]{
+  background: rgba(17,24,39,0.06);
+}
+
+.search-results .result-title{
+  font-weight: 800;
+  margin: 0 0 2px;
+}
+
+.search-results .result-snippet{
+  margin: 0;
+  font-size: 13px;
+  color: rgba(17,24,39,0.70);
+  line-height: 1.3;
+}
+
+.search-results .no-results{
+  padding: 10px 12px;
+  color: rgba(17,24,39,0.75);
+  font-weight: 700;
+}
+
+/* Mobile: lad søgning få fuld bredde og wrap pænt */
+@media (max-width: 720px){
+  .nav-search{
+    width: min(92vw, 520px);
+    max-width: none;
+  }
+}
+
+/* =========================
+   Language dropdown (navbar)
+   ========================= */
+.lang-switch .dropdown{
+  min-width: 180px;
+}
+
+.lang-row{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang-flag{
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* Lidt mere “utility”-look i højre side */
+.navbar .nav-right .nav-link{
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.navbar .nav-right .nav-link:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+/* =========================
+   Holiday themes (body class)
+   ========================= */
+
+/* Default (ingen ændring) */
+body {}
+
+/* Example: Christmas */
+body.theme-christmas{
+  /* små, sikre tweaks */
+  background: linear-gradient(180deg, #f6f7fb, #fff);
+}
+
+body.theme-christmas .navbar{
+  background: #0b3d2e; /* mørk grøn */
+}
+
+body.theme-christmas .navbar a:hover,
+body.theme-christmas .navbar .nav-link:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+body.theme-christmas .pill{
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+/* Optional: en lille “sne”-prik på hero/cards (diskret) */
+body.theme-christmas .card{
+  position: relative;
+  overflow: hidden;
+}
+body.theme-christmas .card::before{
+  content:"";
+  position:absolute; inset:-40px;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 2px) 0 0/28px 28px;
+  opacity: 0.18;
+  pointer-events:none;
+}
+
+/* =========================
+   Holiday theme: Valentine (Feb 14)
+   ========================= */
+
+body.theme-valentine{
+  background: linear-gradient(180deg, #f6f7fb 0%, #fff 55%, #fdf2f4 100%);
+}
+
+/* Navbar: dyb rød/burgundy (mere voksen end Barbie-pink) */
+body.theme-valentine .navbar{
+  background: #4a1020;
+}
+
+/* Hover states */
+body.theme-valentine .navbar a:hover,
+body.theme-valentine .navbar .nav-link:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+/* Active */
+body.theme-valentine .navbar a.active{
+  background: rgba(255,255,255,0.16);
+}
+
+/* Knapper: lille twist */
+body.theme-valentine .btn{
+  background: #4a1020;
+}
+body.theme-valentine .btn.ghost{
+  border-color: rgba(74,16,32,0.25);
+  color: #4a1020;
+}
+
+/* Pills: diskret highlight */
+body.theme-valentine .pill{
+  background: rgba(74,16,32,0.06);
+  border-color: rgba(74,16,32,0.18);
+}
+
+/* Optional: lille “badge” i hero/cards (meget diskret) */
+body.theme-valentine .card{
+  position: relative;
+}
+body.theme-valentine .card.valentine-badge::before{
+  content: "Sankt Valentin · 14/2";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(74,16,32,0.10);
+  border: 1px solid rgba(74,16,32,0.18);
+  color: #4a1020;
+}
+
+

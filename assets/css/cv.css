@@ -1,0 +1,287 @@
+/* =========================
+   CV-only styles (scoped)
+   ========================= */
+
+/* 1) Outer layout: TOC + rest */
+.cv-page .cv-wrap {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px 32px;
+
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+/* 2) TOC */
+.cv-page .toc {
+  position: sticky !important;
+  top: 12px;
+
+  padding: 14px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+
+  z-index: 2;
+}
+
+/* === Pæne bokse tilbage === */
+.cv-page .card,
+.cv-page .section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.cv-page .section-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.cv-page .item {
+  padding: 12px 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.cv-page .item:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.cv-page .item-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.cv-page .item-meta {
+  font-size: 13px;
+  color: rgba(18, 19, 26, 0.7);
+}
+
+.cv-page .profile-card .profile-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+
+/* Header med hamburger */
+.cv-page .toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cv-page .toc-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.cv-page .toc-toggle:hover { background: #f5f7ff; }
+
+/* Hamburger ikon (3 streger) */
+.cv-page .hamburger {
+  width: 18px;
+  height: 2px;
+  background: #111827;
+  border-radius: 2px;
+  position: relative;
+  display: block;
+  pointer-events: none;
+}
+
+.cv-page .hamburger::before,
+.cv-page .hamburger::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  background: #111827;
+  border-radius: 2px;
+  position: absolute;
+  left: 0;
+}
+
+.cv-page .hamburger::before { top: -6px; }
+.cv-page .hamburger::after  { top:  6px; }
+
+/* TOC links */
+.cv-page .toc-nav a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cv-page .toc-nav a:hover { background: #f0f2ff; }
+
+/* 3) Collapse behavior */
+.cv-page .cv-wrap.is-toc-collapsed {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+.cv-page .cv-wrap.is-toc-collapsed .toc {
+  padding: 12px;
+}
+
+.cv-page .cv-wrap.is-toc-collapsed .toc-nav {
+  display: none;
+}
+
+/* 4) Inner CV layout: sidebar + main (no overlap) */
+.cv-page .cv-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.cv-page .cv-side,
+.cv-page .cv-main {
+  min-width: 0;
+}
+
+/* 5) Responsive */
+@media (max-width: 980px) {
+  .cv-page .cv-wrap { grid-template-columns: 1fr; }
+
+  .cv-page .toc {
+    position: relative !important;
+    top: 0;
+  }
+
+  .cv-page .cv-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Hvis collapsed på mobil: skjul hele TOC */
+  .cv-page .cv-wrap.is-toc-collapsed .toc {
+    display: none;
+  }
+}
+
+/* === Stop horisontal scroll === */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Sikrer at grid/flex elementer ikke skubber ud over bredden */
+.cv-page .cv-wrap,
+.cv-page .cv-grid,
+.cv-page .cv-side,
+.cv-page .cv-main,
+.cv-page .card,
+.cv-page .section {
+  min-width: 0;
+}
+
+/* Lange links/ord må gerne wrappe */
+.cv-page a,
+.cv-page p,
+.cv-page li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Billeder må aldrig være bredere end deres container */
+.cv-page img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* === Spacing mellem bokse i venstre/højre kolonne === */
+.cv-page .cv-side,
+.cv-page .cv-main {
+  display: grid;
+  gap: 14px;
+}
+
+/* === Nulstil gammel global .toc (styles.css) på CV-siden === */
+.cv-page .toc {
+  right: auto !important;
+  left: auto !important;
+  width: auto !important;
+
+  max-height: none !important;
+  overflow: visible !important;
+
+  transition: none !important; /* styles.css har transition/max-height trick */
+}
+
+/* Skjul den gamle collapse-btn hvis den findes fra styles.css */
+.cv-page .collapse-btn {
+  display: none !important;
+}
+
+/* === Mobil: giv luft i siderne + stop “helt ude til venstre” === */
+@media (max-width: 980px) {
+  /* mere sidepadding */
+  .cv-page .cv-wrap {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    margin-top: 16px;
+  }
+
+  /* TOC og indhold får samme bredde og centreres */
+  .cv-page .toc,
+  .cv-page .cv-grid {
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* Bokse må aldrig ramme kanten */
+  .cv-page .card,
+  .cv-page .section {
+    padding: 16px !important;
+    border-radius: 14px;
+  }
+}
+
+/* Lange linjer skal wrappe pænt på mobil */
+@media (max-width: 980px) {
+  .cv-page h1, .cv-page h2, .cv-page h3,
+  .cv-page p, .cv-page li, .cv-page a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+/* CV må ikke arve den globale .container (800px + box) */
+.cv-page .container{
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* === FIX: CV-TOC må ikke skjules af global legacy-regel === */
+body.cv-page .toc { 
+  display: block !important; 
+}
+
+/* === FIX: sørg for at grid-placering altid er rigtig === */
+body.cv-page .cv-wrap > .toc { grid-column: 1; }
+body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
+
+@media (max-width: 980px){
+  body.cv-page .cv-wrap > .toc,
+  body.cv-page .cv-wrap > .cv-grid { grid-column: 1; }
+}
+

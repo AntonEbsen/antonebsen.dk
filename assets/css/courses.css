@@ -1,0 +1,214 @@
+/* =========================
+   Courses page styling (scoped)
+   ========================= */
+
+.courses-page { background: #f6f7fb; }
+
+.courses-wrap{
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px 32px;
+}
+
+/* Cards */
+.courses-page .card{
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.courses-page .section-title{
+  margin: 0 0 12px;
+  font-size: 18px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 6px;
+}
+
+.courses-page .eyebrow{
+  margin: 0 0 8px;
+  color: rgba(18,19,26,.75);
+  font-weight: 700;
+}
+
+.courses-page .lead{
+  margin: 0 0 14px;
+  color: rgba(18,19,26,.80);
+  font-size: 16px;
+}
+
+.courses-page .muted{ color: rgba(18,19,26,.75); }
+.courses-page .small{ font-size: 13px; }
+
+/* Hero */
+.courses-page .hero{
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.courses-page .mini-card{
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+/* Controls */
+.courses-page .controls{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.courses-page .search{
+  flex: 1 1 260px;
+  min-width: 220px;
+  display: flex;
+  gap: 10px;
+}
+
+.courses-page .search input{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(17,24,39,.18);
+  outline: none;
+}
+
+.courses-page .filters{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.courses-page .chip{
+  appearance: none;
+  border: 1px solid rgba(17,24,39,.18);
+  background: rgba(17,24,39,.03);
+  color: #111827;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.courses-page .chip:hover{ opacity: .92; }
+.courses-page .chip.active{
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+/* Grid */
+.courses-page .grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.courses-page .course{
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(17,24,39,.02);
+}
+
+.courses-page .course-top{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.courses-page .course-title{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.courses-page .tag{
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(17,24,39,.15);
+  background: rgba(17,24,39,.04);
+  white-space: nowrap;
+}
+
+.courses-page .meta{
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: rgba(18,19,26,.70);
+}
+
+.courses-page .pill-wrap{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.courses-page .pill{
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f1f3ff;
+  border: 1px solid rgba(99,102,241,.18);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.courses-page .cta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.courses-page .btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.courses-page .btn:hover{ opacity: .92; }
+
+.courses-page .btn.ghost{
+  background: transparent;
+  border: 1px solid rgba(17,24,39,.2);
+  color: #111827;
+}
+
+/* Stack spacing between sections */
+.courses-page .stack{
+  display: grid;
+  gap: 14px;
+}
+
+/* Mobile */
+@media (max-width: 980px){
+  .courses-wrap{ padding-left: 14px; padding-right: 14px; }
+  .courses-page .hero{ grid-template-columns: 1fr; }
+  .courses-page .grid{ grid-template-columns: 1fr; }
+}
+
+/* Safety */
+html, body{ overflow-x: hidden; }
+a, p, li{ overflow-wrap: anywhere; word-break: break-word; }
+img{ max-width: 100%; height: auto; }
