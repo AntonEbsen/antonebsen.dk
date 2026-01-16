@@ -496,4 +496,45 @@ body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
   outline-offset: 2px;
 }
 
+/* === Fokusområder: små bokse === */
+.cv-page .focus-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (min-width: 560px){
+  .cv-page .focus-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cv-page .focus-box{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 12px;
+  border-radius: 14px;
+
+  background: rgba(17,24,39,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.cv-page .focus-box i{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(17,24,39,0.06);
+  flex: 0 0 auto;
+}
+
+.cv-page .focus-box span{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
 
