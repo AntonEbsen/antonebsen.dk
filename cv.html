@@ -20,22 +20,6 @@
   <script src="assets/js/themes.js" defer></script>
 </head>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const url = "https://antonebsen.dk/assets/Anton-CV.pdf";
-    const el = document.getElementById("qrCv");
-    if (!el) return;
-
-    el.innerHTML = "";
-    new QRCode(el, {
-      text: url,
-      width: 120,
-      height: 120
-    });
-  });
-</script>
-  
 <body class="cv-page">
 
   <nav class="navbar" aria-label="Primær navigation">
