@@ -340,15 +340,94 @@ body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
   background: rgba(17,24,39,0.06);
 }
 
-.cv-page .qr-box{
-  width: 120px;
-  height: 120px;
-  padding: 8px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: #fff;
+/* =========================
+   Meta rows + ikon-links
+   ========================= */
+.cv-page .meta{
+  margin-top: 12px;
   display: grid;
-  place-items: center;
+  gap: 10px;
 }
 
+.cv-page .meta-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cv-page .meta-label{
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(17,24,39,0.72);
+}
+
+.cv-page .meta-value{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cv-page .meta-value a{
+  color: inherit;
+}
+
+.cv-page .icon-links{
+  gap: 10px;
+}
+
+.cv-page .icon-link{
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: rgba(17,24,39,0.06);
+}
+
+.cv-page .icon-link:hover{
+  background: rgba(17,24,39,0.10);
+}
+
+/* OPTIONAL QR */
+.cv-page .qr-row{
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cv-page .qr-img{
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* =========================
+   Mobil: gør layout “idiot-sikkert”
+   (selv hvis browseren er strid)
+   ========================= */
+@media (max-width: 980px){
+  .cv-page .cv-wrap{
+    display: block !important;   /* ingen grid-stress på mobil */
+    max-width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .cv-page .toc{
+    position: relative !important;
+    top: 0 !important;
+    margin-bottom: 14px;
+  }
+
+  .cv-page .cv-grid{
+    display: block !important;   /* sidebar + main stack */
+  }
+}
 
