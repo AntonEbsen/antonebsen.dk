@@ -20,6 +20,22 @@
   <script src="assets/js/themes.js" defer></script>
 </head>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const url = "https://antonebsen.dk/assets/Anton-CV.pdf";
+    const el = document.getElementById("qrCv");
+    if (!el) return;
+
+    el.innerHTML = "";
+    new QRCode(el, {
+      text: url,
+      width: 120,
+      height: 120
+    });
+  });
+</script>
+  
 <body class="cv-page">
 
   <nav class="navbar" aria-label="Primær navigation">
@@ -201,12 +217,13 @@
               </span>
             </div>
           </div>
-
-          <div class="cta-row">
-            <a class="btn" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">Download CV (PDF)</a>
-          </div>
-          <p class="note">Læg din PDF i <code>assets/Anton-CV.pdf</code> (eller ret linket).</p>
+                  <a class="btn" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          <i class="fa-solid fa-download" aria-hidden="true"></i> Download CV (PDF)
+        </a>
         </div>
+        <a class="btn" href="assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          <i class="fa-solid fa-download" aria-hidden="true"></i> Download CV (PDF)
+        </a>
 
         <div class="card" id="skills">
           <h2>Kompetencer</h2>
