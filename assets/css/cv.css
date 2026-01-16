@@ -431,3 +431,69 @@ body.cv-page .cv-wrap > .cv-grid { grid-column: 2; }
   }
 }
 
+/* === Skills: flotte bokse === */
+.cv-page .skills-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (min-width: 560px){
+  .cv-page .skills-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 980px){
+  .cv-page .skills-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* sidebar = ikke for tæt */
+  }
+}
+
+.cv-page .skill-box{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 12px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.cv-page .skill-box i{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(17,24,39,0.06);
+  flex: 0 0 auto;
+}
+
+.cv-page .skill-box span{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.cv-page .skill-box:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.06);
+  background: #fff;
+}
+
+.cv-page .skill-box:focus-visible{
+  outline: 3px solid rgba(17,24,39,0.25);
+  outline-offset: 2px;
+}
+
+
