@@ -122,3 +122,28 @@
 html, body{ overflow-x: hidden; }
 a, p, li{ overflow-wrap: anywhere; word-break: break-word; }
 img{ max-width: 100%; height: auto; }
+
+/* --- Legal footer variant --- */
+.site-footer--legal .footer-top{
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+
+/* Fjern evt. CTA-områder hvis du genbruger den store footer */
+.site-footer--legal .footer-cta{
+  display: none !important;
+}
+
+/* Gør social-ikonerne “lige” og pæne */
+.site-footer--legal .footer-social{
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
+@media (max-width: 980px){
+  .site-footer--legal .footer-top{
+    grid-template-columns: 1fr;
+  }
+}
+
