@@ -5,74 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Historien bag min hjemmeside – Blog</title>
 
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="blog.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/blog.css" />
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <link rel="icon" href="billeder/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
   <meta name="description" content="Et blogindlæg om hvorfor og hvordan min personlige hjemmeside blev bygget – fra første version til struktur, sider, statistik og næste skridt." />
 </head>
 
+<script src="assets/js/search.js" defer></script>
+<script src="assets/js/themes.js" defer></script>
+<script src="assets/js/scripts.js" defer></script>
+  
 <body class="blog-page">
 
   <!-- NAVBAR -->
   <nav class="navbar" aria-label="Primær navigation">
-    <div class="nav-inner">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a class="nav-link" href="index.html">Hjem</a>
+      <div class="nav-item has-dropdown">
+      <a href="cv.html" class="nav-link">CV</a>
+      <div class="dropdown" role="menu" aria-label="CV undermenu">
+        <a href="cv.html" role="menuitem">CV (overblik)</a>
+        <a href="about.html" role="menuitem">Profil</a>
+        <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+        <a href="education.html" role="menuitem">Uddannelse</a>
+        <a href="skills.html" role="menuitem">Kompetencer</a>
+        <a href="courses.html" role="menuitem">Kurser</a>
+        <a href="certifications.html" role="menuitem">Certificeringer</a>
+        <a href="organizations.html" role="menuitem">Organisationer</a>
+        <a href="timeline.html" role="menuitem">Milepæle</a>
+        <a href="video-cv.html" role="menuitem">Video-CV</a>
+      </div>
+      </div>
 
-      <div class="nav-left">
-        <a href="index.html">Hjem</a>
-        <a href="cv.html">CV</a>
-
-        <div class="nav-item has-dropdown">
-          <a href="portfolio.html" class="nav-link">Portefølje</a>
-          <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
-            <a href="portfolio.html#projects" role="menuitem">Projekter</a>
-            <a href="cases.html" role="menuitem">Projekt-cases</a>
-            <a href="resources.html" role="menuitem">Ressourcer/Downloads</a>
-            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
-          </div>
-        </div>
-
-        <a href="services.html">Samarbejde</a>
-
-        <a href="referencer.html">Referencer</a>
-        <a href="faq.html">FAQ</a>
-
-        <div class="nav-item has-dropdown">
-          <a class="nav-link active" href="blog.html" aria-current="page">Blog</a>
-          <div class="dropdown" role="menu" aria-label="Blog undermenu">
-            <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
-            <a href="blog.html#cat-traening" role="menuitem">Træning</a>
-            <a href="traeningsstatistik.html" role="menuitem">Træningsstatistik</a>
-            <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
-          </div>
-        </div>
-
-        <div class="nav-item has-dropdown">
-          <a href="contact.html" class="nav-link">Kontakt</a>
-          <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
-            <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
-            <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
-            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
-          </div>
+      <div class="nav-item has-dropdown">
+        <a href="portfolio.html" class="nav-link">Portefølje</a>
+        <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+          <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+          <a href="cases.html" role="menuitem">Projekt-cases</a>
+          <a href="resources.html" role="menuitem">Downloads</a>
+          <a href="media.html" role="menuitem">Omtale</a>
+          <a href="notes.html" role="menuitem">Noter</a>
+          <a href="gallery.html" role="menuitem">Galleri</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
         </div>
       </div>
 
-      <div class="nav-right">
-        <button class="flag-btn" onclick="window.location.href='en/blog-hjemmeside-historie.html'" aria-label="English">
-          <img src="billeder/britisk-flag.png" alt="English">
-        </button>
+      <a href="services.html">Samarbejde</a>
+      <a href="referencer.html">Referencer</a>
+      <a href="faq.html">FAQ</a>
 
-        <button class="flag-btn" onclick="window.location.href='de/blog-hjemmeside-historie.html'" aria-label="Deutsch">
-          <img src="billeder/tysk-flag.png" alt="Deutsch">
-        </button>
+      <div class="nav-item has-dropdown">
+        <a class="active" href="blog.html" >Blog</a>
+        <div class="dropdown" role="menu" aria-label="Blog undermenu">
+          <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+          <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+          <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+        </div>
       </div>
 
+      <div class="nav-item has-dropdown">
+        <a href="contact.html" class="nav-link">Kontakt</a>
+        <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+          <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+          <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+        </div>
+      </div>
     </div>
-  </nav>
+
+  <div class="nav-search" role="search">
+    <label class="sr-only" for="siteSearch">Søg på siden</label>
+    <input
+      id="siteSearch"
+      class="nav-search-input"
+      type="search"
+      placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+      autocomplete="off"
+      aria-autocomplete="list"
+      aria-controls="searchResults"
+      aria-expanded="false"
+    />
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div>
+  </div>
+    
+<div class="nav-right">
+
+  <div class="nav-item has-dropdown lang-switch">
+    <a href="#" class="nav-link" aria-label="Skift sprog" onclick="return false;">
+      Sprog <span aria-hidden="true">▾</span>
+    </a>
+
+    <div class="dropdown" role="menu" aria-label="Sprogvalg">
+      <a href="index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="assets/img/dansk-flag.png" alt="" class="lang-flag">
+          Dansk
+        </span>
+      </a>
+
+      <a href="en/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="assets/img/britisk-flag.png" alt="" class="lang-flag">
+          English
+        </span>
+      </a>
+
+      <a href="de/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="assets/img/tysk-flag.png" alt="" class="lang-flag">
+          Deutsch
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</nav>
 
   <main class="blog-wrap">
 
@@ -249,40 +304,99 @@
 
   </main>
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-links">
-        <nav>
-          <a href="index.html">Hjem</a> |
-          <a href="cv.html">CV</a> |
-          <a href="portfolio.html">Portefølje</a> |
-          <a href="faq.html">FAQ</a> |
-          <a href="blog.html">Blog</a> |
-          <a href="contact.html">Kontakt</a>
-        </nav>
-      </div>
+<footer class="site-footer site-footer--blog" role="contentinfo">
+  <div class="footer-container">
 
-      <div class="footer-social">
-        <p>Følg mig:
-          <a href="https://www.linkedin.com/in/antonebsen/" aria-label="LinkedIn" target="_blank" rel="noopener">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://github.com/AntonEbsen" aria-label="GitHub" target="_blank" rel="noopener">
-            <i class="fab fa-github"></i>
-          </a>
+    <div class="footer-top">
+      <!-- Blog/brand -->
+      <section class="footer-col footer-brand" aria-label="Om bloggen">
+        <h2 class="footer-title">Blog · Anton Meier Ebsen Jørgensen</h2>
+        <p class="footer-text">
+          Noter og indlæg om <strong>økonomi</strong>, <strong>data</strong>, <strong>træning</strong> og <strong>rejser</strong>.
+          Kort, praktisk og opdateret løbende.
         </p>
-      </div>
 
-      <div class="footer-legal">
-        <p><a href="privacy.html">Privatlivspolitik</a> | <a href="terms.html">Vilkår for brug</a></p>
-        <p>&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.</p>
-      </div>
+        <div class="footer-cta">
+          <a class="footer-btn" href="blog.html">
+            <i class="fa-solid fa-book-open" aria-hidden="true"></i> Til blogforsiden
+          </a>
+          <a class="footer-btn footer-btn-ghost" href="contact.html">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i> Foreslå et emne
+          </a>
+        </div>
+      </section>
 
-      <div class="footer-contact">
-        <p>Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> | Telefon: +45 25 74 01 31</p>
-      </div>
+      <!-- Kategorier -->
+      <nav class="footer-col" aria-label="Kategorier">
+        <h3 class="footer-title-sm">Kategorier</h3>
+        <ul class="footer-list">
+          <li><a href="blog.html#cat-fagligt">Fagligt</a></li>
+          <li><a href="blog.html#cat-traening">Træning</a></li>
+          <li><a href="blog.html#cat-rejser">Rejser</a></li>
+        </ul>
+
+        <h3 class="footer-title-sm" style="margin-top:14px;">Dashboards</h3>
+        <ul class="footer-list">
+          <li><a href="traeningsstatistik.html">Træningsstatistik</a></li>
+          <li><a href="map.html">Rejsekort</a></li>
+        </ul>
+      </nav>
+
+      <!-- Hurtige links -->
+      <nav class="footer-col" aria-label="Hurtige links">
+        <h3 class="footer-title-sm">Hurtige links</h3>
+        <ul class="footer-list">
+          <li><a href="notes.html">Noter</a></li>
+          <li><a href="resources.html">Downloads</a></li>
+          <li><a href="gallery.html">Galleri</a></li>
+          <li><a href="timeline.html">Milepæle</a></li>
+        </ul>
+      </nav>
+
+      <!-- Kontakt + SoMe -->
+      <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
+        <h3 class="footer-title-sm">Kontakt</h3>
+
+        <address class="footer-text footer-address">
+          <div>
+            <span class="footer-kicker">Email</span><br>
+            <a href="mailto:anton.ebsen@proton.me">anton.ebsen@proton.me</a>
+          </div>
+        </address>
+
+        <div class="footer-social" aria-label="Sociale links">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+          <a href="https://twitter.com/AntonEbsen" target="_blank" rel="noopener" aria-label="X/Twitter">
+            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
     </div>
-  </footer>
+
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Juridiske sider">
+        <a href="privacy.html">Privatlivspolitik</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Vilkår</a>
+        <span aria-hidden="true">·</span>
+        <a href="accessibility.html">Tilgængelighed</a>
+        <span aria-hidden="true">·</span>
+        <a href="disclaimer.html">Disclaimer</a>
+      </nav>
+
+      <p class="footer-copy">
+        &copy; 2026 Anton Meier Ebsen Jørgensen.
+        <span class="footer-copy-muted">Kildekode: <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.</span>
+      </p>
+    </div>
+
+  </div>
+</footer>
 
 </body>
 </html>
