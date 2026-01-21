@@ -2,7 +2,7 @@
    FAQ page styling (matches CV/Home vibe)
    ========================= */
 
-.faq-page { background: #f6f7fb; }
+
 
 .faq-wrap {
   max-width: 1200px;
@@ -12,32 +12,41 @@
 
 /* Card baseline */
 .faq-page .card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--accent-soft);
 }
 
 .faq-page .section-title {
-  margin: 0 0 12px;
-  font-size: 18px;
-  border-bottom: 2px solid #333;
-  padding-bottom: 6px;
+  margin: 0 0 24px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  color: var(--accent);
 }
 
 .faq-page .eyebrow {
-  margin: 0 0 8px;
-  color: rgba(18,19,26,0.75);
-  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text-dim);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 12px;
 }
 
-.faq-page .lead {
-  margin: 0 0 14px;
-  color: rgba(18,19,26,0.80);
-  font-size: 16px;
-}
+.faq-page .lead { margin: 0 0 24px; color: var(--text-dim); font-size: 18px; line-height: 1.6; }
 
-.faq-page .muted { color: rgba(18,19,26,0.75); }
+.faq-page .muted { color: var(--text-dim); opacity: 0.7; }
 
 /* Buttons */
 .faq-page .cta {
@@ -51,13 +60,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #111827;
-  color: #fff;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #050506;
   text-decoration: none;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 14.5px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+  opacity: 1;
+}
+.btn.ghost {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
 }
 
 .faq-page .btn:hover { opacity: 0.92; }
@@ -78,11 +98,15 @@
 }
 
 .faq-page .mini-card {
-  background: #fff;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 14px;
   padding: 16px;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
 }
+.mini-card:hover { border-color: var(--accent-soft); }
 
 /* Main layout: sticky toc + faq */
 .faq-page .faq-grid {
@@ -114,7 +138,7 @@
   padding: 8px 10px;
   border-radius: 10px;
   text-decoration: none;
-  color: inherit;
+  color: var(--text);
 }
 
 .faq-page .toc-nav a:hover { background: #f0f2ff; }

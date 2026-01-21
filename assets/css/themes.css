@@ -7,104 +7,102 @@
 /* Default (no theme) uses your existing :root in styles.css */
 
 /* Shared: a subtle "season bar" under navbar */
-body[class*="theme-"] .navbar{
+body[class*="theme-"] .navbar {
   position: relative;
 }
-body[class*="theme-"] .navbar::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:-1px;
-  height:4px;
-  background: var(--season-bar, rgba(255,255,255,0.18));
+
+body[class*="theme-"] .navbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 4px;
+  background: var(--season-bar, rgba(255, 255, 255, 0.18));
   opacity: .95;
 }
 
 /* Shared: slightly softer page background */
-body[class*="theme-"]{
+body[class*="theme-"] {
   background:
-    radial-gradient(1200px 600px at 20% -10%, rgba(255,255,255,0.55), transparent 60%),
-    radial-gradient(900px 500px at 90% 0%, rgba(255,255,255,0.35), transparent 60%),
+    radial-gradient(1200px 600px at 20% -10%, rgba(255, 180, 100, 0.02), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(100, 150, 255, 0.01), transparent 60%),
     var(--bg);
 }
 
 /* Shared: buttons (only if you want it; safe defaults) */
-body[class*="theme-"] .btn:not(.ghost){
+body[class*="theme-"] .btn:not(.ghost) {
   background: var(--accent, #111827);
 }
 
 /* ---------------------------------
    Lent (Askeonsdag -> Påskeaften)
    --------------------------------- */
-body.theme-lent{
-  --bg: #f7f4fb;
-  --nav: #2b2236;
-  --navHover: #3a2e49;
-  --accent: #5b3b86; /* lilla */
-  --season-bar: linear-gradient(90deg, rgba(91,59,134,0.95), rgba(255,255,255,0.15));
+body.theme-lent {
+  --bg: #0d0a14;
+  --nav: rgba(20, 15, 30, 0.9);
+  --accent: #9333ea;
+  --depth-bg: radial-gradient(circle at 50% -20%, #171026 0%, #0d0a14 100%);
 }
 
 /* ---------------------------------
    Easter (Påskedag -> før Kristi Himmelfart)
    --------------------------------- */
-body.theme-easter{
-  --bg: #f6fbff;
-  --nav: #1b2a3a;
-  --navHover: #24384e;
-  --accent: #0f766e; /* frisk "life" */
-  --season-bar: linear-gradient(90deg, rgba(15,118,110,0.95), rgba(255,255,255,0.15));
+body.theme-easter {
+  --bg: #0a0f0e;
+  --nav: rgba(15, 25, 20, 0.9);
+  --accent: #14b8a6;
+  --depth-bg: radial-gradient(circle at 50% -20%, #152520 0%, #0a0f0e 100%);
 }
 
 /* ---------------------------------
    Ascension (Kristi Himmelfart -> før Pinse)
    --------------------------------- */
-body.theme-ascension{
-  --bg: #fbfcff;
-  --nav: #1f2937;
-  --navHover: #374151;
-  --accent: #2563eb; /* blå */
-  --season-bar: linear-gradient(90deg, rgba(37,99,235,0.95), rgba(255,255,255,0.15));
+body.theme-ascension {
+  --bg: #0a0c14;
+  --nav: rgba(15, 18, 25, 0.9);
+  --accent: #3b82f6;
+  --depth-bg: radial-gradient(circle at 50% -20%, #141a2b 0%, #0a0c14 100%);
 }
 
 /* ---------------------------------
    Pentecost (Pinsedag + 2. pinsedag)
    --------------------------------- */
-body.theme-pentecost{
-  --bg: #fff7f7;
-  --nav: #3b1d1d;
-  --navHover: #512828;
-  --accent: #b91c1c; /* rød */
-  --season-bar: linear-gradient(90deg, rgba(185,28,28,0.95), rgba(255,255,255,0.15));
+body.theme-pentecost {
+  --bg: #0f0a0a;
+  --nav: rgba(25, 15, 15, 0.9);
+  --accent: #ef4444;
+  --depth-bg: radial-gradient(circle at 50% -20%, #2b1515 0%, #0f0a0a 100%);
 }
 
 /* ---------------------------------
    Corpus Christi (Corpus Christi day + optional Sunday)
    --------------------------------- */
-body.theme-corpus{
-  --bg: #fffdf6;
-  --nav: #2d2a1f;
-  --navHover: #3b3728;
-  --accent: #a16207; /* guld */
-  --season-bar: linear-gradient(90deg, rgba(161,98,7,0.95), rgba(255,255,255,0.15));
+body.theme-corpus {
+  --bg: #0a0a05;
+  --nav: rgba(25, 25, 15, 0.9);
+  --accent: #f59e0b;
+  --depth-bg: radial-gradient(circle at 50% -20%, #2b2b15 0%, #0a0a05 100%);
 }
 
 /* ---------------------------------
    Advent (1. søndag i advent -> 24/12)
    --------------------------------- */
-body.theme-advent{
-  --bg: #f7fbff;
-  --nav: #13243a;
-  --navHover: #1b3352;
-  --accent: #1d4ed8; /* blå */
-  --season-bar: linear-gradient(90deg, rgba(29,78,216,0.95), rgba(255,255,255,0.15));
+body.theme-advent {
+  --bg: #050810;
+  --nav: rgba(10, 15, 30, 0.9);
+  --accent: #314480;
+  --depth-bg: radial-gradient(circle at 50% -20%, #101a35 0%, #050810 100%);
 }
 
 /* ---------------------------------
    St. James / Camino (25/7 + weekend buffer)
    --------------------------------- */
-body.theme-camino{
+body.theme-camino {
   --bg: #f6fff8;
   --nav: #123026;
   --navHover: #1a4537;
-  --accent: #15803d; /* grøn */
-  --season-bar: linear-gradient(90deg, rgba(21,128,61,0.95), rgba(255,255,255,0.15));
+  --accent: #15803d;
+  /* grøn */
+  --season-bar: linear-gradient(90deg, rgba(21, 128, 61, 0.95), rgba(255, 255, 255, 0.15));
 }

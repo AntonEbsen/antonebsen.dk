@@ -2,7 +2,7 @@
    Education page (scoped)
    ========================= */
 
-.edu-page{ background:#f6f7fb; }
+
 
 .edu-wrap{
   max-width:1200px;
@@ -10,33 +10,42 @@
   padding:0 16px 32px;
 }
 
-.edu-page .card{
-  background:#fff;
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,.06);
+.edu-page .card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--accent-soft);
 }
 
-.edu-page .section-title{
-  margin:0 0 12px;
-  font-size:18px;
-  border-bottom:2px solid #333;
-  padding-bottom:6px;
+.edu-page .section-title {
+  margin: 0 0 24px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  color: var(--accent);
 }
 
-.edu-page .eyebrow{
-  margin:0 0 8px;
-  color:rgba(18,19,26,.75);
-  font-weight:700;
+.edu-page .eyebrow {
+  margin: 0 0 12px;
+  color: var(--text-dim);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 12px;
 }
 
-.edu-page .lead{
-  margin:0 0 14px;
-  color:rgba(18,19,26,.80);
-  font-size:16px;
-}
+.edu-page .lead { margin: 0 0 24px; color: var(--text-dim); font-size: 18px; line-height: 1.6; }
 
-.edu-page .muted{ color:rgba(18,19,26,.75); }
+.edu-page .muted { color: var(--text-dim); opacity: 0.7; }
 .edu-page .small{ font-size:13px; }
 
 .edu-page .cta{
@@ -46,26 +55,32 @@
   margin:10px 0 14px;
 }
 
-.edu-page .btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:#111827;
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  font-size:14px;
+.edu-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #050506;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+  opacity: 1;
+}
+.btn.ghost {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
 }
 .edu-page .btn:hover{ opacity:.92; }
 
-.edu-page .btn.ghost{
-  background:transparent;
-  border:1px solid rgba(17,24,39,.2);
-  color:#111827;
-}
+.edu-page 
 
 .edu-page .pill-wrap{
   display:flex;
@@ -74,13 +89,16 @@
   margin-top:8px;
 }
 
-.edu-page .pill{
-  padding:6px 10px;
-  border-radius:999px;
-  background:#f1f3ff;
-  border:1px solid rgba(99,102,241,.18);
-  font-size:12px;
-  font-weight:700;
+.edu-page .pill {
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
 }
 
 /* Hero */
@@ -92,12 +110,16 @@
   margin-bottom:14px;
 }
 
-.edu-page .mini-card{
-  background:#fff;
-  border-radius:14px;
-  padding:16px;
-  border:1px solid rgba(0,0,0,.06);
+.edu-page .mini-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
 }
+.mini-card:hover { border-color: var(--accent-soft); }
 
 .edu-page .mini-title{ margin:0 0 8px; font-size:16px; }
 
@@ -119,8 +141,8 @@
 
 .edu-page .course,
 .edu-page .proj{
-  border:1px solid rgba(0,0,0,.06);
-  border-radius:16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
   padding:16px;
   background:rgba(17,24,39,.02);
 }
@@ -141,21 +163,24 @@
   line-height:1.25;
 }
 
-.edu-page .tag{
-  font-size:12px;
-  font-weight:700;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid rgba(17,24,39,.15);
-  background:rgba(17,24,39,.04);
-  white-space:nowrap;
+.edu-page .tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-blue);
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent-blue);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .edu-page .course-meta,
 .edu-page .proj-meta{
   margin:0 0 10px;
   font-size:13px;
-  color:rgba(18,19,26,.70);
+  color:rgba(148, 163, 184, 0.70);
 }
 
 .edu-page .course-links,
