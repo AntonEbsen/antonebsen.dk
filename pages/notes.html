@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Publikationer & Noter</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/notes.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Publikationer, working notes og korte one-pagers om økonomi, data og modeller." />
+</head>
+
+<script src="../assets/js/scripts.js" defer></script>
+<script src="../assets/js/search.js" defer></script>
+<script src="../assets/js/themes.js" defer></script>
+  
+<body class="notes-page">
+
+  <!-- NAVBAR (samme struktur som dine nye sider) -->
+  <nav class="navbar" aria-label="Primær navigation">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="../index.html" class="nav-link">Hjem</a>
+      <div class="nav-item has-dropdown">
+      <a href="cv.html" class="nav-link">CV</a>
+      <div class="dropdown" role="menu" aria-label="CV undermenu">
+        <a href="cv.html" role="menuitem">CV (overblik)</a>
+        <a href="about.html" role="menuitem">Profil</a>
+        <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+        <a href="education.html" role="menuitem">Uddannelse</a>
+        <a href="skills.html" role="menuitem">Kompetencer</a>
+        <a href="courses.html" role="menuitem">Kurser</a>
+        <a href="certifications.html" role="menuitem">Certificeringer</a>
+        <a href="organizations.html" role="menuitem">Organisationer</a>
+        <a href="timeline.html" role="menuitem">Milepæle</a>
+        <a href="video-cv.html" role="menuitem">Video-CV</a>
+      </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a class="active" href="portfolio.html">Portefølje</a>
+        <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+          <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+          <a href="cases.html" role="menuitem">Projekt-cases</a>
+          <a href="resources.html" role="menuitem">Downloads</a>
+          <a href="media.html" role="menuitem">Omtale</a>
+          <a href="notes.html" role="menuitem">Noter</a>
+          <a href="gallery.html" role="menuitem">Galleri</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+        </div>
+      </div>
+
+      <a href="services.html">Samarbejde</a>
+      <a href="referencer.html">Referencer</a>
+      <a href="faq.html">FAQ</a>
+
+      <div class="nav-item has-dropdown">
+        <a href="blog.html" class="nav-link">Blog</a>
+        <div class="dropdown" role="menu" aria-label="Blog undermenu">
+          <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+          <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+          <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a href="contact.html" class="nav-link">Kontakt</a>
+        <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+          <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+          <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+  <div class="nav-search" role="search">
+    <label class="sr-only" for="siteSearch">Søg på siden</label>
+    <input
+      id="siteSearch"
+      class="nav-search-input"
+      type="search"
+      placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+      autocomplete="off"
+      aria-autocomplete="list"
+      aria-controls="searchResults"
+      aria-expanded="false"
+    />
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div>
+  </div>
+    
+<div class="nav-right">
+
+  <div class="nav-item has-dropdown lang-switch">
+    <a href="#" class="nav-link" aria-label="Skift sprog" onclick="return false;">
+      Sprog <span aria-hidden="true">▾</span>
+    </a>
+
+    <div class="dropdown" role="menu" aria-label="Sprogvalg">
+      <a href="../index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/dansk-flag.png" alt="" class="lang-flag">
+          Dansk
+        </span>
+      </a>
+
+      <a href="../en/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/britisk-flag.png" alt="" class="lang-flag">
+          English
+        </span>
+      </a>
+
+      <a href="../de/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/tysk-flag.png" alt="" class="lang-flag">
+          Deutsch
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</nav>
+
+  <main class="notes-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Publikationer / Noter</p>
+        <h1>Korte writeups, working notes og materiale</h1>
+        <p class="lead">
+          Her samler jeg ting, der er mere “arkiv og reference” end blog: one-pagers, slides, arbejdsnoter
+          og (på sigt) publikationer. Tanken er: hurtigt overblik, tydelig metode, og links til kode/data hvis muligt.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#cat-noter">Noter</a>
+          <a class="btn ghost" href="#cat-publikationer">Publikationer</a>
+          <a class="btn ghost" href="#cat-materialer">Slides/Materialer</a>
+        </div>
+
+        <div class="pill-wrap" aria-label="Typer">
+          <span class="pill">One-pagers</span>
+          <span class="pill">Working notes</span>
+          <span class="pill">Slides</span>
+          <span class="pill">Code links</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan du kan bruge siden</h2>
+          <ul class="clean-list muted">
+            <li>Se hurtigt hvad jeg har lavet (og hvad der er på vej).</li>
+            <li>Få en kort “hvad + metode + output”.</li>
+            <li>Download / åbne links til materiale når det er muligt.</li>
+          </ul>
+          <p class="muted small" style="margin-top:10px;">
+            Nogle ting kan være “sanitized” pga. kursus/fortrolighed — men formatet kan næsten altid deles.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== -->
+    <!-- NOTER -->
+    <!-- ===================== -->
+    <section class="cat" id="cat-noter" aria-label="Noter">
+      <div class="cat-head">
+        <h2 class="cat-title">Noter</h2>
+        <p class="muted cat-subtitle">Korte writeups og arbejdsnoter (metode + resultater i mini-format).</p>
+      </div>
+
+      <div class="grid">
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">Template: “Fra data → metode → robusthed → leverance”</h3>
+            <span class="tag">Note</span>
+          </div>
+          <p class="item-meta">— · 2–4 min</p>
+          <p class="muted">En enkel struktur jeg bruger til analyseprojekter, så man ikke ender i “bare én regression mere”-fælden.</p>
+          <div class="item-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
+            <a class="btn" href="#" aria-disabled="true"><i class="fa-solid fa-download"></i> Download</a>
+          </div>
+        </article>
+
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">Note: Hvad jeg tracker i træning (volumen, top set, og fatigue)</h3>
+            <span class="tag">Note</span>
+          </div>
+          <p class="item-meta">— · 3–5 min</p>
+          <p class="muted">En realistisk måde at følge progression på uden at blive Excel-munk (selvom… fristende).</p>
+          <div class="item-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
+          </div>
+        </article>
+
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">Note: Tidsrækker – “hvad gør jeg først?” (checkliste)</h3>
+            <span class="tag">Note</span>
+          </div>
+          <p class="item-meta">— · 4–6 min</p>
+          <p class="muted">Stationaritet, sæson, outliers, splits – kort checklist før du vælger model.</p>
+          <div class="item-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== -->
+    <!-- PUBLIKATIONER -->
+    <!-- ===================== -->
+    <section class="cat" id="cat-publikationer" aria-label="Publikationer">
+      <div class="cat-head">
+        <h2 class="cat-title">Publikationer</h2>
+        <p class="muted cat-subtitle">Når du har noget “citerbart”: arbejdspapir, rapport, artikel, etc.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">[Titel] · [Outlet/serie] · [År]</h3>
+            <span class="tag">Publikation</span>
+          </div>
+          <p class="item-meta">Forfattere: [navne] · Status: [preprint/under review/publ.]</p>
+          <p class="muted">1–2 linjer: problem, metode og vigtigste takeaway.</p>
+
+          <details class="details">
+            <summary>Abstract / kort resumé</summary>
+            <p class="muted" style="margin-top:10px;">
+              Indsæt 5–8 linjer her. Hold det kort. Folk scanner.
+            </p>
+          </details>
+
+          <div class="item-links">
+            <a class="btn" href="#" aria-disabled="true"><i class="fa-solid fa-file-pdf"></i> PDF</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-github"></i> Kode</a>
+          </div>
+        </article>
+
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">[Titel] · [Konference/rapport] · [År]</h3>
+            <span class="tag">Rapport</span>
+          </div>
+          <p class="item-meta">Forfattere: [navne] · Link: [—]</p>
+          <p class="muted">1–2 linjer om bidraget og hvorfor det er relevant.</p>
+          <div class="item-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== -->
+    <!-- SLIDES / MATERIALE -->
+    <!-- ===================== -->
+    <section class="cat" id="cat-materialer" aria-label="Slides og materiale">
+      <div class="cat-head">
+        <h2 class="cat-title">Slides / Materialer</h2>
+        <p class="muted cat-subtitle">Handouts, mini-guides, undervisningsmateriale og “cheat sheets”.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">Excel: “Effektive funktioner” – mini cheat sheet</h3>
+            <span class="tag">Materiale</span>
+          </div>
+          <p class="item-meta">PDF · opdateret: (indsæt dato)</p>
+          <p class="muted">En side med de mest brugte funktioner + typiske fejl og struktur til cases.</p>
+          <div class="item-links">
+            <a class="btn" href="../assets/downloads/excel-cheatsheet.pdf" download>
+              <i class="fa-solid fa-download"></i> Download
+            </a>
+            <a class="btn ghost" href="resources.html">Se flere downloads</a>
+          </div>
+        </article>
+
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">Python: Data cleaning – tjekliste</h3>
+            <span class="tag">Materiale</span>
+          </div>
+          <p class="item-meta">PDF · opdateret: (indsæt dato)</p>
+          <p class="muted">Reproducerbar prep: missing, outliers, logs, splits og dokumentation.</p>
+          <div class="item-links">
+            <a class="btn ghost" href="resources.html">Find i Ressourcer</a>
+          </div>
+        </article>
+
+        <article class="card item">
+          <div class="item-top">
+            <h3 class="item-title">SAS: Time series – “første 30 minutter”</h3>
+            <span class="tag">Slides</span>
+          </div>
+          <p class="item-meta">Slides · opdateret: (indsæt dato)</p>
+          <p class="muted">Helt lavpraktisk startpakke: plot, seasonality, baseline, diagnostics.</p>
+          <div class="item-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card cta-card">
+      <h2 class="section-title">Vil du have en bestemt note/skabelon?</h2>
+      <p class="muted">
+        Hvis du fortæller format (Excel/Python/SAS/GAMS) og mål (fx forecasting, dashboards, modellering),
+        kan jeg foreslå en struktur, der er “klar til brug”.
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html">Kontakt</a>
+        <a class="btn ghost" href="resources.html">Ressourcer/Downloads</a>
+      </div>
+    </section>
+
+  </main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-container">
+
+    <div class="footer-top">
+      <!-- Brand / kort pitch -->
+      <section class="footer-col footer-brand" aria-label="Om siden">
+        <h2 class="footer-title">Anton Meier Ebsen Jørgensen</h2>
+        <p class="footer-text">
+          Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller.
+          Jeg bygger analyser og templates, der kan bruges i praksis.
+        </p>
+
+        <div class="footer-cta">
+          <a class="footer-btn" href="cv.html">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> CV
+          </a>
+          <a class="footer-btn footer-btn-ghost" href="../assets/Anton-CV.pdf" target="_blank" rel="noopener">
+            <i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF
+          </a>
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h3 class="footer-title-sm">Navigation</h3>
+        <ul class="footer-list">
+          <li><a href="../index.html">Hjem</a></li>
+          <li><a href="cv.html">CV</a></li>
+          <li><a href="portfolio.html">Portefølje</a></li>
+          <li><a href="services.html">Samarbejde</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Kontakt</a></li>
+        </ul>
+      </nav>
+
+      <!-- Udvalgte sider -->
+      <nav class="footer-col" aria-label="Udvalgte sider">
+        <h3 class="footer-title-sm">Udvalgte sider</h3>
+        <ul class="footer-list">
+          <li><a href="resources.html">Downloads</a></li>
+          <li><a href="media.html">Omtale</a></li>
+          <li><a href="notes.html">Noter</a></li>
+          <li><a href="gallery.html">Galleri</a></li>
+          <li><a href="timeline.html">Milepæle</a></li>
+        </ul>
+      </nav>
+
+      <!-- Kontakt + SoMe -->
+      <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
+        <h3 class="footer-title-sm">Kontakt</h3>
+
+        <address class="footer-text footer-address">
+          <div class="footer-address-row">
+            <span class="footer-kicker">Email</span><br>
+            <a href="mailto:anton.ebsen@proton.me">anton.ebsen@proton.me</a>
+          </div>
+
+          <div class="footer-address-row">
+            <span class="footer-kicker">Telefon</span><br>
+            <a href="tel:+4525740131">+45 25 74 01 31</a>
+          </div>
+
+          <div class="footer-address-row">
+            <span class="footer-kicker">Lokation</span><br>
+            København, DK
+          </div>
+        </address>
+
+        <div class="footer-social" aria-label="Sociale links">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Juridiske sider">
+        <a href="privacy.html">Privatlivspolitik</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Vilkår</a>
+        <span aria-hidden="true">·</span>
+        <a href="accessibility.html">Tilgængelighed</a>
+        <span aria-hidden="true">·</span>
+        <a href="disclaimer.html">Disclaimer</a>
+      </nav>
+
+      <p class="footer-copy">
+        &copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+        <span class="footer-copy-muted">Kildekode:
+          <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
+        </span>
+      </p>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>

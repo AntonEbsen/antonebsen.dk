@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Favoritpodcasts</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/podcasts.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon">
+  <meta name="description" content="En kurateret liste over mine favoritpodcasts – makro, data, træning, humor og refleksion." />
+</head>
+
+<script src="../assets/js/search.js" defer></script>
+<script src="../assets/js/themes.js" defer></script>
+<script src="../assets/js/scripts.js" defer></script>
+  
+<body class="podcasts-page">
+
+  <!-- NAVBAR (matcher din nye struktur) -->
+  <nav class="navbar" aria-label="Primær navigation">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a class="nav-link" href="../index.html">Hjem</a>
+      <div class="nav-item has-dropdown">
+      <a href="cv.html" class="nav-link">CV</a>
+      <div class="dropdown" role="menu" aria-label="CV undermenu">
+        <a href="cv.html" role="menuitem">CV (overblik)</a>
+        <a href="about.html" role="menuitem">Profil</a>
+        <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+        <a href="education.html" role="menuitem">Uddannelse</a>
+        <a href="skills.html" role="menuitem">Kompetencer</a>
+        <a href="courses.html" role="menuitem">Kurser</a>
+        <a href="certifications.html" role="menuitem">Certificeringer</a>
+        <a href="organizations.html" role="menuitem">Organisationer</a>
+        <a href="timeline.html" role="menuitem">Milepæle</a>
+        <a href="video-cv.html" role="menuitem">Video-CV</a>
+      </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a href="portfolio.html" class="nav-link">Portefølje</a>
+        <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+          <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+          <a href="cases.html" role="menuitem">Projekt-cases</a>
+          <a href="resources.html" role="menuitem">Downloads</a>
+          <a href="media.html" role="menuitem">Omtale</a>
+          <a href="notes.html" role="menuitem">Noter</a>
+          <a href="gallery.html" role="menuitem">Galleri</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+        </div>
+      </div>
+
+      <a href="services.html">Samarbejde</a>
+      <a href="referencer.html">Referencer</a>
+      <a href="faq.html">FAQ</a>
+
+      <div class="nav-item has-dropdown">
+        <a class="active" href="blog.html" >Blog</a>
+        <div class="dropdown" role="menu" aria-label="Blog undermenu">
+          <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+          <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+          <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a href="contact.html" class="nav-link">Kontakt</a>
+        <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+          <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+          <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+  <div class="nav-search" role="search">
+    <label class="sr-only" for="siteSearch">Søg på siden</label>
+    <input
+      id="siteSearch"
+      class="nav-search-input"
+      type="search"
+      placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+      autocomplete="off"
+      aria-autocomplete="list"
+      aria-controls="searchResults"
+      aria-expanded="false"
+    />
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div>
+  </div>
+    
+<div class="nav-right">
+
+  <div class="nav-item has-dropdown lang-switch">
+    <a href="#" class="nav-link" aria-label="Skift sprog" onclick="return false;">
+      Sprog <span aria-hidden="true">▾</span>
+    </a>
+
+    <div class="dropdown" role="menu" aria-label="Sprogvalg">
+      <a href="../index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/dansk-flag.png" alt="" class="lang-flag">
+          Dansk
+        </span>
+      </a>
+
+      <a href="../en/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/britisk-flag.png" alt="" class="lang-flag">
+          English
+        </span>
+      </a>
+
+      <a href="../de/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/tysk-flag.png" alt="" class="lang-flag">
+          Deutsch
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</nav>
+
+  <main class="podcasts-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Podcasts</p>
+        <h1>Favoritter jeg faktisk hører igen</h1>
+        <p class="lead">
+          En kurateret liste opdelt efter tema. Jeg opdaterer løbende, når jeg finder noget der er værd at gemme.
+        </p>
+
+        <div class="pill-wrap" aria-label="Kategorier">
+          <a class="pill-link" href="#cat-makro"><span class="pill">Makro</span></a>
+          <a class="pill-link" href="#cat-data"><span class="pill">Data/Tech</span></a>
+          <a class="pill-link" href="#cat-traening"><span class="pill">Træning</span></a>
+          <a class="pill-link" href="#cat-humor"><span class="pill">Humor</span></a>
+          <a class="pill-link" href="#cat-refleksion"><span class="pill">Refleksion</span></a>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#cat-makro"><i class="fa-solid fa-headphones"></i> Hop til listen</a>
+          <a class="btn ghost" href="contact.html"><i class="fa-solid fa-envelope"></i> Foreslå en podcast</a>
+        </div>
+
+        <p class="muted small" style="margin:0;">
+          Note: Links kan være Spotify/Apple/YouTube. (Du kan vælge 1 platform pr. podcast for at holde det clean.)
+        </p>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan jeg vælger</h2>
+          <ul class="clean-list muted" style="margin:0;">
+            <li>Høj signalværdi (ikke bare “snak”)</li>
+            <li>Gode gæster / konkret viden</li>
+            <li>Kan tåle genlyt</li>
+            <li>Passer til pendling + gåture</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- KATEGORI: MAKRO -->
+    <section class="cat" id="cat-makro" aria-label="Makro & pengepolitik">
+      <div class="cat-head">
+        <h2 class="cat-title">Makro & pengepolitik</h2>
+        <p class="muted cat-subtitle">Centralbanker, konjunkturer, policy og “hvad betyder det i praksis?”.</p>
+      </div>
+
+      <div class="grid">
+        <!-- PODCAST CARD -->
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Makro</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse: Hvilke emner dækker den? Hvad er typisk formatet?</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-apple"></i> Apple</a>
+          </div>
+        </article>
+
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Makro</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse: (kort, konkret)</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: DATA -->
+    <section class="cat" id="cat-data" aria-label="Data & tech">
+      <div class="cat-head">
+        <h2 class="cat-title">Data & tech</h2>
+        <p class="muted cat-subtitle">Praktiske workflows, ML, programmering og værktøjer.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Data</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-youtube"></i> YouTube</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: TRÆNING -->
+    <section class="cat" id="cat-traening" aria-label="Træning">
+      <div class="cat-head">
+        <h2 class="cat-title">Træning</h2>
+        <p class="muted cat-subtitle">Progression, hypertrofi, vaner og sund fornuft.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Træning</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: HUMOR -->
+    <section class="cat" id="cat-humor" aria-label="Humor">
+      <div class="cat-head">
+        <h2 class="cat-title">Humor</h2>
+        <p class="muted cat-subtitle">Hvis hjernen skal have pause (men stadig have kvalitet).</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Humor</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: REFLEKSION -->
+    <section class="cat" id="cat-refleksion" aria-label="Refleksion">
+      <div class="cat-head">
+        <h2 class="cat-title">Refleksion</h2>
+        <p class="muted cat-subtitle">Samtaler, etik, tro, mening og perspektiv.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Refleksion</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Har du en anbefaling?</h2>
+      <p class="muted">
+        Hvis du har en podcast du mener passer til mine temaer, så send den gerne. Bonuspoint hvis du også sender 1 episode,
+        der “sælger” den.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com?subject=Podcast%20anbefaling"><i class="fa-solid fa-paper-plane"></i> Send anbefaling</a>
+        <a class="btn ghost" href="blog.html"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+      </div>
+    </section>
+
+  </main>
+
+<footer class="site-footer site-footer--blog" role="contentinfo">
+  <div class="footer-container">
+
+    <div class="footer-top">
+      <!-- Blog/brand -->
+      <section class="footer-col footer-brand" aria-label="Om bloggen">
+        <h2 class="footer-title">Blog · Anton Meier Ebsen Jørgensen</h2>
+        <p class="footer-text">
+          Noter og indlæg om <strong>økonomi</strong>, <strong>data</strong>, <strong>træning</strong> og <strong>rejser</strong>.
+          Kort, praktisk og opdateret løbende.
+        </p>
+
+        <div class="footer-cta">
+          <a class="footer-btn" href="blog.html">
+            <i class="fa-solid fa-book-open" aria-hidden="true"></i> Til blogforsiden
+          </a>
+          <a class="footer-btn footer-btn-ghost" href="contact.html">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i> Foreslå et emne
+          </a>
+        </div>
+      </section>
+
+      <!-- Kategorier -->
+      <nav class="footer-col" aria-label="Kategorier">
+        <h3 class="footer-title-sm">Kategorier</h3>
+        <ul class="footer-list">
+          <li><a href="blog.html#cat-fagligt">Fagligt</a></li>
+          <li><a href="blog.html#cat-traening">Træning</a></li>
+          <li><a href="blog.html#cat-rejser">Rejser</a></li>
+        </ul>
+
+        <h3 class="footer-title-sm" style="margin-top:14px;">Dashboards</h3>
+        <ul class="footer-list">
+          <li><a href="traeningsstatistik.html">Træningsstatistik</a></li>
+          <li><a href="map.html">Rejsekort</a></li>
+        </ul>
+      </nav>
+
+      <!-- Hurtige links -->
+      <nav class="footer-col" aria-label="Hurtige links">
+        <h3 class="footer-title-sm">Hurtige links</h3>
+        <ul class="footer-list">
+          <li><a href="notes.html">Noter</a></li>
+          <li><a href="resources.html">Downloads</a></li>
+          <li><a href="gallery.html">Galleri</a></li>
+          <li><a href="timeline.html">Milepæle</a></li>
+        </ul>
+      </nav>
+
+      <!-- Kontakt + SoMe -->
+      <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
+        <h3 class="footer-title-sm">Kontakt</h3>
+
+        <address class="footer-text footer-address">
+          <div>
+            <span class="footer-kicker">Email</span><br>
+            <a href="mailto:anton.ebsen@proton.me">anton.ebsen@proton.me</a>
+          </div>
+        </address>
+
+        <div class="footer-social" aria-label="Sociale links">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+          <a href="https://twitter.com/AntonEbsen" target="_blank" rel="noopener" aria-label="X/Twitter">
+            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Juridiske sider">
+        <a href="privacy.html">Privatlivspolitik</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Vilkår</a>
+        <span aria-hidden="true">·</span>
+        <a href="accessibility.html">Tilgængelighed</a>
+        <span aria-hidden="true">·</span>
+        <a href="disclaimer.html">Disclaimer</a>
+      </nav>
+
+      <p class="footer-copy">
+        &copy; 2026 Anton Meier Ebsen Jørgensen.
+        <span class="footer-copy-muted">Kildekode: <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.</span>
+      </p>
+    </div>
+
+  </div>
+</footer>
+</body>
+</html>

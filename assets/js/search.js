@@ -7,28 +7,31 @@
   let open = false;
   let active = -1;
 
-  function langPrefix() {
-    // matcher /en/... eller /de/... (både lokalt og på server)
+  function getSearchIndexPath() {
     const path = location.pathname.replace(/\\/g, "/");
-    const m = path.match(/\/(en|de)\//);
-    return m ? `${m[1]}/` : "";
+    // If we are in the pages directory, go up one level to find assets
+    if (path.includes("/pages/")) {
+      return "../assets/search-index.json";
+    }
+    // If we are in language folders (en, de, dk), try to go up?
+    // Based on directory structure, assets is in root.
+    if (path.match(/\/(en|de|dk)\//)) {
+      return "../assets/search-index.json";
+    }
+    // Default to root assets
+    return "assets/search-index.json";
   }
 
   async function loadIndex() {
-    const prefix = langPrefix();
-    const url = `${prefix}assets/search-index.json`;
+    const url = getSearchIndexPath();
     try {
       const res = await fetch(url, { cache: "no-cache" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       index = await res.json();
     } catch (e) {
-      // fallback: prøv uden prefix (kan hjælpe ved lokale setups)
-      try {
-        const res2 = await fetch(`assets/search-index.json`, { cache: "no-cache" });
-        index = await res2.json();
-      } catch (e2) {
-        index = [];
-      }
+      console.warn("Search index failed to load:", e);
+      // Fallback or retry logic if needed, but the path above should be correct.
+      index = [];
     }
   }
 
@@ -48,7 +51,6 @@
       if (!t) continue;
       const pos = hay.indexOf(t);
       if (pos === -1) return -1;
-      // simple scoring: title matches are worth more + earlier is better
       const titleHay = normalize(item.title);
       if (titleHay.includes(t)) score += 6;
       score += Math.max(0, 5 - Math.min(5, pos / 40));
@@ -77,6 +79,29 @@
     active = idx;
   }
 
+  function fixUrl(url) {
+    const path = location.pathname.replace(/\\/g, "/");
+    const isPages = path.includes("/pages/");
+
+    // URL from JSON is like "pages/cv.html" or "index.html"
+
+    if (isPages) {
+      // We are in pages/
+      if (url === "index.html") {
+        return "../index.html";
+      }
+      if (url.startsWith("pages/")) {
+        return url.substring(6); // remove "pages/" -> "cv.html" (sibling)
+      }
+    } else {
+      // We are in root (or assuming root)
+      // JSON URLs "pages/cv.html" and "index.html" are already correct for root
+      return url;
+    }
+
+    return url;
+  }
+
   function renderResults(results, q) {
     if (!q || q.length < 2) {
       closeBox();
@@ -93,8 +118,10 @@
       .slice(0, 8)
       .map((r, i) => {
         const snippet = (r.content || "").slice(0, 110);
+        const finalUrl = fixUrl(r.url);
+
         return `
-          <a class="result" role="option" aria-selected="${i === 0 ? "true" : "false"}" href="${r.url}">
+          <a class="result" role="option" aria-selected="${i === 0 ? "true" : "false"}" href="${finalUrl}">
             <div class="result-title">${escapeHtml(r.title)}</div>
             <p class="result-snippet">${escapeHtml(snippet)}${(r.content || "").length > 110 ? "…" : ""}</p>
           </a>

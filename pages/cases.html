@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Projekt-cases</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/cases.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Tre udvalgte projekt-cases: data, metode, resultater og værktøjer." />
+</head>
+
+<script src="../assets/js/scripts.js" defer></script>
+<script src="../assets/js/search.js" defer></script>
+<script src="../assets/js/themes.js" defer></script>
+  
+<body class="cases-page">
+
+  <nav class="navbar" aria-label="Primær navigation">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="../index.html" class="nav-link">Hjem</a>
+      <div class="nav-item has-dropdown">
+      <a href="cv.html" class="nav-link">CV</a>
+      <div class="dropdown" role="menu" aria-label="CV undermenu">
+        <a href="cv.html" role="menuitem">CV (overblik)</a>
+        <a href="about.html" role="menuitem">Profil</a>
+        <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+        <a href="education.html" role="menuitem">Uddannelse</a>
+        <a href="skills.html" role="menuitem">Kompetencer</a>
+        <a href="courses.html" role="menuitem">Kurser</a>
+        <a href="certifications.html" role="menuitem">Certificeringer</a>
+        <a href="organizations.html" role="menuitem">Organisationer</a>
+        <a href="timeline.html" role="menuitem">Milepæle</a>
+        <a href="video-cv.html" role="menuitem">Video-CV</a>
+      </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a class="active" href="portfolio.html">Portefølje</a>
+        <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+          <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+          <a href="cases.html" role="menuitem">Projekt-cases</a>
+          <a href="resources.html" role="menuitem">Downloads</a>
+          <a href="media.html" role="menuitem">Omtale</a>
+          <a href="notes.html" role="menuitem">Noter</a>
+          <a href="gallery.html" role="menuitem">Galleri</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+        </div>
+      </div>
+
+      <a href="services.html">Samarbejde</a>
+      <a href="referencer.html">Referencer</a>
+      <a href="faq.html">FAQ</a>
+
+      <div class="nav-item has-dropdown">
+        <a href="blog.html" class="nav-link">Blog</a>
+        <div class="dropdown" role="menu" aria-label="Blog undermenu">
+          <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+          <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+          <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a href="contact.html" class="nav-link">Kontakt</a>
+        <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+          <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+          <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+  <div class="nav-search" role="search">
+    <label class="sr-only" for="siteSearch">Søg på siden</label>
+    <input
+      id="siteSearch"
+      class="nav-search-input"
+      type="search"
+      placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+      autocomplete="off"
+      aria-autocomplete="list"
+      aria-controls="searchResults"
+      aria-expanded="false"
+    />
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div>
+  </div>
+    
+<div class="nav-right">
+
+  <div class="nav-item has-dropdown lang-switch">
+    <a href="#" class="nav-link" aria-label="Skift sprog" onclick="return false;">
+      Sprog <span aria-hidden="true">▾</span>
+    </a>
+
+    <div class="dropdown" role="menu" aria-label="Sprogvalg">
+      <a href="../index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/dansk-flag.png" alt="" class="lang-flag">
+          Dansk
+        </span>
+      </a>
+
+      <a href="../en/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/britisk-flag.png" alt="" class="lang-flag">
+          English
+        </span>
+      </a>
+
+      <a href="../de/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/tysk-flag.png" alt="" class="lang-flag">
+          Deutsch
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</nav>
+
+  <main class="cases-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Projekt-cases</p>
+        <h1>Tre udvalgte cases</h1>
+        <p class="lead">
+          Her er tre cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="portfolio.html">Se portefølje</a>
+          <a class="btn ghost" href="cv.html">Se CV</a>
+          <a class="btn ghost" href="contact.html">Kontakt</a>
+        </div>
+
+        <div class="pill-wrap">
+          <span class="pill">Makro & pengepolitik</span>
+          <span class="pill">Tidsrækker</span>
+          <span class="pill">CGE/RBC</span>
+          <span class="pill">Reproducerbar analyse</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Format</h2>
+          <ul class="clean-list">
+            <li><strong>Problem</strong> → hvad skulle løses?</li>
+            <li><strong>Data</strong> → hvad byggede analysen på?</li>
+            <li><strong>Metode</strong> → hvordan blev det løst?</li>
+            <li><strong>Resultat</strong> → hvad kom der ud?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASES GRID -->
+    <section class="cases-grid" aria-label="Projekt-cases">
+
+      <!-- CASE 1 -->
+      <article class="card case" id="case-gfc">
+        <div class="case-head">
+          <h2 class="case-title">Case 1: Global Financial Cycle & spillovers fra US pengepolitik</h2>
+          <span class="badge">Empirisk makro</span>
+        </div>
+
+        <p class="muted">
+          (Bachelorprojekt) Undersøgelse af hvordan amerikansk pengepolitik påvirker globale finansielle forhold og makroøkonomiske outcomes.
+        </p>
+
+        <div class="case-body">
+          <div class="case-block">
+            <h3>Problem</h3>
+            <p>Hvilke spillover-effekter kan observeres fra US pengepolitik til global økonomi, og hvordan varierer de på tværs af perioder?</p>
+          </div>
+
+          <div class="case-block">
+            <h3>Data</h3>
+            <ul class="clean-list">
+              <li>Makro/finansielle tidsserier (fx renter, kreditspreads, volatilitet, output-indikatorer)</li>
+              <li>Land-/region-panel (hvis relevant)</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Metode</h3>
+            <ul class="clean-list">
+              <li>Strukturel tidsrækkemodel / SVAR-inspiration (tilpas efter dit faktiske setup)</li>
+              <li>Robusthed: alternative specifikationer og subperioder</li>
+              <li>Visualisering: IRF/effektplot, tabeller med nøgleestimater</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Resultat</h3>
+            <ul class="clean-list">
+              <li>Hovedfund: (indsæt 1–2 linjer, når du vil)</li>
+              <li>Praktisk leverance: rapport + figurer + kode/appendiks</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Min rolle</h3>
+            <ul class="clean-list">
+              <li>Design af empirisk strategi</li>
+              <li>Databehandling + estimation</li>
+              <li>Formidling af resultater og begrænsninger</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Tools</h3>
+            <div class="tool-row">
+              <span class="tool-pill">Python</span>
+              <span class="tool-pill">SAS/Stata</span>
+              <span class="tool-pill">LaTeX</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Rapport (kommer)</a>
+          <a class="btn ghost" href="#" aria-disabled="true">Kode (hvis public)</a>
+        </div>
+      </article>
+
+      <!-- CASE 2 -->
+      <article class="card case" id="case-cge">
+        <div class="case-head">
+          <h2 class="case-title">Case 2: CGE-model – CO₂-afgift, sektor-effekter og provenu-recycling</h2>
+          <span class="badge">Modelarbejde</span>
+        </div>
+
+        <p class="muted">
+          (Kursusprojekt/eksamenscase) Kalibrering af en simpel åben økonomi med flere sektorer og policy-shocks.
+        </p>
+
+        <div class="case-body">
+          <div class="case-block">
+            <h3>Problem</h3>
+            <p>Hvordan påvirker en CO₂-afgift produktion, priser og velfærd på tværs af sektorer – og hvad betyder valget af provenu-tilbageførsel?</p>
+          </div>
+
+          <div class="case-block">
+            <h3>Data</h3>
+            <ul class="clean-list">
+              <li>Social Accounting Matrix / nationalregnskabs-baseret kalibrering</li>
+              <li>Sektorspecifikke inputandele, forbrug, eksport/import</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Metode</h3>
+            <ul class="clean-list">
+              <li>Kalibrér baseline der reproducerer SAM</li>
+              <li>Shock-scenarier: skat + alternative lukninger</li>
+              <li>Checks: budgetrestriktioner, nul-profit, (Walras-lov hvor relevant)</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Resultat</h3>
+            <ul class="clean-list">
+              <li>Output: procentændringer i priser/output/forbrug</li>
+              <li>Fortolkning: vindere/tabere og mekanismer (kort)</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Min rolle</h3>
+            <ul class="clean-list">
+              <li>Implementering i GAMS</li>
+              <li>Kalibrering + dokumentation</li>
+              <li>Scenario-opsætning og tabeller/figurer</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Tools</h3>
+            <div class="tool-row">
+              <span class="tool-pill">GAMS</span>
+              <span class="tool-pill">Excel</span>
+              <span class="tool-pill">LaTeX</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Slides/rapport (kommer)</a>
+          <a class="btn ghost" href="#" aria-disabled="true">Modelkode (hvis public)</a>
+        </div>
+      </article>
+
+      <!-- CASE 3 -->
+      <article class="card case" id="case-ts">
+        <div class="case-head">
+          <h2 class="case-title">Case 3: Tidsrækker – forecasting og sæsonmønstre</h2>
+          <span class="badge">Tidsrækker</span>
+        </div>
+
+        <p class="muted">
+          (SAS-kursus/eksamenscase) Modelvalg, diagnosticering og forecast med fokus på robusthed og kommunikation.
+        </p>
+
+        <div class="case-body">
+          <div class="case-block">
+            <h3>Problem</h3>
+            <p>Hvordan laver man et forecast, der er stabilt og forklarligt — og ikke bare “en model der passer”?</p>
+          </div>
+
+          <div class="case-block">
+            <h3>Data</h3>
+            <ul class="clean-list">
+              <li>Tidsserie med sæson og trend (fx månedlige/ugentlige observationer)</li>
+              <li>Evt. outliers/strukturelle brud</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Metode</h3>
+            <ul class="clean-list">
+              <li>Decomposition / UCM / ETS-tilgang (tilpas)</li>
+              <li>Modeldiagnostik: residualer, stabilitet, holdout</li>
+              <li>Alternativer: simple benchmarks vs. mere kompleks model</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Resultat</h3>
+            <ul class="clean-list">
+              <li>Forecast + usikkerhedsbånd</li>
+              <li>Konklusion: hvorfor netop denne model er valgt</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Min rolle</h3>
+            <ul class="clean-list">
+              <li>Data-prep og modelvalg</li>
+              <li>Evaluation + dokumentation</li>
+              <li>Visualisering og write-up</li>
+            </ul>
+          </div>
+
+          <div class="case-block">
+            <h3>Tools</h3>
+            <div class="tool-row">
+              <span class="tool-pill">SAS</span>
+              <span class="tool-pill">Python</span>
+              <span class="tool-pill">Excel</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-links">
+          <a class="btn ghost" href="#" aria-disabled="true">Notebook/rapport (kommer)</a>
+          <a class="btn ghost" href="#" aria-disabled="true">Kode (hvis public)</a>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du se noget mere konkret?</h2>
+      <p class="muted">
+        Nogle projekter kan ikke deles fuldt ud pga. kursus/fortrolighed, men jeg kan ofte dele “sanitized” eksempler eller gennemgå metoder/struktur.
+      </p>
+      <div class="cta">
+        <a class="btn" href="contact.html">Kontakt mig</a>
+        <a class="btn ghost" href="services.html">Samarbejde</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+  <div class="footer-container">
+
+    <div class="footer-top">
+      <!-- Brand / kort pitch -->
+      <section class="footer-col footer-brand" aria-label="Om siden">
+        <h2 class="footer-title">Anton Meier Ebsen Jørgensen</h2>
+        <p class="footer-text">
+          Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller.
+          Jeg bygger analyser og templates, der kan bruges i praksis.
+        </p>
+
+        <div class="footer-cta">
+          <a class="footer-btn" href="cv.html">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> CV
+          </a>
+          <a class="footer-btn footer-btn-ghost" href="../assets/Anton-CV.pdf" target="_blank" rel="noopener">
+            <i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF
+          </a>
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h3 class="footer-title-sm">Navigation</h3>
+        <ul class="footer-list">
+          <li><a href="../index.html">Hjem</a></li>
+          <li><a href="cv.html">CV</a></li>
+          <li><a href="portfolio.html">Portefølje</a></li>
+          <li><a href="services.html">Samarbejde</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Kontakt</a></li>
+        </ul>
+      </nav>
+
+      <!-- Udvalgte sider -->
+      <nav class="footer-col" aria-label="Udvalgte sider">
+        <h3 class="footer-title-sm">Udvalgte sider</h3>
+        <ul class="footer-list">
+          <li><a href="resources.html">Downloads</a></li>
+          <li><a href="media.html">Omtale</a></li>
+          <li><a href="notes.html">Noter</a></li>
+          <li><a href="gallery.html">Galleri</a></li>
+          <li><a href="timeline.html">Milepæle</a></li>
+        </ul>
+      </nav>
+
+      <!-- Kontakt + SoMe -->
+      <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
+        <h3 class="footer-title-sm">Kontakt</h3>
+
+        <address class="footer-text footer-address">
+          <div class="footer-address-row">
+            <span class="footer-kicker">Email</span><br>
+            <a href="mailto:anton.ebsen@proton.me">anton.ebsen@proton.me</a>
+          </div>
+
+          <div class="footer-address-row">
+            <span class="footer-kicker">Telefon</span><br>
+            <a href="tel:+4525740131">+45 25 74 01 31</a>
+          </div>
+
+          <div class="footer-address-row">
+            <span class="footer-kicker">Lokation</span><br>
+            København, DK
+          </div>
+        </address>
+
+        <div class="footer-social" aria-label="Sociale links">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Juridiske sider">
+        <a href="privacy.html">Privatlivspolitik</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Vilkår</a>
+        <span aria-hidden="true">·</span>
+        <a href="accessibility.html">Tilgængelighed</a>
+        <span aria-hidden="true">·</span>
+        <a href="disclaimer.html">Disclaimer</a>
+      </nav>
+
+      <p class="footer-copy">
+        &copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+        <span class="footer-copy-muted">Kildekode:
+          <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
+        </span>
+      </p>
+    </div>
+
+  </div>
+</footer>
+  
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anton Meier Ebsen Jørgensen – Profil / Om mig</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/about.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Profil / Om mig: makroøkonomi, økonometri, modeller og formidling. Arbejdsstil, fokusområder og hvad jeg kan hjælpe med." />
+</head>
+
+<script src="../assets/js/scripts.js" defer></script>
+<script src="../assets/js/search.js" defer></script>
+<script src="../assets/js/themes.js" defer></script>
+  
+<body class="about-page">
+
+  <nav class="navbar" aria-label="Primær navigation">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="../index.html" class="nav-link">Hjem</a>
+      <div class="nav-item has-dropdown">
+      <a class="active" href="cv.html">CV</a>
+      <div class="dropdown" role="menu" aria-label="CV undermenu">
+        <a href="cv.html" role="menuitem">CV (overblik)</a>
+        <a href="about.html" role="menuitem">Profil</a>
+        <a href="experience.html" role="menuitem">Erhvervserfaring</a>
+        <a href="education.html" role="menuitem">Uddannelse</a>
+        <a href="skills.html" role="menuitem">Kompetencer</a>
+        <a href="courses.html" role="menuitem">Kurser</a>
+        <a href="certifications.html" role="menuitem">Certificeringer</a>
+        <a href="organizations.html" role="menuitem">Organisationer</a>
+        <a href="timeline.html" role="menuitem">Milepæle</a>
+        <a href="video-cv.html" role="menuitem">Video-CV</a>
+      </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a href="portfolio.html" class="nav-link">Portefølje</a>
+        <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
+          <a href="portfolio.html#projects" role="menuitem">Projekter</a>
+          <a href="cases.html" role="menuitem">Projekt-cases</a>
+          <a href="resources.html" role="menuitem">Downloads</a>
+          <a href="media.html" role="menuitem">Omtale</a>
+          <a href="notes.html" role="menuitem">Noter</a>
+          <a href="gallery.html" role="menuitem">Galleri</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
+        </div>
+      </div>
+
+      <a href="services.html">Samarbejde</a>
+      <a href="referencer.html">Referencer</a>
+      <a href="faq.html">FAQ</a>
+
+      <div class="nav-item has-dropdown">
+        <a href="blog.html" class="nav-link">Blog</a>
+        <div class="dropdown" role="menu" aria-label="Blog undermenu">
+          <a href="blog.html#cat-fagligt" role="menuitem">Fagligt</a>
+          <a href="blog.html#cat-traening" role="menuitem">Træning</a>
+          <a href="blog.html#cat-rejser" role="menuitem">Rejser</a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dropdown">
+        <a href="contact.html" class="nav-link">Kontakt</a>
+        <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
+          <a href="contact.html#kontakt" role="menuitem">Kontaktformular</a>
+          <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+  <div class="nav-search" role="search">
+    <label class="sr-only" for="siteSearch">Søg på siden</label>
+    <input
+      id="siteSearch"
+      class="nav-search-input"
+      type="search"
+      placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+      autocomplete="off"
+      aria-autocomplete="list"
+      aria-controls="searchResults"
+      aria-expanded="false"
+    />
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div>
+  </div>
+    
+<div class="nav-right">
+
+  <div class="nav-item has-dropdown lang-switch">
+    <a href="#" class="nav-link" aria-label="Skift sprog" onclick="return false;">
+      Sprog <span aria-hidden="true">▾</span>
+    </a>
+
+    <div class="dropdown" role="menu" aria-label="Sprogvalg">
+      <a href="../index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/dansk-flag.png" alt="" class="lang-flag">
+          Dansk
+        </span>
+      </a>
+
+      <a href="../en/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/britisk-flag.png" alt="" class="lang-flag">
+          English
+        </span>
+      </a>
+
+      <a href="../de/index.html" role="menuitem">
+        <span class="lang-row">
+          <img src="../assets/img/tysk-flag.png" alt="" class="lang-flag">
+          Deutsch
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</nav>
+
+  <main class="about-wrap">
+    <div class="stack">
+
+      <!-- HERO -->
+      <section class="card hero">
+        <div>
+          <p class="eyebrow">Profil / Om mig</p>
+          <h1>Makro, økonometri og modeller — med fokus på at gøre det brugbart</h1>
+          <p class="lead">
+            Jeg arbejder i krydsfeltet mellem <strong>økonomi</strong>, <strong>data</strong> og <strong>formidling</strong>.
+            Jeg kan godt lide “klassisk håndværk”: klare antagelser, ordentlig dokumentation og resultater, der kan forklares
+            uden at man skal have læst 300 sider først.
+          </p>
+
+          <div class="pill-wrap" aria-label="Nøgleområder">
+            <span class="pill">Makro & pengepolitik</span>
+            <span class="pill">Økonometri & tidsrækker</span>
+            <span class="pill">Økonomiske modeller</span>
+            <span class="pill">Python / SAS / GAMS</span>
+            <span class="pill">Excel/VBA undervisning</span>
+          </div>
+
+          <div class="cta">
+            <a class="btn" href="#arbejdsstil"><i class="fa-solid fa-compass"></i> Arbejdsstil</a>
+            <a class="btn ghost" href="#fokus"><i class="fa-solid fa-bullseye"></i> Fokusområder</a>
+            <a class="btn ghost" href="#kontakt"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="mini-card">
+            <h2 class="section-title">Hurtige facts</h2>
+            <div class="quickfacts">
+              <div class="fact"><i class="fa-solid fa-location-dot"></i><span>København</span></div>
+              <div class="fact"><i class="fa-solid fa-chart-line"></i><span>Interesse: centralbanker, transmissionsmekanismer, heterogenitet</span></div>
+              <div class="fact"><i class="fa-solid fa-code"></i><span>Værktøjer: Python, SAS, GAMS + Excel/VBA</span></div>
+              <div class="fact"><i class="fa-solid fa-chalkboard-user"></i><span>Formidling: underviser (Excel/VBA) og bygger cases</span></div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <h2 class="section-title">På siden</h2>
+            <nav class="subnav" aria-label="Undermenu">
+              <a href="#fokus">Fokusområder</a>
+              <a href="#arbejdsstil">Hvordan jeg arbejder</a>
+              <a href="#formidling">Undervisning & formidling</a>
+              <a href="#udenfor">Uden for studiet</a>
+              <a href="#kontakt">Kontakt</a>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fokus -->
+      <section class="card" id="fokus">
+        <h2 class="section-title">Fokusområder</h2>
+
+        <div class="grid-2">
+          <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+            <h3 style="margin:0 0 8px;">Makroøkonomi & pengepolitik</h3>
+            <p class="muted" style="margin:0;">
+              Jeg er især optaget af, hvordan pengepolitik “landes” i praksis: gennem finansielle markeder, forventninger,
+              kreditkanaler og forskelle på tværs af lande/sektorer.
+            </p>
+          </div>
+
+          <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+            <h3 style="margin:0 0 8px;">Økonometri & tidsrækker</h3>
+            <p class="muted" style="margin:0;">
+              Forecasting, identifikation og robusthed. Jeg kan godt lide metoder der både er
+              teknisk solide og kan forklares til en normal person uden at de går i søvn.
+            </p>
+          </div>
+
+          <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+            <h3 style="margin:0 0 8px;">Modeller & “structure”</h3>
+            <p class="muted" style="margin:0;">
+              CGE/RBC/DSGE-tænkning: tydelige antagelser, konsistens, checks og baseline/zero-shock disciplin.
+            </p>
+          </div>
+
+          <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+            <h3 style="margin:0 0 8px;">Data & tooling</h3>
+            <p class="muted" style="margin:0;">
+              Jeg bygger små pipelines og templates: fra data cleaning til output, så det kan genbruges og ikke kun virker én gang.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Arbejdsstil -->
+      <section class="card" id="arbejdsstil">
+        <h2 class="section-title">Hvordan jeg arbejder</h2>
+        <p class="muted">
+          Min standard-arbejdsgang (lidt kedelig — men det er præcis derfor den virker):
+        </p>
+
+        <ul class="timeline">
+          <li><strong>1) Afklar mål:</strong> hvad skal beslutningstager/læser kunne gøre bagefter?</li>
+          <li><strong>2) Dokumentér data:</strong> kilder, definitioner, enheder, missing/outliers, transformationer.</li>
+          <li><strong>3) Vælg metode:</strong> simpelt først, derefter “mere fancy” hvis det giver noget reelt.</li>
+          <li><strong>4) Checks:</strong> sanity checks, robusthed, alternative specifikationer, edge cases.</li>
+          <li><strong>5) Formidling:</strong> konklusioner, begrænsninger og “hvad betyder det i praksis?”</li>
+        </ul>
+
+        <div class="cta">
+          <a class="btn ghost" href="portfolio.html"><i class="fa-solid fa-folder-open"></i> Se portefølje</a>
+          <a class="btn" href="resources.html"><i class="fa-solid fa-download"></i> Se ressourcer</a>
+        </div>
+      </section>
+
+      <!-- Formidling -->
+      <section class="card" id="formidling">
+        <h2 class="section-title">Undervisning & formidling</h2>
+        <p class="muted">
+          Jeg har erfaring med at undervise i Excel/VBA og kan lide at gøre ting konkrete: cases, øvelser,
+          “hvorfor” bag funktioner og små genveje der gør en stor forskel.
+        </p>
+
+        <div class="grid-2">
+          <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+            <h3 style="margin:0 0 8px;">Min undervisningsstil</h3>
+            <ul style="margin:0;">
+              <li>Struktur først (mål → løsning → kvalitetstjek)</li>
+              <li>Hands-on: hellere én god case end 30 slides</li>
+              <li>Templates der kan genbruges</li>
+            </ul>
+          </div>
+
+          <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+            <h3 style="margin:0 0 8px;">Hvad jeg typisk hjælper med</h3>
+            <ul style="margin:0;">
+              <li>Excel-modeller, dashboards og logik</li>
+              <li>Data cleaning og reproducérbare workflows</li>
+              <li>Små scripts og automatisering</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Udenfor -->
+      <section class="card" id="udenfor">
+        <h2 class="section-title">Uden for studiet</h2>
+        <p class="muted">
+          Jeg holder af rutiner og progression — både i træning og i projekter. Det lyder måske lidt “kontor-nørdet”,
+          men det er ærligt talt ret tilfredsstillende at se kurver gå den rigtige vej.
+        </p>
+
+        <div class="cta">
+          <a class="btn ghost" href="blog.html#cat-traening"><i class="fa-solid fa-dumbbell"></i> Træningsindlæg</a>
+          <a class="btn ghost" href="blog.html#cat-rejser"><i class="fa-solid fa-person-hiking"></i> Rejser</a>
+        </div>
+      </section>
+
+      <!-- Kontakt -->
+      <section class="card" id="kontakt">
+        <h2 class="section-title">Kontakt</h2>
+        <p class="muted">
+          Hvis du vil sparre om et projekt, en case eller et samarbejde, så skriv endelig.
+        </p>
+        <div class="cta">
+          <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope"></i> Send mail</a>
+          <a class="btn ghost" href="contact.html"><i class="fa-solid fa-message"></i> Kontakt-side</a>
+          <a class="btn ghost" href="cv.html"><i class="fa-solid fa-file-lines"></i> Tilbage til CV</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-container">
+
+    <div class="footer-top">
+      <!-- Brand / kort pitch -->
+      <section class="footer-col footer-brand" aria-label="Om siden">
+        <h2 class="footer-title">Anton Meier Ebsen Jørgensen</h2>
+        <p class="footer-text">
+          Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller.
+          Jeg bygger analyser og templates, der kan bruges i praksis.
+        </p>
+
+        <div class="footer-cta">
+          <a class="footer-btn" href="cv.html">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> CV
+          </a>
+          <a class="footer-btn footer-btn-ghost" href="../assets/Anton-CV.pdf" target="_blank" rel="noopener">
+            <i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF
+          </a>
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h3 class="footer-title-sm">Navigation</h3>
+        <ul class="footer-list">
+          <li><a href="../index.html">Hjem</a></li>
+          <li><a href="cv.html">CV</a></li>
+          <li><a href="portfolio.html">Portefølje</a></li>
+          <li><a href="services.html">Samarbejde</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Kontakt</a></li>
+        </ul>
+      </nav>
+
+      <!-- Udvalgte sider -->
+      <nav class="footer-col" aria-label="Udvalgte sider">
+        <h3 class="footer-title-sm">Udvalgte sider</h3>
+        <ul class="footer-list">
+          <li><a href="resources.html">Downloads</a></li>
+          <li><a href="media.html">Omtale</a></li>
+          <li><a href="notes.html">Noter</a></li>
+          <li><a href="gallery.html">Galleri</a></li>
+          <li><a href="timeline.html">Milepæle</a></li>
+        </ul>
+      </nav>
+
+      <!-- Kontakt + SoMe -->
+      <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
+        <h3 class="footer-title-sm">Kontakt</h3>
+
+        <address class="footer-text footer-address">
+          <div class="footer-address-row">
+            <span class="footer-kicker">Email</span><br>
+            <a href="mailto:anton.ebsen@proton.me">anton.ebsen@proton.me</a>
+          </div>
+
+          <div class="footer-address-row">
+            <span class="footer-kicker">Telefon</span><br>
+            <a href="tel:+4525740131">+45 25 74 01 31</a>
+          </div>
+
+          <div class="footer-address-row">
+            <span class="footer-kicker">Lokation</span><br>
+            København, DK
+          </div>
+        </address>
+
+        <div class="footer-social" aria-label="Sociale links">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Juridiske sider">
+        <a href="privacy.html">Privatlivspolitik</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Vilkår</a>
+        <span aria-hidden="true">·</span>
+        <a href="accessibility.html">Tilgængelighed</a>
+        <span aria-hidden="true">·</span>
+        <a href="disclaimer.html">Disclaimer</a>
+      </nav>
+
+      <p class="footer-copy">
+        &copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+        <span class="footer-copy-muted">Kildekode:
+          <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
+        </span>
+      </p>
+    </div>
+
+  </div>
+</footer>
+
+  <!-- Mobile dropdown click -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".navbar .has-dropdown > .nav-link");
+      links.forEach(link => {
+        link.addEventListener("click", (e) => {
+          if (window.matchMedia("(max-width: 980px)").matches) {
+            e.preventDefault();
+            link.parentElement.classList.toggle("open");
+          }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".navbar .has-dropdown")) {
+          document.querySelectorAll(".navbar .has-dropdown.open")
+            .forEach(x => x.classList.remove("open"));
+        }
+      });
+    });
+  </script>
+</body>
+</html>
