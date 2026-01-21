@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Økonomi, makro & data" 
+  description="Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Erfaring med Python, SAS, GAMS og Excel/VBA."
+  bodyClass="home-page"
+>
+  <!-- Additional CSS for Home -->
+  <link rel="stylesheet" href="/assets/css/hjem.css" slot="head" />
+
+  <!-- The Layout has a <main> wrapper but we might need to override/control classes. 
+       Wait, in my Layout.astro logic I put a <main> wrapper. 
+       Let's refine Layout.astro to NOT have the <main> if we want full control here, 
+       OR we use the bodyClass to style the main.
+       
+       In index.html: <main class="home-wrap">
+       In Layout.astro I wrote: <main class={...}> <slot /> </main>
+       So this content should just be the SECTIONS.
+  -->
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div class="hero-left">
+        <p class="eyebrow">Økonomistuderende (cand.polit.) · København</p>
+        <h1>Makroøkonomi, økonometri og økonomiske modeller – med stærk data- og kodeprofil.</h1>
+        <p class="lead">
+          Jeg bygger analyser og modeller, der kan bruges i praksis: pengepolitik, tidsrækker, modellering og formidling.
+          Erfaring fra undervisning i Excel/VBA og arbejde med Python, SAS og GAMS.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="/cv">Se CV</a>
+          <a class="btn ghost" href="/portfolio">Se portefølje</a>
+          <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">Download PDF</a>
+        </div>
+
+        <div class="pill-wrap">
+          <span class="pill">Python</span>
+          <span class="pill">SAS</span>
+          <span class="pill">GAMS</span>
+          <span class="pill">Excel/VBA</span>
+          <span class="pill">Makro & pengepolitik</span>
+          <span class="pill">Tidsrækker</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <img src="/assets/img/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="hero-img">
+        <div class="hero-links">
+          <a href="mailto:anton.ebsen@proton.me"><i class="fa-solid fa-envelope"></i> Email</a>
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="grid-3">
+      <div class="card">
+        <h2 class="section-title">Hvad jeg arbejder med</h2>
+        <ul class="clean-list">
+          <li>Makroøkonomi & pengepolitik (ECB/centralbanker)</li>
+          <li>Økonometri & tidsrækker (forecasting, SVAR m.m.)</li>
+          <li>Økonomiske modeller (RBC/CGE) og data pipelines</li>
+          <li>Formidling/undervisning: Excel, VBA og “hands-on” cases</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Udvalgte projekter</h2>
+        <ul class="clean-list">
+          <li><strong>Bachelorprojekt:</strong> spillovers fra amerikansk pengepolitik til global økonomi</li>
+          <li><strong>RBC-model:</strong> steady state og model-setup</li>
+          <li><strong>ECB-projekt:</strong> asymmetriske effekter på tværs af lande</li>
+        </ul>
+        <p class="muted" style="margin-top:10px;">
+          <a href="/portfolio">Se mere i porteføljen →</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Hurtig adgang</h2>
+        <div class="quick-links">
+          <a class="btn ghost" href="/cv">CV</a>
+          <a class="btn ghost" href="/portfolio">Portefølje</a>
+          <a class="btn ghost" href="/blog">Blog</a>
+          <a class="btn ghost" href="/contact">Kontakt</a>
+        </div>
+
+        <hr class="divider">
+
+        <p class="muted" style="margin:0;">
+          Åben for samarbejde og faglige samtaler – især om centralbanker, data og modeller.
+        </p>
+      </div>
+    </section>
+
+    <!-- MINI ABOUT -->
+    <section class="card">
+      <h2 class="section-title">Kort om mig</h2>
+      <p class="muted">
+        Jeg interesserer mig særligt for, hvordan pengepolitik og økonomiske chok påvirker økonomien på tværs af lande,
+        og hvordan modeller og data kan bruges i praksis. På siden kan du finde mit CV,
+        projekter og materiale.
+      </p>
+    </section>
+
+</Layout>

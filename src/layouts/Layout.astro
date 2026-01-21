@@ -1,0 +1,58 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+	bodyClass?: string;
+}
+
+const { title, description = "Anton Meier Ebsen Jørgensen", bodyClass = "" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/themes.css" />
+  
+  <!-- Page Specific Styles (will be loaded by individual pages if needed, or we can include common ones here) -->
+  <!-- We might want to migrate page-specific CSS imports to the specific page components later -->
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta name="description" content={description} />
+  
+  <!-- Scripts -->
+  <script src="/assets/js/search.js" defer></script>
+  <script src="/assets/js/themes.js" defer></script>
+  <!-- scripts.js seemed to be used in about.html but not index.html? We can add it if needed -->
+</head>
+<body class={bodyClass}>
+  <Navbar />
+
+  <main class={bodyClass.includes('home-page') ? 'home-wrap' : 'about-wrap'}> 
+    <!-- Note: 'about-wrap' seems to be the default container for inner pages based on about.html structure. 
+         home-page uses 'home-wrap'. We can adjust this logic or just leave the <main> in the page component.
+         Actually, let's keep the main wrapper inside the layout if it's consistent, 
+         BUT index.html has <main class="home-wrap"> and about.html has <main class="about-wrap">.
+         So let's put the SLOT inside the body, and let the Pages define their <main>.
+    -->
+    <slot />
+  </main>
+
+  <Footer />
+</body>
+</html>
