@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Disclaimer" 
+  description="Ansvarsfraskrivelse for indhold og materiale på antonebsen.dk"
+  bodyClass="legal-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/legal.css" slot="head" />
+
+  <main class="legal-wrap">
+
+    <!-- Header -->
+    <section class="card legal-hero">
+      <p class="eyebrow">Ansvarsfraskrivelse</p>
+      <h1>Disclaimer</h1>
+      <p class="lead">
+        Indhold på antonebsen.dk er lavet til information og inspiration. Brug det som et udgangspunkt — ikke som facit.
+      </p>
+      <p class="muted small">
+        Senest opdateret: <strong>14. januar 2026</strong>
+      </p>
+    </section>
+
+    <section class="legal-grid">
+
+      <!-- TOC -->
+      <aside class="card toc" aria-label="Indholdsfortegnelse">
+        <div class="toc-header">
+          <h2 class="toc-title">Indhold</h2>
+        </div>
+
+        <nav class="toc-nav">
+          <a href="#general">1. Generelt</a>
+          <a href="#no-advice">2. Ikke rådgivning</a>
+          <a href="#accuracy">3. Nøjagtighed og opdatering</a>
+          <a href="#downloads">4. Kode, templates og downloads</a>
+          <a href="#external">5. Eksterne links</a>
+          <a href="#liability">6. Ansvarsbegrænsning</a>
+          <a href="#contact">7. Kontakt</a>
+        </nav>
+      </aside>
+
+      <!-- Content -->
+      <article class="card legal-content">
+
+        <h2 id="general">1. Generelt</h2>
+        <p>
+          Denne hjemmeside er en personlig portfolio/CV-side med materiale om økonomi, data, programmering og projekter.
+          Formålet er at præsentere erfaring og eksempler — ikke at levere garanti for resultat i en konkret situation.
+        </p>
+
+        <h2 id="no-advice">2. Ikke rådgivning</h2>
+        <p>
+          Intet på hjemmesiden udgør professionel rådgivning (fx investeringsrådgivning, juridisk rådgivning,
+          skattemæssig rådgivning eller tilsvarende). Hvis du har brug for rådgivning, bør du kontakte en relevant
+          professionel.
+        </p>
+
+        <h2 id="accuracy">3. Nøjagtighed og opdatering</h2>
+        <p>
+          Jeg bestræber mig på at holde indholdet korrekt og opdateret, men jeg kan ikke garantere, at alt er fejlfrit,
+          fuldstændigt eller opdateret på ethvert tidspunkt. Indhold kan ændre sig uden varsel.
+        </p>
+
+        <h2 id="downloads">4. Kode, templates og downloads</h2>
+        <p>
+          Hvis jeg deler kode, Excel-skabeloner, scripts, modeller eller andre ressourcer, stilles de til rådighed
+          “som de er”. Du bruger dem på eget ansvar. Jeg anbefaler altid at:
+        </p>
+        <ul>
+          <li>teste materialet på en kopi af dine data</li>
+          <li>validere antagelser og resultater</li>
+          <li>tilpasse løsningen til din konkrete kontekst</li>
+        </ul>
+        <p class="muted small">
+          (Og ja: “lav lige en model uden antagelser” er stadig ikke en ting.)
+        </p>
+
+        <h2 id="external">5. Eksterne links</h2>
+        <p>
+          Hjemmesiden kan indeholde links til tredjepart (fx GitHub, LinkedIn). Jeg har ingen kontrol over indhold,
+          sikkerhed eller praksis på tredjeparts websites og påtager mig intet ansvar for dem.
+        </p>
+
+        <h2 id="liability">6. Ansvarsbegrænsning</h2>
+        <p>
+          Jeg kan ikke holdes ansvarlig for direkte eller indirekte tab, der måtte opstå ved brug af hjemmesiden,
+          indholdet eller ressourcer/downloads. Brug sker på eget ansvar.
+        </p>
+
+        <h2 id="contact">7. Kontakt</h2>
+        <p>
+          Hvis du opdager fejl, døde links eller har spørgsmål, må du meget gerne skrive:
+          <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>
+        </p>
+
+      </article>
+    </section>
+
+    <section class="card legal-cta">
+      <h2 class="section-title">Relateret</h2>
+      <div class="cta">
+        <a class="btn ghost" href="/privacy">Privatlivspolitik</a>
+        <a class="btn ghost" href="/terms">Vilkår for brug</a>
+        <a class="btn" href="/contact">Kontakt</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

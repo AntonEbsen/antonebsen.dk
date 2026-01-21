@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Samarbejde & Services" 
+  description="Samarbejde og services: studentermedhjælper/RA, dataanalyse, modelarbejde, Excel/VBA undervisning."
+  bodyClass="services-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/services.css" slot="head" />
+
+  <main class="services-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Samarbejde</p>
+        <h1>Samarbejde & services</h1>
+        <p class="lead">
+          Jeg tager især studie-/deltidsopgaver, studentermedhjælper-roller og research assistant-opgaver inden for
+          data, økonomi og modeller — samt undervisning i Excel/VBA.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="/contact">Kontakt mig</a>
+          <a class="btn ghost" href="/cv">Se CV</a>
+          <a class="btn ghost" href="/portfolio">Se portefølje</a>
+        </div>
+
+        <div class="pill-wrap" aria-label="Fokus">
+          <span class="pill">Studentermedhjælper</span>
+          <span class="pill">Research assistant</span>
+          <span class="pill">Data/Analytics</span>
+          <span class="pill">Makro/pengepolitik</span>
+          <span class="pill">Excel/VBA undervisning</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Kort fortalt</h2>
+          <ul class="clean-list">
+            <li><strong>Base:</strong> København (remote/hybrid muligt)</li>
+            <li><strong>Respons:</strong> typisk 24–48 timer på hverdage</li>
+            <li><strong>Tools:</strong> Python, SAS, GAMS, Excel/VBA (+ Stata/MATLAB)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN GRID -->
+    <section class="grid-2" aria-label="Services indhold">
+
+      <!-- SERVICES -->
+      <section class="card" id="services">
+        <h2 class="section-title">Hvad jeg kan hjælpe med</h2>
+
+        <div class="service-list">
+          <article class="service">
+            <h3>1) Dataanalyse & økonometriske opgaver</h3>
+            <p class="muted">
+              Data cleaning, deskriptiv analyse, regression/økonometri, tidsrækker og robusthedstjek.
+            </p>
+            <ul class="clean-list">
+              <li>Reproducerbare workflows</li>
+              <li>Klar dokumentation og versionering</li>
+              <li>Resultater formidlet i figurer/tabeller</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <h3>2) Modelarbejde (makro/struktur)</h3>
+            <p class="muted">
+              Arbejde med økonomiske modeller (fx CGE/RBC), kalibrering, scenarier og kvalitetstjek.
+            </p>
+            <ul class="clean-list">
+              <li>Baseline → shock → sammenligning</li>
+              <li>Konsistenschecks (fx “does it add up?”)</li>
+              <li>Formidling af antagelser og begrænsninger</li>
+            </ul>
+          </article>
+
+          <article class="service">
+            <h3>3) Excel/VBA undervisning & materialer</h3>
+            <p class="muted">
+              Praktiske cases, klare arbejdsgange, og “fra problem til løsning” — inkl. templates og øvelser.
+            </p>
+            <ul class="clean-list">
+              <li>Excel effektivitet + best practice</li>
+              <li>VBA automations</li>
+              <li>Materialer delt efter kurset</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- HOW I WORK -->
+      <section class="card" id="process">
+        <h2 class="section-title">Hvordan jeg arbejder</h2>
+        <ol class="steps">
+          <li><strong>Afklar mål</strong> – Hvad skal bruges til hvad?</li>
+          <li><strong>Data</strong> – adgang, kvalitet, definitioner, datadokumentation</li>
+          <li><strong>Metode</strong> – valg af model/estimand og plan</li>
+          <li><strong>Robusthed</strong> – sanity checks, sensitivitet, alternative specs</li>
+          <li><strong>Formidling</strong> – figurer/tabeller + kort, klar konklusion</li>
+          <li><strong>Leverance</strong> – kode + output + kort “README”</li>
+        </ol>
+
+        <hr class="divider">
+
+        <h3>Kan du dele kode/data fra projekter?</h3>
+        <p class="muted">
+          Nogle projekter er offentlige (GitHub). Andre kan ikke deles pga. kursus-/fortrolighed. Jeg kan ofte dele
+          “sanitized” eksempler eller en forsimplet demo.
+        </p>
+      </section>
+
+      <!-- TOOLING -->
+      <section class="card" id="tools">
+        <h2 class="section-title">Værktøjer & niveau</h2>
+
+        <div class="tool-grid">
+          <div class="tool">
+            <h3>Python</h3>
+            <p class="muted">Daglig brug</p>
+          </div>
+          <div class="tool">
+            <h3>Excel/VBA</h3>
+            <p class="muted">Daglig brug (undervisning + automations)</p>
+          </div>
+          <div class="tool">
+            <h3>SAS</h3>
+            <p class="muted">Godt kendskab (tidsrækker/forecasting)</p>
+          </div>
+          <div class="tool">
+            <h3>GAMS</h3>
+            <p class="muted">Godt kendskab (CGE/modelarbejde)</p>
+          </div>
+          <div class="tool">
+            <h3>Stata / MATLAB</h3>
+            <p class="muted">Grundlæggende</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- NO THANKS -->
+      <section class="card" id="boundaries">
+        <h2 class="section-title">Opgaver jeg typisk siger nej tak til</h2>
+        <ul class="clean-list">
+          <li>Uklare krav (“vi ved ikke hvad vi vil have, men det skal være færdigt i morgen”)</li>
+          <li>Urimelige deadlines uden mulighed for kvalitet/robusthed</li>
+          <li>Opgaver uden dataadgang eller uden mulighed for at verificere kilder</li>
+          <li>“Lav lige en model uden antagelser” (den findes ikke 😄)</li>
+        </ul>
+
+        <hr class="divider">
+
+        <h3>Remote/hybrid?</h3>
+        <p class="muted">Ja — København som base, og hybrid/remote afhænger af opgaven og datasikkerhed.</p>
+      </section>
+
+    </section>
+
+    <!-- CTA -->
+    <section class="card" id="cta">
+      <h2 class="section-title">Lad os tage en snak</h2>
+      <p class="muted">
+        Skriv gerne kort: (1) hvad du vil opnå, (2) hvilken type data/tema, (3) tidshorisont og (4) forventet omfang.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com?subject=Samarbejde%20via%20hjemmesiden">Send mail</a>
+        <a class="btn ghost" href="/contact">Kontaktformular</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

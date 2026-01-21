@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="404 – Siden findes ikke" 
+  description="Siden findes ikke"
+  bodyClass="notfound-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/404.css" slot="head" />
+
+  <main class="notfound-wrap">
+    <section class="card notfound-card" aria-label="404 indhold">
+      <p class="eyebrow">404</p>
+      <h1>Siden findes ikke</h1>
+      <p class="lead">
+        Den side du prøvede at åbne, findes ikke (eller er flyttet).
+      </p>
+
+      <div class="quick">
+        <a class="btn" href="/">Til forsiden</a>
+        <a class="btn ghost" href="/portfolio">Portefølje</a>
+        <a class="btn ghost" href="/blog">Blog</a>
+        <a class="btn ghost" href="/contact">Kontakt</a>
+      </div>
+
+      <div class="help">
+        <p class="muted" style="margin:0;">
+          Tip: tjek URL’en for en stavefejl — eller brug menuen ovenfor.
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>

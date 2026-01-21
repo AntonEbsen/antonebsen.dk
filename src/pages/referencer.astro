@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Anbefalinger" 
+  description="Anbefalinger og udtalelser om mit arbejde inden for økonomi, data og undervisning."
+  bodyClass="testimonials-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/referencer.css" slot="head" />
+
+  <main class="testimonials-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Anbefalinger</p>
+        <h1>Udtalelser om mit arbejde</h1>
+        <p class="lead">
+          Her kan du læse korte udtalelser fra samarbejdspartnere og personer, jeg har arbejdet sammen med.
+          (Hvis du vil tilføje flere, kan vi også lave en “kort version” + link til LinkedIn-anbefalinger.)
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="/contact">Kontakt</a>
+          <a class="btn ghost" href="/cv">Se CV</a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Fokus</h2>
+          <ul class="clean-list">
+            <li>Analytisk styrke & struktur</li>
+            <li>Høj kvalitet og deadline-disciplin</li>
+            <li>Formidling og samarbejde</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIAL GRID -->
+    <section class="grid">
+
+      <article class="card quote">
+        <p class="quote-text">
+          “Anton er en exceptionel professionel, der konsekvent leverer resultater af høj kvalitet.
+          Hans analytiske evner og sans for detaljer er uovertrufne.”
+        </p>
+        <div class="quote-meta">
+          <div class="author">John Doe</div>
+          <div class="position">CEO, ABC Corp</div>
+        </div>
+      </article>
+
+      <article class="card quote">
+        <p class="quote-text">
+          “At arbejde med Anton har været en fantastisk oplevelse. Han bringer kreativitet og dedikation til hvert projekt,
+          hvilket sikrer succes hver gang.”
+        </p>
+        <div class="quote-meta">
+          <div class="author">Jane Smith</div>
+          <div class="position">Marketing Manager, XYZ Ltd.</div>
+        </div>
+      </article>
+
+      <article class="card quote">
+        <p class="quote-text">
+          “Anton har en utrolig evne til at nedbryde komplekse problemer og finde innovative løsninger.
+          Jeg kan varmt anbefale ham til ethvert projekt.”
+        </p>
+        <div class="quote-meta">
+          <div class="author">Emily Brown</div>
+          <div class="position">Product Manager, DEF Inc.</div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- OPTIONAL: CTA CARD -->
+    <section class="card">
+      <h2 class="section-title">Vil du give en anbefaling?</h2>
+      <p class="muted">
+        Hvis vi har arbejdet sammen, er du meget velkommen til at sende en kort udtalelse (2–4 linjer),
+        som jeg kan tilføje her – eller skrive en anbefaling på LinkedIn.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com">Skriv en mail</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">Skriv på LinkedIn</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

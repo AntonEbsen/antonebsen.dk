@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Ressourcer & Downloads" 
+  description="Gratis ressourcer og downloads: Excel-skabeloner, kode, noter og guides."
+  bodyClass="resources-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/resources.css" slot="head" />
+
+  <main class="resources-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Ressourcer</p>
+        <h1>Downloads & templates</h1>
+        <p class="lead">
+          Små, praktiske ressourcer jeg selv bruger: skabeloner, cheat sheets og eksempler.
+          Alt er lavet til at være plug-and-play.
+        </p>
+
+        <div class="pill-wrap">
+          <span class="pill">Excel</span>
+          <span class="pill">VBA</span>
+          <span class="pill">Python</span>
+          <span class="pill">SAS</span>
+          <span class="pill">GAMS</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#downloads">Se downloads</a>
+          <a class="btn ghost" href="/kursusstatistik">
+            <i class="fa-solid fa-chart-column"></i> Se kursusstatistik
+          </a>
+          <a class="btn ghost" href="/contact">Spørg om noget specifikt</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Note</h2>
+          <p class="muted small">
+            Nogle filer kan være “sanitized” (fjernet data/navne) pga. kursus/fortrolighed.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Har du et konkret behov? Skriv — jeg kan ofte lave en skabelon, der passer.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section class="card" id="downloads">
+      <h2 class="section-title">Downloads</h2>
+      <p class="muted">Placér filer i mappen <code>assets/downloads/</code> og link dem her.</p>
+
+      <div class="dl-grid">
+
+        <!-- NEW: Kursusstatistik -->
+        <article class="dl" id="dl-kursusstatistik">
+          <div class="dl-top">
+            <h3 class="dl-title">Kursusstatistik: evalueringer & nøgletal</h3>
+            <span class="tag">Undervisning</span>
+          </div>
+          <p class="dl-meta">Webside · opdateret: (indsæt dato)</p>
+          <p class="muted">
+            Overblik over kursusevalueringer og statistik på tværs af hold. Kort, konkret og let at skimme.
+          </p>
+          <div class="dl-actions">
+            <a class="btn" href="/kursusstatistik">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Se side
+            </a>
+
+            <!-- VALGFRI: hvis du lægger Excel-filen i assets/downloads/ -->
+            <a class="btn ghost" href="/assets/downloads/kursusevalueringer-statistik.xlsx" download>
+              <i class="fa-solid fa-download"></i> Download data
+            </a>
+          </div>
+        </article>
+
+        <!-- Download card 1 -->
+        <article class="dl">
+          <div class="dl-top">
+            <h3 class="dl-title">Excel: Budget & model-skabelon</h3>
+            <span class="tag">Excel</span>
+          </div>
+          <p class="dl-meta">Template · opdateret: (indsæt dato)</p>
+          <p class="muted">En ren skabelon til struktur: inputs, beregninger, output, checks og scenarier.</p>
+          <div class="dl-actions">
+            <a class="btn" href="/assets/downloads/excel-template.xlsx" download>
+              <i class="fa-solid fa-download"></i> Download
+            </a>
+            <a class="btn ghost" href="#" aria-disabled="true">Beskrivelse</a>
+          </div>
+        </article>
+
+        <!-- Download card 2 -->
+        <article class="dl">
+          <div class="dl-top">
+            <h3 class="dl-title">VBA: Snippets (hurtige genveje)</h3>
+            <span class="tag">VBA</span>
+          </div>
+          <p class="dl-meta">ZIP/tekst · opdateret: (indsæt dato)</p>
+          <p class="muted">Korte code blocks: import/cleaning, formatting, loops, performance tips.</p>
+          <div class="dl-actions">
+            <a class="btn" href="/assets/downloads/vba-snippets.zip" download>
+              <i class="fa-solid fa-download"></i> Download
+            </a>
+            <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener">
+              <i class="fa-brands fa-github"></i> GitHub
+            </a>
+          </div>
+        </article>
+
+        <!-- Download card 3 -->
+        <article class="dl">
+          <div class="dl-top">
+            <h3 class="dl-title">Python: Data-cleaning checklist</h3>
+            <span class="tag">Python</span>
+          </div>
+          <p class="dl-meta">PDF · opdateret: (indsæt dato)</p>
+          <p class="muted">En praktisk tjekliste til reproducérbar data prep (missing, outliers, splits, logs).</p>
+          <div class="dl-actions">
+            <a class="btn" href="/assets/downloads/python-checklist.pdf" download>
+              <i class="fa-solid fa-download"></i> Download
+            </a>
+            <a class="btn ghost" href="#" aria-disabled="true">Se eksempel</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du have noget specifikt?</h2>
+      <p class="muted">
+        Hvis du fortæller mig dit format (Excel/Python/SAS) og mål (fx forecasting, dashboards, data-cleaning),
+        kan jeg foreslå en template-struktur, der passer.
+      </p>
+      <div class="cta">
+        <a class="btn" href="/contact">Kontakt</a>
+        <a class="btn ghost" href="/services">Se services</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

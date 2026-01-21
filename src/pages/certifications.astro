@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Certificeringer" 
+  description="Certificeringer i Python, MATLAB, SAS m.m."
+  bodyClass="cert-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/certifications.css" slot="head" />
+
+  <main class="cert-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Certificeringer</p>
+        <h1>Kurser, badges og dokumentation</h1>
+        <p class="lead">
+          Samlet oversigt over mine certificeringer inden for programmering, dataanalyse og formidling.
+          Jeg linker til beviser når muligt.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#cat-python">Python</a>
+          <a class="btn" href="#cat-matlab">MATLAB</a>
+          <a class="btn" href="#cat-sas">SAS</a>
+          <a class="btn" href="#cat-writing">Skriveakademi</a>
+        </div>
+
+        <div class="pill-wrap" aria-label="Temaer">
+          <span class="pill">Data</span>
+          <span class="pill">Coding</span>
+          <span class="pill">Økonomi</span>
+          <span class="pill">Formidling</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Tip</h2>
+          <p class="muted small" style="margin:0;">
+            Når du tilføjer nye certs: hold titler ensartede og skriv 1 linje om “hvad kan jeg nu”.
+            Det er 10/10 mere værd end “jeg har taget et kursus”.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PYTHON -->
+    <section class="cat" id="cat-python" aria-label="Python certificeringer">
+      <div class="cat-head">
+        <h2 class="cat-title">Python</h2>
+        <p class="muted cat-subtitle">Dataanalyse, workflows, og praktisk programmering.</p>
+      </div>
+
+      <div class="grid">
+        <!-- Kopiér denne card-blok pr. cert -->
+        <article class="card cert">
+          <div class="cert-top">
+            <h3 class="cert-title">[Certifikatnavn]</h3>
+            <span class="tag">Python</span>
+          </div>
+          <p class="cert-meta">Udsteder: [fx DataCamp/Coursera] · År: [202X]</p>
+          <p class="muted">1 linje: hvad du lærte / kan bruge det til.</p>
+          <div class="cert-links">
+            <a class="btn" href="#" aria-disabled="true"><i class="fa-solid fa-arrow-up-right-from-square"></i> Bevis</a>
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+          </div>
+        </article>
+
+        <article class="card cert">
+          <div class="cert-top">
+            <h3 class="cert-title">[Certifikatnavn]</h3>
+            <span class="tag">Python</span>
+          </div>
+          <p class="cert-meta">Udsteder: [—] · År: [—]</p>
+          <p class="muted">1 linje: fokus (pandas, ML, viz, etc.).</p>
+          <div class="cert-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Bevis</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- MATLAB -->
+    <section class="cat" id="cat-matlab" aria-label="MATLAB certificeringer">
+      <div class="cat-head">
+        <h2 class="cat-title">MATLAB</h2>
+        <p class="muted cat-subtitle">Numerisk analyse, matrixregning og workflows.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card cert">
+          <div class="cert-top">
+            <h3 class="cert-title">MATLAB Onramp</h3>
+            <span class="tag">MATLAB</span>
+          </div>
+          <p class="cert-meta">MathWorks · (indsæt år)</p>
+          <p class="muted">Grundlæggende MATLAB + typiske workflows.</p>
+          <div class="cert-links">
+            <a class="btn" href="#" aria-disabled="true">Bevis</a>
+          </div>
+        </article>
+
+        <article class="card cert">
+          <div class="cert-top">
+            <h3 class="cert-title">Calculations with Vectors and Matrices</h3>
+            <span class="tag">MATLAB</span>
+          </div>
+          <p class="cert-meta">MathWorks · (indsæt år)</p>
+          <p class="muted">Lineær algebra i praksis.</p>
+          <div class="cert-links">
+            <a class="btn" href="#" aria-disabled="true">Bevis</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SAS -->
+    <section class="cat" id="cat-sas" aria-label="SAS certificeringer">
+      <div class="cat-head">
+        <h2 class="cat-title">SAS</h2>
+        <p class="muted cat-subtitle">Tidsrækker, data management og analyse.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card cert">
+          <div class="cert-top">
+            <h3 class="cert-title">[SAS-certifikatnavn]</h3>
+            <span class="tag">SAS</span>
+          </div>
+          <p class="cert-meta">Udsteder: [SAS/UNI/etc.] · År: [—]</p>
+          <p class="muted">1 linje: hvad certen dækker (PROC, ESM, etc.).</p>
+          <div class="cert-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Bevis</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- WRITING -->
+    <section class="cat" id="cat-writing" aria-label="Skriveakademi">
+      <div class="cat-head">
+        <h2 class="cat-title">Politikens Skriveakademi</h2>
+        <p class="muted cat-subtitle">Skrivning, struktur og formidling.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card cert">
+          <div class="cert-top">
+            <h3 class="cert-title">Skriveakademi for økonomistuderende</h3>
+            <span class="tag">Formidling</span>
+          </div>
+          <p class="cert-meta">Politiken · År: [—]</p>
+          <p class="muted">Praktisk skrivning: klar struktur, argumentation og målgruppe.</p>
+          <div class="cert-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Bevis</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du se CV’et samlet?</h2>
+      <p class="muted">Certificeringer er “bilag”. CV’et er “historien”. Begge dele har sin plads.</p>
+      <div class="cta">
+        <a class="btn" href="/cv">Til CV</a>
+        <a class="btn ghost" href="/contact">Kontakt</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

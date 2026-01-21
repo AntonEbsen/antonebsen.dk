@@ -7,19 +7,10 @@ import Layout from '../layouts/Layout.astro';
   description="Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Erfaring med Python, SAS, GAMS og Excel/VBA."
   bodyClass="home-page"
 >
-  <!-- Additional CSS for Home -->
+  <!-- Page specific CSS -->
   <link rel="stylesheet" href="/assets/css/hjem.css" slot="head" />
 
-  <!-- The Layout has a <main> wrapper but we might need to override/control classes. 
-       Wait, in my Layout.astro logic I put a <main> wrapper. 
-       Let's refine Layout.astro to NOT have the <main> if we want full control here, 
-       OR we use the bodyClass to style the main.
-       
-       In index.html: <main class="home-wrap">
-       In Layout.astro I wrote: <main class={...}> <slot /> </main>
-       So this content should just be the SECTIONS.
-  -->
-
+  <main class="home-wrap">
     <!-- HERO -->
     <section class="card hero">
       <div class="hero-left">
@@ -102,9 +93,9 @@ import Layout from '../layouts/Layout.astro';
       <h2 class="section-title">Kort om mig</h2>
       <p class="muted">
         Jeg interesserer mig særligt for, hvordan pengepolitik og økonomiske chok påvirker økonomien på tværs af lande,
-        og hvordan modeller og data kan bruges i praksis. På siden kan du finde mit CV,
+        og hvordan modeller og data kan bruges til at gøre analysen mere præcis. På siden kan du finde mit CV,
         projekter og materiale.
       </p>
     </section>
-
+  </main>
 </Layout>

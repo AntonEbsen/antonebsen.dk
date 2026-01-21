@@ -1,0 +1,269 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Kompetencer" 
+  description="Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning."
+  bodyClass="skills-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/skills.css" slot="head" />
+
+  <main class="skills-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Kompetencer</p>
+        <h1>Værktøjer, metoder og det jeg leverer</h1>
+        <p class="lead">
+          Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan,
+          <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.
+        </p>
+
+        <div class="pill-wrap" aria-label="Nøglekompetencer">
+          <span class="pill">Excel/VBA</span>
+          <span class="pill">Python</span>
+          <span class="pill">SAS</span>
+          <span class="pill">GAMS</span>
+          <span class="pill">Økonometri</span>
+          <span class="pill">Makro & pengepolitik</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#core"><i class="fa-solid fa-bolt"></i> Kernekompetencer</a>
+          <a class="btn ghost" href="#tools"><i class="fa-solid fa-screwdriver-wrench"></i> Værktøjer</a>
+          <a class="btn ghost" href="#deliverables"><i class="fa-solid fa-box-open"></i> Leverancer</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hurtig oversigt</h2>
+          <ul class="clean-list muted">
+            <li>Strukturerer data → model → output</li>
+            <li>Bygger templates og workflows der kan genbruges</li>
+            <li>Formidler komplekse ting i “menneskesprog”</li>
+          </ul>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: indsæt 2–3 konkrete “beviser” (antal kurser, evalueringer, projekter).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KERNEKOMPETENCER -->
+    <section class="card" id="core">
+      <h2 class="section-title">Programmeringssprog</h2>
+      <p class="muted">Her er de områder, jeg typisk bliver brugt til – med fokus på output.</p>
+
+      <div class="grid-3">
+
+          <article class="skill-card">
+          <div class="skill-top">
+            <h3>Python</h3>
+            <span class="tag">Data</span>
+          </div>
+          <p class="muted">Reproducerbare pipelines: data → analyse → figurer/tabeller.</p>
+          <ul class="skill-list">
+            <li>Pandas/NumPy workflows</li>
+            <li>Plots, rapport-output, notebooks</li>
+            <li>Ryddelig struktur + dokumentation</li>
+          </ul>
+        </article>
+        
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>Excel VBA</h3>
+            <span class="tag">Automatisering</span>
+          </div>
+          <p class="muted">Automatisering og brugerdefinerede funktioner.</p>
+          <ul class="skill-list">
+            <li>Import, format, loops, performance</li>
+          </ul>
+          <div class="skill-actions">
+            <a class="btn ghost" href="/resources"><i class="fa-solid fa-download"></i> Ressourcer</a>
+          </div>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>MATLAB</h3>
+            <span class="tag">Økonometri</span>
+          </div>
+          <p class="muted">SVAR-, DSGE- og Local Projection-modeller.</p>
+          <ul class="skill-list">
+            <li>Identifikation</li>
+            <li>Estimation</li>
+            <li>Impulse Response Functions</li>
+          </ul>
+        </article>
+        
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>SAS</h3>
+            <span class="tag">Tidsrække</span>
+          </div>
+          <p class="muted">Klassisk, robust værktøj til tidsrækker og statistik (og ja, det virker stadig).</p>
+          <ul class="skill-list">
+            <li>PROC ESM / UCM / VARMAX (hvis relevant)</li>
+            <li>Forecasting + model checks</li>
+            <li>Reproducerbart setup</li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>GAMS</h3>
+            <span class="tag">Modeller</span>
+          </div>
+          <p class="muted">Modelopstiling, kalibrering og stød i CGE-modeller.</p>
+          <ul class="skill-list">
+            <li>Kalibrering, lukning</li>
+            <li>Stød + resultattabeller</li>
+            <li>Konsistenschecks</li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-top">
+            <h3>LaTeX</h3>
+            <span class="tag">Typografi</span>
+          </div>
+          <p class="muted"></p>
+          <ul class="skill-list">
+            <li>Opstilling af rapporter og præsentationer</li>
+            <li>Opstilling af tabeller og figurer</li>
+            <li>Matematik</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- VÆRKTØJER / MATRIX -->
+    <section class="card" id="tools">
+      <h2 class="section-title">Værktøjer</h2>
+      <p class="muted">En enkel matrix: hvad jeg bruger værktøjerne til. (Nemt at udvide senere.)</p>
+
+      <div class="tool-grid">
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-table"></i> Excel</h3>
+            <span class="tag">Model/BI</span>
+          </div>
+          <p class="muted small">Dashboards, finansielle modeller, scenarier, checks.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-code"></i> VBA</h3>
+            <span class="tag">Automatisering</span>
+          </div>
+          <p class="muted small">Import, formatting, templates, performance.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-brands fa-python"></i> Python</h3>
+            <span class="tag">Pipeline</span>
+          </div>
+          <p class="muted small">Data-cleaning, analyse, figurer, reproducérbarhed.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-chart-line"></i> SAS</h3>
+            <span class="tag">Tidsrække</span>
+          </div>
+          <p class="muted small">Forecasting, decomposition, klassisk statistik.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-cubes"></i> GAMS</h3>
+            <span class="tag">CGE</span>
+          </div>
+          <p class="muted small">Kalibrering, baseline, stød, resultatsammensætning.</p>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">
+            <h3><i class="fa-solid fa-square-root-variable"></i> MATLAB</h3>
+            <span class="tag">Numerik</span>
+          </div>
+          <p class="muted small">Numeriske øvelser og model-simulation (hvis relevant).</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="muted small" style="margin:0;">
+          Hvis du vil: vi kan senere tilføje “niveau” (basis/intermediate/advanced) – men kun hvis du vil stå på mål for det.
+          Overvurdering = cringe. Underdrivelse = classy.
+        </p>
+      </div>
+    </section>
+
+    <!-- LEVERANCER -->
+    <section class="card" id="deliverables">
+      <h2 class="section-title">Typiske leverancer</h2>
+      <p class="muted">Det her er outputtet, man typisk kan forvente fra mig.</p>
+
+      <div class="grid-2">
+        <div class="deliverable">
+          <h3>Templates & workflows</h3>
+          <ul class="clean-list muted">
+            <li>Excel-templates (inputs/beregning/output/checks)</li>
+            <li>Standardiserede dashboards</li>
+            <li>VBA-snippets til hurtig automation</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <h3>Analyse & rapportering</h3>
+          <ul class="clean-list muted">
+            <li>Reproducerbare analyser (Python/SAS)</li>
+            <li>Tabeller/figurer klar til rapport</li>
+            <li>Fortolkning og “so what?”</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <h3>Undervisning & formidling</h3>
+          <ul class="clean-list muted">
+            <li>Kursusforløb og materiale</li>
+            <li>Øvelser/cases + feedback</li>
+            <li>Praktiske “how-to” guides</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <h3>Modelarbejde</h3>
+          <ul class="clean-list muted">
+            <li>Kalibrering og baseline checks</li>
+            <li>Scenario/shock-resultater</li>
+            <li>Output-tabeller og dokumentation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Har du et konkret behov?</h2>
+      <p class="muted">
+        Skriv format (Excel/Python/SAS) + mål (fx forecasting, dashboards, data-cleaning). Så foreslår jeg en struktur,
+        der passer – og hvad der er realistisk.
+      </p>
+      <div class="cta">
+        <a class="btn" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        <a class="btn ghost" href="/services"><i class="fa-solid fa-handshake"></i> Samarbejde</a>
+        <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          <i class="fa-solid fa-file-arrow-down"></i> CV (PDF)
+        </a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

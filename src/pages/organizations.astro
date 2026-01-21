@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Organisationer" 
+  description="Organisationer og foreninger: roller, ansvar og engagement."
+  bodyClass="organizations-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/organizations.css" slot="head" />
+
+  <main class="organizations-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Organisationer</p>
+        <h1>Foreninger, roller og ansvar</h1>
+        <p class="lead">
+          Her samler jeg organisationer/foreninger jeg er tilknyttet – med fokus på <strong>rolle</strong>,
+          <strong>ansvar</strong> og <strong>resultat</strong>. (LinkedIn-stilen, bare mere læsbar.)
+        </p>
+
+        <div class="pill-wrap" aria-label="Tags">
+          <span class="pill">Ledelse</span>
+          <span class="pill">Frivilligt</span>
+          <span class="pill">Fagligt</span>
+          <span class="pill">Events</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#orgs"><i class="fa-solid fa-users"></i> Se organisationer</a>
+          <a class="btn ghost" href="/cv#volunteer"><i class="fa-solid fa-file-lines"></i> Tilbage til CV</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvorfor en separat side?</h2>
+          <p class="muted small" style="margin:0;">
+            Fordi det er her man viser ansvar og “signal” uden at overfylde CV’et.
+            Og ja — det bliver også lettere for folk at linke direkte til det.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="orgs">
+      <h2 class="section-title">Organisationer</h2>
+      <p class="muted">Tip: hold det kort og konkret. 2–4 bullets per rolle er rigeligt.</p>
+
+      <div class="org-grid">
+
+        <!-- ORG CARD -->
+        <article class="org">
+          <div class="org-top">
+            <h3 class="org-title">Socialøkonomisk Samfund</h3>
+            <span class="tag">Ledelse</span>
+          </div>
+
+          <p class="org-meta">Rolle: <strong>Forperson</strong> · Periode: <strong>2024 – nu</strong> · Lokation: København</p>
+
+          <p class="muted">
+            Indsæt 1–2 linjer om formål + din vinkel (fx arrangementer, koordinering, faglig formidling).
+          </p>
+
+          <ul class="org-list">
+            <li>Planlægning/koordinering af aktiviteter og arrangementer</li>
+            <li>Samarbejde med eksterne oplægsholdere og partnere</li>
+            <li>Struktur, ansvar og eksekvering (aka: få tingene til at ske)</li>
+          </ul>
+
+          <div class="org-actions">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
+            <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Spørg ind</a>
+          </div>
+        </article>
+
+        <!-- TEMPLATE / PLACEHOLDER -->
+        <article class="org">
+          <div class="org-top">
+            <h3 class="org-title">[Organisation / Forening]</h3>
+            <span class="tag">Frivilligt</span>
+          </div>
+
+          <p class="org-meta">Rolle: <strong>[Titel]</strong> · Periode: <strong>[År – År]</strong> · Lokation: [By]</p>
+
+          <p class="muted">
+            1–2 linjer: hvad er organisationen, og hvorfor er din rolle relevant for din profil?
+          </p>
+
+          <ul class="org-list">
+            <li>[Ansvar 1]</li>
+            <li>[Ansvar 2]</li>
+            <li>[Resultat / output, hvis muligt]</li>
+          </ul>
+
+          <div class="org-actions">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file-lines"></i> Note</a>
+          </div>
+        </article>
+
+        <!-- TEMPLATE / PLACEHOLDER -->
+        <article class="org">
+          <div class="org-top">
+            <h3 class="org-title">[Organisation / Netværk]</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+
+          <p class="org-meta">Rolle: <strong>[Medlem / frivillig]</strong> · Periode: <strong>[År – nu]</strong> · Lokation: [—]</p>
+
+          <p class="muted">
+            Kort: hvad følger du/arbejder du med her? (Undgå romaner. Folk scroller.)
+          </p>
+
+          <ul class="org-list">
+            <li>[Aktivitet 1]</li>
+            <li>[Aktivitet 2]</li>
+          </ul>
+
+          <div class="org-actions">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
+            <a class="btn ghost" href="/blog#cat-fagligt"><i class="fa-solid fa-pen"></i> Relateret blog</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du samarbejde?</h2>
+      <p class="muted">
+        Hvis du vil høre mere om mit arbejde i organisationer eller relevant erfaring, så skriv endelig.
+      </p>
+      <div class="cta">
+        <a class="btn" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        <a class="btn ghost" href="/cv"><i class="fa-solid fa-arrow-left"></i> CV</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

@@ -1,0 +1,430 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – CV" 
+  description="CV: Anton Meier Ebsen Jørgensen – økonomistuderende med fokus på makroøkonomi, økonometri og økonomiske modeller."
+  bodyClass="cv-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/cv.css" slot="head" />
+
+  <!-- TOC -->
+    <aside class="toc" id="toc" aria-label="Indholdsfortegnelse">
+      <div class="toc-header">
+        <button
+          id="tocToggle"
+          class="toc-toggle"
+          type="button"
+          aria-expanded="true"
+          aria-controls="tocNav"
+          aria-label="Vis/skjul indholdsfortegnelse"
+          title="Vis/skjul indholdsfortegnelse"
+        >
+          <span class="hamburger" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <nav id="tocNav" class="toc-nav">
+        <a href="#profile">Profil</a>
+        <a href="#experience">Erhvervserfaring</a>
+        <a href="#education">Uddannelse</a>
+        <a href="#projects">Projekter</a>
+        <a href="#skills">Kompetencer</a>
+        <a href="#languages">Sprog</a>
+        <a href="#volunteer">Frivilligt</a>
+        <a href="#certifications">Certificeringer</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+    </aside>
+
+    <!-- CV grid -->
+    <section class="cv-grid" aria-label="CV indhold">
+
+      <!-- Sidebar -->
+      <aside class="cv-side">
+        <div class="card profile-card">
+          <img src="/assets/img/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
+
+          <div class="profile-head">
+            <h1>Anton Meier Ebsen Jørgensen</h1>
+            <p class="subtitle">Økonomistuderende (cand.polit.) · Makroøkonomi · Økonometri · Økonomiske modeller</p>
+          </div>
+
+          <div class="meta">
+            <div class="meta-row">
+              <span class="meta-label">Lokation</span>
+              <span class="meta-value">
+                <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn" target="_blank" rel="noopener">København</a>
+              </span>
+            </div>
+
+            <div class="meta-row">
+              <span class="meta-label">Email</span>
+              <span class="meta-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
+            </div>
+
+            <div class="meta-row">
+              <span class="meta-label">Telefon</span>
+              <span class="meta-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
+            </div>
+
+            <!-- Ikoner i stedet for tekst-rows -->
+            <div class="meta-row">
+              <span class="meta-label">Profiler</span>
+              <span class="meta-value icon-links" aria-label="Profiler">
+                <a class="icon-link" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a class="icon-link" href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i>
+                </a>
+              </span>
+            </div>
+          </div>
+
+          <div class="cta-row">
+            <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+              <i class="fa-solid fa-download" aria-hidden="true"></i> Download CV (PDF)
+            </a>
+          </div>
+        </div>
+
+        <div class="card" id="skills">
+          <h2>Kompetencer</h2>
+          <h3>Faglige kompetencer</h3>
+          <div class="focus-grid" aria-label="Faglige kompetencer">
+          <a class="focus-box" href="/skills#monetary" title="Læs mere om pengepolitik">
+            <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+            <span>Pengepolitisk analyse (ECB/centralbanker)</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#macro" title="Læs mere om makroøkonomi">
+            <i class="fa-solid fa-globe" aria-hidden="true"></i>
+            <span>Makroøkonomisk analyse & transmission</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#timeseries" title="Læs mere om tidsrækker">
+            <i class="fa-solid fa-wave-square" aria-hidden="true"></i>
+            <span>Tidsrækker & forecasting (ARIMA/UCM/VAR/SVAR)</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#econometrics" title="Læs mere om økonometri">
+            <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+            <span>Økonometri (estimation, robusthed, tolkning)</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#cge" title="Læs mere om CGE">
+            <i class="fa-solid fa-network-wired" aria-hidden="true"></i>
+            <span>CGE & generel ligevægt (kalibrering, scenarier)</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#data" title="Læs mere om dataarbejde">
+            <i class="fa-solid fa-filter" aria-hidden="true"></i>
+            <span>Databehandling & reproducérbare workflows</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#communication" title="Læs mere om formidling">
+            <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+            <span>Formidling af analyse (noter, slides, undervisning)</span>
+          </a>
+        
+          <a class="focus-box" href="/skills#viz" title="Læs mere om visualisering">
+            <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+            <span>Datavisualisering & dashboards</span>
+          </a>
+        </div>
+
+          <hr class="divider">
+          <h3>Programmeringssprog</h3>
+          <div class="skills-grid" aria-label="Programmeringssprog">
+            <a class="skill-box" href="/skills#excel" title="Læs mere om Excel">
+              <i class="fa-solid fa-table" aria-hidden="true"></i>
+              <span>Excel</span>
+            </a>
+        
+            <a class="skill-box" href="/skills#vba" title="Læs mere om Excel VBA">
+              <i class="fa-solid fa-code" aria-hidden="true"></i>
+              <span>Excel VBA</span>
+            </a>
+        
+            <a class="skill-box" href="/skills#python" title="Læs mere om Python">
+              <i class="fa-brands fa-python" aria-hidden="true"></i>
+              <span>Python</span>
+            </a>
+        
+            <a class="skill-box" href="/skills#sas" title="Læs mere om SAS">
+              <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+              <span>SAS</span>
+            </a>
+        
+            <a class="skill-box" href="/skills#stata" title="Læs mere om Stata">
+              <i class="fa-solid fa-square-root-variable" aria-hidden="true"></i>
+              <span>Stata</span>
+            </a>
+        
+            <a class="skill-box" href="/skills#matlab" title="Læs mere om MATLAB">
+              <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+              <span>MATLAB</span>
+            </a>
+        
+            <a class="skill-box" href="/skills#gams" title="Læs mere om GAMS">
+              <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+              <span>GAMS</span>
+            </a>
+          </div>
+        
+          <hr class="divider">
+        
+          <h3>Fokusområder</h3>
+          
+          <div class="focus-grid" aria-label="Fokusområder">
+            <div class="focus-box">
+              <i class="fa-solid fa-landmark" aria-hidden="true"></i>
+              <span>Makroøkonomi & pengepolitik</span>
+            </div>
+          
+            <div class="focus-box">
+              <i class="fa-solid fa-chart-simple" aria-hidden="true"></i>
+              <span>Økonometri & tidsrækker</span>
+            </div>
+          
+            <div class="focus-box">
+              <i class="fa-solid fa-database" aria-hidden="true"></i>
+              <span>Databehandling & modellering</span>
+            </div>
+          
+            <div class="focus-box">
+              <i class="fa-solid fa-person-chalkboard" aria-hidden="true"></i>
+              <span>Formidling/undervisning</span>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="lang-grid" aria-label="Sprog">
+            <div class="lang-box">
+              <img src="/assets/img/dansk-flag.png" alt="" class="lang-flag-sm" aria-hidden="true">
+              <div class="lang-text">
+                <div class="lang-name">Dansk</div>
+                <div class="lang-level">Modersmål</div>
+              </div>
+            </div>
+          
+            <div class="lang-box">
+              <img src="/assets/img/britisk-flag.png" alt="" class="lang-flag-sm" aria-hidden="true">
+              <div class="lang-text">
+                <div class="lang-name">Engelsk</div>
+                <div class="lang-level">Flydende i skrift og tale</div>
+              </div>
+            </div>
+          
+            <div class="lang-box">
+              <img src="/assets/img/tysk-flag.png" alt="" class="lang-flag-sm" aria-hidden="true">
+              <div class="lang-text">
+                <div class="lang-name">Tysk</div>
+                <div class="lang-level">Praktisk niveau</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="cv-main">
+
+        <section class="section" id="profile">
+          <h2 class="section-title">Profil</h2>
+          <p>
+            Engageret økonomistuderende på kandidatuddannelsen ved Københavns Universitet med særligt fokus på
+            makroøkonomi, økonometri og økonomiske modeller. Jeg har erfaring med programmering og databehandling
+            gennem kurser i Python, tidsrækkemodeller (SAS) og CGE-modeller, samt undervisning i Excel og VBA.
+          </p>
+          <p>
+            Jeg trives med at arbejde med tal og komplekse datasæt og med at omsætte analyser til resultater, der kan
+            bruges som solidt grundlag for beslutninger.
+          </p>
+        </section>
+
+        <section class="section" id="experience">
+          <h2 class="section-title">Erhvervserfaring</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Studenterunderviser i Excel og VBA · Djøf</h3>
+              <span class="item-meta">København K · 2023 – nu</span>
+            </div>
+            <ul>
+              <li>Undervisning i Excel og VBA</li>
+              <li>Udvikling af kursusmateriale</li>
+              <li>Formidling, samarbejde og præsentation</li>
+            </ul>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Kontorassistent · Handwerkskammer Lübeck</h3>
+              <span class="item-meta">Lübeck, Tyskland · oktober 2019</span>
+            </div>
+            <ul>
+              <li>Udarbejdelse af turistguides</li>
+              <li>Scanning og print</li>
+              <li>Informationsbearbejdning</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="section" id="education">
+          <h2 class="section-title">Uddannelse</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Bachelor & kandidat i økonomi (ba.polit. / cand.polit.) · Københavns Universitet</h3>
+              <span class="item-meta">København K · 2021 – igangværende</span>
+            </div>
+            <p class="muted">
+              Udvalgte valgfag: Introduction to Programming and Numerical Analysis; Advanced Macroeconomics: Structural Vector Autoregressive Analysis;
+              Advanced Macroeconomics: Business Cycles.
+            </p>
+
+            <details class="details">
+              <summary>Udvalgte projekter (klik)</summary>
+              <ul class="clean-list">
+                <li><strong>Bachelorprojekt:</strong> “The Global Financial Cycle Revisited: The Spillover Effects of US Monetary Policy to the Global Economy”</li>
+                <li><strong>Modelprojekt (IPNA):</strong> “Steady State in a simple RBC model”</li>
+                <li><strong>Seminarprojekt:</strong> “One Rule to Rule Them All? … Asymmetric Effects of the ECB’s Monetary Policy”</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Højere Handelseksamen (HHX) · Handelsgymnasiet Lolland-Falster</h3>
+              <span class="item-meta">Nykøbing Falster · 2018 – 2021</span>
+            </div>
+            <p class="muted">
+              Studieretning: Økonomilinjen · Hovedfag (A): International økonomi & virksomhedsøkonomi.
+            </p>
+          </article>
+        </section>
+
+        <section class="section" id="projects">
+          <h2 class="section-title">Projekter</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Bachelorprojekt: Global Financial Cycle & spillovers</h3>
+              <span class="item-meta">Empirisk makro · USA pengepolitik → global økonomi</span>
+            </div>
+            <p class="muted">
+              Undersøger spillover-effekter fra amerikansk pengepolitik til den globale økonomi.
+            </p>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>RBC-model: steady state</h3>
+              <span class="item-meta">Numerisk analyse · modellering</span>
+            </div>
+            <p class="muted">Steady state-løsning og model-setup i en simpel RBC-ramme.</p>
+          </article>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>ECB: asymmetriske effekter på tværs af lande</h3>
+              <span class="item-meta">Pengepolitik · heterogenitet</span>
+            </div>
+            <p class="muted">Analyse af forskelle i ECB’s pengepolitiske effekter mellem lande.</p>
+          </article>
+        </section>
+
+        <section class="section" id="volunteer">
+          <h2 class="section-title">Frivilligt</h2>
+
+          <article class="item">
+            <div class="item-head">
+              <h3>Forperson · Socialøkonomisk Samfund</h3>
+              <span class="item-meta">København K · 2024 – nu</span>
+            </div>
+            <p class="muted">Planlægning/koordinering af aktiviteter og arrangementer.</p>
+          </article>
+        </section>
+
+        <section class="section" id="certifications">
+          <h2 class="section-title">Certificeringer</h2>
+
+          <div class="cert-grid">
+            <div class="cert">
+              <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
+                <img src="/assets/img/matlab-onramp.PNG" alt="MATLAB Onramp certifikat" class="cert-img">
+              </a>
+              <h3>
+                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
+                  MATLAB Onramp
+                </a>
+              </h3>
+              <p class="muted">MATLAB fundamentals og workflows.</p>
+            </div>
+
+            <div class="cert">
+              <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
+                <img src="/assets/img/calculations-with-vectors-and-matrices.PNG" alt="Vectors & Matrices certifikat" class="cert-img">
+              </a>
+              <h3>
+                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
+                  Calculations with Vectors and Matrices
+                </a>
+              </h3>
+              <p class="muted">Lineær algebra i praksis.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="contact">
+          <h2 class="section-title">Kontakt</h2>
+
+          <div class="contact-row">
+            <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+              <span class="sr-only">Email</span>
+              anton.ebsen@gmail.com
+            </a>
+
+            <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+
+            <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+              <span class="sr-only">GitHub</span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  <!-- TOC toggle script -->
+  <script>
+    (function () {
+      const wrap = document.querySelector(".cv-wrap");
+      const btn = document.getElementById("tocToggle");
+      if (!wrap || !btn) return;
+
+      function applyFromStorage() {
+        const collapsed = localStorage.getItem("tocCollapsed") === "1";
+        wrap.classList.toggle("is-toc-collapsed", collapsed);
+        btn.setAttribute("aria-expanded", String(!collapsed));
+      }
+
+      btn.addEventListener("click", function () {
+        const nowCollapsed = wrap.classList.toggle("is-toc-collapsed");
+        btn.setAttribute("aria-expanded", String(!nowCollapsed));
+        localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
+      });
+
+      document.addEventListener("DOMContentLoaded", applyFromStorage);
+    })();
+  </script>
+</Layout>

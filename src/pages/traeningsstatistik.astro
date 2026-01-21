@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Træningsstatistik" 
+  description="Træningsstatistik: nøgletal, volumen, top-sæt og progression. Opdateres løbende."
+  bodyClass="training-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/traeningsstatistik.css" slot="head" />
+
+  <main class="training-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Træning</p>
+        <h1>Træningsstatistik</h1>
+        <p class="lead">
+          Nøgletal for mine sessions (PUSH/PULL/LEGS): volumen, top-sæt og estimeret styrke.
+          Programmet er stabilt, så udvikling og plateaus er lette at spotte.
+        </p>
+
+        <div class="pill-wrap" aria-label="Fokusområder">
+          <span class="pill">Volumen (tonnage)</span>
+          <span class="pill">Top-sæt</span>
+          <span class="pill">Est. 1RM</span>
+          <span class="pill">Plateau-watch</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#sessions"><i class="fa-solid fa-table"></i> Se sessions</a>
+          <a class="btn ghost" href="#method"><i class="fa-solid fa-circle-info"></i> Metode</a>
+          <a class="btn ghost" href="/blog#cat-traening"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Status</h2>
+          <p class="muted small" style="margin:0;">
+            Data: foreløbig 1 uge. Når du tilføjer flere uger, kan vi automatisk vise trends pr. øvelse og pr. muskelgruppe.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: hold øvelsesnavne stabile (samme stavning), så statistikken ikke splitter sig.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI -->
+    <section class="card" aria-label="Nøgletal">
+      <h2 class="section-title">Nøgletal (seneste uge)</h2>
+
+      <!-- Udfyld manuelt nu; senere kan du auto-generere -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <p class="label">Antal sessions</p>
+          <p class="value">6</p>
+          <p class="hint">PUSH/PULL/LEGS x 2</p>
+        </div>
+
+        <div class="kpi">
+          <p class="label">Øvelser logget</p>
+          <p class="value">—</p>
+          <p class="hint">Udfyld når du vil</p>
+        </div>
+
+        <div class="kpi">
+          <p class="label">Total reps</p>
+          <p class="value">—</p>
+          <p class="hint">Reps på tværs af øvelser</p>
+        </div>
+
+        <div class="kpi">
+          <p class="label">Total tonnage</p>
+          <p class="value">—</p>
+          <p class="hint">Σ (kg × reps)</p>
+        </div>
+      </div>
+
+      <p class="muted small" style="margin:0;">
+        *KPI’er bliver først “rigtigt fede” når der er 4+ uger, så man kan se gennemsnit, variation og trend.
+      </p>
+    </section>
+
+    <!-- SPLIT OVERVIEW -->
+    <section class="grid-2" style="margin-top:14px;">
+      <section class="card" aria-label="Split overblik">
+        <h2 class="section-title">Split</h2>
+        <p class="muted" style="margin-top:0;">
+          PUSH / PULL / LEGS. Du kører til failure, så vi kan bruge top-sæt som “performance proxy”.
+        </p>
+        <ul class="muted" style="margin:0; padding-left:18px;">
+          <li><strong>Progression:</strong> reps ↑ ved samme vægt, eller vægt ↑ ved samme reps</li>
+          <li><strong>Plateau:</strong> 2–3 uger uden forbedring på top-sæt</li>
+          <li><strong>Deload:</strong> sænk volumen 30–50% hvis CNS/led føles cooked</li>
+        </ul>
+      </section>
+
+      <section class="card" id="method" aria-label="Metode">
+        <h2 class="section-title">Metode (kort)</h2>
+        <p class="muted" style="margin-top:0;">
+          Jeg tracker de vigtigste ting – ikke alt. Fokus er at kunne sammenligne uge-for-uge.
+        </p>
+        <ul class="muted" style="margin:0; padding-left:18px;">
+          <li><strong>Tonnage:</strong> Σ(kg × reps) pr. øvelse + pr. dag</li>
+          <li><strong>Top-sæt:</strong> bedste sæt pr. øvelse</li>
+          <li><strong>Est. 1RM:</strong> fx Epley: 1RM ≈ kg × (1 + reps/30)</li>
+          <li><strong>Noter:</strong> pauser, kvalme, udstyr, “what happened today??”</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- SESSIONS TABLE -->
+    <section class="card" id="sessions" style="margin-top:14px;">
+      <h2 class="section-title">Sessions (råt overblik)</h2>
+      <p class="muted">Her kan du løbende tilføje nye rækker. Tabellen scroller vandret på mobil.</p>
+
+      <div class="table-wrap" role="region" aria-label="Træningssessions tabel" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Dag</th>
+              <th>Øvelse</th>
+              <th>Sæt</th>
+              <th>Vægt (kg)</th>
+              <th>Reps</th>
+              <th>Tonnage (kg)</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Eksempel-rækker (udskift/udbyg) -->
+            <tr>
+              <td>04-12-2025</td>
+              <td>PUSH 1</td>
+              <td>Incline Press</td>
+              <td>4</td>
+              <td>60</td>
+              <td>10/8/7/6</td>
+              <td>—</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>05-12-2025</td>
+              <td>PULL 1</td>
+              <td>Deadlift</td>
+              <td>3</td>
+              <td>100/100/90</td>
+              <td>5/6/8</td>
+              <td>—</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>06-12-2025</td>
+              <td>LEGS 1</td>
+              <td>Squat</td>
+              <td>4</td>
+              <td>100</td>
+              <td>8/8/7/6</td>
+              <td>—</td>
+              <td>10 min pause (svimmel/kvalme)</td>
+            </tr>
+            <tr>
+              <td>10-12-2025</td>
+              <td>LEGS 2</td>
+              <td>Leg Press</td>
+              <td>4</td>
+              <td>147</td>
+              <td>10/9/9/8</td>
+              <td>—</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cta" style="margin-top:14px;">
+        <a class="btn ghost" href="#method"><i class="fa-solid fa-arrow-up"></i> Top</a>
+        <a class="btn" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+      </div>
+    </section>
+
+    <!-- NEXT STEP -->
+    <section class="card" style="margin-top:14px;">
+      <h2 class="section-title">Næste skridt (når du har 4+ uger)</h2>
+      <p class="muted" style="margin-top:0;">
+        Så kan vi gøre siden meget mere “stats-agtig”:
+      </p>
+      <ul class="muted" style="margin:0; padding-left:18px;">
+        <li>Top-sæt trend pr. øvelse (fx Incline Press: bedste sæt uge for uge)</li>
+        <li>Volumen pr. muskelgruppe (bryst/ryg/ben/skuldre/arme)</li>
+        <li>Plateau-detektion: marker hvis top-sæt ikke forbedres i 2–3 uger</li>
+        <li>Auto-genereret ugeopsummering (med highlights og “watchouts”)</li>
+      </ul>
+    </section>
+
+  </main>
+</Layout>

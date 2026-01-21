@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Kursusstatistik – Anton Meier Ebsen Jørgensen" 
+  description="Kursusstatistik baseret på anonyme kursusevalueringer: tilfredshed, anbefalinger, formidling og svarprocenter."
+  bodyClass="stats-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/kursusstatistik.css" slot="head" />
+
+  <main class="stats-wrap">
+    <!-- HERO -->
+    <section class="card hero">
+      <p class="eyebrow">Undervisning · Evalueringer · Overblik</p>
+      <h1>Kursusstatistik</h1>
+      <p class="lead">
+        Nøgletal baseret på <strong>anonyme kursusevalueringer</strong>. Jeg viser kun aggregerede tal (ingen rå-data eller personoplysninger).
+      </p>
+
+      <div class="notice">
+        <strong>Note:</strong> Tallene nedenfor er fra perioden <strong>18-10-2023 → 17-04-2024</strong> og bygger på <strong>N=33</strong> besvarelser.
+      </div>
+    </section>
+
+    <!-- KPI CARDS -->
+    <section class="kpi-grid" aria-label="Nøgletal">
+      <div class="card kpi">
+        <div class="kpi-top">
+          <h2>Tilfredshed</h2>
+          <span class="kpi-big">8,75<span class="kpi-small">/10</span></span>
+        </div>
+        <progress value="8.75" max="10" aria-label="Tilfredshed 8,75 ud af 10"></progress>
+        <p class="muted">Vægtet efter antal svar.</p>
+      </div>
+
+      <div class="card kpi">
+        <div class="kpi-top">
+          <h2>Anbefaler</h2>
+          <span class="kpi-big">97,3<span class="kpi-small">%</span></span>
+        </div>
+        <progress value="97.3" max="100" aria-label="Anbefaler 97,3 procent"></progress>
+        <p class="muted">Andel “Ja” (vægtet).</p>
+      </div>
+
+      <div class="card kpi">
+        <div class="kpi-top">
+          <h2>Formidling</h2>
+          <span class="kpi-big">4,48<span class="kpi-small">/5</span></span>
+        </div>
+        <progress value="4.48" max="5" aria-label="Formidling 4,48 ud af 5"></progress>
+        <p class="muted">Gennemsnit (vægtet).</p>
+      </div>
+
+      <div class="card kpi">
+        <div class="kpi-top">
+          <h2>Responsrate</h2>
+          <span class="kpi-big">13,0<span class="kpi-small">%</span></span>
+        </div>
+        <progress value="13" max="100" aria-label="Responsrate 13 procent"></progress>
+        <p class="muted">Beregnet på gange med tilmeldte-tal.</p>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <section class="card" aria-label="Kursusgange">
+      <div class="section-head">
+        <h2 class="section-title">Kursusgange (detaljer)</h2>
+        <p class="muted">Dato · kursus · tilmeldte · svar · responsrate · tilfredshed · anbefaler · formidling</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Kursus</th>
+              <th>Tilmeldte</th>
+              <th>Svar</th>
+              <th>Responsrate</th>
+              <th>Tilfredshed</th>
+              <th>Anbefaler</th>
+              <th>Formidling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Dato">18-10-2023</td>
+              <td data-label="Kursus">Excel 3 - Udvidet databehandling</td>
+              <td data-label="Tilmeldte">26</td>
+              <td data-label="Svar">7</td>
+              <td data-label="Responsrate">26,9%</td>
+              <td data-label="Tilfredshed">9,1</td>
+              <td data-label="Anbefaler">100,0%</td>
+              <td data-label="Formidling">4,3</td>
+            </tr>
+
+            <tr>
+              <td data-label="Dato">02-11-2023</td>
+              <td data-label="Kursus">Excel 1 - Få styr på regnearket</td>
+              <td data-label="Tilmeldte">24</td>
+              <td data-label="Svar">2</td>
+              <td data-label="Responsrate">8,3%</td>
+              <td data-label="Tilfredshed">8,0</td>
+              <td data-label="Anbefaler">100,0%</td>
+              <td data-label="Formidling">4,0</td>
+            </tr>
+
+            <tr>
+              <td data-label="Dato">13-02-2024</td>
+              <td data-label="Kursus">Excel 2 - Smarte funktioner</td>
+              <td data-label="Tilmeldte">75</td>
+              <td data-label="Svar">5</td>
+              <td data-label="Responsrate">6,7%</td>
+              <td data-label="Tilfredshed">8,4</td>
+              <td data-label="Anbefaler">100,0%</td>
+              <td data-label="Formidling">4,4</td>
+            </tr>
+
+            <tr>
+              <td data-label="Dato">07-03-2024</td>
+              <td data-label="Kursus">Excel 2 - Smarte funktioner</td>
+              <td data-label="Tilmeldte">55</td>
+              <td data-label="Svar">3</td>
+              <td data-label="Responsrate">5,5%</td>
+              <td data-label="Tilfredshed">9,7</td>
+              <td data-label="Anbefaler">100,0%</td>
+              <td data-label="Formidling">4,7</td>
+            </tr>
+
+            <tr>
+              <td data-label="Dato">02-04-2024</td>
+              <td data-label="Kursus">Excel 2 - Smarte funktioner</td>
+              <td data-label="Tilmeldte">36</td>
+              <td data-label="Svar">4</td>
+              <td data-label="Responsrate">11,1%</td>
+              <td data-label="Tilfredshed">9,5</td>
+              <td data-label="Anbefaler">100,0%</td>
+              <td data-label="Formidling">4,8</td>
+            </tr>
+
+            <tr>
+              <td data-label="Dato">16-04-2024</td>
+              <td data-label="Kursus">Excel 2 - Smart functions</td>
+              <td data-label="Tilmeldte">—</td>
+              <td data-label="Svar">3</td>
+              <td data-label="Responsrate">—</td>
+              <td data-label="Tilfredshed">9,3</td>
+              <td data-label="Anbefaler">100,0%</td>
+              <td data-label="Formidling">4,3</td>
+            </tr>
+
+            <tr>
+              <td data-label="Dato">17-04-2024</td>
+              <td data-label="Kursus">Excel 1 - Få styr på regnearket</td>
+              <td data-label="Tilmeldte">38</td>
+              <td data-label="Svar">9</td>
+              <td data-label="Responsrate">23,7%</td>
+              <td data-label="Tilfredshed">8,0</td>
+              <td data-label="Anbefaler">90,0%</td>
+              <td data-label="Formidling">4,6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details class="details">
+        <summary>Metode & forbehold (klik)</summary>
+        <ul class="clean-list">
+          <li>Nøgletal er beregnet som vægtede gennemsnit med <strong>Antal svar</strong> som vægt.</li>
+          <li>Responsrate = Antal svar / Antal tilmeldte (når tilmeldte er kendt).</li>
+          <li>Lav responsrate kan give støj — derfor viser jeg altid N.</li>
+          <li>Kun aggregerede tal. Ingen persondata, ingen fritekst-svar.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Kontakt</h2>
+      <p class="muted">Vil du høre mere om undervisning, kursusindhold eller tilpasning til jeres behov?</p>
+      <div class="cta">
+        <a class="btn" href="/contact#kontakt">Kontakt mig</a>
+        <a class="btn ghost" href="/services">Samarbejde/Services</a>
+      </div>
+    </section>
+  </main>
+</Layout>

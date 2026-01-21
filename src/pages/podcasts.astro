@@ -1,0 +1,193 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Favoritpodcasts" 
+  description="En kurateret liste over mine favoritpodcasts – makro, data, træning, humor og refleksion."
+  bodyClass="podcasts-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/podcasts.css" slot="head" />
+
+  <main class="podcasts-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Podcasts</p>
+        <h1>Favoritter jeg faktisk hører igen</h1>
+        <p class="lead">
+          En kurateret liste opdelt efter tema. Jeg opdaterer løbende, når jeg finder noget der er værd at gemme.
+        </p>
+
+        <div class="pill-wrap" aria-label="Kategorier">
+          <a class="pill-link" href="#cat-makro"><span class="pill">Makro</span></a>
+          <a class="pill-link" href="#cat-data"><span class="pill">Data/Tech</span></a>
+          <a class="pill-link" href="#cat-traening"><span class="pill">Træning</span></a>
+          <a class="pill-link" href="#cat-humor"><span class="pill">Humor</span></a>
+          <a class="pill-link" href="#cat-refleksion"><span class="pill">Refleksion</span></a>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#cat-makro"><i class="fa-solid fa-headphones"></i> Hop til listen</a>
+          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Foreslå en podcast</a>
+        </div>
+
+        <p class="muted small" style="margin:0;">
+          Note: Links kan være Spotify/Apple/YouTube. (Du kan vælge 1 platform pr. podcast for at holde det clean.)
+        </p>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan jeg vælger</h2>
+          <ul class="clean-list muted" style="margin:0;">
+            <li>Høj signalværdi (ikke bare “snak”)</li>
+            <li>Gode gæster / konkret viden</li>
+            <li>Kan tåle genlyt</li>
+            <li>Passer til pendling + gåture</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- KATEGORI: MAKRO -->
+    <section class="cat" id="cat-makro" aria-label="Makro & pengepolitik">
+      <div class="cat-head">
+        <h2 class="cat-title">Makro & pengepolitik</h2>
+        <p class="muted cat-subtitle">Centralbanker, konjunkturer, policy og “hvad betyder det i praksis?”.</p>
+      </div>
+
+      <div class="grid">
+        <!-- PODCAST CARD -->
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Makro</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse: Hvilke emner dækker den? Hvad er typisk formatet?</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-apple"></i> Apple</a>
+          </div>
+        </article>
+
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Makro</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse: (kort, konkret)</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: DATA -->
+    <section class="cat" id="cat-data" aria-label="Data & tech">
+      <div class="cat-head">
+        <h2 class="cat-title">Data & tech</h2>
+        <p class="muted cat-subtitle">Praktiske workflows, ML, programmering og værktøjer.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Data</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-youtube"></i> YouTube</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: TRÆNING -->
+    <section class="cat" id="cat-traening" aria-label="Træning">
+      <div class="cat-head">
+        <h2 class="cat-title">Træning</h2>
+        <p class="muted cat-subtitle">Progression, hypertrofi, vaner og sund fornuft.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Træning</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: HUMOR -->
+    <section class="cat" id="cat-humor" aria-label="Humor">
+      <div class="cat-head">
+        <h2 class="cat-title">Humor</h2>
+        <p class="muted cat-subtitle">Hvis hjernen skal have pause (men stadig have kvalitet).</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Humor</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- KATEGORI: REFLEKSION -->
+    <section class="cat" id="cat-refleksion" aria-label="Refleksion">
+      <div class="cat-head">
+        <h2 class="cat-title">Refleksion</h2>
+        <p class="muted cat-subtitle">Samtaler, etik, tro, mening og perspektiv.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card pod">
+          <div class="pod-top">
+            <h3 class="pod-title">[Podcastnavn]</h3>
+            <span class="tag">Refleksion</span>
+          </div>
+          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
+          <p class="muted">Beskrivelse…</p>
+          <div class="pod-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Har du en anbefaling?</h2>
+      <p class="muted">
+        Hvis du har en podcast du mener passer til mine temaer, så send den gerne. Bonuspoint hvis du også sender 1 episode,
+        der “sælger” den.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com?subject=Podcast%20anbefaling"><i class="fa-solid fa-paper-plane"></i> Send anbefaling</a>
+        <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

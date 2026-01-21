@@ -1,0 +1,106 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Tilgængelighed" 
+  description="Tilgængelighedserklæring for antonebsen.dk"
+  bodyClass="legal-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/legal.css" slot="head" />
+
+  <main class="legal-wrap">
+
+    <!-- Header -->
+    <section class="card legal-hero">
+      <p class="eyebrow">Tilgængelighed</p>
+      <h1>Accessibility / Tilgængelighedserklæring</h1>
+      <p class="lead">
+        Jeg vil gerne gøre antonebsen.dk så tilgængelig som muligt for alle besøgende. Hvis du oplever problemer,
+        vil jeg meget gerne høre fra dig.
+      </p>
+      <p class="muted small">
+        Senest opdateret: <strong>14. januar 2026</strong>
+      </p>
+    </section>
+
+    <section class="legal-grid">
+
+      <!-- TOC -->
+      <aside class="card toc" aria-label="Indholdsfortegnelse">
+        <div class="toc-header">
+          <h2 class="toc-title">Indhold</h2>
+        </div>
+
+        <nav class="toc-nav">
+          <a href="#status">1. Status</a>
+          <a href="#principper">2. Hvad jeg gør</a>
+          <a href="#kendte">3. Kendte udfordringer</a>
+          <a href="#hjaelp">4. Brug for hjælp?</a>
+          <a href="#feedback">5. Feedback og kontakt</a>
+        </nav>
+      </aside>
+
+      <!-- Content -->
+      <article class="card legal-content">
+
+        <h2 id="status">1. Status</h2>
+        <p>
+          Denne hjemmeside er en personlig portfolio/CV-side. Målet er, at indholdet skal være læsbart, navigerbart
+          og brugbart på både desktop og mobil. Siden er ikke nødvendigvis formelt WCAG-certificeret, men jeg arbejder
+          løbende på at forbedre tilgængeligheden.
+        </p>
+
+        <h2 id="principper">2. Hvad jeg gør</h2>
+        <ul>
+          <li><strong>Responsivt layout</strong> så siden virker på mobil, tablet og desktop.</li>
+          <li><strong>Kontrast og typografi</strong> for at gøre tekst nem at læse.</li>
+          <li><strong>Semantisk HTML</strong> (overskrifter, sektioner, nav/aria-labels) for bedre struktur.</li>
+          <li><strong>Keyboard-friendly navigation</strong> hvor det er muligt (links, knapper, fokus).</li>
+          <li><strong>Alt-tekster</strong> på billeder hvor det giver mening.</li>
+        </ul>
+
+        <h2 id="kendte">3. Kendte udfordringer</h2>
+        <p class="muted">
+          Jeg forbedrer siden løbende. Nogle typiske ting, der kan opstå på en personlig hjemmeside:
+        </p>
+        <ul>
+          <li>Nogle PDF’er eller billeder kan mangle fuld tilgængelighedsstruktur.</li>
+          <li>Dropdown-menuer kan opføre sig forskelligt på touch-enheder afhængigt af browser.</li>
+          <li>Eksterne sider (GitHub/LinkedIn) følger deres egne tilgængelighedsstandarder.</li>
+        </ul>
+
+        <h2 id="hjaelp">4. Brug for hjælp?</h2>
+        <p>
+          Hvis du har svært ved at læse eller navigere på siden, kan jeg hjælpe med en alternativ version af indhold
+          (fx ren tekst, email eller PDF), hvis du skriver til mig.
+        </p>
+
+        <h2 id="feedback">5. Feedback og kontakt</h2>
+        <p>
+          Oplever du et problem, eller har du et forslag? Send gerne:
+        </p>
+        <ul>
+          <li>Hvilken side du var på (link)</li>
+          <li>Hvad du forsøgte at gøre</li>
+          <li>Din enhed og browser (fx iPhone/Safari, Android/Chrome, Windows/Chrome)</li>
+        </ul>
+        <p>
+          Kontakt: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>
+        </p>
+
+      </article>
+    </section>
+
+    <section class="card legal-cta">
+      <h2 class="section-title">Relateret</h2>
+      <div class="cta">
+        <a class="btn ghost" href="/privacy">Privatlivspolitik</a>
+        <a class="btn ghost" href="/terms">Vilkår for brug</a>
+        <a class="btn" href="/contact">Kontakt</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

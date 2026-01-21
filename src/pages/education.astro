@@ -1,0 +1,204 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Uddannelse" 
+  description="Uddannelsesprofil: cand.polit./ba.polit., relevante kurser, projekter og fokusområder."
+  bodyClass="edu-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/education.css" slot="head" />
+
+  <main class="edu-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Uddannelse</p>
+        <h1>Kurser, projekter og faglig profil</h1>
+        <p class="lead">
+          Her samler jeg det, der ellers bliver for langt til CV’et: udvalgte kurser, projektarbejde
+          og hvad jeg konkret har lært (metoder, værktøjer, modeller).
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#ku">Københavns Universitet</a>
+          <a class="btn ghost" href="#hhx">HHX</a>
+          <a class="btn ghost" href="#courses">Kursusoversigt</a>
+          <a class="btn ghost" href="#projects">Projektarbejde</a>
+        </div>
+
+        <div class="pill-wrap">
+          <span class="pill">Makro</span>
+          <span class="pill">Økonometri</span>
+          <span class="pill">Modeller</span>
+          <span class="pill">Tidsrækker</span>
+          <span class="pill">Python/SAS/GAMS</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Kort version?</h2>
+          <p class="muted small" style="margin:0;">
+            CV-siden har den “HR-venlige” oversigt. Denne side er til dem, der faktisk læser.
+          </p>
+          <div class="cta" style="margin-top:12px;">
+            <a class="btn ghost" href="/cv#education">Til CV-oversigt</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KU -->
+    <section class="card" id="ku">
+      <h2 class="section-title">Københavns Universitet (ba.polit./cand.polit.)</h2>
+
+      <div class="two-col">
+        <div class="mini-card">
+          <h3 class="mini-title">Program & fokus</h3>
+          <p class="muted">
+            Økonomi med fokus på makroøkonomi, pengepolitik, tidsrækker og modellering.
+            Stor vægt på praktisk dataarbejde og programmering.
+          </p>
+          <ul class="clean-list">
+            <li>Makro & pengepolitik (ECB/centralbanker)</li>
+            <li>Økonometri & tidsrækker (forecasting, SVAR, etc.)</li>
+            <li>Økonomiske modeller (RBC/CGE)</li>
+            <li>Værktøjer: Python, SAS, GAMS, Excel/VBA</li>
+          </ul>
+        </div>
+
+        <div class="mini-card">
+          <h3 class="mini-title">Nøgleværktøjer</h3>
+          <div class="pill-wrap">
+            <span class="pill">Python</span>
+            <span class="pill">SAS</span>
+            <span class="pill">GAMS</span>
+            <span class="pill">Excel/VBA</span>
+            <span class="pill">Stata</span>
+            <span class="pill">MATLAB</span>
+          </div>
+          <p class="muted small" style="margin-top:10px;">
+            (Du kan senere tilføje links til notebooks, repo’er eller “resources”.)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSE OVERVIEW -->
+    <section class="card" id="courses">
+      <h2 class="section-title">Kursusoversigt (udvalg)</h2>
+      <p class="muted">
+        Tip: hold denne liste “kurateret” (10–15 kurser). Resten kan ligge i PDF CV.
+      </p>
+
+      <div class="grid">
+        <article class="course">
+          <div class="course-top">
+            <h3 class="course-title">Advanced Macroeconomics: SVAR</h3>
+            <span class="tag">Makro</span>
+          </div>
+          <p class="course-meta">KU · (indsæt semester/år)</p>
+          <p class="muted">Metoder: identifikation, impulssvar, robusthed. Værktøj: (SAS/Stata/Python).</p>
+          <div class="course-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+            <a class="btn ghost" href="#" aria-disabled="true">Projekt</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-top">
+            <h3 class="course-title">Introduction to Programming & Numerical Analysis</h3>
+            <span class="tag">Coding</span>
+          </div>
+          <p class="course-meta">KU · (indsæt semester/år)</p>
+          <p class="muted">Numerik, model-simulering og basale workflows. Værktøj: Python/MATLAB.</p>
+          <div class="course-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-top">
+            <h3 class="course-title">CGE / Applied Economic Modelling</h3>
+            <span class="tag">Modeller</span>
+          </div>
+          <p class="course-meta">KU · (indsæt semester/år)</p>
+          <p class="muted">Kalibrering, SAM, stød, baseline checks. Værktøj: GAMS.</p>
+          <div class="course-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Case</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECT WORK -->
+    <section class="card" id="projects">
+      <h2 class="section-title">Projektarbejde (udvalg)</h2>
+
+      <div class="grid">
+        <article class="proj">
+          <div class="proj-top">
+            <h3 class="proj-title">Bachelorprojekt: Global Financial Cycle & spillovers</h3>
+            <span class="tag">Empiri</span>
+          </div>
+          <p class="proj-meta">Tema: USA pengepolitik → global økonomi</p>
+          <p class="muted">1–2 linjer: metode, data, og hvad du bidrog med.</p>
+          <div class="proj-links">
+            <a class="btn ghost" href="#" aria-disabled="true">PDF</a>
+            <a class="btn ghost" href="#" aria-disabled="true">Kode</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top">
+            <h3 class="proj-title">RBC-model: steady state</h3>
+            <span class="tag">Model</span>
+          </div>
+          <p class="proj-meta">Tema: numerik & modelsetup</p>
+          <p class="muted">1–2 linjer: hvad modellen gjorde, og hvad du lærte.</p>
+          <div class="proj-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Noter</a>
+          </div>
+        </article>
+
+        <article class="proj">
+          <div class="proj-top">
+            <h3 class="proj-title">ECB-projekt: heterogene effekter på tværs af lande</h3>
+            <span class="tag">Pengepolitik</span>
+          </div>
+          <p class="proj-meta">Tema: Taylor rules / syntetiske renter</p>
+          <p class="muted">1–2 linjer: metode og output (plots/tables).</p>
+          <div class="proj-links">
+            <a class="btn ghost" href="#" aria-disabled="true">Slides</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HHX -->
+    <section class="card" id="hhx">
+      <h2 class="section-title">HHX (Handelsgymnasiet Lolland-Falster)</h2>
+      <p class="muted">
+        Studieretning: Økonomi. Fokus på international økonomi og virksomhedsøkonomi.
+      </p>
+      <ul class="clean-list">
+        <li>Projekter og skriftlig formidling</li>
+        <li>Grundlæggende kvantitativ metode</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du se certificeringer også?</h2>
+      <p class="muted">Certificeringer er “beviser”. Uddannelse er “forløb”. Begge styrker troværdigheden.</p>
+      <div class="cta">
+        <a class="btn" href="/certifications">Til certificeringer</a>
+        <a class="btn ghost" href="/contact">Kontakt</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

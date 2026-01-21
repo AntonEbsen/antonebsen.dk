@@ -1,0 +1,172 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Favoritbøger – Anton Meier Ebsen Jørgensen" 
+  description="En kurateret liste med mine favoritbøger – klassikere, faglige bøger og bøger jeg vender tilbage til."
+  bodyClass="books-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/books.css" slot="head" />
+
+  <main class="books-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Om mig · Læseliste</p>
+        <h1>Mine favoritbøger</h1>
+        <p class="lead">
+          En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på,
+          eller fordi jeg vender tilbage til dem igen og igen.
+        </p>
+
+        <div class="pill-wrap" aria-label="Kategorier">
+          <span class="pill">Klassikere</span>
+          <span class="pill">Fagligt</span>
+          <span class="pill">Biografier</span>
+          <span class="pill">Tro & etik</span>
+          <span class="pill">Sprog & skrivning</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#list"><i class="fa-solid fa-book"></i> Se listen</a>
+          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Anbefal en bog</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan jeg bruger listen</h2>
+          <p class="muted small" style="margin:0;">
+            Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.
+            Hvis du vil have en anbefaling, så skriv genre + hvad du vil have ud af bogen.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: Tilføj gerne <strong>årstal</strong> og <strong>min korte note</strong> — det gør listen mere personlig.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="list">
+      <h2 class="section-title">Favoritter</h2>
+      <p class="muted" style="margin-top:-6px;">
+        (Skabelon klar — udskift titlerne med dine egne. Du kan også sortere efter kategori.)
+      </p>
+
+      <div class="grid">
+
+        <!-- BOOK CARD -->
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Klassiker</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Genre</p>
+          <p class="book-note">
+            Min note: Hvad gav den mig? Én sætning. (fx “skarpt blik for menneskelig absurditet og moral”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-quote-left"></i> Citat</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-pen"></i> Mini-note</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Fagligt</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Økonomi/Data</p>
+          <p class="book-note">
+            Min note: Hvad lærte jeg? (fx “god til intuition + konkrete eksempler, uden at blive fluff”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Link</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-notes-medical"></i> Takeaways</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Tro & etik</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Refleksion</p>
+          <p class="book-note">
+            Min note: Hvorfor betyder den noget? (fx “en bog jeg vender tilbage til i perioder”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-bookmark"></i> Favoritkapitel</a>
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-comment"></i> Noter</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Biografi</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Person/Emne</p>
+          <p class="book-note">
+            Min note: Hvad inspirerede den? (fx “arbejdsmoral, retning, eller bare et godt livsportræt”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-star"></i> Highlights</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Skrivning</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Stil/Kommunikation</p>
+          <p class="book-note">
+            Min note: Hvilken teknik tog jeg med? (fx “klarhed, struktur, og “cut the fluff””.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-scissors"></i> Regler jeg bruger</a>
+          </div>
+        </article>
+
+        <article class="book">
+          <div class="book-top">
+            <h3 class="book-title">Titel på bog</h3>
+            <span class="tag">Klassiker</span>
+          </div>
+          <p class="book-meta">Forfatter · (årstal) · Roman</p>
+          <p class="book-note">
+            Min note: Hvad gør den stærk? (fx “dialog, tempo, humor, og det der ligger mellem linjerne”.)
+          </p>
+          <div class="book-links">
+            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-masks-theater"></i> Temaer</a>
+          </div>
+        </article>
+
+      </div>
+
+      <hr class="divider">
+
+      <p class="muted small" style="margin:0;">
+        Vil du have det mere “database-agtigt”? Så kan vi lave: søgning, filter på tags, og sortering efter år/genre.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Anbefal mig en bog</h2>
+      <p class="muted">
+        Send gerne: (1) genre, (2) hvad bogen skal kunne, og (3) om du vil have klassiker vs. moderne.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a>
+        <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

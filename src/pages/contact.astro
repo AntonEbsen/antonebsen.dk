@@ -1,0 +1,133 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Kontakt" 
+  description="Kontakt Anton Meier Ebsen Jørgensen – samarbejde, jobmuligheder, undervisning og spørgsmål."
+  bodyClass="contact-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/contact.css" slot="head" />
+
+  <main class="contact-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Kontakt</p>
+        <h1>Kontakt mig</h1>
+        <p class="lead">
+          Har du en mulighed, et samarbejde eller et spørgsmål? Skriv gerne — jeg svarer typisk inden for 24–48 timer på hverdage.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="mailto:anton.ebsen@gmail.com">Send mail</a>
+          <a class="btn ghost" href="/cv">Se CV</a>
+          <a class="btn ghost" href="/portfolio">Se portefølje</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hurtigt overblik</h2>
+          <ul class="clean-list">
+            <li><strong>Lokation:</strong> København</li>
+            <li><strong>Email:</strong> <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></li>
+            <li><strong>Telefon:</strong> <a href="tel:+4525740131">+45 25 74 01 31</a></li>
+            <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">/in/antonebsen</a></li>
+            <li><strong>GitHub:</strong> <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">AntonEbsen</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRID -->
+    <section class="contact-grid" aria-label="Kontaktindhold">
+
+      <!-- Left: details -->
+      <section class="card">
+        <h2 class="section-title">Kontaktoplysninger</h2>
+
+        <div class="info-list">
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Telefon</span>
+            <span class="info-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">LinkedIn</span>
+            <span class="info-value">
+              <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">linkedin.com/in/antonebsen</a>
+            </span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">GitHub</span>
+            <span class="info-value">
+              <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">github.com/AntonEbsen</a>
+            </span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <h3 class="subhead">Hvad jeg typisk kan hjælpe med</h3>
+        <ul class="clean-list">
+          <li>Studentermedhjælper / research assistant</li>
+          <li>Dataanalyse og modelarbejde (økonomi/økonometri)</li>
+          <li>Excel/VBA undervisning og materialer</li>
+          <li>Præsentationer, formidling og struktur</li>
+        </ul>
+      </section>
+
+      <!-- Right: form -->
+      <section class="card">
+        <h2 class="section-title">Send en besked</h2>
+        <p class="muted" style="margin-top:-6px;">
+          Udfyld formularen — eller send en mail direkte, hvis du foretrækker det.
+        </p>
+
+        <!-- OBS: Statisk HTML kan ikke sende mails uden backend.
+             Hvis du ikke har en server, kan vi senere skifte til Formspree/Netlify Forms. -->
+        <form class="form" action="#" method="post">
+          <div class="field">
+            <label for="name">Navn</label>
+            <input type="text" id="name" name="name" placeholder="Dit navn" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="din@email.dk" required>
+          </div>
+
+          <div class="field">
+            <label for="subject">Emne</label>
+            <input type="text" id="subject" name="subject" placeholder="Hvad handler henvendelsen om?">
+          </div>
+
+          <div class="field">
+            <label for="message">Besked</label>
+            <textarea id="message" name="message" rows="6" placeholder="Skriv din besked..." required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn" type="submit">Send besked</button>
+            <a class="btn ghost" href="mailto:anton.ebsen@gmail.com?subject=Kontakt%20via%20hjemmesiden">Send via mail</a>
+          </div>
+
+          <p class="muted small">
+            Tip: Hvis du foreslår et samarbejde/job, så skriv gerne tidshorisont, forventet omfang og evt. data/tema.
+          </p>
+        </form>
+      </section>
+
+    </section>
+
+  </main>
+</Layout>

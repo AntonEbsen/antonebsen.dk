@@ -1,0 +1,167 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Omtale" 
+  description="Omtale, artikler og medieoptrædener: udvalgte links og highlights."
+  bodyClass="media-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/media.css" slot="head" />
+
+  <main class="media-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Omtale</p>
+        <h1>Artikler & omtaler</h1>
+        <p class="lead">
+          Udvalgte steder, hvor jeg er blevet omtalt – samt links og korte highlights.
+          (Tip: Link er altid safe; fulde screenshots/uddrag kræver ofte rettigheder.)
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#mentions"><i class="fa-solid fa-newspaper"></i> Se omtaler</a>
+          <a class="btn ghost" href="#press"><i class="fa-solid fa-kit-medical"></i> Pressekit</a>
+          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        </div>
+
+        <div class="pill-wrap" aria-label="Typer">
+          <span class="pill">Artikel</span>
+          <span class="pill">Interview</span>
+          <span class="pill">Feature</span>
+          <span class="pill">Podcast</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Kort format</h2>
+          <p class="muted small" style="margin:0;">
+            Hold det simpelt: titel, medie, dato, 1 linje om hvorfor det er relevant + link.
+            Det gør siden “clean” og seriøs.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENTIONS -->
+    <section class="card" id="mentions">
+      <h2 class="section-title">Udvalgte omtaler</h2>
+      <p class="muted">
+        Erstat placeholders med dine rigtige links. Du kan også sortere dem (nyeste først).
+      </p>
+
+      <div class="mentions-grid">
+
+        <!-- Item 1 -->
+        <article class="mention">
+          <div class="mention-top">
+            <h3 class="mention-title">[Titel på artikel/interview]</h3>
+            <span class="tag">Artikel</span>
+          </div>
+          <p class="mention-meta">[Medie] · [Dato] · [Emne/kategori]</p>
+          <p class="muted">
+            1–2 linjer: hvad handler den om, og hvorfor er det relevant for din profil.
+          </p>
+          <div class="mention-actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Åbn link
+            </a>
+            <a class="btn ghost" href="#" aria-disabled="true">Kort note</a>
+          </div>
+        </article>
+
+        <!-- Item 2 -->
+        <article class="mention">
+          <div class="mention-top">
+            <h3 class="mention-title">[Titel på omtale]</h3>
+            <span class="tag">Interview</span>
+          </div>
+          <p class="mention-meta">[Medie] · [Dato] · [Tema]</p>
+          <p class="muted">
+            1–2 linjer om vinklen. Fx: data/økonomi/undervisning/AI.
+          </p>
+          <div class="mention-actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Åbn link
+            </a>
+          </div>
+        </article>
+
+        <!-- Item 3 -->
+        <article class="mention">
+          <div class="mention-top">
+            <h3 class="mention-title">[Titel på feature/podcast]</h3>
+            <span class="tag">Podcast</span>
+          </div>
+          <p class="mention-meta">[Medie] · [Dato] · [Tema]</p>
+          <p class="muted">
+            1–2 linjer: hvad du bidrog med (fx forklaring af et emne, metode, erfaring).
+          </p>
+          <div class="mention-actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Åbn link
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PRESS KIT -->
+    <section class="card" id="press">
+      <h2 class="section-title">Pressekit</h2>
+      <p class="muted">
+        Praktisk hvis nogen vil omtale dig igen: kort bio, foto, CV og kontakt. Det gør det nemt at “reuse” dig korrekt.
+      </p>
+
+      <div class="press-grid">
+        <div class="press-box">
+          <h3 class="press-title">Kort bio (kopiér)</h3>
+          <p class="muted">
+            Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller.
+            Erfaring med Python, SAS, GAMS og Excel/VBA samt undervisning i Excel/VBA.
+          </p>
+          <p class="muted small">Tip: hold den på ~2 linjer. Mere = LinkedIn.</p>
+        </div>
+
+        <div class="press-box">
+          <h3 class="press-title">Downloads</h3>
+          <div class="press-actions">
+            <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+              <i class="fa-solid fa-file-pdf"></i> CV (PDF)
+            </a>
+            <a class="btn ghost" href="/assets/billeder/billede-af-mig.jpg" target="_blank" rel="noopener">
+              <i class="fa-solid fa-image"></i> Profilfoto
+            </a>
+          </div>
+          <p class="muted small">Læg evt. en dedikeret pressefoto-fil i <code>assets/</code>.</p>
+        </div>
+      </div>
+
+      <div class="note-strip">
+        <i class="fa-solid fa-circle-info"></i>
+        <p class="muted small">
+          Rettigheder: Link til artikler er normalt helt ok. Hvis du vil bruge logoer, screenshots eller længere citater,
+          så tjek med mediet (eller hold dig til korte citater + link).
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Har du en idé til en artikel eller et interview?</h2>
+      <p class="muted">
+        Skriv gerne — jeg er især interesseret i emner som pengepolitik, tidsrækker, modeller og praktisk dataarbejde.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope"></i> Send mail</a>
+        <a class="btn ghost" href="/contact"><i class="fa-solid fa-comment"></i> Kontakt-side</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

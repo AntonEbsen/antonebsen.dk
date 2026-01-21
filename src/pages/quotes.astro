@@ -1,0 +1,218 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Favoritcitater – Anton Meier Ebsen Jørgensen" 
+  description="En kurateret liste med mine favoritcitater – humor, tro, disciplin, læring og liv."
+  bodyClass="quotes-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/quotes.css" slot="head" />
+
+  <main class="quotes-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Om mig · Noter</p>
+        <h1>Mine favoritcitater</h1>
+        <p class="lead">
+          Små linjer, stor effekt. Citater jeg bruger som mentale genveje til disciplin, læring, tro, humor og perspektiv.
+        </p>
+
+        <div class="pill-wrap" aria-label="Temaer">
+          <span class="pill">Disciplin</span>
+          <span class="pill">Læring</span>
+          <span class="pill">Tro</span>
+          <span class="pill">Humor</span>
+          <span class="pill">Perspektiv</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#list"><i class="fa-solid fa-quote-left"></i> Se listen</a>
+          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Send mig et citat</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Note</h2>
+          <p class="muted small" style="margin:0;">
+            Jeg holder dem korte og brugbare. Hvis et citat kræver en hel Wikipedia-side for at give mening, ryger det typisk ud.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: Skriv altid <strong>kilde</strong> og evt. <strong>kontekst</strong> — fremtidige dig siger tak.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="list">
+      <h2 class="section-title">Citater</h2>
+
+      <!-- Toolbar -->
+      <div class="toolbar" aria-label="Filtre">
+        <div class="search">
+          <input id="qSearch" type="search" placeholder="Søg (tekst, forfatter, tema)..." aria-label="Søg i citater">
+          <select id="qTag" aria-label="Filtrer efter tema">
+            <option value="all">Alle temaer</option>
+            <option value="Disciplin">Disciplin</option>
+            <option value="Læring">Læring</option>
+            <option value="Tro">Tro</option>
+            <option value="Humor">Humor</option>
+            <option value="Perspektiv">Perspektiv</option>
+          </select>
+        </div>
+
+        <button class="btn ghost" type="button" onclick="resetQuotes()">
+          <i class="fa-solid fa-rotate-left"></i> Nulstil
+        </button>
+      </div>
+
+      <div class="grid" id="quotesGrid">
+
+        <!-- QUOTE CARD (placeholder) -->
+        <article class="quote" data-tag="Disciplin">
+          <blockquote>
+            Indsæt dit citat her.
+          </blockquote>
+          <div class="quote-foot">
+            <span class="who">— Forfatter / kilde</span>
+            <span class="tag">Disciplin</span>
+          </div>
+          <div class="quote-actions">
+            <button class="btn ghost" type="button" onclick="copyQuote(this)">
+              <i class="fa-solid fa-copy"></i> Kopiér
+            </button>
+            <button class="btn ghost" type="button" onclick="toggleNote(this)">
+              <i class="fa-solid fa-note-sticky"></i> Note
+            </button>
+          </div>
+          <p class="muted small" data-note style="display:none; margin:0;">
+            Kort note/kontekst (valgfri). Fx hvor du stødte på citatet, eller hvad du bruger det til.
+          </p>
+        </article>
+
+        <article class="quote" data-tag="Læring">
+          <blockquote>
+            Indsæt dit citat her.
+          </blockquote>
+          <div class="quote-foot">
+            <span class="who">— Forfatter / kilde</span>
+            <span class="tag">Læring</span>
+          </div>
+          <div class="quote-actions">
+            <button class="btn ghost" type="button" onclick="copyQuote(this)">
+              <i class="fa-solid fa-copy"></i> Kopiér
+            </button>
+            <button class="btn ghost" type="button" onclick="toggleNote(this)">
+              <i class="fa-solid fa-note-sticky"></i> Note
+            </button>
+          </div>
+          <p class="muted small" data-note style="display:none; margin:0;">
+            Valgfri note.
+          </p>
+        </article>
+
+        <article class="quote" data-tag="Humor">
+          <blockquote>
+            Indsæt dit citat her.
+          </blockquote>
+          <div class="quote-foot">
+            <span class="who">— Forfatter / kilde</span>
+            <span class="tag">Humor</span>
+          </div>
+          <div class="quote-actions">
+            <button class="btn ghost" type="button" onclick="copyQuote(this)">
+              <i class="fa-solid fa-copy"></i> Kopiér
+            </button>
+            <button class="btn ghost" type="button" onclick="toggleNote(this)">
+              <i class="fa-solid fa-note-sticky"></i> Note
+            </button>
+          </div>
+          <p class="muted small" data-note style="display:none; margin:0;">
+            Valgfri note.
+          </p>
+        </article>
+
+      </div>
+
+      <hr class="divider">
+      <p class="muted small" style="margin:0;">
+        Hvis du senere vil have det mere “database-agtigt”: vi kan gøre citaterne til JSON og autogenerere cards + tags.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Send et citat</h2>
+      <p class="muted">
+        Hvis du sender mig et citat, så skriv gerne: (1) forfatter/kilde, (2) tema, (3) hvorfor det rammer.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a>
+        <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script is:inline>
+    // Quotes filtering logic
+    document.addEventListener("DOMContentLoaded", () => {
+      const qSearch = document.getElementById("qSearch");
+      const qTag = document.getElementById("qTag");
+      
+      function getCards() {
+        return Array.from(document.querySelectorAll(".quote"));
+      }
+
+      function applyFilters(){
+        if (!qSearch || !qTag) return;
+        const term = (qSearch.value || "").trim().toLowerCase();
+        const tag = qTag.value;
+
+        getCards().forEach(card => {
+          const text = card.innerText.toLowerCase();
+          const cardTag = card.getAttribute("data-tag") || "";
+          const okTerm = !term || text.includes(term);
+          const okTag = (tag === "all") || (cardTag === tag);
+          card.style.display = (okTerm && okTag) ? "" : "none";
+        });
+      }
+
+      window.resetQuotes = function(){
+        if (!qSearch || !qTag) return;
+        qSearch.value = "";
+        qTag.value = "all";
+        applyFilters();
+      }
+
+      window.copyQuote = function(btn){
+        const card = btn.closest(".quote");
+        const quote = card.querySelector("blockquote")?.innerText?.trim() || "";
+        const who = card.querySelector(".who")?.innerText?.trim() || "";
+        const out = quote && who ? `${quote}\n${who}` : quote || who;
+
+        navigator.clipboard.writeText(out).then(() => {
+          const old = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopieret';
+          setTimeout(() => (btn.innerHTML = old), 900);
+        });
+      }
+
+      window.toggleNote = function(btn){
+        const card = btn.closest(".quote");
+        const note = card.querySelector("[data-note]");
+        if(!note) return;
+        const isHidden = note.style.display === "none";
+        note.style.display = isHidden ? "block" : "none";
+      }
+
+      if (qSearch) qSearch.addEventListener("input", applyFilters);
+      if (qTag) qTag.addEventListener("change", applyFilters);
+    });
+  </script>
+</Layout>
