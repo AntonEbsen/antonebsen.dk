@@ -1,0 +1,20 @@
+---
+interface Props {
+  class?: string;
+  id?: string;
+  [key: string]: any;
+}
+
+const { class: className, id, ...rest } = Astro.props;
+---
+
+<section id={id} class:list={["mb-14", className]} {...rest}>
+  <slot />
+</section>
+
+<style>
+  section {
+    /* Ensure consistent vertical rhythm */
+    margin-bottom: 3.5rem; /* 56px */
+  }
+</style>

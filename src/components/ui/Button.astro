@@ -1,0 +1,23 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  class?: string;
+  target?: string;
+  rel?: string;
+  download?: boolean | string;
+}
+
+const { href, variant = 'primary', class: className, target, rel, download, ...rest } = Astro.props;
+
+const baseStyles = "inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-[14.5px] transition-all duration-300 cubic-bezier(0.34, 1.56, 0.64, 1) no-underline cursor-pointer";
+
+const variants = {
+  primary: "bg-[var(--accent)] text-[#050506] hover:-translate-y-0.5 hover:shadow-[var(--glow)] hover:opacity-90",
+  ghost: "bg-transparent border border-[var(--glass-border)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:-translate-y-0.5"
+};
+---
+
+<a href={href} class:list={[baseStyles, variants[variant], className]} target={target} rel={rel} download={download} {...rest}>
+  <slot />
+</a>

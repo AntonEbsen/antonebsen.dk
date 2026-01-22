@@ -1,0 +1,28 @@
+---
+interface Props {
+  variant?: 'default' | 'glass' | 'gradient' | 'bordered';
+  class?: string;
+  [key: string]: any; // Accept arbitrary props styling
+}
+
+const { variant = 'default', class: className, ...rest } = Astro.props;
+
+const variants = {
+  default: 'bg-[var(--card)]',
+  glass: 'bg-[var(--glass)] backdrop-blur-md border border-[var(--glass-border)]',
+  gradient: 'bg-[var(--depth-bg)]',
+  bordered: 'border border-[var(--glass-border)] bg-[rgba(17,24,39,0.02)]'
+};
+
+const baseStyles = "rounded-[var(--radius)] p-6 shadow-[var(--shadow)] transition-transform duration-300 ease-out hover:-translate-y-1 hover:border-[var(--accent-soft)]";
+---
+
+<div class:list={[baseStyles, variants[variant], className]} {...rest}>
+  <slot />
+</div>
+
+<style>
+  div {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+  }
+</style>
