@@ -105,7 +105,7 @@ const projectsData = await getCollection('portfolio');
           <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{homeData.work.title}</h2>
           <ul class="list-none p-0 m-0 space-y-3">
             {homeData.work.items.map(item => (
-              <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-0 before:w-[1px] before:h-full before:bg-[var(--accent)] before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:origin-top text-[15px] font-medium leading-normal">
+              <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-0 before:w-[1px] before:h-full before:bg-accent before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:origin-top text-[15px] font-medium leading-normal">
                 {item}
               </li>
             ))}
