@@ -6,6 +6,8 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import homeData from '@data/home.json';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import myImage from '@assets/img/billede-af-mig.jpg';
 
 const projectsData = await getCollection('portfolio');
 ---
@@ -32,7 +34,7 @@ const projectsData = await getCollection('portfolio');
 
     .hero-img {
       width: 100%;
-      height: 380px;
+      height: auto;
       object-fit: cover;
       border-radius: 18px;
       display: block;
@@ -54,7 +56,7 @@ const projectsData = await getCollection('portfolio');
         grid-template-columns: 1fr;
       }
       .hero-img {
-        height: 240px;
+        /* height: 240px; handled by aspect ratio or class? */
       }
     }
   </style>
@@ -85,7 +87,7 @@ const projectsData = await getCollection('portfolio');
           </div>
     
           <div class="hero-right">
-            <img src="/assets/img/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="hero-img">
+            <Image src={myImage} alt="Anton Meier Ebsen Jørgensen" class="hero-img" />
             <div class="flex justify-center flex-wrap gap-4 text-sm font-medium text-[var(--accent)]">
               <a href="mailto:anton.ebsen@proton.me" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i> Email</a>
               <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>

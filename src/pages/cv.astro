@@ -1,11 +1,25 @@
----
 import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
+import { Image } from 'astro:assets';
 
 import cv from '@data/cv.json';
 import skillsData from '@data/skills.json';
+
+// Images
+import myImage from '@assets/img/billede-af-mig.jpg';
+import dkFlag from '@assets/img/dansk-flag.png';
+import ukFlag from '@assets/img/britisk-flag.png';
+import deFlag from '@assets/img/tysk-flag.png';
+import matlabCert from '@assets/img/matlab-onramp.PNG';
+import vectorCert from '@assets/img/calculations-with-vectors-and-matrices.PNG';
+
+const flagMap: Record<string, ImageMetadata> = {
+  '/assets/img/dansk-flag.png': dkFlag,
+  '/assets/img/britisk-flag.png': ukFlag,
+  '/assets/img/tysk-flag.png': deFlag
+};
 ---
 
 <Layout 
@@ -49,7 +63,7 @@ import skillsData from '@data/skills.json';
       <!-- Sidebar -->
       <aside class="cv-side">
         <div class="card profile-card">
-          <img src="/assets/img/billede-af-mig.jpg" alt="Anton Meier Ebsen Jørgensen" class="profile-img">
+          <Image src={myImage} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
 
           <div class="profile-head">
             <h1>Anton Meier Ebsen Jørgensen</h1>
@@ -136,7 +150,7 @@ import skillsData from '@data/skills.json';
           <div class="lang-grid" aria-label="Sprog">
             {skillsData.languages.map(lang => (
               <div class="lang-box">
-                <img src={lang.flag} alt="" class="lang-flag-sm" aria-hidden="true">
+                {flagMap[lang.flag] && <Image src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
                 <div class="lang-text">
                   <div class="lang-name">{lang.name}</div>
                   <div class="lang-level">{lang.level}</div>
@@ -240,7 +254,7 @@ import skillsData from '@data/skills.json';
             <div class="cert-grid">
               <div class="cert">
                 <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
-                  <img src="/assets/img/matlab-onramp.PNG" alt="MATLAB Onramp certifikat" class="cert-img">
+                  <Image src={matlabCert} alt="MATLAB Onramp certifikat" class="cert-img" />
                 </a>
                 <h3 class="text-sm font-bold mt-2 mb-1">
                   <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener" class="no-underline text-white hover:text-[var(--accent)]">
@@ -252,7 +266,7 @@ import skillsData from '@data/skills.json';
 
               <div class="cert">
                 <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
-                  <img src="/assets/img/calculations-with-vectors-and-matrices.PNG" alt="Vectors & Matrices certifikat" class="cert-img">
+                  <Image src={vectorCert} alt="Vectors & Matrices certifikat" class="cert-img" />
                 </a>
                 <h3 class="text-sm font-bold mt-2 mb-1">
                   <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener" class="no-underline text-white hover:text-[var(--accent)]">
