@@ -1,11 +1,15 @@
----
 import Layout from '@layouts/Layout.astro';
 import Pill from '@components/ui/Pill.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import BlogCard from '@components/blog/BlogCard.astro';
-import blogData from '@data/blog.json';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const academic = allPosts.filter(p => p.data.category === 'academic');
+const training = allPosts.filter(p => p.data.category === 'training');
+const travel = allPosts.filter(p => p.data.category === 'travel');
 ---
 
 <Layout 
@@ -92,13 +96,13 @@ import blogData from '@data/blog.json';
       </div>
 
       <div class="grid">
-        {blogData.academic.map(post => (
+        {academic.map(post => (
             <BlogCard 
-              title={post.title}
-              tag={post.tag}
-              meta={post.meta}
-              description={post.description}
-              links={post.links}
+              title={post.data.title}
+              tag={post.data.tag}
+              meta={post.data.meta}
+              description={post.data.description}
+              links={post.data.links}
             />
         ))}
       </div>
@@ -114,13 +118,13 @@ import blogData from '@data/blog.json';
       </div>
 
       <div class="grid">
-        {blogData.training.map(post => (
+        {training.map(post => (
            <BlogCard 
-             title={post.title}
-             tag={post.tag}
-             meta={post.meta}
-             description={post.description}
-             links={post.links}
+             title={post.data.title}
+             tag={post.data.tag}
+             meta={post.data.meta}
+             description={post.data.description}
+             links={post.data.links}
            />
        ))}
       </div>
@@ -136,13 +140,13 @@ import blogData from '@data/blog.json';
       </div>
 
       <div class="grid">
-        {blogData.travel.map(post => (
+        {travel.map(post => (
            <BlogCard 
-             title={post.title}
-             tag={post.tag}
-             meta={post.meta}
-             description={post.description}
-             links={post.links}
+             title={post.data.title}
+             tag={post.data.tag}
+             meta={post.data.meta}
+             description={post.data.description}
+             links={post.data.links}
            />
        ))}
       </div>

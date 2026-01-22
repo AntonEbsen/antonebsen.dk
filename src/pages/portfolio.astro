@@ -1,11 +1,12 @@
----
 import Layout from '@layouts/Layout.astro';
 import Pill from '@components/ui/Pill.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import ProjectCard from '@components/portfolio/ProjectCard.astro';
-import portfolioData from '@data/portfolio.json';
+import { getCollection } from 'astro:content';
+
+const portfolioData = await getCollection('portfolio');
 ---
 
 <Layout 
@@ -86,12 +87,12 @@ import portfolioData from '@data/portfolio.json';
         <div class="grid">
           {portfolioData.map(project => (
             <ProjectCard
-              title={project.title}
-              tagString={project.tagString}
-              description={project.description}
-              tools={project.tools}
-              output={project.output}
-              links={project.links}
+              title={project.data.title}
+              tagString={project.data.tagString}
+              description={project.data.description}
+              tools={project.data.tools}
+              output={project.data.output}
+              links={project.data.links}
             />
           ))}
         </div>

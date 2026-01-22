@@ -1,11 +1,12 @@
----
 import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import BookCard from '@components/resources/BookCard.astro';
-import booksData from '@data/resources/books.json';
+import { getCollection } from 'astro:content';
+
+const booksData = await getCollection('books');
 ---
 
 <Layout 
@@ -95,13 +96,13 @@ import booksData from '@data/resources/books.json';
         <div class="grid">
           {booksData.map(book => (
             <BookCard 
-              title={book.title}
-              author={book.author}
-              year={book.year}
-              genre={book.genre}
-              tag={book.tag}
-              note={book.note}
-              links={book.links}
+              title={book.data.title}
+              author={book.data.author}
+              year={book.data.year}
+              genre={book.data.genre}
+              tag={book.data.tag}
+              note={book.data.note}
+              links={book.data.links}
             />
           ))}
         </div>

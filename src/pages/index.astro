@@ -5,7 +5,9 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import homeData from '@data/home.json';
-import projectsData from '@data/portfolio.json';
+import { getCollection } from 'astro:content';
+
+const projectsData = await getCollection('portfolio');
 ---
 
 <Layout 
@@ -113,7 +115,7 @@ import projectsData from '@data/portfolio.json';
           <ul class="list-none p-0 m-0 space-y-2 mb-4">
             {projectsData.map(project => (
               <li class="text-[14px]">
-                <strong class="text-[var(--text)]">{project.title.split(": ")[0]}:</strong> <span class="text-[var(--text-dim)]">{project.title.split(": ")[1]}</span>
+                <strong class="text-[var(--text)]">{project.data.title.split(": ")[0]}:</strong> <span class="text-[var(--text-dim)]">{project.data.title.split(": ")[1]}</span>
               </li>
             ))}
           </ul>
