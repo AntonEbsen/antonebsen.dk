@@ -1,5 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Pill from '../components/common/Pill.astro';
+import Section from '../components/common/Section.astro';
+import Card from '../components/common/Card.astro';
+import homeData from '../data/home.json';
+import projectsData from '../data/projects.json';
 import '../styles/hjem.css';
 ---
 
@@ -12,13 +17,12 @@ import '../styles/hjem.css';
 
   <main class="home-wrap">
     <!-- HERO -->
-    <section class="card hero">
+    <Section class="card hero">
       <div class="hero-left">
-        <p class="eyebrow">Økonomistuderende (cand.polit.) · København</p>
-        <h1>Makroøkonomi, økonometri og økonomiske modeller – med stærk data- og kodeprofil.</h1>
+        <p class="eyebrow">{homeData.hero.eyebrow}</p>
+        <h1>{homeData.hero.title}</h1>
         <p class="lead">
-          Jeg bygger analyser og modeller, der kan bruges i praksis: pengepolitik, tidsrækker, modellering og formidling.
-          Erfaring fra undervisning i Excel/VBA og arbejde med Python, SAS og GAMS.
+          {homeData.hero.lead}
         </p>
 
         <div class="cta">
@@ -28,12 +32,9 @@ import '../styles/hjem.css';
         </div>
 
         <div class="pill-wrap">
-          <span class="pill">Python</span>
-          <span class="pill">SAS</span>
-          <span class="pill">GAMS</span>
-          <span class="pill">Excel/VBA</span>
-          <span class="pill">Makro & pengepolitik</span>
-          <span class="pill">Tidsrækker</span>
+          {homeData.hero.pills.map(pill => (
+            <Pill text={pill} />
+          ))}
         </div>
       </div>
 
@@ -45,33 +46,32 @@ import '../styles/hjem.css';
           <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- HIGHLIGHTS -->
     <section class="grid-3">
-      <div class="card">
-        <h2 class="section-title">Hvad jeg arbejder med</h2>
+      <Card>
+        <h2 class="section-title">{homeData.work.title}</h2>
         <ul class="clean-list">
-          <li>Makroøkonomi & pengepolitik (ECB/centralbanker)</li>
-          <li>Økonometri & tidsrækker (forecasting, SVAR m.m.)</li>
-          <li>Økonomiske modeller (RBC/CGE) og data pipelines</li>
-          <li>Formidling/undervisning: Excel, VBA og “hands-on” cases</li>
+          {homeData.work.items.map(item => (
+            <li>{item}</li>
+          ))}
         </ul>
-      </div>
+      </Card>
 
-      <div class="card">
-        <h2 class="section-title">Udvalgte projekter</h2>
+      <Card>
+        <h2 class="section-title">{homeData.projects.title}</h2>
         <ul class="clean-list">
-          <li><strong>Bachelorprojekt:</strong> spillovers fra amerikansk pengepolitik til global økonomi</li>
-          <li><strong>RBC-model:</strong> steady state og model-setup</li>
-          <li><strong>ECB-projekt:</strong> asymmetriske effekter på tværs af lande</li>
+          {projectsData.map(project => (
+            <li><strong>{project.title.split(": ")[0]}:</strong> {project.title.split(": ")[1]}</li>
+          ))}
         </ul>
         <p class="muted" style="margin-top:10px;">
           <a href="/portfolio">Se mere i porteføljen →</a>
         </p>
-      </div>
+      </Card>
 
-      <div class="card">
+      <Card>
         <h2 class="section-title">Hurtig adgang</h2>
         <div class="quick-links">
           <a class="btn ghost" href="/cv">CV</a>
@@ -85,17 +85,17 @@ import '../styles/hjem.css';
         <p class="muted" style="margin:0;">
           Åben for samarbejde og faglige samtaler – især om centralbanker, data og modeller.
         </p>
-      </div>
+      </Card>
     </section>
 
     <!-- MINI ABOUT -->
-    <section class="card">
+    <Section class="card">
       <h2 class="section-title">Kort om mig</h2>
       <p class="muted">
         Jeg interesserer mig særligt for, hvordan pengepolitik og økonomiske chok påvirker økonomien på tværs af lande,
         og hvordan modeller og data kan bruges til at gøre analysen mere præcis. På siden kan du finde mit CV,
         projekter og materiale.
       </p>
-    </section>
+    </Section>
   </main>
 </Layout>
