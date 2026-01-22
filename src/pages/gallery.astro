@@ -170,11 +170,13 @@ import Layout from '../layouts/Layout.astro';
     let activeFilter = "all";
 
     function applyFilters(){
-      const q = (search.value || "").toLowerCase().trim();
+      const q = (search && search instanceof HTMLInputElement ? search.value : "").toLowerCase().trim();
 
       cards.forEach(card => {
-        const tags = (card.dataset.tags || "").toLowerCase();
-        const cap  = (card.dataset.caption || "").toLowerCase();
+        if (!(card instanceof HTMLElement)) return;
+
+        const tags = (card.getAttribute("data-tags") || "").toLowerCase();
+        const cap  = (card.getAttribute("data-caption") || "").toLowerCase();
 
         const matchesFilter = activeFilter === "all" || tags.includes(activeFilter);
         const matchesSearch = !q || cap.includes(q);
@@ -188,7 +190,7 @@ import Layout from '../layouts/Layout.astro';
         chips.forEach(c => c.classList.remove("is-active"));
         btn.classList.add("is-active");
 
-        activeFilter = btn.dataset.filter;
+        activeFilter = btn.getAttribute("data-filter") || "all";
         applyFilters();
       });
     });
@@ -203,11 +205,14 @@ import Layout from '../layouts/Layout.astro';
     const lbTitle = document.getElementById("lbTitle");
     const lbText = document.getElementById("lbText");
 
-    function openLB({src, alt, title, text}){
-      lbImg.src = src;
-      lbImg.alt = alt || "";
-      lbTitle.textContent = title || "";
-      lbText.textContent = text || "";
+    function openLB(data){
+      if(!lb || !lbImg || !lbTitle || !lbText) return;
+      if (lbImg instanceof HTMLImageElement) {
+          lbImg.src = data.src || "";
+          lbImg.alt = data.alt || "";
+      }
+      lbTitle.textContent = data.title || "";
+      lbText.textContent = data.text || "";
 
       lb.classList.add("is-open");
       lb.setAttribute("aria-hidden", "false");
@@ -215,26 +220,27 @@ import Layout from '../layouts/Layout.astro';
     }
 
     function closeLB(){
+      if(!lb) return;
       lb.classList.remove("is-open");
       lb.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
-      lbImg.src = "";
+      if (lbImg instanceof HTMLImageElement) lbImg.src = "";
     }
 
     document.querySelectorAll(".g-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         openLB({
-          src: btn.dataset.src,
-          alt: btn.dataset.alt,
-          title: btn.dataset.title,
-          text: btn.dataset.text
+          src: btn.getAttribute("data-src"),
+          alt: btn.getAttribute("data-alt"),
+          title: btn.getAttribute("data-title"),
+          text: btn.getAttribute("data-text")
         });
       });
     });
 
     if(lb) {
         lb.addEventListener("click", (e) => {
-        if (e.target.closest("[data-close]")) closeLB();
+        if (e.target instanceof Element && e.target.closest("[data-close]")) closeLB();
         });
 
         document.addEventListener("keydown", (e) => {

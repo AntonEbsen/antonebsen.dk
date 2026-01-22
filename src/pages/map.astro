@@ -188,7 +188,7 @@ import Layout from '../layouts/Layout.astro';
           chips.forEach(c => c.classList.remove("is-active"));
           btn.classList.add("is-active");
 
-          activeFilter = btn.dataset.filter;
+          activeFilter = btn.getAttribute("data-filter") || "all";
           render(activeFilter);
         });
       });

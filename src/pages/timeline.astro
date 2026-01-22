@@ -149,10 +149,12 @@ import Layout from '../layouts/Layout.astro';
           btns.forEach(b => b.classList.remove("is-active"));
           btn.classList.add("is-active");
 
-          const f = btn.dataset.filter;
+          const f = btn.getAttribute("data-filter");
           items.forEach(it => {
-            const cat = it.dataset.cat;
-            it.style.display = (f === "all" || f === cat) ? "" : "none";
+            const cat = it.getAttribute("data-cat");
+            if (it instanceof HTMLElement) {
+               it.style.display = (f === "all" || f === cat) ? "" : "none";
+            }
           });
         });
       });
