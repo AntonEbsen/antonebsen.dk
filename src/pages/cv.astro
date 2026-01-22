@@ -165,7 +165,7 @@ const flagMap: Record<string, ImageMetadata> = {
 
         <Section id="profile">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Profil</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Profil</h2>
             <p class="mb-4 text-[15px] leading-relaxed opacity-90">
               Engageret økonomistuderende på kandidatuddannelsen ved Københavns Universitet med særligt fokus på
               makroøkonomi, økonometri og økonomiske modeller. Jeg har erfaring med programmering og databehandling
@@ -180,17 +180,17 @@ const flagMap: Record<string, ImageMetadata> = {
 
         <Section id="experience">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Erhvervserfaring</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Erhvervserfaring</h2>
             <div class="space-y-0">
               {cv.experience.map(item => (
                 <article class="item">
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} · {item.organization}</h3>
-                    <span class="text-[13px] text-[var(--text-dim)]">{item.location} · {item.period}</span>
+                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
                   </div>
                   <ul class="list-none p-0 m-0 mt-3 space-y-1">
                     {item.description.map(bullet => (
-                      <li class="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)] text-[14px] opacity-90">{bullet}</li>
+                      <li class="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-accent text-[14px] opacity-90">{bullet}</li>
                     ))}
                   </ul>
                 </article>
@@ -201,15 +201,15 @@ const flagMap: Record<string, ImageMetadata> = {
 
         <Section id="education">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Uddannelse</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Uddannelse</h2>
             <div class="space-y-0">
               {cv.education.map(item => (
                 <article class="item">
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} · {item.institution}</h3>
-                    <span class="text-[13px] text-[var(--text-dim)]">{item.location} · {item.period}</span>
+                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
                   </div>
-                  {item.description && <p class="text-[14px] text-[var(--text-dim)] mt-2 opacity-80">{item.description}</p>}
+                  {item.description && <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>}
                 </article>
               ))}
             </div>
@@ -218,15 +218,15 @@ const flagMap: Record<string, ImageMetadata> = {
 
         <Section id="projects">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Projekter</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Projekter</h2>
             <div class="space-y-0">
               {cv.projects.map(project => (
                 <article class="item">
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{project.title}</h3>
-                    {project.meta && <span class="text-[13px] text-[var(--text-dim)]">{project.meta}</span>}
+                    {project.meta && <span class="text-[13px] text-dim">{project.meta}</span>}
                   </div>
-                  <p class="text-[14px] text-[var(--text-dim)] mt-2 opacity-80">
+                  <p class="text-[14px] text-dim mt-2 opacity-80">
                     {project.description}
                   </p>
                 </article>
@@ -237,13 +237,13 @@ const flagMap: Record<string, ImageMetadata> = {
 
         <Section id="volunteer">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Frivilligt</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Frivilligt</h2>
             <article class="item border-none pt-0">
               <div class="item-head">
                  <h3 class="text-[18px] font-bold m-0 mb-1">Forperson · Socialøkonomisk Samfund</h3>
-                 <span class="text-[13px] text-[var(--text-dim)]">København K · 2024 – nu</span>
+                 <span class="text-[13px] text-dim">København K · 2024 – nu</span>
               </div>
-              <p class="text-[14px] text-[var(--text-dim)] mt-2 opacity-80">Planlægning/koordinering af aktiviteter og arrangementer.</p>
+              <p class="text-[14px] text-dim mt-2 opacity-80">Planlægning/koordinering af aktiviteter og arrangementer.</p>
             </article>
           </Card>
         </Section>

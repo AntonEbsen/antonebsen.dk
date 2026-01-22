@@ -67,9 +67,9 @@ const projectsData = await getCollection('portfolio');
       <Card variant="glass" class="p-8">
         <div class="hero">
           <div class="hero-left">
-            <p class="text-[var(--text-dim)] font-extrabold uppercase tracking-widest text-xs mb-3">{homeData.hero.eyebrow}</p>
+            <p class="text-dim font-extrabold uppercase tracking-widest text-xs mb-3">{homeData.hero.eyebrow}</p>
             <h1 class="text-[clamp(32px,5vw,48px)] leading-[1.1] mb-5 font-bold">{homeData.hero.title}</h1>
-            <p class="text-xl leading-relaxed text-[var(--text-dim)] mb-6">
+            <p class="text-xl leading-relaxed text-dim mb-6">
               {homeData.hero.lead}
             </p>
     
@@ -88,7 +88,7 @@ const projectsData = await getCollection('portfolio');
     
           <div class="hero-right">
             <Image src={myImage} alt="Anton Meier Ebsen Jørgensen" class="hero-img" />
-            <div class="flex justify-center flex-wrap gap-4 text-sm font-medium text-[var(--accent)]">
+            <div class="flex justify-center flex-wrap gap-4 text-sm font-medium text-accent">
               <a href="mailto:anton.ebsen@proton.me" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i> Email</a>
               <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
               <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-github"></i> GitHub</a>
@@ -101,8 +101,8 @@ const projectsData = await getCollection('portfolio');
     <!-- HIGHLIGHTS -->
     <Section>
       <div class="grid-3">
-        <Card variant="bordered" class="flex flex-col h-full bg-[rgba(255,255,255,0.01)]!">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">{homeData.work.title}</h2>
+        <Card variant="bordered" class="flex flex-col h-full bg-glass!">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{homeData.work.title}</h2>
           <ul class="list-none p-0 m-0 space-y-3">
             {homeData.work.items.map(item => (
               <li class="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-0 before:w-[1px] before:h-full before:bg-[var(--accent)] before:scale-y-0 hover:before:scale-y-100 before:transition-transform before:origin-top text-[15px] font-medium leading-normal">
@@ -112,22 +112,22 @@ const projectsData = await getCollection('portfolio');
           </ul>
         </Card>
   
-        <Card variant="bordered" class="flex flex-col h-full bg-[rgba(255,255,255,0.01)]!">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">{homeData.projects.title}</h2>
+        <Card variant="bordered" class="flex flex-col h-full bg-glass!">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{homeData.projects.title}</h2>
           <ul class="list-none p-0 m-0 space-y-2 mb-4">
             {projectsData.map(project => (
               <li class="text-[14px]">
-                <strong class="text-[var(--text)]">{project.data.title.split(": ")[0]}:</strong> <span class="text-[var(--text-dim)]">{project.data.title.split(": ")[1]}</span>
+                <strong class="text-text">{project.data.title.split(": ")[0]}:</strong> <span class="text-dim">{project.data.title.split(": ")[1]}</span>
               </li>
             ))}
           </ul>
           <p class="mt-auto text-sm">
-            <a href="/portfolio" class="text-[var(--accent)] font-bold hover:text-white transition-colors">Se mere i porteføljen →</a>
+            <a href="/portfolio" class="text-accent font-bold hover:text-white transition-colors">Se mere i porteføljen →</a>
           </p>
         </Card>
   
-        <Card variant="bordered" class="flex flex-col h-full bg-[rgba(255,255,255,0.01)]!">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Hurtig adgang</h2>
+        <Card variant="bordered" class="flex flex-col h-full bg-glass!">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hurtig adgang</h2>
           <div class="flex flex-wrap gap-2 mb-6">
             <Button href="/cv" variant="ghost" class="text-xs">CV</Button>
             <Button href="/portfolio" variant="ghost" class="text-xs">Portefølje</Button>
@@ -135,9 +135,9 @@ const projectsData = await getCollection('portfolio');
             <Button href="/contact" variant="ghost" class="text-xs">Kontakt</Button>
           </div>
   
-          <hr class="border-0 border-t border-[var(--glass-border)] my-4 w-full" />
+          <hr class="border-0 border-t border-glass-border my-4 w-full" />
   
-          <p class="text-[14px] text-[var(--text-dim)] leading-relaxed m-0 opacity-80">
+          <p class="text-[14px] text-dim leading-relaxed m-0 opacity-80">
             Åben for samarbejde og faglige samtaler – især om centralbanker, data og modeller.
           </p>
         </Card>
@@ -147,8 +147,8 @@ const projectsData = await getCollection('portfolio');
     <!-- MINI ABOUT -->
     <Section>
       <Card variant="glass" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Kort om mig</h2>
-        <p class="text-[var(--text-dim)] leading-relaxed opacity-80 mb-0 max-w-prose">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Kort om mig</h2>
+        <p class="text-dim leading-relaxed opacity-80 mb-0 max-w-prose">
           Jeg interesserer min særligt for, hvordan pengepolitik og økonomiske chok påvirker økonomien på tværs af lande,
           og hvordan modeller og data kan bruges til at gøre analysen mere præcis. På siden kan du finde mit CV,
           projekter og materiale.

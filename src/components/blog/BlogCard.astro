@@ -25,9 +25,9 @@ const { title, tag, meta, description, links } = Astro.props;
     <h3 class="text-[16px] font-bold leading-tight m-0">{title}</h3>
     <Pill variant="accent" class="shrink-0">{tag}</Pill>
   </div>
-  <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">{meta}</p>
+  <p class="text-[13px] text-dim mb-3 opacity-90">{meta}</p>
   
-  <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+  <p class="text-[14px] text-dim flex-grow mb-4 leading-relaxed opacity-90">
     {description}
   </p>
 
@@ -37,7 +37,7 @@ const { title, tag, meta, description, links } = Astro.props;
         href={link.url}
         class:list={[
           "text-xs font-bold transition-colors inline-flex items-center",
-          link.disabled ? "opacity-50 cursor-not-allowed text-[var(--text-dim)]" : "text-[var(--accent)] hover:text-white"
+          link.disabled ? "opacity-50 cursor-not-allowed text-dim" : "text-accent hover:text-white"
         ]}
         aria-disabled={link.disabled}
       >
