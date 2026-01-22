@@ -1,5 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Pill from '../components/common/Pill.astro';
+import Section from '../components/common/Section.astro';
+import BlogCard from '../components/blog/BlogCard.astro';
+import blogData from '../data/blog.json';
+import '../styles/blog.css';
 ---
 
 <Layout 
@@ -7,13 +12,11 @@ import Layout from '../layouts/Layout.astro';
   description="Blog med indlæg om faglige emner, træning og rejser."
   bodyClass="blog-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/blog.css" slot="head" />
 
   <main class="blog-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
+    <Section class="card hero">
       <div>
         <p class="eyebrow">Blog</p>
         <h1>Indlæg og noter</h1>
@@ -29,9 +32,9 @@ import Layout from '../layouts/Layout.astro';
         </div>
 
         <div class="pill-wrap" aria-label="Kategorier">
-          <a class="pill-link" href="#cat-fagligt"><span class="pill">Fagligt</span></a>
-          <a class="pill-link" href="#cat-traening"><span class="pill">Træning</span></a>
-          <a class="pill-link" href="#cat-rejser"><span class="pill">Rejser</span></a>
+          <a class="pill-link" href="#cat-fagligt"><Pill text="Fagligt" /></a>
+          <a class="pill-link" href="#cat-traening"><Pill text="Træning" /></a>
+          <a class="pill-link" href="#cat-rejser"><Pill text="Rejser" /></a>
         </div>
       </div>
 
@@ -43,7 +46,7 @@ import Layout from '../layouts/Layout.astro';
           </p>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- ===================== -->
     <!-- KATEGORI: FAGLIGT -->
@@ -54,108 +57,26 @@ import Layout from '../layouts/Layout.astro';
         <p class="muted cat-subtitle">Økonomi, data, modeller, økonometri og værktøjer.</p>
       </div>
 
-    <article class="card post" style="margin-bottom:14px;">
-  <div class="post-top">
-    <h3 class="post-title">Mine favoritbøger</h3>
-    <span class="tag">Noter</span>
-  </div>
-  <p class="post-meta">Opdateres løbende · Klassikere · Fagligt · Tro & etik</p>
-  <p class="muted" style="margin:0 0 12px;">
-    En kurateret liste med bøger jeg vender tilbage til – og korte noter om hvorfor de er værd at læse.
-  </p>
-  <div class="post-links">
-    <a class="btn" href="/books"><i class="fa-solid fa-book"></i> Åbn listen</a>
-    <a class="btn ghost" href="#cat-fagligt">Tilbage til blog</a>
-  </div>
-</article>
-      
-    <div class="card post" style="margin-bottom:14px;">
-  <div class="post-top">
-    <h3 class="post-title">Favoritpodcasts (liste)</h3>
-    <span class="tag">Fagligt</span>
-  </div>
-  <p class="post-meta">Kurateret · Makro · Data · Træning · Humor</p>
-  <p class="muted" style="margin:0 0 12px;">
-    En kort liste med podcasts jeg anbefaler — opdelt i temaer og med en note om hvorfor de er værd at høre.
-  </p>
-  <div class="post-links">
-    <a class="btn" href="/podcasts">
-      <i class="fa-solid fa-headphones"></i> Åbn podcasts
-    </a>
-  </div>
-</div>
-
-      <article class="card post" style="margin-bottom:14px;">
-  <div class="post-top">
-    <h3 class="post-title">Mine favoritcitater</h3>
-    <span class="tag">Noter</span>
-  </div>
-  <p class="post-meta">Opdateres løbende · Disciplin · Læring · Tro · Humor</p>
-  <p class="muted" style="margin:0 0 12px;">
-    Korte linjer jeg vender tilbage til. Med tema-tags og søgning, så jeg faktisk kan finde dem igen.
-  </p>
-  <div class="post-links">
-    <a class="btn" href="/quotes"><i class="fa-solid fa-quote-left"></i> Åbn citater</a>
-    <a class="btn ghost" href="#cat-fagligt">Tilbage til blog</a>
-  </div>
-</article>
-      
-      <article class="card post">
-  <div class="post-top">
-    <h3 class="post-title">Historien bag min personlige hjemmeside</h3>
-    <span class="tag">Fagligt</span>
-  </div>
-  <p class="post-meta">indsæt dato · 5–7 min læsning</p>
-  <p class="muted">
-    Hvorfor jeg byggede den, hvordan strukturen voksede, og hvorfor statistik-siderne blev en del af porteføljen.
-  </p>
-  <div class="post-links">
-    <a class="btn ghost" href="/hjemmeside-historie">Læs mere</a>
-  </div>
-</article>
+      {blogData.academic.slice(0, 4).map(post => (
+          <BlogCard 
+            title={post.title}
+            tag={post.tag}
+            meta={post.meta}
+            description={post.description}
+            links={post.links}
+          />
+      ))}
       
       <div class="grid">
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Blogindlæg Titel 1</h3>
-            <span class="tag">Fagligt</span>
-          </div>
-          <p class="post-meta">20. august 2024 · 5 min læsning</p>
-          <p class="muted">
-            Introducerende uddrag… Skriv gerne hvad læseren får ud af indlægget i én sætning.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
-
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Hvordan jeg strukturerer en analyse: fra data til formidling</h3>
-            <span class="tag">Fagligt</span>
-          </div>
-          <p class="post-meta">15. juli 2024 · 6 min læsning</p>
-          <p class="muted">
-            Et simpelt framework til at undgå “analyse-kaos”: afklar mål, dokumentér data, vælg metode, test robusthed, og skriv det klart.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
-
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Excel vs. Python: hvornår giver hvad mening?</h3>
-            <span class="tag">Fagligt</span>
-          </div>
-          <p class="post-meta">10. juni 2024 · 4 min læsning</p>
-          <p class="muted">
-            Kort guide til værktøjsvalg: hurtige dashboards og prototyper vs. reproducerbare pipelines og større datasæt.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
+        {blogData.academic.slice(4).map(post => (
+          <BlogCard 
+            title={post.title}
+            tag={post.tag}
+            meta={post.meta}
+            description={post.description}
+            links={post.links}
+          />
+        ))}
       </div>
     </section>
 
@@ -169,66 +90,26 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <!-- FEATURED: Træningsstatistik -->
-      <div class="card post" style="margin-bottom:14px;">
-        <div class="post-top">
-          <h3 class="post-title">Træningsstatistik (dashboard)</h3>
-          <span class="tag">Træning</span>
-        </div>
-        <p class="post-meta">Opdateres løbende · Volumen · Top sæt · Est. 1RM · Plateau-watch</p>
-        <p class="muted" style="margin:0 0 12px;">
-          Jeg logger mine sessions (PUSH/PULL/LEGS) og opsummerer nøgletal som tonnage, reps og bedste sæt.
-          Siden er lavet til et stabilt program, så udvikling og plateaus er nemme at spotte.
-        </p>
-        <div class="post-links">
-          <a class="btn" href="/traeningsstatistik">
-            <i class="fa-solid fa-chart-line"></i> Åbn træningsstatistik
-          </a>
-          <a class="btn ghost" href="#cat-traening">Tilbage til træning</a>
-        </div>
-      </div>
+       {blogData.training.slice(0, 1).map(post => (
+          <BlogCard 
+            title={post.title}
+            tag={post.tag}
+            meta={post.meta}
+            description={post.description}
+            links={post.links}
+          />
+      ))}
 
       <div class="grid">
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Min simple måde at tracke progression på (uden at miste hovedet)</h3>
-            <span class="tag">Træning</span>
-          </div>
-          <p class="post-meta">— · —</p>
-          <p class="muted">
-            Et realistisk system: få nøgletal (volumen, RPE/indsats, søvn), og evaluer uge for uge – ikke dag for dag.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
-
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">6-dages split: fordele, faldgruber og hvordan man undgår overbelastning</h3>
-            <span class="tag">Træning</span>
-          </div>
-          <p class="post-meta">— · —</p>
-          <p class="muted">
-            Når volumen er høj, er restitution en “feature”, ikke en bonus. Her er de greb der gør split’et bæredygtigt.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
-
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Protein, vaner og den kedelige sandhed</h3>
-            <span class="tag">Træning</span>
-          </div>
-          <p class="post-meta">— · —</p>
-          <p class="muted">
-            Du behøver ikke en perfekt plan — du behøver en plan, du kan holde i 6 måneder.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
+        {blogData.training.slice(1).map(post => (
+          <BlogCard 
+            title={post.title}
+            tag={post.tag}
+            meta={post.meta}
+            description={post.description}
+            links={post.links}
+          />
+        ))}
       </div>
     </section>
 
@@ -242,71 +123,31 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
     <!-- FEATURED: Rejsekort -->
-    <div class="card post" style="margin-bottom:14px;">
-      <div class="post-top">
-        <h3 class="post-title">Rejsekort (interaktivt)</h3>
-        <span class="tag">Rejser</span>
-      </div>
-      <p class="post-meta">Opdateres løbende · Ruter · Byer · Vandringer</p>
-      <p class="muted" style="margin:0 0 12px;">
-        Interaktivt kort med steder jeg har været — med noter og highlights fra ture, ruter og små erfaringer undervejs.
-      </p>
-      <div class="post-links">
-        <a class="btn" href="/map">
-          <i class="fa-solid fa-map-location-dot"></i> Åbn rejsekort
-        </a>
-        <a class="btn ghost" href="#cat-rejser">Tilbage til rejser</a>
-      </div>
-    </div>
+    {blogData.travel.slice(0, 1).map(post => (
+          <BlogCard 
+            title={post.title}
+            tag={post.tag}
+            meta={post.meta}
+            description={post.description}
+            links={post.links}
+          />
+      ))}
       
       <div class="grid">
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Vandring: min pakkeliste (det essentielle + det jeg droppede)</h3>
-            <span class="tag">Rejser</span>
-          </div>
-          <p class="post-meta">— · —</p>
-          <p class="muted">
-            Let og praktisk: det du bruger hver dag, og det du bærer uden grund. Plus små hacks, der redder fødderne.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
-
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Hvordan jeg planlægger en rute uden at over-planlægge</h3>
-            <span class="tag">Rejser</span>
-          </div>
-          <p class="post-meta">— · —</p>
-          <p class="muted">
-            En robust plan med plads til virkeligheden: energi, vejr, ben, og det man ikke kan forudsige.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
-
-        <article class="card post">
-          <div class="post-top">
-            <h3 class="post-title">Camino: hvad jeg ville ønske jeg vidste før første lange dag</h3>
-            <span class="tag">Rejser</span>
-          </div>
-          <p class="post-meta">— · —</p>
-          <p class="muted">
-            De små ting: tempo, pauser, sokker, “ego-management” og hvorfor dag 3 ofte føles hårdere end dag 1.
-          </p>
-          <div class="post-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Læs mere</a>
-          </div>
-        </article>
+        {blogData.travel.slice(1).map(post => (
+          <BlogCard 
+            title={post.title}
+            tag={post.tag}
+            meta={post.meta}
+            description={post.description}
+            links={post.links}
+          />
+        ))}
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="card">
-      <h2 class="section-title">Forslag til indlæg?</h2>
+    <Section class="card" title="Forslag til indlæg?">
       <p class="muted">
         Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.
       </p>
@@ -314,7 +155,7 @@ import Layout from '../layouts/Layout.astro';
         <a class="btn" href="mailto:anton.ebsen@gmail.com">Send en mail</a>
         <a class="btn ghost" href="/contact">Kontakt-side</a>
       </div>
-    </section>
+    </Section>
 
   </main>
 </Layout>

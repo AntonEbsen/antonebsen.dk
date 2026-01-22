@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+  <h3 style="margin:0 0 8px;">{title}</h3>
+  <p class="muted" style="margin:0;">
+    {description}
+  </p>
+</div>

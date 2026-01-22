@@ -1,0 +1,13 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="timeline">
+  {items.map(item => (
+      <li set:html={item} />
+  ))}
+</ul>

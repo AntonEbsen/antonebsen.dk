@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  tag: string;
+  meta: string;
+  description: string;
+  links: {
+    label: string;
+    url: string;
+    icon?: string;
+    disabled?: boolean;
+    class?: string; // 'btn' or 'btn ghost' default handling
+  }[];
+}
+
+const { title, tag, meta, description, links } = Astro.props;
+---
+
+<article class="card post" style="margin-bottom:14px;">
+  <div class="post-top">
+    <h3 class="post-title">{title}</h3>
+    <span class="tag">{tag}</span>
+  </div>
+  <p class="post-meta">{meta}</p>
+  <p class="muted" style="margin:0 0 12px;">
+    {description}
+  </p>
+  <div class="post-links">
+    {links.map(link => (
+      <a 
+        class={link.class || "btn ghost"} 
+        href={link.url} 
+        aria-disabled={link.disabled}
+      >
+        {link.icon && <i class={link.icon}></i>} {link.label}
+      </a>
+    ))}
+  </div>
+</article>

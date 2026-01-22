@@ -1,0 +1,32 @@
+---
+---
+<form class="form" action="#" method="post">
+  <div class="field">
+    <label for="name">Navn</label>
+    <input type="text" id="name" name="name" placeholder="Dit navn" required>
+  </div>
+
+  <div class="field">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="din@email.dk" required>
+  </div>
+
+  <div class="field">
+    <label for="subject">Emne</label>
+    <input type="text" id="subject" name="subject" placeholder="Hvad handler henvendelsen om?">
+  </div>
+
+  <div class="field">
+    <label for="message">Besked</label>
+    <textarea id="message" name="message" rows="6" placeholder="Skriv din besked..." required></textarea>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn" type="submit">Send besked</button>
+    <a class="btn ghost" href="mailto:anton.ebsen@gmail.com?subject=Kontakt%20via%20hjemmesiden">Send via mail</a>
+  </div>
+
+  <p class="muted small">
+    Tip: Hvis du foreslår et samarbejde/job, så skriv gerne tidshorisont, forventet omfang og evt. data/tema.
+  </p>
+</form>

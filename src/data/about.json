@@ -1,0 +1,68 @@
+{
+    "hero": {
+        "title": "Makro, økonometri og modeller — med fokus på at gøre det brugbart",
+        "lead": "Jeg arbejder i krydsfeltet mellem <strong>økonomi</strong>, <strong>data</strong> og <strong>formidling</strong>. Jeg kan godt lide “klassisk håndværk”: klare antagelser, ordentlig dokumentation og resultater, der kan forklares uden at man skal have læst 300 sider først.",
+        "pills": [
+            "Makro & pengepolitik",
+            "Økonometri & tidsrækker",
+            "Økonomiske modeller",
+            "Python / SAS / GAMS",
+            "Excel/VBA undervisning"
+        ]
+    },
+    "quickfacts": [
+        {
+            "icon": "fa-solid fa-location-dot",
+            "text": "København"
+        },
+        {
+            "icon": "fa-solid fa-chart-line",
+            "text": "Interesse: centralbanker, transmissionsmekanismer, heterogenitet"
+        },
+        {
+            "icon": "fa-solid fa-code",
+            "text": "Værktøjer: Python, SAS, GAMS + Excel/VBA"
+        },
+        {
+            "icon": "fa-solid fa-chalkboard-user",
+            "text": "Formidling: underviser (Excel/VBA) og bygger cases"
+        }
+    ],
+    "focus": [
+        {
+            "title": "Makroøkonomi & pengepolitik",
+            "description": "Jeg er især optaget af, hvordan pengepolitik “landes” i praksis: gennem finansielle markeder, forventninger, kreditkanaler og forskelle på tværs af lande/sektorer."
+        },
+        {
+            "title": "Økonometri & tidsrækker",
+            "description": "Forecasting, identifikation og robusthed. Jeg kan godt lide metoder der både er teknisk solide og kan forklares til en normal person uden at de går i søvn."
+        },
+        {
+            "title": "Modeller & “structure”",
+            "description": "CGE/RBC/DSGE-tænkning: tydelige antagelser, konsistens, checks og baseline/zero-shock disciplin."
+        },
+        {
+            "title": "Data & tooling",
+            "description": "Jeg bygger små pipelines og templates: fra data cleaning til output, så det kan genbruges og ikke kun virker én gang."
+        }
+    ],
+    "timeline": [
+        "<strong>1) Afklar mål:</strong> hvad skal beslutningstager/læser kunne gøre bagefter?",
+        "<strong>2) Dokumentér data:</strong> kilder, definitioner, enheder, missing/outliers, transformationer.",
+        "<strong>3) Vælg metode:</strong> simpelt først, derefter “mere fancy” hvis det giver noget reelt.",
+        "<strong>4) Checks:</strong> sanity checks, robusthed, alternative specifikationer, edge cases.",
+        "<strong>5) Formidling:</strong> konklusioner, begrænsninger og “hvad betyder det i praksis?”"
+    ],
+    "teaching": {
+        "style": [
+            "Struktur først (mål → løsning → kvalitetstjek)",
+            "Hands-on: hellere én god case end 30 slides",
+            "Templates der kan genbruges"
+        ],
+        "help": [
+            "Excel-modeller, dashboards og logik",
+            "Data cleaning og reproducérbare workflows",
+            "Små scripts og automatisering"
+        ]
+    }
+}
