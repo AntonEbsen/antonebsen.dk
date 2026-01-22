@@ -1,5 +1,24 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
+import KPIGrid from '@components/stats/KPIGrid.astro';
+import CourseStatTable from '@components/stats/CourseStatTable.astro';
+
+const kpiData = [
+  { title: "Tilfredshed", value: "8,75", subValue: "/10", progress: 8.75, max: 10, hint: "Vægtet efter antal svar." },
+  { title: "Anbefaler", value: "97,3", subValue: "%", progress: 97.3, max: 100, hint: "Andel “Ja” (vægtet)." },
+  { title: "Formidling", value: "4,48", subValue: "/5", progress: 4.48, max: 5, hint: "Gennemsnit (vægtet)." },
+  { title: "Responsrate", value: "13,0", subValue: "%", progress: 13, max: 100, hint: "Beregnet på gange med tilmeldte-tal." },
+];
+
+const courseData = [
+  { date: "18-10-2023", course: "Excel 3 - Udvidet databehandling", enrolled: 26, responses: 7, responseRate: "26,9%", satisfaction: 9.1, recommend: "100,0%", communication: 4.3 },
+  { date: "02-11-2023", course: "Excel 1 - Få styr på regnearket", enrolled: 24, responses: 2, responseRate: "8,3%", satisfaction: 8.0, recommend: "100,0%", communication: 4.0 },
+  { date: "13-02-2024", course: "Excel 2 - Smarte funktioner", enrolled: 75, responses: 5, responseRate: "6,7%", satisfaction: 8.4, recommend: "100,0%", communication: 4.4 },
+  { date: "07-03-2024", course: "Excel 2 - Smarte funktioner", enrolled: 55, responses: 3, responseRate: "5,5%", satisfaction: 9.7, recommend: "100,0%", communication: 4.7 },
+  { date: "02-04-2024", course: "Excel 2 - Smarte funktioner", enrolled: 36, responses: 4, responseRate: "11,1%", satisfaction: 9.5, recommend: "100,0%", communication: 4.8 },
+  { date: "16-04-2024", course: "Excel 2 - Smart functions", enrolled: "—", responses: 3, responseRate: "—", satisfaction: 9.3, recommend: "100,0%", communication: 4.3 },
+  { date: "17-04-2024", course: "Excel 1 - Få styr på regnearket", enrolled: 38, responses: 9, responseRate: "23,7%", satisfaction: 8.0, recommend: "90,0%", communication: 4.6 },
+];
 ---
 
 <Layout 
@@ -75,65 +94,6 @@ import Layout from '../../layouts/Layout.astro';
   margin-bottom: 10px; 
 }
 
-/* KPI grid */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 14px 0;
-}
-.kpi-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-}
-.kpi h2 {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text);
-}
-.kpi-big {
-  font-size: 26px;
-  font-weight: 800;
-  line-height: 1;
-}
-.kpi-small { 
-  font-size: 14px; 
-  font-weight: 800; 
-  opacity: 0.7; 
-}
-
-progress {
-  width: 100%;
-  height: 12px;
-  border-radius: 999px;
-  overflow: hidden;
-  margin: 10px 0 6px;
-}
-
-/* Table */
-.table-wrap { 
-  margin-top: 8px; 
-}
-.stats-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-.stats-table th,
-.stats-table td {
-  text-align: left;
-  padding: 10px 10px;
-  border-top: 1px solid var(--glass-border);
-  vertical-align: top;
-}
-.stats-table thead th {
-  border-top: 0;
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
 /* Details */
 .details {
   margin-top: 12px;
@@ -179,39 +139,6 @@ progress {
     padding-left: 14px;
     padding-right: 14px;
   }
-  .kpi-grid { 
-    grid-template-columns: 1fr; 
-  }
-}
-
-/* Turn table rows into stacked rows on small screens */
-@media (max-width: 720px) {
-  .stats-table thead { 
-    display: none; 
-  }
-  .stats-table, 
-  .stats-table tbody, 
-  .stats-table tr, 
-  .stats-table td {
-    display: block;
-    width: 100%;
-  }
-  .stats-table tr {
-    border-top: 1px solid var(--glass-border);
-    padding: 10px 0;
-  }
-  .stats-table td {
-    border: 0;
-    padding: 6px 0;
-  }
-  .stats-table td::before {
-    content: attr(data-label);
-    display: block;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--text-dim);
-    margin-bottom: 2px;
-  }
 }
 
 .card + .card {
@@ -239,42 +166,8 @@ progress {
     </section>
 
     <!-- KPI CARDS -->
-    <section class="kpi-grid" aria-label="Nøgletal">
-      <div class="card kpi">
-        <div class="kpi-top">
-          <h2>Tilfredshed</h2>
-          <span class="kpi-big">8,75<span class="kpi-small">/10</span></span>
-        </div>
-        <progress value="8.75" max="10" aria-label="Tilfredshed 8,75 ud af 10"></progress>
-        <p class="muted">Vægtet efter antal svar.</p>
-      </div>
-
-      <div class="card kpi">
-        <div class="kpi-top">
-          <h2>Anbefaler</h2>
-          <span class="kpi-big">97,3<span class="kpi-small">%</span></span>
-        </div>
-        <progress value="97.3" max="100" aria-label="Anbefaler 97,3 procent"></progress>
-        <p class="muted">Andel “Ja” (vægtet).</p>
-      </div>
-
-      <div class="card kpi">
-        <div class="kpi-top">
-          <h2>Formidling</h2>
-          <span class="kpi-big">4,48<span class="kpi-small">/5</span></span>
-        </div>
-        <progress value="4.48" max="5" aria-label="Formidling 4,48 ud af 5"></progress>
-        <p class="muted">Gennemsnit (vægtet).</p>
-      </div>
-
-      <div class="card kpi">
-        <div class="kpi-top">
-          <h2>Responsrate</h2>
-          <span class="kpi-big">13,0<span class="kpi-small">%</span></span>
-        </div>
-        <progress value="13" max="100" aria-label="Responsrate 13 procent"></progress>
-        <p class="muted">Beregnet på gange med tilmeldte-tal.</p>
-      </div>
+    <section aria-label="Nøgletal">
+      <KPIGrid items={kpiData} />
     </section>
 
     <!-- TABLE -->
@@ -284,100 +177,7 @@ progress {
         <p class="muted">Dato · kursus · tilmeldte · svar · responsrate · tilfredshed · anbefaler · formidling</p>
       </div>
 
-      <div class="table-wrap">
-        <table class="stats-table">
-          <thead>
-            <tr>
-              <th>Dato</th>
-              <th>Kursus</th>
-              <th>Tilmeldte</th>
-              <th>Svar</th>
-              <th>Responsrate</th>
-              <th>Tilfredshed</th>
-              <th>Anbefaler</th>
-              <th>Formidling</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="Dato">18-10-2023</td>
-              <td data-label="Kursus">Excel 3 - Udvidet databehandling</td>
-              <td data-label="Tilmeldte">26</td>
-              <td data-label="Svar">7</td>
-              <td data-label="Responsrate">26,9%</td>
-              <td data-label="Tilfredshed">9,1</td>
-              <td data-label="Anbefaler">100,0%</td>
-              <td data-label="Formidling">4,3</td>
-            </tr>
-
-            <tr>
-              <td data-label="Dato">02-11-2023</td>
-              <td data-label="Kursus">Excel 1 - Få styr på regnearket</td>
-              <td data-label="Tilmeldte">24</td>
-              <td data-label="Svar">2</td>
-              <td data-label="Responsrate">8,3%</td>
-              <td data-label="Tilfredshed">8,0</td>
-              <td data-label="Anbefaler">100,0%</td>
-              <td data-label="Formidling">4,0</td>
-            </tr>
-
-            <tr>
-              <td data-label="Dato">13-02-2024</td>
-              <td data-label="Kursus">Excel 2 - Smarte funktioner</td>
-              <td data-label="Tilmeldte">75</td>
-              <td data-label="Svar">5</td>
-              <td data-label="Responsrate">6,7%</td>
-              <td data-label="Tilfredshed">8,4</td>
-              <td data-label="Anbefaler">100,0%</td>
-              <td data-label="Formidling">4,4</td>
-            </tr>
-
-            <tr>
-              <td data-label="Dato">07-03-2024</td>
-              <td data-label="Kursus">Excel 2 - Smarte funktioner</td>
-              <td data-label="Tilmeldte">55</td>
-              <td data-label="Svar">3</td>
-              <td data-label="Responsrate">5,5%</td>
-              <td data-label="Tilfredshed">9,7</td>
-              <td data-label="Anbefaler">100,0%</td>
-              <td data-label="Formidling">4,7</td>
-            </tr>
-
-            <tr>
-              <td data-label="Dato">02-04-2024</td>
-              <td data-label="Kursus">Excel 2 - Smarte funktioner</td>
-              <td data-label="Tilmeldte">36</td>
-              <td data-label="Svar">4</td>
-              <td data-label="Responsrate">11,1%</td>
-              <td data-label="Tilfredshed">9,5</td>
-              <td data-label="Anbefaler">100,0%</td>
-              <td data-label="Formidling">4,8</td>
-            </tr>
-
-            <tr>
-              <td data-label="Dato">16-04-2024</td>
-              <td data-label="Kursus">Excel 2 - Smart functions</td>
-              <td data-label="Tilmeldte">—</td>
-              <td data-label="Svar">3</td>
-              <td data-label="Responsrate">—</td>
-              <td data-label="Tilfredshed">9,3</td>
-              <td data-label="Anbefaler">100,0%</td>
-              <td data-label="Formidling">4,3</td>
-            </tr>
-
-            <tr>
-              <td data-label="Dato">17-04-2024</td>
-              <td data-label="Kursus">Excel 1 - Få styr på regnearket</td>
-              <td data-label="Tilmeldte">38</td>
-              <td data-label="Svar">9</td>
-              <td data-label="Responsrate">23,7%</td>
-              <td data-label="Tilfredshed">8,0</td>
-              <td data-label="Anbefaler">90,0%</td>
-              <td data-label="Formidling">4,6</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <CourseStatTable stats={courseData} />
 
       <details class="details">
         <summary>Metode & forbehold (klik)</summary>

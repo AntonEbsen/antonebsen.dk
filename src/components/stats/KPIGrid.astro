@@ -1,0 +1,114 @@
+---
+interface Props {
+  items: {
+    title: string;
+    value: string;
+    subValue?: string;
+    progress?: number;
+    hint?: string;
+    max?: number;
+  }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="kpi-grid">
+  {items.map(item => (
+    <div class="card kpi">
+      <div class="kpi-top">
+        <h2>{item.title}</h2>
+        <span class="kpi-big">
+          {item.value}
+          {item.subValue && <span class="kpi-small">{item.subValue}</span>}
+        </span>
+      </div>
+      
+      {item.progress !== undefined && (
+        <>
+          <progress value={item.progress} max={item.max || 100} aria-label={`${item.title} ${item.value}`}></progress>
+          {item.hint && <p class="muted">{item.hint}</p>}
+        </>
+      )}
+
+      {item.progress === undefined && item.hint && (
+          <p class="hint">{item.hint}</p>
+      )}
+    </div>
+  ))}
+</div>
+
+<style>
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 14px 0;
+  }
+
+  .kpi {
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .kpi-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .kpi h2 {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .kpi-big {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .kpi-small {
+    font-size: 14px;
+    font-weight: 800;
+    opacity: 0.7;
+  }
+
+  progress {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 10px 0 6px;
+  }
+
+  /* Progress bar styling fallback/custom is usually handled by browser or global CSS, 
+     but we can add webkit styling if needed. For now relying on default/global. */
+
+  .muted, .hint {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    opacity: 0.8;
+  }
+
+  .hint {
+    margin-top: 6px;
+  }
+
+  @media (max-width: 980px) {
+    .kpi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

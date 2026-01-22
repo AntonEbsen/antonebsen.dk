@@ -1,5 +1,21 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
+import KPIGrid from '@components/stats/KPIGrid.astro';
+import SessionTable from '@components/stats/SessionTable.astro';
+
+const kpiData = [
+  { title: "Antal sessions", value: "6", hint: "PUSH/PULL/LEGS x 2" },
+  { title: "Øvelser logget", value: "—", hint: "Udfyld når du vil" },
+  { title: "Total reps", value: "—", hint: "Reps på tværs af øvelser" },
+  { title: "Total tonnage", value: "—", hint: "Σ (kg × reps)" }
+];
+
+const sessionData = [
+  { date: "04-12-2025", day: "PUSH 1", exercise: "Incline Press", sets: 4, weight: 60, reps: "10/8/7/6" },
+  { date: "05-12-2025", day: "PULL 1", exercise: "Deadlift", sets: 3, weight: "100/100/90", reps: "5/6/8" },
+  { date: "06-12-2025", day: "LEGS 1", exercise: "Squat", sets: 4, weight: 100, reps: "8/8/7/6", note: "10 min pause (svimmel/kvalme)" },
+  { date: "10-12-2025", day: "LEGS 2", exercise: "Leg Press", sets: 4, weight: 147, reps: "10/9/9/8" }
+];
 ---
 
 <Layout 
@@ -116,81 +132,11 @@ import Layout from '../../layouts/Layout.astro';
   border-color: var(--accent-soft); 
 }
 
-/* KPI grid */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 14px 0;
-}
-
-.kpi {
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.kpi .label {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-dim);
-  letter-spacing: .2px;
-}
-
-.kpi .value {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text);
-}
-
-.kpi .hint {
-  margin: 6px 0 0;
-  font-size: 13px;
-  color: var(--text-dim);
-  opacity: 0.8;
-}
-
 /* Split grid */
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
-}
-
-/* Tables */
-.table-wrap {
-  overflow-x: auto;
-  border-radius: 14px;
-  border: 1px solid var(--glass-border);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 720px;
-  background: transparent;
-}
-
-th, td {
-  text-align: left;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--glass-border);
-  font-size: 14px;
-}
-
-th {
-  font-size: 12px;
-  letter-spacing: .2px;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
 }
 
 /* Pills */
@@ -217,9 +163,6 @@ tr:hover td {
 @media (max-width: 980px) {
   .hero { 
     grid-template-columns: 1fr; 
-  }
-  .kpi-grid { 
-    grid-template-columns: repeat(2, minmax(0, 1fr)); 
   }
   .grid-2 { 
     grid-template-columns: 1fr; 
@@ -270,32 +213,7 @@ tr:hover td {
     <section class="card" aria-label="Nøgletal">
       <h2 class="section-title">Nøgletal (seneste uge)</h2>
 
-      <!-- Udfyld manuelt nu; senere kan du auto-generere -->
-      <div class="kpi-grid">
-        <div class="kpi">
-          <p class="label">Antal sessions</p>
-          <p class="value">6</p>
-          <p class="hint">PUSH/PULL/LEGS x 2</p>
-        </div>
-
-        <div class="kpi">
-          <p class="label">Øvelser logget</p>
-          <p class="value">—</p>
-          <p class="hint">Udfyld når du vil</p>
-        </div>
-
-        <div class="kpi">
-          <p class="label">Total reps</p>
-          <p class="value">—</p>
-          <p class="hint">Reps på tværs af øvelser</p>
-        </div>
-
-        <div class="kpi">
-          <p class="label">Total tonnage</p>
-          <p class="value">—</p>
-          <p class="hint">Σ (kg × reps)</p>
-        </div>
-      </div>
+      <KPIGrid items={kpiData} />
 
       <p class="muted small" style="margin:0;">
         *KPI’er bliver først “rigtigt fede” når der er 4+ uger, så man kan se gennemsnit, variation og trend.
@@ -335,65 +253,7 @@ tr:hover td {
       <h2 class="section-title">Sessions (råt overblik)</h2>
       <p class="muted">Her kan du løbende tilføje nye rækker. Tabellen scroller vandret på mobil.</p>
 
-      <div class="table-wrap" role="region" aria-label="Træningssessions tabel" tabindex="0">
-        <table>
-          <thead>
-            <tr>
-              <th>Dato</th>
-              <th>Dag</th>
-              <th>Øvelse</th>
-              <th>Sæt</th>
-              <th>Vægt (kg)</th>
-              <th>Reps</th>
-              <th>Tonnage (kg)</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Eksempel-rækker (udskift/udbyg) -->
-            <tr>
-              <td>04-12-2025</td>
-              <td>PUSH 1</td>
-              <td>Incline Press</td>
-              <td>4</td>
-              <td>60</td>
-              <td>10/8/7/6</td>
-              <td>—</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>05-12-2025</td>
-              <td>PULL 1</td>
-              <td>Deadlift</td>
-              <td>3</td>
-              <td>100/100/90</td>
-              <td>5/6/8</td>
-              <td>—</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>06-12-2025</td>
-              <td>LEGS 1</td>
-              <td>Squat</td>
-              <td>4</td>
-              <td>100</td>
-              <td>8/8/7/6</td>
-              <td>—</td>
-              <td>10 min pause (svimmel/kvalme)</td>
-            </tr>
-            <tr>
-              <td>10-12-2025</td>
-              <td>LEGS 2</td>
-              <td>Leg Press</td>
-              <td>4</td>
-              <td>147</td>
-              <td>10/9/9/8</td>
-              <td>—</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <SessionTable sessions={sessionData} />
 
       <div class="cta" style="margin-top:14px;">
         <a class="btn ghost" href="#method"><i class="fa-solid fa-arrow-up"></i> Top</a>

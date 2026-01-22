@@ -1,0 +1,83 @@
+---
+interface Session {
+  date: string;
+  day: string;
+  exercise: string;
+  sets: number;
+  weight: string | number;
+  reps: string;
+  tonnage?: string | number;
+  note?: string;
+}
+
+interface Props {
+  sessions: Session[];
+}
+
+const { sessions } = Astro.props;
+---
+
+<div class="table-wrap" role="region" aria-label="Træningssessions tabel" tabindex="0">
+  <table>
+    <thead>
+      <tr>
+        <th>Dato</th>
+        <th>Dag</th>
+        <th>Øvelse</th>
+        <th>Sæt</th>
+        <th>Vægt (kg)</th>
+        <th>Reps</th>
+        <th>Tonnage (kg)</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      {sessions.map(session => (
+        <tr>
+          <td>{session.date}</td>
+          <td>{session.day}</td>
+          <td>{session.exercise}</td>
+          <td>{session.sets}</td>
+          <td>{session.weight}</td>
+          <td>{session.reps}</td>
+          <td>{session.tonnage || '—'}</td>
+          <td>{session.note}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+    background: transparent;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 14px;
+  }
+
+  th {
+    font-size: 12px;
+    letter-spacing: .2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+</style>

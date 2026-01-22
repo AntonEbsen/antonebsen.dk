@@ -1,0 +1,102 @@
+---
+interface CourseStat {
+  date: string;
+  course: string;
+  enrolled: number | string;
+  responses: number;
+  responseRate: string;
+  satisfaction: number | string;
+  recommend: string;
+  communication: number | string;
+}
+
+interface Props {
+  stats: CourseStat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<div class="table-wrap">
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th>Dato</th>
+        <th>Kursus</th>
+        <th>Tilmeldte</th>
+        <th>Svar</th>
+        <th>Responsrate</th>
+        <th>Tilfredshed</th>
+        <th>Anbefaler</th>
+        <th>Formidling</th>
+      </tr>
+    </thead>
+    <tbody>
+      {stats.map(row => (
+        <tr>
+          <td data-label="Dato">{row.date}</td>
+          <td data-label="Kursus">{row.course}</td>
+          <td data-label="Tilmeldte">{row.enrolled}</td>
+          <td data-label="Svar">{row.responses}</td>
+          <td data-label="Responsrate">{row.responseRate}</td>
+          <td data-label="Tilfredshed">{row.satisfaction}</td>
+          <td data-label="Anbefaler">{row.recommend}</td>
+          <td data-label="Formidling">{row.communication}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-wrap { 
+    margin-top: 8px; 
+  }
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .stats-table th,
+  .stats-table td {
+    text-align: left;
+    padding: 10px 10px;
+    border-top: 1px solid var(--glass-border);
+    vertical-align: top;
+  }
+  .stats-table thead th {
+    border-top: 0;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* Turn table rows into stacked rows on small screens */
+  @media (max-width: 720px) {
+    .stats-table thead { 
+      display: none; 
+    }
+    .stats-table, 
+    .stats-table tbody, 
+    .stats-table tr, 
+    .stats-table td {
+      display: block;
+      width: 100%;
+    }
+    .stats-table tr {
+      border-top: 1px solid var(--glass-border);
+      padding: 10px 0;
+    }
+    .stats-table td {
+      border: 0;
+      padding: 6px 0;
+    }
+    .stats-table td::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-dim);
+      margin-bottom: 2px;
+    }
+  }
+</style>
