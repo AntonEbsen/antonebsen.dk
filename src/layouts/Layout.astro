@@ -30,6 +30,8 @@ const { title, description, image, article, bodyClass = "" } = Astro.props;
   <!-- Scripts -->
   <script src="/assets/js/search.js" defer></script>
   <script src="/assets/js/themes.js" defer></script>
+
+  <slot name="head" />
 </head>
 <body class={bodyClass}>
   <Navbar />
