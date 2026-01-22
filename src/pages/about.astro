@@ -1,10 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Pill from '../components/common/Pill.astro';
-import Section from '../components/common/Section.astro';
-import Card from '../components/common/Card.astro';
-import Timeline from '../components/about/Timeline.astro';
-import FocusCard from '../components/about/FocusCard.astro';
+import Pill from '../components/ui/Pill.astro';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
 import aboutData from '../data/about.json';
 ---
 
@@ -14,322 +13,195 @@ import aboutData from '../data/about.json';
   bodyClass="about-page"
 >
 
+  <style>
+    .about-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .grid-2 { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
   <main class="about-wrap">
-    <div class="stack">
+    
+    <!-- HERO -->
+    <Section>
+      <div class="hero">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-[var(--text-dim)] mb-3">Profil / Om mig</p>
+          <h1 class="text-[clamp(28px,4vw,40px)] leading-[1.15] mb-5 font-bold">Makro, økonometri og modeller — med fokus på at gøre det brugbart</h1>
+          <div class="text-[17px] leading-bold text-[var(--text-dim)] mb-6 opacity-90" set:html={aboutData.hero.lead}></div>
 
-      <!-- HERO -->
-      <Section class="card hero">
-        <div>
-          <p class="eyebrow">Profil / Om mig</p>
-          <h1>Makro, økonometri og modeller — med fokus på at gøre det brugbart</h1>
-          <p class="lead" set:html={aboutData.hero.lead}></p>
-
-          <div class="pill-wrap" aria-label="Nøgleområder">
+          <div class="flex flex-wrap gap-2 mb-8" aria-label="Nøgleområder">
              {aboutData.hero.pills.map(pill => (
-                <Pill text={pill} />
+                <Pill variant="accent">{pill}</Pill>
              ))}
           </div>
 
-          <div class="cta">
-            <a class="btn" href="#arbejdsstil"><i class="fa-solid fa-compass"></i> Arbejdsstil</a>
-            <a class="btn ghost" href="#fokus"><i class="fa-solid fa-bullseye"></i> Fokusområder</a>
-            <a class="btn ghost" href="#kontakt"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+          <div class="flex flex-wrap gap-3">
+            <Button href="#arbejdsstil"><i class="fa-solid fa-compass mr-2"></i> Arbejdsstil</Button>
+            <Button href="#fokus" variant="ghost"><i class="fa-solid fa-bullseye mr-2"></i> Fokusområder</Button>
+            <Button href="#contact" variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> Kontakt</Button>
           </div>
-        </div>
+        </Card>
 
-        <div class="hero-side">
-          <div class="mini-card">
-            <h2 class="section-title">Hurtige facts</h2>
-            <div class="quickfacts">
+        <div class="flex flex-col gap-3">
+          <Card variant="glass" class="p-5">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Hurtige facts</h2>
+            <div class="grid gap-3">
               {aboutData.quickfacts.map(fact => (
-                 <div class="fact"><i class={fact.icon}></i><span>{fact.text}</span></div>
+                 <div class="flex gap-3 text-sm items-start">
+                   <i class:list={[fact.icon, "mt-1 text-[var(--text-dim)] opacity-80 shrink-0 w-4"]}></i>
+                   <span class="opacity-90">{fact.text}</span>
+                 </div>
               ))}
             </div>
-          </div>
+          </Card>
 
-          <div class="mini-card">
-            <h2 class="section-title">På siden</h2>
-            <nav class="subnav" aria-label="Undermenu">
-              <a href="#fokus">Fokusområder</a>
-              <a href="#arbejdsstil">Hvordan jeg arbejder</a>
-              <a href="#formidling">Undervisning & formidling</a>
-              <a href="#udenfor">Uden for studiet</a>
-              <a href="#kontakt">Kontakt</a>
+          <Card variant="glass" class="p-5">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">På siden</h2>
+            <nav class="flex flex-col gap-2" aria-label="Undermenu">
+              {[
+                { label: 'Fokusområder', href: '#fokus' },
+                { label: 'Hvordan jeg arbejder', href: '#arbejdsstil' },
+                { label: 'Undervisning & formidling', href: '#formidling' },
+                { label: 'Uden for studiet', href: '#udenfor' },
+                { label: 'Kontakt', href: '#contact' }
+              ].map(link => (
+                <a href={link.href} class="text-sm font-medium text-[var(--text)] hover:text-[var(--accent)] transition-colors py-1 block">
+                  {link.label}
+                </a>
+              ))}
             </nav>
-          </div>
+          </Card>
         </div>
-      </Section>
+      </div>
+    </Section>
 
-      <!-- Fokus -->
-      <Section class="card" id="fokus" title="Fokusområder">
+    <!-- FOKUS -->
+    <Section id="fokus">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Fokusområder</h2>
         <div class="grid-2">
             {aboutData.focus.map(focus => (
-                <FocusCard title={focus.title} description={focus.description} />
+                <Card variant="bordered" class="bg-[rgba(17,24,39,0.02)]! h-full border-[rgba(255,255,255,0.05)]!">
+                  <h3 class="font-bold mb-2 text-[15px]">{focus.title}</h3>
+                  <p class="text-[14px] text-[var(--text-dim)] leading-relaxed m-0 opacity-80">{focus.description}</p>
+                </Card>
             ))}
         </div>
-      </Section>
+      </Card>
+    </Section>
 
-      <!-- Arbejdsstil -->
-      <Section class="card" id="arbejdsstil" title="Hvordan jeg arbejder">
-        <p class="muted">
+    <!-- ARBEJDSSTIL -->
+    <Section id="arbejdsstil">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Hvordan jeg arbejder</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6">
           Min standard-arbejdsgang (lidt kedelig — men det er præcis derfor den virker):
         </p>
 
-        <Timeline items={aboutData.timeline} />
-
-        <div class="cta">
-          <a class="btn ghost" href="/portfolio"><i class="fa-solid fa-folder-open"></i> Se portefølje</a>
-          <a class="btn" href="/resources"><i class="fa-solid fa-download"></i> Se ressourcer</a>
+        <div class="space-y-4 mb-8">
+          {aboutData.timeline.map((item, index) => (
+             <div class="flex gap-4">
+               <div class="flex flex-col items-center">
+                 <div class="w-8 h-8 rounded-full bg-[var(--accent-soft)] border border-[var(--accent)] flex items-center justify-center text-xs font-bold text-[var(--accent)] shrink-0">
+                   {index + 1}
+                 </div>
+                 {index < aboutData.timeline.length - 1 && <div class="w-[1px] bg-[var(--glass-border)] h-full min-h-[20px] my-1"></div>}
+               </div>
+               <div class="pb-2 pt-1 text-sm leading-relaxed opacity-90" set:html={item}></div>
+             </div>
+          ))}
         </div>
-      </Section>
 
-      <!-- Formidling -->
-      <Section class="card" id="formidling" title="Undervisning & formidling">
-        <p class="muted">
+        <div class="flex flex-wrap gap-3">
+          <Button href="/portfolio" variant="ghost"><i class="fa-solid fa-folder-open mr-2"></i> Se portefølje</Button>
+          <Button href="/resources"><i class="fa-solid fa-download mr-2"></i> Se ressourcer</Button>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- FORMIDLING -->
+    <Section id="formidling">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Undervisning & formidling</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6 max-w-2xl">
           Jeg har erfaring med at undervise i Excel/VBA og kan lide at gøre ting konkrete: cases, øvelser,
           “hvorfor” bag funktioner og små genveje der gør en stor forskel.
         </p>
 
         <div class="grid-2">
-          <div class="card teaching-card">
-            <h3 class="teaching-title">Min undervisningsstil</h3>
-            <ul class="teaching-list">
+          <Card variant="bordered" class="bg-[rgba(255,255,255,0.02)]! border-[rgba(255,255,255,0.06)]!">
+            <h3 class="font-bold mb-3 text-[15px]">Min undervisningsstil</h3>
+            <ul class="list-disc pl-5 m-0 space-y-1 text-sm text-[var(--text-dim)]">
                {aboutData.teaching.style.map(item => (
-                   <li>{item}</li>
+                   <li class="pl-1">{item}</li>
                ))}
             </ul>
-          </div>
+          </Card>
 
-          <div class="card teaching-card">
-            <h3 class="teaching-title">Hvad jeg typisk hjælper med</h3>
-            <ul class="teaching-list">
+          <Card variant="bordered" class="bg-[rgba(255,255,255,0.02)]! border-[rgba(255,255,255,0.06)]!">
+            <h3 class="font-bold mb-3 text-[15px]">Hvad jeg typisk hjælper med</h3>
+            <ul class="list-disc pl-5 m-0 space-y-1 text-sm text-[var(--text-dim)]">
                 {aboutData.teaching.help.map(item => (
-                   <li>{item}</li>
+                   <li class="pl-1">{item}</li>
                ))}
             </ul>
-          </div>
+          </Card>
         </div>
-      </Section>
+      </Card>
+    </Section>
 
-      <!-- Udenfor -->
-      <Section class="card" id="udenfor" title="Uden for studiet">
-        <p class="muted">
+    <!-- UDENFOR -->
+    <Section id="udenfor">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Uden for studiet</h2>
+        <p class="text-[var(--text-dim)] opacity-80 mb-6 leading-relaxed">
           Jeg holder af rutiner og progression — både i træning og i projekter. Det lyder måske lidt “kontor-nørdet”,
           met det er ærligt talt ret tilfredsstillende at se kurver gå den rigtige vej.
         </p>
 
-        <div class="cta">
-          <a class="btn ghost" href="/blog#cat-traening"><i class="fa-solid fa-dumbbell"></i> Træningsindlæg</a>
-          <a class="btn ghost" href="/blog#cat-rejser"><i class="fa-solid fa-person-hiking"></i> Rejser</a>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/blog#cat-traening" variant="ghost"><i class="fa-solid fa-dumbbell mr-2"></i> Træningsindlæg</Button>
+          <Button href="/blog#cat-rejser" variant="ghost"><i class="fa-solid fa-person-hiking mr-2"></i> Rejser</Button>
         </div>
-      </Section>
+      </Card>
+    </Section>
 
-      <!-- Kontakt -->
-      <Section class="card" id="kontakt" title="Kontakt">
-        <p class="muted">
+    <!-- KONTAKT -->
+    <Section id="contact">
+      <Card variant="glass" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Kontakt</h2>
+        <p class="text-[var(--text-dim)] opacity-80 mb-6">
           Hvis du vil sparre om et projekt, en case eller et samarbejde, så skriv endelig.
         </p>
-        <div class="cta">
-          <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope"></i> Send mail</a>
-          <a class="btn ghost" href="/contact"><i class="fa-solid fa-message"></i> Kontakt-side</a>
-          <a class="btn ghost" href="/cv"><i class="fa-solid fa-file-lines"></i> Tilbage til CV</a>
+        <div class="flex flex-wrap gap-3">
+          <Button href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope mr-2"></i> Send mail</Button>
+          <Button href="/contact" variant="ghost"><i class="fa-solid fa-message mr-2"></i> Kontakt-side</Button>
+          <Button href="/cv" variant="ghost"><i class="fa-solid fa-file-lines mr-2"></i> Tilbage til CV</Button>
         </div>
-      </Section>
+      </Card>
+    </Section>
 
-    </div>
   </main>
 </Layout>
-
-<style>
-.about-wrap {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 16px 32px;
-}
-
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: var(--accent-soft);
-}
-
-.stack {
-  display: grid;
-  gap: 14px;
-}
-
-.section-title {
-  margin: 0 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--text-dim);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-}
-
-.lead { 
-  margin: 0 0 24px; 
-  color: var(--text-dim); 
-  font-size: 18px; 
-  line-height: 1.6; 
-}
-
-.muted { 
-  color: var(--text-dim); 
-  opacity: 0.7; 
-}
-
-/* Hero */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-}
-
-.hero-side {
-  display: grid;
-  gap: 14px;
-}
-
-.mini-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-
-.mini-card:hover { 
-  border-color: var(--accent-soft); 
-}
-
-.quickfacts {
-  display: grid;
-  gap: 10px;
-}
-
-.fact {
-  display: grid;
-  grid-template-columns: 20px minmax(0,1fr);
-  gap: 10px;
-  align-items: start;
-  font-size: 14px;
-}
-
-.fact i { 
-  margin-top: 2px; 
-  opacity: .9; 
-}
-
-/* Pills */
-.pill-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-/* Two-col */
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-}
-
-/* CTA buttons */
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #050506;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-
-.btn.ghost {
-  background: transparent;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-}
-
-/* Internal page links */
-.subnav a {
-  display: block;
-  padding: 8px 10px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: var(--text);
-  transition: background 0.2s ease;
-}
-
-.subnav a:hover { 
-  background: var(--navHover); 
-}
-
-.teaching-card {
-  box-shadow: none; 
-  border: 1px solid rgba(255, 255, 255, 0.06); 
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.teaching-title {
-  margin: 0 0 8px;
-}
-
-.teaching-list {
-  margin: 0;
-}
-
-/* Mobile */
-@media (max-width: 980px) {
-  .about-wrap { 
-    padding-left: 14px; 
-    padding-right: 14px; 
-  }
-  .hero { 
-    grid-template-columns: 1fr; 
-  }
-  .grid-2 { 
-    grid-template-columns: 1fr; 
-  }
-}
-</style>

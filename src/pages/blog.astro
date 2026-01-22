@@ -1,7 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Pill from '../components/common/Pill.astro';
-import Section from '../components/common/Section.astro';
+import Pill from '../components/ui/Pill.astro';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
 import BlogCard from '../components/blog/BlogCard.astro';
 import blogData from '../data/blog.json';
 ---
@@ -12,37 +14,70 @@ import blogData from '../data/blog.json';
   bodyClass="blog-page"
 >
 
+  <style>
+    .blog-wrap { 
+      max-width: 1200px; 
+      margin: 24px auto; 
+      padding: 0 16px 32px; 
+    }
+
+    .hero {
+      display: grid; 
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px; 
+      align-items: start; 
+    }
+
+    .grid {
+      display: grid; 
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px; 
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero { 
+        grid-template-columns: 1fr; 
+      }
+      .grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
   <main class="blog-wrap">
 
     <!-- HERO -->
-    <Section class="card hero">
-      <div>
-        <p class="eyebrow">Blog</p>
-        <h1>Indlæg og noter</h1>
-        <p class="lead">
-          Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression)
-          og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).
-        </p>
-
-        <div class="cta">
-          <a class="btn" href="#cat-fagligt">Fagligt</a>
-          <a class="btn ghost" href="#cat-traening">Træning</a>
-          <a class="btn ghost" href="#cat-rejser">Rejser</a>
-        </div>
-
-        <div class="pill-wrap" aria-label="Kategorier">
-          <a class="pill-link" href="#cat-fagligt"><Pill text="Fagligt" /></a>
-          <a class="pill-link" href="#cat-traening"><Pill text="Træning" /></a>
-          <a class="pill-link" href="#cat-rejser"><Pill text="Rejser" /></a>
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Seneste</h2>
-          <p class="muted" style="margin:0;">
-            Nye indlæg kommer løbende. (Pro tip: når du har 10+ posts, kan vi lave et rigtigt filter.)
+    <Section>
+      <div class="hero">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-[var(--text-dim)] mb-3">Blog</p>
+          <h1 class="text-[clamp(28px,4vw,40px)] leading-[1.15] mb-5 font-bold">Indlæg og noter</h1>
+          <p class="text-[17px] leading-relaxed text-[var(--text-dim)] mb-6 opacity-90">
+            Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression)
+            og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).
           </p>
+  
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#cat-fagligt">Fagligt</Button>
+            <Button href="#cat-traening" variant="ghost">Træning</Button>
+            <Button href="#cat-rejser" variant="ghost">Rejser</Button>
+          </div>
+  
+          <div class="flex flex-wrap gap-2">
+            <a href="#cat-fagligt" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Fagligt</Pill></a>
+            <a href="#cat-traening" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Træning</Pill></a>
+            <a href="#cat-rejser" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Rejser</Pill></a>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Seneste</h2>
+            <p class="text-[var(--text-dim)] opacity-80 m-0">
+              Nye indlæg kommer løbende. (Pro tip: når du har 10+ posts, kan vi lave et rigtigt filter.)
+            </p>
+          </Card>
         </div>
       </div>
     </Section>
@@ -50,275 +85,82 @@ import blogData from '../data/blog.json';
     <!-- ===================== -->
     <!-- KATEGORI: FAGLIGT -->
     <!-- ===================== -->
-    <section class="cat" id="cat-fagligt" aria-label="Fagligt">
-      <div class="cat-head">
-        <h2 class="cat-title">Fagligt</h2>
-        <p class="muted cat-subtitle">Økonomi, data, modeller, økonometri og værktøjer.</p>
+    <Section id="cat-fagligt" aria-label="Fagligt">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+        <h2 class="m-0 text-xl font-bold">Fagligt</h2>
+        <p class="m-0 text-[var(--text-dim)] text-sm opacity-80">Økonomi, data, modeller, økonometri og værktøjer.</p>
       </div>
 
-      {blogData.academic.slice(0, 4).map(post => (
-          <BlogCard 
-            title={post.title}
-            tag={post.tag}
-            meta={post.meta}
-            description={post.description}
-            links={post.links}
-          />
-      ))}
-      
       <div class="grid">
-        {blogData.academic.slice(4).map(post => (
-          <BlogCard 
-            title={post.title}
-            tag={post.tag}
-            meta={post.meta}
-            description={post.description}
-            links={post.links}
-          />
+        {blogData.academic.map(post => (
+            <BlogCard 
+              title={post.title}
+              tag={post.tag}
+              meta={post.meta}
+              description={post.description}
+              links={post.links}
+            />
         ))}
       </div>
-    </section>
+    </Section>
 
     <!-- ===================== -->
     <!-- KATEGORI: TRÆNING -->
     <!-- ===================== -->
-    <section class="cat" id="cat-traening" aria-label="Træning">
-      <div class="cat-head">
-        <h2 class="cat-title">Træning</h2>
-        <p class="muted cat-subtitle">Rutiner, progression, og hvad der faktisk virker i praksis.</p>
+    <Section id="cat-traening" aria-label="Træning">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+        <h2 class="m-0 text-xl font-bold">Træning</h2>
+        <p class="m-0 text-[var(--text-dim)] text-sm opacity-80">Rutiner, progression, og hvad der faktisk virker i praksis.</p>
       </div>
-
-      <!-- FEATURED: Træningsstatistik -->
-       {blogData.training.slice(0, 1).map(post => (
-          <BlogCard 
-            title={post.title}
-            tag={post.tag}
-            meta={post.meta}
-            description={post.description}
-            links={post.links}
-          />
-      ))}
 
       <div class="grid">
-        {blogData.training.slice(1).map(post => (
-          <BlogCard 
-            title={post.title}
-            tag={post.tag}
-            meta={post.meta}
-            description={post.description}
-            links={post.links}
-          />
-        ))}
+        {blogData.training.map(post => (
+           <BlogCard 
+             title={post.title}
+             tag={post.tag}
+             meta={post.meta}
+             description={post.description}
+             links={post.links}
+           />
+       ))}
       </div>
-    </section>
+    </Section>
 
     <!-- ===================== -->
     <!-- KATEGORI: REJSER -->
     <!-- ===================== -->
-    <section class="cat" id="cat-rejser" aria-label="Rejser">
-      <div class="cat-head">
-        <h2 class="cat-title">Rejser</h2>
-        <p class="muted cat-subtitle">Vandring, ruter, planlægning og erfaringer fra turene.</p>
+    <Section id="cat-rejser" aria-label="Rejser">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+        <h2 class="m-0 text-xl font-bold">Rejser</h2>
+        <p class="m-0 text-[var(--text-dim)] text-sm opacity-80">Vandring, ruter, planlægning og erfaringer fra turene.</p>
       </div>
 
-    <!-- FEATURED: Rejsekort -->
-    {blogData.travel.slice(0, 1).map(post => (
-          <BlogCard 
-            title={post.title}
-            tag={post.tag}
-            meta={post.meta}
-            description={post.description}
-            links={post.links}
-          />
-      ))}
-      
       <div class="grid">
-        {blogData.travel.slice(1).map(post => (
-          <BlogCard 
-            title={post.title}
-            tag={post.tag}
-            meta={post.meta}
-            description={post.description}
-            links={post.links}
-          />
-        ))}
+        {blogData.travel.map(post => (
+           <BlogCard 
+             title={post.title}
+             tag={post.tag}
+             meta={post.meta}
+             description={post.description}
+             links={post.links}
+           />
+       ))}
       </div>
-    </section>
+    </Section>
 
     <!-- CTA -->
-    <Section class="card" title="Forslag til indlæg?">
-      <p class="muted">
-        Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.
-      </p>
-      <div class="cta">
-        <a class="btn" href="mailto:anton.ebsen@gmail.com">Send en mail</a>
-        <a class="btn ghost" href="/contact">Kontakt-side</a>
-      </div>
+    <Section>
+      <Card variant="glass" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Forslag til indlæg?</h2>
+        <p class="text-[var(--text-dim)] opacity-80 mb-6">
+          Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="mailto:anton.ebsen@gmail.com">Send en mail</Button>
+          <Button href="/contact" variant="ghost">Kontakt-side</Button>
+        </div>
+      </Card>
     </Section>
 
   </main>
 </Layout>
-
-<style>
-.blog-wrap { 
-  max-width: 1200px; 
-  margin: 24px auto; 
-  padding: 0 16px 32px; 
-}
-
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: var(--accent-soft);
-}
-
-.section-title {
-  margin: 0 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--text-dim);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-}
-
-.lead { 
-  margin: 0 0 24px; 
-  color: var(--text-dim); 
-  font-size: 18px; 
-  line-height: 1.6; 
-}
-
-.muted { 
-  color: var(--text-dim); 
-  opacity: 0.7; 
-}
-
-.cta { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 10px; 
-  margin: 10px 0 14px; 
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #050506;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-
-.btn.ghost {
-  background: transparent;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-}
-
-.pill-wrap { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 8px; 
-}
-
-.pill-link { 
-  text-decoration: none; 
-}
-
-.hero {
-  display: grid; 
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 22px; 
-  align-items: start; 
-  margin-bottom: 14px;
-}
-
-.mini-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-
-.mini-card:hover { 
-  border-color: var(--accent-soft); 
-}
-
-.grid {
-  display: grid; 
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px; 
-  margin-bottom: 14px;
-}
-
-/* Categories */
-.cat { 
-  margin: 14px 0 18px; 
-}
-
-.cat-head {
-  display: flex; 
-  flex-wrap: wrap; 
-  align-items: baseline; 
-  justify-content: space-between;
-  gap: 10px; 
-  margin: 0 0 10px;
-}
-
-.cat-title { 
-  margin: 0; 
-  font-size: 18px; 
-}
-
-.cat-subtitle { 
-  margin: 0; 
-}
-
-/* Responsive */
-@media (max-width: 980px) {
-  .blog-wrap { 
-    padding-left: 14px; 
-    padding-right: 14px; 
-  }
-  .hero { 
-    grid-template-columns: 1fr; 
-  }
-  .grid { 
-    grid-template-columns: 1fr; 
-  }
-  .cat { 
-    margin-top: 10px; 
-  }
-}
-</style>

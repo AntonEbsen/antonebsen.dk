@@ -1,32 +1,33 @@
 ---
+import Button from '../ui/Button.astro';
 ---
-<form class="form" action="#" method="post">
-  <div class="field">
-    <label for="name">Navn</label>
-    <input type="text" id="name" name="name" placeholder="Dit navn" required>
+<form class="grid gap-4" action="#" method="post">
+  <div class="grid gap-1">
+    <label for="name" class="text-sm font-bold text-[var(--text-dim)] ml-1">Navn</label>
+    <input type="text" id="name" name="name" placeholder="Dit navn" required class="bg-[rgba(255,255,255,0.03)] border border-[var(--glass-border)] rounded-lg p-3 focus:border-[var(--accent)] outline-none text-[var(--text)] placeholder-[rgba(255,255,255,0.3)] transition-colors w-full">
   </div>
 
-  <div class="field">
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" placeholder="din@email.dk" required>
+  <div class="grid gap-1">
+    <label for="email" class="text-sm font-bold text-[var(--text-dim)] ml-1">Email</label>
+    <input type="email" id="email" name="email" placeholder="din@email.dk" required class="bg-[rgba(255,255,255,0.03)] border border-[var(--glass-border)] rounded-lg p-3 focus:border-[var(--accent)] outline-none text-[var(--text)] placeholder-[rgba(255,255,255,0.3)] transition-colors w-full">
   </div>
 
-  <div class="field">
-    <label for="subject">Emne</label>
-    <input type="text" id="subject" name="subject" placeholder="Hvad handler henvendelsen om?">
+  <div class="grid gap-1">
+    <label for="subject" class="text-sm font-bold text-[var(--text-dim)] ml-1">Emne</label>
+    <input type="text" id="subject" name="subject" placeholder="Hvad handler henvendelsen om?" class="bg-[rgba(255,255,255,0.03)] border border-[var(--glass-border)] rounded-lg p-3 focus:border-[var(--accent)] outline-none text-[var(--text)] placeholder-[rgba(255,255,255,0.3)] transition-colors w-full">
   </div>
 
-  <div class="field">
-    <label for="message">Besked</label>
-    <textarea id="message" name="message" rows="6" placeholder="Skriv din besked..." required></textarea>
+  <div class="grid gap-1">
+    <label for="message" class="text-sm font-bold text-[var(--text-dim)] ml-1">Besked</label>
+    <textarea id="message" name="message" rows="6" placeholder="Skriv din besked..." required class="bg-[rgba(255,255,255,0.03)] border border-[var(--glass-border)] rounded-lg p-3 focus:border-[var(--accent)] outline-none text-[var(--text)] placeholder-[rgba(255,255,255,0.3)] transition-colors w-full resize-y"></textarea>
   </div>
 
-  <div class="form-actions">
-    <button class="btn" type="submit">Send besked</button>
-    <a class="btn ghost" href="mailto:anton.ebsen@gmail.com?subject=Kontakt%20via%20hjemmesiden">Send via mail</a>
+  <div class="flex flex-wrap gap-3 mt-2">
+    <button type="submit" class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[var(--accent)] text-[#050506] font-bold text-[14.5px] hover:-translate-y-0.5 hover:shadow-[var(--glow)] transition-all cursor-pointer border-none">Send besked</button>
+    <Button href="mailto:anton.ebsen@gmail.com?subject=Kontakt%20via%20hjemmesiden" variant="ghost">Send via mail</Button>
   </div>
 
-  <p class="muted small">
+  <p class="text-[13px] text-[var(--text-dim)] opacity-70 mt-2 ml-1">
     Tip: Hvis du foreslår et samarbejde/job, så skriv gerne tidshorisont, forventet omfang og evt. data/tema.
   </p>
 </form>

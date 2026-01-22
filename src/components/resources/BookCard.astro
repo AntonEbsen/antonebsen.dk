@@ -1,10 +1,14 @@
 ---
+import Card from '../ui/Card.astro';
+import Pill from '../ui/Pill.astro';
+import Button from '../ui/Button.astro';
+
 interface Props {
   title: string;
   author: string;
   year?: string;
-  genre: string;
-  tag: string;
+  genre?: string;
+  tag?: string;
   note: string;
   links?: {
     label: string;
@@ -18,26 +22,32 @@ interface Props {
 const { title, author, year, genre, tag, note, links } = Astro.props;
 ---
 
-<article class="book">
-  <div class="book-top">
-    <h3 class="book-title">{title}</h3>
-    <span class="tag">{tag}</span>
+<Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
+  <div class="flex justify-between items-start mb-2 gap-2">
+    <h3 class="text-[16px] font-bold leading-tight m-0">{title}</h3>
+    {tag && <Pill variant="accent" class="shrink-0">{tag}</Pill>}
   </div>
-  <p class="book-meta">{author} · {year ? `(${year})` : ''} · {genre}</p>
-  <p class="book-note">
-    <strong>Min note:</strong> {note}
+  <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">
+    {author} {year && `· (${year})`} {genre && `· ${genre}`}
+  </p>
+  <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed">
+    <strong class="text-[var(--accent)] text-xs uppercase tracking-wide block mb-1">Min note:</strong>
+    {note}
   </p>
   {links && (
-    <div class="book-links">
+    <div class="flex flex-wrap gap-2 mt-auto pt-3 border-t border-[var(--glass-border)]">
       {links.map(link => (
         <a 
-          class={link.class || "btn ghost"} 
-          href={link.url} 
+          href={link.url}
+          class:list={[
+            "text-xs font-bold transition-colors inline-flex items-center",
+            link.disabled ? "opacity-50 cursor-not-allowed text-[var(--text-dim)]" : "text-[var(--accent)] hover:text-white"
+          ]}
           aria-disabled={link.disabled}
         >
-          {link.icon && <i class={link.icon}></i>} {link.label}
+          {link.icon && <i class:list={[link.icon, "mr-1.5"]}></i>} {link.label}
         </a>
       ))}
     </div>
   )}
-</article>
+</Card>

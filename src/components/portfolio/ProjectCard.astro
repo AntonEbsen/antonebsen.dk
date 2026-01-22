@@ -5,35 +5,34 @@ import Button from '../ui/Button.astro';
 
 interface Props {
   title: string;
-  tag: string;
-  reason: string;
+  tags?: string[];
+  tagString?: string;
   description: string;
+  tools?: string;
+  output?: string;
   links?: {
     label: string;
     url: string;
-    icon?: string;
     disabled?: boolean;
-    class?: string;
   }[];
 }
 
-const { title, tag, reason, description, links } = Astro.props;
+const { title, tags, tagString, description, tools, output, links } = Astro.props;
 ---
 
 <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
   <div class="flex justify-between items-start mb-2 gap-2">
-    <h3 class="text-[16px] font-bold leading-tight m-0">{title}</h3>
-    <Pill variant="accent" class="shrink-0">{tag}</Pill>
-  </div>
-  
-  <div class="mb-3">
-    <strong class="text-[var(--accent)] text-xs uppercase tracking-wide block mb-1">Hvorfor jeg hører den:</strong>
-    <p class="text-[14px] text-[var(--text-dim)] m-0 leading-relaxed">{reason}</p>
+    <h2 class="text-[16px] font-bold leading-tight m-0">{title}</h2>
+    {tagString && <Pill variant="accent" class="shrink-0">{tagString}</Pill>}
   </div>
 
-  <div class="mb-4 flex-grow">
-    <strong class="text-[var(--text-dim)] text-xs uppercase tracking-wide block mb-1 opacity-70">Beskrivelse:</strong>
-    <p class="text-[13px] text-[var(--text-dim)] m-0 opacity-80 leading-relaxed">{description}</p>
+  <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+    {description}
+  </p>
+  
+  <div class="flex flex-col gap-1 mb-4 text-[13px] text-[var(--text-dim)]">
+    {tools && <span><strong class="text-[var(--text)]">Værktøjer:</strong> {tools}</span>}
+    {output && <span><strong class="text-[var(--text)]">Output:</strong> {output}</span>}
   </div>
 
   {links && (
@@ -47,7 +46,7 @@ const { title, tag, reason, description, links } = Astro.props;
           ]}
           aria-disabled={link.disabled}
         >
-          {link.icon && <i class:list={[link.icon, "mr-1.5"]}></i>} {link.label}
+          {link.label}
         </a>
       ))}
     </div>

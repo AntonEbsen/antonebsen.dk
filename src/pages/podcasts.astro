@@ -1,9 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Section from '../components/common/Section.astro';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
+import Pill from '../components/ui/Pill.astro';
 import PodcastCard from '../components/resources/PodcastCard.astro';
 import podcastsData from '../data/resources/podcasts.json';
-import '../styles/podcasts.css';
 ---
 
 <Layout 
@@ -12,143 +14,191 @@ import '../styles/podcasts.css';
   bodyClass="podcasts-page"
 >
 
+  <style>
+    .podcasts-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
   <main class="podcasts-wrap">
 
     <!-- HERO -->
-    <Section class="card hero">
-      <div>
-        <p class="eyebrow">Podcasts</p>
-        <h1>Favoritter jeg faktisk hører igen</h1>
-        <p class="lead">
-          En kurateret liste opdelt efter tema. Jeg opdaterer løbende, når jeg finder noget der er værd at gemme.
-        </p>
+    <Section>
+      <div class="hero">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-[var(--text-dim)] mb-3">Podcasts</p>
+          <h1 class="text-[clamp(28px,4vw,40px)] leading-[1.15] mb-5 font-bold">Favoritter jeg faktisk hører igen</h1>
+          <p class="text-[17px] leading-relaxed text-[var(--text-dim)] mb-6 opacity-90">
+            En kurateret liste opdelt efter tema. Jeg opdaterer løbende, når jeg finder noget der er værd at gemme.
+          </p>
+  
+          <div class="flex flex-wrap gap-2 mb-8" aria-label="Kategorier">
+            <a href="#cat-makro" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Makro</Pill></a>
+            <a href="#cat-data" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Data/Tech</Pill></a>
+            <a href="#cat-traening" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Træning</Pill></a>
+            <a href="#cat-humor" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Humor</Pill></a>
+            <a href="#cat-refleksion" class="no-underline"><Pill variant="accent" class="hover:bg-[var(--accent)] hover:text-white transition-colors">Refleksion</Pill></a>
+          </div>
+  
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#cat-makro"><i class="fa-solid fa-headphones mr-2"></i> Hop til listen</Button>
+            <Button href="/contact" variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> Foreslå en podcast</Button>
+          </div>
 
-        <div class="pill-wrap" aria-label="Kategorier">
-          <a class="pill-link" href="#cat-makro"><span class="pill">Makro</span></a>
-          <a class="pill-link" href="#cat-data"><span class="pill">Data/Tech</span></a>
-          <a class="pill-link" href="#cat-traening"><span class="pill">Træning</span></a>
-          <a class="pill-link" href="#cat-humor"><span class="pill">Humor</span></a>
-          <a class="pill-link" href="#cat-refleksion"><span class="pill">Refleksion</span></a>
-        </div>
-
-        <div class="cta">
-          <a class="btn" href="#cat-makro"><i class="fa-solid fa-headphones"></i> Hop til listen</a>
-          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Foreslå en podcast</a>
-        </div>
-
-        <p class="muted small" style="margin:0;">
-          Note: Links kan være Spotify/Apple/YouTube. (Du kan vælge 1 platform pr. podcast for at holde det clean.)
-        </p>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Hvordan jeg vælger</h2>
-          <ul class="clean-list muted" style="margin:0;">
-            <li>Høj signalværdi (ikke bare “snak”)</li>
-            <li>Gode gæster / konkret viden</li>
-            <li>Kan tåle genlyt</li>
-            <li>Passer til pendling + gåture</li>
-          </ul>
+          <p class="text-[13px] text-[var(--text-dim)] opacity-70 m-0">
+            Note: Links kan være Spotify/Apple/YouTube. (Du kan vælge 1 platform pr. podcast for at holde det clean.)
+          </p>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Hvordan jeg vælger</h2>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-[var(--text-dim)] opacity-90">
+              <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Høj signalværdi (ikke bare “snak”)</li>
+              <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Gode gæster / konkret viden</li>
+              <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Kan tåle genlyt</li>
+              <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Passer til pendling + gåture</li>
+            </ul>
+          </Card>
         </div>
       </div>
     </Section>
 
     <!-- KATEGORI: MAKRO -->
-    <Section class="cat" id="cat-makro" title="Makro & pengepolitik">
-      <p class="muted cat-subtitle" slot="before-content">Centralbanker, konjunkturer, policy og “hvad betyder det i praksis?”.</p>
-      
-      <div class="grid">
-        {podcastsData.macro.map(pod => (
-          <PodcastCard 
-             title={pod.title}
-             tag={pod.tag}
-             reason={pod.reason}
-             description={pod.description}
-             links={pod.links}
-          />
-        ))}
-      </div>
+    <Section id="cat-makro">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-1">Makro & pengepolitik</h2>
+        <p class="text-[var(--text-dim)] text-sm opacity-70 mb-4">Centralbanker, konjunkturer, policy og “hvad betyder det i praksis?”.</p>
+        
+        <div class="grid">
+          {podcastsData.macro.map(pod => (
+            <PodcastCard 
+               title={pod.title}
+               tag={pod.tag}
+               reason={pod.reason}
+               description={pod.description}
+               links={pod.links}
+            />
+          ))}
+        </div>
+      </Card>
     </Section>
 
     <!-- KATEGORI: DATA -->
-    <Section class="cat" id="cat-data" title="Data & tech">
-      <p class="muted cat-subtitle" slot="before-content">Praktiske workflows, ML, programmering og værktøjer.</p>
-
-      <div class="grid">
-        {podcastsData.data.map(pod => (
-          <PodcastCard 
-             title={pod.title}
-             tag={pod.tag}
-             reason={pod.reason}
-             description={pod.description}
-             links={pod.links}
-          />
-        ))}
-      </div>
+    <Section id="cat-data">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-1">Data & tech</h2>
+        <p class="text-[var(--text-dim)] text-sm opacity-70 mb-4">Praktiske workflows, ML, programmering og værktøjer.</p>
+  
+        <div class="grid">
+          {podcastsData.data.map(pod => (
+            <PodcastCard 
+               title={pod.title}
+               tag={pod.tag}
+               reason={pod.reason}
+               description={pod.description}
+               links={pod.links}
+            />
+          ))}
+        </div>
+      </Card>
     </Section>
 
     <!-- KATEGORI: TRÆNING -->
-    <Section class="cat" id="cat-traening" title="Træning">
-      <p class="muted cat-subtitle" slot="before-content">Progression, hypertrofi, vaner og sund fornuft.</p>
-
-      <div class="grid">
-        {podcastsData.training.map(pod => (
-          <PodcastCard 
-             title={pod.title}
-             tag={pod.tag}
-             reason={pod.reason}
-             description={pod.description}
-             links={pod.links}
-          />
-        ))}
-      </div>
+    <Section id="cat-traening">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-1">Træning</h2>
+        <p class="text-[var(--text-dim)] text-sm opacity-70 mb-4">Progression, hypertrofi, vaner og sund fornuft.</p>
+  
+        <div class="grid">
+          {podcastsData.training.map(pod => (
+            <PodcastCard 
+               title={pod.title}
+               tag={pod.tag}
+               reason={pod.reason}
+               description={pod.description}
+               links={pod.links}
+            />
+          ))}
+        </div>
+      </Card>
     </Section>
 
     <!-- KATEGORI: HUMOR -->
-    <Section class="cat" id="cat-humor" title="Humor">
-      <p class="muted cat-subtitle" slot="before-content">Hvis hjernen skal have pause (men stadig have kvalitet).</p>
-
-      <div class="grid">
-        {podcastsData.humor.map(pod => (
-          <PodcastCard 
-             title={pod.title}
-             tag={pod.tag}
-             reason={pod.reason}
-             description={pod.description}
-             links={pod.links}
-          />
-        ))}
-      </div>
+    <Section id="cat-humor">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-1">Humor</h2>
+        <p class="text-[var(--text-dim)] text-sm opacity-70 mb-4">Hvis hjernen skal have pause (men stadig have kvalitet).</p>
+  
+        <div class="grid">
+          {podcastsData.humor.map(pod => (
+            <PodcastCard 
+               title={pod.title}
+               tag={pod.tag}
+               reason={pod.reason}
+               description={pod.description}
+               links={pod.links}
+            />
+          ))}
+        </div>
+      </Card>
     </Section>
 
     <!-- KATEGORI: REFLEKSION -->
-    <Section class="cat" id="cat-refleksion" title="Refleksion">
-      <p class="muted cat-subtitle" slot="before-content">Samtaler, etik, tro, mening og perspektiv.</p>
-
-      <div class="grid">
-        {podcastsData.reflection.map(pod => (
-          <PodcastCard 
-             title={pod.title}
-             tag={pod.tag}
-             reason={pod.reason}
-             description={pod.description}
-             links={pod.links}
-          />
-        ))}
-      </div>
+    <Section id="cat-refleksion">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-1">Refleksion</h2>
+        <p class="text-[var(--text-dim)] text-sm opacity-70 mb-4">Samtaler, etik, tro, mening og perspektiv.</p>
+  
+        <div class="grid">
+          {podcastsData.reflection.map(pod => (
+            <PodcastCard 
+               title={pod.title}
+               tag={pod.tag}
+               reason={pod.reason}
+               description={pod.description}
+               links={pod.links}
+            />
+          ))}
+        </div>
+      </Card>
     </Section>
 
     <!-- CTA -->
-    <Section class="card" title="Har du en anbefaling?">
-      <p class="muted">
-        Hvis du har en podcast du mener passer til mine temaer, så send den gerne. Bonuspoint hvis du også sender 1 episode,
-        der “sælger” den.
-      </p>
-      <div class="cta">
-        <a class="btn" href="mailto:anton.ebsen@gmail.com?subject=Podcast%20anbefaling"><i class="fa-solid fa-paper-plane"></i> Send anbefaling</a>
-        <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
-      </div>
+    <Section>
+      <Card variant="glass" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Har du en anbefaling?</h2>
+        <p class="text-[var(--text-dim)] opacity-80 mb-6">
+          Hvis du har en podcast du mener passer til mine temaer, så send den gerne. Bonuspoint hvis du også sender 1 episode,
+          der “sælger” den.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="mailto:anton.ebsen@gmail.com?subject=Podcast%20anbefaling"><i class="fa-solid fa-paper-plane mr-2"></i> Send anbefaling</Button>
+          <Button href="/blog" variant="ghost"><i class="fa-solid fa-arrow-left mr-2"></i> Tilbage til blog</Button>
+        </div>
+      </Card>
     </Section>
 
   </main>

@@ -1,9 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Section from '../components/common/Section.astro';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
+import Pill from '../components/ui/Pill.astro';
 import BookCard from '../components/resources/BookCard.astro';
 import booksData from '../data/resources/books.json';
-import '../styles/books.css';
 ---
 
 <Layout 
@@ -12,82 +14,118 @@ import '../styles/books.css';
   bodyClass="books-page"
 >
 
+  <style>
+    .books-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
   <main class="books-wrap">
 
     <!-- HERO -->
-    <Section class="card hero">
-      <div>
-        <p class="eyebrow">Om mig · Læseliste</p>
-        <h1>Mine favoritbøger</h1>
-        <p class="lead">
-          En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på,
-          eller fordi jeg vender tilbage til dem igen og igen.
-        </p>
-
-        <div class="pill-wrap" aria-label="Kategorier">
-          <span class="pill">Klassikere</span>
-          <span class="pill">Fagligt</span>
-          <span class="pill">Biografier</span>
-          <span class="pill">Tro & etik</span>
-          <span class="pill">Sprog & skrivning</span>
-        </div>
-
-        <div class="cta">
-          <a class="btn" href="#list"><i class="fa-solid fa-book"></i> Se listen</a>
-          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Anbefal en bog</a>
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Hvordan jeg bruger listen</h2>
-          <p class="muted small" style="margin:0;">
-            Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.
-            Hvis du vil have en anbefaling, så skriv genre + hvad du vil have ud af bogen.
+    <Section>
+      <div class="hero">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-[var(--text-dim)] mb-3">Om mig · Læseliste</p>
+          <h1 class="text-[clamp(28px,4vw,40px)] leading-[1.15] mb-5 font-bold">Mine favoritbøger</h1>
+          <p class="text-[17px] leading-relaxed text-[var(--text-dim)] mb-6 opacity-90">
+            En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på,
+            eller fordi jeg vender tilbage til dem igen og igen.
           </p>
-          <p class="muted small" style="margin-top:10px;">
-            Tip: Tilføj gerne <strong>årstal</strong> og <strong>min korte note</strong> — det gør listen mere personlig.
-          </p>
+  
+          <div class="flex flex-wrap gap-2 mb-8" aria-label="Kategorier">
+            <Pill variant="accent">Klassikere</Pill>
+            <Pill variant="accent">Fagligt</Pill>
+            <Pill variant="accent">Biografier</Pill>
+            <Pill variant="accent">Tro & etik</Pill>
+            <Pill variant="accent">Sprog & skrivning</Pill>
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#list"><i class="fa-solid fa-book mr-2"></i> Se listen</Button>
+            <Button href="/contact" variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> Anbefal en bog</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Hvordan jeg bruger listen</h2>
+            <p class="text-[13px] text-[var(--text-dim)] mb-4 opacity-70 leading-relaxed">
+              Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.
+              Hvis du vil have en anbefaling, så skriv genre + hvad du vil have ud af bogen.
+            </p>
+            <p class="text-[13px] text-[var(--text-dim)] opacity-70 leading-relaxed">
+              Tip: Tilføj gerne <strong>årstal</strong> og <strong>min korte note</strong> — det gør listen mere personlig.
+            </p>
+          </Card>
         </div>
       </div>
     </Section>
 
     <!-- LISTE -->
-    <Section class="card" id="list" title="Favoritter">
-      <p class="muted" style="margin-top:-6px;">
-        (Skabelon klar — udskift titlerne med dine egne. Du kan også sortere efter kategori.)
-      </p>
+    <Section id="list">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-2">Favoritter</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6 text-sm">
+          (Skabelon klar — udskift titlerne med dine egne. Du kan også sortere efter kategori.)
+        </p>
 
-      <div class="grid">
-        {booksData.map(book => (
-          <BookCard 
-            title={book.title}
-            author={book.author}
-            year={book.year}
-            genre={book.genre}
-            tag={book.tag}
-            note={book.note}
-            links={book.links}
-          />
-        ))}
-      </div>
+        <div class="grid">
+          {booksData.map(book => (
+            <BookCard 
+              title={book.title}
+              author={book.author}
+              year={book.year}
+              genre={book.genre}
+              tag={book.tag}
+              note={book.note}
+              links={book.links}
+            />
+          ))}
+        </div>
 
-      <hr class="divider">
+        <hr class="border-0 border-t border-[var(--glass-border)] my-8 w-full" />
 
-      <p class="muted small" style="margin:0;">
-        Vil du have det mere “database-agtigt”? Så kan vi lave: søgning, filter på tags, og sortering efter år/genre.
-      </p>
+        <p class="text-[13px] text-[var(--text-dim)] opacity-70 m-0">
+          Vil du have det mere “database-agtigt”? Så kan vi lave: søgning, filter på tags, og sortering efter år/genre.
+        </p>
+      </Card>
     </Section>
 
     <!-- CTA -->
-    <Section class="card" title="Anbefal mig en bog">
-      <p class="muted">
-        Send gerne: (1) genre, (2) hvad bogen skal kunne, og (3) om du vil have klassiker vs. moderne.
-      </p>
-      <div class="cta">
-        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a>
-        <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
-      </div>
+    <Section>
+      <Card variant="glass" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Anbefal mig en bog</h2>
+        <p class="text-[var(--text-dim)] opacity-80 mb-6">
+          Send gerne: (1) genre, (2) hvad bogen skal kunne, og (3) om du vil have klassiker vs. moderne.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane mr-2"></i> Send mail</Button>
+          <Button href="/blog" variant="ghost"><i class="fa-solid fa-arrow-left mr-2"></i> Tilbage til blog</Button>
+        </div>
+      </Card>
     </Section>
 
   </main>

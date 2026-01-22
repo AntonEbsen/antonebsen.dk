@@ -1,4 +1,8 @@
 ---
+import Card from '../ui/Card.astro';
+import Pill from '../ui/Pill.astro';
+import Button from '../ui/Button.astro';
+
 interface Props {
   title: string;
   tag: string;
@@ -9,31 +13,36 @@ interface Props {
     url: string;
     icon?: string;
     disabled?: boolean;
-    class?: string; // 'btn' or 'btn ghost' default handling
+    class?: string;
   }[];
 }
 
 const { title, tag, meta, description, links } = Astro.props;
 ---
 
-<article class="card post" style="margin-bottom:14px;">
-  <div class="post-top">
-    <h3 class="post-title">{title}</h3>
-    <span class="tag">{tag}</span>
+<Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]! mb-4">
+  <div class="flex justify-between items-start mb-2 gap-2">
+    <h3 class="text-[16px] font-bold leading-tight m-0">{title}</h3>
+    <Pill variant="accent" class="shrink-0">{tag}</Pill>
   </div>
-  <p class="post-meta">{meta}</p>
-  <p class="muted" style="margin:0 0 12px;">
+  <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">{meta}</p>
+  
+  <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
     {description}
   </p>
-  <div class="post-links">
+
+  <div class="flex flex-wrap gap-2 mt-auto pt-3 border-t border-[var(--glass-border)]">
     {links.map(link => (
       <a 
-        class={link.class || "btn ghost"} 
-        href={link.url} 
+        href={link.url}
+        class:list={[
+          "text-xs font-bold transition-colors inline-flex items-center",
+          link.disabled ? "opacity-50 cursor-not-allowed text-[var(--text-dim)]" : "text-[var(--accent)] hover:text-white"
+        ]}
         aria-disabled={link.disabled}
       >
-        {link.icon && <i class={link.icon}></i>} {link.label}
+        {link.icon && <i class:list={[link.icon, "mr-1.5"]}></i>} {link.label}
       </a>
     ))}
   </div>
-</article>
+</Card>

@@ -45,15 +45,7 @@ const { title, description = "Anton Meier Ebsen Jørgensen", bodyClass = "" } = 
 <body class={bodyClass}>
   <Navbar />
 
-  <main class={bodyClass.includes('home-page') ? 'home-wrap' : 'about-wrap'}> 
-    <!-- Note: 'about-wrap' seems to be the default container for inner pages based on about.html structure. 
-         home-page uses 'home-wrap'. We can adjust this logic or just leave the <main> in the page component.
-         Actually, let's keep the main wrapper inside the layout if it's consistent, 
-         BUT index.html has <main class="home-wrap"> and about.html has <main class="about-wrap">.
-         So let's put the SLOT inside the body, and let the Pages define their <main>.
-    -->
-    <slot />
-  </main>
+  <slot />
 
   <Footer />
 </body>
