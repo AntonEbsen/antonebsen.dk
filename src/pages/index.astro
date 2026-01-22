@@ -101,7 +101,7 @@ const projectsData = await getCollection('portfolio');
     <!-- HIGHLIGHTS -->
     <Section>
       <div class="grid-3">
-        <Card variant="bordered" class="flex flex-col h-full bg-glass!">
+        <Card variant="bordered" class="flex flex-col h-full bg-glass">
           <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{homeData.work.title}</h2>
           <ul class="list-none p-0 m-0 space-y-3">
             {homeData.work.items.map(item => (
@@ -112,7 +112,7 @@ const projectsData = await getCollection('portfolio');
           </ul>
         </Card>
   
-        <Card variant="bordered" class="flex flex-col h-full bg-glass!">
+        <Card variant="bordered" class="flex flex-col h-full bg-glass">
           <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{homeData.projects.title}</h2>
           <ul class="list-none p-0 m-0 space-y-2 mb-4">
             {projectsData.map(project => (
@@ -126,7 +126,7 @@ const projectsData = await getCollection('portfolio');
           </p>
         </Card>
   
-        <Card variant="bordered" class="flex flex-col h-full bg-glass!">
+        <Card variant="bordered" class="flex flex-col h-full bg-glass">
           <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hurtig adgang</h2>
           <div class="flex flex-wrap gap-2 mb-6">
             <Button href="/cv" variant="ghost" class="text-xs">CV</Button>
