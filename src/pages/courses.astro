@@ -7,8 +7,250 @@ import Layout from '../layouts/Layout.astro';
   description="Kurser: universitetsfag, online-kurser og certificeringsforløb (Python, SAS, Matlab, økonomi m.m.)."
   bodyClass="courses-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/courses.css" slot="head" />
+<style>
+.courses-wrap {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px 32px;
+}
+
+/* Cards */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--accent-soft);
+}
+
+.section-title {
+  margin: 0 0 24px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--text-dim);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+}
+
+.lead { 
+  margin: 0 0 24px; 
+  color: var(--text-dim); 
+  font-size: 18px; 
+  line-height: 1.6; 
+}
+
+.muted { 
+  color: var(--text-dim); 
+  opacity: 0.7; 
+}
+.small { 
+  font-size: 13px; 
+}
+
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.mini-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.3s ease;
+}
+.mini-card:hover { 
+  border-color: var(--accent-soft); 
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.search {
+  flex: 1 1 260px;
+  min-width: 220px;
+  display: flex;
+  gap: 10px;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  outline: none;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  appearance: none;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover { 
+  background: rgba(255, 255, 255, 0.08); 
+}
+.chip.active {
+  background: var(--accent);
+  color: #050506;
+  border-color: var(--accent);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.course {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.course-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.course-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-blue);
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent-blue);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meta { 
+  font-size: 13px; 
+  color: var(--text-dim); 
+}
+
+.pill-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pill {
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #050506;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+.btn.ghost {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+/* Stack spacing */
+.stack {
+  display: grid;
+  gap: 14px;
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .hero { 
+    grid-template-columns: 1fr; 
+  }
+  .grid { 
+    grid-template-columns: 1fr; 
+  }
+}
+</style>
 
   <main class="courses-wrap">
 

@@ -1,13 +1,18 @@
+---
+import siteData from '../data/site.json';
+const { footer } = siteData;
+const year = new Date().getFullYear();
+---
+
 <footer class="site-footer" role="contentinfo">
   <div class="footer-container">
 
     <div class="footer-top">
       <!-- Brand / kort pitch -->
       <section class="footer-col footer-brand" aria-label="Om siden">
-        <h2 class="footer-title">Anton Meier Ebsen Jørgensen</h2>
+        <h2 class="footer-title">{footer.brand.title}</h2>
         <p class="footer-text">
-          Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller.
-          Jeg bygger analyser og templates, der kan bruges i praksis.
+          {footer.brand.text}
         </p>
 
         <div class="footer-cta">
@@ -24,12 +29,9 @@
       <nav class="footer-col" aria-label="Footer navigation">
         <h3 class="footer-title-sm">Navigation</h3>
         <ul class="footer-list">
-          <li><a href="/">Hjem</a></li>
-          <li><a href="/cv">CV</a></li>
-          <li><a href="/portfolio">Portefølje</a></li>
-          <li><a href="/services">Samarbejde</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/contact">Kontakt</a></li>
+          {footer.links.map(link => (
+            <li><a href={link.url}>{link.label}</a></li>
+          ))}
         </ul>
       </nav>
 
@@ -37,11 +39,9 @@
       <nav class="footer-col" aria-label="Udvalgte sider">
         <h3 class="footer-title-sm">Udvalgte sider</h3>
         <ul class="footer-list">
-          <li><a href="/resources">Downloads</a></li>
-          <li><a href="/media">Omtale</a></li>
-          <li><a href="/notes">Noter</a></li>
-          <li><a href="/gallery">Galleri</a></li>
-          <li><a href="/timeline">Milepæle</a></li>
+          {footer.selected.map(link => (
+            <li><a href={link.url}>{link.label}</a></li>
+          ))}
         </ul>
       </nav>
 
@@ -52,12 +52,12 @@
         <address class="footer-text footer-address">
           <div class="footer-address-row">
             <span class="footer-kicker">Email</span><br>
-            <a href="mailto:anton.ebsen@proton.me">anton.ebsen@proton.me</a>
+            <a href={`mailto:${footer.contact.email}`}>{footer.contact.email}</a>
           </div>
 
           <div class="footer-address-row">
             <span class="footer-kicker">Telefon</span><br>
-            <a href="tel:+4525740131">+45 25 74 01 31</a>
+            <a href={`tel:${footer.contact.phone.replace(/ /g,'')}`}>{footer.contact.phone}</a>
           </div>
 
           <div class="footer-address-row">
@@ -67,10 +67,10 @@
         </address>
 
         <div class="footer-social" aria-label="Sociale links">
-          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <a href={footer.contact.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">
             <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
           </a>
-          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+          <a href={footer.contact.github} target="_blank" rel="noopener" aria-label="GitHub">
             <i class="fa-brands fa-github" aria-hidden="true"></i>
           </a>
         </div>
@@ -79,17 +79,16 @@
 
     <div class="footer-bottom">
       <nav class="footer-legal" aria-label="Juridiske sider">
-        <a href="/privacy">Privatlivspolitik</a>
-        <span aria-hidden="true">·</span>
-        <a href="/terms">Vilkår</a>
-        <span aria-hidden="true">·</span>
-        <a href="/accessibility">Tilgængelighed</a>
-        <span aria-hidden="true">·</span>
-        <a href="/disclaimer">Disclaimer</a>
+         {footer.legal.map((link, index) => (
+           <>
+            <a href={link.url}>{link.label}</a>
+            {index < footer.legal.length - 1 && <span aria-hidden="true">·</span>}
+           </>
+         ))}
       </nav>
 
       <p class="footer-copy">
-        &copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+        &copy; {year} Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
         <span class="footer-copy-muted">Kildekode:
           <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
         </span>

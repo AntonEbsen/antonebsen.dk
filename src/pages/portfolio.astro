@@ -4,7 +4,6 @@ import Pill from '../components/common/Pill.astro';
 import Section from '../components/common/Section.astro';
 import ProjectCard from '../components/common/ProjectCard.astro';
 import portfolioData from '../data/portfolio.json';
-import '../styles/portfolio.css';
 ---
 
 <Layout 
@@ -64,7 +63,7 @@ import '../styles/portfolio.css';
     </section>
 
     <!-- Footer card -->
-    <Section class="card">
+    <Section class="card footer-card">
       <h2 class="section-title">Mere</h2>
       <p class="muted">
         Jeg opdaterer løbende porteføljen. Du kan også finde mere på
@@ -75,3 +74,138 @@ import '../styles/portfolio.css';
     </Section>
 
 </Layout>
+
+<style>
+/* Cards */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--accent-soft);
+}
+
+.section-title {
+  margin: 0 0 24px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--text-dim);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+}
+
+.lead { 
+  margin: 0 0 24px; 
+  color: var(--text-dim); 
+  font-size: 18px; 
+  line-height: 1.6; 
+}
+
+.muted { 
+  color: var(--text-dim); 
+  opacity: 0.7; 
+}
+
+/* Buttons + pills */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #050506;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+.btn.ghost {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+.pill-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Hero layout */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.mini-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.3s ease;
+}
+.mini-card:hover { 
+  border-color: var(--accent-soft); 
+}
+
+/* Project grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* Lists */
+.clean-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.footer-card {
+  margin-top: 14px;
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .hero { 
+    grid-template-columns: 1fr; 
+  }
+  .grid { 
+    grid-template-columns: 1fr; 
+  }
+}
+</style>

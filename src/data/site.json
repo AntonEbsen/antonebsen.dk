@@ -1,0 +1,217 @@
+{
+    "navigation": [
+        {
+            "label": "Hjem",
+            "url": "/",
+            "activeMatch": "/"
+        },
+        {
+            "label": "CV",
+            "url": "/cv",
+            "dropdown": [
+                {
+                    "label": "CV (overblik)",
+                    "url": "/cv"
+                },
+                {
+                    "label": "Profil",
+                    "url": "/about"
+                },
+                {
+                    "label": "Erhvervserfaring",
+                    "url": "/experience"
+                },
+                {
+                    "label": "Uddannelse",
+                    "url": "/education"
+                },
+                {
+                    "label": "Kompetencer",
+                    "url": "/skills"
+                },
+                {
+                    "label": "Kurser",
+                    "url": "/courses"
+                },
+                {
+                    "label": "Certificeringer",
+                    "url": "/certifications"
+                },
+                {
+                    "label": "Organisationer",
+                    "url": "/organizations"
+                },
+                {
+                    "label": "Milepæle",
+                    "url": "/timeline"
+                },
+                {
+                    "label": "Video-CV",
+                    "url": "/video-cv"
+                }
+            ]
+        },
+        {
+            "label": "Portefølje",
+            "url": "/portfolio",
+            "dropdown": [
+                {
+                    "label": "Projekter",
+                    "url": "/portfolio#projects"
+                },
+                {
+                    "label": "Projekt-cases",
+                    "url": "/cases"
+                },
+                {
+                    "label": "Downloads",
+                    "url": "/resources"
+                },
+                {
+                    "label": "Omtale",
+                    "url": "/media"
+                },
+                {
+                    "label": "Noter",
+                    "url": "/notes"
+                },
+                {
+                    "label": "Galleri",
+                    "url": "/gallery"
+                },
+                {
+                    "label": "GitHub",
+                    "url": "https://github.com/AntonEbsen",
+                    "external": true
+                }
+            ]
+        },
+        {
+            "label": "Samarbejde",
+            "url": "/services"
+        },
+        {
+            "label": "Referencer",
+            "url": "/referencer"
+        },
+        {
+            "label": "FAQ",
+            "url": "/faq"
+        },
+        {
+            "label": "Blog",
+            "url": "/blog",
+            "dropdown": [
+                {
+                    "label": "Fagligt",
+                    "url": "/blog#cat-fagligt"
+                },
+                {
+                    "label": "Træning",
+                    "url": "/blog#cat-traening"
+                },
+                {
+                    "label": "Rejser",
+                    "url": "/blog#cat-rejser"
+                }
+            ]
+        },
+        {
+            "label": "Kontakt",
+            "url": "/contact",
+            "dropdown": [
+                {
+                    "label": "Kontaktformular",
+                    "url": "/contact#kontakt"
+                },
+                {
+                    "label": "Send mail",
+                    "url": "mailto:anton.ebsen@gmail.com"
+                },
+                {
+                    "label": "LinkedIn",
+                    "url": "https://www.linkedin.com/in/antonebsen/",
+                    "external": true
+                }
+            ]
+        }
+    ],
+    "footer": {
+        "brand": {
+            "title": "Anton Meier Ebsen Jørgensen",
+            "text": "Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis."
+        },
+        "links": [
+            {
+                "label": "Hjem",
+                "url": "/"
+            },
+            {
+                "label": "CV",
+                "url": "/cv"
+            },
+            {
+                "label": "Portefølje",
+                "url": "/portfolio"
+            },
+            {
+                "label": "Samarbejde",
+                "url": "/services"
+            },
+            {
+                "label": "Blog",
+                "url": "/blog"
+            },
+            {
+                "label": "Kontakt",
+                "url": "/contact"
+            }
+        ],
+        "selected": [
+            {
+                "label": "Downloads",
+                "url": "/resources"
+            },
+            {
+                "label": "Omtale",
+                "url": "/media"
+            },
+            {
+                "label": "Noter",
+                "url": "/notes"
+            },
+            {
+                "label": "Galleri",
+                "url": "/gallery"
+            },
+            {
+                "label": "Milepæle",
+                "url": "/timeline"
+            }
+        ],
+        "contact": {
+            "email": "anton.ebsen@proton.me",
+            "phone": "+45 25 74 01 31",
+            "linkedin": "https://www.linkedin.com/in/antonebsen/",
+            "github": "https://github.com/AntonEbsen"
+        },
+        "legal": [
+            {
+                "label": "Privatlivspolitik",
+                "url": "/legal/privacy"
+            },
+            {
+                "label": "Vilkår",
+                "url": "/legal/terms"
+            },
+            {
+                "label": "Tilgængelighed",
+                "url": "/legal/accessibility"
+            },
+            {
+                "label": "Disclaimer",
+                "url": "/legal/disclaimer"
+            }
+        ]
+    }
+}

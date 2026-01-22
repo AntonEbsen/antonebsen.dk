@@ -1,57 +1,32 @@
+---
+import siteData from '../data/site.json';
+const pathname = new URL(Astro.request.url).pathname;
+---
+
 <nav class="navbar" aria-label="Primær navigation">
   <div class="nav-inner">
     <div class="nav-left">
-      <a class="active" href="/">Hjem</a>
-      <div class="nav-item has-dropdown">
-        <a href="/cv" class="nav-link">CV</a>
-        <div class="dropdown" role="menu" aria-label="CV undermenu">
-          <a href="/cv" role="menuitem">CV (overblik)</a>
-          <a href="/about" role="menuitem">Profil</a>
-          <a href="/experience" role="menuitem">Erhvervserfaring</a>
-          <a href="/education" role="menuitem">Uddannelse</a>
-          <a href="/skills" role="menuitem">Kompetencer</a>
-          <a href="/courses" role="menuitem">Kurser</a>
-          <a href="/certifications" role="menuitem">Certificeringer</a>
-          <a href="/organizations" role="menuitem">Organisationer</a>
-          <a href="/timeline" role="menuitem">Milepæle</a>
-          <a href="/video-cv" role="menuitem">Video-CV</a>
-        </div>
-      </div>
-
-      <div class="nav-item has-dropdown">
-        <a href="/portfolio" class="nav-link">Portefølje</a>
-        <div class="dropdown" role="menu" aria-label="Portefølje undermenu">
-          <a href="/portfolio#projects" role="menuitem">Projekter</a>
-          <a href="/cases" role="menuitem">Projekt-cases</a>
-          <a href="/resources" role="menuitem">Downloads</a>
-          <a href="/media" role="menuitem">Omtale</a>
-          <a href="/notes" role="menuitem">Noter</a>
-          <a href="/gallery" role="menuitem">Galleri</a>
-          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" role="menuitem">GitHub</a>
-        </div>
-      </div>
-
-      <a href="/services">Samarbejde</a>
-      <a href="/referencer">Referencer</a>
-      <a href="/faq">FAQ</a>
-
-      <div class="nav-item has-dropdown">
-        <a href="/blog" class="nav-link">Blog</a>
-        <div class="dropdown" role="menu" aria-label="Blog undermenu">
-          <a href="/blog#cat-fagligt" role="menuitem">Fagligt</a>
-          <a href="/blog#cat-traening" role="menuitem">Træning</a>
-          <a href="/blog#cat-rejser" role="menuitem">Rejser</a>
-        </div>
-      </div>
-
-      <div class="nav-item has-dropdown">
-        <a href="/contact" class="nav-link">Kontakt</a>
-        <div class="dropdown" role="menu" aria-label="Kontakt undermenu">
-          <a href="/contact#kontakt" role="menuitem">Kontaktformular</a>
-          <a href="mailto:anton.ebsen@gmail.com" role="menuitem">Send mail</a>
-          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" role="menuitem">LinkedIn</a>
-        </div>
-      </div>
+      {siteData.navigation.map(item => (
+        item.dropdown ? (
+          <div class="nav-item has-dropdown">
+            <a href={item.url} class={`nav-link ${pathname === item.url ? 'active' : ''}`}>{item.label}</a>
+            <div class="dropdown" role="menu" aria-label={`${item.label} undermenu`}>
+              {item.dropdown.map(subItem => (
+                <a 
+                  href={subItem.url} 
+                  role="menuitem"
+                  target={subItem.external ? "_blank" : undefined}
+                  rel={subItem.external ? "noopener" : undefined}
+                >
+                  {subItem.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a class={pathname === item.url || (item.activeMatch && pathname === item.activeMatch) ? "active" : ""} href={item.url}>{item.label}</a>
+        )
+      ))}
     </div>
 
     <div class="nav-search" role="search">

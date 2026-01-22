@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Section from '../components/common/Section.astro';
+import PodcastCard from '../components/resources/PodcastCard.astro';
+import podcastsData from '../data/resources/podcasts.json';
+import '../styles/podcasts.css';
 ---
 
 <Layout 
@@ -7,13 +11,11 @@ import Layout from '../layouts/Layout.astro';
   description="En kurateret liste over mine favoritpodcasts – makro, data, træning, humor og refleksion."
   bodyClass="podcasts-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/podcasts.css" slot="head" />
 
   <main class="podcasts-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
+    <Section class="card hero">
       <div>
         <p class="eyebrow">Podcasts</p>
         <h1>Favoritter jeg faktisk hører igen</h1>
@@ -50,135 +52,95 @@ import Layout from '../layouts/Layout.astro';
           </ul>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- KATEGORI: MAKRO -->
-    <section class="cat" id="cat-makro" aria-label="Makro & pengepolitik">
-      <div class="cat-head">
-        <h2 class="cat-title">Makro & pengepolitik</h2>
-        <p class="muted cat-subtitle">Centralbanker, konjunkturer, policy og “hvad betyder det i praksis?”.</p>
-      </div>
-
+    <Section class="cat" id="cat-makro" title="Makro & pengepolitik">
+      <p class="muted cat-subtitle" slot="before-content">Centralbanker, konjunkturer, policy og “hvad betyder det i praksis?”.</p>
+      
       <div class="grid">
-        <!-- PODCAST CARD -->
-        <article class="card pod">
-          <div class="pod-top">
-            <h3 class="pod-title">[Podcastnavn]</h3>
-            <span class="tag">Makro</span>
-          </div>
-          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
-          <p class="muted">Beskrivelse: Hvilke emner dækker den? Hvad er typisk formatet?</p>
-          <div class="pod-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-apple"></i> Apple</a>
-          </div>
-        </article>
-
-        <article class="card pod">
-          <div class="pod-top">
-            <h3 class="pod-title">[Podcastnavn]</h3>
-            <span class="tag">Makro</span>
-          </div>
-          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
-          <p class="muted">Beskrivelse: (kort, konkret)</p>
-          <div class="pod-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
-          </div>
-        </article>
+        {podcastsData.macro.map(pod => (
+          <PodcastCard 
+             title={pod.title}
+             tag={pod.tag}
+             reason={pod.reason}
+             description={pod.description}
+             links={pod.links}
+          />
+        ))}
       </div>
-    </section>
+    </Section>
 
     <!-- KATEGORI: DATA -->
-    <section class="cat" id="cat-data" aria-label="Data & tech">
-      <div class="cat-head">
-        <h2 class="cat-title">Data & tech</h2>
-        <p class="muted cat-subtitle">Praktiske workflows, ML, programmering og værktøjer.</p>
-      </div>
+    <Section class="cat" id="cat-data" title="Data & tech">
+      <p class="muted cat-subtitle" slot="before-content">Praktiske workflows, ML, programmering og værktøjer.</p>
 
       <div class="grid">
-        <article class="card pod">
-          <div class="pod-top">
-            <h3 class="pod-title">[Podcastnavn]</h3>
-            <span class="tag">Data</span>
-          </div>
-          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
-          <p class="muted">Beskrivelse…</p>
-          <div class="pod-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-youtube"></i> YouTube</a>
-          </div>
-        </article>
+        {podcastsData.data.map(pod => (
+          <PodcastCard 
+             title={pod.title}
+             tag={pod.tag}
+             reason={pod.reason}
+             description={pod.description}
+             links={pod.links}
+          />
+        ))}
       </div>
-    </section>
+    </Section>
 
     <!-- KATEGORI: TRÆNING -->
-    <section class="cat" id="cat-traening" aria-label="Træning">
-      <div class="cat-head">
-        <h2 class="cat-title">Træning</h2>
-        <p class="muted cat-subtitle">Progression, hypertrofi, vaner og sund fornuft.</p>
-      </div>
+    <Section class="cat" id="cat-traening" title="Træning">
+      <p class="muted cat-subtitle" slot="before-content">Progression, hypertrofi, vaner og sund fornuft.</p>
 
       <div class="grid">
-        <article class="card pod">
-          <div class="pod-top">
-            <h3 class="pod-title">[Podcastnavn]</h3>
-            <span class="tag">Træning</span>
-          </div>
-          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
-          <p class="muted">Beskrivelse…</p>
-          <div class="pod-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
-          </div>
-        </article>
+        {podcastsData.training.map(pod => (
+          <PodcastCard 
+             title={pod.title}
+             tag={pod.tag}
+             reason={pod.reason}
+             description={pod.description}
+             links={pod.links}
+          />
+        ))}
       </div>
-    </section>
+    </Section>
 
     <!-- KATEGORI: HUMOR -->
-    <section class="cat" id="cat-humor" aria-label="Humor">
-      <div class="cat-head">
-        <h2 class="cat-title">Humor</h2>
-        <p class="muted cat-subtitle">Hvis hjernen skal have pause (men stadig have kvalitet).</p>
-      </div>
+    <Section class="cat" id="cat-humor" title="Humor">
+      <p class="muted cat-subtitle" slot="before-content">Hvis hjernen skal have pause (men stadig have kvalitet).</p>
 
       <div class="grid">
-        <article class="card pod">
-          <div class="pod-top">
-            <h3 class="pod-title">[Podcastnavn]</h3>
-            <span class="tag">Humor</span>
-          </div>
-          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
-          <p class="muted">Beskrivelse…</p>
-          <div class="pod-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
-          </div>
-        </article>
+        {podcastsData.humor.map(pod => (
+          <PodcastCard 
+             title={pod.title}
+             tag={pod.tag}
+             reason={pod.reason}
+             description={pod.description}
+             links={pod.links}
+          />
+        ))}
       </div>
-    </section>
+    </Section>
 
     <!-- KATEGORI: REFLEKSION -->
-    <section class="cat" id="cat-refleksion" aria-label="Refleksion">
-      <div class="cat-head">
-        <h2 class="cat-title">Refleksion</h2>
-        <p class="muted cat-subtitle">Samtaler, etik, tro, mening og perspektiv.</p>
-      </div>
+    <Section class="cat" id="cat-refleksion" title="Refleksion">
+      <p class="muted cat-subtitle" slot="before-content">Samtaler, etik, tro, mening og perspektiv.</p>
 
       <div class="grid">
-        <article class="card pod">
-          <div class="pod-top">
-            <h3 class="pod-title">[Podcastnavn]</h3>
-            <span class="tag">Refleksion</span>
-          </div>
-          <p class="pod-meta">Hvorfor jeg hører den: (1 linje)</p>
-          <p class="muted">Beskrivelse…</p>
-          <div class="pod-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-spotify"></i> Spotify</a>
-          </div>
-        </article>
+        {podcastsData.reflection.map(pod => (
+          <PodcastCard 
+             title={pod.title}
+             tag={pod.tag}
+             reason={pod.reason}
+             description={pod.description}
+             links={pod.links}
+          />
+        ))}
       </div>
-    </section>
+    </Section>
 
     <!-- CTA -->
-    <section class="card">
-      <h2 class="section-title">Har du en anbefaling?</h2>
+    <Section class="card" title="Har du en anbefaling?">
       <p class="muted">
         Hvis du har en podcast du mener passer til mine temaer, så send den gerne. Bonuspoint hvis du også sender 1 episode,
         der “sælger” den.
@@ -187,7 +149,7 @@ import Layout from '../layouts/Layout.astro';
         <a class="btn" href="mailto:anton.ebsen@gmail.com?subject=Podcast%20anbefaling"><i class="fa-solid fa-paper-plane"></i> Send anbefaling</a>
         <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
       </div>
-    </section>
+    </Section>
 
   </main>
 </Layout>

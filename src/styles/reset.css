@@ -1,0 +1,80 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* stop side-scroll hvis noget stikker ud */
+}
+
+body {
+    font-family: var(--font-main);
+    font-size: var(--body-size);
+    line-height: var(--lh-body);
+    background: var(--depth-bg);
+    background-attachment: fixed;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    position: relative;
+}
+
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    filter: brightness(1.2);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+p,
+li {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    color: var(--text-dim);
+}
+
+h1,
+h2,
+h3 {
+    color: var(--text);
+    margin: 0 0 0.5em;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-heading);
+    font-weight: 800;
+}
+
+h1 {
+    font-size: var(--h1-size);
+    color: var(--text);
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+h2 {
+    font-size: var(--h2-size);
+    color: var(--text);
+}

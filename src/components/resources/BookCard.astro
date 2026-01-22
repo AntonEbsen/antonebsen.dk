@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  author: string;
+  year?: string;
+  genre: string;
+  tag: string;
+  note: string;
+  links?: {
+    label: string;
+    url: string;
+    icon?: string;
+    disabled?: boolean;
+    class?: string;
+  }[];
+}
+
+const { title, author, year, genre, tag, note, links } = Astro.props;
+---
+
+<article class="book">
+  <div class="book-top">
+    <h3 class="book-title">{title}</h3>
+    <span class="tag">{tag}</span>
+  </div>
+  <p class="book-meta">{author} · {year ? `(${year})` : ''} · {genre}</p>
+  <p class="book-note">
+    <strong>Min note:</strong> {note}
+  </p>
+  {links && (
+    <div class="book-links">
+      {links.map(link => (
+        <a 
+          class={link.class || "btn ghost"} 
+          href={link.url} 
+          aria-disabled={link.disabled}
+        >
+          {link.icon && <i class={link.icon}></i>} {link.label}
+        </a>
+      ))}
+    </div>
+  )}
+</article>

@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Section from '../components/common/Section.astro';
+import BookCard from '../components/resources/BookCard.astro';
+import booksData from '../data/resources/books.json';
+import '../styles/books.css';
 ---
 
 <Layout 
@@ -7,13 +11,11 @@ import Layout from '../layouts/Layout.astro';
   description="En kurateret liste med mine favoritbøger – klassikere, faglige bøger og bøger jeg vender tilbage til."
   bodyClass="books-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/books.css" slot="head" />
 
   <main class="books-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
+    <Section class="card hero">
       <div>
         <p class="eyebrow">Om mig · Læseliste</p>
         <h1>Mine favoritbøger</h1>
@@ -48,105 +50,26 @@ import Layout from '../layouts/Layout.astro';
           </p>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- LISTE -->
-    <section class="card" id="list">
-      <h2 class="section-title">Favoritter</h2>
+    <Section class="card" id="list" title="Favoritter">
       <p class="muted" style="margin-top:-6px;">
         (Skabelon klar — udskift titlerne med dine egne. Du kan også sortere efter kategori.)
       </p>
 
       <div class="grid">
-
-        <!-- BOOK CARD -->
-        <article class="book">
-          <div class="book-top">
-            <h3 class="book-title">Titel på bog</h3>
-            <span class="tag">Klassiker</span>
-          </div>
-          <p class="book-meta">Forfatter · (årstal) · Genre</p>
-          <p class="book-note">
-            Min note: Hvad gav den mig? Én sætning. (fx “skarpt blik for menneskelig absurditet og moral”.)
-          </p>
-          <div class="book-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-quote-left"></i> Citat</a>
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-pen"></i> Mini-note</a>
-          </div>
-        </article>
-
-        <article class="book">
-          <div class="book-top">
-            <h3 class="book-title">Titel på bog</h3>
-            <span class="tag">Fagligt</span>
-          </div>
-          <p class="book-meta">Forfatter · (årstal) · Økonomi/Data</p>
-          <p class="book-note">
-            Min note: Hvad lærte jeg? (fx “god til intuition + konkrete eksempler, uden at blive fluff”.)
-          </p>
-          <div class="book-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Link</a>
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-notes-medical"></i> Takeaways</a>
-          </div>
-        </article>
-
-        <article class="book">
-          <div class="book-top">
-            <h3 class="book-title">Titel på bog</h3>
-            <span class="tag">Tro & etik</span>
-          </div>
-          <p class="book-meta">Forfatter · (årstal) · Refleksion</p>
-          <p class="book-note">
-            Min note: Hvorfor betyder den noget? (fx “en bog jeg vender tilbage til i perioder”.)
-          </p>
-          <div class="book-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-bookmark"></i> Favoritkapitel</a>
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-comment"></i> Noter</a>
-          </div>
-        </article>
-
-        <article class="book">
-          <div class="book-top">
-            <h3 class="book-title">Titel på bog</h3>
-            <span class="tag">Biografi</span>
-          </div>
-          <p class="book-meta">Forfatter · (årstal) · Person/Emne</p>
-          <p class="book-note">
-            Min note: Hvad inspirerede den? (fx “arbejdsmoral, retning, eller bare et godt livsportræt”.)
-          </p>
-          <div class="book-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-star"></i> Highlights</a>
-          </div>
-        </article>
-
-        <article class="book">
-          <div class="book-top">
-            <h3 class="book-title">Titel på bog</h3>
-            <span class="tag">Skrivning</span>
-          </div>
-          <p class="book-meta">Forfatter · (årstal) · Stil/Kommunikation</p>
-          <p class="book-note">
-            Min note: Hvilken teknik tog jeg med? (fx “klarhed, struktur, og “cut the fluff””.)
-          </p>
-          <div class="book-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-scissors"></i> Regler jeg bruger</a>
-          </div>
-        </article>
-
-        <article class="book">
-          <div class="book-top">
-            <h3 class="book-title">Titel på bog</h3>
-            <span class="tag">Klassiker</span>
-          </div>
-          <p class="book-meta">Forfatter · (årstal) · Roman</p>
-          <p class="book-note">
-            Min note: Hvad gør den stærk? (fx “dialog, tempo, humor, og det der ligger mellem linjerne”.)
-          </p>
-          <div class="book-links">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-masks-theater"></i> Temaer</a>
-          </div>
-        </article>
-
+        {booksData.map(book => (
+          <BookCard 
+            title={book.title}
+            author={book.author}
+            year={book.year}
+            genre={book.genre}
+            tag={book.tag}
+            note={book.note}
+            links={book.links}
+          />
+        ))}
       </div>
 
       <hr class="divider">
@@ -154,11 +77,10 @@ import Layout from '../layouts/Layout.astro';
       <p class="muted small" style="margin:0;">
         Vil du have det mere “database-agtigt”? Så kan vi lave: søgning, filter på tags, og sortering efter år/genre.
       </p>
-    </section>
+    </Section>
 
     <!-- CTA -->
-    <section class="card">
-      <h2 class="section-title">Anbefal mig en bog</h2>
+    <Section class="card" title="Anbefal mig en bog">
       <p class="muted">
         Send gerne: (1) genre, (2) hvad bogen skal kunne, og (3) om du vil have klassiker vs. moderne.
       </p>
@@ -166,7 +88,7 @@ import Layout from '../layouts/Layout.astro';
         <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a>
         <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
       </div>
-    </section>
+    </Section>
 
   </main>
 </Layout>

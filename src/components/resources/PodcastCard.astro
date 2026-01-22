@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  tag: string;
+  reason: string;
+  description: string;
+  links?: {
+    label: string;
+    url: string;
+    icon?: string;
+    disabled?: boolean;
+    class?: string;
+  }[];
+}
+
+const { title, tag, reason, description, links } = Astro.props;
+---
+
+<article class="card pod">
+  <div class="pod-top">
+    <h3 class="pod-title">{title}</h3>
+    <span class="tag">{tag}</span>
+  </div>
+  <p class="pod-meta"><strong>Hvorfor jeg hører den:</strong> {reason}</p>
+  <p class="muted"><strong>Beskrivelse:</strong> {description}</p>
+  {links && (
+    <div class="pod-links">
+      {links.map(link => (
+        <a 
+          class={link.class || "btn ghost"} 
+          href={link.url} 
+          aria-disabled={link.disabled}
+        >
+          {link.icon && <i class={link.icon}></i>} {link.label}
+        </a>
+      ))}
+    </div>
+  )}
+</article>
