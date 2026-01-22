@@ -1,6 +1,8 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import '../styles/styles.css';
+import '../styles/themes.css';
 
 interface Props {
 	title: string;
@@ -19,8 +21,8 @@ const { title, description = "Anton Meier Ebsen Jørgensen", bodyClass = "" } = 
   <title>{title}</title>
 
   <!-- Global Styles -->
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-  <link rel="stylesheet" href="/assets/css/themes.css" />
+
+
   
   <!-- Page Specific Styles (will be loaded by individual pages if needed, or we can include common ones here) -->
   <!-- We might want to migrate page-specific CSS imports to the specific page components later -->
