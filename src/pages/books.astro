@@ -1,3 +1,4 @@
+---
 import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
@@ -22,14 +23,14 @@ const booksData = await getCollection('books');
       padding: 0 16px 32px;
     }
 
-    .hero {
+    .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
       gap: 22px;
       align-items: start;
     }
 
-    .grid {
+    .books-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
@@ -37,7 +38,7 @@ const booksData = await getCollection('books');
     }
 
     @media (max-width: 980px) {
-      .hero {
+      .hero-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -47,11 +48,11 @@ const booksData = await getCollection('books');
 
     <!-- HERO -->
     <Section>
-      <div class="hero">
+      <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-extrabold uppercase tracking-widest text-[var(--text-dim)] mb-3">Om mig · Læseliste</p>
-          <h1 class="text-[clamp(28px,4vw,40px)] leading-[1.15] mb-5 font-bold">Mine favoritbøger</h1>
-          <p class="text-[17px] leading-relaxed text-[var(--text-dim)] mb-6 opacity-90">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">Om mig · Læseliste</p>
+          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">Mine favoritbøger</h1>
+          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
             En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på,
             eller fordi jeg vender tilbage til dem igen og igen.
           </p>
@@ -72,13 +73,12 @@ const booksData = await getCollection('books');
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Hvordan jeg bruger listen</h2>
-            <p class="text-[13px] text-[var(--text-dim)] mb-4 opacity-70 leading-relaxed">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hvordan jeg bruger listen</h2>
+            <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
               Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.
-              Hvis du vil have en anbefaling, så skriv genre + hvad du vil have ud af bogen.
             </p>
-            <p class="text-[13px] text-[var(--text-dim)] opacity-70 leading-relaxed">
-              Tip: Tilføj gerne <strong>årstal</strong> og <strong>min korte note</strong> — det gør listen mere personlig.
+            <p class="text-[13px] text-dim opacity-70 leading-relaxed">
+              Tip: Tilføj gerne årstal og noter — det gør listen mere personlig.
             </p>
           </Card>
         </div>
@@ -87,13 +87,13 @@ const booksData = await getCollection('books');
 
     <!-- LISTE -->
     <Section id="list">
-      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-2">Favoritter</h2>
-        <p class="text-[var(--text-dim)] opacity-70 mb-6 text-sm">
-          (Skabelon klar — udskift titlerne med dine egne. Du kan også sortere efter kategori.)
+      <Card variant="bordered" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-2">Favoritter</h2>
+        <p class="text-dim opacity-70 mb-6 text-sm">
+          Udskift titlerne med dine egne for at personliggøre listen.
         </p>
 
-        <div class="grid">
+        <div class="books-grid">
           {booksData.map(book => (
             <BookCard 
               title={book.data.title}
@@ -102,29 +102,22 @@ const booksData = await getCollection('books');
               genre={book.data.genre}
               tag={book.data.tag}
               note={book.data.note}
-              links={book.data.links}
+              links={book.data.links || []}
             />
           ))}
         </div>
-
-        <hr class="border-0 border-t border-[var(--glass-border)] my-8 w-full" />
-
-        <p class="text-[13px] text-[var(--text-dim)] opacity-70 m-0">
-          Vil du have det mere “database-agtigt”? Så kan vi lave: søgning, filter på tags, og sortering efter år/genre.
-        </p>
       </Card>
     </Section>
 
     <!-- CTA -->
     <Section>
       <Card variant="glass" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Anbefal mig en bog</h2>
-        <p class="text-[var(--text-dim)] opacity-80 mb-6">
-          Send gerne: (1) genre, (2) hvad bogen skal kunne, og (3) om du vil have klassiker vs. moderne.
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Anbefal mig en bog</h2>
+        <p class="text-dim opacity-80 mb-6">
+          Send gerne en mail hvis du har forslag til spændende læsning.
         </p>
         <div class="flex flex-wrap gap-3">
           <Button href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane mr-2"></i> Send mail</Button>
-          <Button href="/blog" variant="ghost"><i class="fa-solid fa-arrow-left mr-2"></i> Tilbage til blog</Button>
         </div>
       </Card>
     </Section>

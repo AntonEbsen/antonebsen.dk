@@ -1,5 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
 ---
 
 <Layout 
@@ -7,536 +11,170 @@ import Layout from '../layouts/Layout.astro';
   description="Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning."
   bodyClass="skills-page"
 >
-<style>
-.skills-wrap {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 16px 32px;
-}
+  <style>
+    .skills-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
 
-/* Afstand mellem sektioner */
-.skills-wrap > .card { 
-  margin-bottom: 14px; 
-}
-.skills-wrap > .card:last-child { 
-  margin-bottom: 0; 
-}
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
 
-/* Cards */
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: var(--accent-soft);
-}
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
 
-.section-title {
-  margin: 0 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  color: var(--accent);
-}
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
 
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--text-dim);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-}
-
-.lead { 
-  margin: 0 0 24px; 
-  color: var(--text-dim); 
-  font-size: 18px; 
-  line-height: 1.6; 
-}
-
-.muted { 
-  color: var(--text-dim); 
-  opacity: 0.7; 
-}
-.small { 
-  font-size: 13px; 
-}
-
-/* Buttons */
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 10px 0 14px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #050506;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-.btn.ghost {
-  background: transparent;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-}
-
-/* Pills */
-.pill-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.pill {
-  padding: 6px 14px;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-}
-
-/* Hero */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-}
-
-.mini-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-.mini-card:hover { 
-  border-color: var(--accent-soft); 
-}
-
-/* Grids */
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 14px;
-  margin-top: 12px;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-  margin-top: 12px;
-}
-
-/* Skill cards */
-.skill-card {
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.skill-top {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.skill-top h3 {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.25;
-}
-
-.tag {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--accent-blue);
-  background: rgba(56, 189, 248, 0.1);
-  color: var(--accent-blue);
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.skill-list {
-  margin: 10px 0 0;
-  padding-left: 18px;
-}
-
-.skill-actions {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Tools */
-.tool-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 14px;
-  margin-top: 12px;
-}
-
-.tool {
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.tool-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.tool-head h3 {
-  margin: 0;
-  font-size: 15px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-/* Deliverables */
-.deliverable {
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.clean-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.clean-list li { 
-  margin: 0 0 8px; 
-}
-.clean-list li:last-child { 
-  margin-bottom: 0; 
-}
-
-/* Callout */
-.callout {
-  margin-top: 12px;
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-/* Mobile */
-@media (max-width: 980px) {
-  .hero { 
-    grid-template-columns: 1fr; 
-  }
-  .grid-3 { 
-    grid-template-columns: 1fr; 
-  }
-  .grid-2 { 
-    grid-template-columns: 1fr; 
-  }
-  .tool-grid { 
-    grid-template-columns: 1fr; 
-  }
-}
-</style>
+    @media (max-width: 980px) {
+      .hero-grid, .grid-3, .grid-2 { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
 
   <main class="skills-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">Kompetencer</p>
-        <h1>Værktøjer, metoder og det jeg leverer</h1>
-        <p class="lead">
-          Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan,
-          <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.
-        </p>
-
-        <div class="pill-wrap" aria-label="Nøglekompetencer">
-          <span class="pill">Excel/VBA</span>
-          <span class="pill">Python</span>
-          <span class="pill">SAS</span>
-          <span class="pill">GAMS</span>
-          <span class="pill">Økonometri</span>
-          <span class="pill">Makro & pengepolitik</span>
-        </div>
-
-        <div class="cta">
-          <a class="btn" href="#core"><i class="fa-solid fa-bolt"></i> Kernekompetencer</a>
-          <a class="btn ghost" href="#tools"><i class="fa-solid fa-screwdriver-wrench"></i> Værktøjer</a>
-          <a class="btn ghost" href="#deliverables"><i class="fa-solid fa-box-open"></i> Leverancer</a>
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Hurtig oversigt</h2>
-          <ul class="clean-list muted">
-            <li>Strukturerer data → model → output</li>
-            <li>Bygger templates og workflows der kan genbruges</li>
-            <li>Formidler komplekse ting i “menneskesprog”</li>
-          </ul>
-          <p class="muted small" style="margin-top:10px;">
-            Tip: indsæt 2–3 konkrete “beviser” (antal kurser, evalueringer, projekter).
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-6">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">Kompetencer</p>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">Værktøjer, metoder og det jeg leverer</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan,
+            <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.
           </p>
+  
+          <div class="pill-wrap flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
+            <Pill variant="accent">Excel/VBA</Pill>
+            <Pill variant="accent">Python</Pill>
+            <Pill variant="accent">SAS</Pill>
+            <Pill variant="accent">GAMS</Pill>
+            <Pill variant="accent">Økonometri</Pill>
+            <Pill variant="accent">Makro & pengepolitik</Pill>
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#core"><i class="fa-solid fa-bolt mr-2"></i> Kernekompetencer</Button>
+            <Button href="#tools" variant="ghost"><i class="fa-solid fa-screwdriver-wrench mr-2"></i> Værktøjer</Button>
+            <Button href="#deliverables" variant="ghost"><i class="fa-solid fa-box-open mr-2"></i> Leverancer</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-4">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hurtig oversigt</h2>
+            <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
+              <li>Strukturerer data → model → output</li>
+              <li>Bygger templates og workflows</li>
+              <li>Formidler komplekse ting</li>
+            </ul>
+          </Card>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- KERNEKOMPETENCER -->
-    <section class="card" id="core">
-      <h2 class="section-title">Programmeringssprog</h2>
-      <p class="muted">Her er de områder, jeg typisk bliver brugt til – med fokus på output.</p>
-
-      <div class="grid-3">
-
-          <article class="skill-card">
-          <div class="skill-top">
-            <h3>Python</h3>
-            <span class="tag">Data</span>
-          </div>
-          <p class="muted">Reproducerbare pipelines: data → analyse → figurer/tabeller.</p>
-          <ul class="skill-list">
-            <li>Pandas/NumPy workflows</li>
-            <li>Plots, rapport-output, notebooks</li>
-            <li>Ryddelig struktur + dokumentation</li>
-          </ul>
-        </article>
-        
-        <article class="skill-card">
-          <div class="skill-top">
-            <h3>Excel VBA</h3>
-            <span class="tag">Automatisering</span>
-          </div>
-          <p class="muted">Automatisering og brugerdefinerede funktioner.</p>
-          <ul class="skill-list">
-            <li>Import, format, loops, performance</li>
-          </ul>
-          <div class="skill-actions">
-            <a class="btn ghost" href="/resources"><i class="fa-solid fa-download"></i> Ressourcer</a>
-          </div>
-        </article>
-
-        <article class="skill-card">
-          <div class="skill-top">
-            <h3>MATLAB</h3>
-            <span class="tag">Økonometri</span>
-          </div>
-          <p class="muted">SVAR-, DSGE- og Local Projection-modeller.</p>
-          <ul class="skill-list">
-            <li>Identifikation</li>
-            <li>Estimation</li>
-            <li>Impulse Response Functions</li>
-          </ul>
-        </article>
-        
-        <article class="skill-card">
-          <div class="skill-top">
-            <h3>SAS</h3>
-            <span class="tag">Tidsrække</span>
-          </div>
-          <p class="muted">Klassisk, robust værktøj til tidsrækker og statistik (og ja, det virker stadig).</p>
-          <ul class="skill-list">
-            <li>PROC ESM / UCM / VARMAX (hvis relevant)</li>
-            <li>Forecasting + model checks</li>
-            <li>Reproducerbart setup</li>
-          </ul>
-        </article>
-
-        <article class="skill-card">
-          <div class="skill-top">
-            <h3>GAMS</h3>
-            <span class="tag">Modeller</span>
-          </div>
-          <p class="muted">Modelopstiling, kalibrering og stød i CGE-modeller.</p>
-          <ul class="skill-list">
-            <li>Kalibrering, lukning</li>
-            <li>Stød + resultattabeller</li>
-            <li>Konsistenschecks</li>
-          </ul>
-        </article>
-
-        <article class="skill-card">
-          <div class="skill-top">
-            <h3>LaTeX</h3>
-            <span class="tag">Typografi</span>
-          </div>
-          <p class="muted"></p>
-          <ul class="skill-list">
-            <li>Opstilling af rapporter og præsentationer</li>
-            <li>Opstilling af tabeller og figurer</li>
-            <li>Matematik</li>
-          </ul>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- VÆRKTØJER / MATRIX -->
-    <section class="card" id="tools">
-      <h2 class="section-title">Værktøjer</h2>
-      <p class="muted">En enkel matrix: hvad jeg bruger værktøjerne til. (Nemt at udvide senere.)</p>
-
-      <div class="tool-grid">
-        <div class="tool">
-          <div class="tool-head">
-            <h3><i class="fa-solid fa-table"></i> Excel</h3>
-            <span class="tag">Model/BI</span>
-          </div>
-          <p class="muted small">Dashboards, finansielle modeller, scenarier, checks.</p>
+    <Section id="core">
+      <Card variant="default" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Programmeringssprog & Metoder</h2>
+        <div class="grid-3">
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">Python</h3>
+              <p class="text-dim text-sm">Reproducerbare pipelines: data → analyse → figurer/tabeller.</p>
+            </Card>
+            
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">Excel VBA</h3>
+              <p class="text-dim text-sm">Automatisering og brugerdefinerede funktioner.</p>
+            </Card>
+  
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">MATLAB</h3>
+              <p class="text-dim text-sm">SVAR-, DSGE- og Local Projection-modeller.</p>
+            </Card>
+            
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">SAS</h3>
+              <p class="text-dim text-sm">Klassisk, robust værktøj til tidsrækker og statistik.</p>
+            </Card>
+  
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">GAMS</h3>
+              <p class="text-dim text-sm">Modelopstiling, kalibrering og stød i CGE-modeller.</p>
+            </Card>
+  
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">LaTeX</h3>
+              <p class="text-dim text-sm">Opstilling af rapporter og matematiske præsentationer.</p>
+            </Card>
         </div>
+      </Card>
+    </Section>
 
-        <div class="tool">
-          <div class="tool-head">
-            <h3><i class="fa-solid fa-code"></i> VBA</h3>
-            <span class="tag">Automatisering</span>
-          </div>
-          <p class="muted small">Import, formatting, templates, performance.</p>
+    <!-- VÆRKTØJER -->
+    <Section id="tools">
+      <Card variant="bordered" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Værktøjs-matrix</h2>
+        <div class="grid-3">
+          <Card variant="glass" class="p-4">
+            <h3 class="text-sm font-bold mb-1">Excel</h3>
+            <p class="text-xs text-dim">Dashboards, modeller, scenarier.</p>
+          </Card>
+          <Card variant="glass" class="p-4">
+            <h3 class="text-sm font-bold mb-1">VBA</h3>
+            <p class="text-xs text-dim">Automatisering, loops, performance.</p>
+          </Card>
+          <Card variant="glass" class="p-4">
+            <h3 class="text-sm font-bold mb-1">Python</h3>
+            <p class="text-xs text-dim">Data-cleaning, pipelines, figurer.</p>
+          </Card>
         </div>
-
-        <div class="tool">
-          <div class="tool-head">
-            <h3><i class="fa-brands fa-python"></i> Python</h3>
-            <span class="tag">Pipeline</span>
-          </div>
-          <p class="muted small">Data-cleaning, analyse, figurer, reproducérbarhed.</p>
-        </div>
-
-        <div class="tool">
-          <div class="tool-head">
-            <h3><i class="fa-solid fa-chart-line"></i> SAS</h3>
-            <span class="tag">Tidsrække</span>
-          </div>
-          <p class="muted small">Forecasting, decomposition, klassisk statistik.</p>
-        </div>
-
-        <div class="tool">
-          <div class="tool-head">
-            <h3><i class="fa-solid fa-cubes"></i> GAMS</h3>
-            <span class="tag">CGE</span>
-          </div>
-          <p class="muted small">Kalibrering, baseline, stød, resultatsammensætning.</p>
-        </div>
-
-        <div class="tool">
-          <div class="tool-head">
-            <h3><i class="fa-solid fa-square-root-variable"></i> MATLAB</h3>
-            <span class="tag">Numerik</span>
-          </div>
-          <p class="muted small">Numeriske øvelser og model-simulation (hvis relevant).</p>
-        </div>
-      </div>
-
-      <div class="callout">
-        <p class="muted small" style="margin:0;">
-          Hvis du vil: vi kan senere tilføje “niveau” (basis/intermediate/advanced) – men kun hvis du vil stå på mål for det.
-          Overvurdering = cringe. Underdrivelse = classy.
-        </p>
-      </div>
-    </section>
+      </Card>
+    </Section>
 
     <!-- LEVERANCER -->
-    <section class="card" id="deliverables">
-      <h2 class="section-title">Typiske leverancer</h2>
-      <p class="muted">Det her er outputtet, man typisk kan forvente fra mig.</p>
-
-      <div class="grid-2">
-        <div class="deliverable">
-          <h3>Templates & workflows</h3>
-          <ul class="clean-list muted">
-            <li>Excel-templates (inputs/beregning/output/checks)</li>
-            <li>Standardiserede dashboards</li>
-            <li>VBA-snippets til hurtig automation</li>
-          </ul>
+    <Section id="deliverables">
+      <Card variant="default" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Typiske leverancer</h2>
+        <div class="grid-2">
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold mb-2">Templates & workflows</h3>
+             <p class="text-dim text-sm">Excel-templates, standardiserede dashboards.</p>
+           </Card>
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold mb-2">Analyse & rapportering</h3>
+             <p class="text-dim text-sm">Reproducerbare analyser og figurer klar til rapport.</p>
+           </Card>
         </div>
-
-        <div class="deliverable">
-          <h3>Analyse & rapportering</h3>
-          <ul class="clean-list muted">
-            <li>Reproducerbare analyser (Python/SAS)</li>
-            <li>Tabeller/figurer klar til rapport</li>
-            <li>Fortolkning og “so what?”</li>
-          </ul>
-        </div>
-
-        <div class="deliverable">
-          <h3>Undervisning & formidling</h3>
-          <ul class="clean-list muted">
-            <li>Kursusforløb og materiale</li>
-            <li>Øvelser/cases + feedback</li>
-            <li>Praktiske “how-to” guides</li>
-          </ul>
-        </div>
-
-        <div class="deliverable">
-          <h3>Modelarbejde</h3>
-          <ul class="clean-list muted">
-            <li>Kalibrering og baseline checks</li>
-            <li>Scenario/shock-resultater</li>
-            <li>Output-tabeller og dokumentation</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+      </Card>
+    </Section>
 
     <!-- CTA -->
-    <section class="card">
-      <h2 class="section-title">Har du et konkret behov?</h2>
-      <p class="muted">
-        Skriv format (Excel/Python/SAS) + mål (fx forecasting, dashboards, data-cleaning). Så foreslår jeg en struktur,
-        der passer – og hvad der er realistisk.
-      </p>
-      <div class="cta">
-        <a class="btn" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a>
-        <a class="btn ghost" href="/services"><i class="fa-solid fa-handshake"></i> Samarbejde</a>
-        <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
-          <i class="fa-solid fa-file-arrow-down"></i> CV (PDF)
-        </a>
-      </div>
-    </section>
+    <Section>
+      <Card variant="glass" class="p-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-3">Har du et konkret behov?</h2>
+        <p class="text-dim opacity-70 mb-6">Skriv format + mål. Så foreslår jeg en struktur.</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/contact"><i class="fa-solid fa-envelope mr-2"></i> Kontakt</Button>
+          <Button href="/services" variant="ghost"><i class="fa-solid fa-handshake mr-2"></i> Samarbejde</Button>
+        </div>
+      </Card>
+    </Section>
 
   </main>
 </Layout>

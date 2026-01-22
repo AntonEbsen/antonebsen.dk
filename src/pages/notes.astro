@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
 ---
 
 <Layout 
@@ -7,205 +7,56 @@ import Layout from '../layouts/Layout.astro';
   description="Publikationer, working notes og korte one-pagers om økonomi, data og modeller."
   bodyClass="notes-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/notes.css" slot="head" />
+  <style>
+    .notes-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .notes-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
 
   <main class="notes-wrap">
 
-    <!-- HERO -->
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">Publikationer / Noter</p>
-        <h1>Korte writeups, working notes og materiale</h1>
-        <p class="lead">
-          Her samler jeg ting, der er mere “arkiv og reference” end blog: one-pagers, slides, arbejdsnoter
-          og (på sigt) publikationer. Tanken er: hurtigt overblik, tydelig metode, og links til kode/data hvis muligt.
-        </p>
-
-        <div class="cta">
-          <a class="btn" href="#cat-noter">Noter</a>
-          <a class="btn ghost" href="#cat-publikationer">Publikationer</a>
-          <a class="btn ghost" href="#cat-materialer">Slides/Materialer</a>
-        </div>
-
-        <div class="pill-wrap" aria-label="Typer">
-          <span class="pill">One-pagers</span>
-          <span class="pill">Working notes</span>
-          <span class="pill">Slides</span>
-          <span class="pill">Code links</span>
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Hvordan du kan bruge siden</h2>
-          <ul class="clean-list muted">
-            <li>Se hurtigt hvad jeg har lavet (og hvad der er på vej).</li>
-            <li>Få en kort “hvad + metode + output”.</li>
-            <li>Download / åbne links til materiale når det er muligt.</li>
-          </ul>
-          <p class="muted small" style="margin-top:10px;">
-            Nogle ting kan være “sanitized” pga. kursus/fortrolighed — men formatet kan næsten altid deles.
+    <section class="mb-12">
+      <div class="hero-grid">
+        <div class="bg-glass border border-glass-border p-8 rounded-2xl">
+          <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Publikationer / Noter</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Korte writeups og materiale</h1>
+          <p class="text-lg text-dim">
+            Her samler jeg ting, der er mere “arkiv og reference” end blog: one-pagers, slides og arbejdsnoter.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- ===================== -->
-    <!-- NOTER -->
-    <!-- ===================== -->
-    <section class="cat" id="cat-noter" aria-label="Noter">
-      <div class="cat-head">
-        <h2 class="cat-title">Noter</h2>
-        <p class="muted cat-subtitle">Korte writeups og arbejdsnoter (metode + resultater i mini-format).</p>
-      </div>
-
-      <div class="grid">
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">Template: “Fra data → metode → robusthed → leverance”</h3>
-            <span class="tag">Note</span>
-          </div>
-          <p class="item-meta">— · 2–4 min</p>
-          <p class="muted">En enkel struktur jeg bruger til analyseprojekter, så man ikke ender i “bare én regression mere”-fælden.</p>
-          <div class="item-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
-            <a class="btn" href="#" aria-disabled="true"><i class="fa-solid fa-download"></i> Download</a>
-          </div>
+    <section id="noter" class="mb-20">
+      <h2 class="text-xl font-bold mb-6">Noter</h2>
+      <div class="notes-grid">
+        <article class="bg-glass border border-glass-border p-6 rounded-xl">
+           <h3 class="font-bold mb-2">Template: Data → Leverance</h3>
+           <p class="text-sm text-dim mb-4">En enkel struktur jeg bruger til analyseprojekter.</p>
+           <a href="#" class="text-accent font-bold">Læs note →</a>
         </article>
-
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">Note: Hvad jeg tracker i træning (volumen, top set, og fatigue)</h3>
-            <span class="tag">Note</span>
-          </div>
-          <p class="item-meta">— · 3–5 min</p>
-          <p class="muted">En realistisk måde at følge progression på uden at blive Excel-munk (selvom… fristende).</p>
-          <div class="item-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
-          </div>
-        </article>
-
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">Note: Tidsrækker – “hvad gør jeg først?” (checkliste)</h3>
-            <span class="tag">Note</span>
-          </div>
-          <p class="item-meta">— · 4–6 min</p>
-          <p class="muted">Stationaritet, sæson, outliers, splits – kort checklist før du vælger model.</p>
-          <div class="item-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ===================== -->
-    <!-- PUBLIKATIONER -->
-    <!-- ===================== -->
-    <section class="cat" id="cat-publikationer" aria-label="Publikationer">
-      <div class="cat-head">
-        <h2 class="cat-title">Publikationer</h2>
-        <p class="muted cat-subtitle">Når du har noget “citerbart”: arbejdspapir, rapport, artikel, etc.</p>
-      </div>
-
-      <div class="grid">
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">[Titel] · [Outlet/serie] · [År]</h3>
-            <span class="tag">Publikation</span>
-          </div>
-          <p class="item-meta">Forfattere: [navne] · Status: [preprint/under review/publ.]</p>
-          <p class="muted">1–2 linjer: problem, metode og vigtigste takeaway.</p>
-
-          <details class="details">
-            <summary>Abstract / kort resumé</summary>
-            <p class="muted" style="margin-top:10px;">
-              Indsæt 5–8 linjer her. Hold det kort. Folk scanner.
-            </p>
-          </details>
-
-          <div class="item-links">
-            <a class="btn" href="#" aria-disabled="true"><i class="fa-solid fa-file-pdf"></i> PDF</a>
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-brands fa-github"></i> Kode</a>
-          </div>
-        </article>
-
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">[Titel] · [Konference/rapport] · [År]</h3>
-            <span class="tag">Rapport</span>
-          </div>
-          <p class="item-meta">Forfattere: [navne] · Link: [—]</p>
-          <p class="muted">1–2 linjer om bidraget og hvorfor det er relevant.</p>
-          <div class="item-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ===================== -->
-    <!-- SLIDES / MATERIALE -->
-    <!-- ===================== -->
-    <section class="cat" id="cat-materialer" aria-label="Slides og materiale">
-      <div class="cat-head">
-        <h2 class="cat-title">Slides / Materialer</h2>
-        <p class="muted cat-subtitle">Handouts, mini-guides, undervisningsmateriale og “cheat sheets”.</p>
-      </div>
-
-      <div class="grid">
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">Excel: “Effektive funktioner” – mini cheat sheet</h3>
-            <span class="tag">Materiale</span>
-          </div>
-          <p class="item-meta">PDF · opdateret: (indsæt dato)</p>
-          <p class="muted">En side med de mest brugte funktioner + typiske fejl og struktur til cases.</p>
-          <div class="item-links">
-            <a class="btn" href="/assets/downloads/excel-cheatsheet.pdf" download>
-              <i class="fa-solid fa-download"></i> Download
-            </a>
-            <a class="btn ghost" href="/resources">Se flere downloads</a>
-          </div>
-        </article>
-
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">Python: Data cleaning – tjekliste</h3>
-            <span class="tag">Materiale</span>
-          </div>
-          <p class="item-meta">PDF · opdateret: (indsæt dato)</p>
-          <p class="muted">Reproducerbar prep: missing, outliers, logs, splits og dokumentation.</p>
-          <div class="item-links">
-            <a class="btn ghost" href="/resources">Find i Ressourcer</a>
-          </div>
-        </article>
-
-        <article class="card item">
-          <div class="item-top">
-            <h3 class="item-title">SAS: Time series – “første 30 minutter”</h3>
-            <span class="tag">Slides</span>
-          </div>
-          <p class="item-meta">Slides · opdateret: (indsæt dato)</p>
-          <p class="muted">Helt lavpraktisk startpakke: plot, seasonality, baseline, diagnostics.</p>
-          <div class="item-links">
-            <a class="btn ghost" href="#" aria-disabled="true">Åbn</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="card cta-card">
-      <h2 class="section-title">Vil du have en bestemt note/skabelon?</h2>
-      <p class="muted">
-        Hvis du fortæller format (Excel/Python/SAS/GAMS) og mål (fx forecasting, dashboards, modellering),
-        kan jeg foreslå en struktur, der er “klar til brug”.
-      </p>
-      <div class="cta">
-        <a class="btn" href="/contact">Kontakt</a>
-        <a class="btn ghost" href="/resources">Ressourcer/Downloads</a>
       </div>
     </section>
 

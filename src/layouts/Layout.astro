@@ -19,7 +19,8 @@ const { title, description, image, article, bodyClass = "" } = Astro.props;
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <SEO title={title} description={description} image={image} article={article} />
+  <!-- <SEO title={title} description={description} image={image} article={article} /> -->
+  <title>{title}</title>
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

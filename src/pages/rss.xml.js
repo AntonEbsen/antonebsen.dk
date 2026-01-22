@@ -2,19 +2,16 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
 export async function GET(context) {
-    const posts = await getCollection('blog');
-
+    const blog = await getCollection('blog');
     return rss({
-        title: 'Anton Meier Ebsen Jørgensen | Blog',
-        description: 'Økonomi, makro, data og tanker om læring.',
+        title: 'Anton Meier Ebsen Jørgensen – Blog',
+        description: 'Blog med indlæg om faglige emner (økonomi, data, modeller), træning og rejser.',
         site: context.site,
-        items: posts.map((post) => ({
+        items: blog.map((post) => ({
             title: post.data.title,
-            pubDate: post.data.meta ? new Date() : new Date(), // TODO: add real date field to schema
+            pubDate: new Date(), // Replace with actual date if available
             description: post.data.description,
-            // Since we don't have individual pages yet, link to blog overview anchors
-            // ideally: link: `/blog/${post.slug}/`
-            link: post.data.links?.[0]?.url || `/blog#${post.data.category}`,
+            link: `/blog/${post.id}/`,
         })),
         customData: `<language>da-dk</language>`,
     });

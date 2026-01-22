@@ -20,7 +20,7 @@ interface Props {
 const { title, tag, meta, description, links } = Astro.props;
 ---
 
-<Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]! mb-4">
+<Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)] mb-4">
   <div class="flex justify-between items-start mb-2 gap-2">
     <h3 class="text-[16px] font-bold leading-tight m-0">{title}</h3>
     <Pill variant="accent" class="shrink-0">{tag}</Pill>

@@ -1,3 +1,4 @@
+---
 import Layout from '@layouts/Layout.astro';
 import Pill from '@components/ui/Pill.astro';
 import Section from '@components/ui/Section.astro';
@@ -11,7 +12,7 @@ const portfolioData = await getCollection('portfolio');
 
 <Layout 
   title="Anton Meier Ebsen Jørgensen – Portefølje" 
-  description="Portefølje med udvalgte projekter inden for makroøkonomi, økonometri, tidsrækker og økonomiske modeller. Python, SAS, GAMS og Excel/VBA."
+  description="Portefølje med udvalgte projekter inden for makroøkonomi, økonometri og økonomiske modeller. Python, SAS, GAMS og Excel/VBA."
   bodyClass="portfolio-page"
 >
 
@@ -22,14 +23,14 @@ const portfolioData = await getCollection('portfolio');
       padding: 0 16px 32px;
     }
 
-    .hero {
+    .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
       gap: 22px;
       align-items: start;
     }
 
-    .grid {
+    .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
@@ -37,7 +38,7 @@ const portfolioData = await getCollection('portfolio');
     }
 
     @media (max-width: 980px) {
-      .hero, .grid {
+      .hero-grid, .projects-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -46,11 +47,11 @@ const portfolioData = await getCollection('portfolio');
   <main class="portfolio-wrap">
     <!-- HERO -->
       <Section>
-        <div class="hero">
+        <div class="hero-grid">
           <Card variant="glass" class="p-8">
-            <p class="text-xs font-extrabold uppercase tracking-widest text-[var(--text-dim)] mb-3">Portefølje</p>
-            <h1 class="text-[clamp(28px,4vw,40px)] leading-[1.15] mb-5 font-bold">Udvalgte projekter</h1>
-            <p class="text-[17px] leading-relaxed text-[var(--text-dim)] mb-6 opacity-90">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">Portefølje</p>
+            <h1 class="text-4xl leading-[1.15] mb-5 font-bold">Udvalgte projekter</h1>
+            <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
               Her finder du projekter inden for makroøkonomi, økonometri, tidsrækker og modellering.
               Jeg lægger især vægt på reproducerbar analyse, klare resultater og pæn formidling.
             </p>
@@ -70,12 +71,12 @@ const portfolioData = await getCollection('portfolio');
     
           <div class="hidden md:block">
             <Card variant="glass" class="p-6">
-              <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Sådan er projekterne bygget</h2>
-              <ul class="list-none p-0 m-0 space-y-2 text-sm text-[var(--text-dim)] opacity-90">
-                <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Kort problemformulering</li>
-                <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Metode (model/økonometri)</li>
-                <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Data & kode (hvis muligt)</li>
-                <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[var(--accent)]">Resultater og læring</li>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Sådan er projekterne bygget</h2>
+              <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+                <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">Kort problemformulering</li>
+                <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">Metode (model/økonometri)</li>
+                <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">Data & kode (hvis muligt)</li>
+                <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">Resultater og læring</li>
               </ul>
             </Card>
           </div>
@@ -84,7 +85,7 @@ const portfolioData = await getCollection('portfolio');
   
       <!-- PROJECT GRID -->
       <Section>
-        <div class="grid">
+        <div class="projects-grid">
           {portfolioData.map(project => (
             <ProjectCard
               title={project.data.title}
@@ -92,7 +93,7 @@ const portfolioData = await getCollection('portfolio');
               description={project.data.description}
               tools={project.data.tools}
               output={project.data.output}
-              links={project.data.links}
+              links={project.data.links || []}
             />
           ))}
         </div>
@@ -101,12 +102,12 @@ const portfolioData = await getCollection('portfolio');
       <!-- Footer card -->
       <Section>
         <Card variant="glass" class="p-6">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Mere</h2>
-          <p class="text-[var(--text-dim)] opacity-80 m-0">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Mere</h2>
+          <p class="text-dim opacity-80 m-0">
             Jeg opdaterer løbende porteføljen. Du kan også finde mere på
-            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" class="text-[var(--accent)] font-bold decoration-none hover:text-white transition-colors">GitHub</a>
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" class="text-accent font-bold no-underline hover:text-white transition-colors">GitHub</a>
             og
-            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="text-[var(--accent)] font-bold decoration-none hover:text-white transition-colors">LinkedIn</a>.
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="text-accent font-bold no-underline hover:text-white transition-colors">LinkedIn</a>.
           </p>
         </Card>
       </Section>

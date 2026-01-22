@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
 ---
 
 <Layout 
@@ -7,138 +7,56 @@ import Layout from '../layouts/Layout.astro';
   description="Organisationer og foreninger: roller, ansvar og engagement."
   bodyClass="organizations-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/organizations.css" slot="head" />
+  <style>
+    .orgs-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
 
-  <main class="organizations-wrap">
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
 
-    <!-- HERO -->
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">Organisationer</p>
-        <h1>Foreninger, roller og ansvar</h1>
-        <p class="lead">
-          Her samler jeg organisationer/foreninger jeg er tilknyttet – med fokus på <strong>rolle</strong>,
-          <strong>ansvar</strong> og <strong>resultat</strong>. (LinkedIn-stilen, bare mere læsbar.)
-        </p>
+    .orgs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
 
-        <div class="pill-wrap" aria-label="Tags">
-          <span class="pill">Ledelse</span>
-          <span class="pill">Frivilligt</span>
-          <span class="pill">Fagligt</span>
-          <span class="pill">Events</span>
-        </div>
+    @media (max-width: 980px) {
+      .hero-grid, .orgs-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
 
-        <div class="cta">
-          <a class="btn" href="#orgs"><i class="fa-solid fa-users"></i> Se organisationer</a>
-          <a class="btn ghost" href="/cv#volunteer"><i class="fa-solid fa-file-lines"></i> Tilbage til CV</a>
-        </div>
-      </div>
+  <main class="orgs-wrap">
 
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Hvorfor en separat side?</h2>
-          <p class="muted small" style="margin:0;">
-            Fordi det er her man viser ansvar og “signal” uden at overfylde CV’et.
-            Og ja — det bliver også lettere for folk at linke direkte til det.
+    <section class="mb-12">
+      <div class="hero-grid">
+        <div class="bg-glass border border-glass-border p-8 rounded-2xl">
+          <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Organisationer</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Foreninger, roller og ansvar</h1>
+          <p class="text-lg text-dim">
+            Her samler jeg organisationer og foreninger jeg er tilknyttet.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- LISTE -->
-    <section class="card" id="orgs">
-      <h2 class="section-title">Organisationer</h2>
-      <p class="muted">Tip: hold det kort og konkret. 2–4 bullets per rolle er rigeligt.</p>
-
-      <div class="org-grid">
-
-        <!-- ORG CARD -->
-        <article class="org">
-          <div class="org-top">
-            <h3 class="org-title">Socialøkonomisk Samfund</h3>
-            <span class="tag">Ledelse</span>
-          </div>
-
-          <p class="org-meta">Rolle: <strong>Forperson</strong> · Periode: <strong>2024 – nu</strong> · Lokation: København</p>
-
-          <p class="muted">
-            Indsæt 1–2 linjer om formål + din vinkel (fx arrangementer, koordinering, faglig formidling).
-          </p>
-
-          <ul class="org-list">
-            <li>Planlægning/koordinering af aktiviteter og arrangementer</li>
-            <li>Samarbejde med eksterne oplægsholdere og partnere</li>
-            <li>Struktur, ansvar og eksekvering (aka: få tingene til at ske)</li>
-          </ul>
-
-          <div class="org-actions">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
-            <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Spørg ind</a>
-          </div>
+    <section id="orgs" class="mb-20">
+      <h2 class="text-xl font-bold mb-6">Mine roller</h2>
+      <div class="orgs-grid">
+        <article class="bg-glass border border-glass-border p-6 rounded-xl">
+           <h3 class="font-bold mb-2">Socialøkonomisk Samfund</h3>
+           <p class="text-xs text-accent font-bold mb-3">Forperson · 2024 – nu</p>
+           <p class="text-sm text-dim">Planlægning og koordinering af aktiviteter og arrangementer.</p>
         </article>
-
-        <!-- TEMPLATE / PLACEHOLDER -->
-        <article class="org">
-          <div class="org-top">
-            <h3 class="org-title">[Organisation / Forening]</h3>
-            <span class="tag">Frivilligt</span>
-          </div>
-
-          <p class="org-meta">Rolle: <strong>[Titel]</strong> · Periode: <strong>[År – År]</strong> · Lokation: [By]</p>
-
-          <p class="muted">
-            1–2 linjer: hvad er organisationen, og hvorfor er din rolle relevant for din profil?
-          </p>
-
-          <ul class="org-list">
-            <li>[Ansvar 1]</li>
-            <li>[Ansvar 2]</li>
-            <li>[Resultat / output, hvis muligt]</li>
-          </ul>
-
-          <div class="org-actions">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file-lines"></i> Note</a>
-          </div>
-        </article>
-
-        <!-- TEMPLATE / PLACEHOLDER -->
-        <article class="org">
-          <div class="org-top">
-            <h3 class="org-title">[Organisation / Netværk]</h3>
-            <span class="tag">Fagligt</span>
-          </div>
-
-          <p class="org-meta">Rolle: <strong>[Medlem / frivillig]</strong> · Periode: <strong>[År – nu]</strong> · Lokation: [—]</p>
-
-          <p class="muted">
-            Kort: hvad følger du/arbejder du med her? (Undgå romaner. Folk scroller.)
-          </p>
-
-          <ul class="org-list">
-            <li>[Aktivitet 1]</li>
-            <li>[Aktivitet 2]</li>
-          </ul>
-
-          <div class="org-actions">
-            <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Website</a>
-            <a class="btn ghost" href="/blog#cat-fagligt"><i class="fa-solid fa-pen"></i> Relateret blog</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="card">
-      <h2 class="section-title">Vil du samarbejde?</h2>
-      <p class="muted">
-        Hvis du vil høre mere om mit arbejde i organisationer eller relevant erfaring, så skriv endelig.
-      </p>
-      <div class="cta">
-        <a class="btn" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a>
-        <a class="btn ghost" href="/cv"><i class="fa-solid fa-arrow-left"></i> CV</a>
       </div>
     </section>
 

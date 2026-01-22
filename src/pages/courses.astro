@@ -1,466 +1,118 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
 ---
 
 <Layout 
   title="Anton Meier Ebsen Jørgensen – Kurser" 
-  description="Kurser: universitetsfag, online-kurser og certificeringsforløb (Python, SAS, Matlab, økonomi m.m.)."
+  description="Kurser: universitetsfag, online-kurser og certificeringsforløb."
   bodyClass="courses-page"
 >
-<style>
-.courses-wrap {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 16px 32px;
-}
+  <style>
+    .courses-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
 
-/* Cards */
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: var(--accent-soft);
-}
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
 
-.section-title {
-  margin: 0 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  color: var(--accent);
-}
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
 
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--text-dim);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-}
-
-.lead { 
-  margin: 0 0 24px; 
-  color: var(--text-dim); 
-  font-size: 18px; 
-  line-height: 1.6; 
-}
-
-.muted { 
-  color: var(--text-dim); 
-  opacity: 0.7; 
-}
-.small { 
-  font-size: 13px; 
-}
-
-/* Hero */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-  margin-bottom: 14px;
-}
-
-.mini-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-.mini-card:hover { 
-  border-color: var(--accent-soft); 
-}
-
-/* Controls */
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.search {
-  flex: 1 1 260px;
-  min-width: 220px;
-  display: flex;
-  gap: 10px;
-}
-
-.search input {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  outline: none;
-  background: rgba(255, 255, 255, 0.02);
-  color: var(--text);
-}
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.chip {
-  appearance: none;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
-  padding: 8px 10px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.chip:hover { 
-  background: rgba(255, 255, 255, 0.08); 
-}
-.chip.active {
-  background: var(--accent);
-  color: #050506;
-  border-color: var(--accent);
-}
-
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 14px;
-  margin-top: 12px;
-}
-
-.course {
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.course-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.course-title {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.25;
-}
-
-.tag {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--accent-blue);
-  background: rgba(56, 189, 248, 0.1);
-  color: var(--accent-blue);
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.meta { 
-  font-size: 13px; 
-  color: var(--text-dim); 
-}
-
-.pill-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.pill {
-  padding: 6px 14px;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-}
-
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #050506;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-.btn.ghost {
-  background: transparent;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-}
-
-/* Stack spacing */
-.stack {
-  display: grid;
-  gap: 14px;
-}
-
-/* Mobile */
-@media (max-width: 980px) {
-  .hero { 
-    grid-template-columns: 1fr; 
-  }
-  .grid { 
-    grid-template-columns: 1fr; 
-  }
-}
-</style>
+    @media (max-width: 980px) {
+      .hero-grid, .courses-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
 
   <main class="courses-wrap">
 
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">Kurser</p>
-        <h1>Fag, forløb og kurser</h1>
-        <p class="lead">
-          Her samler jeg alle de kurser, jeg har taget — både universitet og online. Fokus er på
-          makro, økonometri, programmering og modeller.
-        </p>
-
-        <div class="controls" aria-label="Filtre og søgning">
-          <div class="search">
-            <input id="courseSearch" type="search" placeholder="Søg (fx 'SAS', 'CGE', 'Python', 'SVAR')…" aria-label="Søg i kurser" />
-          </div>
-
-          <div class="filters" aria-label="Filtre">
-            <button class="chip active" data-filter="all" type="button">Alle</button>
-            <button class="chip" data-filter="university" type="button">Universitet</button>
-            <button class="chip" data-filter="programming" type="button">Programmering</button>
-            <button class="chip" data-filter="econometrics" type="button">Økonometri</button>
-            <button class="chip" data-filter="macro" type="button">Makro</button>
-            <button class="chip" data-filter="writing" type="button">Skrivning</button>
-          </div>
-        </div>
-
-        <p class="muted small" style="margin:10px 0 0;">
-          Pro tip: hold kort-beskrivelser korte. Hvis nogen vil nørde, klikker de videre.
-        </p>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Sådan bruger du siden</h2>
-          <p class="muted small" style="margin:0;">
-            Brug søgning og filtre. Hver “card” kan have link til pensum, kursus-side og evt. certifikat.
-            Læg dokumenter i <code>assets/courses/</code> (eller <code>assets/certificates/</code>) og link dem.
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">Kurser</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Fag, forløb og kurser</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            Her samler jeg alle de kurser, jeg har taget — både universitet og online. Fokus er på
+            makro, økonometri, programmering og modeller.
           </p>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#university">Universitet</Button>
+            <Button href="#programming" variant="ghost">Programmering</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Sådan bruger du siden</h2>
+            <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
+              Brug søgning og filtre. Hver “card” kan have link til pensum, kursus-side og evt. certifikat.
+            </p>
+          </Card>
         </div>
       </div>
-    </section>
+    </Section>
 
-    <div class="stack">
+    <Section id="university">
+       <Card variant="default" class="p-6">
+         <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-6">Universitetskurser (Københavns Universitet)</h2>
+         <div class="courses-grid">
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold text-base mb-2">Advanced Macroeconomics: Business Cycles</h3>
+             <p class="text-sm text-dim">Konjunkturer, DSGE/RBC intuition.</p>
+           </Card>
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold text-base mb-2">Advanced Macroeconomics: SVAR Analysis</h3>
+             <p class="text-sm text-dim">SVAR-identifikation, impulse responses.</p>
+           </Card>
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold text-base mb-2">Practical Time Series Analysis (SAS)</h3>
+             <p class="text-sm text-dim">Forecasting, decomposition, og SAS workflows.</p>
+           </Card>
+         </div>
+       </Card>
+    </Section>
 
-      <section class="card" aria-label="Kurser liste">
-        <h2 class="section-title">Kurser</h2>
-        <p class="muted">Redigér cards nedenfor og kopier dem for at tilføje flere.</p>
+    <Section id="programming">
+       <Card variant="bordered" class="p-6">
+         <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-6">Programmering & Andre kurser</h2>
+         <div class="courses-grid">
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold text-base mb-2">Python – Data Analysis Samling</h3>
+             <p class="text-sm text-dim">Pandas, data cleaning, plotting, workflows.</p>
+           </Card>
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold text-base mb-2">Politikens Skriveakademi</h3>
+             <p class="text-sm text-dim">Formidling og struktur for økonomer.</p>
+           </Card>
+         </div>
+       </Card>
+    </Section>
 
-        <div class="grid" id="coursesGrid">
-
-          <!-- EKSEMPEL 1 -->
-          <article class="course" data-tags="university macro">
-            <div class="course-top">
-              <h3 class="course-title">Advanced Macroeconomics: Business Cycles</h3>
-              <span class="tag">Universitet</span>
-            </div>
-            <p class="meta">Københavns Universitet · (indsæt år/semester)</p>
-            <p class="muted">Konjunkturer, DSGE/RBC intuition, og hvordan man læser modeller uden at gå kold.</p>
-
-            <div class="pill-wrap" aria-label="Tags">
-              <span class="pill">Makro</span>
-              <span class="pill">Business Cycles</span>
-              <span class="pill">Modeller</span>
-            </div>
-
-            <div class="cta">
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Kursus-side</a>
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file"></i> Pensum/Noter</a>
-            </div>
-          </article>
-
-          <!-- EKSEMPEL 2 -->
-          <article class="course" data-tags="university econometrics">
-            <div class="course-top">
-              <h3 class="course-title">Advanced Macroeconomics: Structural VAR Analysis</h3>
-              <span class="tag">Universitet</span>
-            </div>
-            <p class="meta">Københavns Universitet · (indsæt år/semester)</p>
-            <p class="muted">SVAR-identifikation, impulse responses, og praktisk tidsrække-håndværk.</p>
-
-            <div class="pill-wrap">
-              <span class="pill">Økonometri</span>
-              <span class="pill">SVAR</span>
-              <span class="pill">Tidsrækker</span>
-            </div>
-
-            <div class="cta">
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Kursus-side</a>
-            </div>
-          </article>
-
-          <!-- EKSEMPEL 3 -->
-          <article class="course" data-tags="programming econometrics">
-            <div class="course-top">
-              <h3 class="course-title">Practical Time Series Analysis (SAS)</h3>
-              <span class="tag">SAS</span>
-            </div>
-            <p class="meta">Københavns Universitet · (indsæt år/semester)</p>
-            <p class="muted">Forecasting, decomposition, og SAS workflows (PROC ESM/UCM/X12 etc.).</p>
-
-            <div class="pill-wrap">
-              <span class="pill">SAS</span>
-              <span class="pill">Forecasting</span>
-              <span class="pill">Tidsrækker</span>
-            </div>
-
-            <div class="cta">
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file"></i> Cheatsheet</a>
-            </div>
-          </article>
-
-          <!-- EKSEMPEL 4 -->
-          <article class="course" data-tags="programming">
-            <div class="course-top">
-              <h3 class="course-title">Python – Data Analysis & Automation (samling)</h3>
-              <span class="tag">Programmering</span>
-            </div>
-            <p class="meta">Online · (indsæt platform + år)</p>
-            <p class="muted">Pandas, data cleaning, plotting, reproducérbare workflows og små automatiseringer.</p>
-
-            <div class="pill-wrap">
-              <span class="pill">Python</span>
-              <span class="pill">Pandas</span>
-              <span class="pill">Data prep</span>
-            </div>
-
-            <div class="cta">
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-certificate"></i> Certifikat</a>
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-link"></i> Kursus-link</a>
-            </div>
-          </article>
-
-          <!-- EKSEMPEL 5 -->
-          <article class="course" data-tags="writing">
-            <div class="course-top">
-              <h3 class="course-title">Politikens Skriveakademi (for økonomistuderende)</h3>
-              <span class="tag">Skrivning</span>
-            </div>
-            <p class="meta">Politiken · (indsæt år)</p>
-            <p class="muted">Formidling, struktur og tekst, der faktisk kan læses af mennesker.</p>
-
-            <div class="pill-wrap">
-              <span class="pill">Skrivning</span>
-              <span class="pill">Formidling</span>
-            </div>
-
-            <div class="cta">
-              <a class="btn ghost" href="#" aria-disabled="true"><i class="fa-solid fa-file"></i> Bevis/Link</a>
-            </div>
-          </article>
-
+    <Section>
+      <Card variant="glass" class="p-6 text-center">
+        <h2 class="text-xl font-bold mb-4">Vil du se mere?</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          <Button href="/contact">Kontakt mig</Button>
+          <Button href="/blog" variant="ghost">Tilbage til blog</Button>
         </div>
-      </section>
+      </Card>
+    </Section>
 
-      <section class="card">
-        <h2 class="section-title">Vil du foreslå et kursus?</h2>
-        <p class="muted">
-          Hvis du mener der er et “must-have” kursus for min profil (makro/økonometri/data/modeller), så skriv endelig.
-        </p>
-        <div class="cta">
-          <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-envelope"></i> Send en mail</a>
-          <a class="btn ghost" href="/contact"><i class="fa-solid fa-message"></i> Kontakt-side</a>
-        </div>
-      </section>
-
-    </div>
   </main>
-  
-  <!-- Filter script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Filter + search logic
-      // Note: Navbar script is already in Layout
-      const chips = document.querySelectorAll(".chip");
-      const search = document.getElementById("courseSearch");
-      const cards = Array.from(document.querySelectorAll("#coursesGrid .course"));
-
-      let activeFilter = "all";
-
-      function matchesFilter(card){
-        const tags = (card.getAttribute("data-tags") || "").toLowerCase();
-        return activeFilter === "all" || tags.includes(activeFilter);
-      }
-
-      function matchesSearch(card){
-        const q = (search?.value || "").trim().toLowerCase();
-        if (!q) return true;
-        return card.textContent.toLowerCase().includes(q);
-      }
-
-      function render(){
-        cards.forEach(card => {
-          const show = matchesFilter(card) && matchesSearch(card);
-          card.style.display = show ? "" : "none";
-        });
-      }
-
-      chips.forEach(chip => {
-        chip.addEventListener("click", () => {
-          chips.forEach(c => c.classList.remove("active"));
-          chip.classList.add("active");
-          activeFilter = chip.getAttribute("data-filter");
-          render();
-        });
-      });
-
-      if(search) {
-          search.addEventListener("input", render);
-      }
-    });
-  </script>
 </Layout>
