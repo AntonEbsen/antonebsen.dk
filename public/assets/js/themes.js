@@ -19,8 +19,8 @@
 
   function sameDay(a, b) {
     return a.getFullYear() === b.getFullYear() &&
-           a.getMonth() === b.getMonth() &&
-           a.getDate() === b.getDate();
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate();
   }
 
   function inRangeInclusive(d, start, end) {
@@ -144,5 +144,5 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", applyTheme);
+  // document.addEventListener("DOMContentLoaded", applyTheme);
 })();
