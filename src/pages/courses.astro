@@ -4,6 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 ---
 
 <Layout 
@@ -59,7 +61,7 @@ import Pill from '@components/ui/Pill.astro';
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Sådan bruger du siden</h2>
+            <SectionHeading>Sådan bruger du siden</SectionHeading>
             <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
               Brug søgning og filtre. Hver “card” kan have link til pensum, kursus-side og evt. certifikat.
             </p>
@@ -70,7 +72,7 @@ import Pill from '@components/ui/Pill.astro';
 
     <Section id="university">
        <Card variant="default" class="p-6">
-         <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-6">Universitetskurser (Københavns Universitet)</h2>
+         <SectionHeading>Universitetskurser (Københavns Universitet)</SectionHeading>
          <div class="courses-grid">
            <Card variant="glass" class="p-4">
              <h3 class="font-bold text-base mb-2">Advanced Macroeconomics: Business Cycles</h3>
@@ -90,7 +92,7 @@ import Pill from '@components/ui/Pill.astro';
 
     <Section id="programming">
        <Card variant="bordered" class="p-6">
-         <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-6">Programmering & Andre kurser</h2>
+         <SectionHeading>Programmering & Andre kurser</SectionHeading>
          <div class="courses-grid">
            <Card variant="glass" class="p-4">
              <h3 class="font-bold text-base mb-2">Python – Data Analysis Samling</h3>
@@ -105,13 +107,12 @@ import Pill from '@components/ui/Pill.astro';
     </Section>
 
     <Section>
-      <Card variant="glass" class="p-6 text-center">
-        <h2 class="text-xl font-bold mb-4">Vil du se mere?</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <Button href="/contact">Kontakt mig</Button>
-          <Button href="/blog" variant="ghost">Tilbage til blog</Button>
-        </div>
-      </Card>
+      <ContactCard 
+        variant="glass"
+        title="Vil du se mere?"
+        text="Kontakt mig eller gå tilbage til oversigten."
+        action="contact"
+      />
     </Section>
 
   </main>

@@ -4,6 +4,8 @@ import Pill from '@components/ui/Pill.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 import BlogCard from '@components/blog/BlogCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -78,7 +80,7 @@ const travel = allPosts.filter(p => p.data.category === 'travel');
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Seneste</h2>
+            <SectionHeading>Seneste</SectionHeading>
             <p class="text-dim opacity-80 m-0">
               Nye indlæg kommer løbende. (Pro tip: når du har 10+ posts, kan vi lave et rigtigt filter.)
             </p>
@@ -92,7 +94,7 @@ const travel = allPosts.filter(p => p.data.category === 'travel');
     <!-- ===================== -->
     <Section id="cat-fagligt" aria-label="Fagligt">
       <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <h2 class="m-0 text-xl font-bold">Fagligt</h2>
+        <SectionHeading class="mb-0 text-xl font-bold">Fagligt</SectionHeading>
         <p class="m-0 text-dim text-sm opacity-80">Økonomi, data, modeller, økonometri og værktøjer.</p>
       </div>
 
@@ -114,7 +116,7 @@ const travel = allPosts.filter(p => p.data.category === 'travel');
     <!-- ===================== -->
     <Section id="cat-traening" aria-label="Træning">
       <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <h2 class="m-0 text-xl font-bold">Træning</h2>
+        <SectionHeading class="mb-0 text-xl font-bold">Træning</SectionHeading>
         <p class="m-0 text-dim text-sm opacity-80">Rutiner, progression, og hvad der faktisk virker i praksis.</p>
       </div>
 
@@ -136,7 +138,7 @@ const travel = allPosts.filter(p => p.data.category === 'travel');
     <!-- ===================== -->
     <Section id="cat-rejser" aria-label="Rejser">
       <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <h2 class="m-0 text-xl font-bold">Rejser</h2>
+        <SectionHeading class="mb-0 text-xl font-bold">Rejser</SectionHeading>
         <p class="m-0 text-dim text-sm opacity-80">Vandring, ruter, planlægning og erfaringer fra turene.</p>
       </div>
 
@@ -155,16 +157,12 @@ const travel = allPosts.filter(p => p.data.category === 'travel');
 
     <!-- CTA -->
     <Section>
-      <Card variant="glass" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Forslag til indlæg?</h2>
-        <p class="text-dim opacity-80 mb-6">
-          Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <Button href="mailto:anton.ebsen@gmail.com">Send en mail</Button>
-          <Button href="/contact" variant="ghost">Kontakt-side</Button>
-        </div>
-      </Card>
+      <ContactCard 
+        variant="glass" 
+        title="Forslag til indlæg?" 
+        text="Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig."
+        action="contact"
+      />
     </Section>
 
   </main>
