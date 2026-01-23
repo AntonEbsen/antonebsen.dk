@@ -49,16 +49,16 @@ export const navigation: { [key: string]: { label: string; url: string; children
             label: 'CV',
             url: '/cv',
             children: [
-                { label: 'Profil', url: '/cv#profile' },
-                { label: 'Erhvervserfaring', url: '/cv#experience' },
-                { label: 'Uddannelse', url: '/cv#education' },
-                { label: 'Kompetencer', url: '/cv#skills' },
-                { label: 'Kurser', url: '/cv#courses' },
-                { label: 'Certificeringer', url: '/cv#certifications' },
-                { label: 'Organisationer', url: '/cv#organizations' },
+                { label: 'Profil', url: '/cv' },
+                { label: 'Erhvervserfaring', url: '/experience' },
+                { label: 'Uddannelse', url: '/education' },
+                { label: 'Kompetencer', url: '/skills' },
+                { label: 'Kurser', url: '/courses' },
+                { label: 'Certificeringer', url: '/certifications' },
+                { label: 'Organisationer', url: '/organizations' },
                 { label: 'Referencer', url: '/referencer' },
                 { label: 'Milepæle', url: '/timeline' },
-                { label: 'Video-CV', url: '/cv#video' }
+                { label: 'Video-CV', url: '/video-cv' }
             ]
         },
         {
@@ -66,10 +66,10 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/portfolio',
             children: [
                 { label: 'Projekter', url: '/portfolio' },
-                { label: 'Projekt-cases', url: '/portfolio#cases' },
+                { label: 'Projekt-cases', url: '/cases' },
                 { label: 'Downloads', url: '/resources' },
-                { label: 'Omtale', url: '/referencer' },
-                { label: 'Noter', url: '/blog' },
+                { label: 'Omtale', url: '/media' },
+                { label: 'Noter', url: '/notes' },
                 { label: 'Galleri', url: '/gallery' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -85,16 +85,16 @@ export const navigation: { [key: string]: { label: string; url: string; children
             label: 'CV',
             url: '/en/cv',
             children: [
-                { label: 'Profile', url: '/en/cv#profile' },
-                { label: 'Experience', url: '/en/cv#experience' },
-                { label: 'Education', url: '/en/cv#education' },
-                { label: 'Skills', url: '/en/cv#skills' },
-                { label: 'Courses', url: '/en/cv#courses' },
-                { label: 'Certifications', url: '/en/cv#certifications' },
-                { label: 'Organizations', url: '/en/cv#organizations' },
-                { label: 'References', url: '/en/referencer' },
+                { label: 'Profile', url: '/cv' },
+                { label: 'Experience', url: '/experience' },
+                { label: 'Education', url: '/education' },
+                { label: 'Skills', url: '/skills' },
+                { label: 'Courses', url: '/courses' },
+                { label: 'Certifications', url: '/certifications' },
+                { label: 'Organizations', url: '/organizations' },
+                { label: 'References', url: '/referencer' },
                 { label: 'Milestones', url: '/timeline' },
-                { label: 'Video CV', url: '/en/cv#video' }
+                { label: 'Video CV', url: '/video-cv' }
             ]
         },
         {
@@ -102,10 +102,10 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/en/portfolio',
             children: [
                 { label: 'Projects', url: '/en/portfolio' },
-                { label: 'Case Studies', url: '/en/portfolio#cases' },
+                { label: 'Case Studies', url: '/cases' },
                 { label: 'Downloads', url: '/resources' },
-                { label: 'Mentions', url: '/en/referencer' },
-                { label: 'Notes', url: '/en/blog' },
+                { label: 'Mentions', url: '/media' },
+                { label: 'Notes', url: '/notes' },
                 { label: 'Gallery', url: '/gallery' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
