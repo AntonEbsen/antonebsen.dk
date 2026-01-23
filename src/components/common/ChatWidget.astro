@@ -133,7 +133,7 @@
         const errorMsg = data.message || "Sorry, I encountered an error connecting to my brain.";
         addMessage(`⚠️ ${errorMsg}`, 'ai');
         if (data.error === 'Configuration Error') {
-           addMessage("To fix this: Create a .env file in the root and add OPENAI_API_KEY=sk-...", 'ai');
+           addMessage("To fix this: Create a .env file in the root and add GEMINI_API_KEY=AIzaSy...", 'ai');
         }
       }
     } catch (err) {

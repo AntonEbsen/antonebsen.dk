@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getSystemPrompt } from '../../lib/ai-context';
 
 export const POST: APIRoute = async ({ request }) => {
@@ -11,33 +11,28 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ error: 'No message provided' }), { status: 400 });
         }
 
-        const apiKey = import.meta.env.OPENAI_API_KEY;
+        const apiKey = import.meta.env.GEMINI_API_KEY;
         if (!apiKey) {
             return new Response(JSON.stringify({
                 error: 'Configuration Error',
-                message: 'Missing OPENAI_API_KEY. Please add it to your .env file.'
+                message: 'Missing GEMINI_API_KEY. Please add it to your .env file.'
             }), { status: 500 });
         }
 
-        const openai = new OpenAI({ apiKey: apiKey });
-
-        // Get the dynamic context (CV, projects, etc.)
+        const genAI = new GoogleGenerativeAI(apiKey);
         const systemPrompt = getSystemPrompt();
 
-        // Call OpenAI
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4o-mini", // Cost-effective and fast
-            messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: userMessage }
-            ],
-            max_tokens: 300,
-            temperature: 0.7,
+        // Initialize model with system instruction
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: systemPrompt
         });
 
-        const reply = completion.choices[0].message.content;
+        const result = await model.generateContent(userMessage);
+        const response = await result.response;
+        const text = response.text();
 
-        return new Response(JSON.stringify({ reply }), {
+        return new Response(JSON.stringify({ reply: text }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json'
