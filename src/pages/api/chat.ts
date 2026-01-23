@@ -74,14 +74,38 @@ export const POST: APIRoute = async ({ request }) => {
         const systemPrompt = getSystemPrompt(lang);
 
         // Initialize model with system instruction
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
-            systemInstruction: systemPrompt
-        });
+        // We implement a fallback strategy because sometimes specific model IDs (like 1.5-flash) 
+        // return 404 depending on the API key region or version.
 
-        const result = await model.generateContent(userMessage);
-        const response = await result.response;
-        const text = response.text();
+        const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+        let text = "";
+        let errorToThrow;
+
+        for (const modelName of modelsToTry) {
+            try {
+                const model = genAI.getGenerativeModel({
+                    model: modelName,
+                    systemInstruction: systemPrompt
+                });
+
+                const result = await model.generateContent(userMessage);
+                const response = await result.response;
+                text = response.text();
+
+                // If we get here, it worked!
+                break;
+            } catch (err: any) {
+                console.warn(`Failed with model ${modelName}:`, err.message);
+                errorToThrow = err;
+                // If it's a 404 (Not Found) or 400 (Bad Request), continue to next model.
+                // If it's 401/403 (Auth), it will fail for all anyway, but we continue just in case.
+                continue;
+            }
+        }
+
+        if (!text) {
+            throw errorToThrow || new Error("All models failed.");
+        }
 
         return new Response(JSON.stringify({ reply: text }), {
             status: 200,
