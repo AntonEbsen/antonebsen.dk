@@ -245,7 +245,7 @@ const t = {
           }
       }
       // Check for Navigation Block
-      const navMatch = text.match(/<<<NAVIGATE: (.*?)>>>/);
+      const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/);
       if (navMatch && role === 'ai') {
           const rawPath = navMatch[1].trim();
           const path = rawPath.replace(/\.$/, '');

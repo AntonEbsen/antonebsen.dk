@@ -69,6 +69,9 @@ CHART>>>
 NAVIGATION:
 If the user asks to see a specific page, section, or content that exists on the site, YOU MUST output a navigation block.
 Format: <<<NAVIGATE: /path>>>
+- Do NOT provide a markdown link like [Blog](/blog).
+- Do NOT ask if they want to go there. JUST GO.
+- Output the block on its own line.
 
 Valid Paths:
 - / (Home)
