@@ -1,5 +1,5 @@
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
-import { navigation, ui } from '@i18n/ui'; // Check imports
+import { navigation, ui } from '@i18n/ui';
 import portfolioData from '@data/portfolio.json';
 import blogData from '@data/blog.json';
 import skillsData from '@data/skills.json';
@@ -7,25 +7,28 @@ import skillsData from '@data/skills.json';
 export async function GET(context) {
     const searchIndex = [];
 
-    // 1. Pages from Navigation (Danish as default for now, or mix)
-    // We'll add both DA and EN pages logic if simpler, or just mapped items.
-    // Converting 'navigation.da' to search items
-
     // Helper to add unique items
     const addedUrls = new Set();
     const addItem = (item) => {
-        if (addedUrls.has(item.url)) return;
+        // We allow same URL if lang is different (but here URL is shared? No, they should differ usually, but /#anchors)
+        // If we want to support same item in both languages, we'd need separate entries.
+        // But for simpler filtering, we just add everything.
+        // Note: addedUrls checks might prevent adding same URL for second language if they share URL.
+        // Actually, da/en urls are different mostly.
+        const key = item.url + '|' + item.lang;
+        if (addedUrls.has(key)) return;
         searchIndex.push(item);
-        addedUrls.add(item.url);
+        addedUrls.add(key);
     };
 
-    // Static Pages (DA)
+    // 1. Pages from Navigation (DA)
     navigation.da.forEach(nav => {
         addItem({
             title: nav.label,
             url: nav.url,
             content: `Gå til ${nav.label} siden.`,
-            tags: ['page']
+            tags: ['page'],
+            lang: 'da'
         });
         if (nav.children) {
             nav.children.forEach(child => {
@@ -33,19 +36,21 @@ export async function GET(context) {
                     title: child.label,
                     url: child.url,
                     content: child.label,
-                    tags: ['page', 'subpage']
+                    tags: ['page', 'subpage'],
+                    lang: 'da'
                 });
             });
         }
     });
 
-    // Static Pages (EN)
+    // 2. Pages from Navigation (EN)
     navigation.en.forEach(nav => {
         addItem({
-            title: `${nav.label} (EN)`,
+            title: nav.label,
             url: nav.url,
             content: `Go to ${nav.label} page.`,
-            tags: ['page', 'en']
+            tags: ['page', 'en'],
+            lang: 'en'
         });
         if (nav.children) {
             nav.children.forEach(child => {
@@ -53,46 +58,46 @@ export async function GET(context) {
                     title: child.label,
                     url: child.url,
                     content: child.label,
-                    tags: ['page', 'subpage', 'en']
+                    tags: ['page', 'subpage', 'en'],
+                    lang: 'en'
                 });
             });
         }
     });
 
-    // 2. Portfolio Items
+    // 3. Portfolio Items (DA)
     portfolioData.forEach(item => {
         addItem({
             title: item.title,
-            url: '/portfolio', // or specific link if they have detailed pages? Portfolio.json has 'links' but maybe not separate pages? 
-            // The user has subpages now: /gallery, /timeline. 
-            // But main items are on /portfolio.
+            url: '/portfolio',
             content: item.description + " " + item.tools,
-            tags: ['portfolio', 'project', item.tagString]
+            tags: ['portfolio', 'project', item.tagString],
+            lang: 'da'
         });
     });
 
-    // 3. Blog Posts
-    // 3. Blog Posts (blogData is an object with categories)
+    // 4. Blog Posts (DA)
     Object.values(blogData).flat().forEach((post: any) => {
         const url = post.links?.[0]?.url || '#';
-        if (url === '#' || url.startsWith('#')) return; // Skip posts without real links if desired, or include them?
+        if (url === '#' || url.startsWith('#')) return;
 
         addItem({
             title: post.title,
             url: url,
             content: post.description || '',
-            tags: ['blog', post.tag || '']
+            tags: ['blog', post.tag || ''],
+            lang: 'da'
         });
     });
 
-    // 4. Skills (Optional)
+    // 5. Skills (DA)
     skillsData.programming.forEach(skill => {
-        // Link to CV or Home?
         addItem({
             title: skill.name,
             url: '/cv#skills',
             content: `Erfaring med ${skill.name}. ${skill.title || ''}`,
-            tags: ['skill', 'tool']
+            tags: ['skill', 'tool'],
+            lang: 'da'
         });
     });
 

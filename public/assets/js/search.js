@@ -139,7 +139,10 @@
     const tokens = normalize(q).split(/\s+/).filter(Boolean);
     if (tokens.length === 0) return [];
 
+    const currentLang = document.documentElement.lang || "da";
+
     const scored = index
+      .filter(item => item.lang === currentLang)
       .map(item => ({ item, s: scoreItem(item, tokens) }))
       .filter(x => x.s >= 0)
       .sort((a, b) => b.s - a.s)

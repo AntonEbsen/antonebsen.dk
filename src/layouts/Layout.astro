@@ -13,11 +13,14 @@ interface Props {
 	bodyClass?: string;
 }
 
+import { getLangFromUrl } from '@i18n/utils';
+
 const { title, description, image, article, bodyClass = "" } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <!DOCTYPE html>
-<html lang="da">
+<html lang={lang}>
 <head>
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
