@@ -2,10 +2,54 @@ import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 // Import from code-file instead of JSON logic to be "bulletproof" against bundlers
 import { cv, portfolio, blog, skills, training } from '../../lib/all-data';
+import fs from 'fs/promises';
+import path from 'path';
+import pdf from 'pdf-parse';
+
+// Load documents logic
+async function loadDocuments() {
+    try {
+        const docsDir = path.resolve('./src/data/documents');
+        // Check if directory exists
+        try {
+            await fs.access(docsDir);
+        } catch {
+            console.warn("Documents directory not found (src/data/documents). Skipping RAG.");
+            return "";
+        }
+
+        const files = await fs.readdir(docsDir);
+        let allText = "";
+
+        for (const file of files) {
+            const filePath = path.join(docsDir, file);
+
+            if (file.endsWith('.pdf')) {
+                try {
+                    const buffer = await fs.readFile(filePath);
+                    const data = await pdf(buffer);
+                    allText += `\n--- START DOCUMENT: ${file} ---\n${data.text}\n--- END DOCUMENT ---\n`;
+                } catch (e) {
+                    console.error(`Failed to parse PDF ${file}:`, e);
+                }
+            } else if (file.endsWith('.txt') || file.endsWith('.md')) {
+                const text = await fs.readFile(filePath, 'utf-8');
+                allText += `\n--- START DOCUMENT: ${file} ---\n${text}\n--- END DOCUMENT ---\n`;
+            }
+        }
+        return allText;
+    } catch (error) {
+        console.error("Error loading documents:", error);
+        return "";
+    }
+}
 
 export const prerender = false;
 
-function getSystemPrompt(lang: string = 'da') {
+async function getSystemPrompt(lang: string = 'da') {
+    // Load RAG content dynamically
+    const documentContext = await loadDocuments();
+
     // Convert JSONs to a readable string format
     const cvText = JSON.stringify(cv, null, 2);
     const portfolioText = JSON.stringify(portfolio, null, 2);
@@ -45,6 +89,9 @@ ${blogText}
 
 [TRAINING & FITNESS]
 ${trainingText}
+
+[USER UPLOADED DOCUMENTS (PDFs, THESES, NOTES)]
+${documentContext}
 
 INSTRUCTIONS:
 - When asked about experience, summarize the relevant roles.
@@ -122,7 +169,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const lang = body.lang || 'da';
-        const systemPrompt = getSystemPrompt(lang);
+        const systemPrompt = await getSystemPrompt(lang);
 
         // Initialize model with system instruction
         // Updated for 2026: gemini-1.5 is deprecated. Using gemini-2.5-flash and 2.0-flash.
