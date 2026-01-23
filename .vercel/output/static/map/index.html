@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="da"> <head><!-- Global Metadata --><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon"><meta name="generator" content="Astro v5.16.12"><!-- Canonical URL --><link rel="canonical" href="https://antonebsen.dk/map/"><!-- Primary Meta Tags --><title>Anton Meier Ebsen Jørgensen – Kort</title><meta name="title" content="Anton Meier Ebsen Jørgensen – Kort"><meta name="description" content="Interaktivt kort med udvalgte steder jeg har været: rejser, events og studier."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://antonebsen.dk/map/"><meta property="og:title" content="Anton Meier Ebsen Jørgensen – Kort"><meta property="og:description" content="Interaktivt kort med udvalgte steder jeg har været: rejser, events og studier."><meta property="og:image" content="https://antonebsen.dk/assets/img/billede-af-mig.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://antonebsen.dk/map/"><meta property="twitter:title" content="Anton Meier Ebsen Jørgensen – Kort"><meta property="twitter:description" content="Interaktivt kort med udvalgte steder jeg har været: rejser, events og studier."><meta property="twitter:image" content="https://antonebsen.dk/assets/img/billede-af-mig.jpg"><meta name="design-version" content="dark-gold-v1"><!-- <title>{title}</title> --><!-- Fonts & Icons --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><!-- Scripts --><script src="/assets/js/search.js" defer></script><script src="/assets/js/themes.js" defer></script><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><style>.map-wrap[data-astro-cid-y6dp7ad7]{max-width:1200px;margin:3rem auto;padding:0 1.5rem}.card[data-astro-cid-y6dp7ad7]{background:#ffffff08;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2.5rem;margin-bottom:2rem;backdrop-filter:blur(10px)}.hero[data-astro-cid-y6dp7ad7]{display:grid;gap:2rem}@media(min-width:768px){.hero[data-astro-cid-y6dp7ad7]{grid-template-columns:1.5fr 1fr}}.eyebrow[data-astro-cid-y6dp7ad7]{text-transform:uppercase;letter-spacing:.05em;font-size:.85rem;color:var(--accent);margin-bottom:1rem;font-weight:700}h1[data-astro-cid-y6dp7ad7]{font-size:3rem;font-weight:800;margin-bottom:1.5rem;line-height:1.1}.lead[data-astro-cid-y6dp7ad7]{font-size:1.1rem;color:#fffc;line-height:1.6;margin-bottom:0}.section-title[data-astro-cid-y6dp7ad7]{font-size:1.2rem;font-weight:700;margin-bottom:1rem}.muted[data-astro-cid-y6dp7ad7]{color:#fff9}.small[data-astro-cid-y6dp7ad7]{font-size:.9rem}.controls[data-astro-cid-y6dp7ad7]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;padding:1.5rem 2.5rem}.filters[data-astro-cid-y6dp7ad7]{display:flex;gap:.5rem;flex-wrap:wrap}.chip[data-astro-cid-y6dp7ad7]{background:transparent;border:1px solid rgba(255,255,255,.15);color:#fffc;padding:.5rem 1rem;border-radius:99px;cursor:pointer;font-size:.9rem;transition:all .2s}.chip[data-astro-cid-y6dp7ad7]:hover,.chip[data-astro-cid-y6dp7ad7].is-active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}.layout[data-astro-cid-y6dp7ad7]{display:grid;gap:2rem;grid-template-columns:1fr}@media(min-width:900px){.layout[data-astro-cid-y6dp7ad7]{grid-template-columns:2fr 1fr}}.map-card[data-astro-cid-y6dp7ad7]{padding:0;overflow:hidden;height:500px}.map[data-astro-cid-y6dp7ad7]{width:100%;height:100%}.list-card[data-astro-cid-y6dp7ad7]{height:500px;overflow-y:auto;display:flex;flex-direction:column}.place-list[data-astro-cid-y6dp7ad7]{display:flex;flex-direction:column;gap:.5rem}.place-row[data-astro-cid-y6dp7ad7]{display:flex;align-items:center;justify-content:space-between;background:#ffffff05;border:1px solid rgba(255,255,255,.05);padding:.75rem 1rem;border-radius:8px;cursor:pointer;text-align:left;width:100%;transition:all .2s}.place-row[data-astro-cid-y6dp7ad7]:hover{background:#ffffff0d;border-color:var(--accent)}.row-title[data-astro-cid-y6dp7ad7]{font-weight:600;font-size:.95rem;color:#fff}.row-badge[data-astro-cid-y6dp7ad7]{font-size:.7rem;text-transform:uppercase;background:#ffffff1a;padding:2px 6px;border-radius:4px}.leaflet-popup-content-wrapper{background:#1a1a1a;color:#fff;border:1px solid var(--accent);border-radius:8px}.leaflet-popup-tip{background:var(--accent)}.leaflet-popup-content{margin:12px;line-height:1.5}.badge[data-astro-cid-y6dp7ad7]{background:var(--accent);color:#000;font-size:.7rem;padding:1px 5px;border-radius:3px;margin-left:6px;text-transform:uppercase;font-weight:700}.popup-meta[data-astro-cid-y6dp7ad7]{font-size:.8rem;opacity:.7;margin-bottom:4px}.popup-link[data-astro-cid-y6dp7ad7]{color:var(--accent);font-size:.85rem;text-decoration:none;font-weight:600}
+</style>
+<link rel="stylesheet" href="/_astro/about.1gRC42_8.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		var script = document.createElement('script');
+		script.defer = true;
+		script.src = '/_vercel/insights/script.js';
+		var head = document.querySelector('head');
+		head.appendChild(script);
+	</script></head> <body class="map-page"> <nav class="navbar" aria-label="Primær navigation"> <div class="nav-inner"> <div class="nav-left"> <a class href="/"> Hjem </a><div class="nav-item has-dropdown"> <a href="/cv" class="nav-link "> CV <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-60"></i> </a> <div class="dropdown"> <a href="/about" target="_self" rel> Profil  </a><a href="/experience" target="_self" rel> Erhvervserfaring  </a><a href="/education" target="_self" rel> Uddannelse  </a><a href="/skills" target="_self" rel> Kompetencer  </a><a href="/courses" target="_self" rel> Kurser  </a><a href="/certifications" target="_self" rel> Certificeringer  </a><a href="/organizations" target="_self" rel> Organisationer  </a><a href="/referencer" target="_self" rel> Referencer  </a><a href="/timeline" target="_self" rel> Milepæle  </a><a href="/video-cv" target="_self" rel> Video-CV  </a> </div> </div><div class="nav-item has-dropdown"> <a href="/portfolio" class="nav-link "> Portefølje <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-60"></i> </a> <div class="dropdown"> <a href="/portfolio" target="_self" rel> Projekter  </a><a href="/cases" target="_self" rel> Projekt-cases  </a><a href="/resources" target="_self" rel> Downloads  </a><a href="/media" target="_self" rel> Omtale  </a><a href="/notes" target="_self" rel> Noter  </a><a href="/gallery" target="_self" rel> Galleri  </a><a href="https://github.com/AntonEbsen" target="_blank" rel="noopener noreferrer"> GitHub <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-50"></i> </a> </div> </div><a class href="/services"> Samarbejde </a><a class href="/faq"> FAQ </a><a class href="/blog"> Blog </a><a class href="/contact"> Kontakt </a> </div> <div class="nav-search" role="search"> <label class="sr-only" for="siteSearch">Søg på siden</label> <input id="siteSearch" class="nav-search-input" type="search" placeholder="Søg..." autocomplete="off" aria-autocomplete="list" aria-controls="searchResults" aria-expanded="false"> <div id="searchResults" class="search-results" role="listbox" aria-label="Søgeresultater"></div> </div> <div class="nav-right"> <div class="nav-item has-dropdown lang-switch" data-astro-cid-crzgpmpb> <button type="button" class="nav-link lang-btn" aria-label="Skift sprog" aria-haspopup="true" aria-expanded="false" data-astro-cid-crzgpmpb> Sprog <span aria-hidden="true" data-astro-cid-crzgpmpb>▾</span> </button> <div class="dropdown" role="menu" aria-label="Sprogvalg" data-astro-cid-crzgpmpb> <a href="/" role="menuitem" data-astro-cid-crzgpmpb> <span class="lang-row" data-astro-cid-crzgpmpb> <img src="/assets/img/dansk-flag.png" alt="" class="lang-flag" data-astro-cid-crzgpmpb>
+Dansk
+</span> </a> <a href="/en" role="menuitem" data-astro-cid-crzgpmpb> <span class="lang-row" data-astro-cid-crzgpmpb> <img src="/assets/img/britisk-flag.png" alt="" class="lang-flag" data-astro-cid-crzgpmpb>
+English
+</span> </a> <a href="/de" role="menuitem" data-astro-cid-crzgpmpb> <span class="lang-row" data-astro-cid-crzgpmpb> <img src="/assets/img/tysk-flag.png" alt="" class="lang-flag" data-astro-cid-crzgpmpb>
+Deutsch
+</span> </a> </div> </div> <script type="module">document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".lang-btn").forEach(t=>{t.addEventListener("click",a=>{a.preventDefault();const e=t.closest(".has-dropdown");if(e){e.classList.toggle("open");const n=e.classList.contains("open");t.setAttribute("aria-expanded",String(n))}})}),document.addEventListener("click",t=>{if(!t.target)return;t.target.closest(".lang-switch")||document.querySelectorAll(".lang-switch.open").forEach(e=>{e.classList.remove("open");const n=e.querySelector(".lang-btn");n&&n.setAttribute("aria-expanded","false")})})});</script>  </div> </div> </nav> <script type="module">document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".navbar .has-dropdown > .nav-link").forEach(e=>{e.addEventListener("click",n=>{window.matchMedia("(max-width: 980px)").matches&&(n.preventDefault(),e.parentElement.classList.toggle("open"))})}),document.addEventListener("click",e=>{e.target.closest(".navbar .has-dropdown")||document.querySelectorAll(".navbar .has-dropdown.open").forEach(n=>n.classList.remove("open"))})});</script>      <main class="map-wrap" data-astro-cid-y6dp7ad7> <!-- HERO --> <section class="card hero" data-astro-cid-y6dp7ad7> <div data-astro-cid-y6dp7ad7> <p class="eyebrow" data-astro-cid-y6dp7ad7>Kort</p> <h1 data-astro-cid-y6dp7ad7>Steder jeg har været</h1> <p class="lead" data-astro-cid-y6dp7ad7>
+Et lille visuelt overblik over rejser, events og studier. Klik på en pin for detaljer.
+</p> </div> <div class="hero-side" data-astro-cid-y6dp7ad7> <div class="mini-card" data-astro-cid-y6dp7ad7> <h2 class="section-title" data-astro-cid-y6dp7ad7>Filtre</h2> <p class="muted small" style="margin:0;" data-astro-cid-y6dp7ad7>
+Vælg en kategori for at filtrere pins. Du kan også zoome og panorere.
+</p> </div> </div> </section> <!-- CONTROLS --> <section class="card controls" aria-label="Kortfiltre" data-astro-cid-y6dp7ad7> <div class="filters" role="tablist" aria-label="Kategorier" data-astro-cid-y6dp7ad7> <button class="chip is-active" data-filter="all" role="tab" aria-selected="true" data-astro-cid-y6dp7ad7>Alle</button> <button class="chip" data-filter="rejser" role="tab" aria-selected="false" data-astro-cid-y6dp7ad7>Rejser</button> <button class="chip" data-filter="studier" role="tab" aria-selected="false" data-astro-cid-y6dp7ad7>Studier</button> <button class="chip" data-filter="events" role="tab" aria-selected="false" data-astro-cid-y6dp7ad7>Events</button> </div> <div class="hint muted small" data-astro-cid-y6dp7ad7>
+Tip: Tilføj nye pins i <code data-astro-cid-y6dp7ad7>places</code>-arrayet nederst i filen.
+</div> </section> <!-- MAP + LIST --> <section class="layout" data-astro-cid-y6dp7ad7> <section class="card map-card" aria-label="Kort" data-astro-cid-y6dp7ad7> <div id="map" class="map" role="application" aria-label="Interaktivt kort" data-astro-cid-y6dp7ad7></div> </section> <aside class="card list-card" aria-label="Steder" data-astro-cid-y6dp7ad7> <h2 class="section-title" data-astro-cid-y6dp7ad7>Steder</h2> <div id="placeList" class="place-list" data-astro-cid-y6dp7ad7></div> </aside> </section> </main> <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // ===== 1) Data: tilføj dine steder her =====
+      // lat/lng finder du nemt via Google Maps (højreklik -> "Hvad er der her?")
+      const places = [
+        {
+          title: "København",
+          category: "studier",
+          date: "2021–",
+          lat: 55.6761,
+          lng: 12.5683,
+          note: "Studier, arbejde og base.",
+          link: "https://www.google.com/maps?q=55.6761,12.5683"
+        },
+        {
+          title: "Lübeck",
+          category: "rejser",
+          date: "Okt 2019",
+          lat: 53.8655,
+          lng: 10.6866,
+          note: "Ophold/arbejde (Handwerkskammer).",
+          link: "https://www.google.com/maps?q=53.8655,10.6866"
+        },
+        {
+          title: "Nykøbing Falster",
+          category: "rejser",
+          date: "2018–2021",
+          lat: 54.7691,
+          lng: 11.8740,
+          note: "HHX (Handelsgymnasiet Lolland-Falster).",
+          link: "https://www.google.com/maps?q=54.7691,11.8740"
+        }
+      ];
+
+      // ===== 2) Init map =====
+      const map = L.map("map", { scrollWheelZoom: true }).setView([55.6761, 12.5683], 5);
+
+      // OpenStreetMap tiles
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      // ===== 3) Markers + filtering =====
+      const markersLayer = L.layerGroup().addTo(map);
+
+      function badgeText(cat){
+        if (cat === "rejser") return "Rejser";
+        if (cat === "studier") return "Studier";
+        if (cat === "events") return "Events";
+        return cat;
+      }
+
+      function popupHTML(p){
+        const safeTitle = p.title || "";
+        const safeNote  = p.note || "";
+        const safeDate  = p.date || "";
+        const safeLink  = p.link || "#";
+
+        return `
+          <div class="popup">
+            <div class="popup-top">
+              <strong>${safeTitle}</strong>
+              <span class="badge">${badgeText(p.category)}</span>
+            </div>
+            <div class="popup-meta">${safeDate}</div>
+            <div class="popup-note">${safeNote}</div>
+            <div style="margin-top:10px;">
+              <a class="popup-link" href="${safeLink}" target="_blank" rel="noopener">Åbn i Maps →</a>
+            </div>
+          </div>
+        `;
+      }
+
+      function render(filter){
+        markersLayer.clearLayers();
+
+        const list = document.getElementById("placeList");
+        list.innerHTML = "";
+
+        const filtered = places.filter(p => filter === "all" ? true : p.category === filter);
+
+        filtered.forEach((p) => {
+          const m = L.marker([p.lat, p.lng]).addTo(markersLayer);
+          m.bindPopup(popupHTML(p));
+
+          // List item
+          const row = document.createElement("button");
+          row.type = "button";
+          row.className = "place-row";
+          row.innerHTML = `
+            <div class="row-left">
+              <div class="row-title">${p.title}</div>
+              <div class="row-meta muted small">${p.date || ""}</div>
+            </div>
+            <span class="row-badge">${badgeText(p.category)}</span>
+          `;
+          row.addEventListener("click", () => {
+            map.setView([p.lat, p.lng], Math.max(map.getZoom(), 10), { animate: true });
+            m.openPopup();
+          });
+
+          list.appendChild(row);
+        });
+
+        // Fit bounds hvis der er flere markers
+        if (filtered.length > 1) {
+          const bounds = L.latLngBounds(filtered.map(p => [p.lat, p.lng]));
+          map.fitBounds(bounds, { padding: [30, 30] });
+        } else if (filtered.length === 1) {
+          map.setView([filtered[0].lat, filtered[0].lng], 10);
+        }
+      }
+
+      // Default render
+      let activeFilter = "all";
+      render(activeFilter);
+
+      // ===== 4) UI controls =====
+      const chips = document.querySelectorAll(".chip");
+      chips.forEach(btn => {
+        btn.addEventListener("click", () => {
+          chips.forEach(c => c.classList.remove("is-active"));
+          btn.classList.add("is-active");
+
+          activeFilter = btn.getAttribute("data-filter") || "all";
+          render(activeFilter);
+        });
+      });
+    });
+  </script>  <footer class="site-footer" role="contentinfo"> <div class="footer-container"> <div class="footer-top"> <!-- Brand / kort pitch --> <section class="footer-col footer-brand" aria-label="Om siden"> <h2 class="footer-title">Anton Meier Ebsen Jørgensen</h2> <p class="footer-text"> Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis. </p> <div class="footer-cta"> <a class="footer-btn" href="/cv"> <i class="fa-solid fa-file-lines" aria-hidden="true"></i> CV </a> <a class="footer-btn footer-btn-ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener"> <i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF </a> </div> </section> <!-- Navigation --> <nav class="footer-col" aria-label="Footer navigation"> <h3 class="footer-title-sm">Links</h3> <ul class="footer-list"> <li><a href="/">Hjem</a></li><li><a href="/cv">CV</a></li><li><a href="/portfolio">Portefølje</a></li><li><a href="/services">Samarbejde</a></li><li><a href="/faq">FAQ</a></li><li><a href="/blog">Blog</a></li><li><a href="/contact">Kontakt</a></li> </ul> </nav> <!-- Udvalgte sider --> <nav class="footer-col" aria-label="Udvalgte sider"> <h3 class="footer-title-sm">Udvalgt</h3> <ul class="footer-list"> <li><a href="/resources">Downloads</a></li> <li><a href="/gallery">Galleri</a></li> <li><a href="/timeline">Milepæle</a></li> </ul> </nav> <!-- Kontakt + SoMe --> <section class="footer-col footer-contact" aria-label="Kontakt og profiler"> <h3 class="footer-title-sm">Kontakt</h3> <address class="footer-text footer-address"> <div class="footer-address-row"> <span class="footer-kicker">Email</span><br> <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a> </div> <div class="footer-address-row"> <span class="footer-kicker">Telefon</span><br> <a href="tel:+4525740131">+45 25 74 01 31</a> </div> <div class="footer-address-row"> <span class="footer-kicker">Lokation</span><br> København, DK </div> </address> <div class="footer-social" aria-label="Sociale links"> <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn"> <i class="fa-brands fa-linkedin" aria-hidden="true"></i> </a> <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub"> <i class="fa-brands fa-github" aria-hidden="true"></i> </a> </div> </section> </div> <div class="footer-bottom"> <nav class="footer-legal" aria-label="Juridiske sider"> <a href="#">Privacy</a> <span aria-hidden="true">·</span> <a href="#">Terms</a> </nav> <p class="footer-copy">
+&copy; 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes. <span class="footer-copy-muted">Kildekode: <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
+</span> </p> </div> </div> </footer> <div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none"> <!-- Chat Window --> <div id="chat-window" class="w-[350px] h-[500px] mb-4 bg-glass border border-glass-border rounded-xl shadow-2xl flex flex-col transform translate-y-10 opacity-0 pointer-events-auto transition-all duration-300 origin-bottom-right hidden"> <!-- Header --> <div class="p-4 border-b border-glass-border flex justify-between items-center bg-accent/5 rounded-t-xl"> <div class="flex items-center gap-3"> <div class="w-8 h-8 rounded-full bg-accent text-bg flex items-center justify-center"> <i class="fa-solid fa-robot"></i> </div> <div> <h3 class="font-bold text-sm">Anton's AI</h3> <p class="text-[10px] text-accent flex items-center gap-1"> <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Online
+</p> </div> </div> <button id="close-chat" class="text-dim hover:text-white transition-colors"> <i class="fa-solid fa-xmark"></i> </button> </div> <!-- Messages --> <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-hide text-sm"> <div class="flex gap-2"> <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1"> <i class="fa-solid fa-robot"></i> </div> <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%]"> <p>Hi! I'm Anton's AI assistant. Ask me anything about his experience, skills, or projects!</p> </div> </div> <!-- Messages will appear here --> </div> <!-- Input --> <div class="p-3 border-t border-glass-border bg-glass/50 rounded-b-xl"> <form id="chat-form" class="flex gap-2"> <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 bg-bg/50 border border-glass-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent/50 transition-colors placeholder:text-dim/50" autocomplete="off"> <button type="submit" class="bg-accent text-bg w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white transition-colors"> <i class="fa-solid fa-paper-plane text-xs"></i> </button> </form> <div class="text-[10px] text-center text-dim/30 mt-2">
+Powered by AI · May produce inaccuracies
+</div> </div> </div> <!-- Toggle Button --> <button id="chat-toggle" class="pointer-events-auto w-14 h-14 bg-accent text-bg rounded-full shadow-lg shadow-accent/20 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group"> <i class="fa-solid fa-message text-xl group-hover:scale-110 transition-transform"></i> </button> </div> <script type="module">document.getElementById("chat-widget");const o=document.getElementById("chat-window"),i=document.getElementById("chat-toggle"),g=document.getElementById("close-chat"),p=document.getElementById("chat-form"),l=document.getElementById("chat-input"),s=document.getElementById("chat-messages");let c=!1;function m(){c=!c,c?(o.classList.remove("hidden"),setTimeout(()=>{o.classList.remove("translate-y-10","opacity-0"),i.classList.add("scale-0","opacity-0"),i.style.display="none"},10),l.focus()):(o.classList.add("translate-y-10","opacity-0"),i.style.display="flex",setTimeout(()=>{i.classList.remove("scale-0","opacity-0")},10),setTimeout(()=>{o.classList.add("hidden")},300))}i.addEventListener("click",m);g.addEventListener("click",m);p.addEventListener("submit",async e=>{e.preventDefault();const n=l.value.trim();if(n){a(n,"user"),l.value="",f();try{const t=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:n})}),d=await t.json();if(r(),t.ok)a(d.reply,"ai");else{const u=d.message||"Sorry, I encountered an error connecting to my brain.";a(`⚠️ ${u}`,"ai"),d.error==="Configuration Error"&&a("To fix this: Create a .env file in the root and add GEMINI_API_KEY=AIzaSy...","ai")}}catch(t){r(),a("Sorry, I'm having trouble reaching the server.","ai"),console.error(t)}}});function a(e,n){const t=document.createElement("div");t.className=`flex gap-2 ${n==="user"?"flex-row-reverse":""}`,n==="ai"?t.innerHTML=`
+        <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left">
+          <p>${e}</p>
+        </div>
+      `:t.innerHTML=`
+        <div class="bg-accent text-bg p-3 rounded-lg rounded-tr-none max-w-[85%] text-left">
+          <p>${e}</p>
+        </div>
+      `,s.appendChild(t),s.scrollTop=s.scrollHeight}function f(){const e=document.createElement("div");e.id="typing-indicator",e.className="flex gap-2",e.innerHTML=`
+       <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none">
+          <div class="flex gap-1">
+            <span class="w-1.5 h-1.5 bg-dim/50 rounded-full animate-bounce"></span>
+            <span class="w-1.5 h-1.5 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+            <span class="w-1.5 h-1.5 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+          </div>
+        </div>
+    `,s.appendChild(e),s.scrollTop=s.scrollHeight}function r(){const e=document.getElementById("typing-indicator");e&&e.remove()}</script> </body></html>

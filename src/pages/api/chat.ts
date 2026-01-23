@@ -2,6 +2,8 @@ import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getSystemPrompt } from '@lib/ai-context';
 
+export const prerender = false;
+
 export const POST: APIRoute = async ({ request }) => {
     try {
         const body = await request.json();
