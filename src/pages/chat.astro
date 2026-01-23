@@ -11,7 +11,8 @@ const t = {
     intro: "Hej! Jeg er den store udgave af Antons AI. Jeg kan analysere hele portfolioen og endda <strong>lave grafer</strong> over dataene. Prøv det!",
     placeholder: "Spørg om f.eks. 'Vis mig en graf over dine skills'...",
     disclaimer: "Drevet af Google Gemini · Kan lave fejl",
-    back: "Tilbage til forsiden"
+    back: "Tilbage til forsiden",
+    prompts: ["📊 Vis mig en graf over Antons skills", "💼 Opsummer Antons erfaring", "🚀 Hvorfor skal jeg ansætte Anton?"]
   },
   en: {
     title: "Anton's AI Assistant",
@@ -19,7 +20,8 @@ const t = {
     intro: "Hi! I'm the full-screen AI. I can analyze the portfolio and even <strong>generate charts</strong> from the data. Give it a try!",
     placeholder: "Try: 'Visualize your experience timeline'...",
     disclaimer: "Powered by Google Gemini · May produce inaccuracies",
-    back: "Back to Home"
+    back: "Back to Home",
+    prompts: ["📊 Graph Anton's skills", "💼 Summarize Anton's experience", "🚀 Why should I hire Anton?"]
   }
 }[lang];
 ---
@@ -96,6 +98,15 @@ const t = {
           {t.disclaimer}
         </div>
       </div>
+
+      <!-- Quick Prompts -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pl-14">
+          {t.prompts.map(p => (
+            <button class="text-left text-sm bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-xl p-4 text-dim hover:text-white quick-prompt-btn flex items-center gap-2 shadow-lg">
+              {p}
+            </button>
+          ))}
+      </div>
     </div>
   </main>
 
@@ -105,6 +116,19 @@ const t = {
     const messages = document.getElementById('fp-chat-messages');
     const card = document.getElementById('fp-chat-card');
     const lang = card?.getAttribute('data-lang') || 'da';
+
+    // Quick Prompts Logic
+    document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const text = (e.currentTarget as HTMLElement).textContent?.trim();
+          if(text) {
+              input.value = text;
+              form?.dispatchEvent(new Event('submit'));
+              // Remove prompts after first click
+             (e.currentTarget as HTMLElement).parentElement?.remove();
+          }
+      });
+    });
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();

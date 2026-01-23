@@ -12,7 +12,8 @@ const t = {
     disclaimer: "Drevet af AI · Kan lave fejl",
     error: "Beklager, jeg stødte på en fejl.",
     configError: "Konfigurationsfejl: Mangler API-nøgle.",
-    serverError: "Beklager, jeg kan ikke få forbindelse til serveren."
+    serverError: "Beklager, jeg kan ikke få forbindelse til serveren.",
+    prompts: ["📊 Vis mig en graf over Antons skills", "💼 Opsummer Antons erfaring", "🚀 Hvorfor skal jeg ansætte Anton?"]
   },
   en: {
     title: "Anton's AI",
@@ -22,7 +23,8 @@ const t = {
     disclaimer: "Powered by AI · May produce inaccuracies",
     error: "Sorry, I encountered an error.",
     configError: "Configuration Error: Missing API Key.",
-    serverError: "Sorry, I'm having trouble reaching the server."
+    serverError: "Sorry, I'm having trouble reaching the server.",
+    prompts: ["📊 Graph Anton's skills", "💼 Summarize Anton's experience", "🚀 Why should I hire Anton?"]
   }
 }[lang];
 ---
@@ -65,6 +67,16 @@ const t = {
           <p>{t.intro}</p>
         </div>
       </div>
+      
+      <!-- Quick Prompts -->
+      <div class="grid grid-cols-1 gap-2 pl-12">
+         {t.prompts.map(p => (
+           <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-2 text-dim hover:text-white quick-prompt-btn">
+             {p}
+           </button>
+         ))}
+      </div>
+      
       <!-- Messages will appear here -->
     </div>
 
@@ -134,7 +146,21 @@ const t = {
   }
 
   toggle.addEventListener('click', toggleChat);
+  toggle.addEventListener('click', toggleChat);
   close.addEventListener('click', toggleChat);
+
+  // Quick Prompts Logic
+  document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const text = (e.currentTarget as HTMLElement).textContent?.trim();
+        if(text) {
+            input.value = text;
+            form?.dispatchEvent(new Event('submit'));
+            // Remove prompts after first click to clean up UI
+            (e.currentTarget as HTMLElement).parentElement?.remove();
+        }
+    });
+  });
 
   // Demo functionality
   form.addEventListener('submit', async (e) => {
