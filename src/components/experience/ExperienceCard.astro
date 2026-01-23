@@ -1,0 +1,73 @@
+---
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Link {
+  text: string;
+  href: string;
+  icon?: string;
+}
+
+interface Highlight {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  title: string;
+  organization: string;
+  location: string;
+  period: string;
+  type?: string;
+  description: string[];
+  highlights?: Highlight[];
+  links?: Link[];
+}
+
+const { 
+  title, 
+  organization, 
+  location, 
+  period, 
+  type, 
+  description, 
+  highlights, 
+  links 
+} = Astro.props;
+---
+
+<Card variant="bordered" class="flex flex-col h-full bg-glass">
+  <div class="flex justify-between items-start mb-4 gap-3">
+    <div>
+      <h3 class="text-base font-bold leading-tight m-0">{title} · {organization}</h3>
+      <p class="text-[13px] text-dim mt-1 m-0">{location} · {period}</p>
+    </div>
+    {type && <Pill variant="accent">{type}</Pill>}
+  </div>
+
+  <ul class="list-none p-0 m-0 pl-4 space-y-2 text-[14.5px] mb-6 flex-grow">
+    {description.map((item) => (
+      <li class="relative before:content-['-'] before:absolute before:-left-4 before:text-accent">{item}</li>
+    ))}
+  </ul>
+
+  <div class="grid grid-cols-1 gap-3 mb-6">
+    {highlights && highlights.map((h) => (
+      <div class="rounded-xl p-3 bg-glass border border-glass-border">
+        <span class="block text-xs font-bold text-dim mb-1">{h.label}</span>
+        <span class="block text-sm text-text">{h.value}</span>
+      </div>
+    ))}
+  </div>
+
+  {links && links.length > 0 && (
+    <div class="flex flex-wrap gap-2 mt-auto">
+      {links.map((link) => (
+        <a href={link.href} class="text-xs font-bold border border-glass-border text-white px-3 py-2 rounded-full hover:bg-accent hover:text-white no-underline inline-flex items-center transition-all">
+          {link.icon && <i class:list={["fa-solid", link.icon, "mr-1.5"]}></i>}
+          {link.text}
+        </a>
+      ))}
+    </div>
+  )}
+</Card>

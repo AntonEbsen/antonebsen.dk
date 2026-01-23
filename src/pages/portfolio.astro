@@ -5,6 +5,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import ProjectCard from '@components/portfolio/ProjectCard.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 import { getCollection } from 'astro:content';
 
 const portfolioData = await getCollection('portfolio');
@@ -71,7 +73,7 @@ const portfolioData = await getCollection('portfolio');
     
           <div class="hidden md:block">
             <Card variant="glass" class="p-6">
-              <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Sådan er projekterne bygget</h2>
+              <SectionHeading>Sådan er projekterne bygget</SectionHeading>
               <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
                 <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">Kort problemformulering</li>
                 <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">Metode (model/økonometri)</li>
@@ -101,15 +103,7 @@ const portfolioData = await getCollection('portfolio');
   
       <!-- Footer card -->
       <Section>
-        <Card variant="glass" class="p-6">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Mere</h2>
-          <p class="text-dim opacity-80 m-0">
-            Jeg opdaterer løbende porteføljen. Du kan også finde mere på
-            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" class="text-accent font-bold no-underline hover:text-white transition-colors">GitHub</a>
-            og
-            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="text-accent font-bold no-underline hover:text-white transition-colors">LinkedIn</a>.
-          </p>
-        </Card>
+        <ContactCard />
       </Section>
   
   </main>

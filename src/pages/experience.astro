@@ -4,7 +4,10 @@ import cv from '@data/cv.json';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
 import Section from '@components/ui/Section.astro';
+import ExperienceCard from '@components/experience/ExperienceCard.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 ---
 
 <Layout 
@@ -53,7 +56,7 @@ import Section from '@components/ui/Section.astro';
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-6">
-          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">Erhvervserfaring</p>
+          <SectionHeading class="text-dim mb-3">Erhvervserfaring</SectionHeading>
           <h1 class="text-4xl leading-tight mb-4 font-bold">Undervisning, data og leverancer – i praksis</h1>
           <p class="text-lg leading-relaxed text-dim mb-6">
             Her er min erhvervserfaring samlet i et format, der er let at skimme:
@@ -77,7 +80,7 @@ import Section from '@components/ui/Section.astro';
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-4">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Kort version</h2>
+            <SectionHeading>Kort version</SectionHeading>
             <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
               <li>Excel/VBA-underviser med stærke evalueringer</li>
               <li>Bygger materialer og workflows, der kan genbruges</li>
@@ -91,44 +94,19 @@ import Section from '@components/ui/Section.astro';
     <!-- ROLLER -->
     <Section id="roles" aria-label="Roller">
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-2">Roller</h2>
+        <SectionHeading>Roller</SectionHeading>
         <div class="roles-grid">
           {cv.experience.map((role) => (
-            <Card variant="bordered" class="flex flex-col h-full bg-glass">
-              <div class="flex justify-between items-start mb-4 gap-3">
-                <div>
-                  <h3 class="text-base font-bold leading-tight m-0">{role.title} · {role.organization}</h3>
-                  <p class="text-[13px] text-dim mt-1 m-0">{role.location} · {role.period}</p>
-                </div>
-                <Pill variant="accent">{role.type}</Pill>
-              </div>
-
-              <ul class="list-none p-0 m-0 pl-4 space-y-2 text-[14.5px] mb-6 flex-grow">
-                {role.description.map((item) => (
-                  <li class="relative before:content-['-'] before:absolute before:-left-4 before:text-accent">{item}</li>
-                ))}
-              </ul>
-
-              <div class="grid grid-cols-1 gap-3 mb-6">
-                {role.highlights && role.highlights.map((h) => (
-                  <div class="rounded-xl p-3 bg-glass border border-glass-border">
-                    <span class="block text-xs font-bold text-dim mb-1">{h.label}</span>
-                    <span class="block text-sm text-text">{h.value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {role.links && role.links.length > 0 && (
-                <div class="flex flex-wrap gap-2 mt-auto">
-                  {role.links.map((link) => (
-                    <a href={link.href} class="text-xs font-bold border border-glass-border text-white px-3 py-2 rounded-full hover:bg-accent hover:text-white no-underline inline-flex items-center transition-all">
-                      {link.icon && <i class:list={["fa-solid", link.icon, "mr-1.5"]}></i>}
-                      {link.text}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </Card>
+            <ExperienceCard 
+              title={role.title}
+              organization={role.organization}
+              location={role.location}
+              period={role.period}
+              type={role.type}
+              description={role.description}
+              highlights={role.highlights}
+              links={role.links}
+            />
           ))}
         </div>
       </Card>
@@ -137,7 +115,7 @@ import Section from '@components/ui/Section.astro';
     <!-- HOW I WORK -->
     <Section>
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-6">Hvordan jeg typisk arbejder</h2>
+        <SectionHeading>Hvordan jeg typisk arbejder</SectionHeading>
 
         <div class="process-grid">
           {[
@@ -157,16 +135,12 @@ import Section from '@components/ui/Section.astro';
 
     <!-- CTA -->
     <Section>
-      <Card variant="default" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-3">Vil du samarbejde?</h2>
-        <p class="text-dim opacity-70 mb-6">
-          Hvis du har et konkret behov (undervisning, templates, dataarbejde), så skriv kort.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <Button href="/contact"><i class="fa-solid fa-envelope mr-2"></i> Kontakt</Button>
-          <Button href="/services" variant="ghost"><i class="fa-solid fa-handshake mr-2"></i> Samarbejde</Button>
-        </div>
-      </Card>
+      <ContactCard 
+        variant="default" 
+        title="Vil du samarbejde?" 
+        text="Hvis du har et konkret behov (undervisning, templates, dataarbejde), så skriv kort."
+        action="contact"
+      />
     </Section>
 
   </main>

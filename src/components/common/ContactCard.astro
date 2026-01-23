@@ -1,0 +1,41 @@
+---
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+  variant?: "default" | "glass" | "bordered";
+  action?: "contact" | "socials"; // Simple toggle for now, can be expanded
+}
+
+const { 
+  title = "Mere", 
+  text = "Jeg opdaterer løbende porteføljen. Du kan også finde mere på GitHub og LinkedIn.",
+  variant = "glass",
+  action = "socials"
+} = Astro.props;
+---
+
+<Card variant={variant} class="p-6">
+  <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{title}</h2>
+  
+  {action === "socials" ? (
+      <p class="text-dim opacity-80 m-0">
+        {text} 
+        <br class="hidden md:block"/>
+        <span class="inline-flex gap-4 mt-2">
+            <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" class="text-accent font-bold no-underline hover:text-white transition-colors">GitHub</a>
+            <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="text-accent font-bold no-underline hover:text-white transition-colors">LinkedIn</a>
+        </span>
+      </p>
+  ) : (
+     <>
+        <p class="text-dim opacity-70 mb-6">{text}</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/contact"><i class="fa-solid fa-envelope mr-2"></i> Kontakt</Button>
+          <Button href="/services" variant="ghost"><i class="fa-solid fa-handshake mr-2"></i> Samarbejde</Button>
+        </div>
+     </>
+  )}
+</Card>
