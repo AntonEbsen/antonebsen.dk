@@ -195,7 +195,7 @@ const t = {
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left">
-          <p>${text}</p>
+          <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')}</p>
         </div>
       `;
     } else {
@@ -208,6 +208,50 @@ const t = {
     
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
+
+    // Check for Chart Block
+    const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
+    if (chartMatch && role === 'ai') {
+        const jsonStr = chartMatch[1];
+        try {
+            const chartData = JSON.parse(jsonStr);
+            const canvasId = 'chart-' + Date.now();
+            const canvasContainer = document.createElement('div');
+            canvasContainer.className = "mt-2 p-2 bg-white/5 rounded-lg border border-white/10";
+            canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+            
+            // Append chart below text
+            const textDiv = div.querySelector('.bg-glass-border\\/50') || div;
+            textDiv.appendChild(canvasContainer);
+            messages.scrollTop = messages.scrollHeight;
+
+            // Render Chart
+            import('chart.js/auto').then(({ default: Chart }) => {
+                const ctx = document.getElementById(canvasId) as HTMLCanvasElement;
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: chartData.type,
+                        data: chartData.data,
+                        options: {
+                             ...chartData.options,
+                             color: 'rgba(255, 255, 255, 0.7)',
+                             borderColor: 'rgba(255, 255, 255, 0.1)',
+                             scale: {
+                                ticks: { color: 'rgba(255, 255, 255, 0.5)' },
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                             },
+                             plugins: {
+                                legend: { labels: { color: 'rgba(255, 255, 255, 0.8)' } }
+                             }
+                        }
+                    });
+                }
+            });
+
+        } catch (e) {
+            console.error("Chart Render Error", e);
+        }
+    }
   }
 
   function showTyping() {

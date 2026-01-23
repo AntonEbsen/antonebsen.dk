@@ -177,6 +177,49 @@ const t = {
 
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
+
+      // Check for Chart Block
+      const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
+      if (chartMatch && role === 'ai') {
+          const jsonStr = chartMatch[1];
+          try {
+              const chartData = JSON.parse(jsonStr);
+              const canvasId = 'chart-' + Date.now();
+              const canvasContainer = document.createElement('div');
+              canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
+              canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+              
+              const textDiv = div.querySelector('.bg-\\[rgba\\(255\\,255\\,255\\,0\\.05\\)\\]') || div;
+              textDiv.appendChild(canvasContainer);
+              messages.scrollTop = messages.scrollHeight;
+
+              // Render Chart
+              import('chart.js/auto').then(({ default: Chart }) => {
+                  const ctx = document.getElementById(canvasId) as HTMLCanvasElement;
+                  if (ctx) {
+                      new Chart(ctx, {
+                          type: chartData.type,
+                          data: chartData.data,
+                          options: {
+                              ...chartData.options,
+                              color: 'rgba(255, 255, 255, 0.8)',
+                              borderColor: 'rgba(255, 255, 255, 0.2)',
+                              scale: {
+                                  ticks: { color: 'rgba(255, 255, 255, 0.6)' },
+                                  grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                              },
+                              plugins: {
+                                  legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
+                              }
+                          }
+                      });
+                  }
+              });
+
+          } catch (e) {
+              console.error("Chart Render Error", e);
+          }
+      }
     }
 
     function showTyping() {
@@ -207,8 +250,10 @@ const t = {
 
     // Simple markdown-ish formatter
     function formatText(text) {
+      // Remove Chart JSON from text display
+      let t = text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '');
       // Replace **text** with bold
-      let t = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       // Replace * items with bullets
       t = t.replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc">$1</li>');
       // Handling newlines

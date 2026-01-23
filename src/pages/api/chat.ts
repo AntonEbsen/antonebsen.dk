@@ -46,6 +46,25 @@ INSTRUCTIONS:
 - When asked about experience, summarize the relevant roles.
 - When asked about skills, mention specific tools (Python, GAMS, SAS, etc.).
 - Keep answers concise (under 3-4 sentences is best for chat).
+
+CHARTS & GRAPHS:
+If the user asks for a visualization, graph, or statistics (e.g. "show skills graph", "visualize your experience"), YOU MUST output a JSON block for Chart.js.
+Format:
+<<<CHART
+{
+  "type": "bar",
+  "data": {
+    "labels": ["Label1", "Label2"],
+    "datasets": [{ "label": "Title", "data": [10, 20], "backgroundColor": "rgba(255, 215, 0, 0.5)" }]
+  },
+  "options": { "responsive": true }
+}
+CHART>>>
+
+Pre-defined Charts you can generate:
+1. "Skill Levels": Bar chart of top skills (Python: 90, GAMS: 85, Excel: 95, Macro: 90, Stata: 75).
+2. "Experience Timeline": Bar chart of years per role.
+3. "Projects by Type": Pie chart (Macro: 30, Data: 40, Models: 30).
 `;
 }
 
