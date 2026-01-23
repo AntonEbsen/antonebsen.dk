@@ -1,0 +1,78 @@
+---
+---
+<div class="nav-item has-dropdown lang-switch">
+  <button type="button" class="nav-link lang-btn" aria-label="Skift sprog" aria-haspopup="true" aria-expanded="false">
+    Sprog <span aria-hidden="true">▾</span>
+  </button>
+
+  <div class="dropdown" role="menu" aria-label="Sprogvalg">
+    <a href="/" role="menuitem">
+      <span class="lang-row">
+        <img src="/assets/img/dansk-flag.png" alt="" class="lang-flag">
+        Dansk
+      </span>
+    </a>
+
+    <a href="/en" role="menuitem">
+      <span class="lang-row">
+        <img src="/assets/img/britisk-flag.png" alt="" class="lang-flag">
+        English
+      </span>
+    </a>
+
+    <a href="/de" role="menuitem">
+      <span class="lang-row">
+        <img src="/assets/img/tysk-flag.png" alt="" class="lang-flag">
+        Deutsch
+      </span>
+    </a>
+  </div>
+</div>
+
+<script>
+  // Simple logic to handle dropdown toggle on click for touch devices / accessibility
+  document.addEventListener('DOMContentLoaded', () => {
+    const langBtns = document.querySelectorAll('.lang-btn');
+    
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const parent = btn.closest('.has-dropdown');
+        if (parent) {
+            parent.classList.toggle('open');
+            const expanded = parent.classList.contains('open');
+            btn.setAttribute('aria-expanded', String(expanded));
+        }
+      });
+    });
+
+    // Close when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!e.target) return;
+      const target = e.target as HTMLElement;
+      
+      if (!target.closest(".lang-switch")) {
+        document.querySelectorAll(".lang-switch.open").forEach(el => {
+            el.classList.remove("open");
+            const btn = el.querySelector('.lang-btn');
+            if(btn) btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+    /* Reset button styles */
+    .lang-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font: inherit;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 12px; 
+    }
+</style>

@@ -1,0 +1,58 @@
+---
+---
+
+<aside class="toc" id="toc" aria-label="Indholdsfortegnelse">
+  <div class="toc-header">
+    <button
+      id="tocToggle"
+      class="toc-toggle"
+      type="button"
+      aria-expanded="true"
+      aria-controls="tocNav"
+      aria-label="Vis/skjul indholdsfortegnelse"
+      title="Vis/skjul indholdsfortegnelse"
+    >
+      <span class="hamburger" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <nav id="tocNav" class="toc-nav">
+    <a href="#profile">Profil</a>
+    <a href="#experience">Erhvervserfaring</a>
+    <a href="#education">Uddannelse</a>
+    <a href="#projects">Projekter</a>
+    <a href="#skills">Kompetencer</a>
+    <a href="#languages">Sprog</a>
+    <a href="#volunteer">Frivilligt</a>
+    <a href="#certifications">Certificeringer</a>
+    <a href="#contact">Kontakt</a>
+  </nav>
+</aside>
+
+<script>
+  (function () {
+    const wrap = document.querySelector(".cv-wrap");
+    const btn = document.getElementById("tocToggle");
+    const nav = document.getElementById("tocNav");
+    
+    // Safety check - if we are not on the CV page (or markup changed), exit
+    if (!wrap || !btn || !nav) return;
+
+    function applyFromStorage() {
+        const collapsed = localStorage.getItem("tocCollapsed") === "1";
+        // Toggle the class on wrapper
+        wrap.classList.toggle("is-toc-collapsed", collapsed);
+        // Toggle aria-expanded
+        btn.setAttribute("aria-expanded", String(!collapsed));
+    }
+
+    btn.addEventListener("click", function () {
+        const nowCollapsed = wrap.classList.toggle("is-toc-collapsed");
+        btn.setAttribute("aria-expanded", String(!nowCollapsed));
+        localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
+    });
+
+    document.addEventListener("DOMContentLoaded", applyFromStorage);
+    // Also run on astro:page-load if using View Transitions, though basic script handles it for traditional loads
+  })();
+</script>

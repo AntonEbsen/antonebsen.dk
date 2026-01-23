@@ -1,5 +1,6 @@
 ---
 import siteData from '../data/site.json';
+import LanguageSwitcher from './common/LanguageSwitcher.astro';
 const pathname = new URL(Astro.request.url).pathname;
 ---
 
@@ -45,34 +46,7 @@ const pathname = new URL(Astro.request.url).pathname;
     </div>
     
     <div class="nav-right">
-      <div class="nav-item has-dropdown lang-switch">
-        <a href="#" class="nav-link" aria-label="Skift sprog" onclick="return false;">
-          Sprog <span aria-hidden="true">▾</span>
-        </a>
-
-        <div class="dropdown" role="menu" aria-label="Sprogvalg">
-          <a href="/" role="menuitem">
-            <span class="lang-row">
-              <img src="/assets/img/dansk-flag.png" alt="" class="lang-flag">
-              Dansk
-            </span>
-          </a>
-
-          <a href="/en" role="menuitem">
-            <span class="lang-row">
-              <img src="/assets/img/britisk-flag.png" alt="" class="lang-flag">
-              English
-            </span>
-          </a>
-
-          <a href="/de" role="menuitem">
-            <span class="lang-row">
-              <img src="/assets/img/tysk-flag.png" alt="" class="lang-flag">
-              Deutsch
-            </span>
-          </a>
-        </div>
-      </div>
+      <LanguageSwitcher />
     </div>
   </div>
 </nav>

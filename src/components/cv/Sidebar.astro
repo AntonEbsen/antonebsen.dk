@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import skillsData from '@data/skills.json';
+
+// Images
+import myImage from '@assets/img/billede-af-mig.jpg';
+import dkFlag from '@assets/img/dansk-flag.png';
+import ukFlag from '@assets/img/britisk-flag.png';
+import deFlag from '@assets/img/tysk-flag.png';
+
+const flagMap: Record<string, ImageMetadata> = {
+  '/assets/img/dansk-flag.png': dkFlag,
+  '/assets/img/britisk-flag.png': ukFlag,
+  '/assets/img/tysk-flag.png': deFlag
+};
+---
+
+<aside class="cv-side">
+  <div class="card profile-card">
+    <Image src={myImage} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
+
+    <div class="profile-head">
+      <h1>Anton Meier Ebsen Jørgensen</h1>
+      <p class="subtitle">Økonomistuderende (cand.polit.) · Makroøkonomi · Økonometri · Økonomiske modeller</p>
+    </div>
+
+    <div class="meta">
+      <div class="meta-row">
+        <span class="meta-label">Lokation</span>
+        <span class="meta-value">
+          <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn" target="_blank" rel="noopener">København</a>
+        </span>
+      </div>
+
+      <div class="meta-row">
+        <span class="meta-label">Email</span>
+        <span class="meta-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
+      </div>
+
+      <div class="meta-row">
+        <span class="meta-label">Telefon</span>
+        <span class="meta-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
+      </div>
+
+      <div class="meta-row">
+        <span class="meta-label">Profiler</span>
+        <span class="meta-value icon-links" aria-label="Profiler">
+          <a class="icon-link" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a class="icon-link" href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+        <i class="fa-solid fa-download" aria-hidden="true"></i> Download CV (PDF)
+      </a>
+    </div>
+  </div>
+
+  <div class="card" id="skills">
+    <h2>Kompetencer</h2>
+    <h3>Faglige kompetencer</h3>
+    <div class="focus-grid" aria-label="Faglige kompetencer">
+      {skillsData.professional.map(skill => (
+        <a class="focus-box" href={`/skills#${skill.id}`} title={skill.title}>
+          <i class={skill.icon} aria-hidden="true"></i>
+          <span>{skill.name}</span>
+        </a>
+      ))}
+    </div>
+
+    <hr class="divider">
+    <h3>Programmeringssprog</h3>
+    <div class="skills-grid" aria-label="Programmeringssprog">
+      {skillsData.programming.map(skill => (
+        <a class="skill-box" href={`/skills#${skill.id}`} title={skill.title}>
+          <i class={skill.icon} aria-hidden="true"></i>
+          <span>{skill.name}</span>
+        </a>
+      ))}
+    </div>
+  
+    <hr class="divider">
+  
+    <h3>Fokusområder</h3>
+    
+    <div class="focus-grid" aria-label="Fokusområder">
+      {skillsData.focus.map(skill => (
+        <div class="focus-box">
+          <i class={skill.icon} aria-hidden="true"></i>
+          <span>{skill.name}</span>
+        </div>
+      ))}
+    </div>
+
+    <hr class="divider">
+
+    <div class="lang-grid" aria-label="Sprog">
+      {skillsData.languages.map(lang => (
+        <div class="lang-box">
+          {flagMap[lang.flag] && <Image src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
+          <div class="lang-text">
+            <div class="lang-name">{lang.name}</div>
+            <div class="lang-level">{lang.level}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</aside>

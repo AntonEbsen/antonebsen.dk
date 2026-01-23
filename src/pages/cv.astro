@@ -3,26 +3,13 @@ import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
-import { Image } from 'astro:assets';
+import Sidebar from '@components/cv/Sidebar.astro';
+import TableOfContents from '@components/cv/TableOfContents.astro';
+import CertificationList from '@components/cv/CertificationList.astro';
 
 import cv from '@data/cv.json';
-import skillsData from '@data/skills.json';
-
-// Images
-import myImage from '@assets/img/billede-af-mig.jpg';
-import dkFlag from '@assets/img/dansk-flag.png';
-import ukFlag from '@assets/img/britisk-flag.png';
-import deFlag from '@assets/img/tysk-flag.png';
-import matlabCert from '@assets/img/matlab-onramp.PNG';
-import vectorCert from '@assets/img/calculations-with-vectors-and-matrices.PNG';
 
 import '@styles/cv.css';
-
-const flagMap: Record<string, ImageMetadata> = {
-  '/assets/img/dansk-flag.png': dkFlag,
-  '/assets/img/britisk-flag.png': ukFlag,
-  '/assets/img/tysk-flag.png': deFlag
-};
 ---
 
 <Layout 
@@ -32,136 +19,13 @@ const flagMap: Record<string, ImageMetadata> = {
 >
   <div class="cv-wrap">
     <!-- TOC -->
-    <aside class="toc" id="toc" aria-label="Indholdsfortegnelse">
-      <div class="toc-header">
-        <button
-          id="tocToggle"
-          class="toc-toggle"
-          type="button"
-          aria-expanded="true"
-          aria-controls="tocNav"
-          aria-label="Vis/skjul indholdsfortegnelse"
-          title="Vis/skjul indholdsfortegnelse"
-        >
-          <span class="hamburger" aria-hidden="true"></span>
-        </button>
-      </div>
-
-      <nav id="tocNav" class="toc-nav">
-        <a href="#profile">Profil</a>
-        <a href="#experience">Erhvervserfaring</a>
-        <a href="#education">Uddannelse</a>
-        <a href="#projects">Projekter</a>
-        <a href="#skills">Kompetencer</a>
-        <a href="#languages">Sprog</a>
-        <a href="#volunteer">Frivilligt</a>
-        <a href="#certifications">Certificeringer</a>
-        <a href="#contact">Kontakt</a>
-      </nav>
-    </aside>
+    <TableOfContents />
 
     <!-- CV grid -->
     <section class="cv-grid" aria-label="CV indhold">
 
       <!-- Sidebar -->
-      <aside class="cv-side">
-        <div class="card profile-card">
-          <Image src={myImage} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
-
-          <div class="profile-head">
-            <h1>Anton Meier Ebsen Jørgensen</h1>
-            <p class="subtitle">Økonomistuderende (cand.polit.) · Makroøkonomi · Økonometri · Økonomiske modeller</p>
-          </div>
-
-          <div class="meta">
-            <div class="meta-row">
-              <span class="meta-label">Lokation</span>
-              <span class="meta-value">
-                <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn" target="_blank" rel="noopener">København</a>
-              </span>
-            </div>
-
-            <div class="meta-row">
-              <span class="meta-label">Email</span>
-              <span class="meta-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
-            </div>
-
-            <div class="meta-row">
-              <span class="meta-label">Telefon</span>
-              <span class="meta-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
-            </div>
-
-            <div class="meta-row">
-              <span class="meta-label">Profiler</span>
-              <span class="meta-value icon-links" aria-label="Profiler">
-                <a class="icon-link" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
-                  <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
-                </a>
-                <a class="icon-link" href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
-                  <i class="fa-brands fa-github" aria-hidden="true"></i>
-                </a>
-              </span>
-            </div>
-          </div>
-
-          <div class="cta-row">
-            <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
-              <i class="fa-solid fa-download" aria-hidden="true"></i> Download CV (PDF)
-            </a>
-          </div>
-        </div>
-
-        <div class="card" id="skills">
-          <h2>Kompetencer</h2>
-          <h3>Faglige kompetencer</h3>
-          <div class="focus-grid" aria-label="Faglige kompetencer">
-            {skillsData.professional.map(skill => (
-              <a class="focus-box" href={`/skills#${skill.id}`} title={skill.title}>
-                <i class={skill.icon} aria-hidden="true"></i>
-                <span>{skill.name}</span>
-              </a>
-            ))}
-          </div>
-
-          <hr class="divider">
-          <h3>Programmeringssprog</h3>
-          <div class="skills-grid" aria-label="Programmeringssprog">
-            {skillsData.programming.map(skill => (
-              <a class="skill-box" href={`/skills#${skill.id}`} title={skill.title}>
-                <i class={skill.icon} aria-hidden="true"></i>
-                <span>{skill.name}</span>
-              </a>
-            ))}
-          </div>
-        
-          <hr class="divider">
-        
-          <h3>Fokusområder</h3>
-          
-          <div class="focus-grid" aria-label="Fokusområder">
-            {skillsData.focus.map(skill => (
-              <div class="focus-box">
-                <i class={skill.icon} aria-hidden="true"></i>
-                <span>{skill.name}</span>
-              </div>
-            ))}
-          </div>
-
-          <hr class="divider">
-
-          <div class="lang-grid" aria-label="Sprog">
-            {skillsData.languages.map(lang => (
-              <div class="lang-box">
-                {flagMap[lang.flag] && <Image src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
-                <div class="lang-text">
-                  <div class="lang-name">{lang.name}</div>
-                  <div class="lang-level">{lang.level}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </aside>
+      <Sidebar />
 
       <div class="cv-main">
         <Section id="profile">
@@ -252,31 +116,9 @@ const flagMap: Record<string, ImageMetadata> = {
         <Section id="certifications">
           <Card variant="glass" class="p-6">
             <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Certificeringer</h2>
-            <div class="cert-grid">
-              <div class="cert">
-                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener">
-                  <Image src={matlabCert} alt="MATLAB Onramp certifikat" class="cert-img" />
-                </a>
-                <h3 class="text-sm font-bold mt-2 mb-1">
-                  <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&" target="_blank" rel="noopener" class="no-underline text-white hover:text-accent">
-                    MATLAB Onramp
-                  </a>
-                </h3>
-                <p class="text-xs text-dim">MATLAB fundamentals og workflows.</p>
-              </div>
+            
+            <CertificationList />
 
-              <div class="cert">
-                <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener">
-                  <Image src={vectorCert} alt="Vectors & Matrices certifikat" class="cert-img" />
-                </a>
-                <h3 class="text-sm font-bold mt-2 mb-1">
-                  <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&" target="_blank" rel="noopener" class="no-underline text-white hover:text-accent">
-                    Calculations with Vectors...
-                  </a>
-                </h3>
-                <p class="text-xs text-dim">Lineær algebra i praksis.</p>
-              </div>
-            </div>
           </Card>
         </Section>
 
@@ -302,26 +144,4 @@ const flagMap: Record<string, ImageMetadata> = {
       </div>
     </section>
   </div>
-
-  <script>
-    (function () {
-      const wrap = document.querySelector(".cv-wrap");
-      const btn = document.getElementById("tocToggle");
-      if (!wrap || !btn) return;
-
-      function applyFromStorage() {
-        const collapsed = localStorage.getItem("tocCollapsed") === "1";
-        wrap.classList.toggle("is-toc-collapsed", collapsed);
-        btn.setAttribute("aria-expanded", String(!collapsed));
-      }
-
-      btn.addEventListener("click", function () {
-        const nowCollapsed = wrap.classList.toggle("is-toc-collapsed");
-        btn.setAttribute("aria-expanded", String(!nowCollapsed));
-        localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
-      });
-
-      document.addEventListener("DOMContentLoaded", applyFromStorage);
-    })();
-  </script>
 </Layout>
