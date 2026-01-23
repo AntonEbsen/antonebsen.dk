@@ -260,6 +260,39 @@ const t = {
                window.location.href = path;
            }, 500);
        }
+
+       // Check for Suggestions Block
+       const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
+       if (suggestMatch) {
+            const jsonStr = suggestMatch[1];
+            try {
+                const suggestions = JSON.parse(jsonStr);
+                const chipsContainer = document.createElement('div');
+                chipsContainer.className = "flex flex-wrap gap-2 mt-4 pl-14";
+                
+                suggestions.forEach(s => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm";
+                    btn.innerText = s;
+                    btn.addEventListener('click', () => {
+                        const input = document.getElementById('fp-chat-input');
+                        const form = document.getElementById('fp-chat-form');
+                        if (input && form) {
+                            input.value = s;
+                            form.dispatchEvent(new Event('submit'));
+                            chipsContainer.remove();
+                        }
+                    });
+                    chipsContainer.appendChild(btn);
+                });
+                
+                containerDiv.appendChild(chipsContainer); // Append to the main flex container
+                messages.scrollTop = messages.scrollHeight;
+
+            } catch (e) {
+                console.error("Suggestion Parse Error", e);
+            }
+       }
     }
 
     function addMessage(text, role) {
@@ -327,7 +360,7 @@ const t = {
     function formatText(text) {
       // Remove Chart JSON from text display
       let t = text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '');
-      t = t.replace(/<<<NAVIGATE:.*?>>>/gi, '');
+      t = t.replace(/<<<NAVIGATE:.*?>>>/gi, '').replace(/<<<SUGGESTIONS:.*?>>>/g, '');
       // Replace **text** with bold
       t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       // Replace * items with bullets

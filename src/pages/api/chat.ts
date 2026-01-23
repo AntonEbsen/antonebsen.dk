@@ -86,6 +86,13 @@ Valid Paths:
 - /contact (Contact info from Home)
 - /en/ (English Home)
 
+SUGGESTIONS:
+After every answer, generate 3 short, relevant follow-up questions the user might want to ask next.
+Format: <<<SUGGESTIONS: ["Question 1", "Question 2", "Question 3"]>>>
+- Keep them short (max 5-6 words).
+- Make them specific to the previous context.
+- Output this block at the very end of your response.
+
 Pre-defined Charts you can generate:
 1. "Skill Levels": Bar chart of top skills (Python: 90, GAMS: 85, Excel: 95, Macro: 90, Stata: 75).
 2. "Experience Timeline": Bar chart of years per role.

@@ -226,7 +226,7 @@ const t = {
   });
 
   function formatMessageText(text) {
-      return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/gi, '');
+      return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/gi, '').replace(/<<<SUGGESTIONS:.*?>>>/g, '');
   }
 
   function processSpecialTags(text, containerDiv) {
@@ -272,7 +272,7 @@ const t = {
             }
         }
         
-        // Check for Navigation Block
+       // Check for Navigation Block
         const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
         if (navMatch) {
             const rawPath = navMatch[1].trim();
@@ -289,6 +289,40 @@ const t = {
             setTimeout(() => {
                 window.location.href = path;
             }, 500);
+        }
+
+        // Check for Suggestions Block
+        const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
+        if (suggestMatch) {
+            const jsonStr = suggestMatch[1];
+            try {
+                const suggestions = JSON.parse(jsonStr);
+                const chipsContainer = document.createElement('div');
+                chipsContainer.className = "flex flex-wrap gap-2 mt-2 pl-2";
+                
+                suggestions.forEach(s => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-xs bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-full px-3 py-1 transition-all duration-300";
+                    btn.innerText = s;
+                    btn.addEventListener('click', () => {
+                        const input = document.getElementById('chat-input');
+                        const form = document.getElementById('chat-form');
+                        if (input && form) {
+                            input.value = s;
+                            form.dispatchEvent(new Event('submit'));
+                            // Remove suggestions after clicking
+                            chipsContainer.remove();
+                        }
+                    });
+                    chipsContainer.appendChild(btn);
+                });
+                
+                containerDiv.appendChild(chipsContainer);
+                messages.scrollTop = messages.scrollHeight;
+
+            } catch (e) {
+                console.error("Suggestion Parse Error", e);
+            }
         }
   }
 
