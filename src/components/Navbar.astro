@@ -12,7 +12,23 @@ const pathname = new URL(Astro.request.url).pathname;
   <div class="nav-inner">
     <div class="nav-left">
       {navItems.map(item => (
-          <a class={pathname === item.url || pathname.startsWith(item.url + '/') && item.url !== '/' && item.url !== '/en' ? "active" : ""} href={item.url}>{item.label}</a>
+        item.children && item.children.length > 0 ? (
+          <div class="nav-item has-dropdown">
+            <a href={item.url} class={`nav-link ${pathname.startsWith(item.url) ? "active" : ""}`}>
+              {item.label} 
+              <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-60"></i>
+            </a>
+            <div class="dropdown">
+               {item.children.map(child => (
+                 <a href={child.url}>{child.label}</a>
+               ))}
+            </div>
+          </div>
+        ) : (
+          <a class={pathname === item.url || (pathname.startsWith(item.url + '/') && item.url !== '/' && item.url !== '/en') ? "active" : ""} href={item.url}>
+            {item.label}
+          </a>
+        )
       ))}
     </div>
 

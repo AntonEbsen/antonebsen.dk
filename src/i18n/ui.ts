@@ -42,12 +42,27 @@ export const ui = {
     },
 } as const;
 
-export const navigation = {
+export const navigation: { [key: string]: { label: string; url: string; children?: { label: string; url: string }[] }[] } = {
     da: [
         { label: 'Hjem', url: '/' },
-        { label: 'CV', url: '/cv' }, // Dropdowns can be added later if needed or hardcoded in menu
-        { label: 'Portefølje', url: '/portfolio' },
-        { label: 'Samarbejde', url: '/services' },
+        { label: 'CV', url: '/cv' },
+        {
+            label: 'Portefølje',
+            url: '/portfolio',
+            children: [
+                { label: 'Oversigt', url: '/portfolio' },
+                { label: 'Galleri', url: '/gallery' },
+                { label: 'Milepæle', url: '/timeline' }
+            ]
+        },
+        {
+            label: 'Samarbejde',
+            url: '/services',
+            children: [
+                { label: 'Ydelser', url: '/services' },
+                { label: 'Downloads', url: '/resources' }
+            ]
+        },
         { label: 'Referencer', url: '/referencer' },
         { label: 'FAQ', url: '/faq' },
         { label: 'Blog', url: '/blog' },
@@ -56,8 +71,23 @@ export const navigation = {
     en: [
         { label: 'Home', url: '/en' },
         { label: 'CV', url: '/en/cv' },
-        { label: 'Portfolio', url: '/en/portfolio' },
-        { label: 'Services', url: '/en/services' },
+        {
+            label: 'Portfolio',
+            url: '/en/portfolio',
+            children: [
+                { label: 'Overview', url: '/en/portfolio' },
+                { label: 'Gallery', url: '/gallery' }, // Fallback to root
+                { label: 'Timeline', url: '/timeline' } // Fallback to root
+            ]
+        },
+        {
+            label: 'Services',
+            url: '/en/services',
+            children: [
+                { label: 'Services', url: '/en/services' },
+                { label: 'Downloads', url: '/resources' } // Fallback
+            ]
+        },
         { label: 'Testimonials', url: '/en/referencer' },
         { label: 'FAQ', url: '/en/faq' },
         { label: 'Blog', url: '/en/blog' },
