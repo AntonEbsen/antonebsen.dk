@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Certificeringer" 
+  description="Certificeringer i Python, MATLAB, SAS m.m."
+  bodyClass="cert-page"
+>
+  <style>
+    .cert-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .certs-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="cert-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Certificeringer</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Kurser, badges og dokumentation</h1>
+          <p class="text-lg text-dim mb-6">
+            Samlet oversigt over mine certificeringer inden for programmering, dataanalyse og formidling.
+            Jeg linker til beviser når muligt.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#cat-python">Python</Button>
+            <Button href="#cat-matlab">MATLAB</Button>
+            <Button href="#cat-sas">SAS</Button>
+            <Button href="#cat-writing">Skriveakademi</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2" aria-label="Temaer">
+            <Pill variant="accent">Data</Pill>
+            <Pill variant="accent">Coding</Pill>
+            <Pill variant="accent">Økonomi</Pill>
+            <Pill variant="accent">Formidling</Pill>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Tip</SectionHeading>
+            <p class="text-sm text-dim leading-relaxed">
+              Når du tilføjer nye certs: hold titler ensartede og skriv 1 linje om “hvad kan jeg nu”.
+              Det er 10/10 mere værd end “jeg har taget et kursus”.
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- PYTHON -->
+    <Section id="cat-python" aria-label="Python certificeringer">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Python</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">Dataanalyse, workflows, og praktisk programmering.</p>
+
+        <div class="certs-grid">
+          <!-- Kopiér denne card-blok pr. cert -->
+          <Card variant="glass" class="p-4 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="font-bold text-base leading-tight">[Certifikatnavn]</h3>
+              <Pill variant="accent">Python</Pill>
+            </div>
+            <p class="text-xs text-dim mb-2">Udsteder: [fx DataCamp/Coursera] · År: [202X]</p>
+            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">1 linje: hvad du lærte / kan bruge det til.</p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <Button href="#" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Bevis</Button>
+              <Button href="#" size="sm" variant="ghost">Noter</Button>
+            </div>
+          </Card>
+
+          <Card variant="glass" class="p-4 flex flex-col h-full">
+             <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="font-bold text-base leading-tight">[Certifikatnavn]</h3>
+              <Pill variant="accent">Python</Pill>
+            </div>
+            <p class="text-xs text-dim mb-2">Udsteder: [—] · År: [—]</p>
+            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">1 linje: fokus (pandas, ML, viz, etc.).</p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+               <Button href="#" size="sm" variant="ghost">Bevis</Button>
+             </div>
+          </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- MATLAB -->
+    <Section id="cat-matlab" aria-label="MATLAB certificeringer">
+      <Card variant="bordered" class="p-6">
+         <SectionHeading>MATLAB</SectionHeading>
+         <p class="text-dim opacity-70 mb-6 text-sm">Numerisk analyse, matrixregning og workflows.</p>
+
+        <div class="certs-grid">
+          <Card variant="glass" class="p-4 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-2 gap-2">
+               <h3 class="font-bold text-base leading-tight">MATLAB Onramp</h3>
+               <Pill variant="accent">MATLAB</Pill>
+             </div>
+            <p class="text-xs text-dim mb-2">MathWorks · (indsæt år)</p>
+            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">Grundlæggende MATLAB + typiske workflows.</p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+               <Button href="#" size="sm" variant="ghost">Bevis</Button>
+             </div>
+          </Card>
+
+           <Card variant="glass" class="p-4 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-2 gap-2">
+               <h3 class="font-bold text-base leading-tight">Calculations with Vectors...</h3>
+               <Pill variant="accent">MATLAB</Pill>
+             </div>
+            <p class="text-xs text-dim mb-2">MathWorks · (indsæt år)</p>
+            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">Lineær algebra i praksis.</p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+               <Button href="#" size="sm" variant="ghost">Bevis</Button>
+             </div>
+          </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- SAS -->
+    <Section id="cat-sas" aria-label="SAS certificeringer">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>SAS</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">Tidsrækker, data management og analyse.</p>
+
+        <div class="certs-grid">
+          <Card variant="glass" class="p-4 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="font-bold text-base leading-tight">[SAS-certifikatnavn]</h3>
+              <Pill variant="accent">SAS</Pill>
+            </div>
+            <p class="text-xs text-dim mb-2">Udsteder: [SAS/UNI/etc.] · År: [—]</p>
+            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">1 linje: hvad certen dækker (PROC, ESM, etc.).</p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+               <Button href="#" size="sm" variant="ghost">Bevis</Button>
+            </div>
+          </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- WRITING -->
+    <Section id="cat-writing" aria-label="Skriveakademi">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Politikens Skriveakademi</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">Skrivning, struktur og formidling.</p>
+
+        <div class="certs-grid">
+          <Card variant="glass" class="p-4 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="font-bold text-base leading-tight">Skriveakademi</h3>
+              <Pill variant="accent">Formidling</Pill>
+            </div>
+            <p class="text-xs text-dim mb-2">Politiken · År: [—]</p>
+            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">Praktisk skrivning: klar struktur, argumentation og målgruppe.</p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+               <Button href="#" size="sm" variant="ghost">Bevis</Button>
+            </div>
+          </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title="Vil du se CV’et samlet?"
+            text="Certificeringer er “bilag”. CV’et er “historien”. Begge dele har sin plads."
+            action="cv"
+        />
+    </Section>
+
+  </main>
+</Layout>

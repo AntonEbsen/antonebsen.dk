@@ -1,0 +1,402 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Favoritcitater – Anton Meier Ebsen Jørgensen" 
+  description="En kurateret liste med mine favoritcitater – humor, tro, disciplin, læring og liv."
+  bodyClass="quotes-page"
+>
+  <!-- Page specific CSS -->
+  <style>
+    .quotes-wrap {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .hero {
+      display: grid;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+      .hero { grid-template-columns: 1.5fr 1fr; }
+    }
+    
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+    
+    .lead {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .pill {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+    }
+    
+    .btn:not(.ghost) {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .muted { color: rgba(255, 255, 255, 0.6); line-height: 1.6; }
+    .small { font-size: 0.9rem; }
+    
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .search {
+      flex: 1;
+      display: flex;
+      gap: 0.5rem;
+      min-width: 300px;
+    }
+    
+    input[type="search"], select {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    input[type="search"] { flex: 1; }
+    input[type="search"]:focus, select:focus { border-color: var(--accent); }
+    
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .quote {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s;
+    }
+    
+    .quote:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    blockquote {
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin: 0 0 1rem 0;
+      color: rgba(255, 255, 255, 0.9);
+      flex-grow: 1;
+    }
+    
+    .quote-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .who { font-weight: 600; color: var(--accent); }
+    .tag { font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; }
+    
+    .quote-actions {
+      display: flex;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.75rem;
+    }
+    
+    .quote-actions .btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  </style>
+
+  <main class="quotes-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Om mig · Noter</p>
+        <h1>Mine favoritcitater</h1>
+        <p class="lead">
+          Små linjer, stor effekt. Citater jeg bruger som mentale genveje til disciplin, læring, tro, humor og perspektiv.
+        </p>
+
+        <div class="pill-wrap" aria-label="Temaer">
+          <span class="pill">Disciplin</span>
+          <span class="pill">Læring</span>
+          <span class="pill">Tro</span>
+          <span class="pill">Humor</span>
+          <span class="pill">Perspektiv</span>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#list"><i class="fa-solid fa-quote-left"></i> Se listen</a>
+          <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Send mig et citat</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Note</h2>
+          <p class="muted small" style="margin:0;">
+            Jeg holder dem korte og brugbare. Hvis et citat kræver en hel Wikipedia-side for at give mening, ryger det typisk ud.
+          </p>
+          <p class="muted small" style="margin-top:10px;">
+            Tip: Skriv altid <strong>kilde</strong> og evt. <strong>kontekst</strong> — fremtidige dig siger tak.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="list">
+      <h2 class="section-title">Citater</h2>
+
+      <!-- Toolbar -->
+      <div class="toolbar" aria-label="Filtre">
+        <div class="search">
+          <input id="qSearch" type="search" placeholder="Søg (tekst, forfatter, tema)..." aria-label="Søg i citater">
+          <select id="qTag" aria-label="Filtrer efter tema">
+            <option value="all">Alle temaer</option>
+            <option value="Disciplin">Disciplin</option>
+            <option value="Læring">Læring</option>
+            <option value="Tro">Tro</option>
+            <option value="Humor">Humor</option>
+            <option value="Perspektiv">Perspektiv</option>
+          </select>
+        </div>
+
+        <button class="btn ghost" type="button" onclick="resetQuotes()">
+          <i class="fa-solid fa-rotate-left"></i> Nulstil
+        </button>
+      </div>
+
+      <div class="grid" id="quotesGrid">
+
+        <!-- QUOTE CARD (placeholder) -->
+        <article class="quote" data-tag="Disciplin">
+          <blockquote>
+            Indsæt dit citat her.
+          </blockquote>
+          <div class="quote-foot">
+            <span class="who">— Forfatter / kilde</span>
+            <span class="tag">Disciplin</span>
+          </div>
+          <div class="quote-actions">
+            <button class="btn ghost" type="button" onclick="copyQuote(this)">
+              <i class="fa-solid fa-copy"></i> Kopiér
+            </button>
+            <button class="btn ghost" type="button" onclick="toggleNote(this)">
+              <i class="fa-solid fa-note-sticky"></i> Note
+            </button>
+          </div>
+          <p class="muted small" data-note style="display:none; margin:0;">
+            Kort note/kontekst (valgfri). Fx hvor du stødte på citatet, eller hvad du bruger det til.
+          </p>
+        </article>
+
+        <article class="quote" data-tag="Læring">
+          <blockquote>
+            Indsæt dit citat her.
+          </blockquote>
+          <div class="quote-foot">
+            <span class="who">— Forfatter / kilde</span>
+            <span class="tag">Læring</span>
+          </div>
+          <div class="quote-actions">
+            <button class="btn ghost" type="button" onclick="copyQuote(this)">
+              <i class="fa-solid fa-copy"></i> Kopiér
+            </button>
+            <button class="btn ghost" type="button" onclick="toggleNote(this)">
+              <i class="fa-solid fa-note-sticky"></i> Note
+            </button>
+          </div>
+          <p class="muted small" data-note style="display:none; margin:0;">
+            Valgfri note.
+          </p>
+        </article>
+
+        <article class="quote" data-tag="Humor">
+          <blockquote>
+            Indsæt dit citat her.
+          </blockquote>
+          <div class="quote-foot">
+            <span class="who">— Forfatter / kilde</span>
+            <span class="tag">Humor</span>
+          </div>
+          <div class="quote-actions">
+            <button class="btn ghost" type="button" onclick="copyQuote(this)">
+              <i class="fa-solid fa-copy"></i> Kopiér
+            </button>
+            <button class="btn ghost" type="button" onclick="toggleNote(this)">
+              <i class="fa-solid fa-note-sticky"></i> Note
+            </button>
+          </div>
+          <p class="muted small" data-note style="display:none; margin:0;">
+            Valgfri note.
+          </p>
+        </article>
+
+      </div>
+
+      <hr class="divider">
+      <p class="muted small" style="margin:0;">
+        Hvis du senere vil have det mere “database-agtigt”: vi kan gøre citaterne til JSON og autogenerere cards + tags.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Send et citat</h2>
+      <p class="muted">
+        Hvis du sender mig et citat, så skriv gerne: (1) forfatter/kilde, (2) tema, (3) hvorfor det rammer.
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a>
+        <a class="btn ghost" href="/blog"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script is:inline>
+    // Quotes filtering logic
+    document.addEventListener("DOMContentLoaded", () => {
+      const qSearch = document.getElementById("qSearch");
+      const qTag = document.getElementById("qTag");
+      
+      function getCards() {
+        return Array.from(document.querySelectorAll(".quote"));
+      }
+
+      function applyFilters(){
+        if (!qSearch || !qTag) return;
+        const term = (qSearch.value || "").trim().toLowerCase();
+        const tag = qTag.value;
+
+        getCards().forEach(card => {
+          const text = card.innerText.toLowerCase();
+          const cardTag = card.getAttribute("data-tag") || "";
+          const okTerm = !term || text.includes(term);
+          const okTag = (tag === "all") || (cardTag === tag);
+          card.style.display = (okTerm && okTag) ? "" : "none";
+        });
+      }
+
+      window.resetQuotes = function(){
+        if (!qSearch || !qTag) return;
+        qSearch.value = "";
+        qTag.value = "all";
+        applyFilters();
+      }
+
+      window.copyQuote = function(btn){
+        const card = btn.closest(".quote");
+        const quote = card.querySelector("blockquote")?.innerText?.trim() || "";
+        const who = card.querySelector(".who")?.innerText?.trim() || "";
+        const out = quote && who ? `${quote}\n${who}` : quote || who;
+
+        navigator.clipboard.writeText(out).then(() => {
+          const old = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopieret';
+          setTimeout(() => (btn.innerHTML = old), 900);
+        });
+      }
+
+      window.toggleNote = function(btn){
+        const card = btn.closest(".quote");
+        const note = card.querySelector("[data-note]");
+        if(!note) return;
+        const isHidden = note.style.display === "none";
+        note.style.display = isHidden ? "block" : "none";
+      }
+
+      if (qSearch) qSearch.addEventListener("input", applyFilters);
+      if (qTag) qTag.addEventListener("change", applyFilters);
+    });
+  </script>
+</Layout>

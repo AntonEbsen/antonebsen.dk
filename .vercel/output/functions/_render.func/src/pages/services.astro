@@ -1,0 +1,214 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Samarbejde & Services" 
+  description="Samarbejde og services: studentermedhjælper/RA, dataanalyse, modelarbejde, Excel/VBA undervisning."
+  bodyClass="services-page"
+>
+  <style>
+    .services-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .grid-2, .tool-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <main class="services-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Samarbejde</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Samarbejde & services</h1>
+          <p class="text-lg text-dim mb-6">
+            Jeg tager især studie-/deltidsopgaver, studentermedhjælper-roller og research assistant-opgaver inden for
+            data, økonomi og modeller — samt undervisning i Excel/VBA.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="/contact">Kontakt mig</Button>
+            <Button href="/cv" variant="ghost">Se CV</Button>
+            <Button href="/portfolio" variant="ghost">Se portefølje</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2" aria-label="Fokus">
+            <Pill variant="accent">Studentermedhjælper</Pill>
+            <Pill variant="accent">Research assistant</Pill>
+            <Pill variant="accent">Data/Analytics</Pill>
+            <Pill variant="accent">Makro/pengepolitik</Pill>
+            <Pill variant="accent">Excel/VBA undervisning</Pill>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Kort fortalt</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              <li><strong>Base:</strong> København (remote/hybrid muligt)</li>
+              <li><strong>Respons:</strong> typisk 24–48 timer på hverdage</li>
+              <li><strong>Tools:</strong> Python, SAS, GAMS, Excel/VBA (+ Stata/MATLAB)</li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- MAIN GRID -->
+    <Section class="grid-2" aria-label="Services indhold">
+
+      <!-- SERVICES -->
+      <Card variant="glass" class="p-6" id="services">
+        <SectionHeading>Hvad jeg kan hjælpe med</SectionHeading>
+
+        <div class="space-y-4">
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-2">1) Dataanalyse & økonometriske opgaver</h3>
+            <p class="text-sm text-dim mb-2 opacity-80">
+              Data cleaning, deskriptiv analyse, regression/økonometri, tidsrækker og robusthedstjek.
+            </p>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim opacity-80">
+              <li>• Reproducerbare workflows</li>
+              <li>• Klar dokumentation og versionering</li>
+              <li>• Resultater formidlet i figurer/tabeller</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-2">2) Modelarbejde (makro/struktur)</h3>
+            <p class="text-sm text-dim mb-2 opacity-80">
+              Arbejde med økonomiske modeller (fx CGE/RBC), kalibrering, scenarier og kvalitetstjek.
+            </p>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim opacity-80">
+              <li>• Baseline → shock → sammenligning</li>
+              <li>• Konsistenschecks (fx “does it add up?”)</li>
+              <li>• Formidling af antagelser og begrænsninger</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-2">3) Excel/VBA undervisning & materialer</h3>
+            <p class="text-sm text-dim mb-2 opacity-80">
+              Praktiske cases, klare arbejdsgange, og “fra problem til løsning” — inkl. templates og øvelser.
+            </p>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim opacity-80">
+              <li>• Excel effektivitet + best practice</li>
+              <li>• VBA automations</li>
+              <li>• Materialer delt efter kurset</li>
+            </ul>
+          </div>
+        </div>
+      </Card>
+
+      <!-- HOW I WORK -->
+      <Card variant="glass" class="p-6" id="process">
+        <SectionHeading>Hvordan jeg arbejder</SectionHeading>
+        <ol class="list-decimal p-0 pl-4 space-y-2 text-sm text-dim mb-6">
+          <li><strong>Afklar mål</strong> – Hvad skal bruges til hvad?</li>
+          <li><strong>Data</strong> – adgang, kvalitet, definitioner, datadokumentation</li>
+          <li><strong>Metode</strong> – valg af model/estimand og plan</li>
+          <li><strong>Robusthed</strong> – sanity checks, sensitivitet, alternative specs</li>
+          <li><strong>Formidling</strong> – figurer/tabeller + kort, klar konklusion</li>
+          <li><strong>Leverance</strong> – kode + output + kort “README”</li>
+        </ol>
+
+        <hr class="border-0 h-px bg-glass-border my-4" />
+
+        <h3 class="font-bold mb-2 text-base">Kan du dele kode/data fra projekter?</h3>
+        <p class="text-sm text-dim opacity-80">
+          Nogle projekter er offentlige (GitHub). Andre kan ikke deles pga. kursus-/fortrolighed. Jeg kan ofte dele
+          “sanitized” eksempler eller en forsimplet demo.
+        </p>
+      </Card>
+
+      <!-- TOOLING -->
+      <Card variant="glass" class="p-6" id="tools">
+        <SectionHeading>Værktøjer & niveau</SectionHeading>
+
+        <div class="tool-grid">
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">Python</h3>
+            <p class="text-xs text-dim opacity-70">Daglig brug</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">Excel/VBA</h3>
+            <p class="text-xs text-dim opacity-70">Daglig brug (undervisning + automations)</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">SAS</h3>
+            <p class="text-xs text-dim opacity-70">Godt kendskab (tidsrækker/forecasting)</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">GAMS</h3>
+            <p class="text-xs text-dim opacity-70">Godt kendskab (CGE/modelarbejde)</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">Stata / MATLAB</h3>
+            <p class="text-xs text-dim opacity-70">Grundlæggende</p>
+          </div>
+        </div>
+      </Card>
+
+      <!-- NO THANKS -->
+      <Card variant="glass" class="p-6" id="boundaries">
+        <SectionHeading>Opgaver jeg typisk siger nej tak til</SectionHeading>
+        <ul class="list-none p-0 pl-4 space-y-2 text-sm text-dim opacity-80 mb-6">
+          <li>• Uklare krav (“vi ved ikke hvad vi vil have, men det skal være færdigt i morgen”)</li>
+          <li>• Urimelige deadlines uden mulighed for kvalitet/robusthed</li>
+          <li>• Opgaver uden dataadgang eller uden mulighed for at verificere kilder</li>
+          <li>• “Lav lige en model uden antagelser” (den findes ikke 😄)</li>
+        </ul>
+
+        <hr class="border-0 h-px bg-glass-border my-4" />
+
+        <h3 class="font-bold mb-2 text-base">Remote/hybrid?</h3>
+        <p class="text-sm text-dim opacity-80">Ja — København som base, og hybrid/remote afhænger af opgaven og datasikkerhed.</p>
+      </Card>
+
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title="Lad os tage en snak"
+            text="Skriv gerne kort: (1) hvad du vil opnå, (2) hvilken type data/tema, (3) tidshorisont og (4) forventet omfang."
+            action="email"
+        />
+    </Section>
+
+  </main>
+</Layout>

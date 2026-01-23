@@ -1,0 +1,54 @@
+import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_B2tU-5nP.mjs';
+import 'piccolore';
+import { $ as $$Layout } from '../chunks/Layout_DcRku5aZ.mjs';
+export { renderers } from '../renderers.mjs';
+
+const $$HjemmesideHistorie = createComponent(($$result, $$props, $$slots) => {
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Historien bag min hjemmeside \u2013 Blog", "description": "Et blogindl\xE6g om hvorfor og hvordan min personlige hjemmeside blev bygget \u2013 fra f\xF8rste version til struktur, sider, statistik og n\xE6ste skridt.", "bodyClass": "blog-page" }, { "default": ($$result2) => renderTemplate`   ${maybeRenderHead()}<main class="blog-wrap"> <!-- POST HERO --> <section class="card hero"> <div> <p class="eyebrow">Blog · Fagligt</p> <h1>Historien bag min personlige hjemmeside</h1> <p class="lead">
+Hvorfor jeg byggede den, hvordan den udviklede sig, og hvad den prøver at gøre “rigtigt”
+          (spoiler: struktur + dokumentation + mindre støj).
+</p> <div class="cta"> <a class="btn" href="#tldr"><i class="fa-solid fa-bolt"></i> TL;DR</a> <a class="btn ghost" href="#timeline"><i class="fa-solid fa-clock"></i> Tidslinje</a> <a class="btn ghost" href="#next"><i class="fa-solid fa-forward"></i> Næste skridt</a> </div> </div> <div class="hero-side"> <div class="mini-card"> <h2 class="section-title">Meta</h2> <p class="muted" style="margin:0;">
+Opdateret: <strong>indsæt dato</strong><br>
+Læsetid: <strong>5–7 min</strong><br>
+Tags: <strong>portfolio, struktur, dokumentation</strong> </p> </div> </div> </section> <!-- CONTENT --> <article class="card post" style="margin-top:14px;"> <!-- TL;DR --> <section id="tldr"> <h2 class="section-title">TL;DR</h2> <ul> <li>Hjemmesiden startede som et sted at samle CV + projekter ét sted (og slippe for “hvor ligger det nu?”).</li> <li>Den blev hurtigt til et lille system: Portefølje, Ressourcer/Downloads, og en Blog til noter.</li> <li>Jeg byggede statistik-sider (kursusstatistik og træningsstatistik) for at vise progression og ikke bare påstande.</li> <li>Målet er at gøre tingene nemme at finde: færre klik, klar navigation, og indhold der kan dokumenteres.</li> </ul> </section> <hr class="divider"> <!-- WHY --> <section> <h2 class="section-title">Hvorfor overhovedet lave en personlig hjemmeside?</h2> <p>
+Jeg har altid haft en ret klassisk udfordring: mange projekter, mange filer, mange versioner.
+          Og når man både arbejder med studieprojekter, kode, undervisningsmateriale og CV, så bliver “link-kaos”
+          hurtigt en ting.
+</p> <p>
+Så ideen var egentlig simpel og lidt oldschool: ét sted, som jeg ejer selv, hvor det vigtigste ligger.
+          Ikke bare en profil — men en struktureret base, hvor jeg kan opdatere ting løbende uden at skulle
+          genopfinde alt hver gang.
+</p> </section> <hr class="divider"> <!-- BUILD --> <section> <h2 class="section-title">Hvordan den blev bygget (uden at gøre det unødigt fancy)</h2> <p>
+Jeg valgte en “keep it clean” tilgang: ren HTML/CSS, en tydelig navbar, og genbrugelige kort (“cards”)
+          til indhold. Det lyder banalt — men det er præcis det, der gør det vedligeholdelsesvenligt.
+</p> <div class="grid" style="margin-top:12px;"> <div class="card post"> <div class="post-top"> <h3 class="post-title">Princip 1: Struktur før pynt</h3> <span class="tag">Design</span> </div> <p class="muted" style="margin:0;">
+Hvis navigationen er logisk, kan siden se 20% mindre “flot” ud og stadig være 10x mere brugbar.
+</p> </div> <div class="card post"> <div class="post-top"> <h3 class="post-title">Princip 2: Det skal kunne udbygges</h3> <span class="tag">System</span> </div> <p class="muted" style="margin:0;">
+Nye sider (kurser, certs, noter, omtale) skal være plug-and-play: samme layout, samme footer, samme stil.
+</p> </div> <div class="card post"> <div class="post-top"> <h3 class="post-title">Princip 3: Dokumentation beats vibe</h3> <span class="tag">Proof</span> </div> <p class="muted" style="margin:0;">
+Derfor blev statistik-siderne en ting. Det er svært at argumentere imod data, når de er pænt præsenteret.
+</p> </div> </div> </section> <hr class="divider"> <!-- TIMELINE --> <section id="timeline"> <h2 class="section-title">Tidslinje: fra “CV-side” til mini-portfolio</h2> <div class="card" style="background:rgba(17,24,39,0.02); border:1px solid rgba(0,0,0,0.06);"> <ul style="margin:0; padding-left:18px;"> <li><strong>Version 1:</strong> CV + kontakt. (Det man “skal” have.)</li> <li><strong>Version 2:</strong> Portefølje med projekter + cases. (Det man <em>kan</em> have.)</li> <li><strong>Version 3:</strong> Ressourcer/Downloads. (Det man selv bruger og kan dele.)</li> <li><strong>Version 4:</strong> Blog med tre spor: fagligt, træning, rejser.</li> <li><strong>Version 5:</strong> Statistik-sider: kursusevalueringer og træningsdata. (Progression, ikke bare ord.)</li> <li><strong>Nu:</strong> Flere undersider under CV (kompetencer, erhvervserfaring, kurser, certs) + “omtale”.</li> </ul> </div> <p class="muted" style="margin-top:12px;">
+Og ja — noget af det lyder som “overkill”. Men når man opdaterer ofte, bliver struktur pludselig en superpower.
+</p> </section> <hr class="divider"> <!-- WHAT IT ENABLES --> <section> <h2 class="section-title">Hvad hjemmesiden gør muligt (som LinkedIn ikke gør lige så godt)</h2> <ul> <li><strong>Langform:</strong> forklaringer, noter og refleksioner uden at være fanget i feed-formatet.</li> <li><strong>Artefakter:</strong> downloads, templates, kodeeksempler og “how-to” i en fast struktur.</li> <li><strong>Dashboards:</strong> statistik-sider, der kan opdateres løbende og viser udvikling over tid.</li> <li><strong>Kontrol:</strong> layout, sprog (DA/EN/DE), og hvad der fremhæves hvor.</li> </ul> </section> <hr class="divider"> <!-- NEXT --> <section id="next"> <h2 class="section-title">Næste skridt</h2> <p>
+Den mest oplagte næste opgradering er at gøre bloggen mere “rigtig”: enten med individuelle posts
+          (som denne side) eller et simpelt tagsystem. Derudover giver det mening at udbygge CV-sektionen
+          til dedikerede undersider (kurser, certifikater, kompetencer), så CV-siden ikke bliver en mur af tekst.
+</p> <div class="cta" style="margin-top:12px;"> <a class="btn" href="/blog#cat-fagligt"><i class="fa-solid fa-arrow-left"></i> Tilbage til blog</a> <a class="btn ghost" href="/resources"><i class="fa-solid fa-download"></i> Se ressourcer</a> <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a> </div> </section> </article> <!-- CTA card --> <section class="card" style="margin-top:14px;"> <h2 class="section-title">Har du feedback?</h2> <p class="muted">
+Hvis du synes noget er svært at finde, eller du har forslag til en side, der mangler, så skriv gerne.
+        Jeg prøver at optimere hjemmesiden som et værktøj — ikke som en brochure.
+</p> <div class="cta"> <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send mail</a> <a class="btn ghost" href="/contact">Kontakt-side</a> </div> </section> </main> `, "head": ($$result2) => renderTemplate`<link rel="stylesheet" href="/assets/css/blog.css">` })}`;
+}, "C:/Users/Anton/antonebsen.dk/src/pages/hjemmeside-historie.astro", void 0);
+
+const $$file = "C:/Users/Anton/antonebsen.dk/src/pages/hjemmeside-historie.astro";
+const $$url = "/hjemmeside-historie";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$HjemmesideHistorie,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

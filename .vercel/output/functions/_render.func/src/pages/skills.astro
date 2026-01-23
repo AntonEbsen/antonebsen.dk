@@ -1,0 +1,181 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Kompetencer" 
+  description="Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning."
+  bodyClass="skills-page"
+>
+  <style>
+    .skills-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .grid-3, .grid-2 { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="skills-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-6">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">Kompetencer</p>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">Værktøjer, metoder og det jeg leverer</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan,
+            <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.
+          </p>
+  
+          <div class="pill-wrap flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
+            <Pill variant="accent">Excel/VBA</Pill>
+            <Pill variant="accent">Python</Pill>
+            <Pill variant="accent">SAS</Pill>
+            <Pill variant="accent">GAMS</Pill>
+            <Pill variant="accent">Økonometri</Pill>
+            <Pill variant="accent">Makro & pengepolitik</Pill>
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#core"><i class="fa-solid fa-bolt mr-2"></i> Kernekompetencer</Button>
+            <Button href="#tools" variant="ghost"><i class="fa-solid fa-screwdriver-wrench mr-2"></i> Værktøjer</Button>
+            <Button href="#deliverables" variant="ghost"><i class="fa-solid fa-box-open mr-2"></i> Leverancer</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-4">
+            <SectionHeading>Hurtig oversigt</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
+              <li>Strukturerer data → model → output</li>
+              <li>Bygger templates og workflows</li>
+              <li>Formidler komplekse ting</li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- KERNEKOMPETENCER -->
+    <Section id="core">
+      <Card variant="default" class="p-6">
+        <SectionHeading>Programmeringssprog & Metoder</SectionHeading>
+        <div class="grid-3">
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">Python</h3>
+              <p class="text-dim text-sm">Reproducerbare pipelines: data → analyse → figurer/tabeller.</p>
+            </Card>
+            
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">Excel VBA</h3>
+              <p class="text-dim text-sm">Automatisering og brugerdefinerede funktioner.</p>
+            </Card>
+  
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">MATLAB</h3>
+              <p class="text-dim text-sm">SVAR-, DSGE- og Local Projection-modeller.</p>
+            </Card>
+            
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">SAS</h3>
+              <p class="text-dim text-sm">Klassisk, robust værktøj til tidsrækker og statistik.</p>
+            </Card>
+  
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">GAMS</h3>
+              <p class="text-dim text-sm">Modelopstiling, kalibrering og stød i CGE-modeller.</p>
+            </Card>
+  
+            <Card variant="glass" class="p-4">
+              <h3 class="font-bold mb-2">LaTeX</h3>
+              <p class="text-dim text-sm">Opstilling af rapporter og matematiske præsentationer.</p>
+            </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- VÆRKTØJER -->
+    <Section id="tools">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Værktøjs-matrix</SectionHeading>
+        <div class="grid-3">
+          <Card variant="glass" class="p-4">
+            <h3 class="text-sm font-bold mb-1">Excel</h3>
+            <p class="text-xs text-dim">Dashboards, modeller, scenarier.</p>
+          </Card>
+          <Card variant="glass" class="p-4">
+            <h3 class="text-sm font-bold mb-1">VBA</h3>
+            <p class="text-xs text-dim">Automatisering, loops, performance.</p>
+          </Card>
+          <Card variant="glass" class="p-4">
+            <h3 class="text-sm font-bold mb-1">Python</h3>
+            <p class="text-xs text-dim">Data-cleaning, pipelines, figurer.</p>
+          </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- LEVERANCER -->
+    <Section id="deliverables">
+      <Card variant="default" class="p-6">
+        <SectionHeading>Typiske leverancer</SectionHeading>
+        <div class="grid-2">
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold mb-2">Templates & workflows</h3>
+             <p class="text-dim text-sm">Excel-templates, standardiserede dashboards.</p>
+           </Card>
+           <Card variant="glass" class="p-4">
+             <h3 class="font-bold mb-2">Analyse & rapportering</h3>
+             <p class="text-dim text-sm">Reproducerbare analyser og figurer klar til rapport.</p>
+           </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="glass" 
+        title="Har du et konkret behov?" 
+        text="Skriv format + mål. Så foreslår jeg en struktur."
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>

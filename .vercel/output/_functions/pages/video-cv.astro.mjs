@@ -1,0 +1,43 @@
+import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_B2tU-5nP.mjs';
+import 'piccolore';
+import { $ as $$Layout } from '../chunks/Layout_DcRku5aZ.mjs';
+export { renderers } from '../renderers.mjs';
+
+const $$VideoCv = createComponent(($$result, $$props, $$slots) => {
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Anton Meier Ebsen J\xF8rgensen \u2013 Video-CV", "description": "Video-CV: kort introduktion til min profil, v\xE6rkt\xF8jer og hvad jeg s\xF8ger.", "bodyClass": "video-cv-page" }, { "default": ($$result2) => renderTemplate`   ${maybeRenderHead()}<main class="video-wrap"> <section class="card hero"> <div> <p class="eyebrow">Video-CV</p> <h1>En kort introduktion (1–2 min)</h1> <p class="lead">
+En hurtig opsummering af min profil, værktøjer og hvad jeg søger – lavet til at være “plug-and-play” for folk,
+          der ikke har tid til at læse alt med det samme.
+</p> <div class="cta"> <a class="btn" href="#video"><i class="fa-solid fa-play"></i> Se video</a> <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener"> <i class="fa-solid fa-file-pdf"></i> Download CV (PDF)
+</a> <a class="btn ghost" href="/contact"><i class="fa-solid fa-envelope"></i> Kontakt</a> </div> <p class="muted small" style="margin:0;">
+Tip: hold den kort. Recruitere scanner — de “binge-watcher” ikke CV’er.
+</p> </div> <div class="hero-side"> <div class="mini-card"> <h2 class="section-title">Key points</h2> <ul class="clean-list"> <li>Makroøkonomi, økonometri, modeller og data</li> <li>Python · SAS · GAMS · Excel/VBA</li> <li>Interesse: studentermedhjælper, RA, data/analytics, centralbank/finans, undervisning</li> </ul> </div> </div> </section> <div class="stack"> <section class="card" id="video"> <h2 class="section-title">Video</h2> <!-- OPTION A: Lokal MP4 (anbefales kun hvis filen ikke er kæmpe) --> <div class="video-box" style="margin-top:12px;"> <video controls preload="metadata"> <source src="/assets/video-cv-da.mp4" type="video/mp4">
+Din browser understøtter ikke video-tagget. Du kan i stedet hente videoen her:
+<a href="/assets/video-cv-da.mp4">Download video</a>.
+</video> </div> <!-- OPTION B: YouTube/Vimeo embed (hvis du hellere vil embedde)
+        <div class="video-box" style="margin-top:12px;">
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID"
+            title="Video-CV"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        --> <div class="two-col"> <div class="mini-card"> <h3 style="margin:0 0 8px;">Hvad du får på 90 sek</h3> <ul class="clean-list"> <li>Hvem jeg er + fokusområde</li> <li>Værktøjer og niveau (kort og ærligt)</li> <li>Hvilke roller jeg søger</li> <li>Hvordan jeg arbejder (proces)</li> </ul> </div> <div class="mini-card"> <h3 style="margin:0 0 8px;">Kapitel (valgfrit)</h3> <ul class="chapters"> <li>00:00 – Intro</li> <li>00:15 – Fokusområder</li> <li>00:35 – Værktøjer</li> <li>01:05 – Roller jeg søger</li> <li>01:25 – Kontakt</li> </ul> <p class="muted small" style="margin:10px 0 0;">
+(Du kan putte timestamps i YouTube-beskrivelsen, hvis du embedder.)
+</p> </div> </div> </section> <section class="card"> <h2 class="section-title">Links</h2> <p class="muted">Genveje til de vigtigste steder.</p> <div class="cta"> <a class="btn" href="/cv"><i class="fa-solid fa-id-card"></i> CV (side)</a> <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf"></i> PDF</a> <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a> <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a> </div> </section> </div> </main> `, "head": ($$result2) => renderTemplate`<link rel="stylesheet" href="/assets/css/video-cv.css">` })}`;
+}, "C:/Users/Anton/antonebsen.dk/src/pages/video-cv.astro", void 0);
+
+const $$file = "C:/Users/Anton/antonebsen.dk/src/pages/video-cv.astro";
+const $$url = "/video-cv";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$VideoCv,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

@@ -1,0 +1,372 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Milepæle" 
+  description="Timeline med milepæle inden for økonomi, data, undervisning, projekter og omtale."
+  bodyClass="timeline-page"
+>
+  <style>
+    .timeline-wrap {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .hero {
+      display: grid;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+      .hero { grid-template-columns: 1.5fr 1fr; }
+    }
+    
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+    
+    .lead {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    
+    .pill-btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    .pill-btn:hover, .pill-btn.is-active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    
+    .clean-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .clean-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+    
+    /* Timeline List */
+    .tl {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      padding-left: 2rem;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+    
+    .tl-item {
+      position: relative;
+      margin-bottom: 4rem;
+      padding-left: 2rem;
+    }
+    
+    .tl-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .tl-dot {
+      position: absolute;
+      left: -2.65rem;
+      top: 0.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: #1a1a1a;
+      border: 2px solid var(--accent);
+      z-index: 10;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .tl-head {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    @media (min-width: 640px) {
+      .tl-head { 
+        flex-direction: row; 
+        justify-content: space-between; 
+        align-items: baseline; 
+      }
+    }
+    
+    .tl-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    
+    .tl-date {
+      font-family: monospace;
+      color: var(--accent);
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .tl-meta {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .muted {
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.6;
+      font-size: 1rem;
+      max-width: 65ch;
+    }
+    
+    .tl-links, .cta {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .btn:not(.ghost) {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  </style>
+
+  <main class="timeline-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Milepæle</p>
+        <h1>Min timeline</h1>
+        <p class="lead">
+          Et hurtigt overblik over udvalgte milepæle inden for studier, projekter, undervisning og omtale.
+          Kort, konkret, og opdateres løbende.
+        </p>
+
+        <div class="pill-wrap" aria-label="Filtre">
+          <button class="pill-btn is-active" type="button" data-filter="all">Alle</button>
+          <button class="pill-btn" type="button" data-filter="fagligt">Fagligt</button>
+          <button class="pill-btn" type="button" data-filter="undervisning">Undervisning</button>
+          <button class="pill-btn" type="button" data-filter="projekter">Projekter</button>
+          <button class="pill-btn" type="button" data-filter="omtale">Omtale</button>
+          <button class="pill-btn" type="button" data-filter="traening">Træning</button>
+          <button class="pill-btn" type="button" data-filter="rejser">Rejser</button>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Hvordan jeg bruger den</h2>
+          <ul class="clean-list muted">
+            <li>År / dato</li>
+            <li>Hvad skete der?</li>
+            <li>Resultat (tal/impact hvis muligt)</li>
+            <li>Link til case, artikel eller repo</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="card">
+      <h2 class="section-title">Udvalgte milepæle</h2>
+
+      <ol class="tl" aria-label="Timeline">
+
+        <!-- Eksempel -->
+        <li class="tl-item" data-cat="undervisning">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Studenterunderviser: Excel/VBA – løbende undervisning</h3>
+              <span class="tl-date">2023 – nu</span>
+            </div>
+            <p class="tl-meta">Kategori: Undervisning</p>
+            <p class="muted">
+              Kort beskrivelse af hvad du gør + evt. et resultat: evalueringer, deltagertal, kursusudvikling osv.
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="/experience">Se erhvervserfaring</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl-item" data-cat="projekter">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Projekt: (indsæt titel) – data/model/rapport</h3>
+              <span class="tl-date">(år)</span>
+            </div>
+            <p class="tl-meta">Kategori: Projekter</p>
+            <p class="muted">
+              Hvad var målet, hvad gjorde du, og hvad kom der ud af det (rapport, kode, præsentation)?
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="/cases">Se projekt-cases</a>
+              <a class="btn ghost" href="/portfolio">Se portefølje</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl-item" data-cat="omtale">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Omtale i medier</h3>
+              <span class="tl-date">(år)</span>
+            </div>
+            <p class="tl-meta">Kategori: Omtale</p>
+            <p class="muted">
+              Kort: hvor og hvorfor. Link til artiklen (hvis du må, og hvis den stadig ligger online).
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="/media">Media / Omtale</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl-item" data-cat="traening">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <h3 class="tl-title">Træning: (fx nyt PR / ny rutine / ugevolumen)</h3>
+              <span class="tl-date">(dato)</span>
+            </div>
+            <p class="tl-meta">Kategori: Træning</p>
+            <p class="muted">
+              Hvis du vil holde det professionelt: fokusér på disciplin, struktur og progression (ikke “influencer vibes”).
+            </p>
+            <div class="tl-links">
+              <a class="btn ghost" href="/traeningsstatistik">Træningsstatistik</a>
+            </div>
+          </div>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">Vil du foreslå en milepæl?</h2>
+      <p class="muted">
+        Hvis du mener der mangler noget (fx en publikation, et projekt eller en omtale), så skriv endelig.
+      </p>
+      <div class="cta">
+        <a class="btn" href="/contact">Kontakt</a>
+        <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">Send mail</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    (function(){
+      const btns = document.querySelectorAll(".pill-btn");
+      const items = document.querySelectorAll(".tl-item");
+
+      btns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          btns.forEach(b => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+
+          const f = btn.getAttribute("data-filter");
+          items.forEach(it => {
+            const cat = it.getAttribute("data-cat");
+            if (it instanceof HTMLElement) {
+               it.style.display = (f === "all" || f === cat) ? "" : "none";
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</Layout>

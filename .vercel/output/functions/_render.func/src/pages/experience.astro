@@ -1,0 +1,147 @@
+---
+import Layout from '@layouts/Layout.astro';
+import cv from '@data/cv.json';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Section from '@components/ui/Section.astro';
+import ExperienceCard from '@components/experience/ExperienceCard.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Erhvervserfaring" 
+  description="Erhvervserfaring: undervisning, data og analyse. Rollen, ansvar, resultater og værktøjer."
+  bodyClass="experience-page"
+>
+  <style>
+    .experience-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .roles-grid, .process-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="experience-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-6">
+          <SectionHeading class="text-dim mb-3">Erhvervserfaring</SectionHeading>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">Undervisning, data og leverancer – i praksis</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            Her er min erhvervserfaring samlet i et format, der er let at skimme:
+            rolle → ansvar → resultater → værktøjer. (No fluff, kun signal.)
+          </p>
+  
+          <div class="flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
+            <Pill variant="accent">Undervisning</Pill>
+            <Pill variant="accent">Excel/VBA</Pill>
+            <Pill variant="accent">Data & analyse</Pill>
+            <Pill variant="accent">Formidling</Pill>
+            <Pill variant="accent">Struktur & kvalitet</Pill>
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#roles"><i class="fa-solid fa-briefcase mr-2"></i> Se roller</Button>
+            <Button href="/kursusstatistik" variant="ghost"><i class="fa-solid fa-chart-column mr-2"></i> Kursusstatistik</Button>
+            <Button href="/contact" variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> Kontakt</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-4">
+            <SectionHeading>Kort version</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
+              <li>Excel/VBA-underviser med stærke evalueringer</li>
+              <li>Bygger materialer og workflows, der kan genbruges</li>
+              <li>Trives i deadlines og “delivery mode”</li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ROLLER -->
+    <Section id="roles" aria-label="Roller">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Roller</SectionHeading>
+        <div class="roles-grid">
+          {cv.experience.map((role) => (
+            <ExperienceCard 
+              title={role.title}
+              organization={role.organization}
+              location={role.location}
+              period={role.period}
+              type={role.type}
+              description={role.description}
+              highlights={role.highlights}
+              links={role.links}
+            />
+          ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- HOW I WORK -->
+    <Section>
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Hvordan jeg typisk arbejder</SectionHeading>
+
+        <div class="process-grid">
+          {[
+            { step: "1) Afklar mål", desc: "Hvad er outputtet? Hvem er modtageren? Hvad er “done”?" },
+            { step: "2) Data & kontekst", desc: "Input, constraints, antagelser. Hellere klarhed end magi." },
+            { step: "3) Metode", desc: "Vælg det simplest mulige, der stadig er korrekt." },
+            { step: "4) Formidling & leverance", desc: "Tydeligt output: struktur, noter, og “hvad betyder det?”" }
+          ].map((item) => (
+            <Card variant="bordered" class="p-4 bg-glass">
+              <h3 class="text-[15px] font-bold m-0 mb-2">{item.step}</h3>
+              <p class="text-[13px] text-dim m-0 opacity-80 leading-relaxed">{item.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="default" 
+        title="Vil du samarbejde?" 
+        text="Hvis du har et konkret behov (undervisning, templates, dataarbejde), så skriv kort."
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>
