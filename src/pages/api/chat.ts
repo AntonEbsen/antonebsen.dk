@@ -70,6 +70,7 @@ NAVIGATION:
 If the user asks to see a specific page, section, or content that exists on the site, YOU MUST output a navigation block.
 Format: <<<NAVIGATE: /path>>>
 - Do NOT provide a markdown link like [Blog](/blog).
+- Do NOT bold the tag (e.g. **<<<NAVIGATE...>>>** is BAD).
 - Do NOT ask if they want to go there. JUST GO.
 - Output the block on its own line.
 
@@ -118,10 +119,10 @@ export const POST: APIRoute = async ({ request }) => {
         const systemPrompt = getSystemPrompt(lang);
 
         // Initialize model with system instruction
-        // We implement a fallback strategy because sometimes specific model IDs (like 1.5-flash) 
+        // We implement a fallback strategy because sometimes specific model IDs 
         // return 404 depending on the API key region or version.
 
-        const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
+        const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash"];
         let text = "";
         let errorToThrow;
 

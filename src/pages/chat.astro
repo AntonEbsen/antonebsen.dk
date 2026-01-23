@@ -245,7 +245,7 @@ const t = {
           }
       }
       // Check for Navigation Block
-      const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/);
+      const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
       if (navMatch && role === 'ai') {
           const rawPath = navMatch[1].trim();
           const path = rawPath.replace(/\.$/, '');
@@ -298,7 +298,7 @@ const t = {
     function formatText(text) {
       // Remove Chart JSON from text display
       let t = text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '');
-      t = t.replace(/<<<NAVIGATE:.*?>>>/g, '');
+      t = t.replace(/<<<NAVIGATE:.*?>>>/gi, '');
       // Replace **text** with bold
       t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       // Replace * items with bullets

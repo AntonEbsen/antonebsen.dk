@@ -221,7 +221,7 @@ const t = {
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left message-bubble">
-          <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/g, '')}</p>
+          <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/gi, '')}</p>
         </div>
       `;
     } else {
@@ -279,7 +279,7 @@ const t = {
         }
     }
     // Check for Navigation Block
-    const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/);
+    const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
     if (navMatch && role === 'ai') {
         const rawPath = navMatch[1].trim();
         // Sanitize: remove trailing dots or whitespace
