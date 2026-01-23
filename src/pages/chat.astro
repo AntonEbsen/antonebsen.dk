@@ -158,12 +158,12 @@ const t = {
         <div class="flex items-center gap-3">
             <span class="flex items-center gap-2">
                 <span class="status-dot"></span>
-                ONLINE
+                <span class="hidden md:inline">ONLINE</span>
             </span>
-            <span class="opacity-50">|</span>
-            <span>MODEL: GEMINI 2.5 FLASH</span>
+            <span class="opacity-50 hidden md:inline">|</span>
+            <span class="text-[10px] md:text-xs">MODEL: GEMINI 2.5 FLASH</span>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-3">
             <span>LATENCY: 24ms</span>
             <span class="opacity-50">|</span>
             <span>SECURE CONN</span>
@@ -191,7 +191,7 @@ const t = {
             type="text" 
             id="fp-chat-input"
             placeholder={t.placeholder}
-            class="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl px-5 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[rgba(255,255,255,0.08)] transition-all placeholder:text-dim/40"
+            class="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl px-5 pr-32 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[rgba(255,255,255,0.08)] transition-all placeholder:text-dim/40"
             autocomplete="off"
             autofocus
           />
