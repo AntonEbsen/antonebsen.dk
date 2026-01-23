@@ -45,9 +45,14 @@ const t = {
           </p>
         </div>
       </div>
-      <button id="close-chat" class="text-dim hover:text-white transition-colors">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+      <div class="flex gap-2">
+        <a href="/chat" class="text-dim hover:text-accent transition-colors p-1" title={lang==='da' ? "Åbn stor chat" : "Open full chat"}>
+          <i class="fa-solid fa-expand"></i>
+        </a>
+        <button id="close-chat" class="text-dim hover:text-white transition-colors p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
     </div>
 
     <!-- Messages -->

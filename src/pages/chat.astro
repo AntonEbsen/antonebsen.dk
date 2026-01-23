@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getLangFromUrl } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+  da: {
+    title: "Anton's AI Assistent",
+    desc: "Stil mig spørgsmål om Antons CV, projekter, blogindlæg og erfaring.",
+    intro: "Hej! Jeg er den store udgave af Antons AI. Jeg har læst hele hans portfolio, så du kan spørge om alt fra GAMS-modeller til hans yndlingscitater.",
+    placeholder: "Spørg om f.eks. 'Hvad er din erfaring med Python?'...",
+    disclaimer: "Drevet af Google Gemini · Kan lave fejl",
+    back: "Tilbage til forsiden"
+  },
+  en: {
+    title: "Anton's AI Assistant",
+    desc: "Ask me questions about Anton's CV, projects, blog posts, and experience.",
+    intro: "Hi! I'm the full-screen version of Anton's AI. I've read his entire portfolio, so you can ask about anything from GAMS models to his favorite quotes.",
+    placeholder: "Ask e.g. 'What is your experience with Python?'...",
+    disclaimer: "Powered by Google Gemini · May produce inaccuracies",
+    back: "Back to Home"
+  }
+}[lang];
+---
+
+<Layout 
+  title={t.title} 
+  description={t.desc}
+>
+  <style>
+    .chat-container {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      backdrop-filter: blur(10px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+  </style>
+
+  <main class="chat-container">
+    <div class="mb-6 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold mb-2">{t.title}</h1>
+        <p class="text-dim">{t.desc}</p>
+      </div>
+      <a href="/" class="text-sm font-bold text-accent hover:underline flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> {t.back}
+      </a>
+    </div>
+
+    <!-- Main Chat Window -->
+    <div class="chat-card" id="fp-chat-card" data-lang={lang}>
+      <!-- Messages Area -->
+      <div id="fp-chat-messages" class="flex-1 p-6 overflow-y-auto space-y-6 scrollbar-hide">
+        <!-- Intro Message -->
+        <div class="flex gap-4">
+          <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
+            <i class="fa-solid fa-robot text-lg"></i>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed">
+            <p>{t.intro}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="p-4 border-t border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.2)]">
+        <form id="fp-chat-form" class="flex gap-3 relative">
+          <input 
+            type="text" 
+            id="fp-chat-input"
+            placeholder={t.placeholder}
+            class="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl px-5 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[rgba(255,255,255,0.08)] transition-all placeholder:text-dim/40"
+            autocomplete="off"
+            autofocus
+          />
+          <button type="submit" class="absolute right-2 top-2 bottom-2 bg-accent text-bg w-12 rounded-lg flex items-center justify-center hover:bg-white transition-all transform hover:scale-105 shadow-lg">
+            <i class="fa-solid fa-paper-plane text-lg"></i>
+          </button>
+        </form>
+        <div class="text-center mt-3 text-xs text-dim/40 uppercase tracking-wider font-medium">
+          {t.disclaimer}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('fp-chat-form');
+    const input = document.getElementById('fp-chat-input') as HTMLInputElement;
+    const messages = document.getElementById('fp-chat-messages');
+    const card = document.getElementById('fp-chat-card');
+    const lang = card?.getAttribute('data-lang') || 'da';
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = input.value.trim();
+      if (!query) return;
+
+      // User Message
+      addMessage(query, 'user');
+      input.value = '';
+
+      // Loading
+      showTyping();
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query, lang: lang })
+        });
+        
+        const data = await res.json();
+        removeTyping();
+
+        if (res.ok) {
+          addMessage(data.reply, 'ai');
+        } else {
+          addMessage("⚠️ " + (data.message || "Error"), 'ai');
+        }
+
+      } catch (err) {
+        removeTyping();
+        addMessage("⚠️ Connection error", 'ai');
+      }
+    });
+
+    function addMessage(text, role) {
+      if (!messages) return;
+      const div = document.createElement('div');
+      div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
+
+      if (role === 'ai') {
+        div.innerHTML = `
+          <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
+            <i class="fa-solid fa-robot text-lg"></i>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed text-dim-100">
+            <div class="prose prose-invert max-w-none text-sm md:text-base">
+              ${formatText(text)}
+            </div>
+          </div>
+        `;
+      } else {
+        div.innerHTML = `
+          <div class="bg-accent text-bg p-4 md:p-5 rounded-2xl rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base">
+            <p>${text}</p>
+          </div>
+        `;
+      }
+
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showTyping() {
+      if (!messages) return;
+      const div = document.createElement('div');
+      div.id = 'fp-typing';
+      div.className = 'flex gap-4';
+      div.innerHTML = `
+         <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
+            <i class="fa-solid fa-robot text-lg"></i>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none">
+            <div class="flex gap-2">
+              <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce"></span>
+              <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+              <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+            </div>
+          </div>
+      `;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function removeTyping() {
+      const el = document.getElementById('fp-typing');
+      if (el) el.remove();
+    }
+
+    // Simple markdown-ish formatter
+    function formatText(text) {
+      // Replace **text** with bold
+      let t = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // Replace * items with bullets
+      t = t.replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc">$1</li>');
+      // Handling newlines
+      t = t.replace(/\n/g, '<br>');
+      return t;
+    }
+  </script>
+</Layout>
