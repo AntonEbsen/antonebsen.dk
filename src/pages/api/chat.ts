@@ -124,13 +124,12 @@ export const POST: APIRoute = async ({ request }) => {
         const lang = body.lang || 'da';
         const systemPrompt = getSystemPrompt(lang);
 
+        // Initialize model with system instruction
+        // We prioritize gemini-1.5-flash as it is the most stable and fast model for this use case.
         const modelsToTry = [
-            "gemini-2.5-flash", // User requested
-            "gemini-2.0-flash",
-            "gemini-2.0-flash-exp",
             "gemini-1.5-flash",
-            "gemini-1.5-flash-latest",
-            "gemini-1.5-pro"
+            "gemini-1.5-pro",
+            "gemini-pro"
         ];
 
         let streamResult: any = null;
