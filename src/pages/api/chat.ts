@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 // Import from code-file instead of JSON logic to be "bulletproof" against bundlers
-import { cv, portfolio, blog, skills } from '../../lib/all-data';
+import { cv, portfolio, blog, skills, training } from '../../lib/all-data';
 
 export const prerender = false;
 
@@ -11,6 +11,7 @@ function getSystemPrompt(lang: string = 'da') {
     const portfolioText = JSON.stringify(portfolio, null, 2);
     const skillsText = JSON.stringify(skills, null, 2);
     const blogText = JSON.stringify(blog, null, 2);
+    const trainingText = JSON.stringify(training, null, 2);
 
     const langInstruction = lang === 'da'
         ? "You MUST answer in DANISH."
@@ -42,6 +43,9 @@ ${portfolioText}
 [BLOG POSTS & CONTENT]
 ${blogText}
 
+[TRAINING & FITNESS]
+${trainingText}
+
 INSTRUCTIONS:
 - When asked about experience, summarize the relevant roles.
 - When asked about skills, mention specific tools (Python, GAMS, SAS, etc.).
@@ -65,6 +69,7 @@ Pre-defined Charts you can generate:
 1. "Skill Levels": Bar chart of top skills (Python: 90, GAMS: 85, Excel: 95, Macro: 90, Stata: 75).
 2. "Experience Timeline": Bar chart of years per role.
 3. "Projects by Type": Pie chart (Macro: 30, Data: 40, Models: 30).
+4. "Training Volume": Line chart of weekly tonnage (Uge 1: 40.5, Uge 2: 42.1, etc).
 `;
 }
 

@@ -580,3 +580,24 @@ export const skills = {
         }
     ]
 };
+
+export const training = {
+    "stats": {
+        "volume": "45.2 tons/week",
+        "sessions": 6,
+        "split": "PUSH / PULL / LEGS",
+        "focus": "Hypertrofi"
+    },
+    "prs": [
+        { "lift": "Squat", "weight": "140 kg" },
+        { "lift": "Bench Press", "weight": "110 kg" },
+        { "lift": "Deadlift", "weight": "180 kg" }
+    ],
+    "volume_history": [
+        { "week": "Uge 1", "tonnage": 40.5 },
+        { "week": "Uge 2", "tonnage": 42.1 },
+        { "week": "Uge 3", "tonnage": 44.0 },
+        { "week": "Uge 4", "tonnage": 45.2 },
+        { "week": "Deload", "tonnage": 25.0 }
+    ]
+};
