@@ -125,7 +125,17 @@ const t = {
           body: JSON.stringify({ message: query, lang: lang })
         });
         
-        const data = await res.json();
+        // Try to parse JSON, but handle HTML errors (Vercel crashes)
+        let data;
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+           data = await res.json();
+        } else {
+           const text = await res.text();
+           console.error("Non-JSON API response:", text);
+           throw new Error(text.includes("FUNCTION") ? "Server Function Crashed" : "Invalid Server Response");
+        }
+
         removeTyping();
 
         if (res.ok) {
@@ -136,7 +146,8 @@ const t = {
 
       } catch (err) {
         removeTyping();
-        addMessage("⚠️ Connection error", 'ai');
+        console.error(err);
+        addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai');
       }
     });
 

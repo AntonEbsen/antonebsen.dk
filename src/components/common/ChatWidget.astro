@@ -156,7 +156,16 @@ const t = {
         body: JSON.stringify({ message: query, lang: currentLang })
       });
 
-      const data = await res.json();
+      // Try to parse JSON, but handle HTML errors (Vercel crashes)
+      let data;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+          data = await res.json();
+      } else {
+          const text = await res.text();
+          throw new Error("Server Error (Check Logs/Console)");
+      }
+
       removeTyping();
 
       if (res.ok) {
@@ -170,9 +179,9 @@ const t = {
       }
     } catch (err) {
       removeTyping();
-      const srvErr = currentLang === 'da' ? "Kan ikke forbinde til server." : "Cannot connect to server.";
-      addMessage(srvErr, 'ai');
-      console.error(err);
+      const srvErr = currentLang === 'da' ? "Forbindelsesfejl (se konsol)" : "Connection Error (see console)";
+      addMessage(`⚠️ ${srvErr}`, 'ai');
+      console.error("Chat Error:", err);
     }
   });
 
