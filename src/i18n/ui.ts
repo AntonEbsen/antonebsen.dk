@@ -42,55 +42,71 @@ export const ui = {
     },
 } as const;
 
-export const navigation: { [key: string]: { label: string; url: string; children?: { label: string; url: string }[] }[] } = {
+export const navigation: { [key: string]: { label: string; url: string; children?: { label: string; url: string; external?: boolean }[] }[] } = {
     da: [
         { label: 'Hjem', url: '/' },
-        { label: 'CV', url: '/cv' },
+        {
+            label: 'CV',
+            url: '/cv',
+            children: [
+                { label: 'Profil', url: '/cv#profile' },
+                { label: 'Erhvervserfaring', url: '/cv#experience' },
+                { label: 'Uddannelse', url: '/cv#education' },
+                { label: 'Kompetencer', url: '/cv#skills' },
+                { label: 'Kurser', url: '/cv#courses' },
+                { label: 'Certificeringer', url: '/cv#certifications' },
+                { label: 'Organisationer', url: '/cv#organizations' },
+                { label: 'Milepæle', url: '/timeline' },
+                { label: 'Video-CV', url: '/cv#video' }
+            ]
+        },
         {
             label: 'Portefølje',
             url: '/portfolio',
             children: [
-                { label: 'Oversigt', url: '/portfolio' },
+                { label: 'Projekter', url: '/portfolio' },
+                { label: 'Projekt-cases', url: '/portfolio#cases' },
+                { label: 'Downloads', url: '/resources' },
+                { label: 'Omtale', url: '/referencer' },
+                { label: 'Noter', url: '/blog' },
                 { label: 'Galleri', url: '/gallery' },
-                { label: 'Milepæle', url: '/timeline' }
+                { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        {
-            label: 'Samarbejde',
-            url: '/services',
-            children: [
-                { label: 'Ydelser', url: '/services' },
-                { label: 'Downloads', url: '/resources' }
-            ]
-        },
-        { label: 'Referencer', url: '/referencer' },
-        { label: 'FAQ', url: '/faq' },
-        { label: 'Blog', url: '/blog' },
+        { label: 'Samarbejde', url: '/services' },
         { label: 'Kontakt', url: '/contact' },
     ],
     en: [
         { label: 'Home', url: '/en' },
-        { label: 'CV', url: '/en/cv' },
+        {
+            label: 'CV',
+            url: '/en/cv',
+            children: [
+                { label: 'Profile', url: '/en/cv#profile' },
+                { label: 'Experience', url: '/en/cv#experience' },
+                { label: 'Education', url: '/en/cv#education' },
+                { label: 'Skills', url: '/en/cv#skills' },
+                { label: 'Courses', url: '/en/cv#courses' },
+                { label: 'Certifications', url: '/en/cv#certifications' },
+                { label: 'Organizations', url: '/en/cv#organizations' },
+                { label: 'Milestones', url: '/timeline' },
+                { label: 'Video CV', url: '/en/cv#video' }
+            ]
+        },
         {
             label: 'Portfolio',
             url: '/en/portfolio',
             children: [
-                { label: 'Overview', url: '/en/portfolio' },
-                { label: 'Gallery', url: '/gallery' }, // Fallback to root
-                { label: 'Timeline', url: '/timeline' } // Fallback to root
+                { label: 'Projects', url: '/en/portfolio' },
+                { label: 'Case Studies', url: '/en/portfolio#cases' },
+                { label: 'Downloads', url: '/resources' },
+                { label: 'Mentions', url: '/en/referencer' },
+                { label: 'Notes', url: '/en/blog' },
+                { label: 'Gallery', url: '/gallery' },
+                { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        {
-            label: 'Services',
-            url: '/en/services',
-            children: [
-                { label: 'Services', url: '/en/services' },
-                { label: 'Downloads', url: '/resources' } // Fallback
-            ]
-        },
-        { label: 'Testimonials', url: '/en/referencer' },
-        { label: 'FAQ', url: '/en/faq' },
-        { label: 'Blog', url: '/en/blog' },
+        { label: 'Services', url: '/en/services' },
         { label: 'Contact', url: '/en/contact' },
     ]
 };
