@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
 ---
 
 <Layout 
@@ -7,59 +11,260 @@ import Layout from '../layouts/Layout.astro';
   description="Galleri: udvalgte billeder fra projekter, events, træning og rejser."
   bodyClass="gallery-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/gallery.css" slot="head" />
+  <style>
+    .gallery-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    /* Filters - Custom styling needed for pill-like behavior */
+    .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .chip {
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--glass-border);
+        background: rgba(255,255,255,0.02);
+        color: var(--text-dim);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .chip:hover, .chip.is-active {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+    }
+
+    .search-wrap {
+        position: relative;
+    }
+    .search-wrap i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-dim);
+        font-size: 14px;
+    }
+    .search-input {
+        width: 100%;
+        padding: 10px 10px 10px 36px;
+        border-radius: 8px;
+        border: 1px solid var(--glass-border);
+        background: rgba(0,0,0,0.2);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 14px;
+    }
+    .search-input:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
+
+    /* Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    /* Gallery Card */
+    .g-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.2s ease;
+        margin: 0;
+    }
+    .g-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--glass-border-hover);
+    }
+
+    .g-btn {
+        width: 100%;
+        aspect-ratio: 4/3;
+        border: none;
+        padding: 0;
+        cursor: zoom-in;
+        display: block;
+        overflow: hidden;
+    }
+    .g-btn img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .g-btn:hover img {
+        transform: scale(1.05);
+    }
+
+    .g-caption {
+        padding: 12px 16px 16px;
+    }
+    .cap-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+    .tag {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: rgba(255,255,255,0.05);
+        color: var(--text-dim);
+    }
+
+    /* Lightbox */
+    .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+    }
+    .lightbox.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .lb-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(8px);
+    }
+    .lb-panel {
+        position: relative;
+        max-width: 900px;
+        width: 100%;
+        background: #111;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .lb-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+    .lb-close:hover { background: var(--accent); color: black; }
+    
+    #lbImg {
+        width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+        background: #000;
+        display: block;
+    }
+    .lb-meta {
+        padding: 16px 24px;
+        background: #161616;
+        border-top: 1px solid #333;
+    }
+    #lbTitle { margin: 0 0 4px; font-size: 18px; color: white; }
+    #lbText { margin: 0; font-size: 14px; color: #aaa; }
+
+    @media (max-width: 980px) {
+      .hero-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
 
   <main class="gallery-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">Galleri</p>
-        <h1>Billeder</h1>
-        <p class="lead">
-          Et kurateret udvalg fra projekter, events, træning og rejser.
-          (Samme content som på mine sociale medier — bare samlet ét sted.)
-        </p>
-
-        <div class="cta">
-          <a class="btn" href="#grid">Se galleri</a>
-          <a class="btn ghost" href="/contact">Foreslå et billede</a>
-        </div>
-
-        <p class="muted small" style="margin:10px 0 0;">
-          Tip: læg billeder i <code>assets/gallery/</code> og opdatér kortene nedenfor.
-        </p>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Kategorier</h2>
-          <p class="muted small" style="margin:0;">
-            Brug tags til at holde det ryddeligt: Træning, Rejser, Events, Undervisning.
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Galleri</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Billeder</h1>
+          <p class="text-lg text-dim mb-6">
+            Et kurateret udvalg fra projekter, events, træning og rejser.
+            (Samme content som på mine sociale medier — bare samlet ét sted.)
           </p>
+
+          <div class="flex flex-wrap gap-3">
+            <Button href="#grid">Se galleri</Button>
+            <Button href="/contact" variant="ghost">Foreslå et billede</Button>
+          </div>
+          
+          <p class="text-xs text-dim mt-4 opacity-50">
+            Tip: læg billeder i <code>assets/gallery/</code> og opdatér kortene nedenfor.
+          </p>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Kategorier</SectionHeading>
+            <p class="text-sm text-dim">
+              Brug tags til at holde det ryddeligt: Træning, Rejser, Events, Undervisning.
+            </p>
+          </Card>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- FILTERS -->
-    <section class="card controls" aria-label="Filtre">
-      <div class="filters" role="tablist" aria-label="Kategorier">
-        <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">Alle</button>
-        <button class="chip" data-filter="traening" role="tab" aria-selected="false">Træning</button>
-        <button class="chip" data-filter="rejser" role="tab" aria-selected="false">Rejser</button>
-        <button class="chip" data-filter="events" role="tab" aria-selected="false">Events</button>
-        <button class="chip" data-filter="undervisning" role="tab" aria-selected="false">Undervisning</button>
-      </div>
-
-      <div class="search">
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-        <input id="gallerySearch" type="search" placeholder="Søg i captions…" aria-label="Søg i galleri" />
-      </div>
-    </section>
+    <Section>
+        <Card variant="glass" class="p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="filters" role="tablist" aria-label="Kategorier">
+                    <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">Alle</button>
+                    <button class="chip" data-filter="traening" role="tab" aria-selected="false">Træning</button>
+                    <button class="chip" data-filter="rejser" role="tab" aria-selected="false">Rejser</button>
+                    <button class="chip" data-filter="events" role="tab" aria-selected="false">Events</button>
+                    <button class="chip" data-filter="undervisning" role="tab" aria-selected="false">Undervisning</button>
+                </div>
+        
+                <div class="search-wrap w-full md:w-auto">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <input id="gallerySearch" class="search-input" type="search" placeholder="Søg i captions…" aria-label="Søg i galleri" />
+                </div>
+            </div>
+        </Card>
+    </Section>
 
     <!-- GRID -->
-    <section id="grid" class="grid" aria-label="Galleri">
+    <div id="grid" class="gallery-grid" aria-label="Galleri">
       <!-- CARD TEMPLATE: kopier og tilpas -->
 
       <figure class="g-card" data-tags="traening" data-caption="PUSH 1 – uge 1, progression og fokus">
@@ -70,12 +275,12 @@ import Layout from '../layouts/Layout.astro';
           data-text="Kort note: fokus på teknik og konsistens.">
           <img src="/assets/gallery/sample1.jpg" alt="Træning – billede" loading="lazy">
         </button>
-        <figcaption>
+        <figcaption class="g-caption">
           <div class="cap-top">
-            <strong>PUSH 1 – uge 1</strong>
+            <strong class="text-sm">PUSH 1 – uge 1</strong>
             <span class="tag">Træning</span>
           </div>
-          <p class="muted small">Progression + teknikfokus.</p>
+          <p class="text-xs text-dim opacity-80 m-0">Progression + teknikfokus.</p>
         </figcaption>
       </figure>
 
@@ -87,12 +292,12 @@ import Layout from '../layouts/Layout.astro';
           data-text="Kort note: solid dag på ruten.">
           <img src="/assets/gallery/sample2.jpg" alt="Rejse – billede" loading="lazy">
         </button>
-        <figcaption>
+        <figcaption class="g-caption">
           <div class="cap-top">
-            <strong>Vandretur</strong>
+            <strong class="text-sm">Vandretur</strong>
             <span class="tag">Rejser</span>
           </div>
-          <p class="muted small">Rute + erfaringer.</p>
+          <p class="text-xs text-dim opacity-80 m-0">Rute + erfaringer.</p>
         </figcaption>
       </figure>
 
@@ -104,12 +309,12 @@ import Layout from '../layouts/Layout.astro';
           data-text="Kort note: hands-on cases og god energi.">
           <img src="/assets/gallery/sample3.jpg" alt="Undervisning – billede" loading="lazy">
         </button>
-        <figcaption>
+        <figcaption class="g-caption">
           <div class="cap-top">
-            <strong>Excel-kursus</strong>
+            <strong class="text-sm">Excel-kursus</strong>
             <span class="tag">Undervisning</span>
           </div>
-          <p class="muted small">Hands-on cases.</p>
+          <p class="text-xs text-dim opacity-80 m-0">Hands-on cases.</p>
         </figcaption>
       </figure>
 
@@ -121,16 +326,16 @@ import Layout from '../layouts/Layout.astro';
           data-text="Kort note: spændende talk + gode samtaler.">
           <img src="/assets/gallery/sample4.jpg" alt="Event – billede" loading="lazy">
         </button>
-        <figcaption>
+        <figcaption class="g-caption">
           <div class="cap-top">
-            <strong>Fagligt event</strong>
+            <strong class="text-sm">Fagligt event</strong>
             <span class="tag">Events</span>
           </div>
-          <p class="muted small">Meetup + netværk.</p>
+          <p class="text-xs text-dim opacity-80 m-0">Meetup + netværk.</p>
         </figcaption>
       </figure>
 
-    </section>
+    </div>
 
     <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Billedevisning">
@@ -149,15 +354,17 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
 
-    <section class="card">
-      <h2 class="section-title">Mere</h2>
-      <p class="muted">
-        Jeg opdaterer løbende porteføljen. Du kan også finde mere på
-        <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener">GitHub</a>
-        og
-        <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener">LinkedIn</a>.
-      </p>
-    </section>
+    <div class="mt-8">
+        <Card variant="glass" class="p-6 text-center">
+            <SectionHeading centered>Mere</SectionHeading>
+            <p class="text-sm text-dim">
+                Jeg opdaterer løbende porteføljen. Du kan også finde mere på
+                <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" class="text-accent underline">GitHub</a>
+                og
+                <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" class="text-accent underline">LinkedIn</a>.
+            </p>
+        </Card>
+    </div>
 
   </main>
 

@@ -1,5 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 ---
 
 <Layout 
@@ -7,433 +12,302 @@ import Layout from '../layouts/Layout.astro';
   description="FAQ – ofte stillede spørgsmål om min baggrund, projekter og samarbejde."
   bodyClass="faq-page"
 >
-<style>
-.faq-wrap {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 16px 32px;
-}
+  <style>
+    .faq-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
 
-/* Card baseline */
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: var(--accent-soft);
-}
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
 
-.section-title {
-  margin: 0 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  color: var(--accent);
-}
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
 
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--text-dim);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-}
+    /* Sticky TOC */
+    .toc-sticky {
+      position: sticky;
+      top: 24px;
+    }
 
-.lead { 
-  margin: 0 0 24px; 
-  color: var(--text-dim); 
-  font-size: 18px; 
-  line-height: 1.6; 
-}
+    /* FAQ Details */
+    .faq-item {
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      transition: background 0.2s ease;
+    }
+    .faq-item:hover {
+        background: rgba(255, 255, 255, 0.04);
+    }
 
-.muted { 
-  color: var(--text-dim); 
-  opacity: 0.7; 
-}
+    .faq-item summary {
+      cursor: pointer;
+      font-weight: 700;
+      list-style: none;
+      position: relative;
+    }
+    
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
 
-/* Buttons */
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
+    .faq-body {
+      margin-top: 12px;
+      color: var(--text-dim);
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #050506;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-.btn.ghost {
-  background: transparent;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-}
+    .toc-link {
+        display: block; 
+        padding: 8px 10px; 
+        border-radius: 8px; 
+        color: var(--text-dim); 
+        text-decoration: none; 
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+    }
+    .toc-link:hover {
+        background: var(--accent-soft);
+        color: var(--accent);
+    }
 
-/* Hero */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-  margin-bottom: 14px;
-}
-
-.mini-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-.mini-card:hover { 
-  border-color: var(--accent-soft); 
-}
-
-/* Main layout: sticky toc + faq */
-.faq-grid {
-  display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-}
-
-.toc {
-  position: sticky !important;
-  top: 12px;
-  height: fit-content;
-}
-
-/* IMPORTANT: kill old global .toc rules from styles.css */
-.toc {
-  right: auto !important;
-  left: auto !important;
-  width: auto !important;
-  max-height: none !important;
-  overflow: visible !important;
-  transition: none !important;
-}
-
-/* TOC links */
-.toc-nav a {
-  display: block;
-  padding: 8px 10px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: var(--text);
-  transition: background 0.2s ease;
-}
-
-.toc-nav a:hover { 
-  background: var(--navHover); 
-}
-
-/* FAQ items (details) */
-.faq-main {
-  display: grid;
-  gap: 14px;
-}
-
-.faq-item {
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  padding: 10px 12px;
-  margin-top: 10px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-details.faq-item summary {
-  cursor: pointer;
-  font-weight: 700;
-  list-style: none;
-}
-
-details.faq-item summary::-webkit-details-marker { 
-  display: none; 
-}
-
-.faq-body {
-  margin-top: 10px;
-  color: var(--text-dim);
-}
-
-/* Kategori-overskrifter i FAQ */
-.faq-cat {
-  margin: 18px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-dim);
-  opacity: 0.8;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-/* Mobile */
-@media (max-width: 980px) {
-  .hero { 
-    grid-template-columns: 1fr; 
-  }
-  .faq-grid { 
-    grid-template-columns: 1fr; 
-  }
-  .toc { 
-    position: relative !important; 
-    top: 0; 
-  }
-}
-</style>
+    @media (max-width: 980px) {
+      .hero-grid, .faq-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .toc-sticky {
+        position: static;
+      }
+    }
+  </style>
 
   <main class="faq-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">FAQ</p>
-        <h1>Ofte stillede spørgsmål</h1>
-        <p class="lead">
-          Kort og konkret: hvem jeg er, hvad jeg arbejder med, og hvordan du bedst kontakter mig.
-        </p>
-        <div class="cta">
-          <a class="btn" href="/contact">Kontakt</a>
-          <a class="btn ghost" href="/cv">Se CV</a>
-          <a class="btn ghost" href="/portfolio">Se portefølje</a>
-        </div>
-      </div>
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">FAQ</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Ofte stillede spørgsmål</h1>
+          <p class="text-lg text-dim mb-6">
+            Kort og konkret: hvem jeg er, hvad jeg arbejder med, og hvordan du bedst kontakter mig.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <Button href="/contact">Kontakt</Button>
+            <Button href="/cv" variant="ghost">Se CV</Button>
+            <Button href="/portfolio" variant="ghost">Se portefølje</Button>
+          </div>
+        </Card>
 
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Hurtig navigation</h2>
-          <nav class="toc-nav" aria-label="Indholdsfortegnelse (hurtig)">
-            <a href="#cat-about">Om hjemmesiden</a>
-            <a href="#cat-collab">Samarbejde & kontakt</a>
-            <a href="#cat-work">Arbejdsform & processer</a>
-            <a href="#cat-tools">Værktøjer & kompetencer</a>
-            <a href="#cat-teaching">Undervisning</a>
-            <a href="#cat-practical">Praktisk</a>
-          </nav>
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Hurtig navigation</SectionHeading>
+            <nav class="flex flex-col gap-1" aria-label="Indholdsfortegnelse (hurtig)">
+              <a href="#cat-about" class="toc-link">Om hjemmesiden</a>
+              <a href="#cat-collab" class="toc-link">Samarbejde & kontakt</a>
+              <a href="#cat-work" class="toc-link">Arbejdsform & processer</a>
+              <a href="#cat-tools" class="toc-link">Værktøjer & kompetencer</a>
+              <a href="#cat-teaching" class="toc-link">Undervisning</a>
+              <a href="#cat-practical" class="toc-link">Praktisk</a>
+            </nav>
+          </Card>
         </div>
       </div>
-    </section>
+    </Section>
 
     <!-- CONTENT: left toc + right faq -->
-    <section class="faq-grid">
-
-      <!-- Sticky TOC (desktop) -->
-      <aside class="toc card" aria-label="Indholdsfortegnelse">
-        <div class="toc-head">
-          <h2 class="section-title" style="margin-bottom:10px;">Indhold</h2>
-        </div>
-
-        <nav class="toc-nav">
-          <a href="#cat-about">Om hjemmesiden</a>
-          <a href="#cat-collab">Samarbejde & kontakt</a>
-          <a href="#cat-work">Arbejdsform & processer</a>
-          <a href="#cat-tools">Værktøjer & kompetencer</a>
-          <a href="#cat-teaching">Undervisning</a>
-          <a href="#cat-practical">Praktisk</a>
-        </nav>
-      </aside>
-
-      <!-- FAQ -->
-      <div class="faq-main">
-
-        <section class="card">
-          <h2 class="section-title">Spørgsmål</h2>
-
-          <!-- ===================== -->
-          <!-- Om hjemmesiden -->
-          <!-- ===================== -->
-          <h3 class="faq-cat" id="cat-about">Om hjemmesiden</h3>
-
-          <details class="faq-item" id="q1" open>
-            <summary>Hvad er formålet med denne hjemmeside?</summary>
-            <div class="faq-body">
-              Denne hjemmeside fungerer som min professionelle CV-portefølje, hvor jeg fremviser min baggrund,
-              arbejdserfaring, kompetencer og projekter. Den indeholder også en blog med refleksioner om økonomi, data og modeller.
-            </div>
-          </details>
-
-          <details class="faq-item" id="q4">
-            <summary>Kan jeg se en kopi af dit fulde CV?</summary>
-            <div class="faq-body">
-              Ja. Du finder mit CV på <a href="/cv">CV</a>-siden, og du kan også downloade en PDF derfra.
-            </div>
-          </details>
-
-          <details class="faq-item" id="q3">
-            <summary>Hvilke projekter har du arbejdet på?</summary>
-            <div class="faq-body">
-              Jeg arbejder især med projekter inden for dataanalyse, økonometri/tidsrækker og økonomisk modellering.
-              Du kan se udvalgte projekter på min <a href="/portfolio">Portefølje</a>-side.
-            </div>
-          </details>
-
-          <!-- ===================== -->
-          <!-- Samarbejde & kontakt -->
-          <!-- ===================== -->
-          <h3 class="faq-cat" id="cat-collab">Samarbejde & kontakt</h3>
-
-          <details class="faq-item" id="q2">
-            <summary>Hvordan kan jeg kontakte dig for samarbejde eller jobmuligheder?</summary>
-            <div class="faq-body">
-              Du kan kontakte mig via <a href="/contact">Kontakt</a>-siden eller direkte på
-              <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>. Jeg er åben for relevante muligheder og faglige samarbejder.
-            </div>
-          </details>
-
-          <details class="faq-item" id="q6">
-            <summary>Hvilke roller er du interesseret i?</summary>
-            <div class="faq-body">
-              Jeg er især interesseret i studie-/deltidsstillinger, studentermedhjælper-roller, research assistant,
-              data/analytics samt stillinger med fokus på centralbank/finans og undervisning.
-            </div>
-          </details>
-
-          <details class="faq-item" id="q12">
-            <summary>Er du åben for remote/hybrid?</summary>
-            <div class="faq-body">
-              Ja – afhængigt af opgaven. Jeg er baseret i København, og hybrid/remote kan fungere fint, hvis rammer og forventninger er klare.
-            </div>
-          </details>
-
-          <!-- ===================== -->
-          <!-- Arbejdsform & processer -->
-          <!-- ===================== -->
-          <h3 class="faq-cat" id="cat-work">Arbejdsform & processer</h3>
-
-          <details class="faq-item" id="q8">
-            <summary>Hvordan arbejder du typisk på et projekt?</summary>
-            <div class="faq-body">
-              Typisk følger jeg en fast proces:
-              <ul>
-                <li>Afklaring af mål og succeskriterier</li>
-                <li>Data: indsamling, kvalitetstjek og dokumentation</li>
-                <li>Metodevalg (model/økonometri) og antagelser</li>
-                <li>Robusthedstjek og sanity checks</li>
-                <li>Formidling: figurer, tabeller og klare konklusioner</li>
-                <li>Leverance: reproducerbarhed, filer og kort “handover”</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="faq-item" id="q7">
-            <summary>Hvilke typer projekter siger du nej tak til?</summary>
-            <div class="faq-body">
-              Projekter med uklare krav, urimelige deadlines eller manglende dataadgang – og ja:
-              “lav lige en model uden antagelser” er desværre også et nej. 😄
-            </div>
-          </details>
-
-          <details class="faq-item" id="q9">
-            <summary>Kan du dele kode/data fra projekter?</summary>
-            <div class="faq-body">
-              Det afhænger af projektet. Nogle ting er offentlige (fx GitHub), mens andre ikke kan deles pga. kursus-/fortrolighedshensyn.
-              Jeg kan ofte dele “sanitized” eksempler eller en forenklet version, der viser metoden og strukturen.
-            </div>
-          </details>
-
-          <!-- ===================== -->
-          <!-- Værktøjer & kompetencer -->
-          <!-- ===================== -->
-          <h3 class="faq-cat" id="cat-tools">Værktøjer & kompetencer</h3>
-
-          <details class="faq-item" id="q10">
-            <summary>Hvilke værktøjer bruger du mest – og på hvilket niveau?</summary>
-            <div class="faq-body">
-              <ul>
-                <li><strong>Excel/VBA:</strong> daglig (undervisning, workflows, automatisering)</li>
-                <li><strong>Python:</strong> godt kendskab (dataanalyse, scripting, reproducerbarhed)</li>
-                <li><strong>SAS:</strong> godt kendskab (tidsrækker/økonometriske workflows)</li>
-                <li><strong>GAMS:</strong> godt kendskab (økonomiske modeller/CGE)</li>
-                <li><strong>Stata/MATLAB:</strong> grundlæggende–godt (afhænger af opgaven)</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="faq-item" id="q13">
-            <summary>Hvilke områder arbejder du mest med fagligt lige nu?</summary>
-            <div class="faq-body">
-              Pengepolitik, tidsrækker, CGE/RBC, økonometri – og jeg følger også udviklingen i AI/ML og brugen af det i uddannelse.
-            </div>
-          </details>
-
-          <!-- ===================== -->
-          <!-- Undervisning -->
-          <!-- ===================== -->
-          <h3 class="faq-cat" id="cat-teaching">Undervisning</h3>
-
-          <details class="faq-item" id="q11">
-            <summary>Hvad kan man forvente af en Excel/VBA-undervisning?</summary>
-            <div class="faq-body">
-              Praktiske cases, tydeligt tempo og materialer der kan bruges bagefter.
-              Fokus er “fra problem til løsning” med effektive arbejdsgange og konkrete tips, deltagerne kan bruge med det samme.
-            </div>
-          </details>
-
-          <!-- ===================== -->
-          <!-- Praktisk -->
-          <!-- ===================== -->
-          <h3 class="faq-cat" id="cat-practical">Praktisk</h3>
-
-          <details class="faq-item" id="q5">
-            <summary>Tilbyder du freelance tjenester?</summary>
-            <div class="faq-body">
-              Ja, afhængigt af projektets indhold og tidsramme. Send gerne en kort beskrivelse, så kan vi tage en afklaring.
-            </div>
-          </details>
-
-          <details class="faq-item" id="q14">
-            <summary>Hvor hurtigt svarer du typisk?</summary>
-            <div class="faq-body">
-              Typisk inden for 24–48 timer på hverdage.
-            </div>
-          </details>
-
-          <details class="faq-item" id="q15">
-            <summary>Hvilket sprog kan samarbejde foregå på?</summary>
-            <div class="faq-body">
-              Dansk og engelsk. Tysk på praktisk niveau.
-            </div>
-          </details>
-
-        </section>
-
-        <section class="card">
-          <h2 class="section-title">Ikke fundet dit spørgsmål?</h2>
-          <p class="muted">
-            Skriv gerne – så tilføjer jeg det til FAQ’en, hvis det giver mening.
-          </p>
-          <div class="cta">
-            <a class="btn" href="mailto:anton.ebsen@gmail.com">Send en mail</a>
-            <a class="btn ghost" href="/contact">Kontakt-side</a>
+    <Section>
+        <div class="faq-grid">
+  
+          <!-- Sticky TOC (desktop) -->
+          <div class="toc-sticky hidden md:block">
+            <Card variant="glass" class="p-4">
+                <SectionHeading>Indhold</SectionHeading>
+                <nav class="flex flex-col gap-1">
+                  <a href="#cat-about" class="toc-link">Om hjemmesiden</a>
+                  <a href="#cat-collab" class="toc-link">Samarbejde & kontakt</a>
+                  <a href="#cat-work" class="toc-link">Arbejdsform & processer</a>
+                  <a href="#cat-tools" class="toc-link">Værktøjer & kompetencer</a>
+                  <a href="#cat-teaching" class="toc-link">Undervisning</a>
+                  <a href="#cat-practical" class="toc-link">Praktisk</a>
+                </nav>
+            </Card>
           </div>
-        </section>
+  
+          <!-- FAQ -->
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Spørgsmål</SectionHeading>
+  
+            <!-- Om hjemmesiden -->
+            <h3 class="font-bold text-sm text-dim uppercase tracking-wider mb-2 mt-4 opacity-80" id="cat-about">Om hjemmesiden</h3>
+  
+            <details class="faq-item" id="q1" open>
+              <summary>Hvad er formålet med denne hjemmeside?</summary>
+              <div class="faq-body">
+                Denne hjemmeside fungerer som min professionelle CV-portefølje, hvor jeg fremviser min baggrund,
+                arbejdserfaring, kompetencer og projekter. Den indeholder også en blog med refleksioner om økonomi, data og modeller.
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q4">
+              <summary>Kan jeg se en kopi af dit fulde CV?</summary>
+              <div class="faq-body">
+                Ja. Du finder mit CV på <a href="/cv" class="text-accent hover:underline">CV</a>-siden, og du kan også downloade en PDF derfra.
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q3">
+              <summary>Hvilke projekter har du arbejdet på?</summary>
+              <div class="faq-body">
+                Jeg arbejder især med projekter inden for dataanalyse, økonometri/tidsrækker og økonomisk modellering.
+                Du kan se udvalgte projekter på min <a href="/portfolio" class="text-accent hover:underline">Portefølje</a>-side.
+              </div>
+            </details>
+  
+            <!-- Samarbejde & kontakt -->
+            <h3 class="font-bold text-sm text-dim uppercase tracking-wider mb-2 mt-8 opacity-80" id="cat-collab">Samarbejde & kontakt</h3>
+  
+            <details class="faq-item" id="q2">
+              <summary>Hvordan kan jeg kontakte dig for samarbejde eller jobmuligheder?</summary>
+              <div class="faq-body">
+                Du kan kontakte mig via <a href="/contact" class="text-accent hover:underline">Kontakt</a>-siden eller direkte på
+                <a href="mailto:anton.ebsen@gmail.com" class="text-accent hover:underline">anton.ebsen@gmail.com</a>. Jeg er åben for relevante muligheder og faglige samarbejder.
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q6">
+              <summary>Hvilke roller er du interesseret i?</summary>
+              <div class="faq-body">
+                Jeg er især interesseret i studie-/deltidsstillinger, studentermedhjælper-roller, research assistant,
+                data/analytics samt stillinger med fokus på centralbank/finans og undervisning.
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q12">
+              <summary>Er du åben for remote/hybrid?</summary>
+              <div class="faq-body">
+                Ja – afhængigt af opgaven. Jeg er baseret i København, og hybrid/remote kan fungere fint, hvis rammer og forventninger er klare.
+              </div>
+            </details>
+  
+            <!-- Arbejdsform & processer -->
+            <h3 class="font-bold text-sm text-dim uppercase tracking-wider mb-2 mt-8 opacity-80" id="cat-work">Arbejdsform & processer</h3>
+  
+            <details class="faq-item" id="q8">
+              <summary>Hvordan arbejder du typisk på et projekt?</summary>
+              <div class="faq-body">
+                Typisk følger jeg en fast proces:
+                <ul class="list-disc pl-5 mt-2 space-y-1">
+                  <li>Afklaring af mål og succeskriterier</li>
+                  <li>Data: indsamling, kvalitetstjek og dokumentation</li>
+                  <li>Metodevalg (model/økonometri) og antagelser</li>
+                  <li>Robusthedstjek og sanity checks</li>
+                  <li>Formidling: figurer, tabeller og klare konklusioner</li>
+                  <li>Leverance: reproducerbarhed, filer og kort “handover”</li>
+                </ul>
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q7">
+              <summary>Hvilke typer projekter siger du nej tak til?</summary>
+              <div class="faq-body">
+                Projekter med uklare krav, urimelige deadlines eller manglende dataadgang – og ja:
+                “lav lige en model uden antagelser” er desværre også et nej. 😄
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q9">
+              <summary>Kan du dele kode/data fra projekter?</summary>
+              <div class="faq-body">
+                Det afhænger af projektet. Nogle ting er offentlige (fx GitHub), mens andre ikke kan deles pga. kursus-/fortrolighedshensyn.
+                Jeg kan ofte dele “sanitized” eksempler eller en forenklet version, der viser metoden og strukturen.
+              </div>
+            </details>
+  
+            <!-- Værktøjer & kompetencer -->
+            <h3 class="font-bold text-sm text-dim uppercase tracking-wider mb-2 mt-8 opacity-80" id="cat-tools">Værktøjer & kompetencer</h3>
+  
+            <details class="faq-item" id="q10">
+              <summary>Hvilke værktøjer bruger du mest – og på hvilket niveau?</summary>
+              <div class="faq-body">
+                <ul class="list-disc pl-5 space-y-1">
+                  <li><strong>Excel/VBA:</strong> daglig (undervisning, workflows, automatisering)</li>
+                  <li><strong>Python:</strong> godt kendskab (dataanalyse, scripting, reproducerbarhed)</li>
+                  <li><strong>SAS:</strong> godt kendskab (tidsrækker/økonometriske workflows)</li>
+                  <li><strong>GAMS:</strong> godt kendskab (økonomiske modeller/CGE)</li>
+                  <li><strong>Stata/MATLAB:</strong> grundlæggende–godt (afhænger af opgaven)</li>
+                </ul>
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q13">
+              <summary>Hvilke områder arbejder du mest med fagligt lige nu?</summary>
+              <div class="faq-body">
+                Pengepolitik, tidsrækker, CGE/RBC, økonometri – og jeg følger også udviklingen i AI/ML og brugen af det i uddannelse.
+              </div>
+            </details>
+  
+            <!-- Undervisning -->
+            <h3 class="font-bold text-sm text-dim uppercase tracking-wider mb-2 mt-8 opacity-80" id="cat-teaching">Undervisning</h3>
+  
+            <details class="faq-item" id="q11">
+              <summary>Hvad kan man forvente af en Excel/VBA-undervisning?</summary>
+              <div class="faq-body">
+                Praktiske cases, tydeligt tempo og materialer der kan bruges bagefter.
+                Fokus er “fra problem til løsning” med effektive arbejdsgange og konkrete tips, deltagerne kan bruge med det samme.
+              </div>
+            </details>
+  
+            <!-- Praktisk -->
+            <h3 class="font-bold text-sm text-dim uppercase tracking-wider mb-2 mt-8 opacity-80" id="cat-practical">Praktisk</h3>
+  
+            <details class="faq-item" id="q5">
+              <summary>Tilbyder du freelance tjenester?</summary>
+              <div class="faq-body">
+                Ja, afhængigt af projektets indhold og tidsramme. Send gerne en kort beskrivelse, så kan vi tage en afklaring.
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q14">
+              <summary>Hvor hurtigt svarer du typisk?</summary>
+              <div class="faq-body">
+                Typisk inden for 24–48 timer på hverdage.
+              </div>
+            </details>
+  
+            <details class="faq-item" id="q15">
+              <summary>Hvilket sprog kan samarbejde foregå på?</summary>
+              <div class="faq-body">
+                Dansk og engelsk. Tysk på praktisk niveau.
+              </div>
+            </details>
+  
+          </Card>
+ 
+        </div>
+    </Section>
 
-      </div>
-    </section>
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title="Ikke fundet dit spørgsmål?"
+            text="Skriv gerne – så tilføjer jeg det til FAQ’en, hvis det giver mening."
+            action="email"
+        />
+    </Section>
 
   </main>
 </Layout>
