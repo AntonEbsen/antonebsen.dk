@@ -124,7 +124,14 @@ export const POST: APIRoute = async ({ request }) => {
         const lang = body.lang || 'da';
         const systemPrompt = getSystemPrompt(lang);
 
-        const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash"];
+        const modelsToTry = [
+            "gemini-2.5-flash", // User requested
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-exp",
+            "gemini-1.5-flash",
+            "gemini-1.5-flash-latest",
+            "gemini-1.5-pro"
+        ];
 
         let streamResult: any = null;
         let lastError: any = null;
