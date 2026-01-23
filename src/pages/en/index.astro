@@ -1,132 +1,117 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
-import SectionHeading from '@components/ui/SectionHeading.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import { Image } from 'astro:assets';
 
-import ContactCard from '@components/common/ContactCard.astro';
+// Images
+import myImage from '@assets/img/billede-af-mig.jpg';
 
-// Dummy data for English posts until blog is fully translated
-const recentPosts = [
-    {
-        title: "Model Transparency in Economic Policy",
-        excerpt: "Why model assumptions matter more than the results.",
-        date: "2024-03-15",
-        url: "/en/blog/model-transparency",
-        readTime: "5 min",
-        tags: ["Economics", "Modelling"]
-    },
-     {
-        title: "Getting started with GAMS",
-        excerpt: "A beginner's guide to General Algebraic Modeling System.",
-        date: "2024-02-10",
-        url: "/en/blog/gams-intro",
-        readTime: "8 min",
-        tags: ["GAMS", "Code"]
-    }
-];
+import skillsData from '@data/skills.json';
 
+// Dummy implementation of English skills mapping if needed, or just use English names if they are universal
+// Assuming skills.json names are universal (Python, Excel, R, etc.)
 ---
 
 <Layout 
-  title="Anton Meier Ebsen Jørgensen – Cand.polit Student" 
-  description="Economics student (cand.polit) specializing in macroeconomics, econometrics, and data analysis."
-  bodyClass="home-page"
+  title="Anton Meier Ebsen Jørgensen – Economics Student & Analyst" 
+  description="Welcome to Anton Meier Ebsen Jørgensen's personal website. Here you will find my CV, portfolio, and blog about economics and data."
 >
-
-  <style>
-    .home-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 16px 40px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 20px;
-      align-items: stretch;
-    }
-  </style>
-
-  <main class="home-wrap">
-    
-    <!-- HEADER HERO -->
-    <div class="mt-8 mb-4">
-      <Section>
-        <div class="hero-grid">
-          
-          <!-- LEFT: Intro -->
-          <Card variant="glass" class="p-10 flex flex-col justify-between h-full relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-accent-alpha-10 to-transparent pointer-events-none"></div>
-            
-            <div class="relative z-10">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-alpha-10 border border-accent-alpha-20 text-xs font-bold uppercase tracking-wider text-accent mb-6">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
-                Available for work
-              </div>
-              
-              <h1 class="text-5xl font-extrabold tracking-tight leading-tight mb-4 text-gradient">
-                Anton Meier<br/>Ebsen Jørgensen
-              </h1>
-              
-              <p class="text-xl text-dim leading-relaxed max-w-lg mb-8">
-                Economics student (cand.polit) specializing in <span class="text-text font-medium">macroeconomics</span>, <span class="text-text font-medium">econometrics</span>, and <span class="text-text font-medium">data analysis</span>. 
-              </p>
-              
-              <div class="flex flex-wrap gap-4">
-                <Button href="/en/cv" variant="solid" icon="arrow-right">See CV</Button>
-                <Button href="/en/portfolio" variant="ghost">Portfolio</Button>
-              </div>
-            </div>
-          </Card>
-
-          <!-- RIGHT: Quick stats / Profile -->
-          <div class="flex flex-col gap-4">
-            <Card variant="glass" class="p-6 flex-1">
-              <SectionHeading>Core Competencies</SectionHeading>
-              
-              <div class="flex flex-wrap gap-2 mt-4">
-                 <Pill><i class="fa-solid fa-table mr-1"></i> Excel & VBA</Pill>
-                 <Pill><i class="fa-brands fa-python mr-1"></i> Python</Pill>
-                 <Pill><i class="fa-solid fa-chart-line mr-1"></i> R / SAS</Pill>
-                 <Pill><i class="fa-solid fa-code mr-1"></i> GAMS</Pill>
-                 <Pill><i class="fa-solid fa-database mr-1"></i> SQL</Pill>
-                 <Pill><i class="fa-solid fa-lightbulb mr-1"></i> Macro</Pill>
-              </div>
-              
-              <p class="text-sm text-dim mt-6 leading-relaxed">
-                I bridge the gap between economic theory and practical implementation. Whether it is automating workflows in Excel or building complex CGE models.
-              </p>
-            </Card>
-
-            <Card variant="bordered" class="p-6">
-               <div class="flex justify-between items-center mb-2">
-                 <span class="text-xs font-bold uppercase text-dim tracking-wider">Education</span>
-                 <i class="fa-solid fa-graduation-cap text-accent"></i>
-               </div>
-               <div class="font-bold text-lg">University of Copenhagen</div>
-               <div class="text-sm text-dim">Candidate in Economics (cand.polit)</div>
-            </Card>
-          </div>
-
+  <main class="container mx-auto px-4 py-12">
+    <!-- HERO SECTION -->
+    <Section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+      <div class="space-y-6">
+        <div class="inline-block px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold uppercase tracking-wider">
+          Economics Student @ UCPH
         </div>
-      </Section>
-    </div>
-
-
-
-    <!-- CONTACT CTA -->
-    <Section class="mt-8">
-        <ContactCard 
-            title="Let's work together" 
-            text="I'm always open to discussing new projects, student positions, or collaborations."
-            action="email"
-            lang="en"
-        />
+        <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
+          Anton Meier <span class="text-accent underline decoration-4 underline-offset-8">Ebsen</span> Jørgensen
+        </h1>
+        <p class="text-xl text-dim leading-relaxed max-w-lg">
+          I combine economic theory with strong quantitative methods and programming to create insights into complex issues.
+        </p>
+        <div class="flex flex-wrap gap-4 pt-4">
+          <Button href="/en/portfolio" size="lg">View Projects</Button>
+          <Button href="/en/cv" variant="ghost" size="lg">My CV</Button>
+        </div>
+      </div>
+      
+      <div class="relative group">
+        <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <div class="relative aspect-square overflow-hidden rounded-2xl border border-glass-border shadow-2xl">
+          <Image 
+            src={myImage} 
+            alt="Anton Meier Ebsen Jørgensen" 
+            class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
+            loading="eager"
+          />
+        </div>
+      </div>
     </Section>
 
+    <!-- QUICK STATS / CARDS -->
+    <Section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+      <Card variant="glass" class="p-8 hover-glow group">
+        <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <i class="fa-solid fa-code text-accent text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">Model & Data</h3>
+        <p class="text-dim text-sm leading-relaxed">
+          Experience with Python, SAS, and GAMS for economic modeling and statistical analysis.
+        </p>
+      </Card>
+      
+      <Card variant="glass" class="p-8 hover-glow group">
+        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+          <i class="fa-solid fa-graduation-cap text-blue-400 text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">Academic Focus</h3>
+        <p class="text-dim text-sm leading-relaxed">
+          Focusing on macroeconomics, monetary policy, and econometrics in my Master's at UCPH.
+        </p>
+      </Card>
+      
+      <Card variant="glass" class="p-8 hover-glow group">
+        <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
+          <i class="fa-solid fa-chalkboard-user text-purple-400 text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">Teaching</h3>
+        <p class="text-dim text-sm leading-relaxed">
+          I communicate complex topics in Excel and VBA through structured teaching.
+        </p>
+      </Card>
+    </Section>
+
+    <!-- SKILLS PREVIEW -->
+    <Section class="mb-24">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <SectionHeading class="text-3xl font-bold mb-4">Toolkit</SectionHeading>
+        <div class="flex flex-wrap justify-center gap-2">
+          {skillsData.programming.map(skill => (
+            <Pill variant="accent">{skill.name}</Pill>
+          ))}
+          {/* Note: In English we might want to translate professional skills if they are in Danish in global JSON. 
+              Checked ui.ts, skills might be hardcoded in Danish in json. 
+              If so, I should probably leave them or manual translate here. 
+              Assuming for now I render them as is, but might need revisit if "Pengepolitisk analyse" shows up.
+          */}
+          {skillsData.professional.map(skill => (
+            <Pill variant="default">{skill.name}</Pill>
+          ))}
+        </div>
+      </div>
+    </Section>
+
+    <!-- CTA -->
+    <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10">
+      <h2 class="text-3xl font-bold mb-6">Let's have a chat?</h2>
+      <p class="text-xl text-dim mb-10 max-w-xl mx-auto">
+        I am always interested in professional discussions about economics, data, and potential collaborations.
+      </p>
+      <Button href="/en/contact" size="lg">Contact me here</Button>
+    </Section>
   </main>
 </Layout>
