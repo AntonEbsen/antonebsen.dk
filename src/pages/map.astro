@@ -8,7 +8,202 @@ import Layout from '../layouts/Layout.astro';
   bodyClass="map-page"
 >
   <!-- Page specific CSS and Logic -->
-  <link rel="stylesheet" href="/assets/css/map.css" slot="head" />
+  <style>
+    .map-wrap {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .hero {
+      display: grid;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+      .hero { grid-template-columns: 1.5fr 1fr; }
+    }
+    
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+    
+    .lead {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .muted {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .small { font-size: 0.9rem; }
+    
+    /* Controls */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem 2.5rem; /* slimmer */
+    }
+    
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .chip {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.5rem 1rem;
+      border-radius: 99px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .chip:hover, .chip.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 600;
+    }
+    
+    /* Layout: Map + List */
+    .layout {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr;
+    }
+    
+    @media (min-width: 900px) {
+      .layout { grid-template-columns: 2fr 1fr; }
+    }
+    
+    .map-card {
+      padding: 0; /* Map uses full card */
+      overflow: hidden; 
+      height: 500px;
+    }
+    
+    .map {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .list-card {
+      height: 500px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .place-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .place-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: all 0.2s;
+    }
+    
+    .place-row:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--accent);
+    }
+    
+    .row-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .row-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Leaflet Popup Styling Override */
+    :global(.leaflet-popup-content-wrapper) {
+      background: #1a1a1a;
+      color: #fff;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+    }
+    :global(.leaflet-popup-tip) {
+      background: var(--accent);
+    }
+    :global(.leaflet-popup-content) {
+      margin: 12px;
+      line-height: 1.5;
+    }
+    .badge {
+      background: var(--accent);
+      color: #000;
+      font-size: 0.7rem;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-left: 6px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .popup-meta {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .popup-link {
+      color: var(--accent);
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" slot="head" />
   
   <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" slot="head"></script>
