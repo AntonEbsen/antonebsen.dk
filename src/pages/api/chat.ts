@@ -22,7 +22,8 @@ export const POST: APIRoute = async ({ request }) => {
         }
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const systemPrompt = getSystemPrompt();
+        const lang = body.lang || 'da';
+        const systemPrompt = getSystemPrompt(lang);
 
         // Initialize model with system instruction
         const model = genAI.getGenerativeModel({

@@ -4,12 +4,16 @@ import portfolio from '@data/portfolio.json';
 import blog from '@data/blog.json';
 import skills from '@data/skills.json';
 
-export function getSystemPrompt() {
+export function getSystemPrompt(lang: string = 'da') {
     // Convert JSONs to a readable string format
     const cvText = JSON.stringify(cv, null, 2);
     const portfolioText = JSON.stringify(portfolio, null, 2);
     const skillsText = JSON.stringify(skills, null, 2);
     const blogText = JSON.stringify(blog, null, 2);
+
+    const langInstruction = lang === 'da'
+        ? "You MUST answer in DANISH."
+        : "You MUST answer in ENGLISH.";
 
     return `
 You are the AI Assistant for Anton Meier Ebsen Jørgensen's personal portfolio website.
@@ -21,7 +25,7 @@ TONE & STYLE:
 - Precise and data-driven.
 - If asked about something not in the context, say "I don't have that information in my current records, but you can contact Anton directly."
 - Do NOT make up facts.
-- Answer primarily in the language the user asks in (Danish or English).
+- ${langInstruction}
 
 CONTEXT:
 

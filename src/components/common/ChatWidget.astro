@@ -1,7 +1,33 @@
 ---
+import { getLangFromUrl } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+  da: {
+    title: "Anton's AI",
+    online: "Online",
+    intro: "Hej! Jeg er Antons AI-assistent. Spørg mig om hans erfaring, kompetencer eller projekter!",
+    placeholder: "Stil et spørgsmål...",
+    disclaimer: "Drevet af AI · Kan lave fejl",
+    error: "Beklager, jeg stødte på en fejl.",
+    configError: "Konfigurationsfejl: Mangler API-nøgle.",
+    serverError: "Beklager, jeg kan ikke få forbindelse til serveren."
+  },
+  en: {
+    title: "Anton's AI",
+    online: "Online",
+    intro: "Hi! I'm Anton's AI assistant. Ask me anything about his experience, skills, or projects!",
+    placeholder: "Ask a question...",
+    disclaimer: "Powered by AI · May produce inaccuracies",
+    error: "Sorry, I encountered an error.",
+    configError: "Configuration Error: Missing API Key.",
+    serverError: "Sorry, I'm having trouble reaching the server."
+  }
+}[lang];
 ---
 
-<div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+<div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none" data-lang={lang}>
   
   <!-- Chat Window -->
   <div id="chat-window" class="w-[350px] h-[500px] mb-4 bg-glass border border-glass-border rounded-xl shadow-2xl flex flex-col transform translate-y-10 opacity-0 pointer-events-auto transition-all duration-300 origin-bottom-right hidden">
@@ -13,9 +39,9 @@
           <i class="fa-solid fa-robot"></i>
         </div>
         <div>
-          <h3 class="font-bold text-sm">Anton's AI</h3>
+          <h3 class="font-bold text-sm">{t.title}</h3>
           <p class="text-[10px] text-accent flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Online
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t.online}
           </p>
         </div>
       </div>
@@ -31,7 +57,7 @@
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%]">
-          <p>Hi! I'm Anton's AI assistant. Ask me anything about his experience, skills, or projects!</p>
+          <p>{t.intro}</p>
         </div>
       </div>
       <!-- Messages will appear here -->
@@ -43,7 +69,7 @@
         <input 
           type="text" 
           id="chat-input"
-          placeholder="Ask a question..." 
+          placeholder={t.placeholder}
           class="flex-1 bg-bg/50 border border-glass-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent/50 transition-colors placeholder:text-dim/50"
           autocomplete="off"
         />
@@ -52,7 +78,7 @@
         </button>
       </form>
       <div class="text-[10px] text-center text-dim/30 mt-2">
-        Powered by AI · May produce inaccuracies
+        {t.disclaimer}
       </div>
     </div>
   </div>
@@ -74,6 +100,9 @@
   const input = document.getElementById('chat-input') as HTMLInputElement;
   const messages = document.getElementById('chat-messages');
 
+  // Get lang from data attribute
+  const currentLang = widget?.getAttribute('data-lang') || 'da';
+
   let isOpen = false;
 
   function toggleChat() {
@@ -84,7 +113,6 @@
       setTimeout(() => {
         window.classList.remove('translate-y-10', 'opacity-0');
         toggle.classList.add('scale-0', 'opacity-0');
-        // Hide toggle button visually but keep layout? No, just transform it out
         toggle.style.display = 'none'; 
       }, 10);
       input.focus();
@@ -120,7 +148,7 @@
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: query })
+        body: JSON.stringify({ message: query, lang: currentLang })
       });
 
       const data = await res.json();
@@ -129,8 +157,7 @@
       if (res.ok) {
         addMessage(data.reply, 'ai');
       } else {
-        // Handle error (e.g. missing API key)
-        const errorMsg = data.message || "Sorry, I encountered an error connecting to my brain.";
+        const errorMsg = data.message || (currentLang === 'da' ? "Beklager, fejl." : "Sorry, error.");
         addMessage(`⚠️ ${errorMsg}`, 'ai');
         if (data.error === 'Configuration Error') {
            addMessage("To fix this: Create a .env file in the root and add GEMINI_API_KEY=AIzaSy...", 'ai');
@@ -138,7 +165,8 @@
       }
     } catch (err) {
       removeTyping();
-      addMessage("Sorry, I'm having trouble reaching the server.", 'ai');
+      const srvErr = currentLang === 'da' ? "Kan ikke forbinde til server." : "Cannot connect to server.";
+      addMessage(srvErr, 'ai');
       console.error(err);
     }
   });
