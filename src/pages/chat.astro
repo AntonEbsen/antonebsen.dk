@@ -185,7 +185,7 @@ const t = {
           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
             <i class="fa-solid fa-robot text-lg"></i>
           </div>
-          <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed text-dim-100">
+          <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed text-dim-100 message-bubble">
             <div class="prose prose-invert max-w-none text-sm md:text-base">
               ${formatText(text)}
             </div>
@@ -213,7 +213,7 @@ const t = {
               canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
               canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
               
-              const textDiv = div.querySelector('.bg-\\[rgba\\(255\\,255\\,255\\,0\\.05\\)\\]') || div;
+              const textDiv = div.querySelector('.message-bubble') || div;
               textDiv.appendChild(canvasContainer);
               messages.scrollTop = messages.scrollHeight;
 
@@ -254,7 +254,9 @@ const t = {
           const navDiv = document.createElement('div');
           navDiv.className = "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse";
           navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
-          div.querySelector('.bg-\\[rgba\\(255\\,255\\,255\\,0\\.05\\)\\]')?.appendChild(navDiv);
+          const bubble = div.querySelector('.message-bubble');
+          if (bubble) bubble.appendChild(navDiv); 
+          else div.appendChild(navDiv); // Fallback
           messages.scrollTop = messages.scrollHeight;
 
           console.log("Concierge navigating to:", path);

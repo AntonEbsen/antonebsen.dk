@@ -220,7 +220,7 @@ const t = {
         <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
-        <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left">
+        <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left message-bubble">
           <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/g, '')}</p>
         </div>
       `;
@@ -247,7 +247,7 @@ const t = {
             canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
             
             // Append chart below text
-            const textDiv = div.querySelector('.bg-glass-border\\/50') || div;
+            const textDiv = div.querySelector('.message-bubble') || div;
             textDiv.appendChild(canvasContainer);
             messages.scrollTop = messages.scrollHeight;
 
