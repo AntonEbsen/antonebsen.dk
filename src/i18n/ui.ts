@@ -49,7 +49,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             label: 'CV',
             url: '/cv',
             children: [
-                { label: 'Profil', url: '/cv' },
+                { label: 'Profil', url: '/about' },
                 { label: 'Erhvervserfaring', url: '/experience' },
                 { label: 'Uddannelse', url: '/education' },
                 { label: 'Kompetencer', url: '/skills' },
