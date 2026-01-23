@@ -281,18 +281,23 @@ const t = {
     // Check for Navigation Block
     const navMatch = text.match(/<<<NAVIGATE: (.*?)>>>/);
     if (navMatch && role === 'ai') {
-        const path = navMatch[1].trim();
+        const rawPath = navMatch[1].trim();
+        // Sanitize: remove trailing dots or whitespace
+        const path = rawPath.replace(/\.$/, '');
+        
         // Show navigation indicator
         const navDiv = document.createElement('div');
-        navDiv.className = "flex items-center gap-2 text-xs text-accent mt-1 pl-2";
-        navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long animate-pulse"></i> Navigating to ${path}...`;
+        navDiv.className = "flex items-center gap-2 text-xs text-accent mt-2 pl-2 font-bold animate-pulse";
+        navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
         div.appendChild(navDiv);
         messages.scrollTop = messages.scrollHeight;
 
-        // Execute navigation after short delay for effect
+        console.log("Concierge navigating to:", path);
+
+        // Execute navigation faster (500ms)
         setTimeout(() => {
             window.location.href = path;
-        }, 1500);
+        }, 500);
     }
   }
 
