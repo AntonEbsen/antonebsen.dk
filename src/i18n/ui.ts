@@ -56,6 +56,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Kurser', url: '/cv#courses' },
                 { label: 'Certificeringer', url: '/cv#certifications' },
                 { label: 'Organisationer', url: '/cv#organizations' },
+                { label: 'Referencer', url: '/referencer' },
                 { label: 'Milepæle', url: '/timeline' },
                 { label: 'Video-CV', url: '/cv#video' }
             ]
@@ -74,6 +75,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
             ]
         },
         { label: 'Samarbejde', url: '/services' },
+        { label: 'FAQ', url: '/faq' },
+        { label: 'Blog', url: '/blog' },
         { label: 'Kontakt', url: '/contact' },
     ],
     en: [
@@ -89,6 +92,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Courses', url: '/en/cv#courses' },
                 { label: 'Certifications', url: '/en/cv#certifications' },
                 { label: 'Organizations', url: '/en/cv#organizations' },
+                { label: 'References', url: '/en/referencer' },
                 { label: 'Milestones', url: '/timeline' },
                 { label: 'Video CV', url: '/en/cv#video' }
             ]
@@ -107,6 +111,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
             ]
         },
         { label: 'Services', url: '/en/services' },
+        { label: 'FAQ', url: '/en/faq' },
+        { label: 'Blog', url: '/en/blog' },
         { label: 'Contact', url: '/en/contact' },
     ]
 };
