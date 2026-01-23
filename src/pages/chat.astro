@@ -90,6 +90,10 @@ const t = {
             autocomplete="off"
             autofocus
           />
+          <button type="button" id="fp-voice-btn" class="absolute right-16 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
+            <i class="fa-solid fa-microphone text-lg group-hover:scale-110 transition-transform"></i>
+             <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="fp-voice-indicator"></span>
+          </button>
           <button type="submit" class="absolute right-2 top-2 bottom-2 bg-accent text-bg w-12 rounded-lg flex items-center justify-center hover:bg-white transition-all transform hover:scale-105 shadow-lg">
             <i class="fa-solid fa-paper-plane text-lg"></i>
           </button>
@@ -116,6 +120,47 @@ const t = {
     const messages = document.getElementById('fp-chat-messages');
     const card = document.getElementById('fp-chat-card');
     const lang = card?.getAttribute('data-lang') || 'da';
+    const voiceBtn = document.getElementById('fp-voice-btn');
+    const voiceIndicator = document.getElementById('fp-voice-indicator');
+
+    // Voice Logic (Full Page)
+    let recognition;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = lang === 'da' ? 'da-DK' : 'en-US';
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            voiceIndicator.classList.remove('opacity-0');
+            voiceIndicator.classList.add('animate-pulse', 'border-red-500');
+            voiceBtn.classList.add('text-red-400');
+        };
+
+        recognition.onend = () => {
+             voiceIndicator.classList.add('opacity-0');
+             voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
+             voiceBtn.classList.remove('text-red-400');
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            input.value = transcript;
+            input.focus();
+        };
+
+        voiceBtn?.addEventListener('click', () => {
+            try {
+                recognition.start();
+            } catch (e) {
+                console.log("Recognition already started");
+                recognition.stop();
+            }
+        });
+    } else {
+         if(voiceBtn) voiceBtn.style.display = 'none';
+    }
 
     // Quick Prompts Logic
     document.querySelectorAll('.quick-prompt-btn').forEach(btn => {

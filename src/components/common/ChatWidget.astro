@@ -90,6 +90,10 @@ const t = {
           class="flex-1 bg-bg/50 border border-glass-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent/50 transition-colors placeholder:text-dim/50"
           autocomplete="off"
         />
+        <button type="button" id="voice-btn" class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group relative" title="Speak to Anton (Voice Mode)">
+           <i class="fa-solid fa-microphone text-xs group-hover:scale-110 transition-transform"></i>
+           <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="voice-indicator"></span>
+        </button>
         <button type="submit" class="bg-accent text-bg w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
           <i class="fa-solid fa-paper-plane text-xs"></i>
         </button>
@@ -116,8 +120,50 @@ const t = {
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input') as HTMLInputElement;
   const messages = document.getElementById('chat-messages');
+  const voiceBtn = document.getElementById('voice-btn');
+  const voiceIndicator = document.getElementById('voice-indicator');
 
-  // Get lang from data attribute
+  // Voice Interaction Logic
+  let recognition;
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = currentLang === 'da' ? 'da-DK' : 'en-US';
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+          voiceIndicator.classList.remove('opacity-0');
+          voiceIndicator.classList.add('animate-pulse', 'border-red-500');
+          voiceBtn.classList.add('text-red-400');
+      };
+
+      recognition.onend = () => {
+          voiceIndicator.classList.add('opacity-0');
+          voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
+          voiceBtn.classList.remove('text-red-400');
+      };
+
+      recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          input.value = transcript;
+          // Optional: Auto-submit (uncomment if desired)
+          // form.dispatchEvent(new Event('submit'));
+          input.focus();
+      };
+      
+      voiceBtn?.addEventListener('click', () => {
+          try {
+              recognition.start();
+          } catch (e) {
+              console.log("Recognition already started");
+              recognition.stop();
+          }
+      });
+  } else {
+      // Hide button if not supported
+      if(voiceBtn) voiceBtn.style.display = 'none';
+  }
   const currentLang = widget?.getAttribute('data-lang') || 'da';
 
   let isOpen = false;
