@@ -6,6 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import FeatureCard from '@components/ui/FeatureCard.astro';
+import TechStack from '@components/ui/TechStack.astro';
 import { Image } from 'astro:assets';
 
 // Images
@@ -99,19 +100,17 @@ import skillsData from '@data/skills.json';
 
     <!-- SKILLS PREVIEW -->
     <Section class="mb-24">
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <SectionHeading class="text-3xl font-bold mb-4">Toolkit</SectionHeading>
-        <div class="flex flex-wrap justify-center gap-2">
-          {skillsData.programming.map(skill => (
-            <Pill variant="accent">{skill.name}</Pill>
-          ))}
-          {/* Note: In English we might want to translate professional skills if they are in Danish in global JSON. 
-              Checked ui.ts, skills might be hardcoded in Danish in json. 
-              If so, I should probably leave them or manual translate here. 
-              Assuming for now I render them as is, but might need revisit if "Pengepolitisk analyse" shows up.
-          */}
+      <div class="text-center max-w-4xl mx-auto mb-16">
+        <SectionHeading class="text-3xl font-bold mb-8">Toolkit</SectionHeading>
+        
+        <!-- Visual Tech Stack -->
+        <TechStack skills={skillsData.programming} />
+
+        <!-- Professional Areas (Secondary) -->
+        <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
           {skillsData.professional.map(skill => (
-            <Pill variant="default">{skill.name}</Pill>
+            // Note: Ideally translate these skill names if possible, but staying consistent with data for now
+            <Pill variant="default" class="text-sm">{skill.name}</Pill>
           ))}
         </div>
       </div>
