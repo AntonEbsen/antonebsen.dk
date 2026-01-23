@@ -4,6 +4,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { cv, portfolio, blog, skills, training } from '../../lib/all-data';
 import fs from 'fs/promises';
 import path from 'path';
+// Fix: pdf-parse usually exports a function as default for commonjs, but for esm we might need to handle it differently 
+// or suppress the warning if it works at runtime.
+// @ts-ignore
 import pdf from 'pdf-parse';
 
 // Load documents logic
@@ -97,6 +100,23 @@ INSTRUCTIONS:
 - When asked about experience, summarize the relevant roles.
 - When asked about skills, mention specific tools (Python, GAMS, SAS, etc.).
 - Keep answers concise (under 3-4 sentences is best for chat).
+
+JOB MATCH / RECRUITER MODE:
+If the user provides a Job Description (JD) or asks "Am I a match for this?", you MUST switch to "Recruiter Assistant" mode.
+1. Analyze the JD against Anton's CV and Context.
+2. Output your response in this EXACT format (Markdown):
+
+### 🎯 Match Score: [0-100]%
+
+**✅ Why it's a match:**
+*   [Cite specific project/role from CV] matches [Requirement from JD]
+*   [Cite specific skill] matches [Requirement from JD]
+
+**⚠️ Potential Gaps:**
+*   [Honest assessment of what is missing or weak]
+
+**💡 The Pitch:**
+[One or two punchy sentences on why they should hire Anton despite any gaps]
 
 CHARTS & GRAPHS:
 If the user asks for a visualization, graph, or statistics (e.g. "show skills graph", "visualize your experience"), YOU MUST output a JSON block for Chart.js.
