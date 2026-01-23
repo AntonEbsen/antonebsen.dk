@@ -4,6 +4,7 @@ import { p as portfolioData, b as blogData } from '../../chunks/blog_C5GzFnLC.mj
 import { s as skillsData } from '../../chunks/skills_DAl2nbEH.mjs';
 export { renderers } from '../../renderers.mjs';
 
+const prerender = false;
 function getSystemPrompt(lang = "da") {
   const cvText = JSON.stringify(cv, null, 2);
   const portfolioText = JSON.stringify(portfolioData, null, 2);
@@ -42,8 +43,6 @@ INSTRUCTIONS:
 - Keep answers concise (under 3-4 sentences is best for chat).
 `;
 }
-
-const prerender = false;
 const POST = async ({ request }) => {
   try {
     const body = await request.json();
@@ -53,6 +52,7 @@ const POST = async ({ request }) => {
     }
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
+      console.error("Missing GEMINI_API_KEY");
       return new Response(JSON.stringify({
         error: "Configuration Error",
         message: "Missing GEMINI_API_KEY. Please add it to your .env file."
@@ -76,7 +76,13 @@ const POST = async ({ request }) => {
     });
   } catch (error) {
     console.error("AI Error:", error);
-    return new Response(JSON.stringify({ error: "Failed to generate response" }), { status: 500 });
+    return new Response(JSON.stringify({
+      error: "Server Error",
+      message: error.message || "Unknown Server Error"
+    }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 };
 
