@@ -182,27 +182,41 @@ const t = {
         body: JSON.stringify({ message: query, lang: currentLang })
       });
 
-      // Try to parse JSON, but handle HTML errors (Vercel crashes)
-      let data;
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-          data = await res.json();
-      } else {
-          const text = await res.text();
-          throw new Error("Server Error (Check Logs/Console)");
-      }
-
       removeTyping();
 
-      if (res.ok) {
-        addMessage(data.reply, 'ai');
-      } else {
-        const errorMsg = data.message || (currentLang === 'da' ? "Beklager, fejl." : "Sorry, error.");
-        addMessage(`⚠️ ${errorMsg}`, 'ai');
-        if (data.error === 'Configuration Error') {
-           addMessage("To fix this: Create a .env file in the root and add GEMINI_API_KEY=AIzaSy...", 'ai');
-        }
+      if (!res.ok) {
+          const data = await res.json();
+          const errorMsg = data.message || (currentLang === 'da' ? "Beklager, fejl." : "Sorry, error.");
+          addMessage(`⚠️ ${errorMsg}`, 'ai');
+          if (data.error === 'Configuration Error') {
+             addMessage("To fix this: Create a .env file in the root and add GEMINI_API_KEY=AIzaSy...", 'ai');
+          }
+          return;
       }
+
+      // Create a placeholder message for the stream
+      const messageContent = addMessage("", 'ai');
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      let accumulatedText = "";
+
+      if (reader) {
+          while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              
+              const chunk = decoder.decode(value, { stream: true });
+              accumulatedText += chunk;
+              
+              // Update the UI with the formatted text (hides text-based tags)
+              messageContent.innerHTML = formatMessageText(accumulatedText);
+              messages.scrollTop = messages.scrollHeight;
+          }
+      }
+
+      // Final processing for regex tags (Charts/Navigation) on the complete text
+      processSpecialTags(accumulatedText, messageContent.parentElement.parentElement); // Pass the container div
+
     } catch (err) {
       removeTyping();
       const srvErr = currentLang === 'da' ? "Forbindelsesfejl" : "Connection Error";
@@ -211,19 +225,92 @@ const t = {
     }
   });
 
+  function formatMessageText(text) {
+      return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/gi, '');
+  }
+
+  function processSpecialTags(text, containerDiv) {
+        // Check for Chart Block
+        const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
+        if (chartMatch) {
+            const jsonStr = chartMatch[1];
+            try {
+                const chartData = JSON.parse(jsonStr);
+                const canvasId = 'chart-' + Date.now();
+                const canvasContainer = document.createElement('div');
+                canvasContainer.className = "mt-2 p-2 bg-white/5 rounded-lg border border-white/10";
+                canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+                
+                const textDiv = containerDiv.querySelector('.message-bubble');
+                if (textDiv) textDiv.appendChild(canvasContainer);
+                messages.scrollTop = messages.scrollHeight; // Scroll after adding chart
+
+                import('chart.js/auto').then(({ default: Chart }) => {
+                    const ctx = document.getElementById(canvasId);
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: chartData.type,
+                            data: chartData.data,
+                            options: {
+                                ...chartData.options,
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                scale: {
+                                    ticks: { color: 'rgba(255, 255, 255, 0.5)' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                },
+                                plugins: {
+                                    legend: { labels: { color: 'rgba(255, 255, 255, 0.8)' } }
+                                }
+                            }
+                        });
+                    }
+                });
+
+            } catch (e) {
+                console.error("Chart Render Error", e);
+            }
+        }
+        
+        // Check for Navigation Block
+        const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
+        if (navMatch) {
+            const rawPath = navMatch[1].trim();
+            const path = rawPath.replace(/\.$/, '');
+            
+            const navDiv = document.createElement('div');
+            navDiv.className = "flex items-center gap-2 text-xs text-accent mt-2 pl-2 font-bold animate-pulse";
+            navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
+            containerDiv.appendChild(navDiv);
+            messages.scrollTop = messages.scrollHeight;
+
+            console.log("Concierge navigating to:", path);
+
+            setTimeout(() => {
+                window.location.href = path;
+            }, 500);
+        }
+  }
+
   function addMessage(text, role) {
     const div = document.createElement('div');
     div.className = `flex gap-2 ${role === 'user' ? 'flex-row-reverse' : ''}`;
     
+    let contentElement;
+
     if (role === 'ai') {
       div.innerHTML = `
         <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left message-bubble">
-          <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/gi, '')}</p>
+          <p></p>
         </div>
       `;
+      // We set content later for AI to allow streaming updates
+      contentElement = div.querySelector('p');
+      if (text) contentElement.innerHTML = formatMessageText(text);
+
     } else {
       div.innerHTML = `
         <div class="bg-accent text-bg p-3 rounded-lg rounded-tr-none max-w-[85%] text-left">
@@ -234,71 +321,8 @@ const t = {
     
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
-
-    // Check for Chart Block
-    const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
-    if (chartMatch && role === 'ai') {
-        const jsonStr = chartMatch[1];
-        try {
-            const chartData = JSON.parse(jsonStr);
-            const canvasId = 'chart-' + Date.now();
-            const canvasContainer = document.createElement('div');
-            canvasContainer.className = "mt-2 p-2 bg-white/5 rounded-lg border border-white/10";
-            canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
-            
-            // Append chart below text
-            const textDiv = div.querySelector('.message-bubble') || div;
-            textDiv.appendChild(canvasContainer);
-            messages.scrollTop = messages.scrollHeight;
-
-            // Render Chart
-            import('chart.js/auto').then(({ default: Chart }) => {
-                const ctx = document.getElementById(canvasId) as HTMLCanvasElement;
-                if (ctx) {
-                    new Chart(ctx, {
-                        type: chartData.type,
-                        data: chartData.data,
-                        options: {
-                             ...chartData.options,
-                             color: 'rgba(255, 255, 255, 0.7)',
-                             borderColor: 'rgba(255, 255, 255, 0.1)',
-                             scale: {
-                                ticks: { color: 'rgba(255, 255, 255, 0.5)' },
-                                grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                             },
-                             plugins: {
-                                legend: { labels: { color: 'rgba(255, 255, 255, 0.8)' } }
-                             }
-                        }
-                    });
-                }
-            });
-
-        } catch (e) {
-            console.error("Chart Render Error", e);
-        }
-    }
-    // Check for Navigation Block
-    const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
-    if (navMatch && role === 'ai') {
-        const rawPath = navMatch[1].trim();
-        // Sanitize: remove trailing dots or whitespace
-        const path = rawPath.replace(/\.$/, '');
-        
-        // Show navigation indicator
-        const navDiv = document.createElement('div');
-        navDiv.className = "flex items-center gap-2 text-xs text-accent mt-2 pl-2 font-bold animate-pulse";
-        navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
-        div.appendChild(navDiv);
-        messages.scrollTop = messages.scrollHeight;
-
-        console.log("Concierge navigating to:", path);
-
-        // Execute navigation faster (500ms)
-        setTimeout(() => {
-            window.location.href = path;
-        }, 500);
-    }
+    
+    return contentElement; // Return the P element for updates
   }
 
   function showTyping() {

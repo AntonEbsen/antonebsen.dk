@@ -103,7 +103,6 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ error: 'No message provided' }), { status: 400 });
         }
 
-        // Use import.meta.env for Vercel
         const apiKey = import.meta.env.GEMINI_API_KEY;
 
         if (!apiKey) {
@@ -118,14 +117,12 @@ export const POST: APIRoute = async ({ request }) => {
         const lang = body.lang || 'da';
         const systemPrompt = getSystemPrompt(lang);
 
-        // Initialize model with system instruction
-        // We implement a fallback strategy because sometimes specific model IDs 
-        // return 404 depending on the API key region or version.
-
         const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash"];
-        let text = "";
-        let errorToThrow;
 
+        let streamResult: any = null;
+        let lastError: any = null;
+
+        // Try models until one works
         for (const modelName of modelsToTry) {
             try {
                 const model = genAI.getGenerativeModel({
@@ -133,35 +130,47 @@ export const POST: APIRoute = async ({ request }) => {
                     systemInstruction: systemPrompt
                 });
 
-                const result = await model.generateContent(userMessage);
-                const response = await result.response;
-                text = response.text();
-
-                // If we get here, it worked!
+                streamResult = await model.generateContentStream(userMessage);
+                // If we get here without throwing, the stream request initiated successfully
                 break;
             } catch (err: any) {
                 console.warn(`Failed with model ${modelName}:`, err.message);
-                errorToThrow = err;
-                // If it's a 404 (Not Found) or 400 (Bad Request), continue to next model.
-                // If it's 401/403 (Auth), it will fail for all anyway, but we continue just in case.
+                lastError = err;
                 continue;
             }
         }
 
-        if (!text) {
-            throw errorToThrow || new Error("All models failed.");
+        if (!streamResult) {
+            throw lastError || new Error("All models failed to respond.");
         }
 
-        return new Response(JSON.stringify({ reply: text }), {
+        // Create a readable stream from the Gemini stream
+        const responseStream = new ReadableStream({
+            async start(controller) {
+                const encoder = new TextEncoder();
+                try {
+                    for await (const chunk of streamResult.stream) {
+                        const chunkText = chunk.text();
+                        controller.enqueue(encoder.encode(chunkText));
+                    }
+                    controller.close();
+                } catch (err) {
+                    console.error("Stream Error:", err);
+                    controller.error(err);
+                }
+            }
+        });
+
+        return new Response(responseStream, {
             status: 200,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Transfer-Encoding': 'chunked'
             }
         });
 
     } catch (error: any) {
         console.error('AI Error:', error);
-        // Return JSON error even on crash
         return new Response(JSON.stringify({
             error: 'Server Error',
             message: error.message || 'Unknown Server Error'

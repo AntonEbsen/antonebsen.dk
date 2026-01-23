@@ -149,23 +149,41 @@ const t = {
           body: JSON.stringify({ message: query, lang: lang })
         });
         
-        // Try to parse JSON, but handle HTML errors (Vercel crashes)
-        let data;
-        const contentType = res.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-           data = await res.json();
-        } else {
-           const text = await res.text();
-           console.error("Non-JSON API response:", text);
-           throw new Error(text.includes("FUNCTION") ? "Server Function Crashed" : "Invalid Server Response");
-        }
-
         removeTyping();
 
-        if (res.ok) {
-          addMessage(data.reply, 'ai');
-        } else {
-          addMessage("⚠️ " + (data.message || "Error"), 'ai');
+        if (!res.ok) {
+           // Handle error JSON
+           let data = await res.json();
+           addMessage("⚠️ " + (data.message || "Error"), 'ai');
+           return;
+        }
+
+        // Create a placeholder message for the stream
+        const messageContent = addMessage("", 'ai');
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+        let accumulatedText = "";
+
+        if (reader) {
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                
+                const chunk = decoder.decode(value, { stream: true });
+                accumulatedText += chunk;
+                
+                // Update the UI
+                if (messageContent) {
+                    messageContent.innerHTML = formatText(accumulatedText);
+                }
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Final processing for regex tags (Charts/Navigation) on the complete text
+        // Pass the container div (grandparent of the message content p tag)
+        if (messageContent) {
+             processSpecialTags(accumulatedText, messageContent.closest('.flex')); 
         }
 
       } catch (err) {
@@ -175,10 +193,81 @@ const t = {
       }
     });
 
+    function processSpecialTags(text, containerDiv) {
+       if (!containerDiv) return;
+
+       // Check for Chart Block
+       const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
+       if (chartMatch) {
+           const jsonStr = chartMatch[1];
+           try {
+               const chartData = JSON.parse(jsonStr);
+               const canvasId = 'chart-' + Date.now();
+               const canvasContainer = document.createElement('div');
+               canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
+               canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+               
+               const textDiv = containerDiv.querySelector('.message-bubble') || containerDiv;
+               textDiv.appendChild(canvasContainer);
+               messages.scrollTop = messages.scrollHeight;
+
+               // Render Chart
+               import('chart.js/auto').then(({ default: Chart }) => {
+                   const ctx = document.getElementById(canvasId);
+                   if (ctx) {
+                       new Chart(ctx, {
+                           type: chartData.type,
+                           data: chartData.data,
+                           options: {
+                               ...chartData.options,
+                               color: 'rgba(255, 255, 255, 0.8)',
+                               borderColor: 'rgba(255, 255, 255, 0.2)',
+                               scale: {
+                                  ticks: { color: 'rgba(255, 255, 255, 0.6)' },
+                                  grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                               },
+                               plugins: {
+                                  legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
+                               }
+                           }
+                       });
+                   }
+               });
+
+           } catch (e) {
+               console.error("Chart Render Error", e);
+           }
+       }
+       // Check for Navigation Block
+       const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
+       if (navMatch) {
+           const rawPath = navMatch[1].trim();
+           const path = rawPath.replace(/\.$/, '');
+
+           // Show navigation indicator
+           const navDiv = document.createElement('div');
+           navDiv.className = "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse";
+           navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
+           const bubble = containerDiv.querySelector('.message-bubble');
+           if (bubble) bubble.appendChild(navDiv); 
+           else containerDiv.appendChild(navDiv); // Fallback
+           messages.scrollTop = messages.scrollHeight;
+
+           console.log("Concierge navigating to:", path);
+
+           // Execute navigation faster
+           setTimeout(() => {
+               window.location.href = path;
+           }, 500);
+       }
+    }
+
     function addMessage(text, role) {
       if (!messages) return;
       const div = document.createElement('div');
       div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
+
+      let contentElement;
 
       if (role === 'ai') {
         div.innerHTML = `
@@ -191,6 +280,9 @@ const t = {
             </div>
           </div>
         `;
+        contentElement = div.querySelector('.prose');
+        if (text) contentElement.innerHTML = formatText(text);
+
       } else {
         div.innerHTML = `
           <div class="bg-accent text-bg p-4 md:p-5 rounded-2xl rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base">
@@ -202,70 +294,7 @@ const t = {
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
 
-      // Check for Chart Block
-      const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
-      if (chartMatch && role === 'ai') {
-          const jsonStr = chartMatch[1];
-          try {
-              const chartData = JSON.parse(jsonStr);
-              const canvasId = 'chart-' + Date.now();
-              const canvasContainer = document.createElement('div');
-              canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
-              canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
-              
-              const textDiv = div.querySelector('.message-bubble') || div;
-              textDiv.appendChild(canvasContainer);
-              messages.scrollTop = messages.scrollHeight;
-
-              // Render Chart
-              import('chart.js/auto').then(({ default: Chart }) => {
-                  const ctx = document.getElementById(canvasId) as HTMLCanvasElement;
-                  if (ctx) {
-                      new Chart(ctx, {
-                          type: chartData.type,
-                          data: chartData.data,
-                          options: {
-                              ...chartData.options,
-                              color: 'rgba(255, 255, 255, 0.8)',
-                              borderColor: 'rgba(255, 255, 255, 0.2)',
-                              scale: {
-                                  ticks: { color: 'rgba(255, 255, 255, 0.6)' },
-                                  grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                              },
-                              plugins: {
-                                  legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
-                              }
-                          }
-                      });
-                  }
-              });
-
-          } catch (e) {
-              console.error("Chart Render Error", e);
-          }
-      }
-      // Check for Navigation Block
-      const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
-      if (navMatch && role === 'ai') {
-          const rawPath = navMatch[1].trim();
-          const path = rawPath.replace(/\.$/, '');
-
-          // Show navigation indicator
-          const navDiv = document.createElement('div');
-          navDiv.className = "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse";
-          navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
-          const bubble = div.querySelector('.message-bubble');
-          if (bubble) bubble.appendChild(navDiv); 
-          else div.appendChild(navDiv); // Fallback
-          messages.scrollTop = messages.scrollHeight;
-
-          console.log("Concierge navigating to:", path);
-
-          // Execute navigation faster
-          setTimeout(() => {
-              window.location.href = path;
-          }, 500);
-      }
+      return contentElement;
     }
 
     function showTyping() {
