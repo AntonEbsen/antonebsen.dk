@@ -20,7 +20,14 @@ const pathname = new URL(Astro.request.url).pathname;
             </a>
             <div class="dropdown">
                {item.children.map(child => (
-                 <a href={child.url}>{child.label}</a>
+                 <a 
+                   href={child.url} 
+                   target={child.external ? "_blank" : "_self"}
+                   rel={child.external ? "noopener noreferrer" : ""}
+                 >
+                   {child.label}
+                   {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-50"></i>}
+                 </a>
                ))}
             </div>
           </div>

@@ -1,0 +1,46 @@
+---
+import Card from './Card.astro';
+import Button from './Button.astro';
+
+interface Props {
+  title: string;
+  tagString?: string;
+  description: string;
+  url?: string;
+  badge?: string;
+}
+
+const { title, tagString, description, url = "#", badge = "Featured Analysis" } = Astro.props;
+---
+
+<Card variant="glass" class="p-8 md:p-10 relative overflow-hidden group">
+  <!-- Dynamic Background Glow -->
+  <div class="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none group-hover:bg-accent/10 transition duration-700"></div>
+
+  <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
+    <div class="space-y-4 max-w-2xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs font-bold uppercase tracking-wider text-accent">
+        <i class="fa-solid fa-star text-[10px]"></i>
+        {badge}
+      </div>
+      
+      <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-white mb-2">
+        {title}
+      </h2>
+      
+      <p class="text-lg text-dim leading-relaxed">
+        {description}
+      </p>
+      
+      {tagString && (
+        <div class="text-sm font-mono text-accent/80 pt-1">
+          <i class="fa-solid fa-tags mr-2 opacity-50"></i>{tagString}
+        </div>
+      )}
+    </div>
+
+    <div class="md:shrink-0 pt-4 md:pt-0">
+      <Button href={url} size="lg" icon="arrow-right">Read Analysis</Button>
+    </div>
+  </div>
+</Card>

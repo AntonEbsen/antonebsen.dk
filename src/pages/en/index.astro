@@ -5,6 +5,7 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
+import FeatureCard from '@components/ui/FeatureCard.astro';
 import { Image } from 'astro:assets';
 
 // Images
@@ -83,6 +84,17 @@ import skillsData from '@data/skills.json';
           I communicate complex topics in Excel and VBA through structured teaching.
         </p>
       </Card>
+    </Section>
+
+    <!-- FEATURED PROJECT -->
+    <Section class="mb-24">
+      <FeatureCard
+        badge="Featured Analysis"
+        title="Global Financial Cycle & Spillovers"
+        description="An econometric analysis of US monetary policy spillovers."
+        tagString="Macroeconomics · SVAR · Python"
+        url="/en/portfolio"
+      />
     </Section>
 
     <!-- SKILLS PREVIEW -->

@@ -5,6 +5,7 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
+import FeatureCard from '@components/ui/FeatureCard.astro';
 import { Image } from 'astro:assets';
 
 // Images
@@ -87,6 +88,17 @@ const bulletMap: Record<string, string> = {
           Jeg formidler komplekse emner i Excel og VBA gennem struktureret undervisning.
         </p>
       </Card>
+    </Section>
+
+    <!-- FEATURED PROJECT -->
+    <Section class="mb-24">
+      <FeatureCard
+        badge="Udvalgt Analyse"
+        title="Global Financial Cycle & Spillovers"
+        description="En økonometrisk analyse af spillover-effekter fra amerikansk pengepolitik."
+        tagString="Makroøkonomi · SVAR · Python"
+        url="/portfolio"
+      />
     </Section>
 
     <!-- SKILLS PREVIEW -->
