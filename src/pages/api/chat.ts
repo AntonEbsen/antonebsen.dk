@@ -77,7 +77,7 @@ export const POST: APIRoute = async ({ request }) => {
         // We implement a fallback strategy because sometimes specific model IDs (like 1.5-flash) 
         // return 404 depending on the API key region or version.
 
-        const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+        const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
         let text = "";
         let errorToThrow;
 
