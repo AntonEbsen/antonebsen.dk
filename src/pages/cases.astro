@@ -1,5 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 ---
 
 <Layout 
@@ -7,474 +13,298 @@ import Layout from '../layouts/Layout.astro';
   description="Tre udvalgte projekt-cases: data, metode, resultater og værktøjer."
   bodyClass="cases-page"
 >
-<style>
-.cases-wrap {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 0 16px 32px;
-}
+  <style>
+    .cases-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
 
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: var(--accent-soft);
-}
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
 
-.section-title {
-  margin: 0 0 24px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  color: var(--accent);
-}
+    .cases-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
 
-.eyebrow {
-  margin: 0 0 12px;
-  color: var(--text-dim);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 12px;
-}
+    .case-body {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+    }
 
-.lead { 
-  margin: 0 0 24px; 
-  color: var(--text-dim); 
-  font-size: 18px; 
-  line-height: 1.6; 
-}
-
-.muted { 
-  color: var(--text-dim); 
-  opacity: 0.7; 
-}
-
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 10px 0 14px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #050506;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14.5px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-.btn.ghost {
-  background: transparent;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-}
-
-.pill-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.pill {
-  padding: 6px 14px;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-}
-
-/* Hero */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-  margin-bottom: 14px;
-}
-
-.mini-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid var(--glass-border);
-  transition: border-color 0.3s ease;
-}
-.mini-card:hover { 
-  border-color: var(--accent-soft); 
-}
-
-.clean-list {
-  margin: 0;
-  padding-left: 18px;
-}
-
-/* Cases layout */
-.cases-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-
-.case-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.case-title {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.25;
-}
-
-.badge {
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass);
-  white-space: nowrap;
-}
-
-.case-body {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.case-block {
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.case-block h3 {
-  margin: 0 0 8px;
-  font-size: 14px;
-}
-
-.tool-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tool-pill {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.case-links {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Responsive */
-@media (max-width: 980px) {
-  .hero { 
-    grid-template-columns: 1fr; 
-  }
-  .case-body { 
-    grid-template-columns: 1fr; 
-  }
-}
-</style>
+    @media (max-width: 980px) {
+      .hero-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .case-body { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
 
   <main class="cases-wrap">
 
     <!-- HERO -->
-    <section class="card hero">
-      <div>
-        <p class="eyebrow">Projekt-cases</p>
-        <h1>Tre udvalgte cases</h1>
-        <p class="lead">
-          Her er tre cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.
-        </p>
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Projekt-cases</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Tre udvalgte cases</h1>
+          <p class="text-lg text-dim mb-6">
+            Her er tre cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.
+          </p>
 
-        <div class="cta">
-          <a class="btn" href="/portfolio">Se portefølje</a>
-          <a class="btn ghost" href="/cv">Se CV</a>
-          <a class="btn ghost" href="/contact">Kontakt</a>
-        </div>
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="/portfolio">Se portefølje</Button>
+            <Button href="/cv" variant="ghost">Se CV</Button>
+            <Button href="/contact" variant="ghost">Kontakt</Button>
+          </div>
 
-        <div class="pill-wrap">
-          <span class="pill">Makro & pengepolitik</span>
-          <span class="pill">Tidsrækker</span>
-          <span class="pill">CGE/RBC</span>
-          <span class="pill">Reproducerbar analyse</span>
+          <div class="flex flex-wrap gap-2">
+            <Pill variant="accent">Makro & pengepolitik</Pill>
+            <Pill variant="accent">Tidsrækker</Pill>
+            <Pill variant="accent">CGE/RBC</Pill>
+            <Pill variant="accent">Reproducerbar analyse</Pill>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Format</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              <li><strong>Problem</strong> → hvad skulle løses?</li>
+              <li><strong>Data</strong> → hvad byggede analysen på?</li>
+              <li><strong>Metode</strong> → hvordan blev det løst?</li>
+              <li><strong>Resultat</strong> → hvad kom der ud?</li>
+            </ul>
+          </Card>
         </div>
       </div>
-
-      <div class="hero-side">
-        <div class="mini-card">
-          <h2 class="section-title">Format</h2>
-          <ul class="clean-list">
-            <li><strong>Problem</strong> → hvad skulle løses?</li>
-            <li><strong>Data</strong> → hvad byggede analysen på?</li>
-            <li><strong>Metode</strong> → hvordan blev det løst?</li>
-            <li><strong>Resultat</strong> → hvad kom der ud?</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+    </Section>
 
     <!-- CASES GRID -->
-    <section class="cases-grid" aria-label="Projekt-cases">
+    <Section class="cases-grid" aria-label="Projekt-cases">
 
       <!-- CASE 1 -->
-      <article class="card case" id="case-gfc">
-        <div class="case-head">
-          <h2 class="case-title">Case 1: Global Financial Cycle & spillovers fra US pengepolitik</h2>
-          <span class="badge">Empirisk makro</span>
+      <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id="case-gfc">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <h2 class="text-xl font-bold leading-tight">Case 1: Global Financial Cycle & spillovers fra US pengepolitik</h2>
+          <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">Empirisk makro</span>
         </div>
 
-        <p class="muted">
+        <p class="text-dim opacity-70 mb-4">
           (Bachelorprojekt) Undersøgelse af hvordan amerikansk pengepolitik påvirker globale finansielle forhold og makroøkonomiske outcomes.
         </p>
 
         <div class="case-body">
-          <div class="case-block">
-            <h3>Problem</h3>
-            <p>Hvilke spillover-effekter kan observeres fra US pengepolitik til global økonomi, og hvordan varierer de på tværs af perioder?</p>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Problem</h3>
+            <p class="text-sm text-dim">Hvilke spillover-effekter kan observeres fra US pengepolitik til global økonomi, og hvordan varierer de på tværs af perioder?</p>
           </div>
 
-          <div class="case-block">
-            <h3>Data</h3>
-            <ul class="clean-list">
-              <li>Makro/finansielle tidsserier (fx renter, kreditspreads, volatilitet, output-indikatorer)</li>
-              <li>Land-/region-panel (hvis relevant)</li>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Data</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Makro/finansielle tidsserier (fx renter, kreditspreads, volatilitet, output-indikatorer)</li>
+              <li>• Land-/region-panel (hvis relevant)</li>
             </ul>
           </div>
 
-          <div class="case-block">
-            <h3>Metode</h3>
-            <ul class="clean-list">
-              <li>Strukturel tidsrækkemodel / SVAR-inspiration (tilpas efter dit faktiske setup)</li>
-              <li>Robusthed: alternative specifikationer og subperioder</li>
-              <li>Visualisering: IRF/effektplot, tabeller med nøgleestimater</li>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Metode</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Strukturel tidsrækkemodel / SVAR-inspiration (tilpas efter dit faktiske setup)</li>
+              <li>• Robusthed: alternative specifikationer og subperioder</li>
+              <li>• Visualisering: IRF/effektplot, tabeller med nøgleestimater</li>
             </ul>
           </div>
 
-          <div class="case-block">
-            <h3>Resultat</h3>
-            <ul class="clean-list">
-              <li>Hovedfund: (indsæt 1–2 linjer, når du vil)</li>
-              <li>Praktisk leverance: rapport + figurer + kode/appendiks</li>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Resultat</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Hovedfund: (indsæt 1–2 linjer, når du vil)</li>
+              <li>• Praktisk leverance: rapport + figurer + kode/appendiks</li>
             </ul>
           </div>
 
-          <div class="case-block">
-            <h3>Min rolle</h3>
-            <ul class="clean-list">
-              <li>Design af empirisk strategi</li>
-              <li>Databehandling + estimation</li>
-              <li>Formidling af resultater og begrænsninger</li>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Min rolle</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Design af empirisk strategi</li>
+              <li>• Databehandling + estimation</li>
+              <li>• Formidling af resultater og begrænsninger</li>
             </ul>
           </div>
 
-          <div class="case-block">
-            <h3>Tools</h3>
-            <div class="tool-row">
-              <span class="tool-pill">Python</span>
-              <span class="tool-pill">SAS/Stata</span>
-              <span class="tool-pill">LaTeX</span>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Tools</h3>
+            <div class="flex flex-wrap gap-2">
+              <Pill variant="accent">Python</Pill>
+              <Pill variant="accent">SAS/Stata</Pill>
+              <Pill variant="accent">LaTeX</Pill>
             </div>
           </div>
         </div>
 
-        <div class="case-links">
-          <a class="btn ghost" href="#" aria-disabled="true">Rapport (kommer)</a>
-          <a class="btn ghost" href="#" aria-disabled="true">Kode (hvis public)</a>
+        <div class="flex flex-wrap gap-3 mt-4">
+          <Button href="#" variant="ghost" size="sm">Rapport (kommer)</Button>
+          <Button href="#" variant="ghost" size="sm">Kode (hvis public)</Button>
         </div>
-      </article>
+      </Card>
 
       <!-- CASE 2 -->
-      <article class="card case" id="case-cge">
-        <div class="case-head">
-          <h2 class="case-title">Case 2: CGE-model – CO₂-afgift, sektor-effekter og provenu-recycling</h2>
-          <span class="badge">Modelarbejde</span>
+      <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id="case-cge">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <h2 class="text-xl font-bold leading-tight">Case 2: CGE-model – CO₂-afgift, sektor-effekter og provenu-recycling</h2>
+          <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">Modelarbejde</span>
         </div>
 
-        <p class="muted">
+        <p class="text-dim opacity-70 mb-4">
           (Kursusprojekt/eksamenscase) Kalibrering af en simpel åben økonomi med flere sektorer og policy-shocks.
         </p>
 
         <div class="case-body">
-          <div class="case-block">
-            <h3>Problem</h3>
-            <p>Hvordan påvirker en CO₂-afgift produktion, priser og velfærd på tværs af sektorer – og hvad betyder valget af provenu-tilbageførsel?</p>
-          </div>
-
-          <div class="case-block">
-            <h3>Data</h3>
-            <ul class="clean-list">
-              <li>Social Accounting Matrix / nationalregnskabs-baseret kalibrering</li>
-              <li>Sektorspecifikke inputandele, forbrug, eksport/import</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Metode</h3>
-            <ul class="clean-list">
-              <li>Kalibrér baseline der reproducerer SAM</li>
-              <li>Shock-scenarier: skat + alternative lukninger</li>
-              <li>Checks: budgetrestriktioner, nul-profit, (Walras-lov hvor relevant)</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Resultat</h3>
-            <ul class="clean-list">
-              <li>Output: procentændringer i priser/output/forbrug</li>
-              <li>Fortolkning: vindere/tabere og mekanismer (kort)</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Min rolle</h3>
-            <ul class="clean-list">
-              <li>Implementering i GAMS</li>
-              <li>Kalibrering + dokumentation</li>
-              <li>Scenario-opsætning og tabeller/figurer</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Tools</h3>
-            <div class="tool-row">
-              <span class="tool-pill">GAMS</span>
-              <span class="tool-pill">Excel</span>
-              <span class="tool-pill">LaTeX</span>
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Problem</h3>
+              <p class="text-sm text-dim">Hvordan påvirker en CO₂-afgift produktion, priser og velfærd på tværs af sektorer – og hvad betyder valget af provenu-tilbageførsel?</p>
             </div>
-          </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Data</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Social Accounting Matrix / nationalregnskabs-baseret kalibrering</li>
+                <li>• Sektorspecifikke inputandele, forbrug, eksport/import</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Metode</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Kalibrér baseline der reproducerer SAM</li>
+                <li>• Shock-scenarier: skat + alternative lukninger</li>
+                <li>• Checks: budgetrestriktioner, nul-profit, (Walras-lov hvor relevant)</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Resultat</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Output: procentændringer i priser/output/forbrug</li>
+                <li>• Fortolkning: vindere/tabere og mekanismer (kort)</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Min rolle</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Implementering i GAMS</li>
+                <li>• Kalibrering + dokumentation</li>
+                <li>• Scenario-opsætning og tabeller/figurer</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Tools</h3>
+              <div class="flex flex-wrap gap-2">
+                <Pill variant="accent">GAMS</Pill>
+                <Pill variant="accent">Excel</Pill>
+                <Pill variant="accent">LaTeX</Pill>
+              </div>
+            </div>
         </div>
 
-        <div class="case-links">
-          <a class="btn ghost" href="#" aria-disabled="true">Slides/rapport (kommer)</a>
-          <a class="btn ghost" href="#" aria-disabled="true">Modelkode (hvis public)</a>
+        <div class="flex flex-wrap gap-3 mt-4">
+          <Button href="#" variant="ghost" size="sm">Slides/rapport (kommer)</Button>
+          <Button href="#" variant="ghost" size="sm">Modelkode (hvis public)</Button>
         </div>
-      </article>
+      </Card>
 
       <!-- CASE 3 -->
-      <article class="card case" id="case-ts">
-        <div class="case-head">
-          <h2 class="case-title">Case 3: Tidsrækker – forecasting og sæsonmønstre</h2>
-          <span class="badge">Tidsrækker</span>
+      <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id="case-ts">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <h2 class="text-xl font-bold leading-tight">Case 3: Tidsrækker – forecasting og sæsonmønstre</h2>
+          <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">Tidsrækker</span>
         </div>
 
-        <p class="muted">
+        <p class="text-dim opacity-70 mb-4">
           (SAS-kursus/eksamenscase) Modelvalg, diagnosticering og forecast med fokus på robusthed og kommunikation.
         </p>
 
         <div class="case-body">
-          <div class="case-block">
-            <h3>Problem</h3>
-            <p>Hvordan laver man et forecast, der er stabilt og forklarligt — og ikke bare “en model der passer”?</p>
-          </div>
-
-          <div class="case-block">
-            <h3>Data</h3>
-            <ul class="clean-list">
-              <li>Tidsserie med sæson og trend (fx månedlige/ugentlige observationer)</li>
-              <li>Evt. outliers/strukturelle brud</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Metode</h3>
-            <ul class="clean-list">
-              <li>Decomposition / UCM / ETS-tilgang (tilpas)</li>
-              <li>Modeldiagnostik: residualer, stabilitet, holdout</li>
-              <li>Alternativer: simple benchmarks vs. mere kompleks model</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Resultat</h3>
-            <ul class="clean-list">
-              <li>Forecast + usikkerhedsbånd</li>
-              <li>Konklusion: hvorfor netop denne model er valgt</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Min rolle</h3>
-            <ul class="clean-list">
-              <li>Data-prep og modelvalg</li>
-              <li>Evaluation + dokumentation</li>
-              <li>Visualisering og write-up</li>
-            </ul>
-          </div>
-
-          <div class="case-block">
-            <h3>Tools</h3>
-            <div class="tool-row">
-              <span class="tool-pill">SAS</span>
-              <span class="tool-pill">Python</span>
-              <span class="tool-pill">Excel</span>
-            </div>
-          </div>
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Problem</h3>
+                <p class="text-sm text-dim">Hvordan laver man et forecast, der er stabilt og forklarligt — og ikke bare “en model der passer”?</p>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Data</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Tidsserie med sæson og trend (fx månedlige/ugentlige observationer)</li>
+                  <li>• Evt. outliers/strukturelle brud</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Metode</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Decomposition / UCM / ETS-tilgang (tilpas)</li>
+                  <li>• Modeldiagnostik: residualer, stabilitet, holdout</li>
+                  <li>• Alternativer: simple benchmarks vs. mere kompleks model</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Resultat</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Forecast + usikkerhedsbånd</li>
+                  <li>• Konklusion: hvorfor netop denne model er valgt</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Min rolle</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Data-prep og modelvalg</li>
+                  <li>• Evaluation + dokumentation</li>
+                  <li>• Visualisering og write-up</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Tools</h3>
+                <div class="flex flex-wrap gap-2">
+                  <Pill variant="accent">SAS</Pill>
+                  <Pill variant="accent">Python</Pill>
+                  <Pill variant="accent">Excel</Pill>
+                </div>
+              </div>
         </div>
 
-        <div class="case-links">
-          <a class="btn ghost" href="#" aria-disabled="true">Notebook/rapport (kommer)</a>
-          <a class="btn ghost" href="#" aria-disabled="true">Kode (hvis public)</a>
+        <div class="flex flex-wrap gap-3 mt-4">
+          <Button href="#" variant="ghost" size="sm">Notebook/rapport (kommer)</Button>
+          <Button href="#" variant="ghost" size="sm">Kode (hvis public)</Button>
         </div>
-      </article>
+      </Card>
 
-    </section>
+    </Section>
 
     <!-- CTA -->
-    <section class="card">
-      <h2 class="section-title">Vil du se noget mere konkret?</h2>
-      <p class="muted">
-        Nogle projekter kan ikke deles fuldt ud pga. kursus/fortrolighed, men jeg kan ofte dele “sanitized” eksempler eller gennemgå metoder/struktur.
-      </p>
-      <div class="cta">
-        <a class="btn" href="/contact">Kontakt mig</a>
-        <a class="btn ghost" href="/services">Samarbejde</a>
-      </div>
-    </section>
+    <Section>
+        <ContactCard 
+            title="Vil du se noget mere konkret?"
+            text="Nogle projekter kan ikke deles fuldt ud pga. kursus/fortrolighed, men jeg kan ofte dele “sanitized” eksempler eller gennemgå metoder/struktur."
+            action="contact"
+        />
+    </Section>
 
   </main>
 </Layout>
