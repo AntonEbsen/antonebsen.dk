@@ -4,6 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 ---
 
 <Layout 
@@ -77,7 +79,7 @@ import Pill from '@components/ui/Pill.astro';
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-4">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hurtig oversigt</h2>
+            <SectionHeading>Hurtig oversigt</SectionHeading>
             <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
               <li>Strukturerer data → model → output</li>
               <li>Bygger templates og workflows</li>
@@ -91,7 +93,7 @@ import Pill from '@components/ui/Pill.astro';
     <!-- KERNEKOMPETENCER -->
     <Section id="core">
       <Card variant="default" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Programmeringssprog & Metoder</h2>
+        <SectionHeading>Programmeringssprog & Metoder</SectionHeading>
         <div class="grid-3">
             <Card variant="glass" class="p-4">
               <h3 class="font-bold mb-2">Python</h3>
@@ -129,7 +131,7 @@ import Pill from '@components/ui/Pill.astro';
     <!-- VÆRKTØJER -->
     <Section id="tools">
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Værktøjs-matrix</h2>
+        <SectionHeading>Værktøjs-matrix</SectionHeading>
         <div class="grid-3">
           <Card variant="glass" class="p-4">
             <h3 class="text-sm font-bold mb-1">Excel</h3>
@@ -150,7 +152,7 @@ import Pill from '@components/ui/Pill.astro';
     <!-- LEVERANCER -->
     <Section id="deliverables">
       <Card variant="default" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Typiske leverancer</h2>
+        <SectionHeading>Typiske leverancer</SectionHeading>
         <div class="grid-2">
            <Card variant="glass" class="p-4">
              <h3 class="font-bold mb-2">Templates & workflows</h3>
@@ -165,15 +167,14 @@ import Pill from '@components/ui/Pill.astro';
     </Section>
 
     <!-- CTA -->
+    <!-- CTA -->
     <Section>
-      <Card variant="glass" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-3">Har du et konkret behov?</h2>
-        <p class="text-dim opacity-70 mb-6">Skriv format + mål. Så foreslår jeg en struktur.</p>
-        <div class="flex flex-wrap gap-3">
-          <Button href="/contact"><i class="fa-solid fa-envelope mr-2"></i> Kontakt</Button>
-          <Button href="/services" variant="ghost"><i class="fa-solid fa-handshake mr-2"></i> Samarbejde</Button>
-        </div>
-      </Card>
+      <ContactCard 
+        variant="glass" 
+        title="Har du et konkret behov?" 
+        text="Skriv format + mål. Så foreslår jeg en struktur."
+        action="contact"
+      />
     </Section>
 
   </main>

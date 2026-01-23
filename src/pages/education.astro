@@ -4,6 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 import cv from '@data/cv.json';
 
 const ku = cv.education.find(e => e.degree.includes("cand.polit"));
@@ -82,7 +84,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-4">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Kort version?</h2>
+            <SectionHeading>Kort version?</SectionHeading>
             <p class="text-[13px] text-dim mb-4 opacity-70">
               CV-siden har den “HR-venlige” oversigt. Denne side er til dem, der faktisk læser.
             </p>
@@ -96,7 +98,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
     {ku && (
       <Section id="ku">
         <Card variant="default" class="p-6">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{ku.institution} ({ku.degree})</h2>
+          <SectionHeading>{ku.institution} ({ku.degree})</SectionHeading>
 
           <div class="two-col">
             <Card variant="glass" class="p-4">
@@ -130,7 +132,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
     <!-- COURSES -->
     <Section id="courses">
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-2">Kursusoversigt (udvalg)</h2>
+        <SectionHeading>Kursusoversigt (udvalg)</SectionHeading>
         <p class="text-dim opacity-70 mb-6">
           Tip: Disse kurser repræsenterer min faglige kerne og specialisering.
         </p>
@@ -160,7 +162,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
     <!-- PROJECTS -->
     <Section id="projects">
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-6">Projektarbejde (udvalg)</h2>
+        <SectionHeading>Projektarbejde (udvalg)</SectionHeading>
 
         <div class="courses-grid">
           {cv.projects.map(proj => (
@@ -188,7 +190,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
     {hhx && (
       <Section id="hhx">
         <Card variant="glass" class="p-6">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-3">{hhx.degree} ({hhx.institution})</h2>
+          <SectionHeading>{hhx.degree} ({hhx.institution})</SectionHeading>
           <p class="text-dim mb-4 leading-relaxed">
             {hhx.description}
           </p>
@@ -204,7 +206,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
     <!-- CTA -->
     <Section>
       <Card variant="default" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-3">Vil du se certificeringer også?</h2>
+        <SectionHeading>Vil du se certificeringer også?</SectionHeading>
         <p class="text-dim opacity-70 mb-6">Certificeringer er “beviser”. Uddannelse er “forløb”. Begge styrker troværdigheden.</p>
         <div class="flex flex-wrap gap-3">
           <Button href="/certifications">Til certificeringer</Button>
