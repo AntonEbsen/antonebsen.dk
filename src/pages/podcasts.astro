@@ -4,6 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 import PodcastCard from '@components/resources/PodcastCard.astro';
 import podcastsData from '@data/resources/podcasts.json';
 ---
@@ -70,7 +72,7 @@ import podcastsData from '@data/resources/podcasts.json';
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hvordan jeg vælger</h2>
+            <SectionHeading>Hvordan jeg vælger</SectionHeading>
             <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim">
               <li>Høj signalværdi (ikke bare “snak”)</li>
               <li>Gode gæster / konkret viden</li>
@@ -84,7 +86,7 @@ import podcastsData from '@data/resources/podcasts.json';
     <!-- KATEGORI: MAKRO -->
     <Section id="cat-makro">
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Makro & pengepolitik</h2>
+        <SectionHeading>Makro & pengepolitik</SectionHeading>
         <div class="pod-grid">
           {podcastsData.macro.map(pod => (
             <PodcastCard 
@@ -100,13 +102,12 @@ import podcastsData from '@data/resources/podcasts.json';
     </Section>
 
     <Section>
-      <Card variant="glass" class="p-6 text-center">
-        <h2 class="text-xl font-bold mb-4">Vil du se flere?</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <Button href="/contact">Kontakt mig</Button>
-          <Button href="/blog" variant="ghost">Tilbage til blog</Button>
-        </div>
-      </Card>
+      <ContactCard 
+        variant="glass" 
+        title="Vil du se flere?" 
+        text="Kontakt mig eller gå tilbage til oversigten."
+        action="contact"
+      />
     </Section>
 
   </main>

@@ -1,5 +1,9 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 ---
 
 <Layout 
@@ -37,9 +41,9 @@ import Layout from '@layouts/Layout.astro';
 
   <main class="media-wrap">
 
-    <section class="mb-12">
+    <Section class="mb-12">
       <div class="hero-grid">
-        <div class="bg-glass border border-glass-border p-8 rounded-2xl">
+        <Card variant="glass" class="p-8">
           <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Omtale</p>
           <h1 class="text-4xl font-bold leading-tight mb-4">Artikler & omtaler</h1>
           <p class="text-lg text-dim mb-6">
@@ -49,20 +53,26 @@ import Layout from '@layouts/Layout.astro';
              <a href="#press" class="px-6 py-2 bg-accent text-black rounded-full font-bold">Pressekit</a>
              <a href="/contact" class="px-6 py-2 border border-accent text-accent rounded-full font-bold">Kontakt</a>
           </div>
-        </div>
+        </Card>
       </div>
-    </section>
+    </Section>
 
-    <section id="mentions" class="mb-20">
-      <h2 class="text-xl font-bold mb-6">Udvalgte omtaler</h2>
-      <div class="mentions-grid">
-        <article class="bg-glass border border-glass-border p-6 rounded-xl">
-           <h3 class="font-bold mb-2">Artikel i [Medie]</h3>
-           <p class="text-sm text-dim mb-4">Omkring [Emne] og betydningen for [Kategori].</p>
-           <a href="#" class="text-accent font-bold">Læs artikel →</a>
-        </article>
-      </div>
-    </section>
+    <Section id="mentions" class="mb-20">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Udvalgte omtaler</SectionHeading>
+        <div class="mentions-grid">
+          <Card variant="glass" class="p-6">
+             <h3 class="font-bold mb-2">Artikel i [Medie]</h3>
+             <p class="text-sm text-dim mb-4">Omkring [Emne] og betydningen for [Kategori].</p>
+             <a href="#" class="text-accent font-bold">Læs artikel →</a>
+          </Card>
+        </div>
+      </Card>
+    </Section>
+
+    <Section>
+        <ContactCard />
+    </Section>
 
   </main>
 </Layout>
