@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+// Design System: Dark & Gold
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
