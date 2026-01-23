@@ -4,6 +4,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import cv from '@data/cv.json';
 ---
 
 <Layout 
@@ -57,11 +58,13 @@ import ContactCard from '@components/common/ContactCard.astro';
       <Card variant="bordered" class="p-6">
         <SectionHeading>Mine roller</SectionHeading>
         <div class="orgs-grid">
-          <Card variant="glass" class="p-6">
-             <h3 class="font-bold mb-2">Socialøkonomisk Samfund</h3>
-             <p class="text-xs text-accent font-bold mb-3">Forperson · 2024 – nu</p>
-             <p class="text-sm text-dim">Planlægning og koordinering af aktiviteter og arrangementer.</p>
-          </Card>
+          {cv.organizations.map(org => (
+            <Card variant="glass" class="p-6">
+               <h3 class="font-bold mb-2">{org.name}</h3>
+               <p class="text-xs text-accent font-bold mb-3">{org.role} · {org.period}</p>
+               <p class="text-sm text-dim">{org.description}</p>
+            </Card>
+          ))}
         </div>
       </Card>
     </Section>
