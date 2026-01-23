@@ -125,11 +125,13 @@ export const POST: APIRoute = async ({ request }) => {
         const systemPrompt = getSystemPrompt(lang);
 
         // Initialize model with system instruction
-        // We prioritize gemini-1.5-flash as it is the most stable and fast model for this use case.
+        // We strictly use gemini-1.5-flash variants as they are the most reliable on the free tier.
+        // We removed gemini-pro (legacy) to avoid 404 errors.
         const modelsToTry = [
             "gemini-1.5-flash",
-            "gemini-1.5-pro",
-            "gemini-pro"
+            "gemini-1.5-flash-002",
+            "gemini-1.5-flash-8b",
+            "gemini-2.0-flash-exp"
         ];
 
         let streamResult: any = null;
