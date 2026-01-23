@@ -179,8 +179,8 @@ const t = {
       }
     } catch (err) {
       removeTyping();
-      const srvErr = currentLang === 'da' ? "Forbindelsesfejl (se konsol)" : "Connection Error (see console)";
-      addMessage(`⚠️ ${srvErr}`, 'ai');
+      const srvErr = currentLang === 'da' ? "Forbindelsesfejl" : "Connection Error";
+      addMessage(`⚠️ ${srvErr}: ${err.message || 'Unknown'}`, 'ai');
       console.error("Chat Error:", err);
     }
   });
