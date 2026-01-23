@@ -125,12 +125,10 @@ export const POST: APIRoute = async ({ request }) => {
         const systemPrompt = getSystemPrompt(lang);
 
         // Initialize model with system instruction
-        // We strictly use gemini-1.5-flash variants as they are the most reliable on the free tier.
-        // We removed experimental models (like 2.0-flash-exp) because they generate 429 Quota errors (limit: 0).
+        // We strictly use gemini-1.5-flash ONLY.
+        // This helps us debug if the primary model is failing (e.g. 429 Rate Limit) without falling back to invalid models.
         const modelsToTry = [
-            "gemini-1.5-flash",
-            "gemini-1.5-flash-002",
-            "gemini-1.5-flash-8b"
+            "gemini-1.5-flash"
         ];
 
         let streamResult: any = null;
