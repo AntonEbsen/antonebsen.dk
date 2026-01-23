@@ -221,7 +221,7 @@ const t = {
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left">
-          <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')}</p>
+          <p>${text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/g, '')}</p>
         </div>
       `;
     } else {
@@ -277,6 +277,22 @@ const t = {
         } catch (e) {
             console.error("Chart Render Error", e);
         }
+    }
+    // Check for Navigation Block
+    const navMatch = text.match(/<<<NAVIGATE: (.*?)>>>/);
+    if (navMatch && role === 'ai') {
+        const path = navMatch[1].trim();
+        // Show navigation indicator
+        const navDiv = document.createElement('div');
+        navDiv.className = "flex items-center gap-2 text-xs text-accent mt-1 pl-2";
+        navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long animate-pulse"></i> Navigating to ${path}...`;
+        div.appendChild(navDiv);
+        messages.scrollTop = messages.scrollHeight;
+
+        // Execute navigation after short delay for effect
+        setTimeout(() => {
+            window.location.href = path;
+        }, 1500);
     }
   }
 

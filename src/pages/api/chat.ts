@@ -65,6 +65,23 @@ Format:
 }
 CHART>>>
 
+
+NAVIGATION:
+If the user asks to see a specific page, section, or content that exists on the site, YOU MUST output a navigation block.
+Format: <<<NAVIGATE: /path>>>
+
+Valid Paths:
+- / (Home)
+- /portfolio (Projects & Cases)
+- /blog (All posts)
+- /books (Book list)
+- /podcasts (Podcast list)
+- /quotes (Quotes)
+- /traeningsstatistik (Training Data)
+- /map (Travel Map)
+- /contact (Contact info from Home)
+- /en/ (English Home)
+
 Pre-defined Charts you can generate:
 1. "Skill Levels": Bar chart of top skills (Python: 90, GAMS: 85, Excel: 95, Macro: 90, Stata: 75).
 2. "Experience Timeline": Bar chart of years per role.
