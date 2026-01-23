@@ -1,9 +1,7 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import cv from '@data/cv.json';
-import portfolio from '@data/portfolio.json';
-import blog from '@data/blog.json';
-import skills from '@data/skills.json';
+// Import from code-file instead of JSON logic to be "bulletproof" against bundlers
+import { cv, portfolio, blog, skills } from '../../lib/all-data';
 
 export const prerender = false;
 
