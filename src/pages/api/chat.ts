@@ -125,10 +125,11 @@ export const POST: APIRoute = async ({ request }) => {
         const systemPrompt = getSystemPrompt(lang);
 
         // Initialize model with system instruction
-        // We strictly use gemini-1.5-flash ONLY.
-        // This helps us debug if the primary model is failing (e.g. 429 Rate Limit) without falling back to invalid models.
+        // Updated for 2026: gemini-1.5 is deprecated. Using gemini-2.5-flash and 2.0-flash.
         const modelsToTry = [
-            "gemini-1.5-flash"
+            "gemini-2.5-flash",
+            "gemini-2.0-flash",
+            "gemini-flash-latest"
         ];
 
         let streamResult: any = null;
