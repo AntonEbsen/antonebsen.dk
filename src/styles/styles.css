@@ -1,11 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import "./variables.css";
 @import "./animations.css";
 @import "./reset.css";
 @import "./components.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Legacy themes can stay here for now or be moved later */
 /* =========================
