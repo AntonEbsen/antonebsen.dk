@@ -2,15 +2,16 @@
    Navbar (flex + dropdown)
    ========================= */
 .navbar {
-    background: var(--nav);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    padding: 12px 24px;
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 16px 24px;
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    /* Subtle gold border */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 .navbar .nav-inner {
@@ -25,62 +26,64 @@
 .navbar .nav-left {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     flex-wrap: wrap;
 }
 
 .navbar .nav-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .navbar a,
 .navbar .nav-link {
-    color: var(--text);
+    color: var(--text-dim);
     text-decoration: none;
     padding: 8px 16px;
     display: inline-flex;
     align-items: center;
     font-weight: 500;
-    border-radius: 12px;
-    font-size: 14.5px;
-    letter-spacing: -0.01em;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 8px;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    transition: all 0.2s ease;
 }
 
 .navbar a:hover,
 .navbar .nav-link:hover {
-    background: var(--navHover);
-    transform: translateY(-1px);
-    color: var(--accent);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .navbar a.active {
-    background: rgba(255, 255, 255, 0.08);
     color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 600;
 }
 
 /* Flags */
 .flag-btn {
     position: static;
     background: none;
-    border: none;
+    border: 1px solid transparent;
     cursor: pointer;
     padding: 6px;
-    border-radius: 10px;
+    border-radius: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .flag-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .flag-btn img {
-    width: 30px;
-    height: 20px;
+    width: 24px;
+    height: auto;
+    border-radius: 2px;
 }
 
 /* Dropdown container */
@@ -111,37 +114,37 @@
     left: 50%;
     transform: translateX(-50%) translateY(10px);
 
-    min-width: 240px;
-    background: rgba(10, 10, 12, 0.95);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-radius: 16px;
-    padding: 10px;
-    box-shadow: var(--shadow);
+    min-width: 220px;
+    background: #0a0a0a;
     border: 1px solid var(--glass-border);
+    border-top: 2px solid var(--accent);
+    /* Top highlight */
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     z-index: 9999;
 
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .navbar .dropdown a {
     display: block;
     padding: 10px 14px;
-    border-radius: 10px;
-    color: var(--text);
+    border-radius: 8px;
+    color: var(--text-dim);
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13.5px;
     transition: all 0.2s ease;
 }
 
 .navbar .dropdown a:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
     padding-left: 18px;
-    color: var(--accent);
 }
 
 /* Show on hover / keyboard */
@@ -150,7 +153,7 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateX(-50%) translateY(2px);
+    transform: translateX(-50%) translateY(0);
 }
 
 /* Mobile nav layout */
@@ -176,18 +179,18 @@
     .navbar .dropdown {
         left: 0;
         transform: none;
-        width: min(92vw, 340px);
-    }
-
-    .navbar .has-dropdown:hover .dropdown {
-        /* hover kan være weird på touch – lad click styre det */
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transform: none;
+        width: 100%;
+        position: relative;
+        top: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        display: none;
+        padding-left: 12px;
     }
 
     .navbar .has-dropdown.open .dropdown {
+        display: block;
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
@@ -195,19 +198,16 @@
 }
 
 /* =========================
-   Standard container (for ældre sider)
+   Standard container
    ========================= */
 .container {
-    width: min(92%, 1100px);
-    margin: 32px auto;
-    padding: 32px;
+    width: min(94%, 1200px);
+    margin: 40px auto;
+    padding: 40px;
     background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border-radius: var(--radius);
     border: 1px solid var(--glass-border);
     box-shadow: var(--shadow);
-    animation: fadeInHUD 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Standard section look (for ældre sider) */
@@ -352,13 +352,28 @@
 /* =========================
    Professional footer
    ========================= */
+/* =========================
+   Professional footer
+   ========================= */
 .site-footer {
-    background: var(--nav);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: #020202;
     border-top: 1px solid var(--glass-border);
-    color: var(--text);
-    margin-top: 64px;
+    color: var(--text-dim);
+    margin-top: 80px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+/* Optional: Gold accent line on top of footer */
+.site-footer::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 100%);
+    opacity: 0.5;
 }
 
 .site-footer a {

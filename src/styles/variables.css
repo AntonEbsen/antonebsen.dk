@@ -1,33 +1,46 @@
 :root {
-  --bg: #050506;
-  --card: rgba(255, 255, 255, 0.02);
-  --text: #f1e7d0;
-  /* Soft Gold/Parchment (NO pure white) */
-  --text-dim: #94a3b8;
-  /* Warm Slate Blue */
-  --muted: rgba(148, 163, 184, 0.5);
-  --nav: rgba(5, 5, 6, 0.9);
-  --navHover: rgba(255, 255, 255, 0.08);
-  --shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  --radius: 20px;
+  /* BACKGROUNDS */
+  --bg: #050505;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #1a1505 0%, #050505 60%);
+  --depth-bg: radial-gradient(circle at 60% -20%, #1c1810 0%, #050505 50%);
 
-  /* HUD / Luxury Palette */
-  --glass: rgba(255, 255, 255, 0.02);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --accent: #d4af37;
+  /* TEXT */
+  --text: #f2f2f0;
+  /* Ivory / Off-white for readability */
+  --text-dim: #a1a1aa;
+  /* Cool gray */
+  --muted: rgba(161, 161, 170, 0.4);
+
+  /* ACCENT: GOLD */
+  --accent: #D4AF37;
   /* Metallic Gold */
-  --accent-blue: #38bdf8;
-  /* Digital HUD Blue */
+  --accent-light: #F4C430;
+  /* Bright Gold */
   --accent-soft: rgba(212, 175, 55, 0.15);
-  --glow: 0 0 20px rgba(212, 175, 55, 0.25);
-  --depth-bg: radial-gradient(circle at 50% -20%, #151522 0%, #050506 100%);
+  /* Gold tint */
+  --accent-glow: 0 0 25px rgba(212, 175, 55, 0.3);
 
-  /* Typography */
-  --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --h1-size: clamp(48px, 8vw, 72px);
-  --h2-size: clamp(32px, 6vw, 48px);
-  --body-size: 17px;
-  --lh-body: 1.8;
-  --lh-heading: 1.1;
-  --ls-heading: -0.04em;
+  /* COMPONENTS */
+  --nav: rgba(5, 5, 5, 0.85);
+  /* Darker nav */
+  --navHover: rgba(255, 255, 255, 0.06);
+
+  /* GLASS / BORDERS */
+  --glass: rgba(15, 15, 20, 0.7);
+  /* Darker, slightly blue-tinted glass */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(212, 175, 55, 0.5);
+  /* Gold border on hover */
+
+  --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+  --radius: 16px;
+  /* Slightly tighter radius for professional look */
+
+  /* TYPOGRAPHY */
+  --font-main: "Inter", system-ui, sans-serif;
+  --h1-size: clamp(48px, 6vw, 76px);
+  --h2-size: clamp(28px, 4vw, 42px);
+  --body-size: 16px;
+  --lh-body: 1.7;
+  --ls-heading: -0.02em;
 }
