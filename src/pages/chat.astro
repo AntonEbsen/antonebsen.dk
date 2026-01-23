@@ -183,7 +183,8 @@ const t = {
         // Final processing for regex tags (Charts/Navigation) on the complete text
         // Pass the container div (grandparent of the message content p tag)
         if (messageContent) {
-             processSpecialTags(accumulatedText, messageContent.closest('.flex')); 
+             const wrapper = messageContent.closest('.ai-content-wrapper');
+             processSpecialTags(accumulatedText, wrapper); 
         }
 
       } catch (err) {
@@ -268,7 +269,7 @@ const t = {
             try {
                 const suggestions = JSON.parse(jsonStr);
                 const chipsContainer = document.createElement('div');
-                chipsContainer.className = "flex flex-wrap gap-2 mt-4 pl-14";
+                chipsContainer.className = "flex flex-wrap gap-2 mt-4 w-full"; // Removed pl-14, added w-full
                 
                 suggestions.forEach(s => {
                     const btn = document.createElement('button');
@@ -307,10 +308,12 @@ const t = {
           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
             <i class="fa-solid fa-robot text-lg"></i>
           </div>
-          <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed text-dim-100 message-bubble">
-            <div class="prose prose-invert max-w-none text-sm md:text-base">
-              ${formatText(text)}
-            </div>
+          <div class="flex flex-col max-w-[85%] ai-content-wrapper">
+              <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none leading-relaxed text-dim-100 message-bubble">
+                <div class="prose prose-invert max-w-none text-sm md:text-base">
+                  ${formatText(text)}
+                </div>
+              </div>
           </div>
         `;
         contentElement = div.querySelector('.prose');

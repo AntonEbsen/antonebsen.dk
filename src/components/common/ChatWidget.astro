@@ -215,7 +215,8 @@ const t = {
       }
 
       // Final processing for regex tags (Charts/Navigation) on the complete text
-      processSpecialTags(accumulatedText, messageContent.parentElement.parentElement); // Pass the container div
+      const wrapper = messageContent.closest('.ai-content-wrapper');
+      processSpecialTags(accumulatedText, wrapper); // Pass the wrapper div
 
     } catch (err) {
       removeTyping();
@@ -298,10 +299,11 @@ const t = {
             try {
                 const suggestions = JSON.parse(jsonStr);
                 const chipsContainer = document.createElement('div');
-                chipsContainer.className = "flex flex-wrap gap-2 mt-2 pl-2";
+                chipsContainer.className = "flex flex-wrap gap-2 mt-2 w-full"; // Added w-full
                 
                 suggestions.forEach(s => {
                     const btn = document.createElement('button');
+                    // Style updated for better visibility below text
                     btn.className = "text-xs bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-full px-3 py-1 transition-all duration-300";
                     btn.innerText = s;
                     btn.addEventListener('click', () => {
@@ -337,8 +339,10 @@ const t = {
         <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
-        <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] text-left message-bubble">
-          <p></p>
+        <div class="flex flex-col max-w-[85%] ai-content-wrapper">
+            <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none text-left message-bubble">
+                <p></p>
+            </div>
         </div>
       `;
       // We set content later for AI to allow streaming updates
