@@ -4,6 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
 import BookCard from '@components/resources/BookCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -73,7 +75,7 @@ const booksData = await getCollection('books');
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Hvordan jeg bruger listen</h2>
+            <SectionHeading>Hvordan jeg bruger listen</SectionHeading>
             <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
               Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.
             </p>
@@ -88,7 +90,7 @@ const booksData = await getCollection('books');
     <!-- LISTE -->
     <Section id="list">
       <Card variant="bordered" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-2">Favoritter</h2>
+        <SectionHeading>Favoritter</SectionHeading>
         <p class="text-dim opacity-70 mb-6 text-sm">
           Udskift titlerne med dine egne for at personliggøre listen.
         </p>
@@ -111,15 +113,12 @@ const booksData = await getCollection('books');
 
     <!-- CTA -->
     <Section>
-      <Card variant="glass" class="p-6">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">Anbefal mig en bog</h2>
-        <p class="text-dim opacity-80 mb-6">
-          Send gerne en mail hvis du har forslag til spændende læsning.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <Button href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane mr-2"></i> Send mail</Button>
-        </div>
-      </Card>
+      <ContactCard 
+        variant="glass" 
+        title="Anbefal mig en bog" 
+        text="Send gerne en mail hvis du har forslag til spændende læsning."
+        action="email"
+      />
     </Section>
 
   </main>
