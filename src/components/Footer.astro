@@ -1,6 +1,11 @@
 ---
-import siteData from '../data/site.json';
-const { footer } = siteData;
+import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const navItems = useNav(lang);
+const isEn = lang === 'en';
+
 const year = new Date().getFullYear();
 ---
 
@@ -10,67 +15,67 @@ const year = new Date().getFullYear();
     <div class="footer-top">
       <!-- Brand / kort pitch -->
       <section class="footer-col footer-brand" aria-label="Om siden">
-        <h2 class="footer-title">{footer.brand.title}</h2>
+        <h2 class="footer-title">{t('footer.brand.title')}</h2>
         <p class="footer-text">
-          {footer.brand.text}
+          {t('footer.brand.text')}
         </p>
 
         <div class="footer-cta">
-          <a class="footer-btn" href="/cv">
-            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> CV
+          <a class="footer-btn" href={isEn ? "/en/cv" : "/cv"}>
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> {isEn ? "CV" : "CV"}
           </a>
           <a class="footer-btn footer-btn-ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
-            <i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF
+            <i class="fa-solid fa-download" aria-hidden="true"></i> {isEn ? "Download PDF" : "Download PDF"}
           </a>
         </div>
       </section>
 
       <!-- Navigation -->
       <nav class="footer-col" aria-label="Footer navigation">
-        <h3 class="footer-title-sm">Navigation</h3>
+        <h3 class="footer-title-sm">{t('footer.col.links')}</h3>
         <ul class="footer-list">
-          {footer.links.map(link => (
-            <li><a href={link.url}>{link.label}</a></li>
+          {navItems.map(item => (
+            <li><a href={item.url}>{item.label}</a></li>
           ))}
         </ul>
       </nav>
 
       <!-- Udvalgte sider -->
       <nav class="footer-col" aria-label="Udvalgte sider">
-        <h3 class="footer-title-sm">Udvalgte sider</h3>
+        <h3 class="footer-title-sm">{t('footer.col.selected')}</h3>
         <ul class="footer-list">
-          {footer.selected.map(link => (
-            <li><a href={link.url}>{link.label}</a></li>
-          ))}
+            <li><a href={isEn ? "/en/resources" : "/resources"}>Downloads</a></li>
+            <li><a href={isEn ? "/en/gallery" : "/gallery"}>Galleri</a></li>
+            <li><a href={isEn ? "/en/timeline" : "/timeline"}>Milepæle</a></li>
         </ul>
       </nav>
 
       <!-- Kontakt + SoMe -->
       <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
-        <h3 class="footer-title-sm">Kontakt</h3>
+        <h3 class="footer-title-sm">{t('footer.col.contact')}</h3>
 
         <address class="footer-text footer-address">
           <div class="footer-address-row">
             <span class="footer-kicker">Email</span><br>
-            <a href={`mailto:${footer.contact.email}`}>{footer.contact.email}</a>
+            <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>
           </div>
 
           <div class="footer-address-row">
-            <span class="footer-kicker">Telefon</span><br>
-            <a href={`tel:${footer.contact.phone.replace(/ /g,'')}`}>{footer.contact.phone}</a>
+            <span class="footer-kicker">{isEn ? "Phone" : "Telefon"}</span><br>
+            <a href="tel:+4525740131">+45 25 74 01 31</a>
           </div>
 
           <div class="footer-address-row">
-            <span class="footer-kicker">Lokation</span><br>
-            København, DK
+            <span class="footer-kicker">{isEn ? "Location" : "Lokation"}</span><br>
+            {isEn ? "Copenhagen, DK" : "København, DK"}
           </div>
         </address>
 
         <div class="footer-social" aria-label="Sociale links">
-          <a href={footer.contact.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
           </a>
-          <a href={footer.contact.github} target="_blank" rel="noopener" aria-label="GitHub">
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
             <i class="fa-brands fa-github" aria-hidden="true"></i>
           </a>
         </div>
@@ -79,17 +84,14 @@ const year = new Date().getFullYear();
 
     <div class="footer-bottom">
       <nav class="footer-legal" aria-label="Juridiske sider">
-         {footer.legal.map((link, index) => (
-           <>
-            <a href={link.url}>{link.label}</a>
-            {index < footer.legal.length - 1 && <span aria-hidden="true">·</span>}
-           </>
-         ))}
+           <a href="#">Privacy</a>
+           <span aria-hidden="true">·</span>
+           <a href="#">Terms</a>
       </nav>
 
       <p class="footer-copy">
-        &copy; {year} Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
-        <span class="footer-copy-muted">Kildekode:
+        &copy; {year} Anton Meier Ebsen Jørgensen. {isEn ? "All rights reserved." : "Alle rettigheder forbeholdes."}
+        <span class="footer-copy-muted">{isEn ? "Source code:" : "Kildekode:"}
           <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
         </span>
       </p>

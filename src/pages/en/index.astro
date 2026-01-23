@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+import ContactCard from '@components/common/ContactCard.astro';
+
+// Dummy data for English posts until blog is fully translated
+const recentPosts = [
+    {
+        title: "Model Transparency in Economic Policy",
+        excerpt: "Why model assumptions matter more than the results.",
+        date: "2024-03-15",
+        url: "/en/blog/model-transparency",
+        readTime: "5 min",
+        tags: ["Economics", "Modelling"]
+    },
+     {
+        title: "Getting started with GAMS",
+        excerpt: "A beginner's guide to General Algebraic Modeling System.",
+        date: "2024-02-10",
+        url: "/en/blog/gams-intro",
+        readTime: "8 min",
+        tags: ["GAMS", "Code"]
+    }
+];
+
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Cand.polit Student" 
+  description="Economics student (cand.polit) specializing in macroeconomics, econometrics, and data analysis."
+  bodyClass="home-page"
+>
+
+  <style>
+    .home-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+  </style>
+
+  <main class="home-wrap">
+    
+    <!-- HEADER HERO -->
+    <div class="mt-8 mb-4">
+      <Section>
+        <div class="hero-grid">
+          
+          <!-- LEFT: Intro -->
+          <Card variant="glass" class="p-10 flex flex-col justify-between h-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent-alpha-10 to-transparent pointer-events-none"></div>
+            
+            <div class="relative z-10">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-alpha-10 border border-accent-alpha-20 text-xs font-bold uppercase tracking-wider text-accent mb-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                Available for work
+              </div>
+              
+              <h1 class="text-5xl font-extrabold tracking-tight leading-tight mb-4 text-gradient">
+                Anton Meier<br/>Ebsen Jørgensen
+              </h1>
+              
+              <p class="text-xl text-dim leading-relaxed max-w-lg mb-8">
+                Economics student (cand.polit) specializing in <span class="text-text font-medium">macroeconomics</span>, <span class="text-text font-medium">econometrics</span>, and <span class="text-text font-medium">data analysis</span>. 
+              </p>
+              
+              <div class="flex flex-wrap gap-4">
+                <Button href="/en/cv" variant="solid" icon="arrow-right">See CV</Button>
+                <Button href="/en/portfolio" variant="ghost">Portfolio</Button>
+              </div>
+            </div>
+          </Card>
+
+          <!-- RIGHT: Quick stats / Profile -->
+          <div class="flex flex-col gap-4">
+            <Card variant="glass" class="p-6 flex-1">
+              <SectionHeading>Core Competencies</SectionHeading>
+              
+              <div class="flex flex-wrap gap-2 mt-4">
+                 <Pill><i class="fa-solid fa-table mr-1"></i> Excel & VBA</Pill>
+                 <Pill><i class="fa-brands fa-python mr-1"></i> Python</Pill>
+                 <Pill><i class="fa-solid fa-chart-line mr-1"></i> R / SAS</Pill>
+                 <Pill><i class="fa-solid fa-code mr-1"></i> GAMS</Pill>
+                 <Pill><i class="fa-solid fa-database mr-1"></i> SQL</Pill>
+                 <Pill><i class="fa-solid fa-lightbulb mr-1"></i> Macro</Pill>
+              </div>
+              
+              <p class="text-sm text-dim mt-6 leading-relaxed">
+                I bridge the gap between economic theory and practical implementation. Whether it is automating workflows in Excel or building complex CGE models.
+              </p>
+            </Card>
+
+            <Card variant="bordered" class="p-6">
+               <div class="flex justify-between items-center mb-2">
+                 <span class="text-xs font-bold uppercase text-dim tracking-wider">Education</span>
+                 <i class="fa-solid fa-graduation-cap text-accent"></i>
+               </div>
+               <div class="font-bold text-lg">University of Copenhagen</div>
+               <div class="text-sm text-dim">Candidate in Economics (cand.polit)</div>
+            </Card>
+          </div>
+
+        </div>
+      </Section>
+    </div>
+
+
+
+    <!-- CONTACT CTA -->
+    <Section class="mt-8">
+        <ContactCard 
+            title="Let's work together" 
+            text="I'm always open to discussing new projects, student positions, or collaborations."
+            action="email"
+            lang="en"
+        />
+    </Section>
+
+  </main>
+</Layout>

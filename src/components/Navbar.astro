@@ -1,32 +1,18 @@
 ---
-import siteData from '../data/site.json';
 import LanguageSwitcher from './common/LanguageSwitcher.astro';
+import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const navItems = useNav(lang);
 const pathname = new URL(Astro.request.url).pathname;
 ---
 
 <nav class="navbar" aria-label="Primær navigation">
   <div class="nav-inner">
     <div class="nav-left">
-      {siteData.navigation.map(item => (
-        item.dropdown ? (
-          <div class="nav-item has-dropdown">
-            <a href={item.url} class={`nav-link ${pathname === item.url ? 'active' : ''}`}>{item.label}</a>
-            <div class="dropdown" role="menu" aria-label={`${item.label} undermenu`}>
-              {item.dropdown.map(subItem => (
-                <a 
-                  href={subItem.url} 
-                  role="menuitem"
-                  target={subItem.external ? "_blank" : undefined}
-                  rel={subItem.external ? "noopener" : undefined}
-                >
-                  {subItem.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <a class={pathname === item.url || (item.activeMatch && pathname === item.activeMatch) ? "active" : ""} href={item.url}>{item.label}</a>
-        )
+      {navItems.map(item => (
+          <a class={pathname === item.url || pathname.startsWith(item.url + '/') && item.url !== '/' && item.url !== '/en' ? "active" : ""} href={item.url}>{item.label}</a>
       ))}
     </div>
 
@@ -36,7 +22,7 @@ const pathname = new URL(Astro.request.url).pathname;
         id="siteSearch"
         class="nav-search-input"
         type="search"
-        placeholder="Søg… (fx “SAS”, “CGE”, “Excel”)"
+        placeholder="Søg..."
         autocomplete="off"
         aria-autocomplete="list"
         aria-controls="searchResults"
