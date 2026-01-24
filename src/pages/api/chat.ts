@@ -176,7 +176,19 @@ export const POST: APIRoute = async ({ request }) => {
                     systemInstruction: systemPrompt
                 });
 
-                streamResult = await model.generateContentStream(userMessage);
+                const promptParts: any[] = [userMessage];
+
+                // Add Image if present
+                if (body.image) {
+                    promptParts.push({
+                        inlineData: {
+                            data: body.image.data,
+                            mimeType: body.image.mimeType
+                        }
+                    });
+                }
+
+                streamResult = await model.generateContentStream(promptParts);
                 // If we get here without throwing, the stream request initiated successfully
                 break;
             } catch (err: any) {

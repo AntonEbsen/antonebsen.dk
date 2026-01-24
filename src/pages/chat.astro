@@ -242,7 +242,7 @@ const t = {
             autofocus
           />
 
-          <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv" />
+          <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
           <!-- Button Spacing: Send(2) <-[8px]-> Voice(16) <-[8px]-> File(30) -->
           <button type="button" id="fp-file-btn" class="absolute right-[7.5rem] top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
             <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
@@ -308,12 +308,30 @@ const t = {
                     const content = await page.getTextContent();
                     text += content.items.map((item: any) => item.str).join(' ') + "\n";
                 }
+                currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
+            
+            } else if (file.type.startsWith('image/')) {
+                // Image Handling
+                 const reader = new FileReader();
+                 reader.onload = () => {
+                     const base64 = (reader.result as string).split(',')[1];
+                     currentFileContent = {
+                         type: 'image',
+                         data: base64,
+                         mimeType: file.type,
+                         name: file.name
+                     };
+                 };
+                 reader.readAsDataURL(file);
+                 if(fileNameSpan) fileNameSpan.textContent = file.name + " (Image Ready)";
+                 return; // Async read, we return early
+
             } else {
                 // Text based
                 text = await file.text();
+                currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
             }
 
-            currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
             if(fileNameSpan) fileNameSpan.textContent = file.name + " (Ready)";
             
         } catch (err) {
@@ -402,14 +420,23 @@ const t = {
       // User Message (Text)
       addMessage(query || (currentFileContent ? `[Attached: ${fileInput.files?.[0]?.name}]` : "Empty message"), 'user');
       
-      // Combine query with file content (hidden from user view in the payload)
-      const fullPayload = query + (currentFileContent || "");
-      
-      input.value = '';
-      
-      // Clear file after sending
-      if(currentFileContent) {
-          removeFileBtn?.click();
+      // Build Payload
+      let payload: any = { message: query, lang: lang };
+
+      if (currentFileContent) {
+          if (typeof currentFileContent === 'string') {
+              // Text/PDF context
+              payload.message += currentFileContent;
+          } else if ((currentFileContent as any).type === 'image') {
+              // Vision Upload
+              payload.image = {
+                  data: (currentFileContent as any).data,
+                  mimeType: (currentFileContent as any).mimeType
+              };
+              payload.message += `\n[User uploaded an image: ${(currentFileContent as any).name}]`;
+          }
+           // Clear file after sending
+           removeFileBtn?.click();
       }
 
       // Loading
@@ -419,7 +446,7 @@ const t = {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: fullPayload, lang: lang })
+          body: JSON.stringify(payload)
         });
         
         removeTyping();
