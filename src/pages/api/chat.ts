@@ -1,15 +1,17 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-// Import from code-file instead of JSON logic to be "bulletproof" against bundlers
+// import from code-file instead of JSON logic to be "bulletproof" against bundlers
 import { cv, portfolio, blog, skills, training } from '../../lib/all-data';
-import fs from 'fs/promises';
-import path from 'path';
+// import fs from 'fs/promises';
+// import path from 'path';
 // Fix: pdf-parse usually exports a function as default for commonjs, but for esm we might need to handle it differently 
 // or suppress the warning if it works at runtime.
 // @ts-ignore
-import pdf from 'pdf-parse';
+// import pdf from 'pdf-parse';
 
 // Load documents logic
+// Load documents logic
+/*
 async function loadDocuments() {
     try {
         const docsDir = path.resolve('./src/data/documents');
@@ -46,6 +48,7 @@ async function loadDocuments() {
         return "";
     }
 }
+*/
 
 export const prerender = false;
 
