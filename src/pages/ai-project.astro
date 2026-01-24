@@ -83,14 +83,58 @@ const t = {
 ---
 
 <Layout title={t.title} description={t.subtitle}>
-  <div class="relative min-h-screen overflow-hidden bg-bg">
     
-    <!-- Background FX -->
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px]"></div>
-        <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px;"></div>
-    </div>
+  <style>
+    /* Background Animation */
+    .tech-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    
+    .tech-grid {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        transform: perspective(500px) rotateX(60deg);
+        animation: grid-move 20s linear infinite;
+    }
+
+    @keyframes grid-move {
+        0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+        100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+    }
+
+    .ambient-glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(var(--accent), 0.15) 0%, transparent 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+  </style>
+
+  <div class="tech-bg">
+    <div class="tech-grid"></div>
+  </div>
+  <div class="ambient-glow"></div>
+
+  <div class="relative min-h-screen overflow-hidden">
 
     <main class="relative z-10 max-w-6xl mx-auto px-6 py-24">
       
