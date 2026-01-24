@@ -450,11 +450,13 @@ const t = {
       
       // Build Payload
       let payload: any = { message: query, lang: lang };
+      let fullPayload = query; // Initialize fullPayload
 
       if (currentFileContent) {
           if (typeof currentFileContent === 'string') {
               // Text/PDF context
               payload.message += currentFileContent;
+              fullPayload += currentFileContent; // Update fullPayload
           } else if ((currentFileContent as any).type === 'image') {
               // Vision Upload
               payload.image = {
@@ -462,7 +464,7 @@ const t = {
                   mimeType: (currentFileContent as any).mimeType
               };
               payload.message += `\n[User uploaded an image: ${(currentFileContent as any).name}]`;
-              fullPayload += `\n[User uploaded an image: ${(currentFileContent as any).name}]`; // Append to fullPayload
+              fullPayload += `\n[User uploaded an image: ${(currentFileContent as any).name}]`; 
           }
            // Clear file after sending
            removeFileBtn?.click();
