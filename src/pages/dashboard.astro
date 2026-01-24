@@ -1,0 +1,265 @@
+
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Quantum Dashboard | System Metrics">
+    <main class="min-h-screen bg-black text-gold-50 p-4 md:p-8 font-mono">
+        
+        <!-- LOGIN GATE -->
+        <div id="login-gate" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-4">
+             <div class="border border-gold-500/30 bg-gray-900/90 p-8 rounded-lg shadow-[0_0_30px_rgba(255,215,0,0.1)] max-w-md w-full text-center">
+                <h1 class="text-2xl font-bold mb-2 text-gold-400">System Access</h1>
+                <p class="text-sm text-gray-400 mb-6">Restricted Area. Authorized Personnel Only.</p>
+                
+                <input type="password" id="password-input" placeholder="Enter Access Code" 
+                    class="w-full bg-black border border-gray-700 rounded p-3 text-gold-100 focus:border-gold-500 focus:outline-none mb-4 transition-colors" />
+                
+                <button id="login-btn" class="w-full bg-gold-600 hover:bg-gold-500 text-black font-bold py-3 rounded transition-all hover:shadow-[0_0_15px_rgba(255,215,0,0.4)]">
+                    Unlock Dashboard
+                </button>
+                <p id="error-msg" class="text-red-500 text-xs mt-3 hidden">Access Denied.</p>
+             </div>
+        </div>
+
+        <!-- DASHBOARD CONTENT (Hidden by default) -->
+        <div id="dashboard-content" class="hidden">
+            <header class="flex justify-between items-center mb-8 border-b border-gold-500/20 pb-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-amber-600">
+                        Quantum Analytics
+                    </h1>
+                    <p class="text-xs text-gray-500 mt-1">Live Feed :: Database Connection Active</p>
+                </div>
+                <div class="text-right">
+                    <div id="status-dot" class="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse mr-2"></div>
+                    <span class="text-sm text-gold-400">ONLINE</span>
+                </div>
+            </header>
+
+            <!-- KEY METRICS ROW -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
+                    <p class="text-gray-500 text-xs uppercase tracking-wider">Total Conversations</p>
+                    <p id="metric-total" class="text-4xl font-bold text-gold-100 mt-2">-</p>
+                </div>
+                 <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
+                    <p class="text-gray-500 text-xs uppercase tracking-wider">Top Persona</p>
+                    <p id="metric-persona" class="text-2xl font-bold text-gold-100 mt-2">-</p>
+                </div>
+                 <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
+                    <p class="text-gray-500 text-xs uppercase tracking-wider">Top Intent</p>
+                    <p id="metric-intent" class="text-2xl font-bold text-gold-100 mt-2">-</p>
+                </div>
+                 <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
+                    <p class="text-gray-500 text-xs uppercase tracking-wider">Today's Traffic</p>
+                    <p id="metric-today" class="text-4xl font-bold text-gold-100 mt-2">-</p>
+                </div>
+            </div>
+
+            <!-- CHARTS ROW -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Persona Distribution -->
+                <div class="border border-gray-800 bg-gray-900/30 p-6 rounded relative min-h-[300px]">
+                    <h3 class="text-gold-400 font-bold mb-4 flex items-center">
+                        <span class="mr-2 opacity-50">01</span> User Personas
+                    </h3>
+                    <div class="relative h-64 w-full">
+                        <canvas id="personaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Activity Timeline -->
+                <div class="border border-gray-800 bg-gray-900/30 p-6 rounded relative min-h-[300px]">
+                    <h3 class="text-gold-400 font-bold mb-4 flex items-center">
+                        <span class="mr-2 opacity-50">02</span> Traffic Volume
+                    </h3>
+                     <div class="relative h-64 w-full">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT LOGS TABLE -->
+            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800 flex justify-between items-center">
+                    <h3 class="text-gold-400 font-bold">Recent Intercepts</h3>
+                    <button id="refresh-btn" class="text-xs border border-gray-700 hover:border-gold-500 px-3 py-1 rounded transition-colors">
+                        REFRESH DATA
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-black text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="p-4 font-normal">Time</th>
+                                <th class="p-4 font-normal">Persona</th>
+                                <th class="p-4 font-normal">User Message</th>
+                                <th class="p-4 font-normal">Intent</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-body" class="divide-y divide-gray-800/50">
+                            <!-- Rows injected by JS -->
+                            <tr><td colspan="4" class="p-8 text-center text-gray-600">Loading stream...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</Layout>
+
+<script>
+    import Chart from 'chart.js/auto';
+
+    // 1. Password Protection (Client-side simple)
+    // In production, use auth middleware. For portfolio showcase, this is sufficient.
+    const CORRECT_CODE = "quantum"; 
+    const gate = document.getElementById('login-gate');
+    const content = document.getElementById('dashboard-content');
+    const input = document.getElementById('password-input') as HTMLInputElement;
+    const btn = document.getElementById('login-btn');
+    const errorMsg = document.getElementById('error-msg');
+
+    function checkLogin() {
+        if (input.value.toLowerCase().trim() === CORRECT_CODE) {
+            gate.classList.add('hidden');
+            content.classList.remove('hidden');
+            loadData(); // Trigger data fetch
+        } else {
+            errorMsg.classList.remove('hidden');
+            input.classList.add('border-red-500');
+        }
+    }
+
+    btn?.addEventListener('click', checkLogin);
+    input?.addEventListener('keyup', (e) => e.key === 'Enter' && checkLogin());
+
+    // 2. Data Fetching
+    async function loadData() {
+        try {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+            
+            if (data.error) throw new Error(data.error);
+            
+            renderMetrics(data);
+            renderCharts(data);
+            renderTable(data.recent);
+
+        } catch (err) {
+            console.error("Dashboard Error:", err);
+            alert("Failed to load system metrics.");
+        }
+    }
+
+    document.getElementById('refresh-btn')?.addEventListener('click', loadData);
+
+    // 3. Render Functions
+    function renderMetrics(data: any) {
+        document.getElementById('metric-total')!.textContent = data.total;
+        
+        // Find Top Persona
+        const topPersona = Object.entries(data.personas).sort((a:any,b:any) => b[1] - a[1])[0];
+        document.getElementById('metric-persona')!.textContent = topPersona ? topPersona[0] : 'None';
+
+        // Find Top Intent
+        const topIntent = Object.entries(data.intents).sort((a:any,b:any) => b[1] - a[1])[0];
+        document.getElementById('metric-intent')!.textContent = topIntent ? topIntent[0] : 'None';
+
+        // Today's traffic
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('metric-today')!.textContent = data.activity[today] || '0';
+    }
+
+    let pChart: any = null;
+    let aChart: any = null;
+
+    function renderCharts(data: any) {
+        const ctxP = document.getElementById('personaChart') as HTMLCanvasElement;
+        const ctxA = document.getElementById('activityChart') as HTMLCanvasElement;
+
+        // Destroy old if exists
+        if (pChart) pChart.destroy();
+        if (aChart) aChart.destroy();
+
+        // Persona Pie Chart
+        pChart = new Chart(ctxP, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data.personas),
+                datasets: [{
+                    data: Object.values(data.personas),
+                    backgroundColor: ['#FFD700', '#D97706', '#9CA3AF', '#4B5563', '#1F2937'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { color: '#9CA3AF', font: { family: 'monospace' } } }
+                }
+            }
+        });
+
+        // Activity Line Chart
+        const dates = Object.keys(data.activity).sort();
+        const counts = dates.map(d => data.activity[d]);
+
+        aChart = new Chart(ctxA, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Messages',
+                    data: counts,
+                    borderColor: '#FFD700',
+                    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: '#374151' }, ticks: { color: '#9CA3AF' } },
+                    x: { grid: { display: false }, ticks: { color: '#9CA3AF' } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    function renderTable(logs: any[]) {
+        const tbody = document.getElementById('logs-body')!;
+        tbody.innerHTML = '';
+
+        logs.forEach(log => {
+            const row = document.createElement('tr');
+            row.className = "hover:bg-gray-800/50 transition-colors border-b border-gray-800/50";
+            
+            const time = new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            row.innerHTML = `
+                <td class="p-4 text-gray-500 font-mono text-xs">${time}</td>
+                <td class="p-4">
+                    <span class="bg-gray-800 text-gold-400 px-2 py-1 rounded text-xs border border-gold-500/20 uppercase tracking-widest">
+                        ${log.persona || 'DEFAULT'}
+                    </span>
+                </td>
+                <td class="p-4 text-gray-300 truncate max-w-xs" title="${log.user_message}">${log.user_message}</td>
+                <td class="p-4">
+                     <span class="text-xs text-gray-500 bg-gray-900 border border-gray-700 px-2 py-0.5 rounded">
+                        ${log.intent || 'Unknown'}
+                    </span>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+</script>
