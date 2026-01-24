@@ -131,6 +131,9 @@ function resetBtn(btn) {
     }
 }
 
+// Make available globally for inline calls
+window.speakMessage = speakMessage;
+
 // Ensure voices are loaded (Chrome requirement)
 if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
