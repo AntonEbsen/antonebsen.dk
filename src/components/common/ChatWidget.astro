@@ -617,74 +617,51 @@ const t = {
       let activeUtterance = null;
 
       function speakMessage(text, btn) {
-          if (!window.speechSynthesis) {
-              alert("Your browser does not support Text-to-Speech.");
-              return;
-          }
-          
-          console.log("🔊 Attempting to speak:", text.substring(0, 20) + "...");
+          if (!window.speechSynthesis) return;
 
-          // Cancel current
+          // 1. Hard Cancel
           window.speechSynthesis.cancel();
-
-          // Reset icons
+          
+          // 2. Reset UI
           document.querySelectorAll('.speak-btn i').forEach(icon => {
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
           });
-
           const icon = btn.querySelector('i');
           icon.classList.remove('text-dim-400');
           icon.classList.add('text-accent', 'animate-pulse');
 
-          // Clean text
+          // 3. Prepare Text
           const cleanText = text.replace(/[*#`]/g, '');
-
           const utterance = new SpeechSynthesisUtterance(cleanText);
-          activeUtterance = utterance; 
+          activeUtterance = utterance;
 
-          // Force standard settings first
-          utterance.rate = 1.0;
-          utterance.pitch = 1.0;
-          utterance.volume = 1.0; 
-
-          // Select Voice Logic
-          const voices = window.speechSynthesis.getVoices();
+          // 4. Voice Selection (Aggressive Fallback)
+          const allVoices = window.speechSynthesis.getVoices();
           const lang = document.documentElement.lang || 'da';
-          // Try to find exact match first, then loose match
-          const voice = voices.find(v => v.lang === (lang === 'en' ? 'en-US' : 'da-DK')) 
-                     || voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
+          const targetLang = lang === 'en' ? 'en' : 'da';
           
-          if (voice) {
-              utterance.voice = voice;
-              console.log("🔊 Voice selected:", voice.name);
-          } else {
-              console.warn("🔊 No matching voice found, using default.");
-          }
-
+          // Find ANY voice required language
+          const voice = allVoices.find(v => v.lang.startsWith(targetLang));
+          if (voice) utterance.voice = voice;
+          
+          // 5. Events
           utterance.onend = () => {
-              console.log("🔊 Speech ended");
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
               activeUtterance = null;
           };
-
           utterance.onerror = (e) => {
-              console.error("🔊 Speech Error:", e);
+              console.error("TTS Failed:", e);
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
               activeUtterance = null;
           };
 
-          // Small timeout to Ensure the browser is ready
+          // 6. Speak with safety delay
           setTimeout(() => {
               window.speechSynthesis.speak(utterance);
-              
-              // Resume if stuck (Chrome fix)
-              if (window.speechSynthesis.paused) {
-                  window.speechSynthesis.resume();
-              }
-          }, 100);
+          }, 50);
       }
 
   } catch (err) {
