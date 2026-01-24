@@ -260,45 +260,41 @@ import Layout from '../layouts/Layout.astro';
 
   <script is:inline>
     document.addEventListener("DOMContentLoaded", () => {
-      // ===== 1) Data: tilføj dine steder her =====
-      // lat/lng finder du nemt via Google Maps (højreklik -> "Hvad er der her?")
-      const places = [
-        {
-          title: "København",
-          category: "studier",
-          date: "2021–",
-          lat: 55.6761,
-          lng: 12.5683,
-          note: "Studier, arbejde og base.",
-          link: "https://www.google.com/maps?q=55.6761,12.5683"
-        },
-        {
-          title: "Lübeck",
-          category: "rejser",
-          date: "Okt 2019",
-          lat: 53.8655,
-          lng: 10.6866,
-          note: "Ophold/arbejde (Handwerkskammer).",
-          link: "https://www.google.com/maps?q=53.8655,10.6866"
-        },
-        {
-          title: "Nykøbing Falster",
-          category: "rejser",
-          date: "2018–2021",
-          lat: 54.7691,
-          lng: 11.8740,
-          note: "HHX (Handelsgymnasiet Lolland-Falster).",
-          link: "https://www.google.com/maps?q=54.7691,11.8740"
+      // ===== 1) Data Fetching =====
+      let places = [];
+
+      async function loadPlaces() {
+        try {
+            const res = await fetch('/api/travel');
+            const data = await res.json();
+            
+            // Transform DB data to Map format
+            places = data.map(p => ({
+                title: p.city,
+                category: "rejser", // Default category for now
+                date: p.year ? p.year.toString() : "",
+                lat: p.lat,
+                lng: p.lng,
+                note: p.notes || `Trip to ${p.city}, ${p.country}`,
+                link: `https://www.google.com/maps?q=${p.lat},${p.lng}`
+            }));
+
+            // Initial Render
+            render("all");
+
+        } catch (err) {
+            console.error("Map Error:", err);
+            document.getElementById("placeList").innerHTML = "<p class='muted small'>Failed to load map data.</p>";
         }
-      ];
+      }
 
       // ===== 2) Init map =====
-      const map = L.map("map", { scrollWheelZoom: true }).setView([55.6761, 12.5683], 5);
+      const map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2); // World View
 
-      // OpenStreetMap tiles
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      // OpenStreetMap tiles (Dark Mode preferred if possible, but OSM standard is fine)
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
       }).addTo(map);
 
       // ===== 3) Markers + filtering =====
@@ -337,10 +333,16 @@ import Layout from '../layouts/Layout.astro';
 
         const list = document.getElementById("placeList");
         list.innerHTML = "";
+        
+        if (places.length === 0) {
+            list.innerHTML = "<p class='muted small p-4'>Map is empty. Add locations in Dashboard.</p>";
+            return;
+        }
 
         const filtered = places.filter(p => filter === "all" ? true : p.category === filter);
 
         filtered.forEach((p) => {
+          // Custom Icon could go here, using default for now
           const m = L.marker([p.lat, p.lng]).addTo(markersLayer);
           m.bindPopup(popupHTML(p));
 
@@ -363,20 +365,17 @@ import Layout from '../layouts/Layout.astro';
           list.appendChild(row);
         });
 
-        // Fit bounds hvis der er flere markers
+        // Fit bounds if markers exist
         if (filtered.length > 1) {
           const bounds = L.latLngBounds(filtered.map(p => [p.lat, p.lng]));
           map.fitBounds(bounds, { padding: [30, 30] });
         } else if (filtered.length === 1) {
-          map.setView([filtered[0].lat, filtered[0].lng], 10);
+          map.setView([filtered[0].lat, filtered[0].lng], 8);
         }
       }
 
-      // Default render
-      let activeFilter = "all";
-      render(activeFilter);
-
       // ===== 4) UI controls =====
+      let activeFilter = "all";
       const chips = document.querySelectorAll(".chip");
       chips.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -387,6 +386,9 @@ import Layout from '../layouts/Layout.astro';
           render(activeFilter);
         });
       });
+
+      // Start
+      loadPlaces();
     });
   </script>
 </Layout>

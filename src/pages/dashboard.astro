@@ -180,10 +180,11 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- QUOTE BANK -->
-            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
                     <h3 class="text-gold-400 font-bold">Quote Bank Manager</h3>
                 </div>
+                <!-- ... Quote Form ... -->
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                      <!-- ADD QUOTE FORM -->
                      <div>
@@ -204,6 +205,41 @@ import Layout from '../layouts/Layout.astro';
                         <h4 class="text-gray-400 text-sm mb-4 uppercase">Recent Additions</h4>
                         <ul id="quote-list" class="space-y-2 text-sm text-gray-400">
                             <li>Loading quotes...</li>
+                        </ul>
+                     </div>
+                </div>
+            </div>
+
+            <!-- TRAVEL MAP MANAGER -->
+            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold">World Map Manager</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <!-- ADD LOCATION FORM -->
+                     <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Drop Pin</h4>
+                        <form id="travel-form" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="tr-city" placeholder="City" required class="bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                                <input type="text" id="tr-country" placeholder="Country" required class="bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            </div>
+                             <div class="grid grid-cols-3 gap-2">
+                                <input type="number" id="tr-lat" placeholder="Lat" step="any" required class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <input type="number" id="tr-lng" placeholder="Lng" step="any" required class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <input type="number" id="tr-year" placeholder="Year" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            </div>
+                            <input type="text" id="tr-notes" placeholder="Notes (Memory)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            <p class="text-xs text-gray-500">Tip: Right-click Google Maps to get Lat/Lng.</p>
+                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Add Location</button>
+                        </form>
+                     </div>
+
+                     <!-- RECENT LOCATIONS -->
+                     <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Recent Pins</h4>
+                        <ul id="travel-list" class="space-y-2 text-sm text-gray-400">
+                            <li>Loading map data...</li>
                         </ul>
                      </div>
                 </div>
@@ -231,7 +267,8 @@ import Layout from '../layouts/Layout.astro';
             loadData(); 
             loadBooks(); 
             loadTraining(); 
-            loadQuotes(); // Quotes
+            loadQuotes();
+            loadTravel(); // Travel
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -243,66 +280,61 @@ import Layout from '../layouts/Layout.astro';
 
     // --- LOADERS ---
     async function loadData() { /* ... Stats ... */
-        try {
-            const res = await fetch('/api/stats');
-            const data = await res.json();
-            if (data.error) throw new Error(data.error);
-            renderMetrics(data);
-            renderCharts(data);
-            renderTable(data.recent);
-        } catch (err) { console.error("Dashboard Error:", err); }
+        try { const res = await fetch('/api/stats'); const data = await res.json(); if (data.error) throw new Error(data.error); renderMetrics(data); renderCharts(data); renderTable(data.recent); } catch (err) { console.error("Dashboard Error:", err); }
     }
     async function loadBooks() { /* ... Books ... */
-        try {
-            const res = await fetch('/api/books');
-            const books = await res.json();
-            const list = document.getElementById('book-list')!;
-            list.innerHTML = '';
-            if(books.length === 0) { list.innerHTML = '<li>No books.</li>'; return; }
-            books.slice(0, 5).forEach((b: any) => {
-                const li = document.createElement('li');
-                li.className = "border-b border-gray-800 pb-2 flex justify-between";
-                li.innerHTML = `<span>${b.title}</span> <span class="text-gold-500 text-xs">${b.status}</span>`;
-                list.appendChild(li);
-            });
-        } catch (err) { console.error(err); }
+        try { const res = await fetch('/api/books'); const books = await res.json(); const list = document.getElementById('book-list')!; list.innerHTML = ''; if(books.length === 0) { list.innerHTML = '<li>No books.</li>'; return; } books.slice(0, 5).forEach((b: any) => { const li = document.createElement('li'); li.className = "border-b border-gray-800 pb-2 flex justify-between"; li.innerHTML = `<span>${b.title}</span> <span class="text-gold-500 text-xs">${b.status}</span>`; list.appendChild(li); }); } catch (err) { console.error(err); }
     }
     async function loadTraining() { /* ... Training ... */
-        try {
-             const res = await fetch('/api/training');
-             const logs = await res.json();
-             const list = document.getElementById('training-list')!;
-             list.innerHTML = '';
-             if (logs.length === 0) { list.innerHTML = '<li>No logs found.</li>'; return; }
-             logs.slice(0, 5).forEach((l: any) => {
-                const li = document.createElement('li');
-                li.className = "border-b border-gray-800 pb-2 flex justify-between items-center";
-                li.innerHTML = `<div><span class="text-gray-300 block">${l.type}</span><span class="text-xs text-gray-600">${l.date}</span></div><div class="text-right">${l.distance_km ? `<span class="text-gold-500 text-xs block">${l.distance_km} km</span>` : ''}${l.tonnage_kg ? `<span class="text-gold-500 text-xs block">${l.tonnage_kg} kg</span>` : ''}</div>`;
-                list.appendChild(li);
-             });
-        } catch (err) { console.error(err); }
+        try { const res = await fetch('/api/training'); const logs = await res.json(); const list = document.getElementById('training-list')!; list.innerHTML = ''; if (logs.length === 0) { list.innerHTML = '<li>No logs found.</li>'; return; } logs.slice(0, 5).forEach((l: any) => { const li = document.createElement('li'); li.className = "border-b border-gray-800 pb-2 flex justify-between items-center"; li.innerHTML = `<div><span class="text-gray-300 block">${l.type}</span><span class="text-xs text-gray-600">${l.date}</span></div><div class="text-right">${l.distance_km ? `<span class="text-gold-500 text-xs block">${l.distance_km} km</span>` : ''}${l.tonnage_kg ? `<span class="text-gold-500 text-xs block">${l.tonnage_kg} kg</span>` : ''}</div>`; list.appendChild(li); }); } catch (err) { console.error(err); }
+    }
+    async function loadQuotes() { /* ... Quotes ... */
+        try { const res = await fetch('/api/quotes'); const quotes = await res.json(); const list = document.getElementById('quote-list')!; list.innerHTML = ''; if (quotes.length === 0) { list.innerHTML = '<li>No quotes found.</li>'; return; } quotes.slice(0, 5).forEach((q: any) => { const li = document.createElement('li'); li.className = "border-b border-gray-800 pb-2"; li.innerHTML = `<p class="italic">"${q.text.substring(0, 40)}${q.text.length > 40 ? '...' : ''}"</p><span class="text-gold-500 text-xs">- ${q.author || 'Unknown'}</span>`; list.appendChild(li); }); } catch (err) { console.error(err); }
     }
 
-    // --- QUOTES LOGIC ---
-    async function loadQuotes() {
+    // --- TRAVEL LOGIC ---
+    async function loadTravel() {
         try {
-            const res = await fetch('/api/quotes');
-            const quotes = await res.json();
-            const list = document.getElementById('quote-list')!;
+            const res = await fetch('/api/travel');
+            const locs = await res.json();
+            const list = document.getElementById('travel-list')!;
             list.innerHTML = '';
 
-            if (quotes.length === 0) { list.innerHTML = '<li>No quotes found.</li>'; return; }
+            if (locs.length === 0) { list.innerHTML = '<li>No locations found.</li>'; return; }
 
-            quotes.slice(0, 5).forEach((q: any) => {
+            locs.slice(0, 5).forEach((l: any) => {
                 const li = document.createElement('li');
-                li.className = "border-b border-gray-800 pb-2";
-                li.innerHTML = `<p class="italic">"${q.text.substring(0, 40)}${q.text.length > 40 ? '...' : ''}"</p><span class="text-gold-500 text-xs">- ${q.author || 'Unknown'}</span>`;
+                li.className = "border-b border-gray-800 pb-2 flex justify-between";
+                li.innerHTML = `<span>${l.city}, ${l.country}</span> <span class="text-gray-500 text-xs">${l.year || ''}</span>`;
                 list.appendChild(li);
             });
         } catch (err) { console.error(err); }
     }
 
+    document.getElementById('travel-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const city = (document.getElementById('tr-city') as HTMLInputElement).value;
+        const country = (document.getElementById('tr-country') as HTMLInputElement).value;
+        const lat = (document.getElementById('tr-lat') as HTMLInputElement).value;
+        const lng = (document.getElementById('tr-lng') as HTMLInputElement).value;
+        const year = (document.getElementById('tr-year') as HTMLInputElement).value;
+        const notes = (document.getElementById('tr-notes') as HTMLInputElement).value;
+
+        await fetch('/api/travel', {
+            method: 'POST',
+            body: JSON.stringify({ 
+                city, country, lat: parseFloat(lat), lng: parseFloat(lng), year: year ? parseInt(year) : null, notes 
+            })
+        });
+
+        alert("Location Pinned!");
+        (e.target as HTMLFormElement).reset();
+        loadTravel();
+    });
+
+    // --- SUBMIT HANDLERS (Previous) ---
     document.getElementById('quote-form')?.addEventListener('submit', async (e) => {
+        // ... (Quote Submit Logic) ...
         e.preventDefault();
         const text = (document.getElementById('q-text') as HTMLTextAreaElement).value;
         const author = (document.getElementById('q-author') as HTMLInputElement).value;
@@ -312,19 +344,14 @@ import Layout from '../layouts/Layout.astro';
         await fetch('/api/quotes', {
             method: 'POST',
             body: JSON.stringify({ 
-                text, 
-                author, 
-                source, 
-                tags: tags ? tags.split(',').map(t => t.trim()) : [] 
+                text, author, source, tags: tags ? tags.split(',').map(t => t.trim()) : [] 
             })
         });
-
         alert("Quote Added!");
         (e.target as HTMLFormElement).reset();
         loadQuotes();
     });
 
-    // --- SUBMIT HANDLERS (Previous) ---
     document.getElementById('training-form')?.addEventListener('submit', async (e) => {
         // ... (Training Submit Logic) ...
         e.preventDefault();
