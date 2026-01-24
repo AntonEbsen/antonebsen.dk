@@ -9,7 +9,7 @@ const t = {
     title: "Anton's AI Assistent",
     desc: "Stil mig spørgsmål om Antons CV, projekter, blogindlæg og erfaring.",
     intro: "Hej! Jeg er den store udgave af Antons AI. Jeg kan analysere hele portfolioen og endda <strong>lave grafer</strong> over dataene. Prøv det!",
-    placeholder: "Spørg om f.eks. 'Vis mig en graf over dine skills'...",
+    placeholder: "Stil mig et spørgsmål...",
     disclaimer: "Drevet af Google Gemini · Kan lave fejl",
     back: "Tilbage til forsiden",
     prompts: ["📊 Vis mig en graf over Antons skills", "💼 Opsummer Antons erfaring", "📋 Analysér Jobopslag"]
@@ -241,8 +241,9 @@ const t = {
             autocomplete="off"
             autofocus
           />
+
           <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv" />
-          <button type="button" id="fp-file-btn" class="absolute right-28 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
+          <button type="button" id="fp-file-btn" class="absolute right-32 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
             <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
           </button>
           <button type="button" id="fp-voice-btn" class="absolute right-16 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
@@ -253,8 +254,10 @@ const t = {
             <i class="fa-solid fa-paper-plane text-lg"></i>
           </button>
         </form>
+        <div class="text-center mt-3 text-xs text-dim opacity-60">
           {t.disclaimer}
         </div>
+      </div>
         <div id="fp-file-display" class="hidden mt-2 px-3 py-2 bg-accent/10 border border-accent/20 rounded-lg flex items-center justify-between text-xs text-accent">
             <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-2"></i><span id="fp-filename"></span></span>
             <button type="button" id="fp-remove-file" class="ml-2 hover:text-white"><i class="fa-solid fa-times"></i></button>
