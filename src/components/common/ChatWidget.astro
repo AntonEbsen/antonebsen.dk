@@ -58,11 +58,11 @@ const t = {
       <div class="flex gap-2 items-center">
         <!-- Persona Selector -->
         <div class="relative group mr-1">
-            <select id="widget-persona-select" class="appearance-none bg-accent/10 border border-accent/20 text-accent text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-accent/20 transition-colors focus:outline-none">
-                <option value="default">Standard</option>
-                <option value="recruiter">💼 Recruiter</option>
-                <option value="tech">💻 Tech Lead</option>
-                <option value="eli5">👶 ELI5</option>
+            <select id="widget-persona-select" class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none">
+                <option value="default" class="bg-neutral-900 text-white">Standard</option>
+                <option value="recruiter" class="bg-neutral-900 text-white">💼 Recruiter</option>
+                <option value="tech" class="bg-neutral-900 text-white">💻 Tech Lead</option>
+                <option value="eli5" class="bg-neutral-900 text-white">👶 ELI5</option>
             </select>
             <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
         </div>
@@ -373,11 +373,21 @@ const t = {
              currentY = yOffset + dy;
 
              // Boundary checks (keep on screen)
-             // ... simplify for now, just set style
+             const rect = chatWindow.getBoundingClientRect();
+             const viewportWidth = window.innerWidth;
+             const viewportHeight = window.innerHeight;
+             
+             // Clamp X
+             if (currentX < 0) currentX = 0;
+             if (currentX + rect.width > viewportWidth) currentX = viewportWidth - rect.width;
+             
+             // Clamp Y
+             if (currentY < 0) currentY = 0;
+             if (currentY + rect.height > viewportHeight) currentY = viewportHeight - rect.height;
              
              // Update position (since we are fixed mode)
-             chatWindow.style.left = (clientX - (initialX - xOffset)) + 'px';
-             chatWindow.style.top = (clientY - (initialY - yOffset)) + 'px';
+             chatWindow.style.left = currentX + 'px';
+             chatWindow.style.top = currentY + 'px';
          }
       }
 
