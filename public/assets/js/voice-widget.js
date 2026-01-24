@@ -44,24 +44,32 @@ function speakMessage(text, btn) {
         return;
     }
 
+    const icon = btn.querySelector('i');
+
+    // Check if already speaking THIS message (Toggle Stop)
+    if (icon && icon.classList.contains('fa-stop')) {
+        console.log("🔊 Stopping speech");
+        window.speechSynthesis.cancel();
+        // UI reset will be handled by onend (or forced below)
+        resetAllButtons();
+        return;
+    }
+
     console.log("🔊 Speaking:", text.substring(0, 20) + "...");
 
     // 1. Cancel existing
     window.speechSynthesis.cancel();
 
     // 2. Reset UI for ALL buttons
-    document.querySelectorAll('.speak-btn i').forEach(icon => {
-        icon.classList.remove('text-accent', 'animate-pulse');
-        icon.classList.add('text-dim-400');
-    });
+    resetAllButtons();
 
-    const icon = btn.querySelector('i');
+    // 3. Set Active State
     if (icon) {
-        icon.classList.remove('text-dim-400');
-        icon.classList.add('text-accent', 'animate-pulse');
+        icon.classList.remove('text-dim-400', 'fa-volume-high');
+        icon.classList.add('text-accent', 'animate-pulse', 'fa-stop');
     }
 
-    // 3. Setup Utterance
+    // 4. Setup Utterance
     const cleanText = text.replace(/[*#`]/g, '');
     const utterance = new SpeechSynthesisUtterance(cleanText);
     voiceWidgetUtterance = utterance; // Prevent GC
@@ -70,39 +78,46 @@ function speakMessage(text, btn) {
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
-    // 4. Voice Selection (Simplified)
+    // 5. Voice Selection
     const voices = window.speechSynthesis.getVoices();
     const lang = document.documentElement.lang || 'da';
     const target = lang === 'en' ? 'en' : 'da';
-
     const voice = voices.find(v => v.lang.startsWith(target));
     if (voice) utterance.voice = voice;
 
-    // 5. Handlers
+    // 6. Handlers
     utterance.onend = () => {
         console.log("🔊 End");
-        if (icon) {
-            icon.classList.remove('text-accent', 'animate-pulse');
-            icon.classList.add('text-dim-400');
-        }
+        resetBtn(btn);
         voiceWidgetUtterance = null;
     };
 
     utterance.onerror = (e) => {
         console.error("🔊 Error", e);
-        if (icon) {
-            icon.classList.remove('text-accent', 'animate-pulse');
-            icon.classList.add('text-dim-400');
-        }
+        resetBtn(btn);
         voiceWidgetUtterance = null;
     };
 
-    // 6. Speak
+    // 7. Speak
     setTimeout(() => {
         window.speechSynthesis.speak(utterance);
-        // Chrome Resume Hack
         if (window.speechSynthesis.paused) window.speechSynthesis.resume();
     }, 10);
+}
+
+function resetAllButtons() {
+    document.querySelectorAll('.speak-btn i').forEach(icon => {
+        icon.classList.remove('text-accent', 'animate-pulse', 'fa-stop');
+        icon.classList.add('text-dim-400', 'fa-volume-high');
+    });
+}
+
+function resetBtn(btn) {
+    const icon = btn.querySelector('i');
+    if (icon) {
+        icon.classList.remove('text-accent', 'animate-pulse', 'fa-stop');
+        icon.classList.add('text-dim-400', 'fa-volume-high');
+    }
 }
 
 // Ensure voices are loaded (Chrome requirement)
