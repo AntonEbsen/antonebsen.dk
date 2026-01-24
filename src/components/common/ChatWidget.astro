@@ -617,12 +617,17 @@ const t = {
       let activeUtterance = null;
 
       function speakMessage(text, btn) {
-          if (!window.speechSynthesis) return;
+          if (!window.speechSynthesis) {
+              addMessage("⚠️ TTS not supported by this browser.", 'system');
+              return;
+          }
 
-          // 1. Hard Cancel
+          // Debug: Show we are trying
+          // console.log("🔊 TTS Start"); 
+
           window.speechSynthesis.cancel();
-          
-          // 2. Reset UI
+
+          // Reset UI
           document.querySelectorAll('.speak-btn i').forEach(icon => {
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
@@ -631,37 +636,42 @@ const t = {
           icon.classList.remove('text-dim-400');
           icon.classList.add('text-accent', 'animate-pulse');
 
-          // 3. Prepare Text
           const cleanText = text.replace(/[*#`]/g, '');
           const utterance = new SpeechSynthesisUtterance(cleanText);
           activeUtterance = utterance;
 
-          // 4. Voice Selection (Aggressive Fallback)
-          const allVoices = window.speechSynthesis.getVoices();
+          const voices = window.speechSynthesis.getVoices();
+          // Visual Debug
+          if (voices.length === 0) {
+               // Verify looking for voices
+               window.speechSynthesis.onvoiceschanged = () => speakMessage(text, btn);
+               return; 
+          }
+
           const lang = document.documentElement.lang || 'da';
-          const targetLang = lang === 'en' ? 'en' : 'da';
+          utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
           
-          // Find ANY voice required language
-          const voice = allVoices.find(v => v.lang.startsWith(targetLang));
-          if (voice) utterance.voice = voice;
-          
-          // 5. Events
+          // STRICT SIMPLICITY: Only set voice if we are 100% sure. 
+          // Otherwise trust the browser's default for that language.
+          const voice = voices.find(v => v.lang === (lang === 'en' ? 'en-US' : 'da-DK'));
+          if (voice) {
+              utterance.voice = voice;
+          }
+
           utterance.onend = () => {
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
               activeUtterance = null;
           };
+          
           utterance.onerror = (e) => {
-              console.error("TTS Failed:", e);
+              addMessage("⚠️ TTS Error: " + e.error, 'system');
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
               activeUtterance = null;
           };
 
-          // 6. Speak with safety delay
-          setTimeout(() => {
-              window.speechSynthesis.speak(utterance);
-          }, 50);
+          window.speechSynthesis.speak(utterance);
       }
 
   } catch (err) {
