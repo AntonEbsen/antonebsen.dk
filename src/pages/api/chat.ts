@@ -131,6 +131,12 @@ Pre-defined Charts you can generate:
 2. "Experience Timeline": Bar chart of years per role.
 3. "Projects by Type": Pie chart (Macro: 30, Data: 40, Models: 30).
 4. "Training Volume": Line chart of weekly tonnage (Uge 1: 40.5, Uge 2: 42.1, etc).
+
+CITATIONS:
+If you use information from the [USER UPLOADED DOCUMENTS] section, you MUST cite the source filename using this format:
+<<<CITATION: filename.pdf>>>
+Place the citation immediately after the relevant sentence.
+Do NOT cite CV, Portfolio, or Blog content. Only documents.
 `;
 }
 

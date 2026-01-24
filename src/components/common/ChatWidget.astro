@@ -514,6 +514,7 @@ const t = {
           return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')
                      .replace(/<<<NAVIGATE:.*?>>>/gi, '')
                      .replace(/<<<SUGGESTIONS:.*?>>>/g, '')
+                     .replace(/<<<CITATION:(.*?)>>>/g, '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[10px] uppercase tracking-wider text-accent mx-1 select-none cursor-help" title="Source: Uploaded Document"><i class="fa-solid fa-file-pdf"></i> $1</span>')
                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                      .replace(/\n/g, '<br/>');
       }
