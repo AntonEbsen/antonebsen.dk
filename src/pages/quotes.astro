@@ -234,7 +234,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- LISTE -->
     <section class="card" id="list">
-      <h2 class="section-title">Citater</h2>
+      <h2 class="section-title">Citater (Live DB)</h2>
 
       <!-- Toolbar -->
       <div class="toolbar" aria-label="Filtre">
@@ -256,77 +256,8 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="grid" id="quotesGrid">
-
-        <!-- QUOTE CARD (placeholder) -->
-        <article class="quote" data-tag="Disciplin">
-          <blockquote>
-            Indsæt dit citat her.
-          </blockquote>
-          <div class="quote-foot">
-            <span class="who">— Forfatter / kilde</span>
-            <span class="tag">Disciplin</span>
-          </div>
-          <div class="quote-actions">
-            <button class="btn ghost" type="button" onclick="copyQuote(this)">
-              <i class="fa-solid fa-copy"></i> Kopiér
-            </button>
-            <button class="btn ghost" type="button" onclick="toggleNote(this)">
-              <i class="fa-solid fa-note-sticky"></i> Note
-            </button>
-          </div>
-          <p class="muted small" data-note style="display:none; margin:0;">
-            Kort note/kontekst (valgfri). Fx hvor du stødte på citatet, eller hvad du bruger det til.
-          </p>
-        </article>
-
-        <article class="quote" data-tag="Læring">
-          <blockquote>
-            Indsæt dit citat her.
-          </blockquote>
-          <div class="quote-foot">
-            <span class="who">— Forfatter / kilde</span>
-            <span class="tag">Læring</span>
-          </div>
-          <div class="quote-actions">
-            <button class="btn ghost" type="button" onclick="copyQuote(this)">
-              <i class="fa-solid fa-copy"></i> Kopiér
-            </button>
-            <button class="btn ghost" type="button" onclick="toggleNote(this)">
-              <i class="fa-solid fa-note-sticky"></i> Note
-            </button>
-          </div>
-          <p class="muted small" data-note style="display:none; margin:0;">
-            Valgfri note.
-          </p>
-        </article>
-
-        <article class="quote" data-tag="Humor">
-          <blockquote>
-            Indsæt dit citat her.
-          </blockquote>
-          <div class="quote-foot">
-            <span class="who">— Forfatter / kilde</span>
-            <span class="tag">Humor</span>
-          </div>
-          <div class="quote-actions">
-            <button class="btn ghost" type="button" onclick="copyQuote(this)">
-              <i class="fa-solid fa-copy"></i> Kopiér
-            </button>
-            <button class="btn ghost" type="button" onclick="toggleNote(this)">
-              <i class="fa-solid fa-note-sticky"></i> Note
-            </button>
-          </div>
-          <p class="muted small" data-note style="display:none; margin:0;">
-            Valgfri note.
-          </p>
-        </article>
-
+         <p class="text-dim col-span-full text-center py-12">Loading wisdom...</p>
       </div>
-
-      <hr class="divider">
-      <p class="muted small" style="margin:0;">
-        Hvis du senere vil have det mere “database-agtigt”: vi kan gøre citaterne til JSON og autogenerere cards + tags.
-      </p>
     </section>
 
     <!-- CTA -->
@@ -344,27 +275,82 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script is:inline>
-    // Quotes filtering logic
     document.addEventListener("DOMContentLoaded", () => {
       const qSearch = document.getElementById("qSearch");
       const qTag = document.getElementById("qTag");
+      const grid = document.getElementById("quotesGrid");
       
-      function getCards() {
-        return Array.from(document.querySelectorAll(".quote"));
+      let allQuotes = [];
+
+      // 1. Fetch Quotes
+      async function loadQuotes() {
+        try {
+            const res = await fetch('/api/quotes');
+            allQuotes = await res.json();
+            renderQuotes(allQuotes);
+        } catch (err) {
+            grid.innerHTML = '<p class="text-dim col-span-full text-center py-12">Failed to load quotes.</p>';
+            console.error(err);
+        }
       }
 
+      // 2. Render Quotes
+      function renderQuotes(quotes) {
+        if (!grid) return;
+        grid.innerHTML = '';
+        
+        if (quotes.length === 0) {
+            grid.innerHTML = '<p class="text-dim col-span-full text-center py-12">Biblioteket er tomt.</p>';
+            return;
+        }
+
+        quotes.forEach(q => {
+            const article = document.createElement('article');
+            article.className = 'quote';
+            // Use first tag for data attribute if available, or default
+            const tag = (q.tags && q.tags.length > 0) ? q.tags[0] : 'General';
+            article.setAttribute('data-tag', tag);
+
+            article.innerHTML = `
+                <blockquote>"${q.text}"</blockquote>
+                <div class="quote-foot">
+                    <span class="who">— ${q.author || 'Unknown'}</span>
+                    <span class="tag">${tag}</span>
+                </div>
+                <div class="quote-actions">
+                    <button class="btn ghost" type="button" onclick="copyQuote(this)">
+                        <i class="fa-solid fa-copy"></i> Kopiér
+                    </button>
+                    ${q.source ? `
+                    <button class="btn ghost" type="button" onclick="toggleNote(this)">
+                        <i class="fa-solid fa-note-sticky"></i> Kilde
+                    </button>` : ''}
+                </div>
+                ${q.source ? `
+                <p class="muted small" data-note style="display:none; margin:0;">
+                    Kilde: ${q.source}
+                </p>` : ''}
+            `;
+            grid.appendChild(article);
+        });
+      }
+
+      // 3. Filter Logic
       function applyFilters(){
         if (!qSearch || !qTag) return;
         const term = (qSearch.value || "").trim().toLowerCase();
         const tag = qTag.value;
 
-        getCards().forEach(card => {
-          const text = card.innerText.toLowerCase();
-          const cardTag = card.getAttribute("data-tag") || "";
-          const okTerm = !term || text.includes(term);
-          const okTag = (tag === "all") || (cardTag === tag);
-          card.style.display = (okTerm && okTag) ? "" : "none";
+        const filtered = allQuotes.filter(q => {
+            const textMatch = q.text.toLowerCase().includes(term) || (q.author && q.author.toLowerCase().includes(term));
+            // Check if ANY of the tags match the selected tag (or if selected is 'all')
+            // For simplicity in this UI, we map the dropdown value to the quote's tags array
+            const tagMatch = (tag === "all") || (q.tags && q.tags.includes(tag));
+            
+            return textMatch && tagMatch;
         });
+        
+        renderQuotes(filtered);
       }
 
       window.resetQuotes = function(){
@@ -397,6 +383,9 @@ import Layout from '../layouts/Layout.astro';
 
       if (qSearch) qSearch.addEventListener("input", applyFilters);
       if (qTag) qTag.addEventListener("change", applyFilters);
+
+      // Init
+      loadQuotes();
     });
   </script>
 </Layout>
