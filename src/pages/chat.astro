@@ -223,6 +223,15 @@ const t = {
 
       <!-- Input Area -->
       <div class="p-4 border-t border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.2)]">
+        <!-- Quick Prompts -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+            {t.prompts.map(p => (
+              <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-3 text-dim hover:text-white quick-prompt-btn flex items-center gap-2 shadow-md">
+                <span class="truncate">{p}</span>
+              </button>
+            ))}
+        </div>
+
         <form id="fp-chat-form" class="flex gap-3 relative">
           <input 
             type="text" 
@@ -252,14 +261,7 @@ const t = {
         </div>
       </div>
 
-      <!-- Quick Prompts -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pl-14">
-          {t.prompts.map(p => (
-            <button class="text-left text-sm bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-xl p-4 text-dim hover:text-white quick-prompt-btn flex items-center gap-2 shadow-lg">
-              {p}
-            </button>
-          ))}
-      </div>
+
     </div>
   </main>
 
