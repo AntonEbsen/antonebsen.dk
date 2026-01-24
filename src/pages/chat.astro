@@ -83,10 +83,10 @@ const t = {
     }
 
     .chat-container {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-      height: 80vh;
+      max-width: 950px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      height: 90vh; /* Taller on desktop */
       display: flex;
       flex-direction: column;
       position: relative;
@@ -105,6 +105,32 @@ const t = {
       box-shadow: 
         0 20px 50px rgba(0,0,0,0.5),
         0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+
+    /* Mobile Optimization: Full Screen App Feel */
+    @media (max-width: 768px) {
+        .chat-container {
+            height: 100dvh; /* Use dynamic viewport height */
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .chat-card {
+            border-radius: 0;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.05); /* subtle divider */
+        }
+        
+        /* Adjust header padding for mobile */
+        .mb-4.flex {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0 !important;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
     }
 
     /* Status Bar */
