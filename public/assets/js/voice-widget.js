@@ -6,37 +6,48 @@
 console.log("🔊 Voice Widget Script Loaded");
 
 // Global Speech Synthesis Garbage Collection Fix
-let voiceWidgetUtterance = null;
+// Global check to prevent duplicate listeners
+if (window.voiceWidgetInitialized) {
+    console.log("🔊 Voice Widget already initialized, skipping.");
+} else {
+    window.voiceWidgetInitialized = true;
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("🔊 Voice Widget Initialized");
+    function initVoiceWidget() {
+        console.log("🔊 Voice Widget Initialized");
 
-    // Global Event Delegation for ANY speak button on the page
-    document.body.addEventListener('click', (e) => {
-        // Handle shadow DOM or standard click
-        const path = e.composedPath ? e.composedPath() : [];
-        const btn = path.find(el => el.classList && el.classList.contains('speak-btn')) || e.target.closest('.speak-btn');
+        // Global Event Delegation for ANY speak button on the page
+        document.body.addEventListener('click', (e) => {
+            // Handle shadow DOM or standard click
+            const path = e.composedPath ? e.composedPath() : [];
+            const btn = path.find(el => el.classList && el.classList.contains('speak-btn')) || e.target.closest('.speak-btn');
 
-        if (btn) {
-            e.preventDefault();
-            e.stopPropagation();
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            const text = btn.getAttribute('data-text');
-            if (text) {
-                console.log("🔊 Button Clicked (Delegated)");
-                try {
-                    const decoded = decodeURIComponent(text);
-                    speakMessage(decoded, btn);
-                } catch (err) {
-                    console.error("Text Decode Error", err);
-                    speakMessage(text, btn);
+                const text = btn.getAttribute('data-text');
+                if (text) {
+                    console.log("🔊 Button Clicked (Delegated)");
+                    try {
+                        const decoded = decodeURIComponent(text);
+                        speakMessage(decoded, btn);
+                    } catch (err) {
+                        console.error("Text Decode Error", err);
+                        speakMessage(text, btn);
+                    }
+                } else {
+                    console.warn("🔊 Speak button has no text");
                 }
-            } else {
-                console.warn("🔊 Speak button has no text");
             }
-        }
-    }, { capture: true }); // Capture phase!
-});
+        }, { capture: true }); // Capture phase!
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initVoiceWidget);
+    } else {
+        initVoiceWidget();
+    }
+}
 
 function speakMessage(text, btn) {
     if (!window.speechSynthesis) {
