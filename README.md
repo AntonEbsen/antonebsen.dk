@@ -79,7 +79,24 @@ Siden kører nu på `http://localhost:4321`.
 
 ---
 
-## 💾 Database Schema (Supabase)
+## � Projektstruktur
+
+Her er et overblik over vigtige mapper i projektet:
+
+*   **[`src/`](src/)**: Selve kildekoden.
+    *   **[`pages/`](src/pages/)**: Indeholder alle sideruterne (Astro).
+        *   [`api/`](src/pages/api/): Server-side endpoints til Chatbot, Dashboard, etc.
+        *   [`dashboard.astro`](src/pages/dashboard.astro): Admin-panelet.
+        *   [`map.astro`](src/pages/map.astro): Det interaktive verdenskort.
+    *   **[`layouts/`](src/layouts/)**: Genbrugelige layout-komponenter.
+    *   **[`components/`](src/components/)**: UI-komponenter (Knapper, Kort, Chat Widget).
+    *   **[`data/`](src/data/)**: Statiske JSON-filer og dokumenter til RAG.
+*   **[`public/`](public/)**: Statiske filer (billeder, ikoner) der serveres direkte.
+*   **[`scripts/`](scripts/)**: Hjælpe-scripts til build eller vedligeholdelse.
+
+---
+
+## �💾 Database Schema (Supabase)
 
 Projektet kræver følgende tabeller i Supabase:
 
