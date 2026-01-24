@@ -71,6 +71,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Omtale', url: '/media' },
                 { label: 'Noter', url: '/notes' },
                 { label: 'Galleri', url: '/gallery' },
+                { label: 'Om Antons AI', url: '/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
@@ -107,6 +108,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Mentions', url: '/media' },
                 { label: 'Notes', url: '/notes' },
                 { label: 'Gallery', url: '/gallery' },
+                { label: 'About Anton\'s AI', url: '/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },

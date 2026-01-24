@@ -1,0 +1,164 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+  da: {
+    title: "Om Antons AI",
+    subtitle: "En eksperimentel AI-økonom bygget med RAG og Gemini",
+    hero: {
+      tag: "Projekt Showcase",
+      heading: "Mød Antons AI Assistent",
+      text: "Dette er ikke bare en chatbot. Det er en avanceret AI-agent designet til at analysere økonomiske data, læse dokumenter og forstå min fulde faglige profil. Bygget for at demonstrere potentialet i moderne AI."
+    },
+    features: {
+      rag: {
+        title: "Dokument Analyse (RAG)",
+        desc: "AI'en kan læse og forstå uploadede PDF'er (f.eks. forskningsartikler eller jobopslag) og bruge dem som kontekst i samtalen."
+      },
+      match: {
+        title: "Job Matchmaker",
+        desc: "Indsæt et jobopslag, og AI'en agerer recruiter. Den analyserer match, finder huller i kompetencerne og skriver en målrettet pitch."
+      },
+      charts: {
+        title: "Interaktive Grafer",
+        desc: "Bed om at se en visualisering, og AI'en genererer live Chart.js grafer over kompetencer, erfaring eller økonomiske data."
+      },
+      voice: {
+        title: "Stemmeaktivering",
+        desc: "Tal direkte med assistenten via browserens indbyggede talegenkendelse for en mere naturlig interaktion."
+      }
+    },
+    tech: {
+      title: "Teknologien Bag",
+      stack: [
+        { name: "Google Gemini 2.5 Flash", desc: "Den underliggende LLM med 1M+ token context window." },
+        { name: "Astro & TypeScript", desc: "Lynhurtig frontend framework med type-sikker logik." },
+        { name: "RAG / PDF.js", desc: "Client-side dokument parsing for maksimal privatliv og hastighed." },
+        { name: "Vercel Edge", desc: "Serverless funktioner der sikrer hurtig responstid." }
+      ]
+    },
+    cta: "Prøv AI'en Nu"
+  },
+  en: {
+    title: "About Anton's AI",
+    subtitle: "An experimental AI Economist built with RAG and Gemini",
+    hero: {
+      tag: "Project Showcase",
+      heading: "Meet Anton's AI Assistant",
+      text: "This isn't just a chatbot. It's an advanced AI agent designed to analyze economic data, read documents, and understand my full professional profile. Built to demonstrate the potential of modern AI."
+    },
+    features: {
+      rag: {
+        title: "Document Analysis (RAG)",
+        desc: "The AI can read and understand uploaded PDFs (e.g., research papers or job descriptions) and use them as context in the conversation."
+      },
+      match: {
+        title: "Job Matchmaker",
+        desc: "Paste a job description, and the AI acts as a recruiter. It analyzes the match, finds skill gaps, and writes a targeted pitch."
+      },
+      charts: {
+        title: "Interactive Charts",
+        desc: "Ask specifically for a visualization, and the AI generates live Chart.js graphs of skills, experience, or economic data."
+      },
+      voice: {
+        title: "Voice Activation",
+        desc: "Speak directly to the assistant via the browser's built-in speech recognition for a more natural interaction."
+      }
+    },
+    tech: {
+      title: "The Technology",
+      stack: [
+        { name: "Google Gemini 2.5 Flash", desc: "The underlying LLM with a 1M+ token context window." },
+        { name: "Astro & TypeScript", desc: "Blazing fast frontend framework with type-safe logic." },
+        { name: "RAG / PDF.js", desc: "Client-side document parsing for maximum privacy and speed." },
+        { name: "Vercel Edge", desc: "Serverless functions ensuring fast response times." }
+      ]
+    },
+    cta: "Try the AI Now"
+  }
+}[lang];
+---
+
+<Layout title={t.title} description={t.subtitle}>
+  <div class="relative min-h-screen overflow-hidden bg-bg">
+    
+    <!-- Background FX -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px;"></div>
+    </div>
+
+    <main class="relative z-10 max-w-6xl mx-auto px-6 py-24">
+      
+      <!-- Hero -->
+      <div class="text-center max-w-3xl mx-auto mb-24 animate-fade-in-up">
+        <span class="inline-block py-1 px-3 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono mb-6 tracking-widest uppercase">
+          {t.hero.tag}
+        </span>
+        <h1 class="text-5xl md:text-7xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-dim to-dim/50">
+          {t.hero.heading}
+        </h1>
+        <p class="text-xl text-dim leading-relaxed">
+          {t.hero.text}
+        </p>
+        <div class="mt-10">
+           <a href="/chat" class="inline-flex items-center gap-3 bg-accent text-bg px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-lg shadow-accent/20">
+             <i class="fa-solid fa-robot"></i> {t.cta}
+           </a>
+        </div>
+      </div>
+
+      <!-- Features Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
+        {Object.values(t.features).map((feature, i) => (
+          <div class="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent/30 transition-colors group">
+            <div class="w-12 h-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+              <i class={`fa-solid ${i===0 ? 'fa-file-pdf' : i===1 ? 'fa-briefcase' : i===2 ? 'fa-chart-pie' : 'fa-microphone'}`}></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-3">{feature.title}</h3>
+            <p class="text-dim leading-relaxed">{feature.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="max-w-4xl mx-auto bg-glass border border-glass-border rounded-3xl p-10 md:p-16 relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-32 bg-accent/5 blur-[80px] rounded-full pointer-events-none"></div>
+        
+        <h2 class="text-3xl font-bold mb-10 text-center"><i class="fa-solid fa-code text-accent mr-3"></i> {t.tech.title}</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+           {t.tech.stack.map(item => (
+             <div class="flex gap-4">
+               <div class="w-1 h-full bg-accent/30 rounded-full flex-shrink-0"></div>
+               <div>
+                 <h4 class="font-bold text-lg text-white mb-1">{item.name}</h4>
+                 <p class="text-sm text-dim">{item.desc}</p>
+               </div>
+             </div>
+           ))}
+        </div>
+      </div>
+
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
