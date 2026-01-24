@@ -237,13 +237,14 @@ const t = {
             type="text" 
             id="fp-chat-input"
             placeholder={t.placeholder}
-            class="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl px-5 pr-32 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[rgba(255,255,255,0.08)] transition-all placeholder:text-dim/40"
+            class="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl px-5 pr-44 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[rgba(255,255,255,0.08)] transition-all placeholder:text-dim/40"
             autocomplete="off"
             autofocus
           />
 
           <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv" />
-          <button type="button" id="fp-file-btn" class="absolute right-32 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
+          <!-- Button Spacing: Send(2) <-[8px]-> Voice(16) <-[8px]-> File(30) -->
+          <button type="button" id="fp-file-btn" class="absolute right-[7.5rem] top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
             <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
           </button>
           <button type="button" id="fp-voice-btn" class="absolute right-16 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
