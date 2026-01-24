@@ -216,7 +216,7 @@ const t = {
           </div>
           <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent max-w-[85%] leading-relaxed">
             <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide">System Message</p>
-            <p>{t.intro}</p>
+            <p set:html={t.intro} />
           </div>
         </div>
       </div>
