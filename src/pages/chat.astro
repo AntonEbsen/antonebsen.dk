@@ -443,8 +443,10 @@ const t = {
       let query = input.value.trim();
       if (!query && !currentFileContent) return;
 
+      const persona = localStorage.getItem('anton_ai_persona') || 'default';
+
       // User Message (Text)
-      addMessage(query || (currentFileContent ? `[Attached: ${fileInput.files?.[0]?.name}]` : "Empty message"), 'user');
+      addMessage(query || (currentFileContent ? `[Attached: ${fileInput.files?.[0]?.name}]` : "Empty message"), 'user', false, persona);
       
       // Build Payload
       let payload: any = { message: query, lang: lang };
@@ -470,8 +472,7 @@ const t = {
       showTyping();
 
         const currentLang = document.getElementById('fp-chat-card')?.dataset.lang || 'da';
-        const persona = localStorage.getItem('anton_ai_persona') || 'default';
-
+        
         try {
           const res = await fetch('/api/chat', {
             method: 'POST',
@@ -484,12 +485,12 @@ const t = {
         if (!res.ok) {
            // Handle error JSON
            let data = await res.json();
-           addMessage("⚠️ " + (data.message || "Error"), 'ai');
+           addMessage("⚠️ " + (data.message || "Error"), 'ai', false, persona);
            return;
         }
 
         // Create a placeholder message for the stream (Skip saving initially)
-        const messageContent = addMessage("", 'ai', true);
+        const messageContent = addMessage("", 'ai', true, persona);
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
         let accumulatedText = "";
@@ -511,7 +512,7 @@ const t = {
         }
 
         // Save complete message to history
-        saveMessageToHistory(accumulatedText, 'ai');
+        saveMessageToHistory(accumulatedText, 'ai', persona);
 
         // Final processing for regex tags (Charts/Navigation) on the complete text
         // Pass the container div (grandparent of the message content p tag)
@@ -523,7 +524,7 @@ const t = {
       } catch (err) {
         removeTyping();
         console.error(err);
-        addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai');
+        addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
       }
     });
 
@@ -638,37 +639,46 @@ const t = {
                 const history = JSON.parse(stored);
                 // Clear default intro if history exists (optional, but cleaner)
                 // messages.innerHTML = ''; 
-                history.forEach(msg => addMessage(msg.text, msg.role, true));
+                history.forEach(msg => addMessage(msg.text, msg.role, true, msg.persona));
             } catch (e) {
                 console.error("History parse error", e);
             }
         }
     }
 
-    function saveMessageToHistory(text, role) {
+    function saveMessageToHistory(text, role, persona) {
         const stored = localStorage.getItem(STORAGE_KEY);
         let history = stored ? JSON.parse(stored) : [];
-        history.push({ text, role, timestamp: Date.now() });
-        // Limit to last 50 messages
-        if (history.length > 50) history = history.slice(-50);
+        history.push({ text, role, persona, timestamp: Date.now() });
+        // Limit to last 100 messages
+        if (history.length > 100) history = history.slice(-100);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
     }
 
     document.getElementById('fp-clear-chat')?.addEventListener('click', () => {
-        if(confirm(lang === 'da' ? 'Slet chat historik?' : 'Clear chat history?')) {
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
-        }
+       if(confirm("Are you sure you want to clear the chat history?")) {
+           localStorage.removeItem(STORAGE_KEY);
+           location.reload();
+       }
     });
 
-    function addMessage(text, role, skipSave = false) {
+    function addMessage(text, role, skipSave = false, persona = 'default') {
       if (!messages) return;
       
-      if (!skipSave) saveMessageToHistory(text, role);
+      if (!skipSave) saveMessageToHistory(text, role, persona);
       const div = document.createElement('div');
       div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
 
       let contentElement;
+
+      // Map personas to titles
+      const titles = {
+            'default': 'AI Analysis',
+            'recruiter': '💼 Recruiter Mode',
+            'tech': '💻 Tech Lead Mode',
+            'eli5': '👶 ELI5 Mode'
+      };
+      const displayTitle = titles[persona] || titles['default'];
 
       if (role === 'ai') {
         div.innerHTML = `
@@ -677,7 +687,10 @@ const t = {
           </div>
           <div class="flex flex-col max-w-[85%] ai-content-wrapper">
               <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim-100 message-bubble shadow-lg">
-                <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide">AI Analysis</p>
+                <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide flex justify-between items-center">
+                    <span>${displayTitle}</span>
+                    ${persona !== 'default' ? '<i class="fa-solid fa-check-circle opacity-50"></i>' : ''}
+                </p>
                 <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
                   ${formatText(text)}
                 </div>
@@ -693,7 +706,7 @@ const t = {
         
         const safeText = encodeURIComponent(text);
         actionsDiv.innerHTML = `
-           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}">
+           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
               <i class="fa-solid fa-volume-high text-xs"></i>
            </button>
         `;
@@ -710,8 +723,8 @@ const t = {
 
       } else {
         div.innerHTML = `
-          <div class="bg-accent text-bg p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
-            <p>${text}</p>
+          <div class="bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
+            <p class="text-neutral-950 font-semibold">${text}</p>
           </div>
         `;
       }

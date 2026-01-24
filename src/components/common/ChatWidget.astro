@@ -465,7 +465,9 @@ const t = {
             const query = input?.value.trim() || "";
             if (!query && !currentFileContent) return;
 
-            addMessage(query || (currentFileContent ? `[Attached: ${fileInput?.files?.[0]?.name}]` : "Empty message"), 'user');
+            const persona = localStorage.getItem('anton_ai_persona') || 'default';
+
+            addMessage(query || (currentFileContent ? `[Attached: ${fileInput?.files?.[0]?.name}]` : "Empty message"), 'user', false, persona);
             
             const fullPayload = query + (currentFileContent || "");
             
@@ -476,8 +478,6 @@ const t = {
             }
 
             showTyping();
-
-            const persona = localStorage.getItem('anton_ai_persona') || 'default';
             
             try {
               const res = await fetch('/api/chat', {
@@ -503,11 +503,11 @@ const t = {
                      errorMsg += ": Empty Response";
                  }
                  
-                 addMessage("⚠️ " + errorMsg, 'ai');
+                 addMessage("⚠️ " + errorMsg, 'ai', false, persona);
                  return;
               }
 
-              const messageContent = addMessage("", 'ai', true);
+              const messageContent = addMessage("", 'ai', true, persona);
               const reader = res.body?.getReader();
               const decoder = new TextDecoder();
               let accumulatedText = "";
@@ -529,7 +529,7 @@ const t = {
               }
 
               // Save to history
-              saveMessageToHistory(accumulatedText, 'ai');
+              saveMessageToHistory(accumulatedText, 'ai', persona);
 
               if (messageContent) {
                    const wrapper = messageContent.closest('.ai-content-wrapper');
@@ -659,15 +659,15 @@ const t = {
           if (stored) {
               try {
                   const history = JSON.parse(stored);
-                  history.forEach(msg => addMessage(msg.text, msg.role, true));
+                  history.forEach(msg => addMessage(msg.text, msg.role, true, msg.persona));
               } catch (e) { console.error(e); }
           }
       }
 
-      function saveMessageToHistory(text, role) {
+      function saveMessageToHistory(text, role, persona) {
           const stored = localStorage.getItem(STORAGE_KEY);
           let history = stored ? JSON.parse(stored) : [];
-          history.push({ text, role, timestamp: Date.now() });
+          history.push({ text, role, persona, timestamp: Date.now() });
           if (history.length > 50) history = history.slice(-50);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
       }
@@ -679,15 +679,24 @@ const t = {
          }
       });
 
-      function addMessage(text, role, skipSave = false) {
+      function addMessage(text, role, skipSave = false, persona = 'default') {
         const msgs = document.getElementById('chat-messages');
         if (!msgs) return;
         
-        if (!skipSave) saveMessageToHistory(text, role);
+        if (!skipSave) saveMessageToHistory(text, role, persona);
         const div = document.createElement('div');
         div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
 
         let contentElement;
+
+        // Map personas to titles
+        const titles = {
+            'default': 'AI Analysis',
+            'recruiter': '💼 Recruiter Mode',
+            'tech': '💻 Tech Lead Mode',
+            'eli5': '👶 ELI5 Mode'
+        };
+        const displayTitle = titles[persona] || titles['default'];
 
         if (role === 'ai') {
           div.innerHTML = `
@@ -696,10 +705,21 @@ const t = {
             </div>
             <div class="flex flex-col max-w-[85%] ai-content-wrapper">
                 <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim-100 message-bubble shadow-lg">
-                  <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide">AI Analysis</p>
+                  <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide flex justify-between items-center">
+                    <span>${displayTitle}</span>
+                    ${persona !== 'default' ? '<i class="fa-solid fa-check-circle opacity-50"></i>' : ''}
+                  </p>
                   <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
                     ${formatText(text)}
                   </div>
+                </div>
+                
+                <div class="flex gap-2 mt-2 ml-1">
+                   ${text ? `
+                   <button class="text-xs text-dim hover:text-accent transition-colors flex items-center gap-1 opacity-50 hover:opacity-100" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText).then(() => alert('Copied!'))">
+                      <i class="fa-regular fa-copy"></i>
+                   </button>
+                   ` : ''}
                 </div>
             </div>
           `;
@@ -726,8 +746,8 @@ const t = {
 
         } else {
           div.innerHTML = `
-            <div class="bg-accent text-bg p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
-              <p>${text}</p>
+            <div class="bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
+              <p class="text-neutral-950 font-semibold">${text}</p>
             </div>
           `;
         }
