@@ -133,7 +133,7 @@ const t = {
 <script>
   // Simple chat toggle logic
   const widget = document.getElementById('chat-widget');
-  const window = document.getElementById('chat-window');
+  const chatWindow = document.getElementById('chat-window');
   const toggle = document.getElementById('chat-toggle');
   const close = document.getElementById('close-chat');
   const form = document.getElementById('chat-form');
@@ -287,27 +287,26 @@ const t = {
   function toggleChat() {
     isOpen = !isOpen;
     if (isOpen) {
-      window.classList.remove('hidden');
+      chatWindow.classList.remove('hidden');
       // Small timeout for transition
       setTimeout(() => {
-        window.classList.remove('translate-y-10', 'opacity-0');
+        chatWindow.classList.remove('translate-y-10', 'opacity-0');
         toggle.classList.add('scale-0', 'opacity-0');
         toggle.style.display = 'none'; 
       }, 10);
       input.focus();
     } else {
-      window.classList.add('translate-y-10', 'opacity-0');
+      chatWindow.classList.add('translate-y-10', 'opacity-0');
       toggle.style.display = 'flex';
       setTimeout(() => {
          toggle.classList.remove('scale-0', 'opacity-0');
       }, 10);
       setTimeout(() => {
-        window.classList.add('hidden');
+        chatWindow.classList.add('hidden');
       }, 300);
     }
   }
 
-  toggle.addEventListener('click', toggleChat);
   toggle.addEventListener('click', toggleChat);
   close.addEventListener('click', toggleChat);
 
