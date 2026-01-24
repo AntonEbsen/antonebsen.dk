@@ -199,6 +199,17 @@ const t = {
             </span>
             <span class="opacity-50 hidden md:inline">|</span>
             <span class="text-[10px] md:text-xs">MODEL: GEMINI 2.5 FLASH</span>
+            <span class="opacity-50 mx-2">|</span>
+            <!-- Persona Selector -->
+            <div class="relative group">
+                <select id="fp-persona-select" class="appearance-none bg-accent/10 border border-accent/20 text-accent text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-accent/20 transition-colors focus:outline-none uppercase tracking-wide">
+                    <option value="default">STANDARD</option>
+                    <option value="recruiter">💼 RECRUITER</option>
+                    <option value="tech">💻 TECH LEAD</option>
+                    <option value="eli5">👶 ELI5</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
+            </div>
         </div>
         <div class="hidden md:flex items-center gap-3">
             <span>LATENCY: 24ms</span>
@@ -349,6 +360,18 @@ const t = {
         fileInput.value = '';
         fileDisplay?.classList.add('hidden');
     });
+    
+    // Persona Logic
+    const fpPersonaSelect = document.getElementById('fp-persona-select');
+    if (fpPersonaSelect) {
+        const savedPersona = localStorage.getItem('anton_ai_persona');
+        if (savedPersona) fpPersonaSelect.value = savedPersona;
+        
+        fpPersonaSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            localStorage.setItem('anton_ai_persona', val);
+        });
+    }
 
     // Voice Logic (Full Page)
     let recognition;
@@ -437,6 +460,7 @@ const t = {
                   mimeType: (currentFileContent as any).mimeType
               };
               payload.message += `\n[User uploaded an image: ${(currentFileContent as any).name}]`;
+              fullPayload += `\n[User uploaded an image: ${(currentFileContent as any).name}]`; // Append to fullPayload
           }
            // Clear file after sending
            removeFileBtn?.click();
@@ -445,12 +469,15 @@ const t = {
       // Loading
       showTyping();
 
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        const currentLang = document.getElementById('fp-chat-card')?.dataset.lang || 'da';
+        const persona = localStorage.getItem('anton_ai_persona') || 'default';
+
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: fullPayload, lang: currentLang, persona, image: payload.image }) // Pass image if present
+          });
         
         removeTyping();
 

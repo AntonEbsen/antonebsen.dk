@@ -55,7 +55,18 @@ const t = {
           </p>
         </div>
       </div>
-      <div class="flex gap-2">
+      <div class="flex gap-2 items-center">
+        <!-- Persona Selector -->
+        <div class="relative group mr-1">
+            <select id="widget-persona-select" class="appearance-none bg-accent/10 border border-accent/20 text-accent text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-accent/20 transition-colors focus:outline-none">
+                <option value="default">Standard</option>
+                <option value="recruiter">💼 Recruiter</option>
+                <option value="tech">💻 Tech Lead</option>
+                <option value="eli5">👶 ELI5</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
+        </div>
+
         <a href="/chat" class="text-dim hover:text-accent transition-colors p-1" title={lang==='da' ? "Åbn stor chat" : "Open full chat"}>
           <i class="fa-solid fa-expand"></i>
         </a>
@@ -263,6 +274,19 @@ const t = {
           if (fileInput) fileInput.value = '';
           fileDisplay?.classList.add('hidden');
       });
+      
+      // Persona Logic
+      const personaSelect = document.getElementById('widget-persona-select');
+      if (personaSelect) {
+          const savedPersona = localStorage.getItem('anton_ai_persona');
+          if (savedPersona) personaSelect.value = savedPersona;
+          
+          personaSelect.addEventListener('change', (e) => {
+              const val = e.target.value;
+              localStorage.setItem('anton_ai_persona', val);
+              // Option: Announce change in chat? For now, no.
+          });
+      }
 
       // Draggable Logic
       const header = document.getElementById('chat-header');
@@ -443,11 +467,13 @@ const t = {
 
             showTyping();
 
+            const persona = localStorage.getItem('anton_ai_persona') || 'default';
+            
             try {
               const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: fullPayload, lang: currentLang })
+                body: JSON.stringify({ message: fullPayload, lang: currentLang, persona })
               });
               
               removeTyping();

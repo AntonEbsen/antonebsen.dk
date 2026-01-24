@@ -7,7 +7,7 @@ import { ragContent } from '../../lib/generated-rag';
 
 export const prerender = false;
 
-async function getSystemPrompt(lang: string = 'da') {
+async function getSystemPrompt(lang: string = 'da', persona: string = 'default') {
     // Load RAG content from generated file
     const documentContext = ragContent;
 
@@ -22,9 +22,36 @@ async function getSystemPrompt(lang: string = 'da') {
         ? "You MUST answer in DANISH."
         : "You MUST answer in ENGLISH.";
 
+    let personaInstruction = "";
+    if (persona === 'recruiter') {
+        personaInstruction = `
+        PERSONA: RECRUITER / HR MANAGER 💼
+        - Focus on ROI, business impact, and "soft skills".
+        - Highlight leadership, communication, and adaptability.
+        - Use professional, results-oriented language.
+        - Emphasize "why hire Anton" rather than technical minutiae.
+        `;
+    } else if (persona === 'tech') {
+        personaInstruction = `
+        PERSONA: TECH LEAD / CTO 💻
+        - Focus on technical stack, architecture, and code quality.
+        - Highlight specific libraries (e.g. Scikit-learn, Astro, GAMS), algorithms, and data structures.
+        - Be precise and technical.
+        - Discuss complexity and trade-offs.
+        `;
+    } else if (persona === 'eli5') {
+        personaInstruction = `
+        PERSONA: ELI5 (Explain Like I'm 5) 👶
+        - Explain complex economic or technical concepts using simple analogies.
+        - No jargon.
+        - Keep it fun and educational.
+        `;
+    }
+
     return `
 You are the AI Assistant for Anton Meier Ebsen Jørgensen's personal portfolio website.
 Your name is "Anton's AI".
+${personaInstruction}
 Your goal is to answer questions about Anton's professional experience, skills, projects, and thoughts based strictly on the context provided below.
 
 TONE & STYLE:
@@ -161,7 +188,8 @@ export const POST: APIRoute = async ({ request }) => {
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const lang = body.lang || 'da';
-        const systemPrompt = await getSystemPrompt(lang);
+        const persona = body.persona || 'default';
+        const systemPrompt = await getSystemPrompt(lang, persona);
 
         // Initialize model with system instruction
         // Updated for 2026: gemini-1.5 is deprecated. Using gemini-2.5-flash and 2.0-flash.
