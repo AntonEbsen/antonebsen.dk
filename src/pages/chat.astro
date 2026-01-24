@@ -567,7 +567,7 @@ const t = {
         
         const safeText = encodeURIComponent(text);
         actionsDiv.innerHTML = `
-           <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}">
+           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}">
               <i class="fa-solid fa-volume-high text-xs"></i>
            </button>
         `;
