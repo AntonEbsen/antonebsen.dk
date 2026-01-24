@@ -1,61 +1,15 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-// import from code-file instead of JSON logic to be "bulletproof" against bundlers
+// Import from code-file instead of JSON logic to be "bulletproof" against bundlers
 import { cv, portfolio, blog, skills, training } from '../../lib/all-data';
-// import fs from 'fs/promises';
-// import path from 'path';
-// Fix: pdf-parse usually exports a function as default for commonjs, but for esm we might need to handle it differently 
-// or suppress the warning if it works at runtime.
-// @ts-ignore
-// import pdf from 'pdf-parse';
-
-// Load documents logic
-// Load documents logic
-/*
-async function loadDocuments() {
-    try {
-        const docsDir = path.resolve('./src/data/documents');
-        // Check if directory exists
-        try {
-            await fs.access(docsDir);
-        } catch {
-            console.warn("Documents directory not found (src/data/documents). Skipping RAG.");
-            return "";
-        }
-
-        const files = await fs.readdir(docsDir);
-        let allText = "";
-
-        for (const file of files) {
-            const filePath = path.join(docsDir, file);
-
-            if (file.endsWith('.pdf')) {
-                try {
-                    const buffer = await fs.readFile(filePath);
-                    const data = await pdf(buffer);
-                    allText += `\n--- START DOCUMENT: ${file} ---\n${data.text}\n--- END DOCUMENT ---\n`;
-                } catch (e) {
-                    console.error(`Failed to parse PDF ${file}:`, e);
-                }
-            } else if (file.endsWith('.txt') || file.endsWith('.md')) {
-                const text = await fs.readFile(filePath, 'utf-8');
-                allText += `\n--- START DOCUMENT: ${file} ---\n${text}\n--- END DOCUMENT ---\n`;
-            }
-        }
-        return allText;
-    } catch (error) {
-        console.error("Error loading documents:", error);
-        return "";
-    }
-}
-*/
+// RAG Content (Generated at build time)
+import { ragContent } from '../../lib/generated-rag';
 
 export const prerender = false;
 
 async function getSystemPrompt(lang: string = 'da') {
-    // Load RAG content dynamically
-    // const documentContext = await loadDocuments();
-    const documentContext = ""; // RAG Disabled for debugging
+    // Load RAG content from generated file
+    const documentContext = ragContent;
 
     // Convert JSONs to a readable string format
     const cvText = JSON.stringify(cv, null, 2);
@@ -222,15 +176,9 @@ export const POST: APIRoute = async ({ request }) => {
                     systemInstruction: systemPrompt
                 });
 
-                const result = await model.generateContent(userMessage);
-                const response = result.response;
-                const text = response.text();
-
-                return new Response(text, {
-                    status: 200,
-                    headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-                });
-
+                streamResult = await model.generateContentStream(userMessage);
+                // If we get here without throwing, the stream request initiated successfully
+                break;
             } catch (err: any) {
                 console.warn(`Failed with model ${modelName}:`, err.message);
                 lastError = err;
@@ -238,14 +186,34 @@ export const POST: APIRoute = async ({ request }) => {
             }
         }
 
-        throw lastError || new Error("All models failed.");
-
-        /* STREAMING DISABLED FOR DEBUGGING
         if (!streamResult) {
             throw lastError || new Error("All models failed to respond.");
         }
-        ... (rest to be deleted or commented out)
-        */
+
+        // Create a readable stream from the Gemini stream
+        const responseStream = new ReadableStream({
+            async start(controller) {
+                const encoder = new TextEncoder();
+                try {
+                    for await (const chunk of streamResult.stream) {
+                        const chunkText = chunk.text();
+                        controller.enqueue(encoder.encode(chunkText));
+                    }
+                    controller.close();
+                } catch (err) {
+                    console.error("Stream Error:", err);
+                    controller.error(err);
+                }
+            }
+        });
+
+        return new Response(responseStream, {
+            status: 200,
+            headers: {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Transfer-Encoding': 'chunked'
+            }
+        });
 
     } catch (error: any) {
         console.error('AI Error:', error);
