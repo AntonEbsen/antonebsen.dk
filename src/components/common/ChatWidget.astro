@@ -356,15 +356,20 @@ const t = {
               removeTyping();
 
               if (!res.ok) {
-                 let errorMsg = "Server Error";
-                 try {
-                     const data = await res.json();
-                     errorMsg = data.message || errorMsg;
-                 } catch (e) {
-                     // If JSON fails, try text
-                     const text = await res.text();
-                     errorMsg = text ? `Server Error (${res.status}): ${text.substring(0, 100)}...` : `Server Error (${res.status})`;
+                 const text = await res.text();
+                 let errorMsg = `Server Error (${res.status})`;
+                 if (text) {
+                     try {
+                         const data = JSON.parse(text);
+                         errorMsg = data.message || errorMsg;
+                     } catch (e) {
+                         // Valid text but not JSON (e.g. HTML error page)
+                         errorMsg += `: ${text.substring(0, 100)}...`;
+                     }
+                 } else {
+                     errorMsg += ": Empty Response";
                  }
+                 
                  addMessage("⚠️ " + errorMsg, 'ai');
                  return;
               }
