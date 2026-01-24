@@ -541,29 +541,49 @@ const t = {
         return contentElement;
       }
 
+      let typingInterval;
+
       function showTyping() {
         const msgs = document.getElementById('chat-messages');
         if (!msgs) return;
+        
         const div = document.createElement('div');
         div.id = 'fp-typing';
         div.className = 'flex gap-4';
+        
+        // Initial State
         div.innerHTML = `
-           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
-              <i class="fa-solid fa-robot text-lg"></i>
+           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1 animate-pulse">
+              <i class="fa-solid fa-microchip text-lg"></i>
             </div>
-            <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none">
-              <div class="flex gap-2">
-                <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce"></span>
-                <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-                <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-              </div>
+            <div class="bg-[rgba(255,255,255,0.05)] border border-accent/20 p-4 rounded-2xl rounded-tl-none flex items-center">
+              <span id="typing-text" class="text-xs font-mono text-accent tracking-wider">⚡ Initializing Quantum Core...</span>
             </div>
         `;
         msgs.appendChild(div);
         msgs.scrollTop = msgs.scrollHeight;
+
+        const states = [
+            "⚡ Initializing Quantum Core...",
+            "🌪️ Reading Context & Metadata...",
+            "📚 Searching Knowledge Base...",
+            "🧠 Analyzing Economic Models...",
+            "✨ Generating Response..."
+        ];
+        
+        let stateIdx = 0;
+        const textSpan = div.querySelector('#typing-text');
+        
+        if (textSpan) {
+            typingInterval = setInterval(() => {
+                stateIdx = (stateIdx + 1) % states.length;
+                textSpan.textContent = states[stateIdx];
+            }, 800);
+        }
       }
 
       function removeTyping() {
+        if (typingInterval) clearInterval(typingInterval);
         const el = document.getElementById('fp-typing');
         if (el) el.remove();
       }
