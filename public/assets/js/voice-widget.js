@@ -12,6 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("🔊 Voice Widget Initialized");
 
     // Global Event Delegation for ANY speak button on the page
+
+    // DEBUG BUTTON (REMOVE LATER)
+    const debugBtn = document.createElement('button');
+    debugBtn.innerText = "TEST VOICE SYSTEM 🔊";
+    debugBtn.style.cssText = "position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 99999; background: red; color: white; padding: 10px 20px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer;";
+    debugBtn.onclick = () => {
+        alert("Testing Voice...");
+        const u = new SpeechSynthesisUtterance("System Check. One, Two, Three.");
+        window.speechSynthesis.speak(u);
+    };
+    document.body.appendChild(debugBtn);
+
     document.body.addEventListener('click', (e) => {
         const btn = e.target.closest('.speak-btn');
         if (btn) {
