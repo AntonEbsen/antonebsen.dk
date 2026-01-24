@@ -377,7 +377,7 @@ const t = {
                  return;
               }
 
-              const messageContent = addMessage("", 'ai');
+              const messageContent = addMessage("", 'ai', true);
               const reader = res.body?.getReader();
               const decoder = new TextDecoder();
               let accumulatedText = "";
@@ -397,6 +397,9 @@ const t = {
                       if(msgs) msgs.scrollTop = msgs.scrollHeight;
                   }
               }
+
+              // Save to history
+              saveMessageToHistory(accumulatedText, 'ai');
 
               if (messageContent) {
                    const wrapper = messageContent.closest('.ai-content-wrapper');

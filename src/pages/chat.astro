@@ -461,8 +461,8 @@ const t = {
            return;
         }
 
-        // Create a placeholder message for the stream
-        const messageContent = addMessage("", 'ai');
+        // Create a placeholder message for the stream (Skip saving initially)
+        const messageContent = addMessage("", 'ai', true);
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
         let accumulatedText = "";
@@ -482,6 +482,9 @@ const t = {
                 messages.scrollTop = messages.scrollHeight;
             }
         }
+
+        // Save complete message to history
+        saveMessageToHistory(accumulatedText, 'ai');
 
         // Final processing for regex tags (Charts/Navigation) on the complete text
         // Pass the container div (grandparent of the message content p tag)
