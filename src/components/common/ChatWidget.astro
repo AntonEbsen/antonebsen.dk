@@ -247,6 +247,40 @@ const t = {
       if(voiceBtn) voiceBtn.style.display = 'none';
   }
   const currentLang = widget?.getAttribute('data-lang') || 'da';
+  
+  // Concierge Logic
+  const currentPath = window.location.pathname;
+  const conciergeMessages = {
+      '/cv': {
+          da: "Har du spørgsmål til min erfaring eller specifikke roller?",
+          en: "Do you have questions about my experience or specific roles?"
+      },
+      '/portfolio': {
+          da: "Jeg kan forklare teknologistakken bag disse projekter. Spørg løs!",
+          en: "I can explain the tech stack behind these projects. Ask away!"
+      },
+      '/blog': {
+          da: "Læser du mine tanker? Jeg kan opsummere ethvert blogindlæg for dig.",
+          en: "Reading my thoughts? I can summarize any post for you."
+      },
+      '/ai-project': {
+          da: "Nysgerrig på hvordan jeg arbejder? Spørg mig om min RAG-arkitektur!",
+          en: "Curious about how I work? Ask me about my RAG architecture!"
+      }
+  };
+
+  // Check if we hit a known path (or subpath)
+  const matchedPath = Object.keys(conciergeMessages).find(path => currentPath.startsWith(path));
+  
+  if (matchedPath) {
+     const msg = conciergeMessages[matchedPath][currentLang];
+     const introText = document.querySelector('#chat-messages p');
+     if (introText) {
+         introText.textContent = msg;
+         // Add visual cue
+         introText.parentElement.classList.add('border-accent', 'border');
+     }
+  }
 
   let isOpen = false;
 
