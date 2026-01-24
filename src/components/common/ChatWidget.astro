@@ -515,6 +515,18 @@ const t = {
          }
       }
 
+      // Event Delegation for dynamic buttons
+      const msgsContainer = document.getElementById('chat-messages');
+      if (msgsContainer) {
+          msgsContainer.addEventListener('click', (e) => {
+              const btn = e.target.closest('.speak-btn');
+              if (btn) {
+                  const text = btn.getAttribute('data-text');
+                  if (text) speakMessage(text, btn);
+              }
+          });
+      }
+
       function addMessage(text, role) {
         const msgs = document.getElementById('chat-messages');
         if (!msgs) return;
@@ -540,18 +552,19 @@ const t = {
           contentElement = div.querySelector('.prose');
           if (text) contentElement.innerHTML = formatText(text);
 
-          // Add Speak Button
+          // Add Speak Button with Data Attribute
           const actionsDiv = document.createElement('div');
           actionsDiv.className = "flex justify-end mt-2 gap-2";
+          
+          // Store text in data attribute for safety
+          const safeText = encodeURIComponent(text);
+          
           actionsDiv.innerHTML = `
-             <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt">
+             <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}">
                 <i class="fa-solid fa-volume-high text-xs"></i>
              </button>
           `;
           div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
-          
-          const speakBtn = actionsDiv.querySelector('.speak-btn');
-          speakBtn.onclick = () => speakMessage(text, speakBtn);
 
         } else {
           div.innerHTML = `
@@ -616,10 +629,17 @@ const t = {
 
       let activeUtterance = null;
 
-      function speakMessage(text, btn) {
+      function speakMessage(encodedText, btn) {
           if (!window.speechSynthesis) {
               addMessage("⚠️ TTS not supported by this browser.", 'system');
               return;
+          }
+
+          let text = "";
+          try {
+              text = decodeURIComponent(encodedText);
+          } catch(e) {
+              text = encodedText; // Fallback
           }
 
           // Debug: Show we are trying
