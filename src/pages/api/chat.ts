@@ -51,7 +51,8 @@ export const prerender = false;
 
 async function getSystemPrompt(lang: string = 'da') {
     // Load RAG content dynamically
-    const documentContext = await loadDocuments();
+    // const documentContext = await loadDocuments();
+    const documentContext = ""; // RAG Disabled for debugging
 
     // Convert JSONs to a readable string format
     const cvText = JSON.stringify(cv, null, 2);
