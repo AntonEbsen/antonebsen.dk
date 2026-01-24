@@ -614,19 +614,20 @@ const t = {
         if (el) el.remove();
       }
 
-      // Fix for Chrome GC bug: Store utterance globally
       let activeUtterance = null;
 
       function speakMessage(text, btn) {
           if (!window.speechSynthesis) {
-              console.error("TTS not supported");
+              alert("Your browser does not support Text-to-Speech.");
               return;
           }
           
+          console.log("🔊 Attempting to speak:", text.substring(0, 20) + "...");
+
           // Cancel current
           window.speechSynthesis.cancel();
 
-          // Reset all icons
+          // Reset icons
           document.querySelectorAll('.speak-btn i').forEach(icon => {
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
@@ -640,41 +641,50 @@ const t = {
           const cleanText = text.replace(/[*#`]/g, '');
 
           const utterance = new SpeechSynthesisUtterance(cleanText);
-          activeUtterance = utterance; // Keep reference to prevent GC!
-          
-          const lang = document.documentElement.lang || 'da';
-          utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
+          activeUtterance = utterance; 
+
+          // Force standard settings first
           utterance.rate = 1.0;
           utterance.pitch = 1.0;
+          utterance.volume = 1.0; 
 
-          // Robust Voice Loading
-          const setVoice = () => {
-               const voices = window.speechSynthesis.getVoices();
-               const preferredVoice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
-               if (preferredVoice) utterance.voice = preferredVoice;
-               console.log("TTS Voice set to:", preferredVoice ? preferredVoice.name : "Default");
-          };
-
-          if (window.speechSynthesis.getVoices().length === 0) {
-              window.speechSynthesis.onvoiceschanged = setVoice;
+          // Select Voice Logic
+          const voices = window.speechSynthesis.getVoices();
+          const lang = document.documentElement.lang || 'da';
+          // Try to find exact match first, then loose match
+          const voice = voices.find(v => v.lang === (lang === 'en' ? 'en-US' : 'da-DK')) 
+                     || voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
+          
+          if (voice) {
+              utterance.voice = voice;
+              console.log("🔊 Voice selected:", voice.name);
           } else {
-              setVoice();
+              console.warn("🔊 No matching voice found, using default.");
           }
 
           utterance.onend = () => {
+              console.log("🔊 Speech ended");
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
-              activeUtterance = null; // Release
+              activeUtterance = null;
           };
-          
-          utterance.onerror = (e) => {
-               console.error("TTS Error:", e);
-               icon.classList.remove('text-accent', 'animate-pulse');
-               icon.classList.add('text-dim-400');
-               activeUtterance = null;
-          }
 
-          window.speechSynthesis.speak(utterance);
+          utterance.onerror = (e) => {
+              console.error("🔊 Speech Error:", e);
+              icon.classList.remove('text-accent', 'animate-pulse');
+              icon.classList.add('text-dim-400');
+              activeUtterance = null;
+          };
+
+          // Small timeout to Ensure the browser is ready
+          setTimeout(() => {
+              window.speechSynthesis.speak(utterance);
+              
+              // Resume if stuck (Chrome fix)
+              if (window.speechSynthesis.paused) {
+                  window.speechSynthesis.resume();
+              }
+          }, 100);
       }
 
   } catch (err) {
