@@ -15,18 +15,27 @@ const t = {
     },
     features: {
       rag: {
+        icon: "fa-file-pdf",
         title: "Dokument Analyse (RAG)",
         desc: "AI'en kan læse og forstå uploadede PDF'er (f.eks. forskningsartikler eller jobopslag) og bruge dem som kontekst i samtalen."
       },
       match: {
+        icon: "fa-briefcase",
         title: "Job Matchmaker",
         desc: "Indsæt et jobopslag, og AI'en agerer recruiter. Den analyserer match, finder huller i kompetencerne og skriver en målrettet pitch."
       },
       charts: {
+        icon: "fa-chart-pie",
         title: "Interaktive Grafer",
         desc: "Bed om at se en visualisering, og AI'en genererer live Chart.js grafer over kompetencer, erfaring eller økonomiske data."
       },
+      sim: {
+        icon: "fa-chart-line",
+        title: "Økonomi Simulator",
+        desc: "Bed AI'en om at simulere scenarier (f.eks. 'Simuler en recession'), og den genererer hypotetiske data og grafer for at visualisere effekten."
+      },
       voice: {
+        icon: "fa-microphone",
         title: "Stemmeaktivering",
         desc: "Tal direkte med assistenten via browserens indbyggede talegenkendelse for en mere naturlig interaktion."
       }
@@ -52,18 +61,27 @@ const t = {
     },
     features: {
       rag: {
+        icon: "fa-file-pdf",
         title: "Document Analysis (RAG)",
         desc: "The AI can read and understand uploaded PDFs (e.g., research papers or job descriptions) and use them as context in the conversation."
       },
       match: {
+        icon: "fa-briefcase",
         title: "Job Matchmaker",
         desc: "Paste a job description, and the AI acts as a recruiter. It analyzes the match, finds skill gaps, and writes a targeted pitch."
       },
       charts: {
+        icon: "fa-chart-pie",
         title: "Interactive Charts",
         desc: "Ask specifically for a visualization, and the AI generates live Chart.js graphs of skills, experience, or economic data."
       },
+      sim: {
+        icon: "fa-chart-line",
+        title: "Economy Simulator",
+        desc: "Ask the AI to simulate scenarios (e.g., 'Simulate a recession'), and it generates hypothetical data and charts to visualize the impact."
+      },
       voice: {
+        icon: "fa-microphone",
         title: "Voice Activation",
         desc: "Speak directly to the assistant via the browser's built-in speech recognition for a more natural interaction."
       }
@@ -161,7 +179,7 @@ const t = {
         {Object.values(t.features).map((feature, i) => (
           <div class="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent/30 transition-colors group">
             <div class="w-12 h-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-              <i class={`fa-solid ${i===0 ? 'fa-file-pdf' : i===1 ? 'fa-briefcase' : i===2 ? 'fa-chart-pie' : 'fa-microphone'}`}></i>
+              <i class={`fa-solid ${feature.icon}`}></i>
             </div>
             <h3 class="text-2xl font-bold mb-3">{feature.title}</h3>
             <p class="text-dim leading-relaxed">{feature.desc}</p>
