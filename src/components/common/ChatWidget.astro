@@ -29,6 +29,14 @@ const t = {
 }[lang];
 ---
 
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script is:inline>
+    // Initialize PDF.js worker if not already done
+    if (window.pdfjsLib && !window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+</script>
+
 <div id="chat-widget" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end pointer-events-none" data-lang={lang}>
   
   <!-- Chat Window -->
@@ -90,6 +98,10 @@ const t = {
           class="flex-1 bg-bg/50 border border-glass-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent/50 transition-colors placeholder:text-dim/50"
           autocomplete="off"
         />
+        <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv" />
+        <button type="button" id="file-btn" class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group" title="Upload Document">
+            <i class="fa-solid fa-paperclip text-xs group-hover:scale-110 transition-transform"></i>
+        </button>
         <button type="button" id="voice-btn" class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group relative" title="Speak to Anton (Voice Mode)">
            <i class="fa-solid fa-microphone text-xs group-hover:scale-110 transition-transform"></i>
            <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="voice-indicator"></span>
@@ -98,6 +110,10 @@ const t = {
           <i class="fa-solid fa-paper-plane text-xs"></i>
         </button>
       </form>
+      <div id="file-display" class="hidden mt-2 px-2 py-1 bg-accent/10 border border-accent/20 rounded flex items-center justify-between text-[10px] text-accent">
+          <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-1"></i><span id="filename"></span></span>
+          <button type="button" id="remove-file" class="ml-2 hover:text-white"><i class="fa-solid fa-times"></i></button>
+      </div>
       <div class="text-[10px] text-center text-dim/30 mt-2">
         {t.disclaimer}
       </div>
@@ -122,6 +138,58 @@ const t = {
   const messages = document.getElementById('chat-messages');
   const voiceBtn = document.getElementById('voice-btn');
   const voiceIndicator = document.getElementById('voice-indicator');
+
+
+
+  // File Upload Logic
+  const fileInput = document.getElementById('chat-file') as HTMLInputElement;
+  const fileBtn = document.getElementById('file-btn');
+  const fileDisplay = document.getElementById('file-display');
+  const fileNameSpan = document.getElementById('filename');
+  const removeFileBtn = document.getElementById('remove-file');
+  let currentFileContent = null;
+
+  fileBtn?.addEventListener('click', () => fileInput.click());
+
+  fileInput?.addEventListener('change', async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      if(fileDisplay && fileNameSpan) {
+          fileDisplay.classList.remove('hidden');
+          fileNameSpan.textContent = "Processing...";
+      }
+
+      try {
+          let text = "";
+          if (file.type === 'application/pdf') {
+              if(!window.pdfjsLib) throw new Error("PDF.js not loaded");
+              const arrayBuffer = await file.arrayBuffer();
+              const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+              for (let i = 1; i <= pdf.numPages; i++) {
+                  const page = await pdf.getPage(i);
+                  const content = await page.getTextContent();
+                  text += content.items.map((item: any) => item.str).join(' ') + "\n";
+              }
+          } else {
+              text = await file.text();
+          }
+
+          currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
+          if(fileNameSpan) fileNameSpan.textContent = file.name;
+          
+      } catch (err) {
+          console.error("File read error:", err);
+          if(fileNameSpan) fileNameSpan.textContent = "Error";
+          currentFileContent = null;
+      }
+  });
+
+  removeFileBtn?.addEventListener('click', () => {
+      currentFileContent = null;
+      fileInput.value = '';
+      fileDisplay?.classList.add('hidden');
+  });
 
   // Voice Interaction Logic
   let recognition;
@@ -226,8 +294,17 @@ const t = {
     if (!query) return;
 
     // User Message
-    addMessage(query, 'user');
+    addMessage(query || (currentFileContent ? `[Attached: ${fileInput.files?.[0]?.name}]` : "Empty message"), 'user');
+    
+    // Combine
+    const fullPayload = query + (currentFileContent || "");
+    
     input.value = '';
+
+    // Clear file
+    if(currentFileContent) {
+        removeFileBtn?.click();
+    }
 
     // Thinking
     showTyping();
@@ -236,7 +313,7 @@ const t = {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: query, lang: currentLang })
+        body: JSON.stringify({ message: fullPayload, lang: currentLang })
       });
 
       removeTyping();
