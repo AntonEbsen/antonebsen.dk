@@ -219,9 +219,15 @@ export const POST: APIRoute = async ({ request }) => {
                     systemInstruction: systemPrompt
                 });
 
-                streamResult = await model.generateContentStream(userMessage);
-                // If we get here without throwing, the stream request initiated successfully
-                break;
+                const result = await model.generateContent(userMessage);
+                const response = result.response;
+                const text = response.text();
+
+                return new Response(text, {
+                    status: 200,
+                    headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+                });
+
             } catch (err: any) {
                 console.warn(`Failed with model ${modelName}:`, err.message);
                 lastError = err;
@@ -229,34 +235,14 @@ export const POST: APIRoute = async ({ request }) => {
             }
         }
 
+        throw lastError || new Error("All models failed.");
+
+        /* STREAMING DISABLED FOR DEBUGGING
         if (!streamResult) {
             throw lastError || new Error("All models failed to respond.");
         }
-
-        // Create a readable stream from the Gemini stream
-        const responseStream = new ReadableStream({
-            async start(controller) {
-                const encoder = new TextEncoder();
-                try {
-                    for await (const chunk of streamResult.stream) {
-                        const chunkText = chunk.text();
-                        controller.enqueue(encoder.encode(chunkText));
-                    }
-                    controller.close();
-                } catch (err) {
-                    console.error("Stream Error:", err);
-                    controller.error(err);
-                }
-            }
-        });
-
-        return new Response(responseStream, {
-            status: 200,
-            headers: {
-                'Content-Type': 'text/plain; charset=utf-8',
-                'Transfer-Encoding': 'chunked'
-            }
-        });
+        ... (rest to be deleted or commented out)
+        */
 
     } catch (error: any) {
         console.error('AI Error:', error);
