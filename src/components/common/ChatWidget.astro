@@ -43,7 +43,7 @@ const t = {
   <div id="chat-window" class="w-[calc(100vw-2rem)] md:w-[350px] h-[500px] max-h-[75vh] mb-4 bg-glass border border-glass-border rounded-xl shadow-2xl flex flex-col transform translate-y-10 opacity-0 pointer-events-auto transition-all duration-300 origin-bottom-right hidden">
     
     <!-- Header -->
-    <div class="p-4 border-b border-glass-border flex justify-between items-center bg-accent/5 rounded-t-xl">
+    <div id="chat-header" class="p-4 border-b border-glass-border flex justify-between items-center bg-accent/5 rounded-t-xl cursor-move select-none">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-full bg-accent text-bg flex items-center justify-center">
           <i class="fa-solid fa-robot"></i>
@@ -101,7 +101,7 @@ const t = {
           type="text" 
           id="chat-input"
           placeholder={t.placeholder}
-          class="flex-1 bg-bg/50 border border-glass-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent/50 transition-colors placeholder:text-dim/50"
+          class="flex-1 bg-bg/50 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-white/40"
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv" />
@@ -264,7 +264,101 @@ const t = {
           fileDisplay?.classList.add('hidden');
       });
 
-      // Voice Interaction Logic
+      // Draggable Logic
+      const header = document.getElementById('chat-header');
+      let isDragging = false;
+      let currentX;
+      let currentY;
+      let initialX;
+      let initialY;
+      let xOffset = 0;
+      let yOffset = 0;
+
+      if (header && chatWindow) {
+          header.addEventListener('mousedown', dragStart);
+          document.addEventListener('mousemove', drag);
+          document.addEventListener('mouseup', dragEnd);
+          
+          // Touch support
+          header.addEventListener('touchstart', dragStart, {passive: false});
+          document.addEventListener('touchmove', drag, {passive: false});
+          document.addEventListener('touchend', dragEnd);
+      }
+
+      function dragStart(e) {
+         if (e.target.closest('button') || e.target.closest('a')) return; // Allow clicking buttons in header
+         
+         if (e.type === "touchstart") {
+             initialX = e.touches[0].clientX - xOffset;
+             initialY = e.touches[0].clientY - yOffset;
+         } else {
+             initialX = e.clientX - xOffset;
+             initialY = e.clientY - yOffset;
+         }
+
+         if (e.target === header || header.contains(e.target)) {
+             isDragging = true;
+             // Fix the window in place relative to viewport once dragging starts
+             const rect = chatWindow.getBoundingClientRect();
+             
+             // Important: We need to break out of the flex container constraints
+             // Switch to fixed positioning if not already
+             if (chatWindow.style.position !== 'fixed') {
+                 chatWindow.style.position = 'fixed';
+                 chatWindow.style.left = rect.left + 'px';
+                 chatWindow.style.top = rect.top + 'px';
+                 chatWindow.style.marginBottom = '0';
+                 chatWindow.style.transform = 'none'; // distinct from open animation
+                 
+                 // Recalculate offsets after switching to fixed
+                 // But simply starting translate from 0,0 is easier if we track delta
+                 initialX = e.clientX || e.touches[0].clientX;
+                 initialY = e.clientY || e.touches[0].clientY;
+                 
+                 // Store current top/left
+                 xOffset = rect.left;
+                 yOffset = rect.top;
+             }
+         }
+      }
+
+      function dragEnd(e) {
+         initialX = currentX;
+         initialY = currentY;
+         isDragging = false;
+      }
+
+      function drag(e) {
+         if (isDragging) {
+             e.preventDefault();
+             
+             let clientX, clientY;
+             if (e.type === "touchmove") {
+                 clientX = e.touches[0].clientX;
+                 clientY = e.touches[0].clientY;
+             } else {
+                 clientX = e.clientX;
+                 clientY = e.clientY;
+             }
+
+             // Calculate new position
+             const dx = clientX - initialX;
+             const dy = clientY - initialY;
+             
+             currentX = xOffset + dx;
+             currentY = yOffset + dy;
+
+             // Boundary checks (keep on screen)
+             // ... simplify for now, just set style
+             
+             // Update position (since we are fixed mode)
+             chatWindow.style.left = (clientX - (initialX - xOffset)) + 'px';
+             chatWindow.style.top = (clientY - (initialY - yOffset)) + 'px';
+         }
+      }
+
+      // Voice Logic
+      // Check if browser supports speech recognition
       let recognition;
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
           const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
