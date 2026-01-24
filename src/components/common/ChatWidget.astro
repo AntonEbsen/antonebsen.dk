@@ -586,6 +586,12 @@ const t = {
              </button>
           `;
           div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
+          
+          // Process Tags (Charts, Suggestions) for restored history
+          if (text) {
+               const wrapper = div.querySelector('.ai-content-wrapper');
+               processSpecialTags(text, wrapper); 
+          }
 
         } else {
           div.innerHTML = `
