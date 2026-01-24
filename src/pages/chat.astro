@@ -596,6 +596,35 @@ const t = {
            }, 500);
        }
 
+
+       // Scheduler
+       const schedulerMatch = text.match(/<<<ACTION: SCHEDULER>>>/);
+       if (schedulerMatch) {
+            const schedulerDiv = document.createElement('div');
+            schedulerDiv.className = 'mt-4 p-4 bg-accent/5 border border-accent/20 rounded-xl backdrop-blur-sm self-start max-w-sm';
+            schedulerDiv.innerHTML = `
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                        <i class="fa-solid fa-calendar-check text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Let's Connect</h4>
+                        <p class="text-xs text-dim">Ready to discuss a project?</p>
+                    </div>
+                </div>
+                <a href="mailto:anton@antonebsen.dk?subject=Interview%20Request%20via%20AI%20Assistant" 
+                   class="block w-full py-2 bg-accent hover:bg-accent-light text-bg font-bold text-center rounded-lg transition-colors text-sm">
+                   <i class="fa-solid fa-envelope mr-2"></i> Send Email / Schedule
+                </a>
+            `;
+            // Append to the bubble container or create a new wrapper if needed
+            const bubble = containerDiv.querySelector('.message-bubble');
+            if (bubble) bubble.appendChild(schedulerDiv);
+            else containerDiv.appendChild(schedulerDiv);
+            
+            messages.scrollTop = messages.scrollHeight;
+       }
+
        // Check for Suggestions Block
        const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
        if (suggestMatch) {
