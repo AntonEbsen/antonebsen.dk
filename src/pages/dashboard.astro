@@ -37,8 +37,27 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </header>
 
+            <!-- QUICK NAV -->
+            <div class="flex flex-wrap gap-2 mb-8 sticky top-0 bg-black/90 z-40 py-4 border-b border-gray-800 backdrop-blur-sm">
+                <button onclick="document.getElementById('stats-section').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 hover:border-gold-500 text-xs uppercase tracking-wider text-gray-400 hover:text-gold-400 transition-colors">
+                    <i class="fa-solid fa-chart-line mr-2"></i>Stats
+                </button>
+                <button onclick="document.getElementById('library-section').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 hover:border-gold-500 text-xs uppercase tracking-wider text-gray-400 hover:text-gold-400 transition-colors">
+                    <i class="fa-solid fa-book mr-2"></i>Library
+                </button>
+                <button onclick="document.getElementById('training-section').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 hover:border-gold-500 text-xs uppercase tracking-wider text-gray-400 hover:text-gold-400 transition-colors">
+                    <i class="fa-solid fa-dumbbell mr-2"></i>Training
+                </button>
+                <button onclick="document.getElementById('quotes-section').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 hover:border-gold-500 text-xs uppercase tracking-wider text-gray-400 hover:text-gold-400 transition-colors">
+                    <i class="fa-solid fa-quote-right mr-2"></i>Quotes
+                </button>
+                <button onclick="document.getElementById('travel-section').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 rounded bg-gray-900 border border-gray-700 hover:border-gold-500 text-xs uppercase tracking-wider text-gray-400 hover:text-gold-400 transition-colors">
+                    <i class="fa-solid fa-earth-europe mr-2"></i>Travel
+                </button>
+            </div>
+
             <!-- KEY METRICS ROW -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div id="stats-section" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
                     <p class="text-gray-500 text-xs uppercase tracking-wider">Total Conversations</p>
                     <p id="metric-total" class="text-4xl font-bold text-gold-100 mt-2">-</p>
@@ -107,7 +126,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- LIBRARY MANAGER -->
-             <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8">
+             <div id="library-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
                     <h3 class="text-gold-400 font-bold">Living Library Manager</h3>
                 </div>
@@ -126,7 +145,9 @@ import Layout from '../layouts/Layout.astro';
                                 </select>
                                 <input type="number" id="book-rating" placeholder="Rating (1-5)" min="1" max="5" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
                             </div>
-                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Add to Library</button>
+                            <button type="submit" class="bg-gradient-to-r from-gold-600 to-amber-600 text-black font-bold py-3 px-4 rounded w-full hover:from-gold-500 hover:to-amber-500 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-plus-circle"></i> Add to Library
+                            </button>
                         </form>
                     </div>
 
@@ -141,7 +162,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- WORKOUT LOGGER -->
-            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8">
+            <div id="training-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
                     <h3 class="text-gold-400 font-bold">Quantified Self (Training)</h3>
                 </div>
@@ -165,7 +186,9 @@ import Layout from '../layouts/Layout.astro';
                                 <input type="number" id="t-tonnage" placeholder="Kg" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
                             </div>
                             <input type="text" id="t-notes" placeholder="Notes (e.g. 5x5 Squat PR)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
-                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Log Workout</button>
+                            <button type="submit" class="bg-gradient-to-r from-gold-600 to-amber-600 text-black font-bold py-3 px-4 rounded w-full hover:from-gold-500 hover:to-amber-500 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-person-running"></i> Log Workout
+                            </button>
                          </form>
                     </div>
 
@@ -180,7 +203,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- QUOTE BANK -->
-            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8">
+            <div id="quotes-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
                     <h3 class="text-gold-400 font-bold">Quote Bank Manager</h3>
                 </div>
@@ -196,7 +219,9 @@ import Layout from '../layouts/Layout.astro';
                                 <input type="text" id="q-source" placeholder="Source (Book/Paper)" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
                             </div>
                             <input type="text" id="q-tags" placeholder="Tags (comma separated)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
-                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Add to Bank</button>
+                            <button type="submit" class="bg-gradient-to-r from-gold-600 to-amber-600 text-black font-bold py-3 px-4 rounded w-full hover:from-gold-500 hover:to-amber-500 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-scroll"></i> Add to Bank
+                            </button>
                         </form>
                      </div>
 
@@ -211,7 +236,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- TRAVEL MAP MANAGER -->
-            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+            <div id="travel-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
                     <h3 class="text-gold-400 font-bold">World Map Manager</h3>
                 </div>
@@ -237,19 +262,11 @@ import Layout from '../layouts/Layout.astro';
                             </div>
                             <input type="text" id="tr-notes" placeholder="Notes (Memory)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
                             <p class="text-xs text-gray-500">Tip: Right-click Google Maps to get Lat/Lng.</p>
-                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Add Location</button>
+                            <button type="submit" class="bg-gradient-to-r from-gold-600 to-amber-600 text-black font-bold py-3 px-4 rounded w-full hover:from-gold-500 hover:to-amber-500 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-map-pin"></i> Add Location
+                            </button>
                         </form>
                      </div>
-
-                     <!-- RECENT LOCATIONS -->
-                     <div>
-                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Recent Pins</h4>
-                        <ul id="travel-list" class="space-y-2 text-sm text-gray-400">
-                            <li>Loading map data...</li>
-                        </ul>
-                     </div>
-                </div>
-            </div>
 
         </div>
     </main>
