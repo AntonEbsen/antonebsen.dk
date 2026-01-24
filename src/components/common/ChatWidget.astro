@@ -614,8 +614,14 @@ const t = {
         if (el) el.remove();
       }
 
+      // Fix for Chrome GC bug: Store utterance globally
+      let activeUtterance = null;
+
       function speakMessage(text, btn) {
-          if (!window.speechSynthesis) return;
+          if (!window.speechSynthesis) {
+              console.error("TTS not supported");
+              return;
+          }
           
           // Cancel current
           window.speechSynthesis.cancel();
@@ -630,29 +636,42 @@ const t = {
           icon.classList.remove('text-dim-400');
           icon.classList.add('text-accent', 'animate-pulse');
 
-          // Clean text (remove markdown like *, #, etc)
+          // Clean text
           const cleanText = text.replace(/[*#`]/g, '');
 
           const utterance = new SpeechSynthesisUtterance(cleanText);
-          const lang = document.documentElement.lang || 'da'; // Default to Danish site
+          activeUtterance = utterance; // Keep reference to prevent GC!
+          
+          const lang = document.documentElement.lang || 'da';
           utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
           utterance.rate = 1.0;
           utterance.pitch = 1.0;
 
-          // Attempt to find a good voice
-          const voices = window.speechSynthesis.getVoices();
-          const voice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
-          if (voice) utterance.voice = voice;
+          // Robust Voice Loading
+          const setVoice = () => {
+               const voices = window.speechSynthesis.getVoices();
+               const preferredVoice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
+               if (preferredVoice) utterance.voice = preferredVoice;
+               console.log("TTS Voice set to:", preferredVoice ? preferredVoice.name : "Default");
+          };
+
+          if (window.speechSynthesis.getVoices().length === 0) {
+              window.speechSynthesis.onvoiceschanged = setVoice;
+          } else {
+              setVoice();
+          }
 
           utterance.onend = () => {
               icon.classList.remove('text-accent', 'animate-pulse');
               icon.classList.add('text-dim-400');
+              activeUtterance = null; // Release
           };
           
-          // Fallback reset if it gets stuck
-          utterance.onerror = () => {
+          utterance.onerror = (e) => {
+               console.error("TTS Error:", e);
                icon.classList.remove('text-accent', 'animate-pulse');
                icon.classList.add('text-dim-400');
+               activeUtterance = null;
           }
 
           window.speechSynthesis.speak(utterance);

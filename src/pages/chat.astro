@@ -632,8 +632,14 @@ const t = {
       if (el) el.remove();
     }
 
+    // Fix for Chrome GC bug: Store utterance globally
+    let activeUtterance = null;
+
     function speakMessage(text, btn) {
-        if (!window.speechSynthesis) return;
+        if (!window.speechSynthesis) {
+             console.error("TTS not supported");
+             return;
+        }
         
         // Cancel current
         window.speechSynthesis.cancel();
@@ -652,24 +658,37 @@ const t = {
         const cleanText = text.replace(/[*#`]/g, '');
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
+        activeUtterance = utterance; // Keep reference!
+
         const lang = document.documentElement.lang || 'da';
         utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
 
-        // Attempt to find a good voice
-        const voices = window.speechSynthesis.getVoices();
-        const voice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
-        if (voice) utterance.voice = voice;
+        // Robust Voice Loading
+        const setVoice = () => {
+             const voices = window.speechSynthesis.getVoices();
+             const preferredVoice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
+             if (preferredVoice) utterance.voice = preferredVoice;
+        }
+        
+        if (window.speechSynthesis.getVoices().length === 0) {
+            window.speechSynthesis.onvoiceschanged = setVoice;
+        } else {
+            setVoice();
+        }
 
         utterance.onend = () => {
             icon.classList.remove('text-accent', 'animate-pulse');
             icon.classList.add('text-dim-400');
+            activeUtterance = null;
         };
         
-        utterance.onerror = () => {
+        utterance.onerror = (e) => {
+             console.error("TTS Error:", e);
              icon.classList.remove('text-accent', 'animate-pulse');
              icon.classList.add('text-dim-400');
+             activeUtterance = null;
         }
 
         window.speechSynthesis.speak(utterance);
