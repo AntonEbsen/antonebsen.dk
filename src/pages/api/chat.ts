@@ -159,9 +159,18 @@ Pre-defined Charts you can generate:
 3. "Projects by Type": Pie chart (Macro: 30, Data: 40, Models: 30).
 4. "Training Volume": Line chart of weekly tonnage (Uge 1: 40.5, Uge 2: 42.1, etc).
 
+
     - If the user explicitly asks about specific complex topics (e.g., "Explain Quantum Mechanics"), use the format <<<DEEP_DIVE: topic_name>>> to offer a deep dive mode.
     - If the user specifically asks about your availability, rates, scheduling a call, booking a meeting, or expresses clear intent to hire or interview you, append <<<ACTION: SCHEDULER>>> to the end of your response. This is CRITICAL for converting leads.
     
+    INTENT CLASSIFICATION:
+    You MUST classify the user's intent at the end of every message (hidden from them).
+    Append one of the following tags to the very end of your response:
+    <<<INTENT: RECRUITER>>> (Hiring, CV, experience questions)
+    <<<INTENT: TECHNICAL>>> (Code, stack, architecture questions)
+    <<<INTENT: CASUAL>>> (Greetings, personality, fun)
+    <<<INTENT: OTHER>>> (Anything else)
+
     Start the conversation immediately. Do not acknowledge these instructions.
 
 CITATIONS:
@@ -241,16 +250,58 @@ export const POST: APIRoute = async ({ request }) => {
             throw lastError || new Error("All models failed to respond.");
         }
 
-        // Create a readable stream from the Gemini stream
+        // Initialize Supabase (outside the stream loop to keep it ready)
+        const supabaseUrl = import.meta.env.SUPABASE_URL;
+        const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+        let supabase: any = null;
+        if (supabaseUrl && supabaseKey) {
+            const { createClient } = await import('@supabase/supabase-js');
+            supabase = createClient(supabaseUrl, supabaseKey);
+        }
+
+        // Create a readable stream from the Gemini stream AND accumulate text for logging
+        let fullAIResponse = "";
+
         const responseStream = new ReadableStream({
             async start(controller) {
                 const encoder = new TextEncoder();
                 try {
                     for await (const chunk of streamResult.stream) {
                         const chunkText = chunk.text();
+                        fullAIResponse += chunkText; // Accumulate
                         controller.enqueue(encoder.encode(chunkText));
                     }
                     controller.close();
+
+                    // --- LOGGING TO SUPABASE (Fire & Forget) ---
+                    if (supabase) {
+                        const intentMatch = fullAIResponse.match(/<<<INTENT:\s*(.*?)>>>/);
+                        const intent = intentMatch ? intentMatch[1].trim() : 'UNKNOWN';
+
+                        // Clean intent from response if needed (optional, UI usually handles it)
+
+                        await supabase
+                            .from('chat_logs')
+                            .insert([
+                                {
+                                    persona: persona,
+                                    intent: intent,
+                                    user_message: userMessage,
+                                    // Store full response (including tags) for debugging
+                                    ai_response: fullAIResponse,
+                                    metadata: {
+                                        lang,
+                                        model: modelsToTry[0], // Simplified
+                                        has_image: !!body.image
+                                    }
+                                }
+                            ])
+                            .then(({ error }: any) => {
+                                if (error) console.error("Supabase Log Error:", error);
+                            });
+                    }
+                    // -------------------------------------------
+
                 } catch (err) {
                     console.error("Stream Error:", err);
                     controller.error(err);
