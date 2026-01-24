@@ -131,439 +131,444 @@ const t = {
 </div>
 
 <script>
-  // Simple chat toggle logic
-  const widget = document.getElementById('chat-widget');
-  const chatWindow = document.getElementById('chat-window');
-  const toggle = document.getElementById('chat-toggle');
-  const close = document.getElementById('close-chat');
-  const form = document.getElementById('chat-form');
-  const input = document.getElementById('chat-input') as HTMLInputElement;
-  const messages = document.getElementById('chat-messages');
-  const voiceBtn = document.getElementById('voice-btn');
-  const voiceIndicator = document.getElementById('voice-indicator');
+  try {
+      // Elements
+      const widget = document.getElementById('chat-widget');
+      const chatWindow = document.getElementById('chat-window'); // Renamed from window to chatWindow
+      const toggle = document.getElementById('chat-toggle');
+      const close = document.getElementById('close-chat');
+      const form = document.getElementById('chat-form');
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      const voiceBtn = document.getElementById('voice-btn');
+      const voiceIndicator = document.getElementById('voice-indicator');
 
-
-
-  // File Upload Logic
-  const fileInput = document.getElementById('chat-file') as HTMLInputElement;
-  const fileBtn = document.getElementById('file-btn');
-  const fileDisplay = document.getElementById('file-display');
-  const fileNameSpan = document.getElementById('filename');
-  const removeFileBtn = document.getElementById('remove-file');
-  let currentFileContent = null;
-
-  fileBtn?.addEventListener('click', () => fileInput.click());
-
-  fileInput?.addEventListener('change', async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-
-      if(fileDisplay && fileNameSpan) {
-          fileDisplay.classList.remove('hidden');
-          fileNameSpan.textContent = "Processing...";
-      }
+      // Concierge Logic
+      const currentLang = widget?.getAttribute('data-lang') || 'da';
+      const currentPath = window.location.pathname; // Global window
+      
+      const conciergeMessages = {
+          '/cv': {
+              da: "Har du spørgsmål til min erfaring eller specifikke roller?",
+              en: "Do you have questions about my experience or specific roles?"
+          },
+          '/portfolio': {
+              da: "Jeg kan forklare teknologistakken bag disse projekter. Spørg løs!",
+              en: "I can explain the tech stack behind these projects. Ask away!"
+          },
+          '/blog': {
+              da: "Læser du mine tanker? Jeg kan opsummere ethvert blogindlæg for dig.",
+              en: "Reading my thoughts? I can summarize any post for you."
+          },
+          '/ai-project': {
+              da: "Nysgerrig på hvordan jeg arbejder? Spørg mig om min RAG-arkitektur!",
+              en: "Curious about how I work? Ask me about my RAG architecture!"
+          }
+      };
 
       try {
-          let text = "";
-          if (file.type === 'application/pdf') {
-              if(!window.pdfjsLib) throw new Error("PDF.js not loaded");
-              const arrayBuffer = await file.arrayBuffer();
-              const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-              for (let i = 1; i <= pdf.numPages; i++) {
-                  const page = await pdf.getPage(i);
-                  const content = await page.getTextContent();
-                  text += content.items.map((item: any) => item.str).join(' ') + "\n";
-              }
-          } else {
-              text = await file.text();
-          }
-
-          currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
-          if(fileNameSpan) fileNameSpan.textContent = file.name;
+          const matchedPath = Object.keys(conciergeMessages).find(path => currentPath.startsWith(path));
           
-      } catch (err) {
-          console.error("File read error:", err);
-          if(fileNameSpan) fileNameSpan.textContent = "Error";
-          currentFileContent = null;
-      }
-  });
-
-  removeFileBtn?.addEventListener('click', () => {
-      currentFileContent = null;
-      fileInput.value = '';
-      fileDisplay?.classList.add('hidden');
-  });
-
-  // Voice Interaction Logic
-  let recognition;
-  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.lang = currentLang === 'da' ? 'da-DK' : 'en-US';
-      recognition.interimResults = false;
-
-      recognition.onstart = () => {
-          console.log("🎤 Voice recognition started");
-          voiceIndicator.classList.remove('opacity-0');
-          voiceIndicator.classList.add('animate-pulse', 'border-red-500');
-          voiceBtn.classList.add('text-red-400');
-      };
-
-      recognition.onend = () => {
-          console.log("🎤 Voice recognition ended");
-          voiceIndicator.classList.add('opacity-0');
-          voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
-          voiceBtn.classList.remove('text-red-400');
-      };
-
-      recognition.onerror = (event) => {
-          console.error("🎤 Voice error:", event.error);
-          voiceIndicator.classList.add('opacity-0'); 
-          voiceBtn.classList.remove('text-red-400');
-          if (event.error === 'not-allowed') {
-              alert("Microphone access denied. Please allow microphone permissions in your browser settings.");
+          if (matchedPath) {
+             const msg = conciergeMessages[matchedPath][currentLang];
+             const introText = document.querySelector('#chat-messages p');
+             if (introText) {
+                 introText.textContent = msg;
+                 introText.parentElement.classList.add('border-accent', 'border');
+             }
           }
-      };
-
-      recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          console.log("🎤 Transcript:", transcript);
-          input.value = transcript;
-          input.focus();
-      };
-      
-      voiceBtn?.addEventListener('click', () => {
-          console.log("🎤 Mic button clicked");
-          try {
-              recognition.start();
-          } catch (e) {
-              console.log("Recognition already started or error:", e);
-              recognition.stop();
-          }
-      });
-  } else {
-      // Hide button if not supported
-      if(voiceBtn) voiceBtn.style.display = 'none';
-  }
-  const currentLang = widget?.getAttribute('data-lang') || 'da';
-  
-  // Concierge Logic
-  const currentPath = window.location.pathname;
-  const conciergeMessages = {
-      '/cv': {
-          da: "Har du spørgsmål til min erfaring eller specifikke roller?",
-          en: "Do you have questions about my experience or specific roles?"
-      },
-      '/portfolio': {
-          da: "Jeg kan forklare teknologistakken bag disse projekter. Spørg løs!",
-          en: "I can explain the tech stack behind these projects. Ask away!"
-      },
-      '/blog': {
-          da: "Læser du mine tanker? Jeg kan opsummere ethvert blogindlæg for dig.",
-          en: "Reading my thoughts? I can summarize any post for you."
-      },
-      '/ai-project': {
-          da: "Nysgerrig på hvordan jeg arbejder? Spørg mig om min RAG-arkitektur!",
-          en: "Curious about how I work? Ask me about my RAG architecture!"
-      }
-  };
-
-  // Check if we hit a known path (or subpath)
-  const matchedPath = Object.keys(conciergeMessages).find(path => currentPath.startsWith(path));
-  
-  if (matchedPath) {
-     const msg = conciergeMessages[matchedPath][currentLang];
-     const introText = document.querySelector('#chat-messages p');
-     if (introText) {
-         introText.textContent = msg;
-         // Add visual cue
-         introText.parentElement.classList.add('border-accent', 'border');
-     }
-  }
-
-  let isOpen = false;
-
-  function toggleChat() {
-    isOpen = !isOpen;
-    if (isOpen) {
-      chatWindow.classList.remove('hidden');
-      // Small timeout for transition
-      setTimeout(() => {
-        chatWindow.classList.remove('translate-y-10', 'opacity-0');
-        toggle.classList.add('scale-0', 'opacity-0');
-        toggle.style.display = 'none'; 
-      }, 10);
-      input.focus();
-    } else {
-      chatWindow.classList.add('translate-y-10', 'opacity-0');
-      toggle.style.display = 'flex';
-      setTimeout(() => {
-         toggle.classList.remove('scale-0', 'opacity-0');
-      }, 10);
-      setTimeout(() => {
-        chatWindow.classList.add('hidden');
-      }, 300);
-    }
-  }
-
-  toggle.addEventListener('click', toggleChat);
-  close.addEventListener('click', toggleChat);
-
-  // Quick Prompts Logic
-  document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const text = (e.currentTarget as HTMLElement).textContent?.trim();
-        if(text) {
-            input.value = text;
-            form?.dispatchEvent(new Event('submit'));
-            // Remove prompts after first click to clean up UI
-            (e.currentTarget as HTMLElement).parentElement?.remove();
-        }
-    });
-  });
-
-  // Demo functionality
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const query = input.value.trim();
-    if (!query) return;
-
-    // User Message
-    addMessage(query || (currentFileContent ? `[Attached: ${fileInput.files?.[0]?.name}]` : "Empty message"), 'user');
-    
-    // Combine
-    const fullPayload = query + (currentFileContent || "");
-    
-    input.value = '';
-
-    // Clear file
-    if(currentFileContent) {
-        removeFileBtn?.click();
-    }
-
-    // Thinking
-    showTyping();
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: fullPayload, lang: currentLang })
-      });
-
-      removeTyping();
-
-      if (!res.ok) {
-          const data = await res.json();
-          const errorMsg = data.message || (currentLang === 'da' ? "Beklager, fejl." : "Sorry, error.");
-          addMessage(`⚠️ ${errorMsg}`, 'ai');
-          if (data.error === 'Configuration Error') {
-             addMessage("To fix this: Create a .env file in the root and add GEMINI_API_KEY=AIzaSy...", 'ai');
-          }
-          return;
+      } catch(err) {
+          console.error("Concierge Error:", err);
       }
 
-      // Create a placeholder message for the stream
-      const messageContent = addMessage("", 'ai');
-      const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
-      let accumulatedText = "";
+      // UI Logic
+      let isOpen = false;
 
-      if (reader) {
-          while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              
-              const chunk = decoder.decode(value, { stream: true });
-              accumulatedText += chunk;
-              
-              // Update the UI with the formatted text (hides text-based tags)
-              messageContent.innerHTML = formatMessageText(accumulatedText);
-              messages.scrollTop = messages.scrollHeight;
-          }
-      }
-
-      // Final processing for regex tags (Charts/Navigation) on the complete text
-      const wrapper = messageContent.closest('.ai-content-wrapper');
-      processSpecialTags(accumulatedText, wrapper); // Pass the wrapper div
-
-    } catch (err) {
-      removeTyping();
-      const srvErr = currentLang === 'da' ? "Forbindelsesfejl" : "Connection Error";
-      addMessage(`⚠️ ${srvErr}: ${err.message || 'Unknown'}`, 'ai');
-      console.error("Chat Error:", err);
-    }
-  });
-
-  function formatMessageText(text) {
-      return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '').replace(/<<<NAVIGATE:.*?>>>/gi, '').replace(/<<<SUGGESTIONS:.*?>>>/g, '');
-  }
-
-  function processSpecialTags(text, containerDiv) {
-        // Check for Chart Block
-        const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
-        if (chartMatch) {
-            const jsonStr = chartMatch[1];
-            try {
-                const chartData = JSON.parse(jsonStr);
-                const canvasId = 'chart-' + Date.now();
-                const canvasContainer = document.createElement('div');
-                canvasContainer.className = "mt-2 p-2 bg-white/5 rounded-lg border border-white/10";
-                canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
-                
-                const textDiv = containerDiv.querySelector('.message-bubble');
-                if (textDiv) textDiv.appendChild(canvasContainer);
-                messages.scrollTop = messages.scrollHeight; // Scroll after adding chart
-
-                import('chart.js/auto').then(({ default: Chart }) => {
-                    const ctx = document.getElementById(canvasId);
-                    if (ctx) {
-                        new Chart(ctx, {
-                            type: chartData.type,
-                            data: chartData.data,
-                            options: {
-                                ...chartData.options,
-                                color: 'rgba(255, 255, 255, 0.7)',
-                                borderColor: 'rgba(255, 255, 255, 0.1)',
-                                scale: {
-                                    ticks: { color: 'rgba(255, 255, 255, 0.5)' },
-                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                                },
-                                plugins: {
-                                    legend: { labels: { color: 'rgba(255, 255, 255, 0.8)' } }
-                                }
-                            }
-                        });
-                    }
-                });
-
-            } catch (e) {
-                console.error("Chart Render Error", e);
-            }
-        }
+      function toggleChat() {
+        if (!chatWindow || !toggle) return;
         
-       // Check for Navigation Block
-        const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
-        if (navMatch) {
-            const rawPath = navMatch[1].trim();
-            const path = rawPath.replace(/\.$/, '');
-            
-            const navDiv = document.createElement('div');
-            navDiv.className = "flex items-center gap-2 text-xs text-accent mt-2 pl-2 font-bold animate-pulse";
-            navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
-            containerDiv.appendChild(navDiv);
-            messages.scrollTop = messages.scrollHeight;
-
-            console.log("Concierge navigating to:", path);
-
-            setTimeout(() => {
-                window.location.href = path;
-            }, 500);
+        isOpen = !isOpen;
+        if (isOpen) {
+          chatWindow.classList.remove('hidden');
+          setTimeout(() => {
+            chatWindow.classList.remove('translate-y-10', 'opacity-0');
+            toggle.classList.add('scale-0', 'opacity-0');
+            toggle.style.display = 'none'; 
+          }, 10);
+          input?.focus();
+        } else {
+          chatWindow.classList.add('translate-y-10', 'opacity-0');
+          toggle.style.display = 'flex';
+          setTimeout(() => {
+             toggle.classList.remove('scale-0', 'opacity-0');
+          }, 10);
+          setTimeout(() => {
+            chatWindow.classList.add('hidden');
+          }, 300);
         }
+      }
 
-        // Check for Suggestions Block
-        const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
-        if (suggestMatch) {
-            const jsonStr = suggestMatch[1];
-            try {
-                const suggestions = JSON.parse(jsonStr);
-                const chipsContainer = document.createElement('div');
-                chipsContainer.className = "flex flex-wrap gap-2 mt-2 w-full"; // Added w-full
-                
-                suggestions.forEach(s => {
-                    const btn = document.createElement('button');
-                    // Style updated for better visibility below text
-                    btn.className = "text-xs bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-full px-3 py-1 transition-all duration-300";
-                    btn.innerText = s;
-                    btn.addEventListener('click', () => {
-                        const input = document.getElementById('chat-input');
-                        const form = document.getElementById('chat-form');
-                        if (input && form) {
-                            input.value = s;
-                            form.dispatchEvent(new Event('submit'));
-                            // Remove suggestions after clicking
-                            chipsContainer.remove();
-                        }
-                    });
-                    chipsContainer.appendChild(btn);
-                });
-                
-                containerDiv.appendChild(chipsContainer);
-                messages.scrollTop = messages.scrollHeight;
+      if (toggle) toggle.addEventListener('click', toggleChat);
+      if (close) close.addEventListener('click', toggleChat);
 
-            } catch (e) {
-                console.error("Suggestion Parse Error", e);
+      // File Upload Logic
+      const fileInput = document.getElementById('chat-file');
+      const fileBtn = document.getElementById('file-btn');
+      const fileDisplay = document.getElementById('file-display');
+      const fileNameSpan = document.getElementById('filename');
+      const removeFileBtn = document.getElementById('remove-file');
+      let currentFileContent = null;
+
+      fileBtn?.addEventListener('click', () => fileInput?.click());
+
+      fileInput?.addEventListener('change', async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+
+          if(fileDisplay && fileNameSpan) {
+              fileDisplay.classList.remove('hidden');
+              fileNameSpan.textContent = "Processing..." + file.name;
+          }
+
+          try {
+              let text = "";
+              if (file.type === 'application/pdf') {
+                  if(!window.pdfjsLib) throw new Error("PDF.js not loaded");
+                  const arrayBuffer = await file.arrayBuffer();
+                  const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                  for (let i = 1; i <= pdf.numPages; i++) {
+                      const page = await pdf.getPage(i);
+                      const content = await page.getTextContent();
+                      text += content.items.map(item => item.str).join(' ') + "\n";
+                  }
+              } else {
+                  text = await file.text();
+              }
+
+              currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
+              if(fileNameSpan) fileNameSpan.textContent = file.name + " (Ready)";
+              
+          } catch (err) {
+              console.error("File read error:", err);
+              if(fileNameSpan) fileNameSpan.textContent = "Error reading file";
+              currentFileContent = null;
+          }
+      });
+
+      removeFileBtn?.addEventListener('click', () => {
+          currentFileContent = null;
+          if (fileInput) fileInput.value = '';
+          fileDisplay?.classList.add('hidden');
+      });
+
+      // Voice Interaction Logic
+      let recognition;
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.lang = currentLang === 'da' ? 'da-DK' : 'en-US';
+          recognition.interimResults = false;
+
+          recognition.onstart = () => {
+              if(voiceIndicator) {
+                  voiceIndicator.classList.remove('opacity-0');
+                  voiceIndicator.classList.add('animate-pulse', 'border-red-500');
+              }
+              voiceBtn?.classList.add('text-red-400');
+          };
+
+          recognition.onend = () => {
+              if(voiceIndicator) {
+                  voiceIndicator.classList.add('opacity-0');
+                  voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
+              }
+              voiceBtn?.classList.remove('text-red-400');
+          };
+
+          recognition.onerror = (event) => {
+              console.error("🎤 FP Voice error:", event.error);
+              if(voiceIndicator) voiceIndicator.classList.add('opacity-0');
+              voiceBtn?.classList.remove('text-red-400');
+              if (event.error === 'not-allowed') {
+                  alert("Microphone access denied.");
+              }
+          };
+
+          recognition.onresult = (event) => {
+              const transcript = event.results[0][0].transcript;
+              if (input) {
+                  input.value = transcript;
+                  input.focus();
+              }
+          };
+
+          voiceBtn?.addEventListener('click', () => {
+              try {
+                  recognition.start();
+              } catch (e) {
+                  console.log("Recognition already started or error:", e);
+                  recognition.stop();
+              }
+          });
+      } else {
+          if(voiceBtn) voiceBtn.style.display = 'none';
+      }
+
+      // Quick Prompts Logic
+      document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const text = e.currentTarget.textContent?.trim();
+            if(text && input && form) {
+                input.value = text;
+                form.dispatchEvent(new Event('submit'));
+                e.currentTarget.parentElement?.remove();
             }
-        }
-  }
+        });
+      });
 
-  function addMessage(text, role) {
-    const div = document.createElement('div');
-    div.className = `flex gap-2 ${role === 'user' ? 'flex-row-reverse' : ''}`;
-    
-    let contentElement;
+      // Submit Logic
+      if (form) {
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = input?.value.trim() || "";
+            if (!query && !currentFileContent) return;
 
-    if (role === 'ai') {
-      div.innerHTML = `
-        <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
-          <i class="fa-solid fa-robot"></i>
-        </div>
-        <div class="flex flex-col max-w-[85%] ai-content-wrapper">
-            <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none text-left message-bubble">
-                <p></p>
+            addMessage(query || (currentFileContent ? `[Attached: ${fileInput?.files?.[0]?.name}]` : "Empty message"), 'user');
+            
+            const fullPayload = query + (currentFileContent || "");
+            
+            if (input) input.value = '';
+            
+            if(currentFileContent) {
+                removeFileBtn?.click();
+            }
+
+            showTyping();
+
+            try {
+              const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: fullPayload, lang: currentLang })
+              });
+              
+              removeTyping();
+
+              if (!res.ok) {
+                 const data = await res.json();
+                 addMessage("⚠️ " + (data.message || "Error"), 'ai');
+                 return;
+              }
+
+              const messageContent = addMessage("", 'ai');
+              const reader = res.body?.getReader();
+              const decoder = new TextDecoder();
+              let accumulatedText = "";
+
+              if (reader) {
+                  while (true) {
+                      const { done, value } = await reader.read();
+                      if (done) break;
+                      
+                      const chunk = decoder.decode(value, { stream: true });
+                      accumulatedText += chunk;
+                      
+                      if (messageContent) {
+                          messageContent.innerHTML = formatText(accumulatedText);
+                      }
+                      const msgs = document.getElementById('chat-messages');
+                      if(msgs) msgs.scrollTop = msgs.scrollHeight;
+                  }
+              }
+
+              if (messageContent) {
+                   const wrapper = messageContent.closest('.ai-content-wrapper');
+                   processSpecialTags(accumulatedText, wrapper); 
+              }
+
+            } catch (err) {
+              removeTyping();
+              console.error(err);
+              addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai');
+            }
+          });
+      }
+
+      // Helpers
+      function formatText(text) {
+          // Simple link formatting
+          return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')
+                     .replace(/<<<NAVIGATE:.*?>>>/gi, '')
+                     .replace(/<<<SUGGESTIONS:.*?>>>/g, '')
+                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                     .replace(/\n/g, '<br/>');
+      }
+
+      function processSpecialTags(text, containerDiv) {
+         if (!containerDiv) return;
+
+         // Chart
+         const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
+         if (chartMatch) {
+             const jsonStr = chartMatch[1];
+             try {
+                 const chartData = JSON.parse(jsonStr);
+                 const canvasId = 'chart-' + Date.now();
+                 const canvasContainer = document.createElement('div');
+                 canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
+                 canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+                 
+                 const textDiv = containerDiv.querySelector('.message-bubble') || containerDiv;
+                 textDiv.appendChild(canvasContainer);
+                 const msgs = document.getElementById('chat-messages');
+                 if(msgs) msgs.scrollTop = msgs.scrollHeight;
+
+                 import('chart.js/auto').then(({ default: Chart }) => {
+                     const ctx = document.getElementById(canvasId);
+                     if (ctx) {
+                         new Chart(ctx, {
+                             type: chartData.type,
+                             data: chartData.data,
+                             options: {
+                                 ...chartData.options,
+                                 color: 'rgba(255, 255, 255, 0.8)',
+                                 borderColor: 'rgba(255, 255, 255, 0.2)',
+                                 scale: {
+                                    ticks: { color: 'rgba(255, 255, 255, 0.6)' },
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                                 },
+                                 plugins: {
+                                    legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
+                                 }
+                             }
+                         });
+                     }
+                 });
+
+             } catch (e) {
+                 console.error("Chart Render Error", e);
+             }
+         }
+         // Navigation
+         const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
+         if (navMatch) {
+             const rawPath = navMatch[1].trim();
+             const path = rawPath.replace(/\.$/, '');
+             const navDiv = document.createElement('div');
+             navDiv.className = "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse";
+             navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
+             const bubble = containerDiv.querySelector('.message-bubble');
+             if (bubble) bubble.appendChild(navDiv); 
+             else containerDiv.appendChild(navDiv);
+             const msgs = document.getElementById('chat-messages');
+             if(msgs) msgs.scrollTop = msgs.scrollHeight;
+
+             setTimeout(() => {
+                 window.location.href = path;
+             }, 500);
+         }
+
+         // Suggestions
+         const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
+         if (suggestMatch) {
+              const jsonStr = suggestMatch[1];
+              try {
+                  const suggestions = JSON.parse(jsonStr);
+                  const chipsContainer = document.createElement('div');
+                  chipsContainer.className = "flex flex-wrap gap-2 mt-4 w-full";
+                  
+                  suggestions.forEach(s => {
+                      const btn = document.createElement('button');
+                      btn.className = "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm";
+                      btn.innerText = s;
+                      btn.addEventListener('click', () => {
+                          if (input && form) {
+                              input.value = s;
+                              form.dispatchEvent(new Event('submit'));
+                              chipsContainer.remove();
+                          }
+                      });
+                      chipsContainer.appendChild(btn);
+                  });
+                  
+                  containerDiv.appendChild(chipsContainer);
+                  const msgs = document.getElementById('chat-messages');
+                  if(msgs) msgs.scrollTop = msgs.scrollHeight;
+
+              } catch (e) {
+                  console.error("Suggestion Parse Error", e);
+              }
+         }
+      }
+
+      function addMessage(text, role) {
+        const msgs = document.getElementById('chat-messages');
+        if (!msgs) return;
+        const div = document.createElement('div');
+        div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
+
+        let contentElement;
+
+        if (role === 'ai') {
+          div.innerHTML = `
+            <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 mt-1 border border-accent/20">
+              <i class="fa-solid fa-robot text-lg"></i>
             </div>
-        </div>
-      `;
-      // We set content later for AI to allow streaming updates
-      contentElement = div.querySelector('p');
-      if (text) contentElement.innerHTML = formatMessageText(text);
+            <div class="flex flex-col max-w-[85%] ai-content-wrapper">
+                <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim-100 message-bubble shadow-lg">
+                  <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide">AI Analysis</p>
+                  <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
+                    ${formatText(text)}
+                  </div>
+                </div>
+            </div>
+          `;
+          contentElement = div.querySelector('.prose');
+          if (text) contentElement.innerHTML = formatText(text);
 
-    } else {
-      div.innerHTML = `
-        <div class="bg-accent text-bg p-3 rounded-lg rounded-tr-none max-w-[85%] text-left">
-          <p>${text}</p>
-        </div>
-      `;
-    }
-    
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-    
-    return contentElement; // Return the P element for updates
+        } else {
+          div.innerHTML = `
+            <div class="bg-accent text-bg p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
+              <p>${text}</p>
+            </div>
+          `;
+        }
+
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+
+        return contentElement;
+      }
+
+      function showTyping() {
+        const msgs = document.getElementById('chat-messages');
+        if (!msgs) return;
+        const div = document.createElement('div');
+        div.id = 'fp-typing';
+        div.className = 'flex gap-4';
+        div.innerHTML = `
+           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1">
+              <i class="fa-solid fa-robot text-lg"></i>
+            </div>
+            <div class="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] p-5 rounded-2xl rounded-tl-none">
+              <div class="flex gap-2">
+                <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce"></span>
+                <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+                <span class="w-2 h-2 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+              </div>
+            </div>
+        `;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function removeTyping() {
+        const el = document.getElementById('fp-typing');
+        if (el) el.remove();
+      }
+
+  } catch (err) {
+      console.error("Chat Widget Script Error:", err);
   }
-
-  function showTyping() {
-    const div = document.createElement('div');
-    div.id = 'typing-indicator';
-    div.className = 'flex gap-2';
-    div.innerHTML = `
-       <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
-          <i class="fa-solid fa-robot"></i>
-        </div>
-        <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none">
-          <div class="flex gap-1">
-            <span class="w-1.5 h-1.5 bg-dim/50 rounded-full animate-bounce"></span>
-            <span class="w-1.5 h-1.5 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-            <span class="w-1.5 h-1.5 bg-dim/50 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-          </div>
-        </div>
-    `;
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
-  }
-
-  function removeTyping() {
-    const el = document.getElementById('typing-indicator');
-    if (el) el.remove();
-  }
-
-  function getMockResponse(q) {
-    q = q.toLowerCase();
-    if (q.includes('experience') || q.includes('work')) return "Anton has experience as a Student Teacher at Djøf (Excel/VBA) and as an Office Assistant in Lübeck. He focuses on data, macros, and modeling.";
-    if (q.includes('project') || q.includes('case')) return "He has worked on several projects, including a Global Financial Cycle bachelor thesis, RBC models, and heterogenous effects in the ECB.";
-    if (q.includes('contact') || q.includes('email')) return "You can contact Anton at anton.ebsen@gmail.com.";
-    return "This is a demo mode. To make me simpler and smarter (and read PDFs!), please connect me to an AI backend!";
-  }
-
 </script>
