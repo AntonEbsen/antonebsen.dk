@@ -564,15 +564,16 @@ const t = {
         // Add Speak Button
         const actionsDiv = document.createElement('div');
         actionsDiv.className = "flex justify-end mt-2 gap-2";
+        
+        const safeText = encodeURIComponent(text);
         actionsDiv.innerHTML = `
-           <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt">
+           <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}">
               <i class="fa-solid fa-volume-high text-xs"></i>
            </button>
         `;
         div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
         
-        const speakBtn = actionsDiv.querySelector('.speak-btn');
-        speakBtn.onclick = () => speakMessage(text, speakBtn);
+        // No inline onclick needed due to delegation script
 
       } else {
         div.innerHTML = `
@@ -632,67 +633,7 @@ const t = {
       if (el) el.remove();
     }
 
-    // Fix for Chrome GC bug: Store utterance globally
-    let activeUtterance = null;
 
-    function speakMessage(text, btn) {
-        if (!window.speechSynthesis) {
-             console.error("TTS not supported");
-             return;
-        }
-        
-        // Cancel current
-        window.speechSynthesis.cancel();
-
-        // Reset all icons
-        document.querySelectorAll('.speak-btn i').forEach(icon => {
-            icon.classList.remove('text-accent', 'animate-pulse');
-            icon.classList.add('text-dim-400');
-        });
-
-        const icon = btn.querySelector('i');
-        icon.classList.remove('text-dim-400');
-        icon.classList.add('text-accent', 'animate-pulse');
-
-        // Clean text (remove markdown like *, #, etc)
-        const cleanText = text.replace(/[*#`]/g, '');
-
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        activeUtterance = utterance; // Keep reference!
-
-        const lang = document.documentElement.lang || 'da';
-        utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-
-        // Robust Voice Loading
-        const setVoice = () => {
-             const voices = window.speechSynthesis.getVoices();
-             const preferredVoice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
-             if (preferredVoice) utterance.voice = preferredVoice;
-        }
-        
-        if (window.speechSynthesis.getVoices().length === 0) {
-            window.speechSynthesis.onvoiceschanged = setVoice;
-        } else {
-            setVoice();
-        }
-
-        utterance.onend = () => {
-            icon.classList.remove('text-accent', 'animate-pulse');
-            icon.classList.add('text-dim-400');
-            activeUtterance = null;
-        };
-        
-        utterance.onerror = (e) => {
-             console.error("TTS Error:", e);
-             icon.classList.remove('text-accent', 'animate-pulse');
-             icon.classList.add('text-dim-400');
-             activeUtterance = null;
-        }
-
-        window.speechSynthesis.speak(utterance);
-    }
 
     // Simple markdown-ish formatter
     function formatText(text) {
@@ -708,4 +649,5 @@ const t = {
       return t;
     }
   </script>
+  <script is:inline src="/assets/js/voice-widget.js"></script>
 </Layout>

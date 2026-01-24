@@ -515,18 +515,6 @@ const t = {
          }
       }
 
-      // Event Delegation for dynamic buttons
-      const msgsContainer = document.getElementById('chat-messages');
-      if (msgsContainer) {
-          msgsContainer.addEventListener('click', (e) => {
-              const btn = e.target.closest('.speak-btn');
-              if (btn) {
-                  const text = btn.getAttribute('data-text');
-                  if (text) speakMessage(text, btn);
-              }
-          });
-      }
-
       function addMessage(text, role) {
         const msgs = document.getElementById('chat-messages');
         if (!msgs) return;
@@ -552,13 +540,11 @@ const t = {
           contentElement = div.querySelector('.prose');
           if (text) contentElement.innerHTML = formatText(text);
 
-          // Add Speak Button with Data Attribute
+          // Add Speak Button (Handled by public/assets/js/voice-widget.js)
           const actionsDiv = document.createElement('div');
           actionsDiv.className = "flex justify-end mt-2 gap-2";
           
-          // Store text in data attribute for safety
           const safeText = encodeURIComponent(text);
-          
           actionsDiv.innerHTML = `
              <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}">
                 <i class="fa-solid fa-volume-high text-xs"></i>
@@ -627,74 +613,10 @@ const t = {
         if (el) el.remove();
       }
 
-      let activeUtterance = null;
-
-      function speakMessage(encodedText, btn) {
-          if (!window.speechSynthesis) {
-              addMessage("⚠️ TTS not supported by this browser.", 'system');
-              return;
-          }
-
-          let text = "";
-          try {
-              text = decodeURIComponent(encodedText);
-          } catch(e) {
-              text = encodedText; // Fallback
-          }
-
-          // Debug: Show we are trying
-          // console.log("🔊 TTS Start"); 
-
-          window.speechSynthesis.cancel();
-
-          // Reset UI
-          document.querySelectorAll('.speak-btn i').forEach(icon => {
-              icon.classList.remove('text-accent', 'animate-pulse');
-              icon.classList.add('text-dim-400');
-          });
-          const icon = btn.querySelector('i');
-          icon.classList.remove('text-dim-400');
-          icon.classList.add('text-accent', 'animate-pulse');
-
-          const cleanText = text.replace(/[*#`]/g, '');
-          const utterance = new SpeechSynthesisUtterance(cleanText);
-          activeUtterance = utterance;
-
-          const voices = window.speechSynthesis.getVoices();
-          // Visual Debug
-          if (voices.length === 0) {
-               // Verify looking for voices
-               window.speechSynthesis.onvoiceschanged = () => speakMessage(text, btn);
-               return; 
-          }
-
-          const lang = document.documentElement.lang || 'da';
-          utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
-          
-          // STRICT SIMPLICITY: Only set voice if we are 100% sure. 
-          // Otherwise trust the browser's default for that language.
-          const voice = voices.find(v => v.lang === (lang === 'en' ? 'en-US' : 'da-DK'));
-          if (voice) {
-              utterance.voice = voice;
-          }
-
-          utterance.onend = () => {
-              icon.classList.remove('text-accent', 'animate-pulse');
-              icon.classList.add('text-dim-400');
-              activeUtterance = null;
-          };
-          
-          utterance.onerror = (e) => {
-              addMessage("⚠️ TTS Error: " + e.error, 'system');
-              icon.classList.remove('text-accent', 'animate-pulse');
-              icon.classList.add('text-dim-400');
-              activeUtterance = null;
-          };
-
-          window.speechSynthesis.speak(utterance);
-      }
+      // Old TTS logic removed - now in /public/assets/js/voice-widget.js
 
   } catch (err) {
       console.error("Chat Widget Script Error:", err);
   }
 </script>
+<script is:inline src="/assets/js/voice-widget.js"></script>
