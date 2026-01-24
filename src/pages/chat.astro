@@ -204,6 +204,9 @@ const t = {
             <span>LATENCY: 24ms</span>
             <span class="opacity-50">|</span>
             <span>SECURE CONN</span>
+            <button id="fp-clear-chat" class="ml-4 text-dim hover:text-red-400 transition-colors" title="Clear History">
+              <i class="fa-solid fa-trash"></i>
+            </button>
         </div>
       </div>
 
@@ -596,8 +599,42 @@ const t = {
        }
     }
 
-    function addMessage(text, role) {
+    const STORAGE_KEY = 'anton_ai_chat_history';
+
+    function loadHistory() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            try {
+                const history = JSON.parse(stored);
+                // Clear default intro if history exists (optional, but cleaner)
+                // messages.innerHTML = ''; 
+                history.forEach(msg => addMessage(msg.text, msg.role, true));
+            } catch (e) {
+                console.error("History parse error", e);
+            }
+        }
+    }
+
+    function saveMessageToHistory(text, role) {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        let history = stored ? JSON.parse(stored) : [];
+        history.push({ text, role, timestamp: Date.now() });
+        // Limit to last 50 messages
+        if (history.length > 50) history = history.slice(-50);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    }
+
+    document.getElementById('fp-clear-chat')?.addEventListener('click', () => {
+        if(confirm(lang === 'da' ? 'Slet chat historik?' : 'Clear chat history?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    });
+
+    function addMessage(text, role, skipSave = false) {
       if (!messages) return;
+      
+      if (!skipSave) saveMessageToHistory(text, role);
       const div = document.createElement('div');
       div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
 
@@ -707,6 +744,9 @@ const t = {
       t = t.replace(/\n/g, '<br>');
       return t;
     }
+    
+    // Init History
+    loadHistory();
   </script>
   <script is:inline src="/assets/js/voice-widget.js"></script>
 </Layout>
