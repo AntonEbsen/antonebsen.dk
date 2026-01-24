@@ -224,6 +224,12 @@ import Layout from '../layouts/Layout.astro';
                                 <input type="text" id="tr-city" placeholder="City" required class="bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
                                 <input type="text" id="tr-country" placeholder="Country" required class="bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
                             </div>
+                            <select id="tr-category" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200">
+                                <option value="rejser">Rejser / Ferie</option>
+                                <option value="hjem">Hjem / Base</option>
+                                <option value="studier">Studier</option>
+                                <option value="arbejde">Arbejde / Events</option>
+                            </select>
                              <div class="grid grid-cols-3 gap-2">
                                 <input type="number" id="tr-lat" placeholder="Lat" step="any" required class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
                                 <input type="number" id="tr-lng" placeholder="Lng" step="any" required class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
@@ -315,6 +321,7 @@ import Layout from '../layouts/Layout.astro';
         e.preventDefault();
         const city = (document.getElementById('tr-city') as HTMLInputElement).value;
         const country = (document.getElementById('tr-country') as HTMLInputElement).value;
+        const category = (document.getElementById('tr-category') as HTMLSelectElement).value;
         const lat = (document.getElementById('tr-lat') as HTMLInputElement).value;
         const lng = (document.getElementById('tr-lng') as HTMLInputElement).value;
         const year = (document.getElementById('tr-year') as HTMLInputElement).value;
@@ -323,7 +330,7 @@ import Layout from '../layouts/Layout.astro';
         await fetch('/api/travel', {
             method: 'POST',
             body: JSON.stringify({ 
-                city, country, lat: parseFloat(lat), lng: parseFloat(lng), year: year ? parseInt(year) : null, notes 
+                city, country, category, lat: parseFloat(lat), lng: parseFloat(lng), year: year ? parseInt(year) : null, notes 
             })
         });
 

@@ -234,13 +234,14 @@ import Layout from '../layouts/Layout.astro';
     <section class="card controls" aria-label="Kortfiltre">
       <div class="filters" role="tablist" aria-label="Kategorier">
         <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">Alle</button>
+        <button class="chip" data-filter="hjem" role="tab" aria-selected="false">Hjem/Base</button>
         <button class="chip" data-filter="rejser" role="tab" aria-selected="false">Rejser</button>
         <button class="chip" data-filter="studier" role="tab" aria-selected="false">Studier</button>
-        <button class="chip" data-filter="events" role="tab" aria-selected="false">Events</button>
+        <button class="chip" data-filter="arbejde" role="tab" aria-selected="false">Arbejde/Events</button>
       </div>
 
       <div class="hint muted small">
-        Tip: Tilføj nye pins i <code>places</code>-arrayet nederst i filen.
+        Tip: Tilføj nye pins via Dashboardet (Category: Hjem, Rejser, Studier, Arbejde).
       </div>
     </section>
 
@@ -271,11 +272,12 @@ import Layout from '../layouts/Layout.astro';
             // Transform DB data to Map format
             places = data.map(p => ({
                 title: p.city,
-                category: "rejser", // Default category for now
+                category: p.category || "rejser", // Use DB category or default to 'rejser'
+                country: p.country,
                 date: p.year ? p.year.toString() : "",
                 lat: p.lat,
                 lng: p.lng,
-                note: p.notes || `Trip to ${p.city}, ${p.country}`,
+                note: p.notes || `Rejse til ${p.city}, ${p.country}`,
                 link: `https://www.google.com/maps?q=${p.lat},${p.lng}`
             }));
 
@@ -291,24 +293,27 @@ import Layout from '../layouts/Layout.astro';
       // ===== 2) Init map =====
       const map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2); // World View
 
-      // OpenStreetMap tiles (Dark Mode preferred if possible, but OSM standard is fine)
+      // Dark Mode Tiles
       L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        attribution: '&copy; OpenStreetMap'
       }).addTo(map);
 
       // ===== 3) Markers + filtering =====
       const markersLayer = L.layerGroup().addTo(map);
 
       function badgeText(cat){
-        if (cat === "rejser") return "Rejser";
-        if (cat === "studier") return "Studier";
-        if (cat === "events") return "Events";
-        return cat;
+        const c = (cat || "").toLowerCase();
+        if (c === "rejser") return "Rejser";
+        if (c === "hjem") return "Hjem";
+        if (c === "studier") return "Studier";
+        if (c === "arbejde") return "Arbejde";
+        return c.charAt(0).toUpperCase() + c.slice(1);
       }
 
       function popupHTML(p){
         const safeTitle = p.title || "";
+        const safeCountry = p.country || "";
         const safeNote  = p.note || "";
         const safeDate  = p.date || "";
         const safeLink  = p.link || "#";
@@ -316,7 +321,7 @@ import Layout from '../layouts/Layout.astro';
         return `
           <div class="popup">
             <div class="popup-top">
-              <strong>${safeTitle}</strong>
+              <strong>${safeTitle}, ${safeCountry}</strong>
               <span class="badge">${badgeText(p.category)}</span>
             </div>
             <div class="popup-meta">${safeDate}</div>
