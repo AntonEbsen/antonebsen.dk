@@ -356,8 +356,16 @@ const t = {
               removeTyping();
 
               if (!res.ok) {
-                 const data = await res.json();
-                 addMessage("⚠️ " + (data.message || "Error"), 'ai');
+                 let errorMsg = "Server Error";
+                 try {
+                     const data = await res.json();
+                     errorMsg = data.message || errorMsg;
+                 } catch (e) {
+                     // If JSON fails, try text
+                     const text = await res.text();
+                     errorMsg = text ? `Server Error (${res.status}): ${text.substring(0, 100)}...` : `Server Error (${res.status})`;
+                 }
+                 addMessage("⚠️ " + errorMsg, 'ai');
                  return;
               }
 
