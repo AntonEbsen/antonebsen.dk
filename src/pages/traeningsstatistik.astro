@@ -13,26 +13,38 @@ import Button from '../components/ui/Button.astro';
   <main class="container mx-auto px-4 py-12">
     <Section class="max-w-4xl mx-auto">
       <Card variant="glass" class="p-12 text-center">
-        <SectionHeading class="mb-6">Træning</SectionHeading>
+        <SectionHeading class="mb-6">Træning (Live Data)</SectionHeading>
         <h1 class="text-4xl font-bold mb-6">Træningsstatistik</h1>
         <p class="text-xl text-dim mb-8 max-w-2xl mx-auto">
-          Jeg nørder data - også i fitnesscenteret. Denne side vil snart vise live-opdaterede grafer over 
-          volumen, intensitet og progression hentet fra min træningslog.
+          Live-opdateret data direkte fra min træningslog. Fordi det der bliver målt, bliver forbedret.
         </p>
         
+        <!-- KPI METRICS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
           <div class="p-4 bg-glass border border-glass-border rounded-xl">
-            <span class="text-xs uppercase text-accent font-bold">Volumen (Uge)</span>
-            <div class="text-2xl font-bold mt-1">45.2 tons</div>
+            <span class="text-xs uppercase text-accent font-bold">Total Volumen (All Time)</span>
+            <div id="stat-tonnage" class="text-2xl font-bold mt-1 animate-pulse">...</div>
           </div>
           <div class="p-4 bg-glass border border-glass-border rounded-xl">
-            <span class="text-xs uppercase text-accent font-bold">Sessions</span>
-            <div class="text-2xl font-bold mt-1">6 / uge</div>
+            <span class="text-xs uppercase text-accent font-bold">Sessions (Total)</span>
+            <div id="stat-sessions" class="text-2xl font-bold mt-1 animate-pulse">...</div>
           </div>
           <div class="p-4 bg-glass border border-glass-border rounded-xl">
-            <span class="text-xs uppercase text-accent font-bold">Fokus</span>
-            <div class="text-2xl font-bold mt-1">Hypertrofi</div>
+            <span class="text-xs uppercase text-accent font-bold">Favorit Løft</span>
+            <div class="text-2xl font-bold mt-1">Squat</div>
           </div>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+             <div class="p-4 bg-glass border border-glass-border rounded-xl min-h-[300px]">
+                <h3 class="text-left text-xs uppercase font-bold text-accent mb-4">Volumen pr uge (kg)</h3>
+                <canvas id="volChart"></canvas>
+             </div>
+             <div class="p-4 bg-glass border border-glass-border rounded-xl min-h-[300px]">
+                <h3 class="text-left text-xs uppercase font-bold text-accent mb-4">Cardio (km)</h3>
+                <canvas id="cardioChart"></canvas>
+             </div>
         </div>
 
         <div class="flex justify-center gap-4">
@@ -41,5 +53,106 @@ import Button from '../components/ui/Button.astro';
         </div>
       </Card>
     </Section>
+  </main>
+</Layout>
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  async function initStats() {
+    try {
+      const res = await fetch('/api/training');
+      const logs = await res.json();
+      
+      if (!logs || logs.length === 0) {
+        document.getElementById('stat-tonnage')!.innerText = '0 kg';
+        document.getElementById('stat-sessions')!.innerText = '0';
+        return;
+      }
+
+      // 1. Calculate KPIs
+      const totalTonnage = logs.reduce((sum: number, log: any) => sum + (log.tonnage_kg || 0), 0);
+      const totalSessions = logs.length;
+
+      document.getElementById('stat-tonnage')!.innerText = (totalTonnage / 1000).toFixed(1) + ' tons';
+      document.getElementById('stat-tonnage')!.classList.remove('animate-pulse');
+      
+      document.getElementById('stat-sessions')!.innerText = totalSessions.toString();
+      document.getElementById('stat-sessions')!.classList.remove('animate-pulse');
+
+      // 2. Prepare Chart Data (Group by Week/Date)
+      // Simple grouping by Date for now
+      const tonnageByDate: Record<string, number> = {};
+      const cardioByDate: Record<string, number> = {};
+
+      logs.slice().reverse().forEach((log: any) => {
+         const d = log.date;
+         if (log.tonnage_kg) tonnageByDate[d] = (tonnageByDate[d] || 0) + log.tonnage_kg;
+         if (log.distance_km) cardioByDate[d] = (cardioByDate[d] || 0) + log.distance_km;
+      });
+
+      const dates = Object.keys(tonnageByDate);
+      const tonnages = dates.map(d => tonnageByDate[d]);
+      
+      const cDates = Object.keys(cardioByDate);
+      const distances = cDates.map(d => cardioByDate[d]);
+
+      // 3. Render Charts
+      const ctxV = document.getElementById('volChart') as HTMLCanvasElement;
+      new Chart(ctxV, {
+        type: 'bar',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Tonnage (kg)',
+            data: tonnages,
+            backgroundColor: '#FFD700',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#ffffff50' }, grid: { display: false } },
+            y: { ticks: { color: '#ffffff50' }, grid: { color: '#ffffff10' } }
+          }
+        }
+      });
+
+      const ctxC = document.getElementById('cardioChart') as HTMLCanvasElement;
+      new Chart(ctxC, {
+        type: 'line',
+        data: {
+          labels: cDates,
+          datasets: [{
+            label: 'Distance (km)',
+            data: distances,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#ffffff50' }, grid: { display: false } },
+            y: { ticks: { color: '#ffffff50' }, grid: { color: '#ffffff10' } }
+          }
+        }
+      });
+
+    } catch (err) {
+      console.error("Stats Error", err);
+    }
+  }
+
+  // Run on load
+  initStats();
+</script>
   </main>
 </Layout>

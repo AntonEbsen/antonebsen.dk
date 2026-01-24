@@ -107,7 +107,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- LIBRARY MANAGER -->
-             <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+             <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
                     <h3 class="text-gold-400 font-bold">Living Library Manager</h3>
                 </div>
@@ -140,6 +140,45 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- WORKOUT LOGGER -->
+            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold">Quantified Self (Training)</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- LOG WORKOUT FORM -->
+                    <div>
+                         <h4 class="text-gray-400 text-sm mb-4 uppercase">Log Session</h4>
+                         <form id="training-form" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="date" id="t-date" required class="bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                                <select id="t-type" class="bg-black border border-gray-700 p-2 rounded text-gray-200">
+                                    <option value="Strength">Strength (Styrke)</option>
+                                    <option value="Running">Running (Løb)</option>
+                                    <option value="Cycling">Cycling (Cykling)</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <input type="number" id="t-duration" placeholder="Mins" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <input type="number" id="t-distance" placeholder="Km" step="0.1" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <input type="number" id="t-tonnage" placeholder="Kg" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            </div>
+                            <input type="text" id="t-notes" placeholder="Notes (e.g. 5x5 Squat PR)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Log Workout</button>
+                         </form>
+                    </div>
+
+                    <!-- RECENT LOGS -->
+                    <div>
+                         <h4 class="text-gray-400 text-sm mb-4 uppercase">Recent Logs</h4>
+                         <ul id="training-list" class="space-y-2 text-sm text-gray-400">
+                            <li>Loading logs...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 </Layout>
@@ -159,8 +198,9 @@ import Layout from '../layouts/Layout.astro';
         if (input.value.toLowerCase().trim() === CORRECT_CODE) {
             gate.classList.add('hidden');
             content.classList.remove('hidden');
-            loadData(); // Trigger stats fetch
-            loadBooks(); // Trigger books fetch
+            loadData(); // Stats
+            loadBooks(); // Books
+            loadTraining(); // Training
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -176,17 +216,11 @@ import Layout from '../layouts/Layout.astro';
         try {
             const res = await fetch('/api/stats');
             const data = await res.json();
-            
             if (data.error) throw new Error(data.error);
-            
             renderMetrics(data);
             renderCharts(data);
             renderTable(data.recent);
-
-        } catch (err) {
-            console.error("Dashboard Error:", err);
-            // alert("Failed to load system metrics.");
-        }
+        } catch (err) { console.error("Dashboard Error:", err); }
     }
 
     // --- BOOKS LOGIC ---
@@ -196,24 +230,72 @@ import Layout from '../layouts/Layout.astro';
             const books = await res.json();
             const list = document.getElementById('book-list')!;
             list.innerHTML = '';
-            
-            if(books.length === 0) {
-                 list.innerHTML = '<li>No books in database.</li>';
-                 return;
-            }
-
+            if(books.length === 0) { list.innerHTML = '<li>No books.</li>'; return; }
             books.slice(0, 5).forEach((b: any) => {
                 const li = document.createElement('li');
                 li.className = "border-b border-gray-800 pb-2 flex justify-between";
                 li.innerHTML = `<span>${b.title}</span> <span class="text-gold-500 text-xs">${b.status}</span>`;
                 list.appendChild(li);
             });
-
-        } catch (err) {
-            console.error(err);
-        }
+        } catch (err) { console.error(err); }
     }
 
+    // --- TRAINING LOGIC ---
+    async function loadTraining() {
+        try {
+             const res = await fetch('/api/training');
+             const logs = await res.json();
+             const list = document.getElementById('training-list')!;
+             list.innerHTML = '';
+
+             if (logs.length === 0) { list.innerHTML = '<li>No logs found.</li>'; return; }
+
+             logs.slice(0, 5).forEach((l: any) => {
+                const li = document.createElement('li');
+                li.className = "border-b border-gray-800 pb-2 flex justify-between items-center";
+                li.innerHTML = `
+                    <div>
+                        <span class="text-gray-300 block">${l.type}</span>
+                        <span class="text-xs text-gray-600">${l.date}</span>
+                    </div>
+                    <div class="text-right">
+                        ${l.distance_km ? `<span class="text-gold-500 text-xs block">${l.distance_km} km</span>` : ''}
+                        ${l.tonnage_kg ? `<span class="text-gold-500 text-xs block">${l.tonnage_kg} kg</span>` : ''}
+                    </div>
+                `;
+                list.appendChild(li);
+             });
+        } catch (err) { console.error(err); }
+    }
+
+    document.getElementById('training-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const date = (document.getElementById('t-date') as HTMLInputElement).value;
+        const type = (document.getElementById('t-type') as HTMLSelectElement).value;
+        const duration = (document.getElementById('t-duration') as HTMLInputElement).value;
+        const distance = (document.getElementById('t-distance') as HTMLInputElement).value;
+        const tonnage = (document.getElementById('t-tonnage') as HTMLInputElement).value;
+        const notes = (document.getElementById('t-notes') as HTMLInputElement).value;
+
+        await fetch('/api/training', {
+            method: 'POST',
+            body: JSON.stringify({
+                date,
+                type,
+                duration_min: duration ? parseInt(duration) : null,
+                distance_km: distance ? parseFloat(distance) : null,
+                tonnage_kg: tonnage ? parseInt(tonnage) : null,
+                notes
+            })
+        });
+
+        alert("Workout Logged!");
+        (e.target as HTMLFormElement).reset();
+        loadTraining();
+    });
+
+
+    // --- BOOKS HANDLER ---
     document.getElementById('book-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = (document.getElementById('book-title') as HTMLInputElement).value;
@@ -225,12 +307,11 @@ import Layout from '../layouts/Layout.astro';
             method: 'POST',
             body: JSON.stringify({ title, author, status, rating: rating ? parseInt(rating) : null })
         });
-
         alert("Book Added!");
-        // Clear form
         (e.target as HTMLFormElement).reset();
         loadBooks();
     });
+
 
 
     // ... (Charts Render Logic same as before) ...
