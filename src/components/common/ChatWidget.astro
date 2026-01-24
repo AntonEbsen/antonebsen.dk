@@ -540,6 +540,19 @@ const t = {
           contentElement = div.querySelector('.prose');
           if (text) contentElement.innerHTML = formatText(text);
 
+          // Add Speak Button
+          const actionsDiv = document.createElement('div');
+          actionsDiv.className = "flex justify-end mt-2 gap-2";
+          actionsDiv.innerHTML = `
+             <button class="speak-btn text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+             </button>
+          `;
+          div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
+          
+          const speakBtn = actionsDiv.querySelector('.speak-btn');
+          speakBtn.onclick = () => speakMessage(text, speakBtn);
+
         } else {
           div.innerHTML = `
             <div class="bg-accent text-bg p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
@@ -599,6 +612,50 @@ const t = {
         if (typingInterval) clearInterval(typingInterval);
         const el = document.getElementById('fp-typing');
         if (el) el.remove();
+      }
+
+      function speakMessage(text, btn) {
+          if (!window.speechSynthesis) return;
+          
+          // Cancel current
+          window.speechSynthesis.cancel();
+
+          // Reset all icons
+          document.querySelectorAll('.speak-btn i').forEach(icon => {
+              icon.classList.remove('text-accent', 'animate-pulse');
+              icon.classList.add('text-dim-400');
+          });
+
+          const icon = btn.querySelector('i');
+          icon.classList.remove('text-dim-400');
+          icon.classList.add('text-accent', 'animate-pulse');
+
+          // Clean text (remove markdown like *, #, etc)
+          const cleanText = text.replace(/[*#`]/g, '');
+
+          const utterance = new SpeechSynthesisUtterance(cleanText);
+          const lang = document.documentElement.lang || 'da'; // Default to Danish site
+          utterance.lang = lang === 'en' ? 'en-US' : 'da-DK';
+          utterance.rate = 1.0;
+          utterance.pitch = 1.0;
+
+          // Attempt to find a good voice
+          const voices = window.speechSynthesis.getVoices();
+          const voice = voices.find(v => v.lang.startsWith(lang === 'en' ? 'en' : 'da'));
+          if (voice) utterance.voice = voice;
+
+          utterance.onend = () => {
+              icon.classList.remove('text-accent', 'animate-pulse');
+              icon.classList.add('text-dim-400');
+          };
+          
+          // Fallback reset if it gets stuck
+          utterance.onerror = () => {
+               icon.classList.remove('text-accent', 'animate-pulse');
+               icon.classList.add('text-dim-400');
+          }
+
+          window.speechSynthesis.speak(utterance);
       }
 
   } catch (err) {
