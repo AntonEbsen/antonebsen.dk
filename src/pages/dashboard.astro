@@ -81,7 +81,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <!-- RECENT LOGS TABLE -->
-            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+            <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800 flex justify-between items-center">
                     <h3 class="text-gold-400 font-bold">Recent Intercepts</h3>
                     <button id="refresh-btn" class="text-xs border border-gray-700 hover:border-gold-500 px-3 py-1 rounded transition-colors">
@@ -106,6 +106,40 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- LIBRARY MANAGER -->
+             <div class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold">Living Library Manager</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- ADD BOOK FORM -->
+                    <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Add New Entry</h4>
+                        <form id="book-form" class="space-y-4">
+                            <input type="text" id="book-title" placeholder="Book Title" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <input type="text" id="book-author" placeholder="Author" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <div class="grid grid-cols-2 gap-4">
+                                <select id="book-status" class="bg-black border border-gray-700 p-2 rounded text-gray-200">
+                                    <option value="Reading">Reading</option>
+                                    <option value="Finished">Finished</option>
+                                    <option value="To Read">To Read</option>
+                                </select>
+                                <input type="number" id="book-rating" placeholder="Rating (1-5)" min="1" max="5" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            </div>
+                            <button type="submit" class="bg-gold-600 text-black font-bold py-2 px-4 rounded w-full hover:bg-gold-500">Add to Library</button>
+                        </form>
+                    </div>
+
+                    <!-- BOOK LIST PREVIEW -->
+                    <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Recent Additions</h4>
+                        <ul id="book-list" class="space-y-2 text-sm text-gray-400">
+                            <li>Loading library...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 </Layout>
@@ -113,8 +147,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
     import Chart from 'chart.js/auto';
 
-    // 1. Password Protection (Client-side simple)
-    // In production, use auth middleware. For portfolio showcase, this is sufficient.
+    // ... (Login Gate Logic same as before) ...
     const CORRECT_CODE = "quantum"; 
     const gate = document.getElementById('login-gate');
     const content = document.getElementById('dashboard-content');
@@ -126,7 +159,8 @@ import Layout from '../layouts/Layout.astro';
         if (input.value.toLowerCase().trim() === CORRECT_CODE) {
             gate.classList.add('hidden');
             content.classList.remove('hidden');
-            loadData(); // Trigger data fetch
+            loadData(); // Trigger stats fetch
+            loadBooks(); // Trigger books fetch
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -136,7 +170,8 @@ import Layout from '../layouts/Layout.astro';
     btn?.addEventListener('click', checkLogin);
     input?.addEventListener('keyup', (e) => e.key === 'Enter' && checkLogin());
 
-    // 2. Data Fetching
+
+    // --- STATS LOGIC ---
     async function loadData() {
         try {
             const res = await fetch('/api/stats');
@@ -150,10 +185,55 @@ import Layout from '../layouts/Layout.astro';
 
         } catch (err) {
             console.error("Dashboard Error:", err);
-            alert("Failed to load system metrics.");
+            // alert("Failed to load system metrics.");
         }
     }
 
+    // --- BOOKS LOGIC ---
+    async function loadBooks() {
+        try {
+            const res = await fetch('/api/books');
+            const books = await res.json();
+            const list = document.getElementById('book-list')!;
+            list.innerHTML = '';
+            
+            if(books.length === 0) {
+                 list.innerHTML = '<li>No books in database.</li>';
+                 return;
+            }
+
+            books.slice(0, 5).forEach((b: any) => {
+                const li = document.createElement('li');
+                li.className = "border-b border-gray-800 pb-2 flex justify-between";
+                li.innerHTML = `<span>${b.title}</span> <span class="text-gold-500 text-xs">${b.status}</span>`;
+                list.appendChild(li);
+            });
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    document.getElementById('book-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.getElementById('book-title') as HTMLInputElement).value;
+        const author = (document.getElementById('book-author') as HTMLInputElement).value;
+        const status = (document.getElementById('book-status') as HTMLSelectElement).value;
+        const rating = (document.getElementById('book-rating') as HTMLInputElement).value;
+
+        await fetch('/api/books', {
+            method: 'POST',
+            body: JSON.stringify({ title, author, status, rating: rating ? parseInt(rating) : null })
+        });
+
+        alert("Book Added!");
+        // Clear form
+        (e.target as HTMLFormElement).reset();
+        loadBooks();
+    });
+
+
+    // ... (Charts Render Logic same as before) ...
     document.getElementById('refresh-btn')?.addEventListener('click', loadData);
 
     // 3. Render Functions

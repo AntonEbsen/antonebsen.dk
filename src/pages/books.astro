@@ -90,26 +90,66 @@ const booksData = await getCollection('books');
     <!-- LISTE -->
     <Section id="list">
       <Card variant="bordered" class="p-6">
-        <SectionHeading>Favoritter</SectionHeading>
+        <SectionHeading>Favoritter (Live DB)</SectionHeading>
         <p class="text-dim opacity-70 mb-6 text-sm">
-          Udskift titlerne med dine egne for at personliggøre listen.
+          Hentet direkte fra "Living Library" databasen.
         </p>
 
-        <div class="books-grid">
-          {booksData.map(book => (
-            <BookCard 
-              title={book.data.title}
-              author={book.data.author}
-              year={book.data.year}
-              genre={book.data.genre}
-              tag={book.data.tag}
-              note={book.data.note}
-              links={book.data.links || []}
-            />
-          ))}
+        <div id="books-grid" class="books-grid">
+           <p class="text-dim col-span-full text-center py-12">Loading Library...</p>
         </div>
       </Card>
     </Section>
+
+    <script>
+      async function loadBooks() {
+        try {
+          const res = await fetch('/api/books');
+          const books = await res.json();
+          const grid = document.getElementById('books-grid');
+          
+          if (!grid) return;
+          grid.innerHTML = '';
+
+          if (books.length === 0) {
+             grid.innerHTML = '<p class="text-dim col-span-full text-center py-12">Biblioteket er tomt.</p>';
+             return;
+          }
+
+          books.forEach((book: any) => {
+            // Re-use BookCard styling structure manually since we are in client-side JS
+            // Or use a web component. For now, simple HTML injection matching the style.
+            const card = document.createElement('div');
+            card.className = 'group relative flex flex-col gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-black/20';
+            
+            const ratingStars = '★'.repeat(book.rating || 0) + '☆'.repeat(5 - (book.rating || 0));
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <h3 class="text-lg font-bold text-white/90 group-hover:text-gold-400 transition-colors">${book.title}</h3>
+                    <span class="text-xs bg-white/10 px-2 py-1 rounded text-white/60">${book.status || 'Read'}</span>
+                </div>
+                
+                <div class="text-sm text-white/50 mb-2">
+                    ${book.author || 'Unknown'}
+                </div>
+
+                ${book.notes ? `<p class="text-sm text-white/70 italic line-clamp-3">"${book.notes}"</p>` : ''}
+                
+                <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-white/40">
+                    <span class="text-gold-500/80 tracking-widest">${ratingStars}</span>
+                    <span>${new Date(book.created_at).getFullYear()}</span>
+                </div>
+            `;
+            grid.appendChild(card);
+          });
+
+        } catch (err) {
+          console.error("Failed to load books", err);
+        }
+      }
+      loadBooks();
+    </script>
 
     <!-- CTA -->
     <Section>
