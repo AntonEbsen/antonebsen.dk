@@ -7,12 +7,17 @@ import Button from '@components/ui/Button.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import BlogCard from '@components/blog/BlogCard.astro';
-import { getCollection } from 'astro:content';
+import { createClient } from '@supabase/supabase-js';
 
-const allPosts = await getCollection('blog');
-const academic = allPosts.filter(p => p.data.category === 'academic');
-const training = allPosts.filter(p => p.data.category === 'training');
-const travel = allPosts.filter(p => p.data.category === 'travel');
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: posts, error } = await supabase
+  .from('posts')
+  .select('*')
+  .eq('published', true)
+  .order('created_at', { ascending: false });
+
+if (error) posts = [];
+
 ---
 
 <Layout 

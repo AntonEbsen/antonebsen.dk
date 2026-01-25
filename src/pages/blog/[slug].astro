@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/ui/Section.astro';
+import Card from '../../components/ui/Card.astro';
+import { createClient } from '@supabase/supabase-js';
+
+const { slug } = Astro.params;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let post = null;
+
+// Fetch post by slug
+const { data, error } = await supabase
+  .from('posts')
+  .select('*')
+  .eq('slug', slug)
+  .eq('published', true)
+  .single();
+
+if (error || !data) {
+  return Astro.redirect('/blog');
+}
+
+post = data;
+
+// Simple Markdown Parser (Basic)
+// For a production blog, use 'marked' or 'astro-markdown' but this handles paragraphs
+const contentHtml = post.content
+    .split('\n\n')
+    .map(p => `<p class="mb-4 text-dim leading-relaxed">${p}</p>`)
+    .join('');
+---
+
+<Layout title={`${post.title} | Blog`} description={post.excerpt}>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+     <Section>
+        <Card variant="glass" class="p-8 md:p-12">
+            <a href="/blog" class="text-sm text-accent hover:underline mb-4 block">&larr; Tilbage til oversigt</a>
+            
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">{post.title}</h1>
+            <p class="text-dim text-sm mb-8 uppercase tracking-widest opacity-70">
+                {new Date(post.created_at).toLocaleDateString('da-DK', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+
+            {post.image_url && (
+                <img src={post.image_url} alt={post.title} class="w-full h-64 md:h-96 object-cover rounded-lg mb-8 border border-white/10" />
+            )}
+
+            <div class="prose prose-invert max-w-none">
+                <Fragment set:html={contentHtml} />
+            </div>
+        </Card>
+     </Section>
+  </main>
+</Layout>
