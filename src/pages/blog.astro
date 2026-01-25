@@ -18,8 +18,7 @@ let { data: posts, error } = await supabase
   .eq('published', true)
   .order('created_at', { ascending: false });
 
-if (error) posts = [];
-
+if (error || !posts) posts = [];
 ---
 
 <Layout 
@@ -73,16 +72,8 @@ if (error) posts = [];
           </p>
   
           <div class="flex flex-wrap gap-3 mb-6">
-            <Button href="#cat-fagligt">Fagligt</Button>
-            <Button href="#cat-traening" variant="ghost">Træning</Button>
-            <Button href="#cat-rejser" variant="ghost">Rejser</Button>
+            <Button href="#latest">Seneste</Button>
             <Button href="/bucketlist" variant="ghost" class="text-gold-400 hover:text-gold-300"><i class="fa-solid fa-trophy mr-2"></i>Bucket List</Button>
-          </div>
-  
-          <div class="flex flex-wrap gap-2">
-            <a href="#cat-fagligt" class="no-underline"><Pill variant="accent" class="hover:bg-accent hover:text-white transition-colors">Fagligt</Pill></a>
-            <a href="#cat-traening" class="no-underline"><Pill variant="accent" class="hover:bg-accent hover:text-white transition-colors">Træning</Pill></a>
-            <a href="#cat-rejser" class="no-underline"><Pill variant="accent" class="hover:bg-accent hover:text-white transition-colors">Rejser</Pill></a>
           </div>
         </Card>
   
@@ -90,7 +81,7 @@ if (error) posts = [];
           <Card variant="glass" class="p-6">
             <SectionHeading>Seneste</SectionHeading>
             <p class="text-dim opacity-80 m-0">
-              Nye indlæg kommer løbende. (Pro tip: når du har 10+ posts, kan vi lave et rigtigt filter.)
+              {posts.length > 0 ? `Viser ${posts.length} indlæg.` : 'Ingen indlæg endnu.'}
             </p>
           </Card>
         </div>
@@ -98,68 +89,30 @@ if (error) posts = [];
     </Section>
 
     <!-- ===================== -->
-    <!-- KATEGORI: FAGLIGT -->
+    <!-- ALLE INDLÆG (DB) -->
     <!-- ===================== -->
-    <Section id="cat-fagligt" aria-label="Fagligt">
+    <Section id="latest">
       <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <SectionHeading class="mb-0 text-xl font-bold">Fagligt</SectionHeading>
-        <p class="m-0 text-dim text-sm opacity-80">Økonomi, data, modeller, økonometri og værktøjer.</p>
+        <SectionHeading class="mb-0 text-xl font-bold">Seneste Indlæg</SectionHeading>
+        <p class="m-0 text-dim text-sm opacity-80">Direkte fra databasen.</p>
       </div>
 
       <div class="posts-grid">
-        {academic.map(post => (
+        {posts.map(p => (
             <BlogCard 
-              title={post.data.title}
-              tag={post.data.tag}
-              meta={post.data.meta || ""}
-              description={post.data.description}
-              links={post.data.links || []}
+              title={p.title}
+              tag={p.category || "Blog"}
+              meta={new Date(p.created_at).toLocaleDateString('da-DK')}
+              description={p.excerpt || ""}
+              links={[{ text: 'Læs mere', url: `/blog/${p.slug}`, icon: 'arrow-right' }]}
             />
         ))}
-      </div>
-    </Section>
-
-    <!-- ===================== -->
-    <!-- KATEGORI: TRÆNING -->
-    <!-- ===================== -->
-    <Section id="cat-traening" aria-label="Træning">
-      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <SectionHeading class="mb-0 text-xl font-bold">Træning</SectionHeading>
-        <p class="m-0 text-dim text-sm opacity-80">Rutiner, progression, og hvad der faktisk virker i praksis.</p>
-      </div>
-
-      <div class="posts-grid">
-        {training.map(post => (
-           <BlogCard 
-             title={post.data.title}
-             tag={post.data.tag}
-             meta={post.data.meta || ""}
-             description={post.data.description}
-             links={post.data.links || []}
-           />
-       ))}
-      </div>
-    </Section>
-
-    <!-- ===================== -->
-    <!-- KATEGORI: REJSER -->
-    <!-- ===================== -->
-    <Section id="cat-rejser" aria-label="Rejser">
-      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <SectionHeading class="mb-0 text-xl font-bold">Rejser</SectionHeading>
-        <p class="m-0 text-dim text-sm opacity-80">Vandring, ruter, planlægning og erfaringer fra turene.</p>
-      </div>
-
-      <div class="posts-grid">
-        {travel.map(post => (
-           <BlogCard 
-             title={post.data.title}
-             tag={post.data.tag}
-             meta={post.data.meta || ""}
-             description={post.data.description}
-             links={post.data.links || []}
-           />
-       ))}
+        {posts.length === 0 && (
+            <div class="col-span-3 text-center py-12 border border-white/5 rounded-lg bg-white/5">
+                <i class="fa-solid fa-feather text-4xl text-dim mb-4 opacity-50"></i>
+                <p class="text-dim">Ingen indlæg fundet. Tjek din database.</p>
+            </div>
+        )}
       </div>
     </Section>
 
