@@ -166,7 +166,7 @@
     const muteIcon = muteBtn?.querySelector('.fa-volume-xmark');
 
     // Shrine Open/Close Logic
-    document.addEventListener('openShrine', () => {
+    document.addEventListener('openShrine', async () => {
         if (!shrine) return;
         shrine.style.display = 'flex'; // Enable Flexbox layout
         
