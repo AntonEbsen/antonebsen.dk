@@ -1,0 +1,126 @@
+---
+import { getLiturgicalSeason } from '../../utils/liturgy';
+import '@styles/styles.css';
+
+const season = getLiturgicalSeason();
+
+// Map colors to CSS gradients
+const colorMap: Record<string, string> = {
+    green:  'from-green-900/40 via-black to-black',
+    purple: 'from-purple-900/40 via-black to-black',
+    white:  'from-yellow-100/20 via-black to-black', // Gold/White
+    red:    'from-red-900/40 via-black to-black',
+    black:  'from-gray-900 via-black to-black'
+};
+
+const bgGradient = colorMap[season.color] || colorMap.green;
+const accentColor = {
+    green: 'text-green-500',
+    purple: 'text-purple-400',
+    white: 'text-gold-200',
+    red: 'text-red-500',
+    black: 'text-gray-500'
+}[season.color];
+
+const today = new Date().toLocaleDateString('da-DK', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+});
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalenderen | Ad Majorem Dei Gloriam</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .sans { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#050508] text-gray-300 h-screen w-screen overflow-hidden m-0 p-0 selection:bg-gold-500/30">
+
+    <!-- Dynamic Background -->
+    <div class={`fixed inset-0 z-0 pointer-events-none bg-gradient-to-b ${bgGradient} transition-colors duration-1000`}>
+         <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+         <!-- Ambient Glow -->
+         <div class={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[150px] opacity-20 ${season.color === 'white' ? 'bg-gold-500' : `bg-${season.color}-500`}`}></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 sans">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Tilbage</span>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full h-full flex flex-col items-center justify-center p-6 text-center">
+        
+        <div class="mb-4">
+            <span class="text-xs sans uppercase tracking-[0.4em] text-gray-500 animate-fade-in-up">I dag er det</span>
+        </div>
+
+        <h1 class="text-2xl md:text-3xl text-gray-300 capitalize mb-12 animate-fade-in-up delay-100">
+            {today}
+        </h1>
+
+        <!-- Season Card -->
+        <div class="relative group animate-fade-in-up delay-200">
+            <!-- Border Glow -->
+            <div class={`absolute -inset-1 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000 ${season.color === 'white' ? 'bg-gold-500' : `bg-${season.color}-600`}`}></div>
+            
+            <div class="relative bg-black/40 backdrop-blur-md border border-white/10 p-12 md:p-16 rounded-lg max-w-lg">
+                <i class={`fa-solid fa-church text-4xl mb-6 ${accentColor} opacity-80`}></i>
+                
+                <h2 class={`text-4xl md:text-5xl font-bold mb-6 ${accentColor} drop-shadow-lg`}>
+                    {season.name}
+                </h2>
+                
+                <div class="h-px w-24 bg-gradient-to-r from-transparent via-gray-500 to-transparent mx-auto mb-6"></div>
+                
+                <p class="text-lg text-gray-400 italic">
+                    {season.description}
+                </p>
+
+                 <!-- Liturgical Color Label -->
+                 <div class="absolute top-4 right-4">
+                    <div class="flex items-center gap-2" title="Liturgisk Farve">
+                        <span class="text-[10px] sans uppercase tracking-widest text-gray-600 hidden group-hover:block transition-all">{season.color}</span>
+                        <div class={`w-3 h-3 rounded-full ${season.color === 'white' ? 'bg-gray-100' : `bg-${season.color}-600`} shadow-[0_0_10px_currentColor]`}></div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+</body>
+</html>
