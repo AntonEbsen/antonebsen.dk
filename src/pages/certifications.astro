@@ -6,6 +6,24 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: certifications, error } = await supabase
+  .from('certifications')
+  .select('*')
+  .eq('visible', true)
+  .order('id', { ascending: false });
+
+if (error) certifications = [];
+
+const pythonCerts = certifications?.filter(c => c.category === 'Python') || [];
+const matlabCerts = certifications?.filter(c => c.category === 'MATLAB') || [];
+const sasCerts = certifications?.filter(c => c.category === 'SAS') || [];
+const writingCerts = certifications?.filter(c => c.category === 'Formidling') || [];
+const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'Formidling'].includes(c.category)) || [];
 ---
 
 <Layout 
@@ -81,6 +99,14 @@ import ContactCard from '@components/common/ContactCard.astro';
       </div>
     </Section>
 
+    {certifications?.length === 0 && (
+        <Section>
+            <Card variant="glass" class="p-8 text-center text-dim bg-purple-500/10 border-purple-500/20">
+                <p>Ingen certificeringer fundet endnu. <br/>Tilføj dine diplomer i <a href="/dashboard" class="text-white underline">Dashboardet</a>.</p>
+            </Card>
+        </Section>
+    )}
+
     <!-- PYTHON -->
     <Section id="cat-python" aria-label="Python certificeringer">
       <Card variant="bordered" class="p-6">
@@ -88,31 +114,20 @@ import ContactCard from '@components/common/ContactCard.astro';
         <p class="text-dim opacity-70 mb-6 text-sm">Dataanalyse, workflows, og praktisk programmering.</p>
 
         <div class="certs-grid">
-          <!-- Kopiér denne card-blok pr. cert -->
-          <Card variant="glass" class="p-4 flex flex-col h-full">
-            <div class="flex justify-between items-start mb-2 gap-2">
-              <h3 class="font-bold text-base leading-tight">[Certifikatnavn]</h3>
-              <Pill variant="accent">Python</Pill>
-            </div>
-            <p class="text-xs text-dim mb-2">Udsteder: [fx DataCamp/Coursera] · År: [202X]</p>
-            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">1 linje: hvad du lærte / kan bruge det til.</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              <Button href="#" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Bevis</Button>
-              <Button href="#" size="sm" variant="ghost">Noter</Button>
-            </div>
-          </Card>
-
-          <Card variant="glass" class="p-4 flex flex-col h-full">
-             <div class="flex justify-between items-start mb-2 gap-2">
-              <h3 class="font-bold text-base leading-tight">[Certifikatnavn]</h3>
-              <Pill variant="accent">Python</Pill>
-            </div>
-            <p class="text-xs text-dim mb-2">Udsteder: [—] · År: [—]</p>
-            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">1 linje: fokus (pandas, ML, viz, etc.).</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-               <Button href="#" size="sm" variant="ghost">Bevis</Button>
-             </div>
-          </Card>
+          {pythonCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">Python</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Bevis</Button>}
+                </div>
+              </Card>
+          ))}
+          {pythonCerts.length === 0 && <p class="text-dim text-sm italic">Ingen Python certificeringer endnu.</p>}
         </div>
       </Card>
     </Section>
@@ -124,29 +139,20 @@ import ContactCard from '@components/common/ContactCard.astro';
          <p class="text-dim opacity-70 mb-6 text-sm">Numerisk analyse, matrixregning og workflows.</p>
 
         <div class="certs-grid">
-          <Card variant="glass" class="p-4 flex flex-col h-full">
-            <div class="flex justify-between items-start mb-2 gap-2">
-               <h3 class="font-bold text-base leading-tight">MATLAB Onramp</h3>
-               <Pill variant="accent">MATLAB</Pill>
-             </div>
-            <p class="text-xs text-dim mb-2">MathWorks · (indsæt år)</p>
-            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">Grundlæggende MATLAB + typiske workflows.</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-               <Button href="#" size="sm" variant="ghost">Bevis</Button>
-             </div>
-          </Card>
-
-           <Card variant="glass" class="p-4 flex flex-col h-full">
-            <div class="flex justify-between items-start mb-2 gap-2">
-               <h3 class="font-bold text-base leading-tight">Calculations with Vectors...</h3>
-               <Pill variant="accent">MATLAB</Pill>
-             </div>
-            <p class="text-xs text-dim mb-2">MathWorks · (indsæt år)</p>
-            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">Lineær algebra i praksis.</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-               <Button href="#" size="sm" variant="ghost">Bevis</Button>
-             </div>
-          </Card>
+           {matlabCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">MATLAB</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Bevis</Button>}
+                </div>
+              </Card>
+          ))}
+          {matlabCerts.length === 0 && <p class="text-dim text-sm italic">Ingen MATLAB certificeringer endnu.</p>}
         </div>
       </Card>
     </Section>
@@ -158,17 +164,20 @@ import ContactCard from '@components/common/ContactCard.astro';
         <p class="text-dim opacity-70 mb-6 text-sm">Tidsrækker, data management og analyse.</p>
 
         <div class="certs-grid">
-          <Card variant="glass" class="p-4 flex flex-col h-full">
-            <div class="flex justify-between items-start mb-2 gap-2">
-              <h3 class="font-bold text-base leading-tight">[SAS-certifikatnavn]</h3>
-              <Pill variant="accent">SAS</Pill>
-            </div>
-            <p class="text-xs text-dim mb-2">Udsteder: [SAS/UNI/etc.] · År: [—]</p>
-            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">1 linje: hvad certen dækker (PROC, ESM, etc.).</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-               <Button href="#" size="sm" variant="ghost">Bevis</Button>
-            </div>
-          </Card>
+           {sasCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">SAS</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Bevis</Button>}
+                </div>
+              </Card>
+          ))}
+          {sasCerts.length === 0 && <p class="text-dim text-sm italic">Ingen SAS certificeringer endnu.</p>}
         </div>
       </Card>
     </Section>
@@ -180,20 +189,46 @@ import ContactCard from '@components/common/ContactCard.astro';
         <p class="text-dim opacity-70 mb-6 text-sm">Skrivning, struktur og formidling.</p>
 
         <div class="certs-grid">
-          <Card variant="glass" class="p-4 flex flex-col h-full">
-            <div class="flex justify-between items-start mb-2 gap-2">
-              <h3 class="font-bold text-base leading-tight">Skriveakademi</h3>
-              <Pill variant="accent">Formidling</Pill>
-            </div>
-            <p class="text-xs text-dim mb-2">Politiken · År: [—]</p>
-            <p class="text-sm text-dim opacity-80 mb-4 flex-grow">Praktisk skrivning: klar struktur, argumentation og målgruppe.</p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-               <Button href="#" size="sm" variant="ghost">Bevis</Button>
-            </div>
-          </Card>
+           {writingCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">Formidling</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Bevis</Button>}
+                </div>
+              </Card>
+          ))}
+          {writingCerts.length === 0 && <p class="text-dim text-sm italic">Ingen Formidlings-certificeringer endnu.</p>}
         </div>
       </Card>
     </Section>
+
+    {otherCerts.length > 0 && (
+        <Section id="cat-other">
+          <Card variant="bordered" class="p-6">
+            <SectionHeading>Andet</SectionHeading>
+            <div class="certs-grid">
+              {otherCerts.map(c => (
+                 <Card variant="glass" class="p-4 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-2 gap-2">
+                      <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                      <Pill variant="accent">{c.category}</Pill>
+                    </div>
+                    <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                    <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                      {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Bevis</Button>}
+                    </div>
+                  </Card>
+              ))}
+            </div>
+          </Card>
+        </Section>
+    )}
 
     <!-- CTA -->
     <Section>

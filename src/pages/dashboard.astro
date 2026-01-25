@@ -1254,6 +1254,31 @@ import Layout from '../layouts/Layout.astro';
         alert("Education Added!");
     });
 
+    // --- CERTIFICATION LOGIC ---
+    document.getElementById('cert-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = (document.getElementById('c-name') as HTMLInputElement).value;
+        const issuer = (document.getElementById('c-issuer') as HTMLInputElement).value;
+        const category = (document.getElementById('c-category') as HTMLSelectElement).value;
+        const year = (document.getElementById('c-year') as HTMLInputElement).value;
+        const url = (document.getElementById('c-link') as HTMLInputElement).value;
+        const image_url = (document.getElementById('c-image') as HTMLInputElement).value;
+        const description = (document.getElementById('c-desc') as HTMLInputElement).value;
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const icon = btn.innerHTML;
+        btn.innerHTML = '...';
+
+        await fetch('/api/certifications', {
+            method: 'POST',
+            body: JSON.stringify({ name, issuer, category, year, url, image_url, description })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = icon;
+        alert("Certificate Added!");
+    });
+
     async function loadTravel() {
         try {
             const res = await fetch('/api/travel');
