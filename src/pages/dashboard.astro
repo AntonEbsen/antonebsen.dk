@@ -534,7 +534,8 @@ import Layout from '../layouts/Layout.astro';
             loadSkills();
             loadPosts();
             loadInbox();
-            loadStatus(); // Now Status
+            loadStatus();
+            loadGoals(); // Bucket List
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -895,6 +896,70 @@ import Layout from '../layouts/Layout.astro';
     };
 
     // --- TRAVEL LOGIC ---
+    // --- GOAL LOGIC ---
+    async function loadGoals() {
+        try {
+            const res = await fetch('/api/bucketlist');
+            const data = await res.json();
+            
+            const todo = document.getElementById('list-todo')!;
+            const doing = document.getElementById('list-doing')!;
+            const done = document.getElementById('list-done')!;
+            
+            todo.innerHTML = ''; doing.innerHTML = ''; done.innerHTML = '';
+
+            data.forEach((g: any) => {
+                const li = document.createElement('li');
+                li.className = "bg-black p-2 rounded border border-gray-800 text-xs shadow-sm";
+                
+                let btns = '';
+                if (g.status === 'todo') {
+                    btns = `<button onclick="updateGoal(${g.id}, 'doing')" class="text-blue-500 hover:text-blue-400 ml-auto"><i class="fa-solid fa-play"></i></button>`;
+                } else if (g.status === 'doing') {
+                    btns = `
+                        <button onclick="updateGoal(${g.id}, 'todo')" class="text-gray-500 hover:text-gray-400 mr-2"><i class="fa-solid fa-backward"></i></button>
+                        <button onclick="updateGoal(${g.id}, 'done')" class="text-green-500 hover:text-green-400"><i class="fa-solid fa-check"></i></button>
+                    `;
+                } else {
+                    btns = `<button onclick="updateGoal(${g.id}, 'doing')" class="text-gray-500 hover:text-gray-400 ml-auto"><i class="fa-solid fa-rotate-left"></i></button>`;
+                }
+
+                li.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="text-gray-300 font-medium">${g.title}</span>
+                        <div class="flex">${btns}</div>
+                    </div>
+                `;
+
+                if (g.status === 'todo') todo.appendChild(li);
+                if (g.status === 'doing') doing.appendChild(li);
+                if (g.status === 'done') done.appendChild(li);
+            });
+        } catch (err) { console.error(err); }
+    }
+
+    (window as any).updateGoal = async (id: number, status: string) => {
+        await fetch('/api/bucketlist', {
+            method: 'PUT',
+            body: JSON.stringify({ id, status })
+        });
+        loadGoals();
+    };
+
+    document.getElementById('goal-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.getElementById('g-title') as HTMLInputElement).value;
+        const description = (document.getElementById('g-desc') as HTMLInputElement).value;
+        const image_url = (document.getElementById('g-image') as HTMLInputElement).value;
+
+        await fetch('/api/bucketlist', {
+            method: 'POST',
+            body: JSON.stringify({ title, description, image_url })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        loadGoals();
+    });
     async function loadTravel() {
         try {
             const res = await fetch('/api/travel');
