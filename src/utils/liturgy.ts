@@ -6,6 +6,56 @@ export interface LiturgicalSeason {
     description: string;
 }
 
+export interface Saint {
+    name: string;
+    title?: string;
+}
+
+const saintsData: Record<string, Saint> = {
+    "1-1": { name: "Guds Moder Maria", title: "Højtid" },
+    "1-25": { name: "Paulus' Omvendelse", title: "Apostel" },
+    "1-26": { name: "Timotheus og Titus", title: "Biskopper" },
+    "1-28": { name: "Thomas Aquinas", title: "Kirkelærer" },
+    "2-2": { name: "Kyndelmisse", title: "Fest" },
+    "3-19": { name: "Josef", title: "Jomfru Marias Brudgom" },
+    "3-25": { name: "Herrens Bebudelse", title: "Højtid" },
+    "4-23": { name: "Georg", title: "Martyr" },
+    "4-25": { name: "Markus", title: "Evangelist" },
+    "4-29": { name: "Katarina af Siena", title: "Kirkelærer" },
+    "5-3": { name: "Filip og Jakob", title: "Apostle" },
+    "5-31": { name: "Marias Besøgelse", title: "Fest" },
+    "6-24": { name: "Johannes Døberens Fødsel", title: "Højtid" },
+    "6-29": { name: "Peter og Paulus", title: "Apostle" },
+    "7-22": { name: "Maria Magdalena", title: "Apostel" },
+    "7-25": { name: "Jakob", title: "Apostel" },
+    "7-31": { name: "Ignatius af Loyola", title: "Præst" },
+    "8-10": { name: "Laurentius", title: "Diakon og Martyr" },
+    "8-15": { name: "Jomfru Marias Himmelfart", title: "Højtid" },
+    "8-24": { name: "Bartolomæus", title: "Apostel" },
+    "8-28": { name: "Augustin", title: "Biskop og Kirkelærer" },
+    "9-8": { name: "Jomfru Marias Fødsel", title: "Fest" },
+    "9-14": { name: "Korsets Ophøjelse", title: "Fest" },
+    "9-21": { name: "Matthæus", title: "Apostel og Evangelist" },
+    "9-29": { name: "Mikael, Gabriel og Rafael", title: "Ærkeengle" },
+    "10-4": { name: "Frans af Assisi", title: "Munk" },
+    "10-7": { name: "Vor Frue af Rosenkransen", title: "Fest" },
+    "10-18": { name: "Lukas", title: "Evangelist" },
+    "11-1": { name: "Alle Helgen", title: "Højtid" },
+    "11-2": { name: "Alle Sjæle", title: "Ihukommelse" },
+    "11-30": { name: "Andreas", title: "Apostel" },
+    "12-6": { name: "Nikolaus", title: "Biskop" },
+    "12-8": { name: "Marias Ubesmittede Undfangelse", title: "Højtid" },
+    "12-13": { name: "Lucia", title: "Jomfru og Martyr" },
+    "12-25": { name: "Jesu Fødsel", title: "Højtid" },
+    "12-26": { name: "Stefanus", title: "Protomartyr" },
+    "12-27": { name: "Johannes", title: "Apostel og Evangelist" },
+};
+
+export function getSaint(date: Date): Saint | null {
+    const key = `${date.getMonth() + 1}-${date.getDate()}`;
+    return saintsData[key] || null;
+}
+
 export function getLiturgicalSeason(date: Date = new Date()): LiturgicalSeason {
     const year = date.getFullYear();
     const easter = getEasterDate(year);
