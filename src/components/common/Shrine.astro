@@ -20,7 +20,7 @@
         
         <!-- AUDIO PLAYER -->
         <audio id="shrine-audio" loop preload="auto">
-            <source src="https://ia800300.us.archive.org/34/items/GregorianChantMass/01_Puer_natus_est_nobis.mp3" type="audio/mpeg">
+            <source src="/assets/audio/chant.mp3" type="audio/mpeg">
         </audio>
 
         <!-- SOUND CONTROL -->
@@ -180,11 +180,12 @@
         
         // Start Audio
         audio.currentTime = 0;
-        audio.volume = 0.5;
-        audio.muted = false; // Ensure unmuted
+        audio.volume = 1.0; // Max volume
+        audio.muted = false;
         
         try {
             await audio.play();
+            console.log("Audio started successfully.");
             // Success: Show Volume Icon
             volIcon?.classList.remove('hidden');
             muteIcon?.classList.add('hidden');
