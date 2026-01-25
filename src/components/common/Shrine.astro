@@ -1,0 +1,161 @@
+---
+---
+
+<!-- 
+    THE HIDDEN SHRINE ✝️
+    Ad Majorem Dei Gloriam.
+-->
+
+<div id="shrine-overlay" class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-1000 bg-gradient-to-b from-[#0a0a2a] via-[#1a1a4a] to-black flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden backdrop-blur-sm">
+    
+    <!-- Background Texture (Subtle Noise) -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+
+    <!-- Close Button (Subtle) -->
+    <button id="close-shrine" class="absolute top-8 right-8 text-gold-500/50 hover:text-gold-400 transition-colors text-2xl" aria-label="Close">
+        <i class="fa-solid fa-times"></i>
+    </button>
+
+    <div class="relative z-10 p-8 max-w-2xl mx-auto flex flex-col items-center">
+        
+        <!-- HEADER: Latin Invocation -->
+        <p class="text-gold-500/60 text-sm tracking-[0.3em] uppercase mb-8 animate-fade-in-up" style="animation-delay: 0.5s;">
+            In Nomine Patris, et Filii, et Spiritus Sancti
+        </p>
+
+        <!-- CENTERPIECE: The Cross -->
+        <div class="relative mb-12 animate-fade-in-up" style="animation-delay: 1s;">
+            <!-- Halo Glow -->
+            <div class="absolute inset-0 bg-gold-500/20 blur-[60px] rounded-full transform scale-150 animate-pulse-slow"></div>
+            
+            <!-- Cross SVG -->
+            <div class="relative drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+                <i class="fa-solid fa-cross text-8xl text-gradient-gold"></i>
+            </div>
+        </div>
+
+        <!-- MAIN VERSE -->
+        <h1 class="text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-gray-400 font-serif font-bold italic mb-4 leading-tight animate-fade-in-up" style="animation-delay: 2s;">
+            "Ego sum via et veritas et vita."
+        </h1>
+        
+        <p class="text-gold-400/80 text-lg mb-12 animate-fade-in-up" style="animation-delay: 2.5s;">
+            I am the way and the truth and the life.
+            <span class="block text-xs mt-2 text-gray-500 uppercase tracking-widest not-italic sans-serif">— John 14:6</span>
+        </p>
+
+        <!-- INTERACTIVE: Votive Candle -->
+        <div class="animate-fade-in-up group cursor-pointer" id="candle-trigger" style="animation-delay: 3.5s;">
+            <div class="relative w-8 h-12 mx-auto">
+                <!-- Candle Body -->
+                <div class="absolute bottom-0 w-8 h-8 bg-red-900/40 border border-red-500/30 rounded-sm"></div>
+                <!-- Flame (Hidden initially) -->
+                <div id="flame" class="absolute -top-4 left-1/2 -translate-x-1/2 w-4 h-6 bg-orange-400 rounded-full blur-[2px] opacity-0 transition-all duration-700 animate-flicker transform scale-0 group-hover:opacity-50"></div>
+            </div>
+            <p class="text-xs text-gray-600 mt-4 tracking-widest group-hover:text-gold-500 transition-colors uppercase">
+                Light a Candle
+            </p>
+        </div>
+
+    </div>
+
+    <!-- FOOTER: Dedication -->
+    <div class="absolute bottom-8 w-full text-center">
+        <p class="text-[10px] text-gray-700 uppercase tracking-[0.2em] opacity-0 animate-fade-in" style="animation-delay: 5s;">
+            Ad Majorem Dei Gloriam
+        </p>
+    </div>
+
+</div>
+
+<style>
+    /* Custom Animations for the Shrine */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 1.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 2s ease-out forwards;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes flicker {
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+        50% { transform: translateX(-50%) scale(1.1); opacity: 1; filter: brightness(1.2); }
+        25% { transform: translateX(-52%) scale(0.9); opacity: 0.7; }
+        75% { transform: translateX(-48%) scale(1.05); opacity: 0.9; }
+    }
+
+    .animate-flicker {
+        animation: flicker 0.1s infinite alternate; /* Fast flicker like real fire */
+    }
+
+    /* Override Utility for Gradient Text on Icon */
+    .text-gradient-gold {
+        background: linear-gradient(to bottom, #FFD700, #B8860B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Lit state */
+    .candle-lit #flame {
+        opacity: 1 !important;
+        transform: translateX(-50%) scale(1);
+    }
+</style>
+
+<script>
+    // Logic to Open/Close Shrine
+    const shrine = document.getElementById('shrine-overlay');
+    const closeBtn = document.getElementById('close-shrine');
+    const candleTrigger = document.getElementById('candle-trigger');
+    const flame = document.getElementById('flame');
+
+    // Listen for custom event 'openShrine'
+    document.addEventListener('openShrine', () => {
+        shrine?.classList.remove('hidden');
+        // Small timeout to allow display:block to apply before opacity transition
+        setTimeout(() => {
+            shrine?.classList.remove('opacity-0');
+        }, 50);
+    });
+
+    closeBtn?.addEventListener('click', () => {
+        shrine?.classList.add('opacity-0');
+        setTimeout(() => {
+            shrine?.classList.add('hidden');
+        }, 1000); // Wait for transition
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !shrine?.classList.contains('hidden')) {
+            shrine?.classList.add('opacity-0');
+            setTimeout(() => shrine?.classList.add('hidden'), 1000);
+        }
+    });
+
+    // Candle Logic
+    let isLit = false;
+    candleTrigger?.addEventListener('click', () => {
+        if (!isLit) {
+            candleTrigger.classList.add('candle-lit');
+            // Add a subtle glow to the whole room
+            shrine!.style.boxShadow = "inset 0 0 100px rgba(255, 165, 0, 0.1)";
+            isLit = true;
+        } else {
+            candleTrigger.classList.remove('candle-lit');
+             shrine!.style.boxShadow = "none";
+            isLit = false;
+        }
+    });
+</script>
