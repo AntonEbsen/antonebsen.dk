@@ -16,7 +16,19 @@
         <i class="fa-solid fa-times"></i>
     </button>
 
-    <div class="relative z-10 p-8 max-w-2xl mx-auto flex flex-col items-center">
+        <!-- AUDIO PLAYER -->
+        <audio id="shrine-audio" loop preload="auto">
+            <source src="https://gregorianchanthymns.com/audio/adoremu.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- SOUND CONTROL -->
+        <button id="mute-btn" class="absolute top-8 left-8 text-gold-500/50 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group" aria-label="Mute">
+            <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
+            <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i> <!-- Logic: detailed in script -->
+            <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Chant</span>
+        </button>
+
+    </div>
         
         <!-- HEADER: Latin Invocation -->
         <p class="text-gold-500/60 text-sm tracking-[0.3em] uppercase mb-8 animate-fade-in-up" style="animation-delay: 0.5s;">
@@ -141,42 +153,74 @@
 </style>
 
 <script>
-    // Logic to Open/Close Shrine
-    const shrine = document.getElementById('shrine-overlay');
-    const closeBtn = document.getElementById('close-shrine');
-    const candleTrigger = document.getElementById('candle-trigger');
-    const flame = document.getElementById('flame');
+    // Audio Elements
+    const audio = document.getElementById('shrine-audio') as HTMLAudioElement;
+    const muteBtn = document.getElementById('mute-btn');
+    const volIcon = muteBtn?.querySelector('.fa-volume-high');
+    const muteIcon = muteBtn?.querySelector('.fa-volume-xmark');
 
-    // Listen for custom event 'openShrine'
+    // Shrine Open/Close Logic
     document.addEventListener('openShrine', () => {
         shrine?.classList.remove('hidden');
-        // Small timeout to allow display:block to apply before opacity transition
-        setTimeout(() => {
-            shrine?.classList.remove('opacity-0');
-        }, 50);
+        setTimeout(() => shrine?.classList.remove('opacity-0'), 50);
+        
+        // Start Audio (Fade In)
+        audio.currentTime = 0;
+        audio.volume = 0;
+        audio.play().then(() => {
+            const fade = setInterval(() => {
+                if (audio.volume < 0.3) audio.volume += 0.01;
+                else clearInterval(fade);
+            }, 100);
+        }).catch(e => console.log("Audio autoplay restricted:", e));
     });
 
-    closeBtn?.addEventListener('click', () => {
+    function closeShrineFn() {
         shrine?.classList.add('opacity-0');
-        setTimeout(() => {
-            shrine?.classList.add('hidden');
-        }, 1000); // Wait for transition
-    });
+        // Fade Out Audio
+        const fadeOut = setInterval(() => {
+            if (audio.volume > 0.01) audio.volume -= 0.01;
+            else {
+                clearInterval(fadeOut);
+                audio.pause();
+            }
+        }, 50);
+        setTimeout(() => shrine?.classList.add('hidden'), 1000);
+    }
 
-    // Close on Escape key
+    closeBtn?.addEventListener('click', closeShrineFn);
+    
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !shrine?.classList.contains('hidden')) {
-            shrine?.classList.add('opacity-0');
-            setTimeout(() => shrine?.classList.add('hidden'), 1000);
+            closeShrineFn();
         }
     });
 
-    // Candle Logic
+    // Mute Logic
+    muteBtn?.addEventListener('click', () => {
+       if (audio.muted) {
+           audio.muted = false;
+           volIcon?.classList.remove('hidden');
+           muteIcon?.classList.add('hidden');
+       } else {
+           audio.muted = true;
+           volIcon?.classList.add('hidden');
+           muteIcon?.classList.remove('hidden');
+       }
+    });
+    
+    // Init state for icons (reversed in HTML for initial hover effect logic, fixing here)
+    // Actually, let's keep it simple: Show Volume UP by default. 
+    // If clicked -> Mute.
+    volIcon?.classList.remove('hidden');
+    muteIcon?.classList.add('hidden');
+
+
+    // Candle Logic (Existing)
     let isLit = false;
     candleTrigger?.addEventListener('click', () => {
         if (!isLit) {
             candleTrigger.classList.add('candle-lit');
-            // Add a subtle glow to the whole room
             shrine!.style.boxShadow = "inset 0 0 100px rgba(255, 165, 0, 0.1)";
             isLit = true;
         } else {
