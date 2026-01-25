@@ -6,7 +6,7 @@
     Ad Majorem Dei Gloriam.
 -->
 
-<div id="shrine-overlay" class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-1000 bg-gradient-to-b from-[#0a0a2a] via-[#1a1a4a] to-black flex-col items-center justify-center font-serif text-center select-none overflow-hidden backdrop-blur-sm">
+<div id="shrine-overlay" style="display: none;" class="fixed inset-0 z-[100] opacity-0 transition-opacity duration-1000 bg-gradient-to-b from-[#0a0a2a] via-[#1a1a4a] to-black flex-col items-center justify-center font-serif text-center select-none overflow-hidden backdrop-blur-sm">
     
     <!-- Background Texture (Subtle Noise) -->
     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
@@ -161,9 +161,13 @@
 
     // Shrine Open/Close Logic
     document.addEventListener('openShrine', () => {
-        shrine?.classList.remove('hidden');
-        shrine?.classList.add('flex'); // Add flex display
-        setTimeout(() => shrine?.classList.remove('opacity-0'), 50);
+        if (!shrine) return;
+        shrine.style.display = 'flex'; // Enable Flexbox layout
+        
+        // Timeout to allow browser to register display:flex before running opacity transition
+        requestAnimationFrame(() => {
+            shrine.classList.remove('opacity-0');
+        });
         
         // Start Audio (Fade In)
         audio.currentTime = 0;
@@ -177,7 +181,9 @@
     });
 
     function closeShrineFn() {
-        shrine?.classList.add('opacity-0');
+        if (!shrine) return;
+        shrine.classList.add('opacity-0');
+        
         // Fade Out Audio
         const fadeOut = setInterval(() => {
             if (audio.volume > 0.01) audio.volume -= 0.01;
@@ -186,9 +192,9 @@
                 audio.pause();
             }
         }, 50);
+
         setTimeout(() => {
-            shrine?.classList.add('hidden');
-            shrine?.classList.remove('flex'); // Remove flex display
+            shrine.style.display = 'none';
         }, 1000);
     }
 
