@@ -20,7 +20,7 @@
         
         <!-- AUDIO PLAYER -->
         <audio id="shrine-audio" loop preload="auto">
-            <source src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Gregorian_chant_-_Kyrie_XI_A.ogg" type="audio/ogg">
+            <source src="https://ia800300.us.archive.org/34/items/GregorianChantMass/01_Puer_natus_est_nobis.mp3" type="audio/mpeg">
         </audio>
 
         <!-- SOUND CONTROL -->
@@ -166,7 +166,8 @@
     const muteIcon = muteBtn?.querySelector('.fa-volume-xmark');
 
     // Shrine Open/Close Logic
-    document.addEventListener('openShrine', async () => {
+    // Exposed to window for direct calling (preserves user gesture for audio)
+    window.openShrine = async () => {
         if (!shrine) return;
         shrine.style.display = 'flex'; // Enable Flexbox layout
         
@@ -177,14 +178,20 @@
         
         // Start Audio
         audio.currentTime = 0;
-        audio.volume = 0.4; // Set volume directly for now
+        audio.volume = 0.4;
         
         try {
             await audio.play();
+            console.log("Audio playing...");
         } catch (e) {
             console.error("Audio playback failed:", e);
+            // Fallback: Show a visible "Play" button if needed? 
+            // For now, logging is enough.
         }
-    });
+    };
+    
+    // Support Custom Event as fallback/alias
+    document.addEventListener('openShrine', window.openShrine);
 
     function closeShrineFn() {
         if (!shrine) return;
