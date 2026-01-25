@@ -28,9 +28,36 @@
             <!-- Halo Glow -->
             <div class="absolute inset-0 bg-gold-500/20 blur-[60px] rounded-full transform scale-150 animate-pulse-slow"></div>
             
-            <!-- Cross SVG -->
+            <!-- Crucifix SVG -->
             <div class="relative drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]">
-                <i class="fa-solid fa-cross text-8xl text-gradient-gold"></i>
+                <svg width="120" height="150" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg" class="mx-auto overflow-visible">
+                    <defs>
+                        <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#FDB931;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+                        </linearGradient>
+                         <filter id="glow">
+                            <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    
+                    <!-- The Cross -->
+                    <path d="M10 2 H14 V6 H22 V10 H14 V28 H10 V10 H2 V6 H10 V2 Z" fill="url(#gold-gradient)" opacity="0.8" />
+                    
+                    <!-- The Corpus (Body of Christ) -->
+                    <!-- Head (Halo) -->
+                    <circle cx="12" cy="7.5" r="1.5" fill="url(#gold-gradient)" />
+                    <!-- Body & Arms (Stylized) -->
+                    <path d="M12 9 C 9 9, 4 8, 4 7 C 4 9, 9 11, 12 12 C 15 11, 20 9, 20 7 C 20 8, 15 9, 12 9 Z M 12 12 L 12 22 L 11 26 L 13 26 L 12 22 Z" fill="url(#gold-gradient)" filter="url(#glow)" />
+                    
+                    <!-- INRI Sign -->
+                    <rect x="11" y="0.5" width="2" height="1.5" fill="url(#gold-gradient)" />
+                </svg>
             </div>
         </div>
 
