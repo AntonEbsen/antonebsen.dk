@@ -55,13 +55,12 @@ const pathname = new URL(Astro.request.url).pathname;
     </div>
     
     <div class="nav-right flex items-center">
-      <a href="/dashboard" id="now-status" class="no-underline hidden items-center gap-2 mr-4 bg-gray-900/50 px-3 py-1 text-dim hover:text-white transition-colors rounded-full border border-gold-500/20 shadow-[0_0_10px_rgba(255,215,0,0.1)] group" title="Live Status">
+      <a href="/dashboard" id="now-status" class="no-underline hidden items-center gap-2 mr-3 bg-gray-900/50 px-2 py-1.5 text-dim hover:text-white transition-colors rounded-full border border-gold-500/20 shadow-[0_0_10px_rgba(255,215,0,0.1)] group" title="Live Status">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
-          <span id="now-emoji-display" class="text-xs"></span>
-          <span id="now-text-display" class="text-[10px] uppercase tracking-wider font-bold hidden md:inline group-hover:text-gold-400 transition-colors"></span>
+          <span id="now-emoji-display" class="text-sm leading-none"></span>
       </a>
       <LanguageSwitcher />
     </div>
@@ -73,10 +72,9 @@ const pathname = new URL(Astro.request.url).pathname;
       if (data && data.status) {
         const el = document.getElementById('now-status');
         const emo = document.getElementById('now-emoji-display');
-        const txt = document.getElementById('now-text-display');
-        if (el && emo && txt) {
+        if (el && emo) {
           emo.innerText = data.emoji || '⚡';
-          txt.innerText = data.status;
+          el.title = `Current Status: ${data.status}`; // Set tooltip
           el.classList.remove('hidden');
           el.classList.add('flex');
         }
