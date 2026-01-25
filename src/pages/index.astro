@@ -12,8 +12,18 @@ import { Image } from 'astro:assets';
 // Images
 import myImage from '@assets/img/billede-af-mig.jpg';
 
-import skillsData from '@data/skills.json';
-import cvData from '@data/cv.json';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: skillsRows, error } = await supabase.from('skills').select('*');
+if (error) skillsRows = [];
+
+// Group by category
+const skillsData = {
+  programming: skillsRows?.filter(s => s.category === 'programming') || [],
+  professional: skillsRows?.filter(s => s.category === 'professional') || []
+};
+
 
 const bulletMap: Record<string, string> = {
   "academic": "Fagligt",
