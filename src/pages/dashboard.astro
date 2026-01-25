@@ -283,6 +283,34 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- MEDIA MANAGER -->
+            <div id="media-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-newspaper mr-2"></i> Media Manager</h3>
+                </div>
+                <div class="p-6">
+                     <form id="media-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <input type="text" id="m-title" placeholder="Article Title" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <input type="text" id="m-source" placeholder="Source (e.g. TV2 Øst)" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <input type="date" id="m-date" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div class="md:col-span-2">
+                            <input type="url" id="m-url" placeholder="Article URL" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div class="md:col-span-2">
+                             <button type="submit" class="bg-gray-800 text-white font-bold py-2 px-4 rounded w-full hover:bg-gray-700 border border-gray-700 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-rss"></i> Add Article
+                            </button>
+                        </div>
+                     </form>
+                </div>
+            </div>
+
             <!-- ... GUESTBOOK ... -->
             
             <!-- ... PROJECTS ... -->
