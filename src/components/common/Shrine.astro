@@ -20,7 +20,7 @@
         
         <!-- AUDIO PLAYER -->
         <audio id="shrine-audio" loop preload="auto">
-            <source src="https://gregorianchanthymns.com/audio/adoremu.mp3" type="audio/mpeg">
+            <source src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Gregorian_chant_-_Kyrie_XI_A.ogg" type="audio/ogg">
         </audio>
 
         <!-- SOUND CONTROL -->
@@ -175,15 +175,15 @@
             shrine.classList.remove('opacity-0');
         });
         
-        // Start Audio (Fade In)
+        // Start Audio
         audio.currentTime = 0;
-        audio.volume = 0;
-        audio.play().then(() => {
-            const fade = setInterval(() => {
-                if (audio.volume < 0.3) audio.volume += 0.01;
-                else clearInterval(fade);
-            }, 100);
-        }).catch(e => console.log("Audio autoplay restricted:", e));
+        audio.volume = 0.4; // Set volume directly for now
+        
+        try {
+            await audio.play();
+        } catch (e) {
+            console.error("Audio playback failed:", e);
+        }
     });
 
     function closeShrineFn() {
