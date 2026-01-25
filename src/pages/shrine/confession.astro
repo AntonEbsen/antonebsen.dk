@@ -1,0 +1,158 @@
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skriftemål | Ad Majorem Dei Gloriam</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .sans { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#050508] text-gray-300 overflow-hidden h-screen w-screen m-0 p-0 selection:bg-gold-500/30">
+
+    <!-- Background -->
+    <div class="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-[#020205] via-[#0a0a1a] to-black">
+         <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+         <!-- Fog -->
+         <div class="absolute bottom-0 w-full h-[50vh] bg-gradient-to-t from-gray-900/30 to-transparent"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 sans">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Tilbage</span>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full h-full flex flex-col items-center justify-center p-6">
+        
+        <!-- Intro -->
+        <h1 class="text-3xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-b from-gray-200 to-gray-600 mb-8 animate-fade-in-up">
+            Skriftemål
+        </h1>
+        <p class="text-sm sans text-gray-500 max-w-md text-center mb-12 animate-fade-in-up delay-100">
+            Skriv det du bærer på. Slip det her.
+            <br>
+            <span class="text-xs opacity-50 italic">(Intet gemmes. Ordene bliver til røg.)</span>
+        </p>
+
+        <!-- The Input Area -->
+        <div class="relative w-full max-w-xl group animate-fade-in-up delay-200">
+            <textarea 
+                id="confession-input" 
+                class="w-full h-48 bg-transparent border-l-2 border-gold-900/30 text-gold-100/90 text-xl font-serif p-6 focus:outline-none focus:border-gold-500/50 transition-colors resize-none placeholder:text-gray-800"
+                placeholder="Jeg bekender..."
+                spellcheck="false"
+            ></textarea>
+            
+            <!-- Glow Effect on Focus -->
+            <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(0,0,0,1)]"></div>
+        </div>
+
+        <!-- Action Button -->
+        <button id="release-btn" class="mt-12 px-8 py-3 border border-gold-900/50 hover:border-gold-500/50 text-gold-500/60 hover:text-gold-400 text-xs sans uppercase tracking-[0.3em] transition-all opacity-0 animate-fade-in-up delay-300">
+            Slip Byrden
+        </button>
+
+        <!-- Absolution Text (Hidden) -->
+        <div id="absolution" class="hidden absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50">
+            <div class="text-center">
+                <p class="text-2xl md:text-4xl text-gold-500 text-shadow-glow mb-4 animate-scale-in">
+                    Vade in pace.
+                </p>
+                <p class="text-sm sans text-gray-500 uppercase tracking-widest animate-fade-in delay-500">
+                    Gå i fred.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .animate-scale-in {
+            animation: scaleIn 1.5s ease-out forwards;
+        }
+
+        .text-shadow-glow {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Dissolve Animation Class */
+        .dissolving {
+            transition: all 2s ease-out;
+            filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-20px) scale(1.1);
+            letter-spacing: 0.5em;
+        }
+    </style>
+
+    <script>
+        const input = document.getElementById('confession-input') as HTMLTextAreaElement;
+        const btn = document.getElementById('release-btn');
+        const absolution = document.getElementById('absolution');
+
+        // Show button only when typing
+        input?.addEventListener('input', () => {
+            if (input.value.length > 0) {
+                btn!.style.opacity = '1';
+                btn!.style.transform = 'translateY(0)';
+            } else {
+                btn!.style.opacity = '0';
+            }
+        });
+
+        btn?.addEventListener('click', () => {
+            if (!input.value.trim()) return;
+
+            // 1. Dissolve Text
+            input.classList.add('dissolving');
+            btn.style.opacity = '0';
+
+            // 2. Clear and Show Absolution after delay
+            setTimeout(() => {
+                input.value = '';
+                absolution?.classList.remove('hidden');
+            }, 1500);
+
+            // 3. Reset after a while
+            setTimeout(() => {
+                 window.location.href = '/shrine';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
