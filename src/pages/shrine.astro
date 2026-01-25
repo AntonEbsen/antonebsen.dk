@@ -1,48 +1,62 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import '@styles/styles.css';
 ---
 
-<!-- 
-    THE SHRINE ✝️
-    Ad Majorem Dei Gloriam.
--->
-
-<Layout title="Ad Majorem Dei Gloriam" bodyClass="bg-black overflow-hidden h-screen">
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Majorem Dei Gloriam ✝️</title>
+    <meta name="robots" content="noindex, nofollow">
     
+    <!-- Fonts: Inter + Cinzel (Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .sans { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#020205] text-white overflow-hidden h-screen w-screen m-0 p-0 selection:bg-gold-500/30">
+
     <!-- MAIN CONTAINER (Full Screen) -->
-    <div class="relative w-full h-full flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden bg-gradient-to-b from-[#0a0a2a] via-[#1a1a4a] to-black">
+    <div class="relative w-full h-full flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden bg-gradient-to-b from-[#050510] via-black to-black">
 
         <!-- Background Texture (Subtle Noise) -->
-        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
 
-        <!-- INCENSE SMOKE EFFECT 🌫️ -->
-        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
+        <!-- INCENSE SMOKE EFFECT 🌫️ (Boosted Opacity) -->
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-60 mix-blend-screen">
              <!-- Deep rolling fog -->
-             <div class="absolute -bottom-20 left-1/4 w-[600px] h-[600px] bg-gray-500/10 rounded-full blur-[100px] animate-smoke-rise"></div>
-             <div class="absolute -bottom-32 right-1/4 w-[700px] h-[700px] bg-gray-400/5 rounded-full blur-[120px] animate-smoke-rise-slow"></div>
+             <div class="absolute -bottom-20 left-1/4 w-[600px] h-[600px] bg-gray-600/20 rounded-full blur-[100px] animate-smoke-rise"></div>
+             <div class="absolute -bottom-32 right-1/4 w-[700px] h-[700px] bg-gray-500/10 rounded-full blur-[120px] animate-smoke-rise-slow"></div>
              <!-- Center Glow -->
-             <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-500/5 rounded-full blur-[80px] animate-pulse-slow"></div>
+             <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-600/10 rounded-full blur-[80px] animate-pulse-slow"></div>
         </div>
     
         <!-- BACK BUTTON (Subtle Return) -->
-        <a href="/" class="absolute top-8 left-8 text-gold-500/40 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 z-50">
+        <a href="/" class="absolute top-8 left-8 text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 z-50 sans">
             <i class="fa-solid fa-arrow-left"></i>
             <span class="text-xs uppercase tracking-widest hidden md:inline">Return</span>
         </a>
 
         <!-- AUDIO CONTROL (Right Side) -->
-        <button id="mute-btn" class="absolute top-8 right-8 text-gold-500/50 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group z-50" aria-label="Mute/Play">
+        <button id="mute-btn" class="absolute top-8 right-8 text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group z-50" aria-label="Mute/Play">
             <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
             <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i>
             <i class="fa-solid fa-play hidden text-gold-500"></i>
-            <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Chant</span>
+            <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity sans">Chant</span>
         </button>
 
         <!-- CONTENT -->
         <div class="relative z-10 p-8 max-w-3xl mx-auto flex flex-col items-center fade-in-section">
             
             <!-- HEADER: Latin Invocation -->
-            <p class="text-gold-500/60 text-sm tracking-[0.3em] uppercase mb-12 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <p class="text-gold-500/80 text-sm tracking-[0.3em] uppercase mb-12 animate-fade-in-up" style="animation-delay: 0.2s;">
                 In Nomine Patris, et Filii, et Spiritus Sancti
             </p>
     
@@ -115,7 +129,8 @@ import Layout from '../layouts/Layout.astro';
         <source src="/assets/audio/chant.mp3" type="audio/mpeg">
     </audio>
 
-</Layout>
+</body>
+</html>
 
 <style>
     /* KEYFRAMES */
