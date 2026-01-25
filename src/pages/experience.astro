@@ -1,6 +1,5 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import cv from '@data/cv.json';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
@@ -8,6 +7,18 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import Section from '@components/ui/Section.astro';
 import ExperienceCard from '@components/experience/ExperienceCard.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: experience, error } = await supabase
+  .from('experience')
+  .select('*')
+  .eq('visible', true)
+  .order('id', { ascending: false }); // or created_at
+
+if (error) experience = [];
 ---
 
 <Layout 
@@ -91,12 +102,20 @@ import ContactCard from '@components/common/ContactCard.astro';
       </div>
     </Section>
 
+    {experience?.length === 0 && (
+      <Section>
+        <Card variant="glass" class="p-8 text-center text-dim bg-red-500/10 border-red-500/20">
+            <p>Databasen mangler data. Gå til <a href="/dashboard" class="text-white underline">Dashboard</a> for at tilføje roller.</p>
+        </Card>
+      </Section>
+    )}
+
     <!-- ROLLER -->
     <Section id="roles" aria-label="Roller">
       <Card variant="bordered" class="p-6">
         <SectionHeading>Roller</SectionHeading>
         <div class="roles-grid">
-          {cv.experience.map((role) => (
+          {experience?.map((role) => (
             <ExperienceCard 
               title={role.title}
               organization={role.organization}

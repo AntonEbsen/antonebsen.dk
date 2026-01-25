@@ -189,6 +189,87 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- PODCAST MANAGER -->
+            <div id="podcast-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-microphone mr-2"></i> Podcast Manager</h3>
+                </div>
+                <div class="p-6">
+                     <form id="podcast-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <input type="text" id="p-title" placeholder="Podcast Title" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <input type="text" id="p-host" placeholder="Host / Network" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <select id="p-category" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500">
+                                <option value="Økonomi & Finans">Økonomi & Finans</option>
+                                <option value="Tech & Fremtid">Tech & Fremtid</option>
+                                <option value="Society & Kultur">Society & Kultur</option>
+                                <option value="Historie">Historie</option>
+                                <option value="Sport & Træning">Sport & Træning</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="number" id="p-rating" placeholder="Rating (1-5)" min="1" max="5" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div class="md:col-span-2">
+                             <input type="url" id="p-link" placeholder="Spotify/Apple Link" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                         <div class="md:col-span-2">
+                            <textarea id="p-desc" placeholder="Why is it good?" rows="2" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                             <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 px-4 rounded w-full hover:from-purple-500 hover:to-indigo-500 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-headphones"></i> Add to Collection
+                            </button>
+                        </div>
+                     </form>
+                </div>
+            </div>
+
+            <!-- CAREER MANAGER -->
+            <div id="career-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-briefcase mr-2"></i> Career Manager</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- EXPERIENCE FORM -->
+                    <div class="border-r border-gray-800 pr-0 md:pr-8">
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase font-bold">Add Experience</h4>
+                        <form id="exp-form" class="space-y-3">
+                            <input type="text" id="exp-title" placeholder="Job Title" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <input type="text" id="exp-org" placeholder="Organization" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="exp-type" placeholder="Type (e.g. Undervisning)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                                <input type="text" id="exp-loc" placeholder="Location" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            </div>
+                            <input type="text" id="exp-period" placeholder="Period (e.g. 2023 - nu)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <textarea id="exp-desc" placeholder="Description (One bullet per line)" rows="3" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                            <textarea id="exp-high" placeholder="Highlights (Label: Value per line)" rows="2" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                            <button type="submit" class="bg-gray-800 text-white font-bold py-2 px-4 rounded w-full hover:bg-gray-700 border border-gray-700">Add Job</button>
+                        </form>
+                    </div>
+
+                    <!-- EDUCATION FORM -->
+                    <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase font-bold">Add Education</h4>
+                        <form id="edu-form" class="space-y-3">
+                            <input type="text" id="edu-inst" placeholder="Institution" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <input type="text" id="edu-degree" placeholder="Degree (e.g. cand.oecon)" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <input type="text" id="edu-period" placeholder="Period" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <textarea id="edu-desc" placeholder="General Description" rows="2" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                            <textarea id="edu-bullets" placeholder="Key Points (One per line)" rows="3" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                            <input type="text" id="edu-tech" placeholder="Technologies (comma separated)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <button type="submit" class="bg-gray-800 text-white font-bold py-2 px-4 rounded w-full hover:bg-gray-700 border border-gray-700">Add Degree</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- ... GUESTBOOK ... -->
             
             <!-- ... PROJECTS ... -->
@@ -1112,6 +1193,65 @@ import Layout from '../layouts/Layout.astro';
         // visual success
         btn.classList.add('bg-green-400', 'text-black');
         setTimeout(() => btn.classList.remove('bg-green-400', 'text-black'), 1000);
+    });
+
+    // --- CAREER LOGIC ---
+    document.getElementById('exp-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.getElementById('exp-title') as HTMLInputElement).value;
+        const organization = (document.getElementById('exp-org') as HTMLInputElement).value;
+        const type = (document.getElementById('exp-type') as HTMLInputElement).value;
+        const location = (document.getElementById('exp-loc') as HTMLInputElement).value;
+        const period = (document.getElementById('exp-period') as HTMLInputElement).value;
+        
+        const descRaw = (document.getElementById('exp-desc') as HTMLTextAreaElement).value;
+        const description = descRaw.split('\n').filter(l => l.trim().length > 0);
+
+        const highRaw = (document.getElementById('exp-high') as HTMLTextAreaElement).value;
+        const highlights = highRaw.split('\n').filter(l => l.trim().length > 0).map(l => {
+            const parts = l.split(':');
+            return { label: parts[0]?.trim(), value: parts.slice(1).join(':').trim() };
+        });
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const icon = btn.innerHTML;
+        btn.innerHTML = '...';
+
+        await fetch('/api/cv/experience', {
+            method: 'POST',
+            body: JSON.stringify({ title, organization, type, location, period, description, highlights })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = icon;
+        alert("Experience Added!");
+    });
+
+    document.getElementById('edu-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const institution = (document.getElementById('edu-inst') as HTMLInputElement).value;
+        const degree = (document.getElementById('edu-degree') as HTMLInputElement).value;
+        const period = (document.getElementById('edu-period') as HTMLInputElement).value;
+        const description = (document.getElementById('edu-desc') as HTMLInputElement).value;
+        
+        const bulletsRaw = (document.getElementById('edu-bullets') as HTMLTextAreaElement).value;
+        const bullets = bulletsRaw.split('\n').filter(l => l.trim().length > 0);
+
+        const techRaw = (document.getElementById('edu-tech') as HTMLInputElement).value;
+        const technologies = techRaw.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const icon = btn.innerHTML;
+        btn.innerHTML = '...';
+
+        await fetch('/api/cv/education', {
+            method: 'POST',
+            body: JSON.stringify({ institution, degree, period, description, bullets, technologies })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = icon;
+        alert("Education Added!");
     });
 
     async function loadTravel() {

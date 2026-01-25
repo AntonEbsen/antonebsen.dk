@@ -6,10 +6,31 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import cv from '@data/cv.json';
+import cv from '@data/cv.json'; // Keeping for courses
+import { createClient } from '@supabase/supabase-js';
 
-const ku = cv.education.find(e => e.degree.includes("cand.polit"));
-const hhx = cv.education.find(e => e.degree.includes("HHX"));
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+
+// Fetch Education
+let { data: education, error: eduError } = await supabase
+  .from('education')
+  .select('*')
+  .eq('visible', true);
+
+// Fetch Projects (reusing projects table)
+let { data: projects, error: projError } = await supabase
+  .from('projects')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(3);
+
+if (eduError) education = [];
+if (projError) projects = [];
+
+const ku = education?.find(e => e.degree.includes("cand.polit"));
+const hhx = education?.find(e => e.degree.includes("HHX"));
 ---
 
 <Layout 
@@ -17,7 +38,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
   description="Uddannelsesprofil: cand.polit./ba.polit., relevante kurser, projekter og fokusområder."
   bodyClass="edu-page"
 >
-
+<!-- ... Style block unchanged ... -->
   <style>
     .edu-wrap {
       max-width: 1200px;
@@ -107,7 +128,7 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
                 {ku.description}
               </p>
               <ul class="list-none p-0 m-0 space-y-2 text-[13px] text-dim">
-                {ku.bullets.map(item => (
+                {ku.bullets && ku.bullets.map(item => (
                   <li class="relative pl-3 before:content-['-'] before:absolute before:left-0 before:text-accent">{item}</li>
                 ))}
               </ul>
@@ -165,23 +186,25 @@ const hhx = cv.education.find(e => e.degree.includes("HHX"));
         <SectionHeading>Projektarbejde (udvalg)</SectionHeading>
 
         <div class="courses-grid">
-          {cv.projects.map(proj => (
+          {projects.map(proj => (
             <Card variant="bordered" class="flex flex-col h-full bg-glass">
               <div class="flex justify-between items-start mb-3 gap-2">
                 <h3 class="text-[16px] font-bold leading-tight m-0">{proj.title}</h3>
-                <Pill variant="accent" class="shrink-0">{proj.tag}</Pill>
+                <Pill variant="accent" class="shrink-0">{proj.tags && proj.tags[0] ? proj.tags[0] : 'Projekt'}</Pill>
               </div>
-              {proj.meta && <p class="text-[13px] text-dim mb-3">{proj.meta}</p>}
               <p class="text-[14px] text-dim opacity-80 leading-relaxed mb-4 flex-grow">
                 {proj.description}
               </p>
               <div class="flex flex-wrap gap-2 mt-auto">
-                 {proj.links && proj.links.map(link => (
-                  <a href={link.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{link.text} →</a>
-                ))}
+                 {proj.url && (
+                  <a href={proj.url} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">Se Projekt →</a>
+                 )}
               </div>
             </Card>
           ))}
+        </div>
+        <div class="mt-6 text-center">
+            <Button href="/portfolio" variant="ghost">Se hel portefølje</Button>
         </div>
       </Card>
     </Section>
