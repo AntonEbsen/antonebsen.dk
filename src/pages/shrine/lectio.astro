@@ -1,0 +1,148 @@
+---
+import { getDailyVerse } from '../../utils/scripture';
+import '@styles/styles.css';
+
+const verse = getDailyVerse();
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectio | Ad Majorem Dei Gloriam</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .sans { font-family: 'Inter', sans-serif; }
+        .serif-italic { font-family: 'Playfair Display', serif; font-style: italic; }
+    </style>
+</head>
+<body class="bg-black text-gray-300 h-screen w-screen overflow-hidden m-0 p-0 selection:bg-gold-500/30">
+
+    <!-- Deep Background -->
+    <div class="fixed inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900/40 via-black to-black">
+         <div class="absolute inset-0 opacity-5" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 sans">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Tilbage</span>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center" id="lectio-container">
+        
+        <p class="text-xs sans uppercase tracking-[0.4em] text-gray-700 mb-12 animate-fade-in opacity-50">
+            Dagens Ord
+        </p>
+
+        <div class="max-w-4xl relative">
+            <!-- Quote Marks -->
+            <span class="absolute -top-12 -left-8 md:-left-16 text-6xl md:text-8xl text-gold-900/30 font-serif opacity-0 animate-fade-in" style="animation-delay: 0.5s;">“</span>
+            
+            <h1 class="text-3xl md:text-5xl lg:text-6xl text-gray-200 serif-italic leading-relaxed md:leading-tight mb-8 opacity-0 animate-slow-reveal">
+                {verse.text}
+            </h1>
+            
+            <span class="absolute -bottom-16 -right-8 md:-right-8 text-6xl md:text-8xl text-gold-900/30 font-serif opacity-0 animate-fade-in" style="animation-delay: 2s;">”</span>
+        </div>
+
+        <p class="text-gold-500/80 sans text-sm uppercase tracking-widest mt-12 opacity-0 animate-fade-in" style="animation-delay: 3s;">
+            — {verse.citation}
+        </p>
+
+        <!-- Refresh / New Verse Button (Subtle) -->
+         <button id="refresh-btn" class="absolute bottom-12 text-gray-800 hover:text-gray-500 transition-colors opacity-0 animate-fade-in" style="animation-delay: 5s;" title="Nyt ord">
+            <i class="fa-solid fa-rotate-right"></i>
+        </button>
+
+    </main>
+
+    <style>
+        @keyframes slowReveal {
+            0% { opacity: 0; filter: blur(10px); transform: scale(0.95); }
+            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+
+        .animate-slow-reveal {
+            animation: slowReveal 3s ease-out forwards;
+            animation-delay: 1s;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+
+    <script>
+        import { getRandomVerse } from '../../utils/scripture';
+        
+        // Client-side refresh logic requires bringing the verses to the client or an API.
+        // For simplicity, let's just reload the page or implement a simple client-side list in script.
+        
+        // We will just replicate the list here for client interactivity to keep it snappy.
+        const verses = [
+            { text: "Herren er min hyrde, jeg lider ingen nød.", citation: "Salme 23:1" },
+            { text: "Vær stille hos Gud, min sjæl, for fra ham kommer mit håb.", citation: "Salme 62:6" },
+            { text: "Jeg er verdens lys. Den, der følger mig, skal aldrig vandre i mørket.", citation: "Johannes 8:12" },
+            { text: "Kom til mig, alle I, som slider og slæber, så vil jeg give jer hvile.", citation: "Matthæus 11:28" },
+            { text: "Salige er de, som stifter fred, for de skal kaldes Guds børn.", citation: "Matthæus 5:9" },
+            { text: "Tro er fast tillid til det, der håbes på, overbevisning om det, der ikke ses.", citation: "Hebræerne 11:1" },
+            { text: "I begyndelsen var Ordet, og Ordet var hos Gud, og Ordet var Gud.", citation: "Johannes 1:1" },
+            { text: "Kærligheden er tålmodig, kærligheden er mild, den misunder ikke.", citation: "1. Korinther 13:4" },
+            { text: "Frygt ikke, for jeg er med dig, fortvivl ikke, for jeg er din Gud.", citation: "Esajas 41:10" },
+            { text: "Bed, så skal der gives jer; søg, så skal I finde; bank på, så skal der lukkes op for jer.", citation: "Matthæus 7:7" },
+            { text: "Hvad hjælper det et menneske at vinde hele verden, men bøde med sin sjæl?", citation: "Matthæus 16:26" },
+            { text: "Fred efterlader jeg jer, min fred giver jeg jer.", citation: "Johannes 14:27" },
+            { text: "Vær stærke og modige, frygt ikke, for Herren din Gud er med dig.", citation: "Josvabogen 1:9" },
+            { text: "Herren er nær ved dem, hvis hjerte er knust.", citation: "Salme 34:19" },
+            { text: "Alt formår jeg i ham, der giver mig kraft.", citation: "Filipperne 4:13" },
+            { text: "Vær ikke bekymrede for noget, men bring i alle forhold jeres ønsker frem for Gud i bøn.", citation: "Filipperne 4:6" },
+            { text: "Så bliver da tro, håb, kærlighed, disse tre. Men størst af dem er kærligheden.", citation: "1. Korinther 13:13" },
+            { text: "Den, der ikke elsker, kender ikke Gud, for Gud er kærlighed.", citation: "1. Johannes 4:8" },
+            { text: "Jeg er opstandelsen og livet; den, der tror på mig, skal leve, om han end dør.", citation: "Johannes 11:25" },
+            { text: "Også om jeg vandrer i dødsskyggens dal, frygter jeg intet ondt, for du er med mig.", citation: "Salme 23:4" },
+        ];
+
+        const btn = document.getElementById('refresh-btn');
+        const textEl = document.querySelector('h1');
+        const citeEl = document.querySelector('p.text-gold-500\\/80');
+
+        btn?.addEventListener('click', () => {
+            // Fade out
+            textEl!.style.opacity = '0';
+            citeEl!.style.opacity = '0';
+            
+            setTimeout(() => {
+                const random = verses[Math.floor(Math.random() * verses.length)];
+                textEl!.innerText = random.text;
+                // citation format is slightly different in HTML: "— " + citation
+                citeEl!.innerText = "— " + random.citation;
+                
+                // Fade in
+                textEl!.style.opacity = '1';
+                textEl!.style.filter = 'blur(0)'; // Ensure filter is reset if it was set
+                citeEl!.style.opacity = '1';
+            }, 500);
+        });
+
+    </script>
+</body>
+</html>
