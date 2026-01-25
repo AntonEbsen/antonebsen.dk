@@ -1,0 +1,242 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<!-- 
+    THE SHRINE ✝️
+    Ad Majorem Dei Gloriam.
+-->
+
+<Layout title="Ad Majorem Dei Gloriam" bodyClass="bg-black overflow-hidden h-screen">
+    
+    <!-- MAIN CONTAINER (Full Screen) -->
+    <div class="relative w-full h-full flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden bg-gradient-to-b from-[#0a0a2a] via-[#1a1a4a] to-black">
+
+        <!-- Background Texture (Subtle Noise) -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+
+        <!-- INCENSE SMOKE EFFECT 🌫️ -->
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
+             <!-- Deep rolling fog -->
+             <div class="absolute -bottom-20 left-1/4 w-[600px] h-[600px] bg-gray-500/10 rounded-full blur-[100px] animate-smoke-rise"></div>
+             <div class="absolute -bottom-32 right-1/4 w-[700px] h-[700px] bg-gray-400/5 rounded-full blur-[120px] animate-smoke-rise-slow"></div>
+             <!-- Center Glow -->
+             <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-500/5 rounded-full blur-[80px] animate-pulse-slow"></div>
+        </div>
+    
+        <!-- BACK BUTTON (Subtle Return) -->
+        <a href="/" class="absolute top-8 left-8 text-gold-500/40 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 z-50">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Return</span>
+        </a>
+
+        <!-- AUDIO CONTROL (Right Side) -->
+        <button id="mute-btn" class="absolute top-8 right-8 text-gold-500/50 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group z-50" aria-label="Mute/Play">
+            <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
+            <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i>
+            <i class="fa-solid fa-play hidden text-gold-500"></i>
+            <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Chant</span>
+        </button>
+
+        <!-- CONTENT -->
+        <div class="relative z-10 p-8 max-w-3xl mx-auto flex flex-col items-center fade-in-section">
+            
+            <!-- HEADER: Latin Invocation -->
+            <p class="text-gold-500/60 text-sm tracking-[0.3em] uppercase mb-12 animate-fade-in-up" style="animation-delay: 0.2s;">
+                In Nomine Patris, et Filii, et Spiritus Sancti
+            </p>
+    
+            <!-- CENTERPIECE: Crucifix -->
+            <div class="relative mb-16 animate-fade-in-up" style="animation-delay: 0.5s;">
+                <!-- Halo Glow -->
+                <div class="absolute inset-0 bg-gold-500/20 blur-[80px] rounded-full transform scale-150 animate-pulse-slow"></div>
+                
+                <!-- Crucifix SVG -->
+                <div class="relative drop-shadow-[0_0_25px_rgba(255,215,0,0.6)] hover:scale-105 transition-transform duration-1000">
+                    <svg width="150" height="190" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg" class="mx-auto overflow-visible">
+                        <defs>
+                            <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#FDB931;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+                            </linearGradient>
+                             <filter id="glow">
+                                <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <path d="M10 2 H14 V6 H22 V10 H14 V28 H10 V10 H2 V6 H10 V2 Z" fill="url(#gold-gradient)" opacity="0.9" />
+                        <circle cx="12" cy="7.5" r="1.5" fill="url(#gold-gradient)" />
+                        <path d="M12 9 C 9 9, 4 8, 4 7 C 4 9, 9 11, 12 12 C 15 11, 20 9, 20 7 C 20 8, 15 9, 12 9 Z M 12 12 L 12 22 L 11 26 L 13 26 L 12 22 Z" fill="url(#gold-gradient)" filter="url(#glow)" />
+                        <rect x="11" y="0.5" width="2" height="1.5" fill="url(#gold-gradient)" />
+                    </svg>
+                </div>
+            </div>
+    
+            <!-- MAIN VERSE -->
+            <h1 class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-gray-400 font-serif font-bold italic mb-6 leading-tight animate-fade-in-up" style="animation-delay: 1s;">
+                "Ego sum via et veritas et vita."
+            </h1>
+            
+            <p class="text-gold-400/80 text-xl mb-16 animate-fade-in-up" style="animation-delay: 1.5s;">
+                I am the way and the truth and the life.
+                <span class="block text-xs mt-3 text-gray-500 uppercase tracking-widest not-italic sans-serif">— John 14:6</span>
+            </p>
+    
+            <!-- INTERACTIVE: Votive Candle -->
+            <div class="animate-fade-in-up group cursor-pointer relative z-50" id="candle-trigger" style="animation-delay: 2s;">
+                <div class="relative w-10 h-16 mx-auto transition-transform duration-500 group-hover:-translate-y-1">
+                    <!-- Candle Body -->
+                    <div class="absolute bottom-0 w-10 h-10 bg-red-900/40 border border-red-500/30 rounded-sm shadow-[0_0_15px_rgba(255,0,0,0.1)]"></div>
+                    <!-- Flame (Hidden initially) -->
+                    <div id="flame" class="absolute -top-6 left-1/2 -translate-x-1/2 w-5 h-8 bg-orange-400 rounded-full blur-[3px] opacity-0 transition-all duration-700 animate-flicker transform scale-0"></div>
+                </div>
+                <p class="text-xs text-gray-600 mt-4 tracking-widest group-hover:text-gold-500 transition-colors uppercase">
+                    Light a Candle
+                </p>
+            </div>
+    
+        </div>
+    
+        <!-- FOOTER: Dedication -->
+        <div class="absolute bottom-8 w-full text-center z-10">
+            <p class="text-[10px] text-gray-700 uppercase tracking-[0.2em] opacity-0 animate-fade-in" style="animation-delay: 3s;">
+                Ad Majorem Dei Gloriam
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Hidden Audio Player -->
+    <audio id="shrine-audio" loop preload="auto">
+        <source src="/assets/audio/chant.mp3" type="audio/mpeg">
+    </audio>
+
+</Layout>
+
+<style>
+    /* KEYFRAMES */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 2s ease-out forwards;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes smokeRise {
+        0% { transform: translateY(0) scale(1); opacity: 0.3; }
+        50% { transform: translateY(-30px) scale(1.1); opacity: 0.2; }
+        100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
+    }
+    
+    .animate-smoke-rise {
+        animation: smokeRise 15s infinite ease-in-out;
+    }
+    
+    .animate-smoke-rise-slow {
+        animation: smokeRise 25s infinite ease-in-out reverse;
+    }
+
+    @keyframes flicker {
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+        50% { transform: translateX(-50%) scale(1.1); opacity: 1; filter: brightness(1.2); }
+        25% { transform: translateX(-52%) scale(0.9); opacity: 0.7; }
+        75% { transform: translateX(-48%) scale(1.05); opacity: 0.9; }
+    }
+
+    .animate-flicker {
+        animation: flicker 0.1s infinite alternate;
+    }
+
+    /* STATES */
+    .candle-lit #flame {
+        opacity: 1 !important;
+        transform: translateX(-50%) scale(1);
+    }
+</style>
+
+<script>
+    // Audio Elements
+    const audio = document.getElementById('shrine-audio') as HTMLAudioElement;
+    const muteBtn = document.getElementById('mute-btn');
+    const volIcon = muteBtn?.querySelector('.fa-volume-high');
+    const muteIcon = muteBtn?.querySelector('.fa-volume-xmark');
+    const playIcon = muteBtn?.querySelector('.fa-play');
+    
+    // Interactive Elements
+    const candleTrigger = document.getElementById('candle-trigger');
+    const wrapper = document.querySelector('.bg-gradient-to-b') as HTMLElement;
+
+    // Start Logic on Load
+    window.addEventListener('load', async () => {
+        // Try Autoplay
+        audio.volume = 1.0;
+        try {
+            await audio.play();
+            // Success
+            volIcon?.classList.remove('hidden');
+            muteIcon?.classList.add('hidden');
+            playIcon?.classList.add('hidden');
+        } catch (e) {
+            console.log("Autoplay blocked. Showing Play button.", e);
+            // Fallback
+            volIcon?.classList.add('hidden');
+            muteIcon?.classList.add('hidden');
+            playIcon?.classList.remove('hidden');
+            muteBtn?.classList.add('animate-pulse');
+        }
+    });
+
+    // Mute/Play Control
+    muteBtn?.addEventListener('click', async () => {
+        if (audio.paused) {
+            // Manual Start
+            try {
+                await audio.play();
+                volIcon?.classList.remove('hidden');
+                muteIcon?.classList.add('hidden');
+                playIcon?.classList.add('hidden');
+                muteBtn.classList.remove('animate-pulse');
+            } catch(e) { console.error(e); }
+        } else {
+            // Toggle Mute
+            audio.muted = !audio.muted;
+            if(audio.muted) {
+                volIcon?.classList.add('hidden');
+                muteIcon?.classList.remove('hidden');
+            } else {
+                volIcon?.classList.remove('hidden');
+                muteIcon?.classList.add('hidden');
+            }
+        }
+    });
+
+    // Candle Logic
+    let isLit = false;
+    candleTrigger?.addEventListener('click', () => {
+        if (!isLit) {
+            candleTrigger.classList.add('candle-lit');
+            // Warmth efffect
+             if (wrapper) wrapper.style.boxShadow = "inset 0 0 150px rgba(255, 100, 0, 0.15)";
+            isLit = true;
+        } else {
+            candleTrigger.classList.remove('candle-lit');
+             if (wrapper) wrapper.style.boxShadow = "none";
+            isLit = false;
+        }
+    });
+</script>
