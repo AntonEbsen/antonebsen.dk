@@ -1,0 +1,234 @@
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summa | Thomas Aquinas</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #888; }
+    </style>
+</head>
+<body class="bg-[#0a0a0c] text-gray-300 h-screen w-screen overflow-hidden m-0 p-0 selection:bg-gold-500/30">
+
+    <!-- Background: Dark Monastery Cell -->
+    <div class="fixed inset-0 z-0 pointer-events-none bg-radial-gradient from-[#1a1a20] via-[#050508] to-black">
+        <!-- Subtle paper texture overlay -->
+        <div class="absolute inset-0 opacity-5 mix-blend-overlay" style="background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Tilbage</span>
+        </a>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full h-full flex flex-col items-center pt-24 pb-8 px-4 md:px-0 max-w-2xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-8 animate-fade-in-up">
+            <div class="w-16 h-16 mx-auto bg-gold-900/20 rounded-full flex items-center justify-center border border-gold-500/30 mb-4 shadow-[0_0_30px_rgba(255,215,0,0.1)]">
+                <i class="fa-solid fa-feather-pointed text-2xl text-gold-500"></i>
+            </div>
+            <h1 class="text-2xl md:text-3xl text-gold-100 font-bold tracking-wide">Doctor Angelicus</h1>
+            <p class="text-xs text-gold-500/60 uppercase tracking-[0.3em] mt-2">Thomas Aquinas</p>
+        </div>
+
+        <!-- Conversation Area -->
+        <div id="chat-container" class="flex-1 w-full overflow-y-auto space-y-6 mb-8 px-4 scroll-smooth">
+            <!-- Intro Message -->
+            <div class="flex gap-4 animate-fade-in-up delay-100">
+                <div class="w-8 h-8 rounded-full bg-gold-900/20 border border-gold-500/20 flex-shrink-0 flex items-center justify-center text-gold-500 text-xs">
+                    T.A.
+                </div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-lg rounded-tl-none max-w-[85%] text-body text-gray-300 leading-relaxed shadow-lg">
+                    <p>Pax Christi. I am Thomas. Provide your <em>quaestio</em>, and we shall seek the Truth together.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="w-full relative animate-fade-in-up delay-200">
+            <form id="aquinas-form" class="relative group">
+                <input 
+                    type="text" 
+                    id="quaestio-input" 
+                    placeholder="Stil dit spørgsmål (Quaestio)..." 
+                    class="w-full bg-[#15151a] border border-gold-500/20 rounded-lg py-4 pl-6 pr-14 text-gold-100 placeholder:text-gray-600 focus:outline-none focus:border-gold-500/50 focus:bg-[#1a1a20] transition-all text-body"
+                    autocomplete="off"
+                >
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gold-500/50 hover:text-gold-500 transition-colors">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+            <div class="text-center mt-3">
+                <p class="text-[10px] text-gray-600 uppercase tracking-widest">Ad Majorem Dei Gloriam</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const form = document.getElementById('aquinas-form');
+        const input = document.getElementById('quaestio-input') as HTMLInputElement;
+        const chatContainer = document.getElementById('chat-container');
+
+        form?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = input.value.trim();
+            if (!question) return;
+
+            // Add User Message
+            addMessage(question, 'user');
+            input.value = '';
+
+            // Add Loading Indicator
+            const loadingId = addLoading();
+
+            try {
+                const res = await fetch('/api/aquinas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: question })
+                });
+
+                // Remove loading
+                removeMessage(loadingId);
+
+                if (!res.ok) {
+                    addMessage("Forgive me, my connection to the ether is weak.", 'ai');
+                    return;
+                }
+
+                // Stream response
+                const reader = res.body?.getReader();
+                const decoder = new TextDecoder();
+                let fullText = "";
+                const aiMsgId = addMessage("", 'ai'); // Empty AI message to fill
+                const aiContentEl = document.getElementById(aiMsgId)?.querySelector('.ai-content');
+
+                if (reader && aiContentEl) {
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        const chunk = decoder.decode(value, { stream: true });
+                        fullText += chunk;
+                        aiContentEl.innerHTML = formatText(fullText);
+                        chatContainer!.scrollTop = chatContainer!.scrollHeight;
+                    }
+                }
+
+            } catch (err) {
+                removeMessage(loadingId);
+                addMessage("An error occurred in my contemplation.", 'ai');
+                console.error(err);
+            }
+        });
+
+        function addMessage(text: string, role: 'user' | 'ai'): string {
+            const id = 'msg-' + Date.now();
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''} animate-fade-in`;
+            
+            if (role === 'ai') {
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gold-900/20 border border-gold-500/20 flex-shrink-0 flex items-center justify-center text-gold-500 text-xs mt-1">
+                        T.A.
+                    </div>
+                    <div class="bg-white/5 border border-white/10 p-5 rounded-lg rounded-tl-none max-w-[90%] text-body text-gray-300 leading-relaxed shadow-lg ai-content">
+                        ${formatText(text)}
+                    </div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div class="bg-gold-900/10 border border-gold-500/30 p-4 rounded-lg rounded-tr-none max-w-[85%] text-body text-gold-100 leading-relaxed shadow-lg">
+                        ${text}
+                    </div>
+                `;
+            }
+
+            chatContainer?.appendChild(div);
+            // Scroll to bottom
+            setTimeout(() => {
+                chatContainer!.scrollTop = chatContainer!.scrollHeight;
+            }, 10);
+            return id;
+        }
+
+        function addLoading(): string {
+             const id = 'loading-' + Date.now();
+             const div = document.createElement('div');
+             div.id = id;
+             div.className = "flex gap-4 animate-pulse";
+             div.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-gold-900/20 border border-gold-500/20 flex-shrink-0 flex items-center justify-center text-gold-500 text-xs mt-1">T.A.</div>
+                <div class="bg-white/5 border border-white/10 p-4 rounded-lg rounded-tl-none text-gray-500 text-xs italic flex items-center">
+                    Contemplating...
+                </div>
+             `;
+             chatContainer?.appendChild(div);
+             chatContainer!.scrollTop = chatContainer!.scrollHeight;
+             return id;
+        }
+
+        function removeMessage(id: string) {
+            const el = document.getElementById(id);
+            if(el) el.remove();
+        }
+
+        function formatText(text: string) {
+             // Simple markdown
+             return text
+                .replace(/\*([^\*]+)\*/g, '<em>$1</em>') // Italics
+                .replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>') // Bold
+                .replace(/\n/g, '<br>');
+        }
+
+    </script>
+    
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</body>
+</html>
