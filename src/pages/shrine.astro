@@ -24,6 +24,23 @@ import '@styles/styles.css';
 </head>
 <body class="bg-[#020205] text-white overflow-hidden h-screen w-screen m-0 p-0 selection:bg-gold-500/30">
 
+    <!-- TOP BAR (Constrained) -->
+    <div class="absolute top-0 w-full max-w-7xl px-8 py-8 flex justify-between items-start z-50 pointer-events-none">
+        <!-- BACK BUTTON -->
+        <a href="/" class="pointer-events-auto text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 sans">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Return</span>
+        </a>
+
+        <!-- AUDIO CONTROL -->
+        <button id="mute-btn" class="pointer-events-auto text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group" aria-label="Mute/Play">
+            <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
+            <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i>
+            <i class="fa-solid fa-play hidden text-gold-500"></i>
+            <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity sans">Chant</span>
+        </button>
+    </div>
+
     <!-- MAIN CONTAINER (Full Screen) -->
     <div class="relative w-full h-full flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden bg-gradient-to-b from-[#050510] via-black to-black">
 
@@ -39,30 +56,16 @@ import '@styles/styles.css';
              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-600/10 rounded-full blur-[80px] animate-pulse-slow"></div>
         </div>
     
-        <!-- BACK BUTTON (Subtle Return) -->
-        <a href="/" class="absolute top-8 left-8 text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 z-50 sans">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span class="text-xs uppercase tracking-widest hidden md:inline">Return</span>
-        </a>
-
-        <!-- AUDIO CONTROL (Right Side) -->
-        <button id="mute-btn" class="absolute top-8 right-8 text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group z-50" aria-label="Mute/Play">
-            <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
-            <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i>
-            <i class="fa-solid fa-play hidden text-gold-500"></i>
-            <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity sans">Chant</span>
-        </button>
-
         <!-- CONTENT -->
         <div class="relative z-10 p-8 max-w-3xl mx-auto flex flex-col items-center fade-in-section">
             
             <!-- HEADER: Latin Invocation -->
-            <p class="text-gold-500/80 text-sm tracking-[0.3em] uppercase mb-12 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <p class="text-gold-500/80 text-sm tracking-[0.3em] uppercase mb-8 md:mb-12 animate-fade-in-up" style="animation-delay: 0.2s;">
                 In Nomine Patris, et Filii, et Spiritus Sancti
             </p>
     
             <!-- CENTERPIECE: Crucifix -->
-            <div class="relative mb-16 animate-fade-in-up" style="animation-delay: 0.5s;">
+            <div class="relative mb-12 animate-fade-in-up" style="animation-delay: 0.5s;">
                 <!-- Halo Glow -->
                 <div class="absolute inset-0 bg-gold-500/20 blur-[80px] rounded-full transform scale-150 animate-pulse-slow"></div>
                 
@@ -92,17 +95,17 @@ import '@styles/styles.css';
             </div>
     
             <!-- MAIN VERSE -->
-            <h1 class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-gray-400 font-serif font-bold italic mb-6 leading-tight animate-fade-in-up" style="animation-delay: 1s;">
+            <h1 class="text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-gray-400 font-serif font-bold italic mb-4 leading-tight animate-fade-in-up" style="animation-delay: 1s;">
                 "Ego sum via et veritas et vita."
             </h1>
             
-            <p class="text-gold-400/80 text-xl mb-16 animate-fade-in-up" style="animation-delay: 1.5s;">
+            <p class="text-gold-400/80 text-lg mb-12 animate-fade-in-up" style="animation-delay: 1.5s;">
                 I am the way and the truth and the life.
                 <span class="block text-xs mt-3 text-gray-500 uppercase tracking-widest not-italic sans-serif">— John 14:6</span>
             </p>
     
             <!-- INTERACTIVE: Votive Candle -->
-            <div class="animate-fade-in-up group cursor-pointer relative z-50 mb-12" id="candle-trigger" style="animation-delay: 2s;">
+            <div class="animate-fade-in-up group cursor-pointer relative z-50 mb-8" id="candle-trigger" style="animation-delay: 2s;">
                 <div class="relative w-10 h-16 mx-auto transition-transform duration-500 group-hover:-translate-y-1">
                     <!-- Candle Body -->
                     <div class="absolute bottom-0 w-10 h-10 bg-red-900/40 border border-red-500/30 rounded-sm shadow-[0_0_15px_rgba(255,0,0,0.1)]"></div>
@@ -115,25 +118,29 @@ import '@styles/styles.css';
             </div>
 
             <!-- NAVIGATION LINKS -->
-            <nav class="flex gap-6 md:gap-8 animate-fade-in-up z-50" style="animation-delay: 2.5s;">
-                 <a href="/shrine/testimony" class="text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
+            <nav class="flex gap-6 md:gap-8 animate-fade-in-up z-50 items-center justify-center opacity-80 hover:opacity-100 transition-opacity" style="animation-delay: 2.5s;">
+                 <a href="/shrine/testimony" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
                     Vidnesbyrd
                 </a>
                 <span class="text-gray-800">•</span>
-                 <a href="/shrine/rosary" class="text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
+                 <a href="/shrine/rosary" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
                     Rosenkrans
                 </a>
                 <span class="text-gray-800">•</span>
-                 <a href="/shrine/confession" class="text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
+                 <a href="/shrine/confession" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
                     Skriftemål
+                </a>
+                <span class="text-gray-800">•</span>
+                 <a href="/shrine/prayers" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
+                    Forbøn
                 </a>
             </nav>
     
         </div>
     
         <!-- FOOTER: Dedication -->
-        <div class="absolute bottom-8 w-full text-center z-10">
-            <p class="text-[10px] text-gray-700 uppercase tracking-[0.2em] opacity-0 animate-fade-in" style="animation-delay: 3s;">
+        <div class="absolute bottom-4 md:bottom-8 w-full text-center z-10 pointer-events-none">
+            <p class="text-[9px] md:text-[10px] text-gray-800 uppercase tracking-[0.2em] opacity-0 animate-fade-in" style="animation-delay: 3s;">
                 Ad Majorem Dei Gloriam
             </p>
         </div>
