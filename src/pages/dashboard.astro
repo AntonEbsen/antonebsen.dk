@@ -317,6 +317,40 @@ import Layout from '../layouts/Layout.astro';
 
             <!-- ... SKILLS ... -->
 
+            <!-- REFERENCE MANAGER -->
+            <div id="ref-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-handshake mr-2"></i> Reference Manager</h3>
+                </div>
+                <div class="p-6">
+                     <form id="ref-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <input type="text" id="r-name" placeholder="Name (e.g. John Doe)" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <input type="text" id="r-role" placeholder="Role (e.g. CEO)" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <input type="text" id="r-company" placeholder="Company/Org" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <input type="text" id="r-rel" placeholder="Relationship (e.g. Manager)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                         <div class="md:col-span-2">
+                             <textarea id="r-quote" placeholder="The Quote/Testimonial..." rows="3" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <input type="url" id="r-linkedin" placeholder="LinkedIn URL (Optional)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div class="md:col-span-2">
+                             <button type="submit" class="bg-gray-800 text-white font-bold py-2 px-4 rounded w-full hover:bg-gray-700 border border-gray-700 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-quote-left"></i> Add Reference
+                            </button>
+                        </div>
+                     </form>
+                </div>
+            </div>
+
             <!-- BLOG EDITOR -->
              <div id="blog-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
