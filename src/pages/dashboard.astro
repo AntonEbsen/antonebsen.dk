@@ -143,6 +143,39 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- RELEASE MANAGER (Changelog) -->
+            <div id="changelog-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-code-branch mr-2"></i> Release Manager</h3>
+                </div>
+                <div class="p-6">
+                     <form id="changelog-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <input type="text" id="cl-title" placeholder="Update Title (e.g. Added Dark Mode)" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div>
+                            <select id="cl-type" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500">
+                                <option value="new">✨ New Feature</option>
+                                <option value="fix">🐛 Bug Fix</option>
+                                <option value="polish">🎨 Polish</option>
+                                <option value="announcement">📢 Announcement</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="cl-version" placeholder="Version (e.g. v1.2)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                        </div>
+                        <div class="md:col-span-2">
+                            <textarea id="cl-desc" placeholder="What changed? Use formatting if needed." rows="3" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                             <button type="submit" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-2 px-4 rounded w-full hover:from-green-500 hover:to-emerald-500 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-rocket"></i> Publish Release
+                            </button>
+                        </div>
+                     </form>
+                </div>
+            </div>
+
             <!-- ... GUESTBOOK ... -->
             
             <!-- ... PROJECTS ... -->
@@ -960,6 +993,31 @@ import Layout from '../layouts/Layout.astro';
         (e.target as HTMLFormElement).reset();
         loadGoals();
     });
+    // --- TRAVEL LOGIC ---
+    // --- CHANGELOG LOGIC ---
+    document.getElementById('changelog-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.getElementById('cl-title') as HTMLInputElement).value;
+        const type = (document.getElementById('cl-type') as HTMLInputElement).value;
+        const version = (document.getElementById('cl-version') as HTMLInputElement).value;
+        const description = (document.getElementById('cl-desc') as HTMLInputElement).value;
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const icon = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+        await fetch('/api/changelog', {
+            method: 'POST',
+            body: JSON.stringify({ title, type, version, description })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = icon;
+        // visual success
+        btn.classList.add('bg-green-400', 'text-black');
+        setTimeout(() => btn.classList.remove('bg-green-400', 'text-black'), 1000);
+    });
+
     async function loadTravel() {
         try {
             const res = await fetch('/api/travel');

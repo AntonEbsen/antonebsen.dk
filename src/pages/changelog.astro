@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/ui/Section.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: logs, error } = await supabase
+    .from('changelog')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+if (error) logs = [];
+
+function getTypeColor(type: string) {
+    switch (type) {
+        case 'new': return 'bg-green-500/20 text-green-400 border-green-500/30';
+        case 'fix': return 'bg-red-500/20 text-red-400 border-red-500/30';
+        case 'polish': return 'bg-gold-500/20 text-gold-400 border-gold-500/30';
+        default: return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+    }
+}
+
+function getTypeIcon(type: string) {
+    switch (type) {
+        case 'new': return 'fa-star';
+        case 'fix': return 'fa-bug';
+        case 'polish': return 'fa-wand-magic-sparkles';
+        default: return 'fa-bullhorn';
+    }
+}
+---
+
+<Layout 
+  title="Changelog | Anton Ebsen" 
+  description="Historik over opdateringer og ændringer."
+>
+  <main class="max-w-3xl mx-auto px-4 py-12">
+     <Section>
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                Changelog 📜
+            </h1>
+            <p class="text-dim text-lg">
+                Building in public. Her er hvad der sker bag kulisserne.
+            </p>
+        </div>
+
+        <div class="relative border-l border-gray-800 ml-4 md:ml-6 space-y-12">
+            {logs?.map((log, index) => (
+                <div class="relative pl-8 md:pl-12">
+                    {/* Timestamp Dot */}
+                    <div class="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-gold-600 ring-4 ring-black"></div>
+                    
+                    <div class="flex flex-col md:flex-row md:items-baseline gap-2 mb-2">
+                        <span class="text-xs font-mono text-dim opacity-60">
+                            {new Date(log.created_at).toLocaleDateString('da-DK', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        </span>
+                        {log.version && (
+                            <span class="text-xs font-mono text-gold-500/80 bg-gold-900/20 px-1.5 rounded">
+                                {log.version}
+                            </span>
+                        )}
+                    </div>
+
+                    <div class="bg-gray-900/40 p-6 rounded-lg border border-white/5 hover:border-gold-500/20 transition-colors group">
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <h3 class="text-xl font-bold text-white group-hover:text-gold-200 transition-colors">{log.title}</h3>
+                            <span class={`px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider border flex items-center gap-1.5 ${getTypeColor(log.type)}`}>
+                                <i class={`fa-solid ${getTypeIcon(log.type)}`}></i>
+                                {log.type}
+                            </span>
+                        </div>
+                        <p class="text-dim text-sm leading-relaxed whitespace-pre-line">
+                            {log.description}
+                        </p>
+                    </div>
+                </div>
+            ))}
+            
+            {logs?.length === 0 && (
+                <p class="text-center text-dim py-12">Ingen opdateringer endnu.</p>
+            )}
+        </div>
+
+     </Section>
+  </main>
+</Layout>
