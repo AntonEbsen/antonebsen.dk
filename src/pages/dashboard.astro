@@ -37,6 +37,27 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </header>
 
+            <!-- STATUS UPDATER -->
+            <div class="mb-8 p-4 border border-gold-500/30 bg-gray-900/40 rounded-lg flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center border border-gold-500/20 text-xl">
+                        ⚡
+                    </div>
+                    <div>
+                        <h3 class="text-gold-400 font-bold text-sm uppercase tracking-wider">Live Status</h3>
+                        <p class="text-xs text-gray-500">Update the 'Now' indicator on the site.</p>
+                    </div>
+                </div>
+                
+                <form id="status-form" class="flex gap-2 w-full md:w-auto">
+                    <input type="text" id="now-emoji" placeholder="🤖" class="w-12 bg-black border border-gray-700 rounded text-center focus:border-gold-500 text-lg p-2" required />
+                    <input type="text" id="now-text" placeholder="What are you doing?" class="flex-1 md:w-80 bg-black border border-gray-700 rounded px-3 py-2 text-sm focus:border-gold-500 text-gray-200" required />
+                    <button type="submit" class="bg-gold-500 text-black px-4 rounded hover:bg-gold-400 transition-colors font-bold">
+                        SET
+                    </button>
+                </form>
+            </div>
+
             <!-- QUICK NAV -->
             <div class="flex flex-wrap gap-3 mb-8 sticky top-0 bg-black/95 z-40 py-4 border-b border-gold-900/50 backdrop-blur-md shadow-lg">
                 <button onclick="document.getElementById('stats-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-gold-500 text-xs font-bold uppercase tracking-wider text-gold-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-gold-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
@@ -512,7 +533,8 @@ import Layout from '../layouts/Layout.astro';
             loadProjects();
             loadSkills();
             loadPosts();
-            loadInbox(); // Inbox
+            loadInbox();
+            loadStatus(); // Now Status
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -777,6 +799,38 @@ import Layout from '../layouts/Layout.astro';
         await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
         loadPosts();
     };
+
+    // --- NOW STATUS LOGIC ---
+    async function loadStatus() {
+        try {
+            const res = await fetch('/api/now');
+            const data = await res.json();
+            if (data) {
+                (document.getElementById('now-emoji') as HTMLInputElement).value = data.emoji;
+                (document.getElementById('now-text') as HTMLInputElement).value = data.status;
+            }
+        } catch (err) { console.error(err); }
+    }
+
+    document.getElementById('status-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const emoji = (document.getElementById('now-emoji') as HTMLInputElement).value;
+        const status = (document.getElementById('now-text') as HTMLInputElement).value;
+        
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const icon = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+        await fetch('/api/now', {
+            method: 'POST',
+            body: JSON.stringify({ emoji, status })
+        });
+        
+        btn.innerHTML = icon;
+        // Visual feedback
+        btn.classList.add('bg-green-500', 'text-white');
+        setTimeout(() => btn.classList.remove('bg-green-500', 'text-white'), 1000);
+    });
 
     // --- INBOX LOGIC ---
     async function loadInbox() {
