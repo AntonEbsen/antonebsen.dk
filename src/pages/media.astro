@@ -4,6 +4,18 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: media, error } = await supabase
+  .from('media_mentions')
+  .select('*')
+  .eq('visible', true)
+  .order('date', { ascending: false });
+
+if (error) media = [];
 ---
 
 <Layout 
@@ -60,12 +72,26 @@ import ContactCard from '@components/common/ContactCard.astro';
     <Section id="mentions" class="mb-20">
       <Card variant="bordered" class="p-6">
         <SectionHeading>Udvalgte omtaler</SectionHeading>
+
+        {media?.length === 0 && (
+            <p class="text-dim text-center py-8">Ingen omtaler fundet. <a href="/dashboard" class="underline">Tilføj i Dashboard</a>.</p>
+        )}
+
         <div class="mentions-grid">
-          <Card variant="glass" class="p-6">
-             <h3 class="font-bold mb-2">Artikel i [Medie]</h3>
-             <p class="text-sm text-dim mb-4">Omkring [Emne] og betydningen for [Kategori].</p>
-             <a href="#" class="text-accent font-bold">Læs artikel →</a>
-          </Card>
+          {media?.map(m => (
+              <Card variant="glass" class="p-6 flex flex-col h-full hover:bg-white/5 transition-colors group">
+                 <div class="flex justify-between items-start mb-2">
+                     <span class="text-xs uppercase tracking-wider text-accent font-bold">{m.source}</span>
+                     <span class="text-xs text-dim opacity-50">{m.date}</span>
+                 </div>
+                 <h3 class="font-bold text-lg mb-2 leading-tight group-hover:text-white transition-colors">
+                    <a href={m.url} target="_blank" class="hover:underline decoration-accent underline-offset-4">{m.title}</a>
+                 </h3>
+                 <a href={m.url} target="_blank" class="mt-auto text-sm text-dim hover:text-white flex items-center gap-2 pt-4">
+                    Læs artikel <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                 </a>
+              </Card>
+          ))}
         </div>
       </Card>
     </Section>

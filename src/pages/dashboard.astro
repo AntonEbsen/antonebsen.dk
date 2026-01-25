@@ -1208,6 +1208,28 @@ import Layout from '../layouts/Layout.astro';
         setTimeout(() => btn.classList.remove('bg-green-400', 'text-black'), 1000);
     });
 
+    // --- MEDIA LOGIC ---
+    document.getElementById('media-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.getElementById('m-title') as HTMLInputElement).value;
+        const source = (document.getElementById('m-source') as HTMLInputElement).value;
+        const date = (document.getElementById('m-date') as HTMLInputElement).value;
+        const url = (document.getElementById('m-url') as HTMLInputElement).value;
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const iconHTML = btn.innerHTML;
+        btn.innerHTML = '...';
+
+        await fetch('/api/media', {
+            method: 'POST',
+            body: JSON.stringify({ title, source, date, url })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = iconHTML;
+        alert("Article Added!");
+    });
+
     // --- SKILL LOGIC ---
     document.getElementById('skill-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
