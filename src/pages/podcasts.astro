@@ -3,44 +3,39 @@ import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
-import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import PodcastCard from '@components/resources/PodcastCard.astro';
-import podcastsData from '@data/resources/podcasts.json';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: podcasts, error } = await supabase
+  .from('podcasts')
+  .select('*')
+  .order('rating', { ascending: false });
+
+if (error) podcasts = [];
+
+// Group by category
+const categories = {};
+podcasts?.forEach(pod => {
+    if (!categories[pod.category]) categories[pod.category] = [];
+    categories[pod.category].push(pod);
+});
 ---
 
 <Layout 
-  title="Anton Meier Ebsen Jørgensen – Favoritpodcasts" 
-  description="En kurateret liste over mine favoritpodcasts – makro, data, træning, humor og refleksion."
+  title="Kulturloggen: Podcasts | Anton Ebsen" 
+  description="En kurateret liste over mine favoritpodcasts."
   bodyClass="podcasts-page"
 >
 
   <style>
     .podcasts-wrap {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 24px auto;
       padding: 0 16px 32px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
-    }
-
-    .pod-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 
@@ -48,64 +43,68 @@ import podcastsData from '@data/resources/podcasts.json';
 
     <!-- HERO -->
     <Section>
-      <div class="hero-grid">
-        <Card variant="glass" class="p-8">
-          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">Podcasts</p>
-          <h1 class="text-4xl font-bold leading-tight mb-5">Favoritter jeg faktisk hører igen</h1>
-          <p class="text-lg text-dim mb-6">
-            En kurateret liste opdelt efter tema. Jeg opdaterer løbende.
-          </p>
-  
-          <div class="flex flex-wrap gap-2 mb-8" aria-label="Kategorier">
-            <Pill variant="accent">Makro</Pill>
-            <Pill variant="accent">Data/Tech</Pill>
-            <Pill variant="accent">Træning</Pill>
-            <Pill variant="accent">Humor</Pill>
-            <Pill variant="accent">Refleksion</Pill>
-          </div>
-  
-          <div class="flex flex-wrap gap-3">
-            <Button href="#cat-makro">Se listen</Button>
-            <Button href="/contact" variant="ghost">Foreslå en podcast</Button>
-          </div>
-        </Card>
-  
-        <div class="hidden md:block">
-          <Card variant="glass" class="p-6">
-            <SectionHeading>Hvordan jeg vælger</SectionHeading>
-            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim">
-              <li>Høj signalværdi (ikke bare “snak”)</li>
-              <li>Gode gæster / konkret viden</li>
-              <li>Kan tåle genlyt</li>
-            </ul>
-          </Card>
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4 text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                Kulturloggen: Podcasts 🎧
+            </h1>
+            <p class="text-dim text-lg max-w-2xl mx-auto">
+                Min "Media Diet". Her er de podcasts, der gør mig klogere (eller bare gladere).
+                <br>Opdateres løbende.
+            </p>
         </div>
-      </div>
     </Section>
 
-    <!-- KATEGORI: MAKRO -->
-    <Section id="cat-makro">
-      <Card variant="bordered" class="p-6">
-        <SectionHeading>Makro & pengepolitik</SectionHeading>
-        <div class="pod-grid">
-          {podcastsData.macro.map(pod => (
-            <PodcastCard 
-               title={pod.title}
-               tag={pod.tag}
-               reason={pod.reason}
-               description={pod.description}
-               links={pod.links || []}
-            />
-          ))}
+    {Object.keys(categories).length === 0 && (
+        <div class="text-center py-12 border border-gray-800 rounded bg-gray-900/30">
+            <p class="text-dim">Ingen podcasts i databasen endnu.</p>
         </div>
-      </Card>
-    </Section>
+    )}
+
+    {Object.entries(categories).map(([category, items]: [string, any[]]) => (
+        <Section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-white border-b border-gray-800 pb-2 flex items-center gap-3">
+                <span class="w-2 h-8 bg-purple-500 rounded-full inline-block"></span>
+                {category}
+            </h2>
+            
+            <div class="grid grid-cols-1 gap-4">
+                {items.map(pod => (
+                    <div class="bg-gray-900/40 p-5 rounded-lg border border-white/5 hover:border-purple-500/30 transition-all group flex flex-col md:flex-row gap-6 items-start">
+                        
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-1 group-hover:text-purple-300 transition-colors">
+                                {pod.title}
+                                {pod.favorite && <i class="fa-solid fa-heart text-purple-500 ml-2 text-sm" title="Favorit"></i>}
+                            </h3>
+                            <p class="text-xs text-purple-400/80 uppercase tracking-widest font-bold mb-2">{pod.host}</p>
+                            <p class="text-gray-300 leading-relaxed text-sm mb-3">
+                                {pod.description}
+                            </p>
+                            {pod.link && (
+                                <a href={pod.link} target="_blank" rel="noopener" class="inline-flex items-center text-xs font-bold text-white bg-green-500/10 px-3 py-1.5 rounded hover:bg-green-500/20 text-green-400 border border-green-500/20 transition-colors">
+                                    <i class="fa-brands fa-spotify mr-2"></i> Lyt Nu
+                                </a>
+                            )}
+                        </div>
+
+                        <div class="hidden md:flex flex-col items-center justify-center min-w-[80px]">
+                            <span class="text-3xl font-bold text-gray-800 group-hover:text-purple-500/20 transition-colors">{pod.rating}/5</span>
+                            <div class="flex text-xs text-purple-500 gap-0.5 mt-1">
+                                {Array.from({length: pod.rating}).map(() => <i class="fa-solid fa-star"></i>)}
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+        </Section>
+    ))}
 
     <Section>
       <ContactCard 
         variant="glass" 
-        title="Vil du se flere?" 
-        text="Kontakt mig eller gå tilbage til oversigten."
+        title="Har jeg glemt noget?" 
+        text="Send mig dine anbefalinger."
         action="contact"
       />
     </Section>
