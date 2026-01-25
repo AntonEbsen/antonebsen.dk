@@ -24,9 +24,10 @@
         </audio>
 
         <!-- SOUND CONTROL -->
-        <button id="mute-btn" class="absolute top-8 left-8 text-gold-500/50 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group" aria-label="Mute">
+        <button id="mute-btn" class="absolute top-8 left-8 text-gold-500/50 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group" aria-label="Mute/Play">
             <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
-            <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i> <!-- Logic: detailed in script -->
+            <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i>
+            <i class="fa-solid fa-play hidden text-gold-500"></i> <!-- Fallback Play Icon -->
             <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Chant</span>
         </button>
         
@@ -164,6 +165,7 @@
     const muteBtn = document.getElementById('mute-btn');
     const volIcon = muteBtn?.querySelector('.fa-volume-high');
     const muteIcon = muteBtn?.querySelector('.fa-volume-xmark');
+    const playIcon = muteBtn?.querySelector('.fa-play');
 
     // Shrine Open/Close Logic
     // Exposed to window for direct calling (preserves user gesture for audio)
@@ -178,15 +180,22 @@
         
         // Start Audio
         audio.currentTime = 0;
-        audio.volume = 0.4;
+        audio.volume = 0.5;
+        audio.muted = false; // Ensure unmuted
         
         try {
             await audio.play();
-            console.log("Audio playing...");
+            // Success: Show Volume Icon
+            volIcon?.classList.remove('hidden');
+            muteIcon?.classList.add('hidden');
+            playIcon?.classList.add('hidden');
         } catch (e) {
-            console.error("Audio playback failed:", e);
-            // Fallback: Show a visible "Play" button if needed? 
-            // For now, logging is enough.
+            console.error("Audio playback failed (Autoplay blocked?):", e);
+            // Fallback: Show Play Icon and Pulse
+            volIcon?.classList.add('hidden');
+            muteIcon?.classList.add('hidden');
+            playIcon?.classList.remove('hidden');
+            muteBtn?.classList.add('animate-pulse'); // Draw attention
         }
     };
     
@@ -219,16 +228,31 @@
         }
     });
 
-    // Mute Logic
-    muteBtn?.addEventListener('click', () => {
-       if (audio.muted) {
-           audio.muted = false;
-           volIcon?.classList.remove('hidden');
-           muteIcon?.classList.add('hidden');
+    // Mute Logic / Play Fallback
+    muteBtn?.addEventListener('click', async () => {
+       if (audio.paused) {
+           // Fallback: User manually starts audio
+           try {
+               await audio.play();
+               // Reset icons to Playing state (Volume Up)
+               volIcon?.classList.remove('hidden');
+               muteIcon?.classList.add('hidden');
+               playIcon?.classList.add('hidden');
+               muteBtn.classList.remove('animate-pulse'); // Stop attention seeker
+           } catch (e) {
+               console.error("Manual play failed:", e);
+           }
        } else {
-           audio.muted = true;
-           volIcon?.classList.add('hidden');
-           muteIcon?.classList.remove('hidden');
+           // Normal Mute Toggle
+           if (audio.muted) {
+               audio.muted = false;
+               volIcon?.classList.remove('hidden');
+               muteIcon?.classList.add('hidden');
+           } else {
+               audio.muted = true;
+               volIcon?.classList.add('hidden');
+               muteIcon?.classList.remove('hidden');
+           }
        }
     });
     
