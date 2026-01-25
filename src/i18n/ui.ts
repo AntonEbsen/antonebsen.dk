@@ -76,7 +76,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             ]
         },
         { label: 'Samarbejde', url: '/services' },
-        { label: 'FAQ', url: '/faq' },
+        { label: 'Q&A', url: '/qa' },
         { label: 'Blog', url: '/blog' },
         { label: 'Kontakt', url: '/contact' },
     ],
@@ -85,35 +85,10 @@ export const navigation: { [key: string]: { label: string; url: string; children
         {
             label: 'CV',
             url: '/en/cv',
-            children: [
-                { label: 'Profile', url: '/cv' },
-                { label: 'Experience', url: '/experience' },
-                { label: 'Education', url: '/education' },
-                { label: 'Skills', url: '/skills' },
-                { label: 'Courses', url: '/courses' },
-                { label: 'Certifications', url: '/certifications' },
-                { label: 'Organizations', url: '/organizations' },
-                { label: 'References', url: '/referencer' },
-                { label: 'Milestones', url: '/timeline' },
-                { label: 'Video CV', url: '/video-cv' }
-            ]
-        },
-        {
-            label: 'Portfolio',
-            url: '/en/portfolio',
-            children: [
-                { label: 'Projects', url: '/en/portfolio' },
-                { label: 'Case Studies', url: '/cases' },
-                { label: 'Downloads', url: '/resources' },
-                { label: 'Mentions', url: '/media' },
-                { label: 'Notes', url: '/notes' },
-                { label: 'Gallery', url: '/gallery' },
-                { label: 'About Anton\'s AI', url: '/ai-project' },
-                { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
-            ]
+            // ...
         },
         { label: 'Services', url: '/en/services' },
-        { label: 'FAQ', url: '/en/faq' },
+        { label: 'Q&A', url: '/qa' },
         { label: 'Blog', url: '/en/blog' },
         { label: 'Contact', url: '/en/contact' },
     ]

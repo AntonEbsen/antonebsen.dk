@@ -1,0 +1,145 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: questions, error } = await supabase
+    .from('questions')
+    .select('*')
+    .eq('status', 'answered')
+    .order('created_at', { ascending: false });
+
+if (error) questions = [];
+
+const pinned = [
+    { q: "Hvad laver du til daglig?", a: "Jeg studerer Økonomi (cand.oecon) på Aarhus Universitet og arbejder som instruktor." },
+    { q: "Er du åben for freelance?", a: "Ja, primært inden for dataanalyse, webudvikling og automatisering." }
+];
+---
+
+<Layout 
+  title="Q&A | Anton Ebsen" 
+  description="Spørg mig om alt. Ökonomi, kode, træning."
+>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+     <Section>
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                Ask Me Anything 🎤
+            </h1>
+            <p class="text-dim text-lg">
+                Ingen spørgsmål er for dumme. Her samler jeg svarene.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <!-- LEFT COLUMN: WRITE -->
+            <div>
+                <div class="sticky top-24">
+                    <div class="bg-gray-900/40 p-6 rounded-lg border border-gold-500/20 shadow-[0_0_20px_rgba(255,215,0,0.05)]">
+                        <SectionHeading>Stil et spørgsmål</SectionHeading>
+                        <p class="text-sm text-dim mb-6">Det kan være om studiet, kode, træning eller hvilken pizza der er bedst.</p>
+                        
+                        <form id="qa-public-form" class="space-y-4">
+                            <div>
+                                <label class="block text-xs uppercase text-dim font-bold mb-1">Navn (Valgfrit)</label>
+                                <input type="text" id="qa-name" placeholder="Anonym" class="w-full bg-black/50 border border-gray-700 p-3 rounded text-gray-200 focus:border-gold-500 focus:outline-none transition-colors" />
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase text-dim font-bold mb-1">Spørgsmål</label>
+                                <textarea id="qa-text" rows="4" required placeholder="Skriv løs..." class="w-full bg-black/50 border border-gray-700 p-3 rounded text-gray-200 focus:border-gold-500 focus:outline-none transition-colors"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-black font-bold py-3 rounded transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Send Spørgsmål
+                            </button>
+                            <p id="qa-success" class="text-green-400 text-xs text-center hidden"><i class="fa-solid fa-check mr-1"></i> Modtaget! Venter på svar.</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: READ -->
+            <div class="space-y-8">
+                
+                <!-- PINNED -->
+                <div class="mb-8">
+                    <h3 class="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4 border-b border-gray-800 pb-2">Ofte Stillede</h3>
+                    <div class="space-y-6">
+                        {pinned.map(item => (
+                            <div class="opacity-80 hover:opacity-100 transition-opacity">
+                                <h4 class="font-bold text-white mb-1"><i class="fa-solid fa-thumbtack text-gold-500/50 mr-2 text-xs"></i>{item.q}</h4>
+                                <p class="text-dim text-sm leading-relaxed pl-5 border-l-2 border-gray-800">{item.a}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- DYNAMIC -->
+                <div>
+                    <h3 class="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4 border-b border-gray-800 pb-2">Nylige Svar</h3>
+                    <div class="space-y-8">
+                        {questions?.map(q => (
+                            <div class="group">
+                                <h4 class="font-bold text-white mb-2 text-lg">{q.question}</h4>
+                                <div class="flex items-center gap-2 mb-3 text-xs text-dim opacity-60">
+                                    <span class="bg-gray-800 px-1.5 rounded">{q.asker_name || 'Anonym'}</span>
+                                    <span>•</span>
+                                    <span>{new Date(q.created_at).toLocaleDateString('da-DK')}</span>
+                                </div>
+                                <div class="bg-gray-900/30 p-4 rounded border border-white/5 relative group-hover:border-gold-500/20 transition-colors">
+                                    <i class="fa-solid fa-quote-left absolute top-3 left-3 text-4xl text-white/5 -z-10"></i>
+                                    <p class="text-gray-300 leading-relaxed whitespace-pre-line">{q.answer}</p>
+                                </div>
+                            </div>
+                        ))}
+                        {questions?.length === 0 && (
+                            <p class="text-dim text-sm italic">Ingen nye spørgsmål besvaret endnu. Vær den første!</p>
+                        )}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+     </Section>
+  </main>
+
+<script>
+    document.getElementById('qa-public-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const originalText = btn.innerHTML;
+        const successMsg = document.getElementById('qa-success')!;
+        
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sender...';
+        btn.disabled = true;
+
+        const question = (document.getElementById('qa-text') as HTMLTextAreaElement).value;
+        const asker_name = (document.getElementById('qa-name') as HTMLInputElement).value;
+
+        try {
+            await fetch('/api/qa', {
+                method: 'POST',
+                body: JSON.stringify({ question, asker_name })
+            });
+            
+            (e.target as HTMLFormElement).reset();
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 5000);
+        } catch (err) {
+            console.error(err);
+            alert('Der skete en fejl. Prøv igen.');
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+
+</Layout>

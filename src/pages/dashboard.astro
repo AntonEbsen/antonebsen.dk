@@ -176,6 +176,19 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- Q&A MODERATOR -->
+            <div id="qa-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800 flex justify-between items-center">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-comments mr-2"></i> Q&A Moderator</h3>
+                    <button onclick="loadQuestions()" class="text-xs text-dim hover:text-white"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                </div>
+                <div class="p-6">
+                    <div id="qa-pending-list" class="space-y-4">
+                        <p class="text-dim text-sm italic">Loading pending questions...</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- ... GUESTBOOK ... -->
             
             <!-- ... PROJECTS ... -->
@@ -569,6 +582,7 @@ import Layout from '../layouts/Layout.astro';
             loadInbox();
             loadStatus();
             loadGoals(); // Bucket List
+            loadQuestions(); // Q&A
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -996,6 +1010,7 @@ import Layout from '../layouts/Layout.astro';
     // --- TRAVEL LOGIC ---
     // --- CHANGELOG LOGIC ---
     document.getElementById('changelog-form')?.addEventListener('submit', async (e) => {
+        // ... (existing changelog logic)
         e.preventDefault();
         const title = (document.getElementById('cl-title') as HTMLInputElement).value;
         const type = (document.getElementById('cl-type') as HTMLInputElement).value;
@@ -1017,6 +1032,58 @@ import Layout from '../layouts/Layout.astro';
         btn.classList.add('bg-green-400', 'text-black');
         setTimeout(() => btn.classList.remove('bg-green-400', 'text-black'), 1000);
     });
+
+    // --- Q&A LOGIC ---
+    async function loadQuestions() {
+        try {
+            const res = await fetch('/api/qa?admin=true');
+            const data = await res.json();
+            const list = document.getElementById('qa-pending-list')!;
+            list.innerHTML = '';
+            
+            const pending = data.filter((q:any) => q.status === 'pending');
+
+            if (pending.length === 0) {
+                list.innerHTML = '<p class="text-dim text-sm italic">No pending questions.</p>';
+                return;
+            }
+
+            pending.forEach((q:any) => {
+                const div = document.createElement('div');
+                div.className = "bg-black border border-gray-800 p-4 rounded mb-4";
+                div.innerHTML = `
+                    <p class="text-gray-300 font-bold mb-2">"${q.question}"</p>
+                    <p class="text-xs text-dim mb-3">Asked by: ${q.asker_name} • ${new Date(q.created_at).toLocaleDateString()}</p>
+                    <textarea id="ans-${q.id}" rows="2" placeholder="Write answer..." class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-sm text-gray-200 mb-2 focus:border-gold-500"></textarea>
+                    <button onclick="publishAnswer(${q.id})" class="text-xs bg-gold-600 text-black px-3 py-1.5 rounded font-bold hover:bg-gold-500">
+                        Publish Answer
+                    </button>
+                    <button onclick="hideQuestion(${q.id})" class="text-xs text-red-400 ml-2 hover:text-red-300">Archive</button>
+                `;
+                list.appendChild(div);
+            });
+        } catch (err) { console.error(err); }
+    }
+
+    (window as any).publishAnswer = async (id: number) => {
+        const answer = (document.getElementById(`ans-${id}`) as HTMLTextAreaElement).value;
+        if (!answer) return alert("Write an answer!");
+        
+        await fetch('/api/qa', {
+            method: 'PUT',
+            body: JSON.stringify({ id, answer, status: 'answered' })
+        });
+        loadQuestions();
+    };
+
+    (window as any).hideQuestion = async (id: number) => {
+        if (!confirm("Are you sure?")) return;
+        await fetch('/api/qa', {
+            method: 'PUT',
+            body: JSON.stringify({ id, status: 'hidden' })
+        });
+        loadQuestions();
+    };
 
     async function loadTravel() {
         try {
