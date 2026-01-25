@@ -7,9 +7,13 @@ import Button from '@components/ui/Button.astro';
 import ProjectCard from '@components/portfolio/ProjectCard.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import { getCollection } from 'astro:content';
+import { createClient } from '@supabase/supabase-js';
 
-const portfolioData = await getCollection('portfolio');
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+
+if (error) projects = [];
+
 ---
 
 <Layout 
@@ -88,14 +92,14 @@ const portfolioData = await getCollection('portfolio');
       <!-- PROJECT GRID -->
       <Section>
         <div class="projects-grid">
-          {portfolioData.map(project => (
+          {projects?.map(p => (
             <ProjectCard
-              title={project.data.title}
-              tagString={project.data.tagString}
-              description={project.data.description}
-              tools={project.data.tools}
-              output={project.data.output}
-              links={project.data.links || []}
+              title={p.title}
+              tagString={p.tags ? p.tags.join(' · ') : ''}
+              description={p.description}
+              tools={[]}
+              output={p.featured ? "Featured" : "Project"}
+              links={p.url ? [{ text: 'Se Projekt', url: p.url, icon: 'arrow-right' }] : []}
             />
           ))}
         </div>

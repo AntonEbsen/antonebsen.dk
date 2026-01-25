@@ -2,7 +2,7 @@
 
 Kontakt udvikleren bag systemet.
 
-*   **Navn**: Anton Ebsen
+*   **Navn**: Anton Meier Ebsen Jørgensen
 *   **LinkedIn**: [Anton Ebsen](https://www.linkedin.com/in/antonebsen)
 *   **Website**: [antonebsen.dk](https://antonebsen.dk)
-*   **Email**: (Se website for aktuel email)
+*   **Email**: [anton.ebsen@proton.me](anton.ebsen@proton.me)

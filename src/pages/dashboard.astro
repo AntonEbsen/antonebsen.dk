@@ -57,6 +57,9 @@ import Layout from '../layouts/Layout.astro';
                 <button onclick="document.getElementById('guestbook-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-gold-500 text-xs font-bold uppercase tracking-wider text-gold-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-gold-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
                     <i class="fa-solid fa-pen-nib mr-2"></i>Gæstebog
                 </button>
+                <button onclick="document.getElementById('projects-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-gold-500 text-xs font-bold uppercase tracking-wider text-gold-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-gold-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
+                    <i class="fa-solid fa-briefcase mr-2"></i>Portfolio
+                </button>
             </div>
 
             <!-- KEY METRICS ROW -->
@@ -77,6 +80,49 @@ import Layout from '../layouts/Layout.astro';
                  <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
                     <p class="text-gray-500 text-xs uppercase tracking-wider">Today's Traffic</p>
                     <p id="metric-today" class="text-4xl font-bold text-gold-100 mt-2">-</p>
+                </div>
+            </div>
+
+            <!-- ... CHARTS ROW ... -->
+            
+            <!-- ... LOGS TABLE ... -->
+            
+            <!-- ... GUESTBOOK ... -->
+
+            <!-- PROJECTS MANAGER -->
+            <div id="projects-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-gold-400 font-bold">Project Portfolio Manager</h3>
+                </div>
+                <!-- ... Form ... -->
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <!-- ADD PROJECT FORM -->
+                     <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Add Project</h4>
+                        <form id="project-form" class="space-y-4">
+                            <input type="text" id="p-title" placeholder="Project Title" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500" />
+                            <textarea id="p-desc" placeholder="Description (Markdown supported)" required rows="3" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-gold-500"></textarea>
+                            <input type="text" id="p-tags" placeholder="Tags (e.g. Astro, Tailwind, AI)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="p-url" placeholder="Project URL" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <div class="flex items-center gap-2 border border-gray-700 rounded px-2">
+                                     <input type="checkbox" id="p-featured" class="accent-gold-500 w-4 h-4" />
+                                     <label for="p-featured" class="text-gray-400 text-sm">Featured</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="bg-gradient-to-r from-gold-600 to-amber-600 text-black font-bold py-3 px-4 rounded w-full hover:from-gold-500 hover:to-amber-500 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-briefcase"></i> Add Project
+                            </button>
+                        </form>
+                     </div>
+
+                     <!-- PROJECT LIST -->
+                     <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Existing Projects</h4>
+                        <ul id="project-list" class="space-y-2 text-sm text-gray-400 max-h-80 overflow-y-auto">
+                            <li>Loading projects...</li>
+                        </ul>
+                     </div>
                 </div>
             </div>
 
@@ -326,7 +372,8 @@ import Layout from '../layouts/Layout.astro';
             loadTraining(); 
             loadQuotes();
             loadTravel();
-            loadGuestbook(); // Guestbook
+            loadGuestbook();
+            loadProjects(); // Projects
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -414,6 +461,64 @@ import Layout from '../layouts/Layout.astro';
             body: JSON.stringify({ id, action })
         });
         loadGuestbook();
+    };
+
+    // --- PROJECTS LOGIC ---
+    async function loadProjects() {
+        try {
+            const res = await fetch('/api/projects');
+            const data = await res.json();
+            const list = document.getElementById('project-list')!;
+            
+            list.innerHTML = '';
+            if (data.length === 0) {
+                list.innerHTML = '<li>No projects found.</li>';
+                return;
+            }
+
+            data.forEach((p: any) => {
+                const li = document.createElement('li');
+                li.className = "bg-black/50 p-3 rounded border border-gray-800 flex justify-between items-center group hover:border-gold-500/50 transition-colors";
+                li.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                             <span class="font-bold text-gray-200">${p.title}</span>
+                             ${p.featured ? '<span class="text-[10px] bg-gold-500/20 text-gold-400 px-1 rounded uppercase tracking-wider border border-gold-500/30">Detailed</span>' : ''}
+                        </div>
+                        <p class="text-xs text-gray-500 truncate max-w-[200px]">${p.tags ? p.tags.join(', ') : ''}</p>
+                    </div>
+                    <button onclick="deleteProject(${p.id})" class="text-red-500 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                list.appendChild(li);
+            });
+        } catch (err) { console.error(err); }
+    }
+
+    document.getElementById('project-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = (document.getElementById('p-title') as HTMLInputElement).value;
+        const description = (document.getElementById('p-desc') as HTMLTextAreaElement).value;
+        const tagsRaw = (document.getElementById('p-tags') as HTMLInputElement).value;
+        const url = (document.getElementById('p-url') as HTMLInputElement).value;
+        const featured = (document.getElementById('p-featured') as HTMLInputElement).checked;
+
+        const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+
+        await fetch('/api/projects', {
+            method: 'POST',
+            body: JSON.stringify({ title, description, tags, url, featured })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        loadProjects();
+    });
+
+    (window as any).deleteProject = async (id: number) => {
+        if (!confirm('Delete this project?')) return;
+        await fetch(`/api/projects?id=${id}`, { method: 'DELETE' });
+        loadProjects();
     };
 
     // --- TRAVEL LOGIC ---
