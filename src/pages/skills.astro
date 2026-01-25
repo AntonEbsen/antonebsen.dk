@@ -6,6 +6,20 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: skills, error } = await supabase
+  .from('skills')
+  .select('*')
+  .order('proficiency', { ascending: false });
+
+if (error) skills = [];
+
+const coreSkills = skills?.filter(s => s.category === 'Core') || [];
+const toolSkills = skills?.filter(s => s.category === 'Tools') || [];
 ---
 
 <Layout 
@@ -62,12 +76,13 @@ import ContactCard from '@components/common/ContactCard.astro';
           </p>
   
           <div class="pill-wrap flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
-            <Pill variant="accent">Excel/VBA</Pill>
-            <Pill variant="accent">Python</Pill>
-            <Pill variant="accent">SAS</Pill>
-            <Pill variant="accent">GAMS</Pill>
-            <Pill variant="accent">Økonometri</Pill>
-            <Pill variant="accent">Makro & pengepolitik</Pill>
+            {coreSkills.length > 0 ? coreSkills.slice(0,5).map(s => <Pill variant="accent">{s.name}</Pill>) : (
+                <>
+                    <Pill variant="accent">Excel/VBA</Pill>
+                    <Pill variant="accent">Python</Pill>
+                    <Pill variant="accent">SAS</Pill>
+                </>
+            )}
           </div>
   
           <div class="flex flex-wrap gap-3">
@@ -90,40 +105,33 @@ import ContactCard from '@components/common/ContactCard.astro';
       </div>
     </Section>
 
+    {skills?.length === 0 && (
+      <Section>
+         <Card variant="glass" class="p-8 text-center text-dim bg-green-500/10 border-green-500/20">
+            <p>Skill Tree er tomt. Gå til <a href="/dashboard" class="text-white underline">Dashboard</a> for at plante dine skills. 🌱</p>
+        </Card>
+      </Section>
+    )}
+
     <!-- KERNEKOMPETENCER -->
     <Section id="core">
       <Card variant="default" class="p-6">
         <SectionHeading>Programmeringssprog & Metoder</SectionHeading>
         <div class="grid-3">
-            <Card variant="glass" class="p-4">
-              <h3 class="font-bold mb-2">Python</h3>
-              <p class="text-dim text-sm">Reproducerbare pipelines: data → analyse → figurer/tabeller.</p>
-            </Card>
-            
-            <Card variant="glass" class="p-4">
-              <h3 class="font-bold mb-2">Excel VBA</h3>
-              <p class="text-dim text-sm">Automatisering og brugerdefinerede funktioner.</p>
-            </Card>
-  
-            <Card variant="glass" class="p-4">
-              <h3 class="font-bold mb-2">MATLAB</h3>
-              <p class="text-dim text-sm">SVAR-, DSGE- og Local Projection-modeller.</p>
-            </Card>
-            
-            <Card variant="glass" class="p-4">
-              <h3 class="font-bold mb-2">SAS</h3>
-              <p class="text-dim text-sm">Klassisk, robust værktøj til tidsrækker og statistik.</p>
-            </Card>
-  
-            <Card variant="glass" class="p-4">
-              <h3 class="font-bold mb-2">GAMS</h3>
-              <p class="text-dim text-sm">Modelopstiling, kalibrering og stød i CGE-modeller.</p>
-            </Card>
-  
-            <Card variant="glass" class="p-4">
-              <h3 class="font-bold mb-2">LaTeX</h3>
-              <p class="text-dim text-sm">Opstilling af rapporter og matematiske præsentationer.</p>
-            </Card>
+            {coreSkills.map(s => (
+                <Card variant="glass" class="p-4 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                         {s.icon && <i class={`${s.icon} text-4xl`}></i>}
+                    </div>
+                  <h3 class="font-bold mb-2">{s.name}</h3>
+                  <p class="text-dim text-sm">{s.description}</p>
+                  {s.proficiency && (
+                      <div class="w-full bg-gray-800 h-1 mt-3 rounded overflow-hidden">
+                          <div class="bg-gold-500 h-full" style={`width: ${s.proficiency}%`}></div>
+                      </div>
+                  )}
+                </Card>
+            ))}
         </div>
       </Card>
     </Section>
@@ -133,21 +141,19 @@ import ContactCard from '@components/common/ContactCard.astro';
       <Card variant="bordered" class="p-6">
         <SectionHeading>Værktøjs-matrix</SectionHeading>
         <div class="grid-3">
-          <Card variant="glass" class="p-4">
-            <h3 class="text-sm font-bold mb-1">Excel</h3>
-            <p class="text-xs text-dim">Dashboards, modeller, scenarier.</p>
-          </Card>
-          <Card variant="glass" class="p-4">
-            <h3 class="text-sm font-bold mb-1">VBA</h3>
-            <p class="text-xs text-dim">Automatisering, loops, performance.</p>
-          </Card>
-          <Card variant="glass" class="p-4">
-            <h3 class="text-sm font-bold mb-1">Python</h3>
-            <p class="text-xs text-dim">Data-cleaning, pipelines, figurer.</p>
-          </Card>
+           {toolSkills.map(s => (
+             <Card variant="glass" class="p-4">
+                <div class="flex justify-between items-center mb-1">
+                   <h3 class="text-sm font-bold">{s.name}</h3>
+                   {s.icon && <i class={`${s.icon} text-dim text-xs`}></i>}
+                </div>
+                <p class="text-xs text-dim">{s.description}</p>
+             </Card>
+           ))}
         </div>
       </Card>
     </Section>
+
 
     <!-- LEVERANCER -->
     <Section id="deliverables">

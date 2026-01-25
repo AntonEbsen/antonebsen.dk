@@ -176,6 +176,19 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
 
+            <!-- INBOX -->
+            <div id="inbox-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800 flex justify-between items-center">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-inbox mr-2"></i> Inbox</h3>
+                    <button onclick="loadMessages()" class="text-xs text-dim hover:text-white"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                </div>
+                <div class="p-0">
+                    <div id="inbox-list" class="divide-y divide-gray-800 max-h-[300px] overflow-y-auto">
+                        <p class="p-6 text-dim text-sm italic">Loading messages...</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Q&A MODERATOR -->
             <div id="qa-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800 flex justify-between items-center">
@@ -1193,6 +1206,29 @@ import Layout from '../layouts/Layout.astro';
         // visual success
         btn.classList.add('bg-green-400', 'text-black');
         setTimeout(() => btn.classList.remove('bg-green-400', 'text-black'), 1000);
+    });
+
+    // --- SKILL LOGIC ---
+    document.getElementById('skill-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = (document.getElementById('s-name') as HTMLInputElement).value;
+        const category = (document.getElementById('s-category') as HTMLSelectElement).value;
+        const icon = (document.getElementById('s-icon') as HTMLInputElement).value;
+        const proficiency = (document.getElementById('s-prof') as HTMLInputElement).value;
+        const description = (document.getElementById('s-desc') as HTMLInputElement).value;
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const iconHTML = btn.innerHTML;
+        btn.innerHTML = '...';
+
+        await fetch('/api/skills', {
+            method: 'POST',
+            body: JSON.stringify({ name, category, icon, proficiency: parseInt(proficiency), description })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = iconHTML;
+        alert("Skill Added!");
     });
 
     // --- CAREER LOGIC ---
