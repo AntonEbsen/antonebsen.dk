@@ -16,6 +16,8 @@
         <i class="fa-solid fa-times"></i>
     </button>
 
+    <div class="relative z-10 p-8 max-w-2xl mx-auto flex flex-col items-center">
+        
         <!-- AUDIO PLAYER -->
         <audio id="shrine-audio" loop preload="auto">
             <source src="https://gregorianchanthymns.com/audio/adoremu.mp3" type="audio/mpeg">
@@ -27,8 +29,6 @@
             <i class="fa-solid fa-volume-xmark group-hover:hidden block"></i> <!-- Logic: detailed in script -->
             <span class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Chant</span>
         </button>
-
-    </div>
         
         <!-- HEADER: Latin Invocation -->
         <p class="text-gold-500/60 text-sm tracking-[0.3em] uppercase mb-8 animate-fade-in-up" style="animation-delay: 0.5s;">
@@ -153,6 +153,12 @@
 </style>
 
 <script>
+    // Shrine Elements
+    const shrine = document.getElementById('shrine-overlay');
+    const closeBtn = document.getElementById('close-shrine');
+    const candleTrigger = document.getElementById('candle-trigger');
+    const flame = document.getElementById('flame');
+
     // Audio Elements
     const audio = document.getElementById('shrine-audio') as HTMLAudioElement;
     const muteBtn = document.getElementById('mute-btn');
