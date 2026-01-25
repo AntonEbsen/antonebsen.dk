@@ -9,6 +9,8 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { createClient } from '@supabase/supabase-js';
 
+export const prerender = false;
+
 const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
 let { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
 
