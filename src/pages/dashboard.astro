@@ -66,11 +66,14 @@ import Layout from '../layouts/Layout.astro';
                 <button onclick="document.getElementById('blog-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-gold-500 text-xs font-bold uppercase tracking-wider text-gold-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-gold-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
                     <i class="fa-solid fa-newspaper mr-2"></i>Blog
                 </button>
+                 <button onclick="document.getElementById('inbox-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-gold-500 text-xs font-bold uppercase tracking-wider text-gold-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-gold-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
+                    <i class="fa-solid fa-envelope mr-2"></i>Inbox
+                </button>
             </div>
 
             <!-- KEY METRICS ROW -->
             <div id="stats-section" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                <!-- ... stats content ... -->
+                <!-- ... stats ... -->
                 <div class="border border-gray-800 bg-gray-900/50 p-4 rounded hover:border-gold-500/30 transition-colors">
                     <p class="text-gray-500 text-xs uppercase tracking-wider">Total Conversations</p>
                     <p id="metric-total" class="text-4xl font-bold text-gold-100 mt-2">-</p>
@@ -93,6 +96,32 @@ import Layout from '../layouts/Layout.astro';
             
             <!-- ... LOGS TABLE ... -->
             
+            <!-- INBOX (CRM) -->
+            <div id="inbox-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800 flex justify-between items-center">
+                    <h3 class="text-gold-400 font-bold"><i class="fa-solid fa-inbox mr-2"></i> Inbox (CRM)</h3>
+                    <span id="unread-count" class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full hidden">0 NEW</span>
+                </div>
+                <div class="p-0">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-400">
+                            <thead class="bg-gray-900/50 text-xs uppercase font-medium text-gray-500">
+                                <tr>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4">From</th>
+                                    <th class="p-4">Message</th>
+                                    <th class="p-4">Date</th>
+                                    <th class="p-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inbox-list" class="divide-y divide-gray-800">
+                                <tr><td colspan="5" class="p-4 text-center">Loading messages...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- ... GUESTBOOK ... -->
             
             <!-- ... PROJECTS ... -->
@@ -482,7 +511,8 @@ import Layout from '../layouts/Layout.astro';
             loadGuestbook();
             loadProjects();
             loadSkills();
-            loadPosts(); // Blog
+            loadPosts();
+            loadInbox(); // Inbox
         } else {
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
@@ -746,6 +776,68 @@ import Layout from '../layouts/Layout.astro';
         if (!confirm('Delete this post?')) return;
         await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
         loadPosts();
+    };
+
+    // --- INBOX LOGIC ---
+    async function loadInbox() {
+        try {
+            const res = await fetch('/api/contact');
+            const data = await res.json();
+            const list = document.getElementById('inbox-list')!;
+            const badge = document.getElementById('unread-count')!;
+            
+            list.innerHTML = '';
+            if (data.length === 0) {
+                list.innerHTML = '<tr><td colspan="5" class="p-4 text-center">No messages.</td></tr>';
+                badge.classList.add('hidden');
+                return;
+            }
+
+            const unread = data.filter((m: any) => !m.read).length;
+            if (unread > 0) {
+                badge.innerText = `${unread} NEW`;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            data.forEach((m: any) => {
+                const tr = document.createElement('tr');
+                tr.className = m.read ? "bg-transparent opacity-50 hover:opacity-100 transition-opacity" : "bg-gold-500/5 font-medium";
+                tr.innerHTML = `
+                    <td class="p-4">
+                        ${m.read ? '<i class="fa-regular fa-envelope-open text-gray-600"></i>' : '<i class="fa-solid fa-envelope text-gold-500"></i>'}
+                    </td>
+                    <td class="p-4">
+                        <div class="text-gray-200">${m.name}</div>
+                        <div class="text-[10px] text-gray-500">${m.email}</div>
+                    </td>
+                    <td class="p-4 max-w-xs truncate" title="${m.message}">
+                        ${m.message}
+                    </td>
+                    <td class="p-4 text-xs text-gray-500">
+                         ${new Date(m.created_at).toLocaleDateString()}
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="toggleRead(${m.id}, ${!m.read})" class="text-xs border border-gray-700 px-2 py-1 rounded hover:bg-gray-800">
+                            ${m.read ? 'Mark Unread' : 'Mark Read'}
+                        </button>
+                         <a href="mailto:${m.email}" class="ml-2 text-xs border border-gray-700 px-2 py-1 rounded hover:bg-gray-800">
+                           Reply
+                        </a>
+                    </td>
+                `;
+                list.appendChild(tr);
+            });
+        } catch (err) { console.error(err); }
+    }
+
+    (window as any).toggleRead = async (id: number, read: boolean) => {
+        await fetch('/api/contact', {
+            method: 'PUT',
+            body: JSON.stringify({ id, read })
+        });
+        loadInbox();
     };
 
     // --- TRAVEL LOGIC ---

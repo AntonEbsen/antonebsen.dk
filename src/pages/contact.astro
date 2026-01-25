@@ -1,136 +1,84 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Section from '@components/ui/Section.astro';
-import Card from '@components/ui/Card.astro';
-import Button from '@components/ui/Button.astro';
-import SectionHeading from '@components/ui/SectionHeading.astro';
-import ContactForm from '@components/contact/ContactForm.astro';
-import contactData from '@data/contact.json';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
 ---
 
 <Layout 
-  title="Anton Meier Ebsen Jørgensen – Kontakt" 
-  description="Kontakt Anton Meier Ebsen Jørgensen – samarbejde, jobmuligheder, undervisning og spørgsmål."
-  bodyClass="contact-page"
+  title="Kontakt | Anton Ebsen" 
+  description="Kontaktformular for Anton Ebsen."
 >
-
   <style>
     .contact-wrap {
-      max-width: 1200px;
-      margin: 24px auto;
-      padding: 0 16px 32px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid, .contact-grid { 
-        grid-template-columns: 1fr; 
-      }
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 16px;
     }
   </style>
 
   <main class="contact-wrap">
+     <Section>
+        <Card variant="glass" class="p-8 md:p-12">
+            <h1 class="text-4xl font-bold mb-6 text-center">Kontakt</h1>
+            <p class="text-dim text-center mb-8 text-lg">
+                Har du et spørgsmål, en idé til et projekt, eller vil du bare sige hej? <br/>
+                Udfyld formularen herunder, så lander beskeden direkte i mit system.
+            </p>
 
-    <!-- HERO -->
-    <Section>
-      <div class="hero-grid">
-        <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Kontakt</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">Kontakt mig</h1>
-          <p class="text-lg text-dim mb-6 opacity-90">
-            Har du en mulighed, et samarbejde eller et spørgsmål? Skriv gerne — jeg svarer typisk inden for 24–48 timer på hverdage.
-          </p>
-  
-          <div class="flex flex-wrap gap-3">
-            <Button href={`mailto:${contactData.email}`}>Send mail</Button>
-            <Button href="/cv" variant="ghost">Se CV</Button>
-            <Button href="/portfolio" variant="ghost">Se portefølje</Button>
-          </div>
-        </Card>
-  
-        <div class="hidden md:block">
-          <Card variant="glass" class="p-6">
-            <SectionHeading>Hurtigt overblik</SectionHeading>
-            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
-              <li><strong>Lokation:</strong> København</li>
-              <li><strong>Email:</strong> <a href={`mailto:${contactData.email}`} class="text-accent hover:text-white transition-colors">{contactData.email}</a></li>
-              <li><strong>Telefon:</strong> <a href={`tel:${contactData.phone.replace(/ /g,'')}`} class="text-accent hover:text-white transition-colors">{contactData.phone}</a></li>
-              <li><strong>LinkedIn:</strong> <a href={contactData.linkedin} target="_blank" rel="noopener" class="text-accent hover:text-white transition-colors">/in/antonebsen</a></li>
-              <li><strong>GitHub:</strong> <a href={contactData.github} target="_blank" rel="noopener" class="text-accent hover:text-white transition-colors">AntonEbsen</a></li>
-            </ul>
-          </Card>
-        </div>
-      </div>
-    </Section>
+            <form id="contact-form" class="space-y-6 max-w-lg mx-auto">
+                <div>
+                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">Navn</label>
+                    <input type="text" id="c-name" name="name" required class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder="Dit navn" />
+                </div>
+                
+                <div>
+                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">Email</label>
+                    <input type="email" id="c-email" name="email" required class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder="din@email.dk" />
+                </div>
 
-    <!-- GRID -->
-    <Section>
-      <div class="contact-grid" aria-label="Kontaktindhold">
-  
-        <!-- Left: details -->
-        <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
-          <SectionHeading>Kontaktoplysninger</SectionHeading>
-  
-          <div class="flex flex-col gap-3 mb-6">
-            <div class="flex justify-between items-center gap-3 p-3 rounded-lg border border-glass-border bg-[rgba(255,255,255,0.02)]">
-              <span class="font-bold text-sm text-dim">Email</span>
-              <span class="text-sm"><a href={`mailto:${contactData.email}`} class="text-text hover:text-accent transition-colors decoration-none">{contactData.email}</a></span>
-            </div>
-  
-            <div class="flex justify-between items-center gap-3 p-3 rounded-lg border border-glass-border bg-[rgba(255,255,255,0.02)]">
-              <span class="font-bold text-sm text-dim">Telefon</span>
-              <span class="text-sm"><a href={`tel:${contactData.phone.replace(/ /g,'')}`} class="text-text hover:text-accent transition-colors decoration-none">{contactData.phone}</a></span>
-            </div>
-  
-            <div class="flex justify-between items-center gap-3 p-3 rounded-lg border border-glass-border bg-[rgba(255,255,255,0.02)]">
-              <span class="font-bold text-sm text-dim">LinkedIn</span>
-              <span class="text-sm">
-                <a href={contactData.linkedin} target="_blank" rel="noopener" class="text-text hover:text-accent transition-colors decoration-none">linkedin.com/in/antonebsen</a>
-              </span>
-            </div>
-  
-            <div class="flex justify-between items-center gap-3 p-3 rounded-lg border border-glass-border bg-[rgba(255,255,255,0.02)]">
-              <span class="font-bold text-sm text-dim">GitHub</span>
-              <span class="text-sm">
-                <a href={contactData.github} target="_blank" rel="noopener" class="text-text hover:text-accent transition-colors decoration-none">github.com/AntonEbsen</a>
-              </span>
-            </div>
-          </div>
-  
-          <hr class="border-0 border-t border-glass-border my-6 w-full" />
-  
-          <h3 class="font-bold mb-3 text-[15px]">Hvad jeg typisk kan hjælpe med</h3>
-          <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90 pl-3">
-              {contactData.help.map(item => (
-                  <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-accent">{item}</li>
-              ))}
-          </ul>
-        </Card>
-  
-        <!-- Right: form -->
-        <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
-          <SectionHeading>Send en besked</SectionHeading>
-          <p class="text-dim text-sm opacity-70 mb-6">
-            Udfyld formularen — eller send en mail direkte, hvis du foretrækker det.
-          </p>
-  
-          <ContactForm />
-        </Card>
-  
-      </div>
-    </Section>
+                <div>
+                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">Besked</label>
+                    <textarea id="c-message" name="message" required rows="5" class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder="Hvad har du på hjertet?"></textarea>
+                </div>
 
+                <div id="form-status" class="hidden p-4 rounded bg-accent/20 text-accent text-center text-sm mb-4">
+                    Tak for din besked! Jeg vender tilbage hurtigst muligt.
+                </div>
+
+                <Button type="submit" size="lg" icon="paper-plane" class="w-full justify-center">Send Besked</Button>
+            </form>
+        </Card>
+     </Section>
   </main>
 </Layout>
+
+<script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const status = document.getElementById('form-status')!;
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                form.reset();
+                status.classList.remove('hidden');
+                setTimeout(() => status.classList.add('hidden'), 5000);
+            } else {
+                alert('Der skete en fejl. Prøv igen senere.');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Kunne ikke forbinde til serveren.');
+        }
+    });
+</script>
