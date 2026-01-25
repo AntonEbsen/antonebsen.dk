@@ -1236,6 +1236,30 @@ import Layout from '../layouts/Layout.astro';
         setTimeout(() => btn.classList.remove('bg-green-400', 'text-black'), 1000);
     });
 
+    // --- REFERENCE LOGIC ---
+    document.getElementById('ref-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = (document.getElementById('r-name') as HTMLInputElement).value;
+        const role = (document.getElementById('r-role') as HTMLInputElement).value;
+        const company = (document.getElementById('r-company') as HTMLInputElement).value;
+        const relationship = (document.getElementById('r-rel') as HTMLInputElement).value;
+        const quote = (document.getElementById('r-quote') as HTMLTextAreaElement).value;
+        const linkedin_url = (document.getElementById('r-linkedin') as HTMLInputElement).value;
+
+        const btn = (e.target as HTMLFormElement).querySelector('button')!;
+        const iconHTML = btn.innerHTML;
+        btn.innerHTML = '...';
+
+        await fetch('/api/references', {
+            method: 'POST',
+            body: JSON.stringify({ name, role, company, relationship, quote, linkedin_url })
+        });
+        
+        (e.target as HTMLFormElement).reset();
+        btn.innerHTML = iconHTML;
+        alert("Reference Added!");
+    });
+
     // --- MEDIA LOGIC ---
     document.getElementById('media-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();

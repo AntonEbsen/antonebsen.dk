@@ -5,6 +5,18 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: references, error } = await supabase
+  .from('references')
+  .select('*')
+  .eq('visible', true)
+  .order('id', { ascending: false });
+
+if (error) references = [];
 ---
 
 <Layout 
@@ -46,11 +58,10 @@ import ContactCard from '@components/common/ContactCard.astro';
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Anbefaliner</p>
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Anbefalinger</p>
           <h1 class="text-4xl font-bold leading-tight mb-4">Udtalelser om mit arbejde</h1>
           <p class="text-lg text-dim mb-6">
             Her kan du læse korte udtalelser fra samarbejdspartnere og personer, jeg har arbejdet sammen med.
-            (Hvis du vil tilføje flere, kan vi også lave en “kort version” + link til LinkedIn-anbefalinger.)
           </p>
           <div class="flex flex-wrap gap-3">
             <Button href="/contact">Kontakt</Button>
@@ -75,41 +86,29 @@ import ContactCard from '@components/common/ContactCard.astro';
     <!-- TESTIMONIAL GRID -->
     <Section class="quotes-grid" aria-label="Anbefalinger">
 
-      <Card variant="glass" class="p-6 relative">
-        <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">“</div>
-        <p class="text-base text-text italic mt-4 mb-6 relative z-10 leading-relaxed">
-          Anton er en exceptionel professionel, der konsekvent leverer resultater af høj kvalitet.
-          Hans analytiske evner og sans for detaljer er uovertrufne.
-        </p>
-        <div class="border-t border-glass-border pt-4">
-          <div class="font-bold">John Doe</div>
-          <div class="text-xs text-dim">CEO, ABC Corp</div>
-        </div>
-      </Card>
+      {references?.length === 0 && (
+           <Card variant="glass" class="p-8 col-span-full text-center text-dim bg-white/5 border-white/10">
+                <p>Ingen anbefalinger fundet endnu. Tilføj via <a href="/dashboard" class="text-white underline">Dashboard</a>.</p>
+           </Card>
+      )}
 
-      <Card variant="glass" class="p-6 relative">
-        <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">“</div>
-        <p class="text-base text-text italic mt-4 mb-6 relative z-10 leading-relaxed">
-          At arbejde med Anton har været en fantastisk oplevelse. Han bringer kreativitet og dedikation til hvert projekt,
-          hvilket sikrer succes hver gang.
-        </p>
-        <div class="border-t border-glass-border pt-4">
-          <div class="font-bold">Jane Smith</div>
-          <div class="text-xs text-dim">Marketing Manager, XYZ Ltd.</div>
-        </div>
-      </Card>
-
-      <Card variant="glass" class="p-6 relative">
-        <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">“</div>
-        <p class="text-base text-text italic mt-4 mb-6 relative z-10 leading-relaxed">
-          Anton har en utrolig evne til at nedbryde komplekse problemer og finde innovative løsninger.
-          Jeg kan varmt anbefale ham til ethvert projekt.
-        </p>
-        <div class="border-t border-glass-border pt-4">
-          <div class="font-bold">Emily Brown</div>
-          <div class="text-xs text-dim">Product Manager, DEF Inc.</div>
-        </div>
-      </Card>
+      {references?.map(ref => (
+          <Card variant="glass" class="p-6 relative flex flex-col h-full">
+            <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">“</div>
+            <p class="text-base text-gray-200 italic mt-4 mb-6 relative z-10 leading-relaxed flex-grow">
+              {ref.quote}
+            </p>
+            <div class="border-t border-white/10 pt-4 flex justify-between items-end">
+                <div>
+                  <div class="font-bold text-white">{ref.name}</div>
+                  <div class="text-xs text-dim">{ref.role}{ref.company ? `, ${ref.company}` : ''}</div>
+                </div>
+                {ref.linkedin_url && (
+                    <a href={ref.linkedin_url} target="_blank" class="text-white/20 hover:text-[#0077b5] transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                )}
+            </div>
+          </Card>
+      ))}
 
     </Section>
 
@@ -117,7 +116,7 @@ import ContactCard from '@components/common/ContactCard.astro';
     <Section>
         <ContactCard 
             title="Vil du give en anbefaling?"
-            text="Hvis vi har arbejdet sammen, er du meget velkommen til at sende en kort udtalelse (2–4 linjer), som jeg kan tilføje her – eller skrive en anbefaling på LinkedIn."
+            text="Hvis vi har arbejdet sammen, er du meget velkommen til at sende en kort udtalelse."
             action="linkedin"
         />
     </Section>
