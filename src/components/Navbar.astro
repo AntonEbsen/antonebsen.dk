@@ -74,7 +74,7 @@ const pathname = new URL(Astro.request.url).pathname;
         const emo = document.getElementById('now-emoji-display');
         if (el && emo) {
           emo.innerText = data.emoji || '⚡';
-          el.title = `Current Status: ${data.status}`; // Set tooltip
+          el.title = `Nuværende status: ${data.status}`; // Set tooltip
           el.classList.remove('hidden');
           el.classList.add('flex');
         }
