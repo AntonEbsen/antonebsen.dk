@@ -1,0 +1,178 @@
+
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catacombs | Memento Mori</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-carved { font-family: 'Nanum Myeongjo', serif; } /* Looks like chiseled text */
+        
+        .stone-texture {
+            background-color: #111;
+            background-image: url("https://www.transparenttextures.com/patterns/dark-matter.png");
+            /* fallback dark noise */
+        }
+        
+        .carve-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Nanum Myeongjo', serif;
+            color: #888;
+            outline: none;
+            text-align: center;
+        }
+
+        /* Erosion effects */
+        .eroded-1 { opacity: 0.8; filter: blur(0.5px); }
+        .eroded-2 { opacity: 0.6; filter: blur(1px); color: #555; }
+        .eroded-3 { opacity: 0.3; filter: blur(2px); color: #333; text-shadow: none; }
+    </style>
+</head>
+<body class="bg-[#050505] text-gray-400 min-h-screen selection:bg-gray-500/30 overflow-x-hidden">
+
+    <!-- Nav -->
+    <nav class="fixed top-8 left-8 z-50 mix-blend-difference">
+        <a href="/shrine" class="text-gray-500 hover:text-white transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-up"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline"> Op til Lyset</span>
+        </a>
+    </nav>
+    
+    <!-- Depth Marker -->
+    <div class="fixed top-1/2 right-8 transform -translate-y-1/2 z-40 text-right opacity-30 pointer-events-none hidden md:block">
+        <div id="depth-meter" class="text-4xl font-serif text-gray-800">0</div>
+        <div class="text-[9px] uppercase tracking-widest text-gray-900 mt-1">Meter nede</div>
+    </div>
+
+    <!-- MAIN SHAFT -->
+    <main class="w-full max-w-2xl mx-auto relative min-h-[300vh] stone-texture border-x border-[#1a1a1a] shadow-[inset_0_0_100px_rgba(0,0,0,1)] flex flex-col items-center pt-32 pb-32">
+        
+        <!-- Entrance -->
+        <div class="text-center mb-32 opacity-60">
+            <h1 class="text-3xl text-gray-600 font-serif mb-2">Ad Catacumbas</h1>
+            <p class="text-[10px] uppercase tracking-[0.3em] text-gray-800">Memento Mori</p>
+            <p class="text-xs text-gray-800 italic mt-4 max-w-xs mx-auto">"Husk, menneske, at du er støv,<br>og til støv skal du vende tilbage."</p>
+        </div>
+
+        <!-- The Wall of Names -->
+        <div id="wall" class="w-full flex flex-col items-center gap-24 px-12">
+            <!-- Names injected here -->
+        </div>
+
+        <!-- Carving Station (Sticky at bottom or appears?) Let's make it appear when you scroll deep enough or button. -->
+        <!-- Just an inline form at the "current end" -->
+        <div class="mt-32 p-8 border border-gray-900 rounded-sm text-center opacity-0 transition-opacity duration-1000" id="carve-station">
+            <p class="text-[10px] uppercase tracking-widest text-gray-700 mb-4">Efterlad dit mærke</p>
+            <input type="text" id="name-input" placeholder="Dit Navn" class="carve-input text-2xl w-full max-w-xs mb-4" maxlength="20" autocomplete="off">
+            <button onclick="carveName()" class="block mx-auto text-xs uppercase tracking-widest text-gray-600 hover:text-gray-400 transition-colors">
+                <i class="fa-solid fa-pen-fancy mr-2"></i> Hug i stenen
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Overlay Darkness (Gets darker as you scroll?) -->
+    <div class="fixed inset-0 pointer-events-none bg-black opacity-0 z-50 transition-opacity duration-300" id="darkness-overlay"></div>
+
+    <script>
+        const wall = document.getElementById('wall');
+        const depthMeter = document.getElementById('depth-meter');
+        const carveStation = document.getElementById('carve-station');
+        const nameInput = document.getElementById('name-input');
+        
+        let names = JSON.parse(localStorage.getItem('shrine_catacombs') || "[]");
+        
+        // Seed some "ancient" names if empty
+        if(names.length === 0) {
+            names = [
+                { text: "PETRUS", time: Date.now() - 10000000000 },
+                { text: "MARIA", time: Date.now() - 5000000000 },
+                { text: "JOHANNES", time: Date.now() - 2000000000 }
+            ];
+        }
+
+        function renderWall() {
+            if(!wall) return;
+            wall.innerHTML = '';
+            
+            // Sort by time? Or just list them.
+            // Let's list them.
+            names.forEach(n => {
+                const el = document.createElement('div');
+                const age = Date.now() - n.time;
+                
+                // Determine erosion level
+                let erosionClass = "";
+                // 1 day = 86400000 ms
+                if(age > 86400000 * 7) erosionClass = "eroded-3"; // > 1 week
+                else if(age > 86400000) erosionClass = "eroded-2"; // > 1 day
+                else if(age > 3600000) erosionClass = "eroded-1"; // > 1 hour
+                
+                el.className = `text-carved text-3xl md:text-5xl text-gray-500 uppercase tracking-widest drop-shadow-[1px_1px_0_rgba(255,255,255,0.05)] shadow-inner transform ${erosionClass}`;
+                el.innerText = n.text;
+                
+                // Random offset for "messy wall" feel
+                const randomX = (Math.random() - 0.5) * 40;
+                el.style.transform = `translateX(${randomX}px) rotate(${Math.random()*2 - 1}deg)`;
+                
+                wall.appendChild(el);
+            });
+        }
+        
+        (window as any).carveName = () => {
+            const val = (nameInput as HTMLInputElement).value;
+            if(!val) return;
+            
+            // Add new name
+            names.push({ text: val, time: Date.now() });
+            localStorage.setItem('shrine_catacombs', JSON.stringify(names));
+            
+            // Clear
+            (nameInput as HTMLInputElement).value = '';
+            
+            // Re-render
+            renderWall();
+            
+            // Scroll to it
+            // window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        };
+
+        renderWall();
+        
+        // Scroll Listener
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const percent = scrollY / maxScroll;
+            
+            // Update Depth Meter
+            if(depthMeter) depthMeter.innerText = Math.floor(scrollY / 10).toString();
+            
+            // Show Carve Station
+            if(scrollY > 200) {
+                carveStation?.classList.remove('opacity-0');
+            }
+            
+            // Darkness at VERY deep?
+            // document.getElementById('darkness-overlay').style.opacity = (scrollY / 5000).toString();
+        });
+
+    </script>
+</body>
+</html>
