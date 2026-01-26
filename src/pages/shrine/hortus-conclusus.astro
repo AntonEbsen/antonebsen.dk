@@ -1,0 +1,183 @@
+
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hortus Conclusus | Jomfruens Have</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+        
+        /* Light/Garden Theme Overrides */
+        .sky-gradient {
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+        }
+    </style>
+</head>
+<body class="sky-gradient text-gray-800 min-h-screen relative overflow-hidden flex flex-col items-center select-none">
+
+    <!-- Nav -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-white/80 hover:text-white drop-shadow-md transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Forlad Haven</span>
+        </a>
+    </nav>
+    
+    <!-- Sun/Light -->
+    <div class="fixed top-[-100px] right-[-100px] w-[500px] h-[500px] bg-yellow-100/30 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <!-- MAIN GARDEN CANVAS -->
+    <div class="fixed inset-0 z-0 flex items-end justify-center pointer-events-none">
+        
+        <!-- Background Walls (The "Conclusus") -->
+        <div class="absolute bottom-0 w-full h-[30vh] bg-[#e8e4c9] border-t-8 border-[#d4cfb0]"></div>
+        
+        <!-- Grass -->
+        <div class="absolute bottom-0 w-full h-[25vh] bg-gradient-to-t from-[#2d5a27] to-[#5c8a4c]"></div>
+        
+        <!-- Flowers Container -->
+        <div id="flower-bed" class="absolute bottom-[5vh] w-full max-w-6xl h-[20vh] flex items-end justify-center gap-2 md:gap-8 px-10">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- UI LAYER -->
+    <main class="relative z-10 w-full min-h-screen flex flex-col items-center justify-start pt-32 pointer-events-none">
+        
+        <div class="text-center pointer-events-auto">
+            <h1 class="text-4xl md:text-6xl text-white font-serif drop-shadow-lg mb-2">Hortus Conclusus</h1>
+            <p class="text-body text-white/90 text-lg italic drop-shadow-md">En indesluttet have er min søster, min brud.</p>
+        </div>
+
+        <!-- Planting Controls -->
+        <div class="mt-auto mb-12 bg-white/80 backdrop-blur-md p-8 rounded-t-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] w-full max-w-lg pointer-events-auto">
+            <h3 class="text-center text-xs uppercase tracking-widest text-gray-500 mb-6">Plant en bøn</h3>
+            
+            <div class="grid grid-cols-3 gap-4 mb-8">
+                <button onclick="selectFlower('rose')" class="flower-btn group flex flex-col items-center gap-2 p-2 rounded hover:bg-red-50 transition-colors border border-transparent hover:border-red-100">
+                     <i class="fa-solid fa-seedling text-red-500 text-2xl group-hover:scale-110 transition-transform"></i>
+                     <span class="text-[10px] uppercase text-gray-500">Rose</span>
+                     <span class="text-[8px] text-gray-400 italic">Kærlighed</span>
+                </button>
+                <button onclick="selectFlower('lily')" class="flower-btn group flex flex-col items-center gap-2 p-2 rounded hover:bg-yellow-50 transition-colors border border-transparent hover:border-yellow-100">
+                     <i class="fa-solid fa-leaf text-yellow-500 text-2xl group-hover:scale-110 transition-transform"></i>
+                     <span class="text-[10px] uppercase text-gray-500">Lilje</span>
+                     <span class="text-[8px] text-gray-400 italic">Renhed</span>
+                </button>
+                <button onclick="selectFlower('violet')" class="flower-btn group flex flex-col items-center gap-2 p-2 rounded hover:bg-purple-50 transition-colors border border-transparent hover:border-purple-100">
+                     <i class="fa-solid fa-spa text-purple-500 text-2xl group-hover:scale-110 transition-transform"></i>
+                     <span class="text-[10px] uppercase text-gray-500">Viol</span>
+                     <span class="text-[8px] text-gray-400 italic">Ydmyghed</span>
+                </button>
+            </div>
+
+            <input type="text" id="intention-input" placeholder="Din Intention (valgfri)..." class="w-full bg-transparent border-b border-gray-300 text-gray-700 font-serif text-center pb-2 focus:outline-none focus:border-green-500 transition-colors placeholder:italic placeholder:text-gray-400 mb-6">
+
+            <button onclick="plant()" class="w-full py-3 bg-[#5c8a4c] text-white uppercase text-xs tracking-widest hover:bg-[#4a723b] transition-colors shadow-lg">
+                Plant i Haven
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        const flowerBed = document.getElementById('flower-bed');
+        const intentionInput = document.getElementById('intention-input') as HTMLInputElement;
+        
+        let selectedType = 'rose';
+
+        (window as any).selectFlower = (type: string) => {
+            selectedType = type;
+            // Visual feedback on selection
+            document.querySelectorAll('.flower-btn').forEach(b => b.classList.remove('bg-gray-100'));
+            // (Simulated selection state logic here)
+        };
+
+        (window as any).plant = () => {
+            if(!flowerBed) return;
+            const intention = intentionInput.value;
+            
+            // Create Flower Element
+            const flower = document.createElement('div');
+            flower.className = "relative group flex flex-col items-center justify-end h-32 md:h-48 origin-bottom animate-grow cursor-help";
+            
+            // Randomize position slightly? No, flex handles layout, but we can randomize size/rotation slightly
+            const scale = 0.8 + Math.random() * 0.4;
+            const rot = -5 + Math.random() * 10;
+            flower.style.transform = `scale(${scale}) rotate(${rot}deg)`;
+            
+            // Icon based on type
+            let iconClass = "fa-brands fa-pagelines"; 
+            let colorClass = "text-green-600";
+            let headColor = "";
+            
+            if(selectedType === 'rose') { headColor = "text-red-600"; }
+            else if(selectedType === 'lily') { headColor = "text-white drop-shadow-md"; }
+            else { headColor = "text-violet-600"; }
+
+            flower.innerHTML = `
+                <div class="absolute bottom-20 ${headColor} z-10 text-4xl transform group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-fan fa-spin-pulse" style="animation-duration: 3s;"></i>
+                </div>
+                <div class="w-1 h-20 bg-green-700"></div>
+                
+                ${intention ? `
+                <div class="hidden group-hover:block absolute -top-12 bg-white/90 p-2 rounded text-xs text-gray-600 shadow-lg whitespace-nowrap pointer-events-none z-50">
+                    "${intention}"
+                </div>` : ''}
+            `;
+            
+            // Persist (Simulated: Add to bed)
+            flowerBed.appendChild(flower);
+            
+            // Clear Input
+            intentionInput.value = '';
+            
+            // LocalStorage for basic persistence
+            saveGarden();
+        };
+
+        function saveGarden() {
+            // Save just the types? For now let's just keep it ephemeral + reload default
+        }
+        
+        // Pre-populate visually
+        function initGarden() {
+             for(let i=0; i<5; i++) {
+                 const t = ['rose','lily','violet'][Math.floor(Math.random()*3)];
+                 selectedType = t;
+                 (window as any).plant();
+             }
+             intentionInput.value = ''; // clear initial mock data inputs
+        }
+        
+        setTimeout(initGarden, 100);
+
+    </script>
+    
+    <style>
+        @keyframes grow {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .animate-grow {
+            animation: grow 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</body>
+</html>
