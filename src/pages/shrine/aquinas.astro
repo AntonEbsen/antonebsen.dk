@@ -54,6 +54,33 @@ import '@styles/styles.css';
             font-weight: normal; /* Font itself is bold */
         }
 
+        /* Export Mode (Parchment Style for Image Capture) */
+        .export-mode {
+            background-color: #e3d5b8 !important; /* Parchment color */
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png') !important;
+            color: #1a0f0a !important; /* Dark Iron Ink */
+        }
+        .export-mode .ai-content {
+            background: rgba(255, 255, 255, 0.4) !important;
+            border-color: rgba(0, 0, 0, 0.2) !important;
+            color: #000 !important;
+            box-shadow: none !important;
+        }
+        .export-mode .text-gold-100 {
+            color: #1a0f0a !important; /* Force dark text for user messages too */
+        }
+        .export-mode .bg-gold-900\/10 {
+            background: rgba(0, 0, 0, 0.05) !important;
+            border-color: rgba(0, 0, 0, 0.2) !important;
+            color: #000 !important;
+        }
+        .export-mode .rounded-full.bg-gold-900\/20 {
+             border-color: rgba(0,0,0,0.5) !important;
+             color: #000 !important;
+             background: rgba(0,0,0,0.1) !important;
+        }
+
+
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -317,23 +344,32 @@ import '@styles/styles.css';
              // Visual feedback
              scribeBtn!.classList.add('animate-pulse', 'text-gold-100');
              
+             // Apply Parchment Theme temporarily
+             chatContainer.classList.add('export-mode', 'p-8'); 
+             
              try {
+                // Wait for styles to apply
+                await new Promise(r => setTimeout(r, 100));
+
                 // @ts-ignore
                 const canvas = await html2canvas(chatContainer, {
-                    backgroundColor: '#15151a', 
+                    backgroundColor: '#e3d5b8', 
                     scale: 2, // High res
                     useCORS: true,
-                    logging: false
+                    logging: false,
+                    ignoreElements: (element: any) => element.id === 'suggestions-area'
                 });
 
                 const link = document.createElement('a');
-                link.download = `aquinas-dialogue-${Date.now()}.png`;
+                link.download = `aquinas-manuscript-${Date.now()}.png`;
                 link.href = canvas.toDataURL();
                 link.click();
              } catch(e) {
                  console.error("Scribe failed:", e);
                  alert("The Scribe broke his quill. (Export failed)");
              } finally {
+                 // Revert Theme
+                 chatContainer.classList.remove('export-mode', 'p-8');
                  scribeBtn!.classList.remove('animate-pulse', 'text-gold-100');
              }
         });
