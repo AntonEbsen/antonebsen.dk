@@ -82,9 +82,14 @@ import '@styles/styles.css';
         
         <!-- Header -->
         <div class="text-center mb-6 animate-fade-in-up relative">
-            <button id="scriptorium-btn" class="absolute left-0 top-0 text-gold-500/50 hover:text-gold-100 transition-colors z-20" title="Scriptorium Mode">
-                <i class="fa-solid fa-scroll text-xl"></i>
-            </button>
+            <div class="absolute left-0 top-0 flex gap-4 z-20">
+                <button id="scriptorium-btn" class="text-gold-500/50 hover:text-gold-100 transition-colors" title="Scriptorium Mode">
+                    <i class="fa-solid fa-scroll text-xl"></i>
+                </button>
+                <button id="hymn-btn" class="text-gold-500/50 hover:text-gold-100 transition-colors" title="Adoro Te Devote">
+                    <i class="fa-solid fa-music text-xl"></i>
+                </button>
+            </div>
              <button id="info-btn" class="absolute right-0 top-0 text-gold-500/50 hover:text-gold-100 transition-colors z-20" title="Vejledning">
                 <i class="fa-regular fa-circle-question text-xl"></i>
             </button>
@@ -223,6 +228,11 @@ import '@styles/styles.css';
         </div>
     </div>
 
+    <!-- Hidden Audio Player -->
+    <audio id="hymn-audio" loop>
+        <source src="/assets/audio/adoro.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         // Modal Logic
         const infoBtn = document.getElementById('info-btn');
@@ -260,12 +270,37 @@ import '@styles/styles.css';
             isScriptorium = !isScriptorium;
             if(isScriptorium) {
                 document.body.classList.add('scriptorium-mode');
-                scriptoriumBtn.classList.remove('text-gold-500/50');
-                scriptoriumBtn.classList.add('text-gold-100');
+                scriptoriumBtn!.classList.remove('text-gold-500/50');
+                scriptoriumBtn!.classList.add('text-gold-100');
             } else {
                 document.body.classList.remove('scriptorium-mode');
-                scriptoriumBtn.classList.add('text-gold-500/50');
-                scriptoriumBtn.classList.remove('text-gold-100');
+                scriptoriumBtn!.classList.add('text-gold-500/50');
+                scriptoriumBtn!.classList.remove('text-gold-100');
+            }
+        });
+
+        // Hymn Logic
+        const hymnBtn = document.getElementById('hymn-btn');
+        const hymnAudio = document.getElementById('hymn-audio') as HTMLAudioElement;
+        let isPlaying = false;
+
+        hymnBtn?.addEventListener('click', async () => {
+             if (isPlaying) {
+                hymnAudio.pause();
+                hymnBtn!.classList.add('text-gold-500/50');
+                hymnBtn!.classList.remove('text-gold-100', 'animate-pulse');
+                isPlaying = false;
+            } else {
+                try {
+                    hymnAudio.volume = 0.5; // Gentle volume
+                    await hymnAudio.play();
+                    hymnBtn!.classList.remove('text-gold-500/50');
+                    hymnBtn!.classList.add('text-gold-100', 'animate-pulse');
+                    isPlaying = true;
+                } catch (e) {
+                    console.error("Audio playback failed", e);
+                    alert("Could not play audio. Please ensure /assets/audio/adoro.mp3 exists.");
+                }
             }
         });
 
