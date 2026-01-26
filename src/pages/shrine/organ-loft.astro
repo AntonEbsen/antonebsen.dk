@@ -1,0 +1,302 @@
+
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organ Loft | Musica Sacra</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 8px;
+            background: #D4AF37;
+            cursor: pointer;
+            border: 1px solid #000;
+            border-radius: 2px;
+            margin-top: -10px; /* offset */
+        }
+        
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 2px;
+        }
+
+        .pipe {
+            background: linear-gradient(90deg, #333 0%, #666 50%, #222 100%);
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            position: relative;
+        }
+        .pipe::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(0,0,0,0.5);
+            /* The "mouth" of the pipe */
+        }
+        
+        .active-stop {
+            box-shadow: 0 0 15px rgba(212,175,55,0.5);
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0c] text-gray-400 min-h-screen flex flex-col items-center overflow-x-hidden selection:bg-gold-500/30">
+
+    <!-- Nav -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gray-600 hover:text-gold-500 transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Forlad Orglet</span>
+        </a>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="mt-20 text-center mb-12 relative z-10">
+        <h1 class="text-4xl text-gold-500 font-serif tracking-widest drop-shadow-md">Musica Sacra</h1>
+        <p class="text-[10px] uppercase tracking-[0.4em] text-gray-600 mt-2">Dronum Cathedralis</p>
+    </header>
+
+    <!-- VISUAL ORGAN (Pipes) -->
+    <div class="w-full max-w-4xl mx-auto h-[40vh] flex items-end justify-center px-8 gap-1 md:gap-2 mb-12 opacity-80" id="pipes-container">
+        <!-- Generated Pipes -->
+    </div>
+
+    <!-- CONTROLS (Stops) -->
+    <div class="w-full max-w-2xl bg-[#111] p-8 md:p-12 border border-gold-900/30 rounded-t-xl shadow-2xl relative z-20">
+        <div class="flex justify-between items-center mb-8">
+             <h3 class="text-xs uppercase tracking-widest text-gold-500/80">Registrering</h3>
+             
+             <!-- Master Power -->
+             <button id="power-btn" onclick="toggleAudio()" class="px-6 py-2 border border-gold-500/30 text-gold-500 hover:bg-gold-500/10 uppercase text-[10px] tracking-widest transition-all">
+                <i class="fa-solid fa-power-off mr-2"></i> Aktiver Luft
+             </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <!-- Stop 1: Subbass -->
+            <div class="flex flex-col gap-2">
+                <label class="text-[9px] uppercase tracking-widest text-gray-500">Subbass 32'</label>
+                <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="updateStop('sub', this.value)" disabled class="stop-slider">
+            </div>
+
+            <!-- Stop 2: Principal -->
+            <div class="flex flex-col gap-2">
+                <label class="text-[9px] uppercase tracking-widest text-gray-500">Principal 8'</label>
+                <input type="range" min="0" max="1" step="0.01" value="0" oninput="updateStop('principal', this.value)" disabled class="stop-slider">
+            </div>
+
+            <!-- Stop 3: Octave/Fifth -->
+            <div class="flex flex-col gap-2">
+                <label class="text-[9px] uppercase tracking-widest text-gray-500">Quinte 2⅔'</label>
+                <input type="range" min="0" max="1" step="0.01" value="0" oninput="updateStop('quinte', this.value)" disabled class="stop-slider">
+            </div>
+
+            <!-- Stop 4: Reverb/Mix (Simulated via high shine?) -->
+            <div class="flex flex-col gap-2">
+                <label class="text-[9px] uppercase tracking-widest text-gray-500">Mixtur IV</label>
+                <input type="range" min="0" max="1" step="0.01" value="0" oninput="updateStop('mixtur', this.value)" disabled class="stop-slider">
+            </div>
+
+        </div>
+        
+        <p class="text-center text-[10px] text-gray-700 mt-8 italic font-serif" id="status-text">
+            Luftpumpen er slukket.
+        </p>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        // --- VISUALS ---
+        const pipesContainer = document.getElementById('pipes-container');
+        const pipeCount = 21; // Odd number for symmetry
+        
+        function renderPipes() {
+            if(!pipesContainer) return;
+            // V shape configuration
+            for(let i=0; i<pipeCount; i++) {
+                const center = Math.floor(pipeCount/2);
+                const dist = Math.abs(i - center);
+                const height = 100 - (dist * 4); // tallest in middle
+                
+                const pipe = document.createElement('div');
+                pipe.className = "pipe w-3 md:w-6 transition-all duration-300";
+                pipe.style.height = `${height}%`;
+                pipe.id = `pipe-${i}`;
+                pipesContainer.appendChild(pipe);
+            }
+        }
+        renderPipes();
+
+        // --- AUDIO ENGINE (Web Audio API) ---
+        let audioCtx: AudioContext | null = null;
+        let isPlaying = false;
+        
+        // Nodes
+        const nodes: any = {
+            sub: { osc: [], gain: null },
+            principal: { osc: [], gain: null },
+            quinte: { osc: [], gain: null },
+            mixtur: { osc: [], gain: null }
+        };
+
+        const frequencies = {
+            base: 110, // A2 (Low A)
+        };
+
+        (window as any).toggleAudio = async () => {
+            const btn = document.getElementById('power-btn');
+            const status = document.getElementById('status-text');
+            const sliders = document.querySelectorAll('.stop-slider');
+
+            if (isPlaying) {
+                // Stop
+                if(audioCtx) audioCtx.suspend();
+                isPlaying = false;
+                btn.innerHTML = '<i class="fa-solid fa-power-off mr-2"></i> Aktiver Luft';
+                status.innerText = "Luftpumpen er slukket.";
+                sliders.forEach(s => s.setAttribute('disabled', 'true'));
+                
+                // Dim pipes
+                document.querySelectorAll('.pipe').forEach(p => (p as HTMLElement).style.background = "linear-gradient(90deg, #333 0%, #666 50%, #222 100%)");
+
+            } else {
+                // Start
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+                    setupOscillators();
+                }
+                await audioCtx.resume();
+                isPlaying = true;
+                btn.innerHTML = '<i class="fa-solid fa-pause mr-2"></i> Stop Luft';
+                status.innerText = "Træk i registrene for at forme lyden.";
+                sliders.forEach(s => s.removeAttribute('disabled'));
+                
+                // Trigger initial volumes
+                sliders.forEach((s: any) => {
+                    // Trigger input event manually or just read values?
+                    // Let's just update all
+                    // (But we need the ID/Type which isn't on the input easy, let's look at oninput attribute string parsing or just hardcode init)
+                });
+                // Force update from current DOM values
+                updateStop('sub', (document.querySelector('input[oninput*="sub"]') as HTMLInputElement).value);
+                updateStop('principal', (document.querySelector('input[oninput*="principal"]') as HTMLInputElement).value);
+                updateStop('quinte', (document.querySelector('input[oninput*="quinte"]') as HTMLInputElement).value);
+                updateStop('mixtur', (document.querySelector('input[oninput*="mixtur"]') as HTMLInputElement).value);
+            }
+        };
+
+        function setupOscillators() {
+            if(!audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // drone chord A minor add9 (A, C, E, B) to sound "Gregorian"
+            
+            // 1. SUBBASS (Low Sine) - Just Root and Fifth low
+            nodes.sub.gain = audioCtx.createGain();
+            nodes.sub.gain.gain.value = 0;
+            nodes.sub.gain.connect(audioCtx.destination);
+            
+            createOsc(nodes.sub.gain, frequencies.base / 2, 'sine'); // A1
+            createOsc(nodes.sub.gain, frequencies.base, 'sine');     // A2
+
+            // 2. PRINCIPAL (Saw/Triangle - Body) - A2, E3, A3
+            nodes.principal.gain = audioCtx.createGain();
+            nodes.principal.gain.gain.value = 0;
+            nodes.principal.gain.connect(audioCtx.destination);
+            
+            createOsc(nodes.principal.gain, frequencies.base, 'triangle'); // A2
+            createOsc(nodes.principal.gain, frequencies.base * 1.5, 'triangle'); // E3
+            createOsc(nodes.principal.gain, frequencies.base * 2, 'triangle'); // A3
+
+            // 3. QUINTE (High Harmonics) - E4, B4
+            nodes.quinte.gain = audioCtx.createGain();
+            nodes.quinte.gain.gain.value = 0;
+            nodes.quinte.gain.connect(audioCtx.destination);
+            
+            createOsc(nodes.quinte.gain, frequencies.base * 3, 'sine'); // E4
+            createOsc(nodes.quinte.gain, frequencies.base * 4.5, 'sine'); // B4 (approx)
+
+            // 4. MIXTUR (Shimmer/High) - Random high clusters
+            nodes.mixtur.gain = audioCtx.createGain();
+            nodes.mixtur.gain.gain.value = 0;
+            nodes.mixtur.gain.connect(audioCtx.destination);
+            
+            createOsc(nodes.mixtur.gain, frequencies.base * 4, 'sawtooth', 0.1); 
+            createOsc(nodes.mixtur.gain, frequencies.base * 5, 'sawtooth', 0.1); 
+        }
+
+        function createOsc(dest: AudioNode, freq: number, type: any, detuneBy = 0) {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            osc.frequency.value = freq + detuneBy;
+            osc.type = type;
+            osc.connect(dest);
+            osc.start();
+            return osc;
+        }
+
+        (window as any).updateStop = (type: string, val: string) => {
+            const vol = parseFloat(val);
+            if(nodes[type] && nodes[type].gain) {
+                // Smooth transition
+               nodes[type].gain.gain.setTargetAtTime(vol * 0.3, audioCtx?.currentTime || 0, 0.1);
+            }
+            
+            // Visual Feedback
+            // Light up pipes based on volume
+            const intensity = Math.floor(vol * 255);
+            // Color shift from Grey to Gold
+            // Gold is ~ 212, 175, 55
+            const pipes = document.querySelectorAll('.pipe');
+            pipes.forEach((p) => {
+               // Random flicker based on volume
+               if(Math.random() < vol) {
+                   (p as HTMLElement).style.background = `linear-gradient(90deg, #D4AF37 0%, #FEE 50%, #B8860B 100%)`;
+                   (p as HTMLElement).style.boxShadow = `0 0 ${vol*20}px rgba(212,175,55,${vol})`;
+               } else {
+                   // revert partial
+                    (p as HTMLElement).style.background = `linear-gradient(90deg, #333 0%, #666 50%, #222 100%)`;
+                     (p as HTMLElement).style.boxShadow = 'none';
+               }
+            });
+        };
+
+        // cleanup
+        window.addEventListener('beforeunload', () => {
+             if(audioCtx) audioCtx.close();
+        });
+
+    </script>
+</body>
+</html>
