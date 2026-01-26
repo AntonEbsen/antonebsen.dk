@@ -60,24 +60,37 @@ import '@styles/styles.css';
             background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png') !important;
             color: #1a0f0a !important; /* Dark Iron Ink */
         }
-        .export-mode .ai-content {
+        
+        /* Message Bubbles in Export */
+        .export-mode .ai-content,
+        .export-mode .bg-gold-900\/10 {
             background: rgba(255, 255, 255, 0.4) !important;
-            border-color: rgba(0, 0, 0, 0.2) !important;
-            color: #000 !important;
+            border: 1px solid rgba(0, 0, 0, 0.3) !important;
             box-shadow: none !important;
         }
-        .export-mode .text-gold-100 {
-            color: #1a0f0a !important; /* Force dark text for user messages too */
+
+        /* Force ALL text to dark ink in export mode */
+        .export-mode p, 
+        .export-mode span, 
+        .export-mode div,
+        .export-mode button,
+        .export-mode strong,
+        .export-mode em {
+            color: #1a0f0a !important;
+            text-shadow: none !important;
         }
-        .export-mode .bg-gold-900\/10 {
-            background: rgba(0, 0, 0, 0.05) !important;
-            border-color: rgba(0, 0, 0, 0.2) !important;
-            color: #000 !important;
+
+        /* Manuscripts often use Dark Red for initials */
+        body.scriptorium-mode .export-mode .ai-content::first-letter {
+             color: #8b0000 !important; /* Dark Red Drop Cap */
+             text-shadow: none !important;
         }
-        .export-mode .rounded-full.bg-gold-900\/20 {
+        
+        /* Fix the T.A. avatar circle */
+        .export-mode .w-8.h-8 {
              border-color: rgba(0,0,0,0.5) !important;
              color: #000 !important;
-             background: rgba(0,0,0,0.1) !important;
+             background: transparent !important;
         }
 
 
