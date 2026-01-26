@@ -14,12 +14,29 @@ import '@styles/styles.css';
     <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
         body { font-family: 'Cinzel', serif; }
         .text-body { font-family: 'Playfair Display', serif; }
+        
+        /* Scriptorium Mode (Gothic) */
+        body.scriptorium-mode,
+        body.scriptorium-mode .text-body,
+        body.scriptorium-mode h1,
+        body.scriptorium-mode h2,
+        body.scriptorium-mode p,
+        body.scriptorium-mode button,
+        body.scriptorium-mode input,
+        body.scriptorium-mode span {
+            font-family: 'UnifrakturMaguntia', cursive !important;
+        }
+        body.scriptorium-mode .text-body {
+            font-size: 1.15em;
+            line-height: 1.6;
+            letter-spacing: 0.05em;
+        }
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -49,6 +66,9 @@ import '@styles/styles.css';
         
         <!-- Header -->
         <div class="text-center mb-6 animate-fade-in-up relative">
+            <button id="scriptorium-btn" class="absolute left-0 top-0 text-gold-500/50 hover:text-gold-100 transition-colors z-20" title="Scriptorium Mode">
+                <i class="fa-solid fa-scroll text-xl"></i>
+            </button>
              <button id="info-btn" class="absolute right-0 top-0 text-gold-500/50 hover:text-gold-100 transition-colors z-20" title="Vejledning">
                 <i class="fa-regular fa-circle-question text-xl"></i>
             </button>
@@ -214,6 +234,23 @@ import '@styles/styles.css';
 
         document.addEventListener('keydown', (e) => {
             if(e.key === 'Escape') toggleModal(false);
+        });
+
+        // Scriptorium Logic
+        const scriptoriumBtn = document.getElementById('scriptorium-btn');
+        let isScriptorium = false;
+        
+        scriptoriumBtn?.addEventListener('click', () => {
+            isScriptorium = !isScriptorium;
+            if(isScriptorium) {
+                document.body.classList.add('scriptorium-mode');
+                scriptoriumBtn.classList.remove('text-gold-500/50');
+                scriptoriumBtn.classList.add('text-gold-100');
+            } else {
+                document.body.classList.remove('scriptorium-mode');
+                scriptoriumBtn.classList.add('text-gold-500/50');
+                scriptoriumBtn.classList.remove('text-gold-100');
+            }
         });
 
         const form = document.getElementById('aquinas-form');
