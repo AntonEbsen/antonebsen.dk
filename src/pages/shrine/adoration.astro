@@ -1,0 +1,234 @@
+
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoratio Perpetua | Det Stille Vagt</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+        
+        /* Monstrance Glow */
+        @keyframes holy-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3)) brightness(1); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.6)) brightness(1.2); }
+        }
+        .monstrance-glow {
+            animation: holy-glow 6s infinite ease-in-out;
+        }
+
+        /* Fade UI */
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-black text-gold-100 min-h-screen relative overflow-hidden flex flex-col items-center justify-center select-none cursor-none" id="body">
+
+    <!-- Background (Darkness) -->
+    <div class="fixed inset-0 z-0 bg-[#020202]">
+        <div class="absolute inset-0 bg-gradient-radial from-[#1a1205] to-black opacity-60"></div>
+    </div>
+
+    <!-- Navigation (Hides during adoration) -->
+    <nav id="nav-ui" class="fixed top-8 left-8 z-50 transition-opacity duration-1000">
+        <a href="/shrine" class="text-gold-500/40 hover:text-gold-400 transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Forlad Kapellet</span>
+        </a>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="relative z-10 flex flex-col items-center justify-center h-full w-full">
+        
+        <!-- MONSTRANCE -->
+        <div class="relative z-20 transition-all duration-3000 ease-in-out transform scale-95 hover:scale-100" id="monstrance-container">
+            <div class="absolute inset-0 bg-gold-500/10 rounded-full blur-[100px] animate-pulse-slow"></div>
+            <img src="/assets/monstrance.png" alt="Monstrance showing the Blessed Sacrament" 
+                 class="w-[300px] md:w-[500px] h-auto object-contain monstrance-glow relative z-10 drop-shadow-2xl">
+        </div>
+
+        <!-- CONTROLS (Initial State) -->
+        <div id="controls-ui" class="absolute bottom-20 flex flex-col items-center gap-8 transition-all duration-1000 z-30">
+            <div class="text-center space-y-2">
+                <h1 class="text-2xl text-white font-serif tracking-widest">Adoratio</h1>
+                <p class="text-xs text-gold-500/60 uppercase tracking-[0.3em]">Vælg din vagt</p>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="startAdoration(15)" class="px-6 py-2 border border-gold-500/20 text-gold-500/60 hover:text-white hover:border-gold-500/80 hover:bg-gold-500/10 rounded-sm uppercase text-xs tracking-widest transition-all">
+                    15 Min
+                </button>
+                <button onclick="startAdoration(30)" class="px-6 py-2 border border-gold-500/20 text-gold-500/60 hover:text-white hover:border-gold-500/80 hover:bg-gold-500/10 rounded-sm uppercase text-xs tracking-widest transition-all">
+                    30 Min
+                </button>
+                 <button onclick="startAdoration(60)" class="px-6 py-2 border border-gold-500/20 text-gold-500/60 hover:text-white hover:border-gold-500/80 hover:bg-gold-500/10 rounded-sm uppercase text-xs tracking-widest transition-all">
+                    1 Time
+                </button>
+            </div>
+        </div>
+
+        <!-- ACTIVE TIMER (Hidden Initially) -->
+        <div id="timer-ui" class="absolute bottom-10 opacity-0 transition-opacity duration-2000 text-center z-30 pointer-events-none">
+            <p class="text-[10px] text-gray-600 uppercase tracking-[0.5em] mb-2">Resterende Tid</p>
+            <div id="time-display" class="text-xl text-gray-800 font-serif">00:00</div>
+        </div>
+
+        <!-- WARNING OVERLAY (Be Still) -->
+        <div id="warning-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 opacity-0 pointer-events-none transition-opacity duration-500">
+            <h2 class="text-3xl md:text-5xl text-red-900 font-serif italic tracking-widest drop-shadow-[0_0_10px_rgba(255,0,0,0.5)]">
+                Vær Stille.
+            </h2>
+        </div>
+
+        <!-- COMPLETION OVERLAY -->
+        <div id="completion-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 opacity-0 pointer-events-none transition-opacity duration-2000">
+             <h2 class="text-2xl text-gold-100 font-serif mb-4">Deo Gratias</h2>
+             <p class="text-sm text-gray-400 italic mb-8">Din vagt er overstået.</p>
+             <button onclick="location.reload()" class="text-xs uppercase tracking-widest text-gold-500 border-b border-gold-500/50 pb-1 hover:text-white transition-colors">
+                Vend tilbage
+             </button>
+        </div>
+
+    </main>
+
+    <script>
+        let timerParams = {
+            active: false,
+            timeLeft: 0,
+            interval: 0 as any,
+            mouseLastX: 0,
+            mouseLastY: 0,
+            movementScore: 0
+        };
+
+        const body = document.getElementById('body');
+        const navUi = document.getElementById('nav-ui');
+        const controls = document.getElementById('controls-ui');
+        const timerUi = document.getElementById('timer-ui');
+        const timeDisplay = document.getElementById('time-display');
+        const warning = document.getElementById('warning-overlay');
+        const completion = document.getElementById('completion-overlay');
+
+        // Start
+        (window as any).startAdoration = (minutes: number) => {
+            // Hide Controls
+            controls?.classList.add('fade-out');
+            navUi?.classList.add('fade-out');
+            body?.classList.add('cursor-none');
+            
+            // Show Monstrance Logic (Scaling up slightly)
+            document.getElementById('monstrance-container')?.classList.add('scale-105');
+
+            // Init Timer
+            timerParams.active = true;
+            timerParams.timeLeft = minutes * 60;
+            
+            // Show subtle timer after delay
+            setTimeout(() => {
+                timerUi?.classList.remove('opacity-0');
+            }, 5000);
+
+            // Start Ticking
+            timerParams.interval = setInterval(tick, 1000);
+
+            // Enter Fullscreen (optional/browser restriction)
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+            } catch(e) {}
+        };
+
+        function tick() {
+            if(!timerParams.active) return;
+
+            timerParams.timeLeft--;
+            
+            // Format
+            const m = Math.floor(timerParams.timeLeft / 60);
+            const s = timerParams.timeLeft % 60;
+            if(timeDisplay) timeDisplay.innerText = `${m}:${s < 10 ? '0'+s : s}`;
+
+            // Check Movement Decay
+            if(timerParams.movementScore > 0) timerParams.movementScore -= 5;
+            if(timerParams.movementScore < 0) timerParams.movementScore = 0;
+
+            // Finish
+            if(timerParams.timeLeft <= 0) {
+                finish();
+            }
+        }
+
+        function finish() {
+            clearInterval(timerParams.interval);
+            timerParams.active = false;
+            completion?.classList.remove('opacity-0', 'pointer-events-none');
+            try { document.exitFullscreen(); } catch(e) {}
+        }
+
+        // STILLNESS DETECTION
+        document.addEventListener('mousemove', (e) => {
+            if(!timerParams.active) {
+                 // allow mouse when selecting
+                 body?.classList.remove('cursor-none');
+                 return;
+            }
+
+            // Calculate distance
+            const dist = Math.abs(e.screenX - timerParams.mouseLastX) + Math.abs(e.screenY - timerParams.mouseLastY);
+            timerParams.movementScore += dist;
+            
+            timerParams.mouseLastX = e.screenX;
+            timerParams.mouseLastY = e.screenY;
+
+            // Threshold
+            if(timerParams.movementScore > 2000) { // arbitrary sensitive threshold
+                triggerWarning();
+                timerParams.movementScore = 0;
+            }
+
+            // Show cursor briefly if moving
+            body?.classList.remove('cursor-none');
+            clearTimeout((window as any).cursorTimeout);
+            (window as any).cursorTimeout = setTimeout(() => {
+                if(timerParams.active) body?.classList.add('cursor-none');
+            }, 1000);
+        });
+
+        // Tab Switching / Visibility
+        document.addEventListener("visibilitychange", () => {
+             if (document.hidden && timerParams.active) {
+                triggerWarning();
+             }
+        });
+
+        function triggerWarning() {
+            warning?.classList.remove('opacity-0');
+            
+            // Pause Timer?? No, let it run, but warn them.
+            
+            setTimeout(() => {
+                warning?.classList.add('opacity-0');
+            }, 2500);
+        }
+
+    </script>
+</body>
+</html>
