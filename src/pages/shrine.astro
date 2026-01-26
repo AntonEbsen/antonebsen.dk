@@ -1,6 +1,21 @@
 
 ---
 import '@styles/styles.css';
+import { getLiturgicalSeason } from '../utils/liturgy';
+
+// Liturgical Atmosphere
+const season = getLiturgicalSeason(new Date());
+
+const seasonGradients: Record<string, string> = {
+    green:  'from-[#0a150a] via-black to-black', // Ordinary Time (Deep Green)
+    purple: 'from-[#150515] via-black to-black', // Advent/Lent (Deep Purple)
+    white:  'from-[#151205] via-black to-black', // Easter/Christmas (Deep Gold)
+    red:    'from-[#150505] via-black to-black', // Pentecost/Martyrs (Deep Red)
+    black:  'from-[#0a0a0a] via-black to-black'
+};
+
+// Default to green if undefined
+const currentGradient = seasonGradients[season.color] || seasonGradients.green;
 ---
 
 <!DOCTYPE html>
@@ -33,6 +48,11 @@ import '@styles/styles.css';
             <span class="text-xs uppercase tracking-widest hidden md:inline">Return</span>
         </a>
 
+        <!-- SEASON INDICATOR (New) -->
+        <div class="hidden md:block text-center opacity-40 hover:opacity-100 transition-opacity pointer-events-auto cursor-help" title={season.description}>
+            <span class="text-[10px] uppercase tracking-[0.3em] block text-gold-500">{season.name}</span>
+        </div>
+
         <!-- AUDIO CONTROL -->
         <button id="mute-btn" class="pointer-events-auto text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 group" aria-label="Mute/Play">
             <i class="fa-solid fa-volume-high group-hover:block hidden"></i>
@@ -43,7 +63,7 @@ import '@styles/styles.css';
     </div>
 
     <!-- MAIN CONTAINER (Full Screen) -->
-    <div class="relative w-full h-full flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden bg-gradient-to-b from-[#050510] via-black to-black">
+    <div class={`relative w-full h-full flex flex-col items-center justify-center font-serif text-center select-none overflow-hidden bg-gradient-to-b ${currentGradient} transition-colors duration-1000`}>
 
         <!-- Background Texture (Subtle Noise) -->
         <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
