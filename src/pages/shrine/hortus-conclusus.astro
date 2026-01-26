@@ -45,19 +45,24 @@ import '@styles/styles.css';
     <div class="fixed inset-0 z-0 flex items-end justify-center pointer-events-none">
         
         <!-- Background Walls (The "Conclusus") -->
-        <div class="absolute bottom-0 w-full h-[30vh] bg-[#e8e4c9] border-t-8 border-[#d4cfb0]"></div>
+        <div class="absolute bottom-0 w-full h-[35vh] bg-[#e8e4c9] border-t-8 border-[#d4cfb0]"></div>
         
         <!-- Grass -->
-        <div class="absolute bottom-0 w-full h-[25vh] bg-gradient-to-t from-[#2d5a27] to-[#5c8a4c]"></div>
+        <div class="absolute bottom-0 w-full h-[30vh] bg-gradient-to-t from-[#2d5a27] to-[#6aa856]"></div>
         
-        <!-- Flowers Container -->
-        <div id="flower-bed" class="absolute bottom-[5vh] w-full max-w-6xl h-[20vh] flex items-end justify-center gap-2 md:gap-8 px-10">
+        <!-- STATUE -->
+         <div class="absolute bottom-[5vh] z-10 drop-shadow-2xl transition-opacity animate-in">
+            <img src="/assets/statue_virgin_mary.png" alt="Statue of Virgin Mary" class="h-[50vh] md:h-[60vh] object-contain opacity-95">
+         </div>
+
+        <!-- Flowers Container (Spans full width) -->
+        <div id="flower-bed" class="absolute bottom-[2vh] w-full h-[30vh] z-20 pointer-events-none overflow-hidden">
             <!-- Populated by JS -->
         </div>
     </div>
 
     <!-- UI LAYER -->
-    <main class="relative z-10 w-full min-h-screen flex flex-col items-center justify-start pt-32 pointer-events-none">
+    <main class="relative z-10 w-full min-h-screen flex flex-col items-center justify-between pt-16 pb-8 pointer-events-none">
         
         <div class="text-center pointer-events-auto">
             <h1 class="text-4xl md:text-6xl text-white font-serif drop-shadow-lg mb-2">Hortus Conclusus</h1>
@@ -65,10 +70,10 @@ import '@styles/styles.css';
         </div>
 
         <!-- Planting Controls -->
-        <div class="mt-auto mb-12 bg-white/80 backdrop-blur-md p-8 rounded-t-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] w-full max-w-lg pointer-events-auto">
-            <h3 class="text-center text-xs uppercase tracking-widest text-gray-500 mb-6">Plant en bøn</h3>
+        <div class="bg-white/60 backdrop-blur-md p-6 rounded-2xl shadow-xl w-[90%] max-w-md pointer-events-auto transition-all hover:bg-white/90 hover:shadow-2xl translate-y-0 mb-4">
+            <h3 class="text-center text-xs uppercase tracking-widest text-gray-500 mb-4">Plant en bøn</h3>
             
-            <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="grid grid-cols-3 gap-4 mb-4">
                 <button onclick="selectFlower('rose')" class="flower-btn group flex flex-col items-center gap-2 p-2 rounded hover:bg-red-50 transition-colors border border-transparent hover:border-red-100">
                      <i class="fa-solid fa-seedling text-red-500 text-2xl group-hover:scale-110 transition-transform"></i>
                      <span class="text-[10px] uppercase text-gray-500">Rose</span>
@@ -114,42 +119,53 @@ import '@styles/styles.css';
             
             // Create Flower Element
             const flower = document.createElement('div');
-            flower.className = "relative group flex flex-col items-center justify-end h-32 md:h-48 origin-bottom animate-grow cursor-help";
+            flower.className = "absolute origin-bottom animate-grow cursor-help group flex flex-col items-center";
             
-            // Randomize position slightly? No, flex handles layout, but we can randomize size/rotation slightly
-            const scale = 0.8 + Math.random() * 0.4;
-            const rot = -5 + Math.random() * 10;
+            // Random Position
+            // Spread across 5% to 95% width
+            let leftPos = Math.random() * 90 + 5; 
+            
+            flower.style.left = `${leftPos}%`;
+            flower.style.bottom = `${Math.random() * 15}%`; // Varied depth
+            
+            const scale = 0.6 + Math.random() * 0.6; // 0.6 to 1.2
+            const rot = -15 + Math.random() * 30;
             flower.style.transform = `scale(${scale}) rotate(${rot}deg)`;
-            
+            flower.style.zIndex = Math.floor(scale * 100).toString(); // Bigger in front
+
             // Icon based on type
-            let iconClass = "fa-brands fa-pagelines"; 
-            let colorClass = "text-green-600";
             let headColor = "";
+            let headIcon = "fa-fan"; // default rose-ish
             
-            if(selectedType === 'rose') { headColor = "text-red-600"; }
-            else if(selectedType === 'lily') { headColor = "text-white drop-shadow-md"; }
-            else { headColor = "text-violet-600"; }
+            if(selectedType === 'rose') { 
+                headColor = "text-red-500"; 
+                headIcon = "fa-fan";
+            }
+            else if(selectedType === 'lily') { 
+                headColor = "text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.2)]"; 
+                headIcon = "fa-leaf"; 
+            }
+            else { 
+                headColor = "text-violet-500"; 
+                headIcon = "fa-spa";
+            }
 
             flower.innerHTML = `
-                <div class="absolute bottom-20 ${headColor} z-10 text-4xl transform group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-fan fa-spin-pulse" style="animation-duration: 3s;"></i>
+                <div class="${headColor} text-5xl filter drop-shadow-sm transition-transform group-hover:scale-110">
+                    <i class="fa-solid ${headIcon} ${selectedType === 'rose' ? 'fa-spin-pulse' : ''}" style="animation-duration: ${3 + Math.random()}s;"></i>
                 </div>
-                <div class="w-1 h-20 bg-green-700"></div>
+                <div class="w-1 h-24 bg-green-700/80 rounded-full mt-[-2px]"></div>
                 
                 ${intention ? `
-                <div class="hidden group-hover:block absolute -top-12 bg-white/90 p-2 rounded text-xs text-gray-600 shadow-lg whitespace-nowrap pointer-events-none z-50">
-                    "${intention}"
+                <div class="hidden group-hover:block absolute bottom-full mb-2 bg-white/95 p-3 rounded-lg text-xs text-gray-600 shadow-xl whitespace-nowrap z-50 pointer-events-none transform -translate-x-1/2 left-1/2">
+                    <span class="italic">"${intention}"</span>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white/95"></div>
                 </div>` : ''}
             `;
             
-            // Persist (Simulated: Add to bed)
             flowerBed.appendChild(flower);
             
-            // Clear Input
             intentionInput.value = '';
-            
-            // LocalStorage for basic persistence
-            saveGarden();
         };
 
         function saveGarden() {
@@ -178,6 +194,12 @@ import '@styles/styles.css';
         .animate-grow {
             animation: grow 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
+        
+        .animate-in {
+            animation: fadeIn 2s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn { to { opacity: 0.95; } }
     </style>
 </body>
 </html>
