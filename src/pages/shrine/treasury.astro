@@ -1,0 +1,169 @@
+
+---
+import '@styles/styles.css';
+import { getSaint } from '../../utils/liturgy';
+
+const today = new Date();
+const saint = getSaint(today);
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thesaurus | Skatkammeret</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+        
+        .relic-card {
+            background: linear-gradient(145deg, #111, #050505);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .relic-card.unlocked {
+            border-color: rgba(255, 215, 0, 0.4);
+            background: linear-gradient(145deg, #1a1505, #050505);
+        }
+    </style>
+</head>
+<body class="bg-[#020202] text-gray-300 min-h-screen flex flex-col items-center py-20 px-8 selection:bg-gold-500/30">
+
+    <!-- Nav -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gray-600 hover:text-gold-500 transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Forlad Skatkammeret</span>
+        </a>
+    </nav>
+    
+    <!-- Header -->
+    <header class="text-center mb-16">
+        <span class="text-[10px] uppercase tracking-[0.4em] text-gold-500 block mb-4">Thesaurus Sanctorum</span>
+        <h1 class="text-4xl md:text-5xl text-gray-200 font-serif mb-4">Relikviesamlingen</h1>
+        <p class="text-body text-gray-600 italic">Saml hver dags hellige vidnesbyrd.</p>
+    </header>
+
+    <!-- TODAY'S OFFERING -->
+    <div class="mb-24 w-full max-w-md">
+        {saint ? (
+            <div id="today-container" class="relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-gold-900 to-transparent opacity-20 blur-md rounded-lg group-hover:opacity-40 transition-opacity"></div>
+                <div class="relative bg-[#080808] border border-gold-900/40 p-8 text-center rounded-sm">
+                    <span class="text-[9px] uppercase tracking-widest text-gold-600 block mb-2">Dagens Helgen</span>
+                    <h2 class="text-2xl text-gold-100 font-serif mb-2" id="saint-name-target">{saint.name}</h2>
+                    <p class="text-sm text-gray-500 italic mb-6">{saint.title}</p>
+                    
+                    <button id="claim-btn" class="px-8 py-2 bg-gold-900/20 border border-gold-500/20 text-gold-500 hover:bg-gold-500 hover:text-black uppercase text-xs tracking-widest transition-all">
+                        Gem Relikvie
+                    </button>
+                    
+                    <div id="claimed-msg" class="hidden text-green-700 uppercase text-xs tracking-widest mt-2">
+                        <i class="fa-solid fa-check"></i> Gemt i samlingen
+                    </div>
+                </div>
+            </div>
+        ) : (
+            <div class="text-center p-8 border border-dashed border-gray-800 rounded-sm opacity-50">
+                <p class="text-sm text-gray-500">Ingen særlig helgenfest i dag.</p>
+                <p class="text-xs text-gray-700 mt-2">Kom tilbage i morgen.</p>
+            </div>
+        )}
+    </div>
+
+    <!-- COLLECTION GRID -->
+    <div class="w-full max-w-4xl">
+        <h3 class="text-xs uppercase tracking-widest text-gray-700 mb-8 border-b border-gray-900 pb-2">Din Samling</h3>
+        <div id="collection-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Populated by JS -->
+            <div class="col-span-full text-center text-gray-800 text-sm py-12 italic hidden" id="empty-msg">
+                Samlingen er tom.<br>Besøg skatkammeret på festdage.
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA for JS -->
+    <script define:vars={{ saintName: saint?.name || "", saintTitle: saint?.title || "", dateKey: `${today.getMonth()+1}-${today.getDay()}` }}>
+        // Types
+        const key = "shrine_relics";
+        const todayKey = new Date().toISOString().split('T')[0]; // simple YYYY-MM-DD to avoid collecting same thing twice same day? Or use Saint Name as ID.
+        // Let's use Saint Name as ID to allow multiple saints per day conceptually, but mainly unique saints.
+        
+        const currentSaint = saintName ? { name: saintName, title: saintTitle, dateCollected: todayKey } : null;
+
+        const claimBtn = document.getElementById('claim-btn');
+        const claimedMsg = document.getElementById('claimed-msg');
+        const grid = document.getElementById('collection-grid');
+        const emptyMsg = document.getElementById('empty-msg');
+
+        // Load Collection
+        let collection = JSON.parse(localStorage.getItem(key) || "[]");
+
+        function renderCollection() {
+            grid.innerHTML = '';
+            if(collection.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                grid.appendChild(emptyMsg);
+                return;
+            }
+            emptyMsg.classList.add('hidden');
+
+            collection.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "relic-card unlocked p-6 text-center flex flex-col justify-center items-center aspect-[3/4] transition-transform hover:-translate-y-1";
+                el.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gold-900/20 border border-gold-500/30 flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-crown text-gold-500/60 text-[10px]"></i>
+                    </div>
+                    <h4 class="text-gold-200 font-serif text-sm mb-1">${item.name}</h4>
+                    <p class="text-[10px] text-gray-500 italic truncate w-full">${item.title}</p>
+                    <span class="mt-4 text-[9px] text-gray-700 uppercase tracking-widest bg-black px-2 py-0.5 rounded border border-gray-800">${item.dateCollected}</span>
+                `;
+                grid.appendChild(el);
+            });
+        }
+
+        // Check if already claimed today/this saint
+        if(currentSaint) {
+            const alreadyHas = collection.find(c => c.name === currentSaint.name);
+            if(alreadyHas) {
+                claimBtn?.classList.add('hidden');
+                claimedMsg?.classList.remove('hidden');
+            }
+        }
+
+        // Claim Action
+        claimBtn?.addEventListener('click', () => {
+            if(!currentSaint) return;
+            
+            collection.unshift(currentSaint); // Add to top
+            localStorage.setItem(key, JSON.stringify(collection));
+            
+            // Update UI
+            claimBtn.classList.add('hidden');
+            claimedMsg?.classList.remove('hidden');
+            renderCollection();
+
+            // Celebration Effect (Simple shake/glow)
+            const todayContainer = document.getElementById('today-container');
+            todayContainer.classList.add('scale-105');
+            setTimeout(() => todayContainer.classList.remove('scale-105'), 200);
+        });
+
+        // Init
+        renderCollection();
+
+    </script>
+
+</body>
+</html>
