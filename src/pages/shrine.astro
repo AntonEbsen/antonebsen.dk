@@ -77,181 +77,93 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-600/10 rounded-full blur-[80px] animate-pulse-slow"></div>
         </div>
     
-        <!-- CATHEDRAL LAYOUT -->
-        <div class="relative w-full h-full flex items-center justify-center p-4 overflow-y-auto">
+        <!-- CATHEDRAL LAYOUT / DASHBOARD -->
+        <div class="relative w-full h-full flex flex-col items-center justify-center p-4 md:p-12 overflow-y-auto">
             
-            <!-- Floorplan Grid (Cross Shape) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 max-w-7xl w-full relative z-10 py-20">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 max-w-[95vw] w-full relative z-10 py-10 items-start">
                 
-                <!-- WEST WING (Theology / Left) -->
-                <div class="col-span-1 flex flex-col gap-8 justify-center items-center md:items-end order-2 md:order-1 animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <a href="/shrine/aquinas" class="shrine-card group text-center md:text-right w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Schola Theologica</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Thomas Aquinas</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">"Doctor Angelicus"</p>
-                    </a>
-                    <a href="/shrine/scriptorium" class="shrine-card group text-center md:text-right w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Scriptorium</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Skrivestuen</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Meditativ Afskrift</p>
-                    </a>
-                    <a href="/shrine/library" class="shrine-card group text-center md:text-right w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Bibliotheca</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Biblioteket</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Viden & Apologetik</p>
-                    </a>
-                    <a href="/shrine/via-dolorosa" class="shrine-card group text-center md:text-right w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Pilgrimsfærd</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Via Dolorosa</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Korsets Vej</p>
-                    </a>
-                    <a href="/shrine/testimony" class="shrine-card group text-center md:text-right w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Martyrologium</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Vidnesbyrd</h2>
-                    </a>
+                <!-- COL 1: STUDIUM (The Mind) -->
+                <div class="col-span-1 flex flex-col gap-4">
+                     <div class="text-[9px] uppercase tracking-widest text-gray-600 mb-2 border-b border-gray-800 pb-1">Studium</div>
+                     <a href="/shrine/library" class="shrine-btn group"><i class="fa-solid fa-book text-gold-500/50 group-hover:text-gold-400 w-5"></i> Bibliotheca</a>
+                     <a href="/shrine/aquinas" class="shrine-btn group"><i class="fa-solid fa-feather text-gold-500/50 group-hover:text-gold-400 w-5"></i> Aquinas</a>
+                     <a href="/shrine/scriptorium" class="shrine-btn group"><i class="fa-solid fa-pen-nib text-gold-500/50 group-hover:text-gold-400 w-5"></i> Scriptorium</a>
+                     <a href="/shrine/lectio" class="shrine-btn group"><i class="fa-solid fa-comment-dots text-gold-500/50 group-hover:text-gold-400 w-5"></i> Lectio Divina</a>
+                     <a href="/shrine/testimony" class="shrine-btn group"><i class="fa-solid fa-quote-right text-gold-500/50 group-hover:text-gold-400 w-5"></i> Vidnesbyrd</a>
                 </div>
 
-                <!-- NAVE (Center / Axis Mundi) -->
-                <div class="col-span-1 flex flex-col items-center gap-16 order-1 md:order-2 animate-fade-in-up">
+                <!-- COL 2: POENITENTIA (The Soul) -->
+                <div class="col-span-1 flex flex-col gap-4">
+                     <div class="text-[9px] uppercase tracking-widest text-gray-600 mb-2 border-b border-gray-800 pb-1">Poenitentia</div>
+                     <a href="/shrine/via-dolorosa" class="shrine-btn group"><i class="fa-solid fa-road text-gold-500/50 group-hover:text-gold-400 w-5"></i> Via Dolorosa</a>
+                     <a href="/shrine/confession" class="shrine-btn group"><i class="fa-solid fa-user-secret text-gold-500/50 group-hover:text-gold-400 w-5"></i> Skriftemål</a>
+                     <a href="/shrine/speculum" class="shrine-btn group"><i class="fa-solid fa-mirror text-gold-500/50 group-hover:text-gold-400 w-5"></i> Speculum</a>
+                     <a href="/shrine/catacombs" class="shrine-btn group"><i class="fa-solid fa-skull text-gold-500/50 group-hover:text-gold-400 w-5"></i> Katakomberne</a>
+                </div>
+
+                <!-- COL 3: SANCTUARIUM (Center / Liturgy) -->
+                <div class="col-span-2 md:col-span-1 flex flex-col items-center gap-8 pt-4 md:pt-8 order-first md:order-none">
+                     <!-- Altar -->
+                     <div class="relative group cursor-pointer transform hover:scale-105 transition-transform duration-1000">
+                        <a href="/shrine/adoration" class="block relative z-10">
+                            <div class="absolute inset-0 bg-gold-500/10 blur-[60px] rounded-full animate-pulse-slow"></div>
+                             <svg width="60" height="80" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg" class="mx-auto overflow-visible drop-shadow-[0_0_25px_rgba(255,215,0,0.4)]">
+                                <path d="M10 2 H14 V6 H22 V10 H14 V28 H10 V10 H2 V6 H10 V2 Z" fill="#FFD700" opacity="0.9" />
+                                <circle cx="12" cy="7.5" r="1.5" fill="#FFE55C" />
+                            </svg>
+                        </a>
+                    </div>
                     
-                    <!-- Narthex (Calendar & Stoup) -->
-                    <div class="flex flex-col items-center gap-8">
-                        <div class="text-center group">
-                            <a href="/shrine/calendar" class="inline-block relative">
-                                <div class="w-12 h-12 mx-auto border border-gold-500/20 rounded-full flex items-center justify-center mb-3 group-hover:border-gold-500/50 transition-colors">
-                                    <i class="fa-solid fa-calendar-day text-gold-500/80 text-sm"></i>
-                                </div>
-                                <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500 group-hover:text-gold-400 transition-colors block font-sans">Liturgisk Kalender</span>
-                            </a>
-                        </div>
-
-                         <!-- Holy Water Stoup -->
-                         <div class="relative group cursor-pointer flex flex-col items-center" id="stoup-trigger">
-                            <div class="w-16 h-8 border-b-2 border-r-2 border-l-2 border-gold-500/20 rounded-b-full flex items-center justify-center relative overflow-hidden transition-all duration-500 group-hover:border-gold-500/40 group-hover:shadow-[0_0_20px_rgba(0,200,255,0.1)] bg-gradient-to-b from-transparent to-cyan-900/10">
-                                <!-- Water Surface -->
-                                <div class="absolute inset-x-2 top-2 bottom-1 bg-cyan-500/5 rounded-b-full"></div>
-                                <i class="fa-solid fa-cross text-cyan-500/20 text-[8px]"></i>
-                                
-                                <!-- Ripple Container -->
-                                <div id="ripple-container" class="absolute inset-0 flex items-center justify-center pointer-events-none text-cyan-200"></div>
-                            </div>
-                            <span class="text-[9px] uppercase tracking-widest text-gray-600 group-hover:text-cyan-500/60 transition-colors mt-2 block opacity-60">Vievand</span>
-                             
-                             <!-- Floating Text Feedback -->
-                             <div id="blessing-text" class="absolute -top-8 left-1/2 -translate-x-1/2 text-gold-200 font-serif italic whitespace-nowrap opacity-0 pointer-events-none transition-all duration-1000 transform translate-y-2 text-sm drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">
-                                "In Nomine Patris..."
+                    <!-- Calendar & Stoup Row -->
+                    <div class="flex gap-6 justify-center">
+                         <a href="/shrine/calendar" class="text-xs uppercase tracking-widest text-gray-500 hover:text-gold-500 transition-colors flex flex-col items-center gap-1 group">
+                             <i class="fa-solid fa-calendar-day group-hover:scale-110 transition-transform"></i> <span class="text-[8px]">Kalender</span>
+                         </a>
+                         
+                         <!-- Bell -->
+                         <div id="bell-rope" class="text-xs uppercase tracking-widest text-gray-500 hover:text-gold-500 transition-colors flex flex-col items-center gap-1 group cursor-pointer">
+                             <div class="h-8 w-0.5 bg-gray-700 group-hover:h-10 transition-all origin-top relative" id="rope-line">
+                                 <div class="w-1.5 h-2 bg-gold-900 absolute bottom-0 -left-0.5 rounded-full" id="rope-knot"></div>
                              </div>
-                        </div>
-
-                        <!-- Bell Tower Rope -->
-                         <div class="relative group cursor-pointer flex flex-col items-center mt-4" id="bell-rope">
-                             <!-- rope line -->
-                             <div class="h-24 w-0.5 bg-gradient-to-b from-gray-800 to-gold-900/80 origin-top transition-all duration-300 ease-in-out group-hover:h-28" id="rope-line"></div>
-                             <!-- rope knot -->
-                             <div class="w-2 h-3 bg-gold-900 rounded-b-lg shadow-lg relative z-10 transition-transform duration-300 group-hover:translate-y-4" id="rope-knot"></div>
-                             
-                             <span class="text-[9px] uppercase tracking-widest text-gray-600 group-hover:text-gold-500/60 transition-colors mt-2 block opacity-60">Angelus</span>
+                             <span class="text-[8px]">Angelus</span>
                          </div>
                     </div>
 
-                    <!-- Altar (Visual Centerpiece) -->
-                    <div class="relative group cursor-pointer transform hover:scale-105 transition-transform duration-1000">
-                        <a href="/shrine/adoration" class="block relative z-10">
-                            <div class="absolute inset-0 bg-gold-500/10 blur-[80px] rounded-full animate-pulse-slow"></div>
-                            
-                            <!-- Crucifix SVG -->
-                            <div class="relative drop-shadow-[0_0_35px_rgba(255,215,0,0.3)]">
-                                <svg width="100" height="130" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg" class="mx-auto overflow-visible">
-                                    <defs>
-                                        <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-                                            <stop offset="50%" style="stop-color:#FDB931;stop-opacity:1" />
-                                            <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
-                                        </linearGradient>
-                                        <filter id="glow">
-                                            <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
-                                            <feMerge>
-                                                <feMergeNode in="coloredBlur"/>
-                                                <feMergeNode in="SourceGraphic"/>
-                                            </feMerge>
-                                        </filter>
-                                    </defs>
-                                    <path d="M10 2 H14 V6 H22 V10 H14 V28 H10 V10 H2 V6 H10 V2 Z" fill="url(#gold-gradient)" opacity="0.9" />
-                                    <circle cx="12" cy="7.5" r="1.5" fill="url(#gold-gradient)" />
-                                    <path d="M12 9 C 9 9, 4 8, 4 7 C 4 9, 9 11, 12 12 C 15 11, 20 9, 20 7 C 20 8, 15 9, 12 9 Z M 12 12 L 12 22 L 11 26 L 13 26 L 12 22 Z" fill="url(#gold-gradient)" filter="url(#glow)" />
-                                    <rect x="11" y="0.5" width="2" height="1.5" fill="url(#gold-gradient)" />
-                                </svg>
-                            </div>
-                             <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-[0.3em] text-gold-500/60 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                Adoratio
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Choir (Community & Prayer) -->
-                    <div class="flex flex-col gap-4 text-center w-full max-w-xs">
-                        <a href="/shrine/prayers" class="shrine-card-center group py-6 border-t border-b border-gold-500/10 hover:border-gold-500/30 transition-all">
-                            <span class="text-[10px] uppercase tracking-widest text-gold-500/60 block mb-2 font-sans">Communio Sanctorum</span>
-                            <h2 class="text-xl text-gold-100 font-serif tracking-wide group-hover:text-white transition-colors">Forbøn</h2>
-                        </a>
-                        <a href="/shrine/candles" class="shrine-card-center group py-6 border-b border-gold-500/10 hover:border-gold-500/30 transition-all">
-                            <span class="text-[10px] uppercase tracking-widest text-gold-500/60 block mb-2 font-sans">Capella Lucis</span>
-                            <h2 class="text-xl text-gold-100 font-serif flex items-center justify-center gap-3 tracking-wide group-hover:text-white transition-colors">
-                                Kapellet <i class="fa-solid fa-fire text-orange-500 text-xs animate-flicker opacity-80"></i>
-                            </h2>
-                        </a>
-                    </div>
+                    <!-- Water -->
+                     <div class="relative group cursor-pointer flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity" id="stoup-trigger">
+                         <div class="w-12 h-6 border-b border-r border-l border-cyan-500/30 rounded-b-full flex items-center justify-center relative overflow-hidden bg-cyan-900/10 transition-shadow group-hover:shadow-[0_0_10px_rgba(0,255,255,0.2)]">
+                              <div id="ripple-container" class="absolute inset-0 flex items-center justify-center pointer-events-none text-cyan-200"></div>
+                         </div>
+                         <span class="text-[8px] uppercase tracking-widest text-gray-600 mt-1">Vievand</span>
+                          <!-- Floating Text -->
+                             <div id="blessing-text" class="absolute -top-6 left-1/2 -translate-x-1/2 text-gold-200 font-serif italic whitespace-nowrap opacity-0 pointer-events-none transition-all duration-1000 transform translate-y-2 text-xs">
+                                "In Nomine Patris..."
+                             </div>
+                     </div>
                 </div>
 
-                <!-- EAST WING (Sacraments / Right) -->
-                <div class="col-span-1 flex flex-col gap-8 justify-center items-center md:items-start order-3 animate-fade-in-up" style="animation-delay: 0.4s;">
-                    <a href="/shrine/treasury" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Thesaurus</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Skatkammeret</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Helgensamling</p>
-                    </a>
-                    <a href="/shrine/confession" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Confessionarium</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Skriftemål</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Samvittighedsransagelse</p>
-                    </a>
-                    <a href="/shrine/rosary" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Rosarium</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Rosenkransen</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Mysteriets Have</p>
-                    </a>
-                    <a href="/shrine/hortus-conclusus" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                         <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Hortus Conclusus</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Jomfruens Have</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Stilhed & Vækst</p>
-                    </a>
-                    <a href="/shrine/organ-loft" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                         <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Organum</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Orglet</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Musica Sacra</p>
-                    </a>
-                    <a href="/shrine/rose-window" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Rosace</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Rosevinduet</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Lux Mundi</p>
-                    </a>
-                    <a href="/shrine/thurible" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Incensem</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Røgelseskarret</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Bønnens Røg</p>
-                    </a>
-                    <a href="/shrine/lectio" class="shrine-card group text-center md:text-left w-64 md:w-auto">
-                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Verbum Dei</span>
-                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Lectio Divina</h2>
-                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Dagens Ord</p>
-                    </a>
+                <!-- COL 4: ORATIO (Prayer) -->
+                <div class="col-span-1 flex flex-col gap-4">
+                     <div class="text-[9px] uppercase tracking-widest text-gray-600 mb-2 border-b border-gray-800 pb-1">Oratio</div>
+                     <a href="/shrine/prayers" class="shrine-btn group"><i class="fa-solid fa-hands-praying text-gold-500/50 group-hover:text-gold-400 w-5"></i> Forbøn</a>
+                     <a href="/shrine/candles" class="shrine-btn group"><i class="fa-solid fa-fire text-orange-500/50 group-hover:text-orange-400 w-5 text-[10px]"></i> Lyskapellet</a>
+                     <a href="/shrine/treasury" class="shrine-btn group"><i class="fa-solid fa-crown text-gold-500/50 group-hover:text-gold-400 w-5"></i> Skatkammeret</a>
+                     <a href="/shrine/rosary" class="shrine-btn group"><i class="fa-solid fa-dharmachakra text-gold-500/50 group-hover:text-gold-400 w-5"></i> Rosenkransen</a>
+                </div>
+                
+                 <!-- COL 5: MYSTERIUM (Sensory) -->
+                <div class="col-span-1 flex flex-col gap-4">
+                     <div class="text-[9px] uppercase tracking-widest text-gray-600 mb-2 border-b border-gray-800 pb-1">Mysterium</div>
+                     <a href="/shrine/hortus-conclusus" class="shrine-btn group"><i class="fa-solid fa-seedling text-green-500/50 group-hover:text-green-400 w-5"></i> Jomfruens Have</a>
+                     <a href="/shrine/rose-window" class="shrine-btn group"><i class="fa-solid fa-fan text-pink-500/50 group-hover:text-pink-400 w-5"></i> Rosevinduet</a>
+                     <a href="/shrine/organ-loft" class="shrine-btn group"><i class="fa-solid fa-music text-purple-500/50 group-hover:text-purple-400 w-5"></i> Orglet</a>
+                     <a href="/shrine/thurible" class="shrine-btn group"><i class="fa-solid fa-wind text-gray-500/50 group-hover:text-gray-400 w-5"></i> Røgelseskarret</a>
                 </div>
 
             </div>
 
-            <!-- Decorative Arch Lines (Background) -->
-            <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-gold-500/10 to-transparent pointer-events-none"></div>
-            <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-gold-500/10 to-transparent pointer-events-none"></div>
+            <!-- Decorative Floor Lines -->
+             <div class="absolute inset-x-0 bottom-10 h-px bg-gradient-to-r from-transparent via-gray-900 to-transparent pointer-events-none"></div>
         </div>
     
     </div>
@@ -401,14 +313,23 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
             transform: translateX(-5px);
     }
     
-    .shrine-card-center {
-        display: block;
-        width: 100%;
-        background: transparent;
-    }
-    .shrine-card-center:hover {
-        background: rgba(255, 215, 0, 0.03);
+    .shrine-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.5rem;
+        color: #888;
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        border-radius: 4px;
         letter-spacing: 0.05em;
+    }
+    .shrine-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
 
     /* KEYFRAMES */
