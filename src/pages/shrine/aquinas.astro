@@ -16,6 +16,7 @@ import '@styles/styles.css';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { font-family: 'Cinzel', serif; }
@@ -88,6 +89,9 @@ import '@styles/styles.css';
                 </button>
                 <button id="hymn-btn" class="text-gold-500/50 hover:text-gold-100 transition-colors" title="Adoro Te Devote">
                     <i class="fa-solid fa-music text-xl"></i>
+                </button>
+                <button id="scribe-btn" class="text-gold-500/50 hover:text-gold-100 transition-colors" title="The Scribe (Save Image)">
+                    <i class="fa-solid fa-file-arrow-down text-xl"></i>
                 </button>
             </div>
              <button id="info-btn" class="absolute right-0 top-0 text-gold-500/50 hover:text-gold-100 transition-colors z-20" title="Vejledning">
@@ -302,6 +306,36 @@ import '@styles/styles.css';
                     alert("Could not play audio. Please ensure /assets/audio/adoro.mp3 exists.");
                 }
             }
+        });
+
+        // Scribe Logic (Export)
+        const scribeBtn = document.getElementById('scribe-btn');
+        
+        scribeBtn?.addEventListener('click', async () => {
+             if(!chatContainer) return;
+             
+             // Visual feedback
+             scribeBtn!.classList.add('animate-pulse', 'text-gold-100');
+             
+             try {
+                // @ts-ignore
+                const canvas = await html2canvas(chatContainer, {
+                    backgroundColor: '#15151a', 
+                    scale: 2, // High res
+                    useCORS: true,
+                    logging: false
+                });
+
+                const link = document.createElement('a');
+                link.download = `aquinas-dialogue-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+             } catch(e) {
+                 console.error("Scribe failed:", e);
+                 alert("The Scribe broke his quill. (Export failed)");
+             } finally {
+                 scribeBtn!.classList.remove('animate-pulse', 'text-gold-100');
+             }
         });
 
         const form = document.getElementById('aquinas-form');
