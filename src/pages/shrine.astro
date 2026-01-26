@@ -1,3 +1,4 @@
+
 ---
 import '@styles/styles.css';
 ---
@@ -56,106 +57,113 @@ import '@styles/styles.css';
              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-600/10 rounded-full blur-[80px] animate-pulse-slow"></div>
         </div>
     
-        <!-- CONTENT -->
-        <div class="relative z-10 p-8 max-w-3xl mx-auto flex flex-col items-center fade-in-section">
+        <!-- CATHEDRAL LAYOUT -->
+        <div class="relative w-full h-full flex items-center justify-center p-4 overflow-y-auto">
             
-            <!-- HEADER: Latin Invocation -->
-            <p class="text-gold-500/80 text-sm tracking-[0.3em] uppercase mb-8 md:mb-12 animate-fade-in-up" style="animation-delay: 0.2s;">
-                In Nomine Patris, et Filii, et Spiritus Sancti
-            </p>
-    
-            <!-- CENTERPIECE: Crucifix -->
-            <div class="relative mb-12 animate-fade-in-up" style="animation-delay: 0.5s;">
-                <!-- Halo Glow -->
-                <div class="absolute inset-0 bg-gold-500/20 blur-[80px] rounded-full transform scale-150 animate-pulse-slow"></div>
+            <!-- Floorplan Grid (Cross Shape) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 max-w-7xl w-full relative z-10 py-20">
                 
-                <!-- Crucifix SVG -->
-                <div class="relative drop-shadow-[0_0_25px_rgba(255,215,0,0.6)] hover:scale-105 transition-transform duration-1000">
-                    <svg width="150" height="190" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg" class="mx-auto overflow-visible">
-                        <defs>
-                            <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#FDB931;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
-                            </linearGradient>
-                             <filter id="glow">
-                                <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <path d="M10 2 H14 V6 H22 V10 H14 V28 H10 V10 H2 V6 H10 V2 Z" fill="url(#gold-gradient)" opacity="0.9" />
-                        <circle cx="12" cy="7.5" r="1.5" fill="url(#gold-gradient)" />
-                        <path d="M12 9 C 9 9, 4 8, 4 7 C 4 9, 9 11, 12 12 C 15 11, 20 9, 20 7 C 20 8, 15 9, 12 9 Z M 12 12 L 12 22 L 11 26 L 13 26 L 12 22 Z" fill="url(#gold-gradient)" filter="url(#glow)" />
-                        <rect x="11" y="0.5" width="2" height="1.5" fill="url(#gold-gradient)" />
-                    </svg>
+                <!-- WEST WING (Theology / Left) -->
+                <div class="col-span-1 flex flex-col gap-8 justify-center items-center md:items-end order-2 md:order-1 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <a href="/shrine/aquinas" class="shrine-card group text-center md:text-right w-64 md:w-auto">
+                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Schola Theologica</span>
+                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Thomas Aquinas</h2>
+                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">"Doctor Angelicus"</p>
+                    </a>
+                    <a href="/shrine/library" class="shrine-card group text-center md:text-right w-64 md:w-auto">
+                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Bibliotheca</span>
+                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Biblioteket</h2>
+                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Viden & Apologetik</p>
+                    </a>
+                    <a href="/shrine/testimony" class="shrine-card group text-center md:text-right w-64 md:w-auto">
+                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Martyrologium</span>
+                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Vidnesbyrd</h2>
+                    </a>
                 </div>
-            </div>
-    
-            <!-- MAIN VERSE -->
-            <h1 class="text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-gray-100 to-gray-400 font-serif font-bold italic mb-4 leading-tight animate-fade-in-up" style="animation-delay: 1s;">
-                "Ego sum via et veritas et vita."
-            </h1>
-            
-            <p class="text-gold-400/80 text-lg mb-12 animate-fade-in-up" style="animation-delay: 1.5s;">
-                I am the way and the truth and the life.
-                <span class="block text-xs mt-3 text-gray-500 uppercase tracking-widest not-italic sans-serif">— John 14:6</span>
-            </p>
-    
-            <!-- INTERACTIVE: Votive Candle -->
-            <div class="animate-fade-in-up group cursor-pointer relative z-50 mb-8" id="candle-trigger" style="animation-delay: 2s;">
-                <div class="relative w-10 h-16 mx-auto transition-transform duration-500 group-hover:-translate-y-1">
-                    <!-- Candle Body -->
-                    <div class="absolute bottom-0 w-10 h-10 bg-red-900/40 border border-red-500/30 rounded-sm shadow-[0_0_15px_rgba(255,0,0,0.1)]"></div>
-                    <!-- Flame (Hidden initially) -->
-                    <div id="flame" class="absolute -top-6 left-1/2 -translate-x-1/2 w-5 h-8 bg-orange-400 rounded-full blur-[3px] opacity-0 transition-all duration-700 animate-flicker transform scale-0"></div>
+
+                <!-- NAVE (Center / Axis Mundi) -->
+                <div class="col-span-1 flex flex-col items-center gap-16 order-1 md:order-2 animate-fade-in-up">
+                    
+                    <!-- Narthex (Calendar) -->
+                    <div class="text-center group">
+                        <a href="/shrine/calendar" class="inline-block relative">
+                            <div class="w-12 h-12 mx-auto border border-gold-500/20 rounded-full flex items-center justify-center mb-3 group-hover:border-gold-500/50 transition-colors">
+                                <i class="fa-solid fa-calendar-day text-gold-500/80 text-sm"></i>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500 group-hover:text-gold-400 transition-colors block font-sans">Liturgisk Kalender</span>
+                        </a>
+                    </div>
+
+                    <!-- Altar (Visual Centerpiece) -->
+                    <div class="relative group cursor-pointer transform hover:scale-105 transition-transform duration-1000">
+                        <div class="absolute inset-0 bg-gold-500/10 blur-[80px] rounded-full animate-pulse-slow"></div>
+                        
+                        <!-- Crucifix SVG -->
+                        <div class="relative drop-shadow-[0_0_35px_rgba(255,215,0,0.3)]">
+                            <svg width="100" height="130" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg" class="mx-auto overflow-visible">
+                                <defs>
+                                    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#FDB931;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+                                    </linearGradient>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <path d="M10 2 H14 V6 H22 V10 H14 V28 H10 V10 H2 V6 H10 V2 Z" fill="url(#gold-gradient)" opacity="0.9" />
+                                <circle cx="12" cy="7.5" r="1.5" fill="url(#gold-gradient)" />
+                                <path d="M12 9 C 9 9, 4 8, 4 7 C 4 9, 9 11, 12 12 C 15 11, 20 9, 20 7 C 20 8, 15 9, 12 9 Z M 12 12 L 12 22 L 11 26 L 13 26 L 12 22 Z" fill="url(#gold-gradient)" filter="url(#glow)" />
+                                <rect x="11" y="0.5" width="2" height="1.5" fill="url(#gold-gradient)" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Choir (Community & Prayer) -->
+                    <div class="flex flex-col gap-4 text-center w-full max-w-xs">
+                        <a href="/shrine/prayers" class="shrine-card-center group py-6 border-t border-b border-gold-500/10 hover:border-gold-500/30 transition-all">
+                            <span class="text-[10px] uppercase tracking-widest text-gold-500/60 block mb-2 font-sans">Communio Sanctorum</span>
+                            <h2 class="text-xl text-gold-100 font-serif tracking-wide group-hover:text-white transition-colors">Forbøn</h2>
+                        </a>
+                        <a href="/shrine/candles" class="shrine-card-center group py-6 border-b border-gold-500/10 hover:border-gold-500/30 transition-all">
+                            <span class="text-[10px] uppercase tracking-widest text-gold-500/60 block mb-2 font-sans">Capella Lucis</span>
+                            <h2 class="text-xl text-gold-100 font-serif flex items-center justify-center gap-3 tracking-wide group-hover:text-white transition-colors">
+                                Kapellet <i class="fa-solid fa-fire text-orange-500 text-xs animate-flicker opacity-80"></i>
+                            </h2>
+                        </a>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-600 mt-4 tracking-widest group-hover:text-gold-500 transition-colors uppercase">
-                    Tænd et lys
-                </p>
+
+                <!-- EAST WING (Sacraments / Right) -->
+                <div class="col-span-1 flex flex-col gap-8 justify-center items-center md:items-start order-3 animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <a href="/shrine/confession" class="shrine-card group text-center md:text-left w-64 md:w-auto">
+                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Confessionarium</span>
+                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Skriftemål</h2>
+                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Samvittighedsransagelse</p>
+                    </a>
+                    <a href="/shrine/rosary" class="shrine-card group text-center md:text-left w-64 md:w-auto">
+                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Rosarium</span>
+                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Rosenkransen</h2>
+                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Mysteriets Have</p>
+                    </a>
+                    <a href="/shrine/lectio" class="shrine-card group text-center md:text-left w-64 md:w-auto">
+                        <span class="text-[10px] uppercase tracking-widest text-gold-500/60 group-hover:text-gold-400 mb-2 block font-sans">Verbum Dei</span>
+                        <h2 class="text-2xl text-gold-100 font-serif group-hover:text-white transition-colors">Lectio Divina</h2>
+                        <p class="text-xs text-gray-500 mt-2 opacity-60 group-hover:opacity-100 transition-opacity italic font-serif">Dagens Ord</p>
+                    </a>
+                </div>
+
             </div>
 
-            <!-- NAVIGATION LINKS -->
-            <nav class="flex gap-6 md:gap-8 animate-fade-in-up z-50 items-center justify-center opacity-80 hover:opacity-100 transition-opacity" style="animation-delay: 2.5s;">
-                 <a href="/shrine/testimony" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Vidnesbyrd
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/rosary" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Rosenkrans
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/confession" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Skriftemål
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/prayers" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Forbøn
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/calendar" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Kalender
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/lectio" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Dagens Ord
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/aquinas" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Aquinas
-                </a>
-                <span class="text-gray-800">•</span>
-                 <a href="/shrine/library" class="text-[10px] md:text-xs sans uppercase tracking-[0.2em] text-gray-500 hover:text-gold-400 transition-colors border-b border-transparent hover:border-gold-500/50 pb-1">
-                    Bibliotek
-                </a>
-            </nav>
-
-
-    
+            <!-- Decorative Arch Lines (Background) -->
+            <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-gold-500/10 to-transparent pointer-events-none"></div>
+            <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-gold-500/10 to-transparent pointer-events-none"></div>
         </div>
-
+    
     </div>
 
     <!-- Hidden Audio Player -->
@@ -166,58 +174,6 @@ import '@styles/styles.css';
 </body>
 </html>
 
-<style>
-    /* KEYFRAMES */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-fade-in-up {
-        animation: fadeInUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        opacity: 0;
-    }
-
-    .animate-fade-in {
-        animation: fadeInUp 2s ease-out forwards;
-    }
-
-    .animate-pulse-slow {
-        animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    @keyframes smokeRise {
-        0% { transform: translateY(0) scale(1); opacity: 0.3; }
-        50% { transform: translateY(-30px) scale(1.1); opacity: 0.2; }
-        100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
-    }
-    
-    .animate-smoke-rise {
-        animation: smokeRise 15s infinite ease-in-out;
-    }
-    
-    .animate-smoke-rise-slow {
-        animation: smokeRise 25s infinite ease-in-out reverse;
-    }
-
-    @keyframes flicker {
-        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-        50% { transform: translateX(-50%) scale(1.1); opacity: 1; filter: brightness(1.2); }
-        25% { transform: translateX(-52%) scale(0.9); opacity: 0.7; }
-        75% { transform: translateX(-48%) scale(1.05); opacity: 0.9; }
-    }
-
-    .animate-flicker {
-        animation: flicker 0.1s infinite alternate;
-    }
-
-    /* STATES */
-    .candle-lit #flame {
-        opacity: 1 !important;
-        transform: translateX(-50%) scale(1);
-    }
-</style>
-
 <script>
     // Audio Elements
     const audio = document.getElementById('shrine-audio') as HTMLAudioElement;
@@ -226,10 +182,6 @@ import '@styles/styles.css';
     const muteIcon = muteBtn?.querySelector('.fa-volume-xmark');
     const playIcon = muteBtn?.querySelector('.fa-play');
     
-    // Interactive Elements
-    const candleTrigger = document.getElementById('candle-trigger');
-    const wrapper = document.querySelector('.bg-gradient-to-b') as HTMLElement;
-
     // Start Logic on Load
     window.addEventListener('load', async () => {
         // Try Autoplay
@@ -273,19 +225,74 @@ import '@styles/styles.css';
             }
         }
     });
-
-    // Candle Logic
-    let isLit = false;
-    candleTrigger?.addEventListener('click', () => {
-        if (!isLit) {
-            candleTrigger.classList.add('candle-lit');
-            // Warmth efffect
-             if (wrapper) wrapper.style.boxShadow = "inset 0 0 150px rgba(255, 100, 0, 0.15)";
-            isLit = true;
-        } else {
-            candleTrigger.classList.remove('candle-lit');
-             if (wrapper) wrapper.style.boxShadow = "none";
-            isLit = false;
-        }
-    });
 </script>
+
+<style>
+    .shrine-card {
+        display: block;
+        padding: 1.5rem;
+        border: 1px solid transparent;
+        background: transparent;
+        transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        position: relative;
+    }
+    .shrine-card:hover {
+        border-color: rgba(255, 215, 0, 0.1);
+        background: rgba(255, 215, 0, 0.02);
+        transform: translateX(5px);
+    }
+    /* Reverse hover for Left side */
+    .items-end .shrine-card:hover {
+            transform: translateX(-5px);
+    }
+    
+    .shrine-card-center {
+        display: block;
+        width: 100%;
+        background: transparent;
+    }
+    .shrine-card-center:hover {
+        background: rgba(255, 215, 0, 0.03);
+        letter-spacing: 0.05em;
+    }
+
+    /* KEYFRAMES */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes smokeRise {
+        0% { transform: translateY(0) scale(1); opacity: 0.3; }
+        50% { transform: translateY(-30px) scale(1.1); opacity: 0.2; }
+        100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
+    }
+    
+    .animate-smoke-rise {
+        animation: smokeRise 15s infinite ease-in-out;
+    }
+    
+    .animate-smoke-rise-slow {
+        animation: smokeRise 25s infinite ease-in-out reverse;
+    }
+
+    @keyframes flicker {
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+        50% { transform: translateX(-50%) scale(1.1); opacity: 1; filter: brightness(1.2); }
+        25% { transform: translateX(-52%) scale(0.9); opacity: 0.7; }
+        75% { transform: translateX(-48%) scale(1.05); opacity: 0.9; }
+    }
+
+    .animate-flicker {
+        animation: flicker 0.1s infinite alternate;
+    }
+</style>
