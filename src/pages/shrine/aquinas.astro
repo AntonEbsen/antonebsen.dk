@@ -48,7 +48,10 @@ import '@styles/styles.css';
     <main class="relative z-10 w-full h-full flex flex-col items-center pt-24 pb-8 px-4 md:px-0 max-w-2xl mx-auto">
         
         <!-- Header -->
-        <div class="text-center mb-6 animate-fade-in-up">
+        <div class="text-center mb-6 animate-fade-in-up relative">
+             <button id="info-btn" class="absolute right-0 top-0 text-gold-500/50 hover:text-gold-100 transition-colors z-20" title="Vejledning">
+                <i class="fa-regular fa-circle-question text-xl"></i>
+            </button>
             <div class="w-16 h-16 mx-auto bg-gold-900/20 rounded-full flex items-center justify-center border border-gold-500/30 mb-4 shadow-[0_0_30px_rgba(255,215,0,0.1)]">
                 <i class="fa-solid fa-feather-pointed text-2xl text-gold-500"></i>
             </div>
@@ -127,7 +130,92 @@ import '@styles/styles.css';
 
     </main>
 
+    <!-- Info Modal -->
+    <div id="info-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-[#101014] border border-gold-500/30 p-8 rounded-xl max-w-sm mx-6 relative shadow-[0_0_50px_rgba(0,0,0,0.9)] transform scale-95 transition-all duration-300" id="modal-content">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center mb-8">
+                <h2 class="text-xl text-gold-100 font-bold mb-2">Vejledning</h2>
+                <div class="h-px w-12 bg-gold-500/30 mx-auto"></div>
+            </div>
+
+            <div class="space-y-6 text-sm text-gray-400 font-light sans">
+                <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded bg-gold-900/10 flex items-center justify-center flex-shrink-0 text-gold-500 text-xs border border-gold-500/10">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div>
+                        <span class="text-gold-100 font-bold block text-xs uppercase tracking-wider mb-1">Samtale</span>
+                        <p class="leading-relaxed">Stil spørgsmål om tro, teologi og livet. Thomas svarer som vejleder.</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded bg-gold-900/10 flex items-center justify-center flex-shrink-0 text-gold-500 text-xs border border-gold-500/10">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div>
+                        <span class="text-gold-100 font-bold block text-xs uppercase tracking-wider mb-1">Debat</span>
+                        <p class="leading-relaxed">Formel <em>Disputatio</em>. Udfordr Thomas i en streng teologisk duel.</p>
+                    </div>
+                </div>
+
+                 <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded bg-gold-900/10 flex items-center justify-center flex-shrink-0 text-gold-500 text-xs border border-gold-500/10">
+                        <i class="fa-solid fa-hands-praying"></i>
+                    </div>
+                    <div>
+                        <span class="text-gold-100 font-bold block text-xs uppercase tracking-wider mb-1">Bøn</span>
+                        <p class="leading-relaxed">Bed Thomas om at forfatte en personlig bøn for dig (Latin/Dansk).</p>
+                    </div>
+                </div>
+
+                 <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded bg-gold-900/10 flex items-center justify-center flex-shrink-0 text-gold-500 text-xs border border-gold-500/10">
+                        <i class="fa-solid fa-heart-crack"></i>
+                    </div>
+                    <div>
+                        <span class="text-gold-100 font-bold block text-xs uppercase tracking-wider mb-1">Scrutinium</span>
+                        <p class="leading-relaxed">Ransag din samvittighed gennem de 7 dyder før skriftemål.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
     <script>
+        // Modal Logic
+        const infoBtn = document.getElementById('info-btn');
+        const infoModal = document.getElementById('info-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalContent = document.getElementById('modal-content');
+
+        function toggleModal(show: boolean) {
+            if(show) {
+                infoModal?.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent?.classList.remove('scale-95');
+                modalContent?.classList.add('scale-100');
+            } else {
+                infoModal?.classList.add('opacity-0', 'pointer-events-none');
+                modalContent?.classList.remove('scale-100');
+                modalContent?.classList.add('scale-95');
+            }
+        }
+
+        infoBtn?.addEventListener('click', () => toggleModal(true));
+        closeModal?.addEventListener('click', () => toggleModal(false));
+         infoModal?.addEventListener('click', (e) => {
+            if(e.target === infoModal) toggleModal(false);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') toggleModal(false);
+        });
+
         const form = document.getElementById('aquinas-form');
         const input = document.getElementById('quaestio-input') as HTMLInputElement;
         const chatContainer = document.getElementById('chat-container');
