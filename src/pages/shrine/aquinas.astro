@@ -64,8 +64,24 @@ import '@styles/styles.css';
                     T.A.
                 </div>
                 <div class="bg-white/5 border border-white/10 p-4 rounded-lg rounded-tl-none max-w-[85%] text-body text-gray-300 leading-relaxed shadow-lg">
-                    <p>Pax Christi. I am Thomas. Provide your <em>quaestio</em>, and we shall seek the Truth together.</p>
+                    <p>Pax Christi. Jeg er Thomas. Fremsæt din <em>quaestio</em>, og lad os søge Sandheden sammen.</p>
                 </div>
+            </div>
+
+            <!-- Suggested Questions (Chips) -->
+            <div class="flex flex-wrap gap-2 pl-12 animate-fade-in-up delay-200" id="suggestions-area">
+                <button class="quaestio-chip text-xs bg-gold-900/10 border border-gold-500/20 text-gold-500 hover:bg-gold-500 hover:text-black px-3 py-1.5 rounded-full transition-all duration-300">
+                    Hvorfor findes det onde?
+                </button>
+                <button class="quaestio-chip text-xs bg-gold-900/10 border border-gold-500/20 text-gold-500 hover:bg-gold-500 hover:text-black px-3 py-1.5 rounded-full transition-all duration-300">
+                    Bevis Guds eksistens
+                </button>
+                <button class="quaestio-chip text-xs bg-gold-900/10 border border-gold-500/20 text-gold-500 hover:bg-gold-500 hover:text-black px-3 py-1.5 rounded-full transition-all duration-300">
+                    Hvad er meningen med livet?
+                </button>
+                <button class="quaestio-chip text-xs bg-gold-900/10 border border-gold-500/20 text-gold-500 hover:bg-gold-500 hover:text-black px-3 py-1.5 rounded-full transition-all duration-300">
+                    Forklar Treenigheden
+                </button>
             </div>
         </div>
 
@@ -94,6 +110,21 @@ import '@styles/styles.css';
         const form = document.getElementById('aquinas-form');
         const input = document.getElementById('quaestio-input') as HTMLInputElement;
         const chatContainer = document.getElementById('chat-container');
+
+        // Suggested Questions Logic
+        document.querySelectorAll('.quaestio-chip').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const text = (e.currentTarget as HTMLElement).innerText;
+                if(input && form) {
+                    input.value = text;
+                    form.dispatchEvent(new Event('submit'));
+                    
+                    // Fade out suggestions
+                    const area = document.getElementById('suggestions-area');
+                    if(area) area.classList.add('hidden');
+                }
+            });
+        });
 
         form?.addEventListener('submit', async (e) => {
             e.preventDefault();
