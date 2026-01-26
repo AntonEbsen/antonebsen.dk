@@ -37,6 +37,22 @@ import '@styles/styles.css';
             line-height: 1.6;
             letter-spacing: 0.05em;
         }
+
+        /* Illuminated Initial (Drop Cap) */
+        body.scriptorium-mode .ai-content::first-letter {
+            float: left;
+            font-size: 3.5em;
+            line-height: 0.8;
+            padding-right: 0.15em;
+            padding-left: 0.05em;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            font-family: 'UnifrakturMaguntia', cursive;
+            margin-top: 0.05em;
+            margin-bottom: -0.1em;
+            font-weight: normal; /* Font itself is bold */
+        }
+
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
