@@ -104,14 +104,34 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
                 <!-- NAVE (Center / Axis Mundi) -->
                 <div class="col-span-1 flex flex-col items-center gap-16 order-1 md:order-2 animate-fade-in-up">
                     
-                    <!-- Narthex (Calendar) -->
-                    <div class="text-center group">
-                        <a href="/shrine/calendar" class="inline-block relative">
-                            <div class="w-12 h-12 mx-auto border border-gold-500/20 rounded-full flex items-center justify-center mb-3 group-hover:border-gold-500/50 transition-colors">
-                                <i class="fa-solid fa-calendar-day text-gold-500/80 text-sm"></i>
+                    <!-- Narthex (Calendar & Stoup) -->
+                    <div class="flex flex-col items-center gap-8">
+                        <div class="text-center group">
+                            <a href="/shrine/calendar" class="inline-block relative">
+                                <div class="w-12 h-12 mx-auto border border-gold-500/20 rounded-full flex items-center justify-center mb-3 group-hover:border-gold-500/50 transition-colors">
+                                    <i class="fa-solid fa-calendar-day text-gold-500/80 text-sm"></i>
+                                </div>
+                                <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500 group-hover:text-gold-400 transition-colors block font-sans">Liturgisk Kalender</span>
+                            </a>
+                        </div>
+
+                         <!-- Holy Water Stoup -->
+                         <div class="relative group cursor-pointer flex flex-col items-center" id="stoup-trigger">
+                            <div class="w-16 h-8 border-b-2 border-r-2 border-l-2 border-gold-500/20 rounded-b-full flex items-center justify-center relative overflow-hidden transition-all duration-500 group-hover:border-gold-500/40 group-hover:shadow-[0_0_20px_rgba(0,200,255,0.1)] bg-gradient-to-b from-transparent to-cyan-900/10">
+                                <!-- Water Surface -->
+                                <div class="absolute inset-x-2 top-2 bottom-1 bg-cyan-500/5 rounded-b-full"></div>
+                                <i class="fa-solid fa-cross text-cyan-500/20 text-[8px]"></i>
+                                
+                                <!-- Ripple Container -->
+                                <div id="ripple-container" class="absolute inset-0 flex items-center justify-center pointer-events-none text-cyan-200"></div>
                             </div>
-                            <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500 group-hover:text-gold-400 transition-colors block font-sans">Liturgisk Kalender</span>
-                        </a>
+                            <span class="text-[9px] uppercase tracking-widest text-gray-600 group-hover:text-cyan-500/60 transition-colors mt-2 block opacity-60">Vievand</span>
+                             
+                             <!-- Floating Text Feedback -->
+                             <div id="blessing-text" class="absolute -top-8 left-1/2 -translate-x-1/2 text-gold-200 font-serif italic whitespace-nowrap opacity-0 pointer-events-none transition-all duration-1000 transform translate-y-2 text-sm drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">
+                                "In Nomine Patris..."
+                             </div>
+                        </div>
                     </div>
 
                     <!-- Altar (Visual Centerpiece) -->
@@ -245,6 +265,33 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
             }
         }
     });
+
+    // Holy Water Stoup
+    const stoupTrigger = document.getElementById('stoup-trigger');
+    const rippleContainer = document.getElementById('ripple-container');
+    const blessingText = document.getElementById('blessing-text');
+
+    stoupTrigger?.addEventListener('click', () => {
+        // Create Ripple
+        const ripple = document.createElement('div');
+        ripple.className = "ripple-effect";
+        rippleContainer?.appendChild(ripple);
+        
+        // Cleanup Ripple
+        setTimeout(() => ripple.remove(), 800);
+
+        // Show Text
+        if(blessingText) {
+            blessingText.classList.remove('opacity-0', 'translate-y-2');
+            blessingText.classList.add('opacity-100', 'translate-y-0');
+            
+            // Hide after 2s
+            setTimeout(() => {
+                blessingText.classList.remove('opacity-100', 'translate-y-0');
+                blessingText.classList.add('opacity-0', 'translate-y-2'); 
+            }, 2000);
+        }
+    });
 </script>
 
 <style>
@@ -314,5 +361,19 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
 
     .animate-flicker {
         animation: flicker 0.1s infinite alternate;
+    }
+
+    /* RIPPLE */
+    @keyframes ripple {
+        0% { transform: scale(0); opacity: 0.5; }
+        100% { transform: scale(3); opacity: 0; }
+    }
+    .ripple-effect {
+        position: absolute;
+        width: 100%;
+        height: 100%; /* Fill container */
+        background: radial-gradient(circle, rgba(0,255,255,0.2) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: ripple 0.8s ease-out forwards;
     }
 </style>
