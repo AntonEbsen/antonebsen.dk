@@ -1,3 +1,4 @@
+
 ---
 import '@styles/styles.css';
 ---
@@ -7,153 +8,250 @@ import '@styles/styles.css';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skriftemål | Ad Majorem Dei Gloriam</title>
+    <title>Speculum Conscientiae | Samvittighedens Spejl</title>
     <meta name="robots" content="noindex, nofollow">
     
     <!-- Fonts -->
     <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
         body { font-family: 'Cinzel', serif; }
-        .sans { font-family: 'Inter', sans-serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+
+        /* The Mirror */
+        .mirror-container {
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 100px rgba(0,0,0,0.9);
+            background: radial-gradient(circle, #1a1a1a 0%, #000 90%);
+        }
+        
+        .reflection-active {
+            filter: brightness(1.5) contrast(1.1);
+            box-shadow: 0 0 80px rgba(255, 255, 255, 0.1), inset 0 0 50px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Progress Ring */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.1s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
     </style>
 </head>
-<body class="bg-[#050508] text-gray-300 overflow-hidden h-screen w-screen m-0 p-0 selection:bg-gold-500/30">
-
-    <!-- Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-[#020205] via-[#0a0a1a] to-black">
-         <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
-         <!-- Fog -->
-         <div class="absolute bottom-0 w-full h-[50vh] bg-gradient-to-t from-gray-900/30 to-transparent"></div>
-    </div>
+<body class="bg-[#020202] text-gray-300 h-screen w-screen overflow-hidden flex flex-col items-center justify-center select-none m-0 p-0">
 
     <!-- Navigation -->
     <nav class="fixed top-8 left-8 z-50">
-        <a href="/shrine" class="text-gold-500/60 hover:text-gold-400 transition-colors text-xl flex items-center gap-2 sans">
+        <a href="/shrine" class="text-gray-600 hover:text-gray-400 transition-colors text-xl flex items-center gap-2">
             <i class="fa-solid fa-arrow-left"></i>
-            <span class="text-xs uppercase tracking-widest hidden md:inline">Tilbage</span>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Forlad Spejlet</span>
         </a>
     </nav>
 
-    <!-- Main Content -->
-    <main class="relative z-10 w-full h-full flex flex-col items-center justify-center p-6">
+    <main class="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl px-6 text-center">
         
-        <!-- Intro -->
-        <h1 class="text-3xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-b from-gray-200 to-gray-600 mb-8 animate-fade-in-up">
-            Skriftemål
-        </h1>
-        <p class="text-sm sans text-gray-500 max-w-md text-center mb-12 animate-fade-in-up delay-100">
-            Skriv det du bærer på. Slip det her.
-            <br>
-            <span class="text-xs opacity-50 italic">(Intet gemmes. Ordene bliver til røg.)</span>
-        </p>
-
-        <!-- The Input Area -->
-        <div class="relative w-full max-w-xl group animate-fade-in-up delay-200">
-            <textarea 
-                id="confession-input" 
-                class="w-full h-48 bg-transparent border-l-2 border-gold-900/30 text-gold-100/90 text-xl font-serif p-6 focus:outline-none focus:border-gold-500/50 transition-colors resize-none placeholder:text-gray-800"
-                placeholder="Jeg bekender..."
-                spellcheck="false"
-            ></textarea>
-            
-            <!-- Glow Effect on Focus -->
-            <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(0,0,0,1)]"></div>
+        <!-- STAGE 1: INTRO -->
+        <div id="intro-screen" class="transition-opacity duration-1000">
+            <h1 class="text-3xl md:text-5xl text-gray-200 font-serif mb-6 tracking-wide">Speculum Conscientiae</h1>
+            <p class="text-body text-gray-500 text-lg mb-12">
+                "For nu ser vi i et spejl, i en gåde, men da skal vi se ansigt til ansigt."
+            </p>
+            <button onclick="startExamen()" class="px-8 py-3 border border-gray-800 text-gray-500 hover:text-white hover:border-gray-500 uppercase text-xs tracking-[0.2em] transition-all">
+                Træd ind i lyset
+            </button>
         </div>
 
-        <!-- Action Button -->
-        <button id="release-btn" class="mt-12 px-8 py-3 border border-gold-900/50 hover:border-gold-500/50 text-gold-500/60 hover:text-gold-400 text-xs sans uppercase tracking-[0.3em] transition-all opacity-0 animate-fade-in-up delay-300">
-            Slip Byrden
-        </button>
+        <!-- STAGE 2: THE MIRROR (Questions) -->
+        <div id="mirror-screen" class="hidden opacity-0 transition-opacity duration-1000 flex-col items-center">
+            
+            <!-- The Mirror Frame -->
+            <div id="mirror-frame" class="w-64 h-64 md:w-80 md:h-80 rounded-full mirror-container flex items-center justify-center relative mb-12 transition-all duration-500">
+                 <!-- Progress Indicator (SVG Ring) -->
+                 <svg class="absolute inset-0 w-full h-full pointer-events-none" width="320" height="320">
+                    <circle class="progress-ring__circle" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="transparent" r="48%" cx="50%" cy="50%" />
+                    <circle id="progress-circle" class="progress-ring__circle" stroke="rgba(255,215,0,0.8)" stroke-width="4" fill="transparent" r="48%" cx="50%" cy="50%" style="stroke-dasharray: 1000; stroke-dashoffset: 1000;" />
+                 </svg>
 
-        <!-- Absolution Text (Hidden) -->
-        <div id="absolution" class="hidden absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50">
-            <div class="text-center">
-                <p class="text-2xl md:text-4xl text-gold-500 text-shadow-glow mb-4 animate-scale-in">
-                    Vade in pace.
-                </p>
-                <p class="text-sm sans text-gray-500 uppercase tracking-widest animate-fade-in delay-500">
-                    Gå i fred.
-                </p>
+                 <!-- Center instructions -->
+                 <div class="absolute inset-0 flex items-center justify-center opacity-50">
+                     <i class="fa-solid fa-fingerprint text-4xl text-gray-600 animate-pulse"></i>
+                 </div>
             </div>
+
+            <!-- The Question -->
+            <div id="question-container" class="min-h-[120px] flex items-center justify-center">
+                <h2 id="question-text" class="text-2xl md:text-3xl text-gray-100 font-serif leading-snug">
+                    ...
+                </h2>
+            </div>
+            
+            <p id="instruction-text" class="text-xs text-gray-600 uppercase tracking-widest mt-8 animate-pulse">
+                Hold [Mellemrum] nede for at reflektere
+            </p>
+        </div>
+
+        <!-- STAGE 3: ABSOLUTION -->
+        <div id="finale-screen" class="hidden opacity-0 transition-opacity duration-2000 flex-col items-center">
+            <h2 class="text-4xl text-gold-100 font-serif mb-6 text-shadow-glow">Ego te absolvo.</h2>
+            <p class="text-body text-gray-400 italic mb-12">
+                Dine synder er dig forladt. Gå i fred.
+            </p>
+            <a href="/shrine" class="text-xs uppercase tracking-widest text-gold-500 border-b border-gold-500/50 pb-1 hover:text-white transition-colors">
+                Vend tilbage
+            </a>
         </div>
 
     </main>
 
-    <style>
-        .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out forwards;
-            opacity: 0;
-        }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-500 { animation-delay: 0.5s; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .animate-scale-in {
-            animation: scaleIn 1.5s ease-out forwards;
-        }
-
-        .text-shadow-glow {
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-
-        /* Dissolve Animation Class */
-        .dissolving {
-            transition: all 2s ease-out;
-            filter: blur(10px);
-            opacity: 0;
-            transform: translateY(-20px) scale(1.1);
-            letter-spacing: 0.5em;
-        }
-    </style>
-
     <script>
-        const input = document.getElementById('confession-input') as HTMLTextAreaElement;
-        const btn = document.getElementById('release-btn');
-        const absolution = document.getElementById('absolution');
+        const questions = [
+            "Har jeg elsket Gud over alle ting?",
+            "Har jeg brugt Hans navn til løgn eller forbandelse?",
+            "Har jeg holdt hviledagen hellig?",
+            "Har jeg æret min far og min mor?",
+            "Har jeg båret nag eller vrede i mit hjerte?",
+            "Har jeg været ren i mine tanker og handlinger?",
+            "Har jeg taget noget, der ikke var mit?",
+            "Har jeg talt sandt om min næste?",
+            "Har jeg misundt andres lykke eller ejendom?"
+        ];
 
-        // Show button only when typing
-        input?.addEventListener('input', () => {
-            if (input.value.length > 0) {
-                btn!.style.opacity = '1';
-                btn!.style.transform = 'translateY(0)';
+        let currentQIndex = 0;
+        let reflectionProgress = 0; // 0 to 100
+        let isHolding = false;
+        let animationFrame: any;
+
+        const intro = document.getElementById('intro-screen');
+        const mirror = document.getElementById('mirror-screen');
+        const finale = document.getElementById('finale-screen');
+        
+        const qText = document.getElementById('question-text');
+        const progressCircle = document.getElementById('progress-circle');
+        const mirrorFrame = document.getElementById('mirror-frame');
+        
+        // Progress Ring Calculation
+        // Approx circumference for r=48% of 320px (~150px radius) -> 2 * PI * 150 = ~942
+        // Let's set dasharray to 950
+        const circumference = 960; 
+        if(progressCircle) {
+            progressCircle.style.strokeDasharray = `${circumference}`;
+            progressCircle.style.strokeDashoffset = `${circumference}`;
+        }
+
+        (window as any).startExamen = () => {
+            intro?.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                intro?.classList.add('hidden');
+                mirror?.classList.remove('hidden');
+                setTimeout(() => mirror?.classList.remove('opacity-0'), 100);
+                loadQuestion();
+            }, 1000);
+        };
+
+        function loadQuestion() {
+            if(currentQIndex >= questions.length) {
+                finishExamen();
+                return;
+            }
+            if(qText) {
+                qText.style.opacity = '0';
+                setTimeout(() => {
+                    qText.innerText = questions[currentQIndex];
+                    qText.style.opacity = '1';
+                }, 500);
+            }
+            resetProgress();
+        }
+
+        function resetProgress() {
+            reflectionProgress = 0;
+            updateVisuals();
+        }
+
+        function finishExamen() {
+            mirror?.classList.add('opacity-0');
+            setTimeout(() => {
+                mirror?.classList.add('hidden');
+                finale?.classList.remove('hidden');
+                setTimeout(() => finale?.classList.remove('opacity-0'), 100);
+            }, 1000);
+        }
+
+        // --- INTERACTION LOGIC ---
+
+        function updateLoop() {
+            if(isHolding) {
+                reflectionProgress += 0.8; // Speed of reflection
+                if(reflectionProgress >= 100) {
+                    reflectionProgress = 100;
+                    completeQuestion();
+                }
             } else {
-                btn!.style.opacity = '0';
+                reflectionProgress -= 1.5; // Decay
+                if(reflectionProgress < 0) reflectionProgress = 0;
+            }
+            
+            updateVisuals();
+            animationFrame = requestAnimationFrame(updateLoop);
+        }
+        
+        // Start loop
+        animationFrame = requestAnimationFrame(updateLoop);
+
+        function completeQuestion() {
+            isHolding = false; 
+            currentQIndex++;
+            // Small success effect
+            if(mirrorFrame) {
+                mirrorFrame.style.boxShadow = "0 0 100px rgba(255,215,0,0.5)";
+                setTimeout(() => mirrorFrame.style.boxShadow = "", 500); 
+            }
+            loadQuestion();
+        }
+
+        function updateVisuals() {
+            // Circle
+            if(progressCircle) {
+                const offset = circumference - (reflectionProgress / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset.toString();
+            }
+            
+            // Mirror Glow
+            if(mirrorFrame) {
+                if(isHolding) {
+                    const intensity = reflectionProgress / 100;
+                    mirrorFrame.style.background = `radial-gradient(circle, #2a2a2a ${intensity*30}%, #000 90%)`;
+                    mirrorFrame.style.transform = `scale(${1 + intensity * 0.05})`;
+                } else {
+                     mirrorFrame.style.background = `radial-gradient(circle, #1a1a1a 0%, #000 90%)`;
+                     mirrorFrame.style.transform = `scale(1)`;
+                }
+            }
+        }
+
+        // --- INPUT LISTENERS ---
+        
+        // Keyboard (Space)
+        document.addEventListener('keydown', (e) => {
+            if(e.code === 'Space') {
+                if(!isHolding) isHolding = true;
+            }
+        });
+        document.addEventListener('keyup', (e) => {
+            if(e.code === 'Space') {
+                isHolding = false;
             }
         });
 
-        btn?.addEventListener('click', () => {
-            if (!input.value.trim()) return;
+        // Mouse / Touch
+        document.addEventListener('mousedown', () => isHolding = true);
+        document.addEventListener('mouseup', () => isHolding = false);
+        document.addEventListener('touchstart', (e) => { e.preventDefault(); isHolding = true; }, {passive: false});
+        document.addEventListener('touchend', () => isHolding = false);
 
-            // 1. Dissolve Text
-            input.classList.add('dissolving');
-            btn.style.opacity = '0';
-
-            // 2. Clear and Show Absolution after delay
-            setTimeout(() => {
-                input.value = '';
-                absolution?.classList.remove('hidden');
-            }, 1500);
-
-            // 3. Reset after a while
-            setTimeout(() => {
-                 window.location.href = '/shrine';
-            }, 5000);
-        });
     </script>
 </body>
 </html>
