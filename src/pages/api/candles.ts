@@ -2,12 +2,22 @@
 import type { APIRoute } from "astro";
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.SUPABASE_URL;
-const supabaseKey = import.meta.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+export const prerender = false;
 
 export const GET: APIRoute = async () => {
+    // Initialize Supabase only when request comes in, to avoid build-time errors
+    const supabaseUrl = import.meta.env.SUPABASE_URL;
+    const supabaseKey = import.meta.env.SUPABASE_ANON_KEY || import.meta.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        return new Response(JSON.stringify({ error: "Missing Supabase credentials" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     try {
         // Fetch candles from the last 24 hours
         const { data, error } = await supabase
@@ -31,6 +41,18 @@ export const GET: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+    const supabaseUrl = import.meta.env.SUPABASE_URL;
+    const supabaseKey = import.meta.env.SUPABASE_ANON_KEY || import.meta.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        return new Response(JSON.stringify({ error: "Missing Supabase credentials" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     try {
         const { message, position } = await request.json();
 
