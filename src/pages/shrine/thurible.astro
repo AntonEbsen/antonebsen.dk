@@ -1,0 +1,250 @@
+
+---
+import '@styles/styles.css';
+---
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incensem | Røgelseskarret</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fonts -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-cross.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cinzel', serif; }
+        .text-body { font-family: 'Playfair Display', serif; }
+        
+        .hidden-text {
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0);
+            transition: text-shadow 2s ease, color 3s ease;
+        }
+        .revealed {
+            color: rgba(212, 175, 55, 0.8);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-[#050505] text-gray-300 min-h-screen overflow-hidden flex flex-col items-center justify-center relative cursor-grab active:cursor-grabbing selection:bg-gold-500/30">
+
+    <!-- Nav -->
+    <nav class="fixed top-8 left-8 z-50">
+        <a href="/shrine" class="text-gray-600 hover:text-gold-500 transition-colors text-xl flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-xs uppercase tracking-widest hidden md:inline">Forlad Røgen</span>
+        </a>
+    </nav>
+    
+    <!-- Instructions -->
+    <div class="fixed top-8 right-8 text-right pointer-events-none opacity-50 z-40">
+        <p class="text-[10px] uppercase tracking-widest text-gold-500">Sving Karret (Mus)</p>
+    </div>
+
+    <!-- Hidden Prayers Layer (Revealed by Smoke) -->
+    <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <div class="text-center max-w-2xl px-8 leading-relaxed">
+            <h2 id="prayer-1" class="hidden-text text-2xl md:text-4xl font-serif italic mb-8">Dirigatur oratio mea</h2>
+            <p id="prayer-2" class="hidden-text text-lg md:text-2xl font-serif italic mb-4">sicut incensum in conspectu tuo:</p>
+            <p id="prayer-3" class="hidden-text text-lg md:text-2xl font-serif italic">elevatio manuum mearum sacrificium vespertinum.</p>
+        </div>
+    </div>
+
+    <!-- Physics & Smoke Canvas -->
+    <canvas id="canvas" class="fixed inset-0 z-10 block w-full h-full"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Physics State representing the Thurible (Pendulum)
+        const pendulum = {
+            origin: { x: 0, y: 0 }, // Set on reisze
+            length: 300,
+            angle: 0, // 0 is straight down
+            aVel: 0,
+            aAcc: 0,
+            damping: 0.995, // friction
+            gravity: 0.4
+        };
+
+        // Text Elements to reveal
+        const texts = [
+            document.getElementById('prayer-1'),
+            document.getElementById('prayer-2'),
+            document.getElementById('prayer-3')
+        ];
+
+        // Smoke Particles
+        const particles = [];
+        class Particle {
+            constructor(x, y, vx, vy) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.alpha = 0.8;
+                this.size = 10 + Math.random() * 20;
+                this.life = 1.0;
+                this.decay = 0.003 + Math.random() * 0.005;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.98; // Drag
+                this.size += 0.2; // Expand
+                this.life -= this.decay;
+                this.alpha = this.life * 0.4;
+            }
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = "#aaa"; // Smoke color
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let width, height;
+        let mouseX = 0, mouseY = 0, mouseSpeedX = 0;
+        let lastMouseX = 0;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            pendulum.origin = { x: width / 2, y: 0 }; // Pivot at top center
+            pendulum.length = height * 0.6; // 60% of screen height
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            mouseSpeedX = e.clientX - lastMouseX;
+            lastMouseX = e.clientX;
+        });
+
+        // Loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // --- PHYSICS UPDATE ---
+            
+            // Gravity force
+            // force = -g * sin(angle)
+            // But we scale it a bit
+            const force = -0.005 * Math.sin(pendulum.angle); 
+            pendulum.aAcc = force;
+
+            // Mouse Interaction: If mouse is near the bob, push it?
+            // Calculate bob position
+            const bobX = pendulum.origin.x + Math.sin(pendulum.angle) * pendulum.length;
+            const bobY = pendulum.origin.y + Math.cos(pendulum.angle) * pendulum.length;
+
+            const dx = mouseX - bobX;
+            const dy = mouseY - bobY;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+
+            // Simple "Kick" interaction: if mouse is moving and hits the bob area
+            if (dist < 100) {
+                // Add velocity based on mouse movement
+                // Tangential component of mouse force roughly
+                pendulum.aVel += mouseSpeedX * 0.0001;
+            }
+
+            pendulum.aVel += pendulum.aAcc;
+            pendulum.aVel *= pendulum.damping;
+            pendulum.angle += pendulum.aVel;
+
+            // Update Bob Pos
+            const finalBobX = pendulum.origin.x + Math.sin(pendulum.angle) * pendulum.length;
+            const finalBobY = pendulum.origin.y + Math.cos(pendulum.angle) * pendulum.length;
+
+            // --- DRAW THURIBLE (GOLD) ---
+            ctx.strokeStyle = "rgba(212, 175, 55, 0.4)";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pendulum.origin.x, pendulum.origin.y);
+            ctx.lineTo(finalBobX, finalBobY);
+            ctx.stroke();
+
+            // Censer Bob
+            ctx.fillStyle = "#D4AF37";
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = "rgba(212, 175, 55, 0.5)";
+            ctx.beginPath();
+            ctx.arc(finalBobX, finalBobY, 30, 0, Math.PI*2);
+            ctx.fill();
+            ctx.shadowBlur = 0; // reset
+
+            // Spark/Ember inside
+            ctx.fillStyle = "#FF4500";
+            ctx.beginPath();
+            ctx.arc(finalBobX, finalBobY, 5, 0, Math.PI*2);
+            ctx.fill();
+
+
+            // --- SMOKE SYSTEM ---
+            // Emit particles based on speed (more speed = more smoke potentially, or just constant)
+            // Smoke rises, so vy is negative. Add some horizontal velocity from the swing
+            const speed = Math.abs(pendulum.aVel);
+            const emitCount = 2 + Math.floor(speed * 100);
+            
+            for(let i=0; i<emitCount; i++) {
+                const vx = (Math.random() - 0.5) * 2 + (pendulum.aVel * width * 0.01); // Inherit momentum
+                const vy = -1 - Math.random() * 2; // Up
+                particles.push(new Particle(finalBobX, finalBobY, vx, vy));
+            }
+
+            // Update & Draw Particles
+            for(let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                p.draw(ctx);
+                if(p.life <= 0) particles.splice(i, 1);
+            }
+
+            // --- REVEAL MECHANIC ---
+            // If smoke covers the text area, reveal it.
+            // Simplified: If total smoke emitted > X, or average smoke position is screen center.
+            // Let's use total particles as a "density" metric in the center area.
+            
+            let density = 0;
+            for(let p of particles) {
+                // If particle is in the central text area vertically
+                if(p.y < height/2 + 100 && p.y > height/2 - 100 && p.x > width/2 - 200 && p.x < width/2 + 200) {
+                    density++;
+                }
+            }
+
+            if(density > 50) { // arbitrary threshold
+                texts.forEach(t => t?.classList.add('revealed'));
+            } else if (density < 10) {
+                // Fade out slowly? Or keep revealed once revealed?
+                // Let's keep revealed for a bit, maybe not fade out immediately.
+                // Actually user said "reveal hidden texts", implying they stay or fade slowly.
+                // CSS transition handles slow fade.
+                // Let's only remove 'revealed' if it's REALLY clear
+                // texts.forEach(t => t?.classList.remove('revealed'));
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+    </script>
+</body>
+</html>
