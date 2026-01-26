@@ -142,6 +142,16 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
                                 "In Nomine Patris..."
                              </div>
                         </div>
+
+                        <!-- Bell Tower Rope -->
+                         <div class="relative group cursor-pointer flex flex-col items-center mt-4" id="bell-rope">
+                             <!-- rope line -->
+                             <div class="h-24 w-0.5 bg-gradient-to-b from-gray-800 to-gold-900/80 origin-top transition-all duration-300 ease-in-out group-hover:h-28" id="rope-line"></div>
+                             <!-- rope knot -->
+                             <div class="w-2 h-3 bg-gold-900 rounded-b-lg shadow-lg relative z-10 transition-transform duration-300 group-hover:translate-y-4" id="rope-knot"></div>
+                             
+                             <span class="text-[9px] uppercase tracking-widest text-gray-600 group-hover:text-gold-500/60 transition-colors mt-2 block opacity-60">Angelus</span>
+                         </div>
                     </div>
 
                     <!-- Altar (Visual Centerpiece) -->
@@ -225,9 +235,13 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
     <audio id="shrine-audio" loop preload="auto">
         <source src="/assets/audio/chant.mp3" type="audio/mpeg">
     </audio>
+    <audio id="bell-audio" preload="auto">
+        <source src="/assets/audio/bell.mp3" type="audio/mpeg">
+    </audio>
 
 </body>
 </html>
+
 
 <script>
     // Audio Elements
@@ -307,6 +321,40 @@ const currentGradient = seasonGradients[season.color] || seasonGradients.green;
             }, 2000);
         }
     });
+
+    // Bell Tower (Angelus)
+    const bellRope = document.getElementById('bell-rope');
+    const ropeLine = document.getElementById('rope-line');
+    const ropeKnot = document.getElementById('rope-knot');
+    const bellAudio = document.getElementById('bell-audio');
+
+    function ringBell() {
+        // visual pull
+        ropeLine?.classList.add('scale-y-[1.2]');
+        ropeKnot?.classList.add('translate-y-6');
+        setTimeout(() => {
+            ropeLine?.classList.remove('scale-y-[1.2]');
+            ropeKnot?.classList.remove('translate-y-6');
+        }, 300);
+
+        // sound
+        if(bellAudio) {
+            (bellAudio as HTMLAudioElement).currentTime = 0;
+            (bellAudio as HTMLAudioElement).play().catch(e => console.log("Audio ignored", e));
+        }
+    }
+
+    bellRope?.addEventListener('click', ringBell);
+
+    // Initial Angelus Check
+    const now = new Date();
+    const h = now.getHours();
+    const m = now.getMinutes();
+    // 12:00 or 18:00 (6 PM) window (let's say first 2 minutes)
+    if((h === 12 || h === 18) && m < 5) {
+        // Pulse animation to invite ringing (since we can't auto-play sound mostly)
+        bellRope?.classList.add('animate-bounce');
+    }
 </script>
 
 <style>
