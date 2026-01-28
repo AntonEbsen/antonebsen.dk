@@ -59,7 +59,14 @@ export const prerender = false;
                     </div>
                     <div>
                         <h4 class="font-bold text-lg mb-1 text-white">Find Vej</h4>
-                        <p class="text-dim text-sm">Blok X, Etage Y, Køkken Z. <br/> (Præcis lokation kommer tættere på)</p>
+                        <p class="text-dim text-sm mb-4">Blok X, Etage Y, Køkken Z. <br/> (Præcis lokation kommer tættere på)</p>
+                        <a 
+                            href="https://www.google.com/maps/search/?api=1&query=Grønjordskollegiet" 
+                            target="_blank"
+                            class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:text-white transition-colors"
+                        >
+                            <i class="fa-solid fa-location-arrow"></i> Åbn i Google Maps
+                        </a>
                     </div>
                 </div>
 
@@ -89,27 +96,65 @@ export const prerender = false;
 
     {/* The Menu Section */}
     <section class="bg-white/[0.02] py-40 border-y border-white/5 px-6">
-        <div class="max-w-4xl mx-auto text-center space-y-20">
+        <div class="max-w-6xl mx-auto text-center space-y-24">
             <div class="space-y-4">
                 <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white">Menuen</h2>
                 <div class="w-12 h-1 bg-accent mx-auto rounded-full"></div>
+                <p class="text-dim text-lg pt-4">En uformel servering af mine favoritter.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20 text-left">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
                 {menu.map((item, i) => (
-                    <div class="space-y-6 group">
-                        <div class="flex items-center gap-4">
-                            <span class="text-accent/20 text-4xl font-black italic group-hover:text-accent transition-colors">0{i+1}</span>
-                            <div class="h-px flex-1 bg-white/5"></div>
-                            <i class={`fa-solid ${item.icon} text-white/10 group-hover:text-white/40 transition-colors`}></i>
+                    <div class="group relative bg-white/[0.03] border border-glass-border rounded-[48px] overflow-hidden hover:border-accent/40 transition-all duration-500">
+                        <div class="aspect-video relative overflow-hidden">
+                            <img src={item.image} alt={item.title} class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-60 group-hover:opacity-100" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
+                            <div class="absolute top-6 right-6 flex gap-2">
+                                {item.tags.map(tag => (
+                                    <span class="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-white/80">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                        <div class="space-y-2">
-                            <h3 class="text-2xl font-bold uppercase tracking-tight text-white">{item.title}</h3>
+                        
+                        <div class="p-10 space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-accent-soft flex items-center justify-center text-accent text-xl transition-transform group-hover:rotate-12">
+                                    <i class={`fa-solid ${item.icon}`}></i>
+                                </div>
+                                <h3 class="text-2xl font-black uppercase tracking-tight text-white">{item.title}</h3>
+                            </div>
                             <p class="text-dim leading-relaxed italic">{item.description}</p>
                         </div>
                     </div>
                 ))}
             </div>
+        </div>
+    </section>
+
+    {/* FAQ for Family */}
+    <section class="max-w-4xl mx-auto px-6 py-40 border-b border-white/5 space-y-24">
+        <div class="text-center space-y-4">
+            <span class="text-accent text-[10px] font-black uppercase tracking-[0.3em]">Spørgsmål & Svar</span>
+            <h2 class="text-5xl font-black italic tracking-tighter text-white">Det praktiske</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {[
+                { q: "Hvor kan vi parkere?", a: "Der er parkeringspladser langs Grønjordsvej og ved kollegiet. Husk at tjekke skiltningen, da Amager kan være lidt striks med parkering!", icon: "fa-car" },
+                { q: "Er der elevator?", a: "Ja, der er elevator i alle blokke, så det er nemt at komme op til mit køkken, også hvis man er dårligt gående.", icon: "fa-elevator" },
+                { q: "Hvad med gaver?", a: "Det vigtigste er jeres selskab! Hvis I vil give noget, er et lille bidrag til min fremtidige opsparing altid værdsat.", icon: "fa-gift" },
+                { q: "Andet logistik?", a: "Hvis I har spørgsmål eller bliver væk, kan I altid ringe direkte til mig. Jeg sender mit nummer ud i god tid.", icon: "fa-circle-info" }
+            ].map(item => (
+                <div class="p-10 rounded-[40px] bg-white/[0.03] border border-glass-border hover:bg-white/[0.05] transition-all group">
+                    <div class="w-12 h-12 bg-accent/10 rounded-2x flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
+                        <i class={`fa-solid ${item.icon}`}></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2 uppercase tracking-tight italic">{item.q}</h4>
+                    <p class="text-dim text-sm leading-relaxed">{item.a}</p>
+                </div>
+            ))}
         </div>
     </section>
 
