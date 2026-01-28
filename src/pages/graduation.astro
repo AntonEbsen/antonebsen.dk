@@ -43,7 +43,7 @@ const { data: messages } = await supabase
 // Fetch RSVPs
 const { data: rsvps } = await supabase
     .from('rsvp')
-    .select('name, created_at, plus_one')
+    .select('name, created_at, plus_one, song_request')
     .order('created_at', { ascending: false });
 
 // Fetch Toasts
@@ -66,6 +66,11 @@ const guestTypeSplit = (rsvps || []).reduce((acc, r) => {
     acc[r.plus_one ? 'Plus One' : 'Single'] = (acc[r.plus_one ? 'Plus One' : 'Single'] || 0) + 1;
     return acc;
 }, {} as Record<string, number>);
+
+// Song Requests Logic
+const requestedSongs = (rsvps || [])
+    .filter(r => r.song_request && r.song_request.trim() !== '')
+    .slice(0, 5);
 
 // Placeholder for the event date
 const eventDate = "2026-06-01T18:00:00"; 
@@ -144,10 +149,10 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
             Klar til fejring! 🎉
           </div>
           <h1 class="text-6xl font-extrabold tracking-tight text-white sm:text-9xl mb-4">
-            Jeg er nu <span class="text-accent italic text-glow-accent outline-text-accent">Master.</span>
+            Jeg er nu <span class="text-accent italic text-glow-accent outline-text-accent">cand.polit.</span>
           </h1>
           <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto">
-            Efter 5 års studier er jeg endelig cand.polit! Det skal fejres, og du er hermed inviteret til min dimissionsfest.
+            Efter 5,5 års studier er jeg endelig cand.polit! Det skal fejres, og du er hermed inviteret til min dimissionsfest.
           </p>
 
           <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10">
@@ -186,6 +191,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                     <div class="h-0.5 w-12 bg-accent"></div>
                 </div>
             </div>
+            {/* User: Replace with your actual video or keep as placeholder overlay */}
             <div class="w-full h-full bg-gradient-to-tr from-accent/20 via-black to-accent/5 flex items-center justify-center">
                 <i class="fa-solid fa-film text-white/5 text-9xl"></i>
             </div>
@@ -304,10 +310,10 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         {/* Study Stats */}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-                { label: "Års studier", value: "5", icon: "fa-graduation-cap" },
+                { label: "Års studier", value: "5,5", icon: "fa-graduation-cap" },
                 { label: "Eksaminer", value: "30+", icon: "fa-book-open" },
                 { label: "Kopper kaffe", value: "1.500+", icon: "fa-coffee" },
-                { label: "Master grad", value: "1", icon: "fa-medal" }
+                { label: "cand.polit grad", value: "1", icon: "fa-medal" }
             ].map(stat => (
                 <div class="p-8 rounded-[32px] bg-white/[0.03] border border-glass-border flex flex-col items-center text-center space-y-2 hover:bg-white/[0.06] hover:border-accent/20 transition-all group">
                     <i class={`fa-solid ${stat.icon} text-accent/20 group-hover:text-accent/60 transition-colors text-sm`}></i>
@@ -321,7 +327,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         <section class="space-y-12">
             <div class="space-y-4">
                 <h2 class="text-5xl font-extrabold text-white italic">Minder fra studiet</h2>
-                <p class="text-dim max-w-lg mx-auto leading-relaxed">Et lille tilbageblik på de sidste 5 år, fra læsesalen til dimissionsdagen.</p>
+                <p class="text-dim max-w-lg mx-auto leading-relaxed">Et lille tilbageblik på de sidste 5,5 år, fra læsesalen til dimissionsdagen.</p>
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 h-[500px]">
@@ -400,9 +406,17 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
               <p class="text-dim/60 text-sm italic">Mandag d. 1. juni 2026 (Forventet)</p>
             </div>
 
-            {/* Spotify Embed */}
-            <div class="pt-8 border-t border-white/5">
-                <p class="text-[10px] text-dim font-bold uppercase tracking-[0.2em] mb-4">Dimission Vibe Playlist</p>
+            {/* Spotify & Requested Songs Section (Phase 5) */}
+            <div class="pt-8 border-t border-white/5 space-y-6">
+                <div class="flex items-center justify-between">
+                    <p class="text-[10px] text-dim font-bold uppercase tracking-[0.2em]">Dimission Vibe</p>
+                    <div class="flex gap-1">
+                        <div class="w-1 h-3 bg-accent/40 animate-music-bar-1"></div>
+                        <div class="w-1 h-4 bg-accent/60 animate-music-bar-2"></div>
+                        <div class="w-1 h-2 bg-accent/30 animate-music-bar-3"></div>
+                    </div>
+                </div>
+                
                 <iframe 
                     style="border-radius:24px" 
                     src="https://open.spotify.com/embed/playlist/37i9dQZF1DXaXB8f7pzhH7?utm_source=generator&theme=0" 
@@ -413,6 +427,25 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                     loading="lazy">
                 </iframe>
+
+                {/* Music Wall (Phase 5) */}
+                <div class="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+                    <h4 class="text-[10px] font-black uppercase tracking-widest text-accent flex items-center gap-2">
+                        <i class="fa-solid fa-record-vinyl"></i> Top Ønsker
+                    </h4>
+                    {requestedSongs.length > 0 ? (
+                        <ul class="space-y-3">
+                            {requestedSongs.map((r, i) => (
+                                <li class="text-xs text-white/80 flex justify-between items-center group/song">
+                                    <span class="truncate pr-4 italic leading-relaxed">"{r.song_request}"</span>
+                                    <span class="text-[8px] font-bold text-dim/40 uppercase whitespace-nowrap">— {r.name.split(' ')[0]}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p class="text-[10px] italic text-dim/40 uppercase tracking-widest">Ingen ønsker endnu...</p>
+                    )}
+                </div>
             </div>
           </div>
         </div>
@@ -440,6 +473,11 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                             </select>
                         </div>
                     </div>
+                    {/* Song Request Field (Phase 5) */}
+                    <div class="space-y-2 relative z-10">
+                        <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Ønsk et nummer (Sang + Kunstner)</label>
+                        <input name="song_request" type="text" placeholder="Gilli - Kiko..." class="w-full px-6 py-4 bg-white/5 border border-glass-border rounded-2xl text-white outline-none focus:border-accent transition-all placeholder:text-white/10" />
+                    </div>
                     <div class="space-y-2 relative z-10">
                         <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Besked (Valgfrit)</label>
                         <textarea name="message" rows="3" placeholder="Jeg glæder mig helt vildt!..." class="w-full px-6 py-4 bg-white/5 border border-glass-border rounded-2xl text-white outline-none focus:border-accent transition-all resize-none placeholder:text-white/10"></textarea>
@@ -453,7 +491,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
 
             <div class="md:col-span-2 space-y-8 text-left">
                 <h3 class="text-2xl font-bold text-white uppercase tracking-tighter italic">Hvem kommer?</h3>
-                <div class="p-10 rounded-[48px] bg-accent/5 border border-accent/10 space-y-8 min-h-[400px] flex flex-col items-center justify-start text-left overflow-y-auto max-h-[500px]">
+                <div class="p-10 rounded-[48px] bg-accent/5 border border-accent/10 space-y-8 min-h-[400px] flex flex-col items-center justify-start text-left overflow-y-auto max-h-[600px]">
                     {rsvps && rsvps.length > 0 ? (
                         <div class="w-full space-y-6">
                             <p class="text-accent text-[10px] font-black uppercase tracking-[0.3em] border-b border-accent/10 pb-6 mb-4">
@@ -490,7 +528,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { q: "Hvad er dresscoden?", a: "Dresscoden er Smart Casual. Kom som du er, men vi kan godt lide lidt glimmer for at fejre de 5 år!", icon: "fa-shirt" },
+              { q: "Hvad er dresscoden?", a: "Dresscoden er Smart Casual. Kom som du er, men vi kan godt lide lidt glimmer for at fejre de 5,5 år!", icon: "fa-shirt" },
               { q: "Ledsager (+1)?", a: "Vi har begrænset plads, så tjek venligst din invitation for '+1' status eller kontakt mig direkte hvis du er i tvivl.", icon: "fa-user-plus" },
               { q: "Gaveønsker?", a: "Din tilstedeværelse er den største gave! Hvis du absolut vil give noget, kan du finde min ønskeseddel her: [Link kommer snart].", icon: "fa-gift" },
               { q: "Transport?", a: "Baren ligger tæt på Nørreport Station. Vi fraråder bilkørsel da parkering i K er præcis så svært som man forestiller sig.", icon: "fa-train" }
@@ -716,4 +754,12 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
   @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
   .animate-marquee { animation: marquee 40s linear infinite; }
   .animate-marquee:hover { animation-play-state: paused; }
+  
+  @keyframes music-bar {
+    0%, 100% { height: 2px; }
+    50% { height: 16px; }
+  }
+  .animate-music-bar-1 { animation: music-bar 0.8s ease-in-out infinite; }
+  .animate-music-bar-2 { animation: music-bar 1.2s ease-in-out infinite; }
+  .animate-music-bar-3 { animation: music-bar 1.0s ease-in-out infinite; }
 </style>
