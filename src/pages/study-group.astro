@@ -301,6 +301,87 @@ const milestones = [
                         </div>
                     </section>
 
+                    {/* Phase 3: Den Røde Bog & Dekret-tavlen */}
+                    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        
+                        {/* Den Røde Bog (Reading List) */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Den Røde Bog <span class="text-red-600 text-sm">(Læseliste)</span></h3>
+                            <div class="space-y-4">
+                                {[
+                                    { title: "Capital in the 21st Century", author: "Piketty", readers: ["Stalin", "Mao"] },
+                                    { title: "Macroeconomic Theory", author: "Romer", readers: ["Che"] },
+                                    { title: "Seminar Core Paper #1", author: "Kollektivet", readers: ["Mao"] }
+                                ].map(book => (
+                                    <div class="p-6 bg-white/[0.03] border border-white/5 rounded-3xl group hover:border-red-600/20 transition-all">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <div class="space-y-1">
+                                                <h4 class="font-bold text-white uppercase tracking-tight">{book.title}</h4>
+                                                <p class="text-white/40 text-xs italic">{book.author}</p>
+                                            </div>
+                                            <i class="fa-solid fa-book-open text-red-600/20 group-hover:text-red-600 transition-colors"></i>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            {book.readers.map(reader => (
+                                                <span class="px-2 py-1 bg-red-600/10 border border-red-600/20 rounded-md text-[8px] font-black uppercase tracking-widest text-red-600">
+                                                    Læst af {reader}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Dekret-tavlen (Message Board) */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Dekret-tavlen</h3>
+                            <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] space-y-8 relative overflow-hidden">
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-red-600/5 blur-3xl rounded-full"></div>
+                                <div class="space-y-6">
+                                    {[
+                                        { from: "Stalin", msg: "Nyt udkast til seminaropgaven ligger på Overleaf. Til gennemsyn!", time: "2 timer siden" },
+                                        { from: "Che", msg: "Jeg tager kaffe og croissanter med på tirsdag. Husk kopper!", time: "5 timer siden" }
+                                    ].map(decree => (
+                                        <div class="space-y-2 border-l-2 border-red-600/30 pl-6 py-2">
+                                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-red-600">
+                                                <span>Kamerat {decree.from}</span>
+                                                <span class="text-white/20">{decree.time}</span>
+                                            </div>
+                                            <p class="text-sm font-medium italic text-white/80">"{decree.msg}"</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button class="w-full py-4 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white font-black uppercase tracking-widest rounded-2xl transition-all border border-dashed border-white/10">Udsted nyt dekret +</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Kollektivkassen (Ledger) */}
+                    <section class="max-w-4xl mx-auto space-y-16">
+                        <div class="flex items-center gap-6">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Kollektivkassen <span class="text-red-600 text-sm">(Regnskab)</span></h3>
+                            <div class="h-px flex-1 bg-white/5"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {[
+                                { name: "Stalin", balance: -50, item: "Print & Papir" },
+                                { name: "Mao", balance: 120, item: "Specialkaffe" },
+                                { name: "Che", balance: -70, item: "Snacks" }
+                            ].map(entry => (
+                                <div class="p-8 bg-white/[0.03] border border-white/5 rounded-[40px] text-center space-y-4 group hover:border-red-600/20 transition-all">
+                                    <h4 class="text-lg font-black uppercase tracking-tight text-white/60">{entry.name}</h4>
+                                    <div class={`text-3xl font-black tabular-nums ${entry.balance >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                        {entry.balance >= 0 ? '+' : ''}{entry.balance} kr.
+                                    </div>
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-white/20 italic">Sidst: {entry.item}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <p class="text-center text-[10px] text-white/10 uppercase tracking-[0.2em]">Retfærdighed gennem ligelig fordeling af kaffe-omkostninger.</p>
+                    </section>
+
                     {/* Footer / Manifesto */}
                     <footer class="pt-20 border-t border-white/5 text-center space-y-8">
                         <div class="flex justify-center gap-4 text-red-600/20 text-4xl">
