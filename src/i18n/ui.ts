@@ -50,6 +50,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/cv',
             children: [
                 { label: 'Profil', url: '/about' },
+                { label: 'Modgang & Målrettethed', url: '/modgang-og-maalrettethed' },
                 { label: 'Erhvervserfaring', url: '/experience' },
                 { label: 'Uddannelse', url: '/education' },
                 { label: 'Kompetencer', url: '/skills' },
