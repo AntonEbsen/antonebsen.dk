@@ -1,76 +1,176 @@
 ---
 import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
+
+// Supabase Init
+const supabaseUrl = import.meta.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Fetch Intel
+let { data: intel } = await supabase
+    .from('study_war_room')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+const intelList = intel || [];
 ---
 
 <StudyGroupLayout title="Krigsrådet" activePage="war-room">
-    <div class="space-y-32">
-        <div class="space-y-4">
-            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Krigsrådet <br/> <span class="text-red-600">& Strategi</span></h2>
-            <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
-                Visuelt braindump. Her pinner vi alt fra geniale grafer til de vildeste teorier.
-            </p>
+    <div class="space-y-16">
+        <div class="flex justify-between items-end">
+            <div class="space-y-4">
+                <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">Krigs- <br/> <span class="text-red-600">rådet</span></h2>
+                <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                    Visuel intelligens og strategisk koordination. Her arkiveres plots, ligninger og hemmelige dokumenter.
+                </p>
+            </div>
+            
+            <label class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-glow-red cursor-pointer group">
+                Tilføj Intel +
+                <input type="file" id="intel-upload" class="hidden" accept="image/*" />
+            </label>
         </div>
 
-        {/* Pinboard Grid */}
-        <section class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-            {[
-                { type: 'image', content: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&q=80&w=400', caption: 'Ligningssystem v1.2' },
-                { type: 'note', title: 'Teoretisk Gennembrud', text: 'Hvad hvis vi kobler Solow-modellen med AI-adoption rater?' },
-                { type: 'equation', formula: 'Y = A K^\\alpha (L E)^{1-\\alpha}', desc: 'Basismodellen til seminar' },
-                { type: 'image', content: 'https://images.unsplash.com/photo-1551288049-bbbda543661e?auto=format&fit=crop&q=80&w=400', caption: 'Data-output fra Stata' },
-                { type: 'note', title: 'Husk', text: 'Spørg vejleder om heteroskedasticitet i vores datasæt.' },
-                { type: 'image', content: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80&w=400', caption: 'Inspirationsgraf' }
-            ].map(item => (
-                <div class="break-inside-avoid bg-white/[0.02] border border-white/5 rounded-3xl overflow-hidden hover:border-red-600/30 transition-all group cursor-pointer shadow-lg">
-                    {item.type === 'image' && (
-                        <div class="relative">
-                            <img src={item.content} alt={item.caption} class="w-full grayscale group-hover:grayscale-0 transition-all duration-700" />
-                            <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black to-transparent">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-white/80">{item.caption}</p>
-                            </div>
+        {/* Intel Grid */}
+        <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8" id="intel-grid">
+            {intelList.length > 0 ? intelList.map(item => (
+                <div class="break-inside-avoid bg-white/[0.02] border border-white/5 rounded-[32px] overflow-hidden group hover:border-red-600/30 transition-all shadow-xl">
+                    <div class="relative">
+                        <img src={item.image_url} alt={item.title} class="w-full grayscale group-hover:grayscale-0 transition-all duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+                            <p class="text-white font-black uppercase tracking-widest text-[10px] mb-1">Af Kamerat {item.member_id.charAt(0).toUpperCase() + item.member_id.slice(1)}</p>
+                            <h4 class="text-white font-bold text-lg leading-tight uppercase tracking-tight">{item.title}</h4>
                         </div>
-                    )}
-                    {item.type === 'note' && (
-                        <div class="p-8 space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-2 h-2 rounded-full bg-red-600 shadow-glow-red"></div>
-                                <h4 class="font-bold text-white uppercase tracking-tight">{item.title}</h4>
-                            </div>
-                            <p class="text-white/40 text-sm italic leading-relaxed">"{item.text}"</p>
-                        </div>
-                    )}
-                    {item.type === 'equation' && (
-                        <div class="p-8 bg-red-600/5 text-center space-y-6">
-                            <div class="text-xl font-serif text-white/90 py-4">
-                                {item.formula}
-                            </div>
-                            <div class="pt-4 border-t border-red-600/20">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-red-600">{item.desc}</p>
-                            </div>
-                        </div>
-                    )}
+                    </div>
                 </div>
-            ))}
-            
-            {/* Add New Slide */}
-            <div class="break-inside-avoid p-12 border-2 border-dashed border-white/5 rounded-3xl flex flex-col items-center justify-center gap-6 group hover:border-red-600/30 transition-all cursor-pointer">
-                <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-white/10 group-hover:bg-red-600 group-hover:text-white transition-all">
-                    <i class="fa-solid fa-plus text-2xl"></i>
+            )) : (
+                <div class="col-span-full py-32 text-center border-2 border-dashed border-white/5 rounded-[48px]">
+                    <p class="text-white/10 font-black uppercase tracking-[0.3em] italic">Ingen intel indrapporteret endnu...</p>
                 </div>
-                <div class="text-center">
-                    <p class="font-black uppercase tracking-widest text-white/20 group-hover:text-white transition-all text-[10px]">Tilføj til Krigsrådet</p>
-                    <p class="text-[8px] text-white/5 uppercase mt-1">Billede, note eller ligning</p>
-                </div>
-            </div>
-        </section>
-
-        {/* Tactical Footer */}
-        <section class="max-w-2xl mx-auto p-10 bg-red-600/5 border border-red-600/10 rounded-[40px] text-center space-y-4">
-            <i class="fa-solid fa-shield-halved text-red-600 text-3xl"></i>
-            <h4 class="text-lg font-bold text-white uppercase tracking-tight italic">Strategisk Fortrolighed</h4>
-            <p class="text-white/30 text-xs italic">Alt indhold i Krigsrådet er underlagt kollektivets tavshedspligt. Ingen lækager til reaktionen (medstuderende).</p>
-        </section>
+            )}
+        </div>
     </div>
+
+    {/* Title Modal (appears after file selection) */}
+    <div id="intel-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-md w-full space-y-8 shadow-2xl">
+             <div class="space-y-2">
+                 <h4 class="text-2xl font-black uppercase italic text-white leading-none">Deklassificer Intel</h4>
+                 <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Giv dit bidrag en titel</p>
+             </div>
+             <div class="space-y-6">
+                 <div class="space-y-2">
+                     <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Beskrivelse / Titel</label>
+                     <input type="text" id="intel-title" placeholder="Fx: Stata Plot - Vækstrate 2024" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                 </div>
+                 <div class="flex gap-4">
+                     <button id="confirm-upload" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all shadow-glow-red">Gem Intel</button>
+                     <button id="cancel-upload" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <script shadow:true>
+        import { createClient } from '@supabase/supabase-js';
+        const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+        const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        const uploadInp = document.getElementById('intel-upload');
+        const modal = document.getElementById('intel-modal');
+        const titleInp = document.getElementById('intel-title');
+        const confirmBtn = document.getElementById('confirm-upload');
+        const cancelBtn = document.getElementById('cancel-upload');
+        const grid = document.getElementById('intel-grid');
+
+        const comradeId = document.cookie.split('; ').find(row => row.startsWith('study_comrade='))?.split('=')[1];
+
+        let selectedFile = null;
+
+        uploadInp?.addEventListener('change', (e) => {
+            selectedFile = e.target.files?.[0];
+            if (selectedFile) {
+                modal?.classList.remove('hidden');
+            }
+        });
+
+        cancelBtn?.addEventListener('click', () => {
+            modal?.classList.add('hidden');
+            selectedFile = null;
+            uploadInp.value = '';
+        });
+
+        confirmBtn?.addEventListener('click', async () => {
+            if (!selectedFile || !comradeId) return;
+
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Tilføjer...';
+
+            const fileName = `${Date.now()}_${selectedFile.name}`;
+            const filePath = `intel/${fileName}`;
+
+            // 1. Upload to Storage
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('study-resources')
+                .upload(filePath, selectedFile);
+
+            if (uploadError) {
+                alert("Upload fejl: " + uploadError.message);
+                confirmBtn.disabled = false;
+                confirmBtn.innerText = 'Gem Intel';
+                return;
+            }
+
+            // 2. Get Public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('study-resources')
+                .getPublicUrl(filePath);
+
+            // 3. Insert into Table
+            const { error: dbError } = await supabase
+                .from('study_war_room')
+                .insert([{
+                    member_id: comradeId,
+                    title: titleInp.value || "Untitled Intel",
+                    image_url: publicUrl
+                }]);
+
+            if (!dbError) {
+                window.location.reload();
+            } else {
+                alert("Database fejl: " + dbError.message);
+                confirmBtn.disabled = false;
+                confirmBtn.innerText = 'Gem Intel';
+            }
+        });
+
+        // Realtime Subscription
+        supabase
+            .channel('public:study_war_room')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'study_war_room' }, payload => {
+                const item = payload.new;
+                const from = item.member_id.charAt(0).toUpperCase() + item.member_id.slice(1);
+                
+                const html = `
+                    <div class="break-inside-avoid bg-white/[0.02] border border-white/5 rounded-[32px] overflow-hidden group hover:border-red-600/30 transition-all shadow-xl animate-in fade-in zoom-in duration-1000">
+                        <div class="relative">
+                            <img src="${item.image_url}" alt="${item.title}" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+                                <p class="text-white font-black uppercase tracking-widest text-[10px] mb-1">Af Kamerat ${from}</p>
+                                <h4 class="text-white font-bold text-lg leading-tight uppercase tracking-tight">${item.title}</h4>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // If the "no intel" message exists, remove it
+                if (grid.innerText.includes('Ingen intel')) grid.innerHTML = '';
+                grid.insertAdjacentHTML('afterbegin', html);
+            })
+            .subscribe();
+    </script>
 </StudyGroupLayout>

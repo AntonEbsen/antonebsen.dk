@@ -112,6 +112,13 @@ export const prerender = false;
     </div>
 
     <script shadow:true>
+        import { createClient } from '@supabase/supabase-js';
+        const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+        const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        const comradeId = document.cookie.split('; ').find(row => row.startsWith('study_comrade='))?.split('=')[1];
+
         let timer;
         let timeLeft = 25 * 60;
         const display = document.getElementById('timer-display');
@@ -125,23 +132,71 @@ export const prerender = false;
             display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
+        async function syncTimerState(isActive) {
+            if (!comradeId) return;
+            if (isActive) {
+                await supabase.from('study_active_timers').upsert({
+                    member_id: comradeId,
+                    start_time: new Date().toISOString(),
+                    duration_minutes: 25,
+                    is_active: true
+                }, { onConflict: 'member_id' });
+            } else {
+                await supabase.from('study_active_timers')
+                    .update({ is_active: false })
+                    .eq('member_id', comradeId);
+            }
+        }
+
+        async function finishSession() {
+            if (!comradeId) return;
+            
+            // 1. Clear active timer
+            await syncTimerState(false);
+
+            // 2. Update Leaderboard (+1 Pomodoro)
+            const { data: current } = await supabase
+                .from('study_leaderboard')
+                .select('pomodoros')
+                .eq('member_id', comradeId)
+                .single();
+            
+            await supabase.from('study_leaderboard').upsert({
+                member_id: comradeId,
+                pomodoros: (current?.pomodoros || 0) + 1,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'member_id' });
+
+            alert("Arbejdet for kollektivet er afsluttet! Din indsats er registreret på leaderboardet.");
+        }
+
         if (startBtn) {
-            startBtn.addEventListener('click', () => {
+            startBtn.addEventListener('click', async () => {
                 if (timer) {
+                    // Pause logic
                     clearInterval(timer);
                     timer = null;
                     startBtn.textContent = 'Fortsæt';
                     startBtn.classList.remove('bg-red-700');
+                    await syncTimerState(false);
                 } else {
+                    // Start logic
                     startBtn.textContent = 'Hver minut tæller...';
                     startBtn.classList.add('bg-red-700');
-                    timer = setInterval(() => {
+                    await syncTimerState(true);
+                    
+                    timer = setInterval(async () => {
                         if (timeLeft > 0) {
                             timeLeft--;
                             updateDisplay();
                         } else {
                             clearInterval(timer);
-                            alert("Arbejdet for kollektivet er afsluttet! Tag en velfortjent pause.");
+                            timer = null;
+                            await finishSession();
+                            timeLeft = 25 * 60;
+                            updateDisplay();
+                            startBtn.textContent = 'Start Ny Session';
+                            startBtn.classList.remove('bg-red-700');
                         }
                     }, 1000);
                 }
@@ -149,12 +204,16 @@ export const prerender = false;
         }
 
         if (resetBtn) {
-            resetBtn.addEventListener('click', () => {
+            resetBtn.addEventListener('click', async () => {
                 clearInterval(timer);
                 timer = null;
                 timeLeft = 25 * 60;
                 updateDisplay();
-                if (startBtn) startBtn.textContent = 'Start Session';
+                if (startBtn) {
+                    startBtn.textContent = 'Start Session';
+                    startBtn.classList.remove('bg-red-700');
+                }
+                await syncTimerState(false);
             });
         }
     </script>

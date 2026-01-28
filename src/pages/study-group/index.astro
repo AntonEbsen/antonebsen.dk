@@ -70,12 +70,28 @@ const decrees = liveDecrees && liveDecrees.length > 0 ? liveDecrees.map(d => ({
                 </p>
             </div>
             
-            <div class="bg-white/[0.03] border border-white/5 rounded-[48px] p-10 flex items-center justify-between group hover:border-red-600/30 transition-all duration-500">
-                <div class="space-y-2">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Dagens Manifest</p>
-                    <p class="text-xl font-bold italic text-white/90">"Hver yder efter evne, hver modtager efter behov."</p>
+            <div class="space-y-8">
+                <div class="bg-white/[0.03] border border-white/5 rounded-[48px] p-10 flex items-center justify-between group hover:border-red-600/30 transition-all duration-500">
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Dagens Manifest</p>
+                        <p class="text-xl font-bold italic text-white/90">"Hver yder efter evne, hver modtager efter behov."</p>
+                    </div>
+                    <i class="fa-solid fa-quote-right text-4xl text-red-600/20 group-hover:text-red-600/40 transition-colors"></i>
                 </div>
-                <i class="fa-solid fa-quote-right text-4xl text-red-600/20 group-hover:text-red-600/40 transition-colors"></i>
+
+                {/* Active Workers Section */}
+                <div id="active-workers-container" class="hidden animate-in fade-in slide-in-from-right-8 duration-700">
+                    <div class="bg-red-600/5 border border-red-600/10 rounded-[48px] p-10 flex items-center gap-8 group">
+                        <div class="relative">
+                            <i class="fa-solid fa-person-digging text-4xl text-red-600 animate-bounce"></i>
+                            <div class="absolute -top-2 -right-2 w-4 h-4 bg-red-600 rounded-full border-4 border-[#0a0a0a]"></div>
+                        </div>
+                        <div class="flex-1 space-y-1">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Mobilisering i gang</p>
+                            <h4 id="active-workers-text" class="text-xl font-bold italic text-white uppercase tracking-tighter leading-none">Indlæser indsats...</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -283,4 +299,34 @@ const decrees = liveDecrees && liveDecrees.length > 0 ? liveDecrees.map(d => ({
         
         if (!error) window.location.reload();
     });
+
+    // Active Workers Realtime Logic
+    const workersContainer = document.getElementById('active-workers-container');
+    const workersText = document.getElementById('active-workers-text');
+
+    async function updateActiveWorkers() {
+        const { data: active } = await supabase
+            .from('study_active_timers')
+            .select('*')
+            .eq('is_active', true);
+        
+        if (active && active.length > 0) {
+            workersContainer?.classList.remove('hidden');
+            const names = active.map(a => a.member_id.charAt(0).toUpperCase() + a.member_id.slice(1)).join(' & ');
+            workersText.textContent = `${names} producerer lige nu...`;
+        } else {
+            workersContainer?.classList.add('hidden');
+        }
+    }
+
+    // Initial check
+    updateActiveWorkers();
+
+    // Listen for changes
+    supabase
+        .channel('public:study_active_timers')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'study_active_timers' }, () => {
+            updateActiveWorkers();
+        })
+        .subscribe();
 </script>
