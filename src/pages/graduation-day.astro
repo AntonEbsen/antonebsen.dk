@@ -7,11 +7,11 @@ export const prerender = false;
 ---
 
 <Layout title="Graduering & Reception | Anton Ebsen" description="Fejring af cand.polit graduering på Grønjordskollegiet">
-  <main class="min-h-screen bg-[#fafafa] text-[#1a1a1a] font-sans selection:bg-accent/30">
+  <main class="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-accent/30">
     
     {/* Minimalist Navigation */}
-    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-8 flex justify-between items-center mix-blend-difference">
-        <a href="/graduation" class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-white transition-all group">
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-8 flex justify-between items-center">
+        <a href="/graduation" class="text-[10px] font-black uppercase tracking-[0.3em] text-dim hover:text-accent transition-all group">
             <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform mr-2"></i> Tilbage til festen
         </a>
     </nav>
@@ -21,17 +21,17 @@ export const prerender = false;
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-accent/5 blur-[120px] rounded-full -z-10 animate-pulse"></div>
         
         <div class="space-y-6 max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div class="w-12 h-1 px-4 bg-accent/20 mx-auto rounded-full mb-8"></div>
+            <div class="w-12 h-1 bg-accent/20 mx-auto rounded-full mb-8"></div>
             <h1 class="text-6xl md:text-8xl font-black tracking-tighter italic leading-[0.9]">
                 Reception & <br/>
-                <span class="text-accent underline decoration-accent/20 underline-offset-8">Middag</span>
+                <span class="text-accent text-glow-accent outline-text-accent">Middag</span>
             </h1>
-            <p class="text-xl md:text-2xl text-black/60 font-medium max-w-xl mx-auto leading-relaxed pt-8">
+            <p class="text-xl md:text-2xl text-dim font-medium max-w-xl mx-auto leading-relaxed pt-8">
                 En hyggelig eftermiddag for familie og venner på Grønjordskollegiet, før den store fest går i gang.
             </p>
             <div class="pt-12 flex flex-col items-center gap-4">
-                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-black/30">Gem Datoen</p>
-                <p class="text-2xl font-bold italic">Juni 2026</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.4em] text-dim">Gem Datoen</p>
+                <p class="text-2xl font-bold italic text-white">Juni 2026</p>
             </div>
         </div>
 
@@ -41,57 +41,57 @@ export const prerender = false;
     </section>
 
     {/* The Venue Section */}
-    <section class="max-w-6xl mx-auto px-6 py-32 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center border-t border-black/5">
-        <div class="space-y-10 order-2 lg:order-1">
+    <section class="max-w-6xl mx-auto px-6 py-32 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center border-t border-white/5">
+        <div class="space-y-10 order-2 lg:order-1 text-left">
             <div class="space-y-4">
                 <span class="text-accent text-[10px] font-black uppercase tracking-[0.3em]">Hvor & Hvornår</span>
-                <h2 class="text-4xl md:text-5xl font-black italic tracking-tight">Grønjordskollegiet</h2>
-                <p class="text-black/60 text-lg leading-relaxed">
+                <h2 class="text-4xl md:text-5xl font-black italic tracking-tight text-white">Grønjordskollegiet</h2>
+                <p class="text-dim text-lg leading-relaxed">
                     Vi samles i mit køkken/fælleslokale på Grønjordskollegiet til nogle timer med god mad og fejring. 
                     Det er uformelt, varmt og lige nøjagtig som det skal være.
                 </p>
             </div>
 
             <div class="space-y-6">
-                <div class="flex items-start gap-6 p-8 rounded-[32px] bg-white border border-black/5 shadow-sm group hover:shadow-md transition-shadow">
+                <div class="flex items-start gap-6 p-8 rounded-[32px] bg-white/[0.03] border border-glass-border shadow-sm group hover:border-accent/40 transition-all">
                     <div class="w-12 h-12 rounded-2xl bg-accent-soft flex items-center justify-center text-accent text-xl transition-transform group-hover:rotate-12">
                         <i class="fa-solid fa-map-location-dot"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-lg mb-1">Find Vej</h4>
-                        <p class="text-black/50 text-sm">Blok X, Etage Y, Køkken Z. <br/> (Præcis lokation kommer tættere på)</p>
+                        <h4 class="font-bold text-lg mb-1 text-white">Find Vej</h4>
+                        <p class="text-dim text-sm">Blok X, Etage Y, Køkken Z. <br/> (Præcis lokation kommer tættere på)</p>
                     </div>
                 </div>
 
-                <div class="flex items-start gap-6 p-8 rounded-[32px] bg-white border border-black/5 shadow-sm group hover:shadow-md transition-shadow">
+                <div class="flex items-start gap-6 p-8 rounded-[32px] bg-white/[0.03] border border-glass-border shadow-sm group hover:border-accent/40 transition-all">
                     <div class="w-12 h-12 rounded-2xl bg-accent-soft flex items-center justify-center text-accent text-xl transition-transform group-hover:rotate-12">
                         <i class="fa-solid fa-clock"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-lg mb-1">Tidspunkt</h4>
-                        <p class="text-black/50 text-sm">Vi starter omkring kl. 14:00. <br/> (Placeholder tidspunkt)</p>
+                        <h4 class="font-bold text-lg mb-1 text-white">Tidspunkt</h4>
+                        <p class="text-dim text-sm">Vi starter omkring kl. 14:00. <br/> (Placeholder tidspunkt)</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="aspect-[4/5] rounded-[64px] bg-black/5 overflow-hidden order-1 lg:order-2 relative group shadow-2xl">
+        <div class="aspect-[4/5] rounded-[64px] bg-white/5 overflow-hidden order-1 lg:order-2 relative group shadow-2xl">
             <div class="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div class="w-full h-full flex items-center justify-center italic text-black/5 text-9xl">
+            <div class="w-full h-full flex items-center justify-center italic text-white/5 text-9xl">
                 <i class="fa-solid fa-house-chimney"></i>
             </div>
-            <div class="absolute bottom-10 left-10 p-8 bg-white/80 backdrop-blur-md rounded-[32px] border border-black/5 max-w-xs animate-in slide-in-from-bottom-4">
+            <div class="absolute bottom-10 left-10 p-8 bg-black/60 backdrop-blur-md rounded-[32px] border border-white/10 max-w-xs animate-in slide-in-from-bottom-4">
                 <p class="text-accent font-black uppercase text-[10px] tracking-widest mb-2">Note fra kokken</p>
-                <p class="text-sm font-medium italic">"Jeg glæder mig til at vise jer mit hjem og servere noget af min yndlingsmad for jer."</p>
+                <p class="text-sm font-medium italic text-white/90">"Jeg glæder mig til at vise jer mit hjem og servere noget af min yndlingsmad for jer."</p>
             </div>
         </div>
     </section>
 
     {/* The Menu Section */}
-    <section class="bg-white py-40 border-y border-black/5 px-6">
+    <section class="bg-white/[0.02] py-40 border-y border-white/5 px-6">
         <div class="max-w-4xl mx-auto text-center space-y-20">
             <div class="space-y-4">
-                <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter">Menuen</h2>
+                <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white">Menuen</h2>
                 <div class="w-12 h-1 bg-accent mx-auto rounded-full"></div>
             </div>
 
@@ -100,12 +100,12 @@ export const prerender = false;
                     <div class="space-y-6 group">
                         <div class="flex items-center gap-4">
                             <span class="text-accent/20 text-4xl font-black italic group-hover:text-accent transition-colors">0{i+1}</span>
-                            <div class="h-px flex-1 bg-black/5"></div>
-                            <i class={`fa-solid ${item.icon} text-black/10 group-hover:text-black/40 transition-colors`}></i>
+                            <div class="h-px flex-1 bg-white/5"></div>
+                            <i class={`fa-solid ${item.icon} text-white/10 group-hover:text-white/40 transition-colors`}></i>
                         </div>
                         <div class="space-y-2">
-                            <h3 class="text-2xl font-bold uppercase tracking-tight">{item.title}</h3>
-                            <p class="text-black/50 leading-relaxed italic">{item.description}</p>
+                            <h3 class="text-2xl font-bold uppercase tracking-tight text-white">{item.title}</h3>
+                            <p class="text-dim leading-relaxed italic">{item.description}</p>
                         </div>
                     </div>
                 ))}
@@ -116,48 +116,48 @@ export const prerender = false;
     {/* RSVP for Reception */}
     <section class="max-w-4xl mx-auto px-6 py-40 text-center space-y-16">
         <div class="space-y-4">
-            <h2 class="text-5xl font-black italic tracking-tighter">Svar udbedes</h2>
-            <p class="text-black/50 text-lg">Giv venligst besked om I kan komme til receptionen.</p>
+            <h2 class="text-5xl md:text-6xl font-black italic tracking-tighter text-white">Svar udbedes</h2>
+            <p class="text-dim text-lg">Giv venligst besked om I kan komme til receptionen.</p>
         </div>
 
         <form class="max-w-xl mx-auto grid grid-cols-1 gap-6 text-left">
             <div class="space-y-2">
-                <label class="text-[10px] font-black uppercase tracking-widest pl-2">Navn</label>
-                <input required type="text" placeholder="Navn..." class="w-full px-8 py-5 bg-white border border-black/10 rounded-3xl outline-none focus:border-accent transition-all placeholder:text-black/10" />
+                <label class="text-[10px] font-black uppercase tracking-widest pl-4 text-dim">Navn</label>
+                <input required type="text" placeholder="Navn..." class="w-full px-8 py-5 bg-white/5 border border-glass-border rounded-3xl outline-none focus:border-accent transition-all placeholder:text-white/10 text-white" />
             </div>
             <div class="space-y-2">
-                <label class="text-[10px] font-black uppercase tracking-widest pl-2">Antal Personer</label>
-                <select class="w-full px-8 py-5 bg-white border border-black/10 rounded-3xl outline-none focus:border-accent transition-all appearance-none cursor-pointer font-medium">
-                    <option value="1">1 Person</option>
-                    <option value="2">2 Personer</option>
-                    <option value="3">3 Personer</option>
-                    <option value="4">4 Personer</option>
+                <label class="text-[10px] font-black uppercase tracking-widest pl-4 text-dim">Antal Personer</label>
+                <select class="w-full px-8 py-5 bg-white/5 border border-glass-border rounded-3xl outline-none focus:border-accent transition-all appearance-none cursor-pointer font-medium text-white">
+                    <option value="1" class="bg-black">1 Person</option>
+                    <option value="2" class="bg-black">2 Personer</option>
+                    <option value="3" class="bg-black">3 Personer</option>
+                    <option value="4" class="bg-black">4 Personer</option>
                 </select>
             </div>
             <div class="space-y-2">
-                <label class="text-[10px] font-black uppercase tracking-widest pl-2">Eventuelle Allergier</label>
-                <textarea rows="3" placeholder="Skriv her..." class="w-full px-8 py-5 bg-white border border-black/10 rounded-3xl outline-none focus:border-accent transition-all resize-none placeholder:text-black/10"></textarea>
+                <label class="text-[10px] font-black uppercase tracking-widest pl-4 text-dim">Eventuelle Allergier</label>
+                <textarea rows="3" placeholder="Skriv her..." class="w-full px-8 py-5 bg-white/5 border border-glass-border rounded-3xl outline-none focus:border-accent transition-all resize-none placeholder:text-white/10 text-white"></textarea>
             </div>
-            <button type="submit" class="w-full py-6 bg-[#1a1a1a] text-white font-black rounded-3xl hover:bg-accent hover:text-black transition-all shadow-xl active:scale-[0.98]">
+            <button type="submit" class="w-full py-6 bg-white text-black font-black rounded-3xl hover:bg-accent transition-all shadow-xl active:scale-[0.98]">
                 Send Bekræftelse <i class="fa-solid fa-paper-plane ml-3 text-xs"></i>
             </button>
-            <p class="text-[10px] text-black/30 font-bold uppercase tracking-widest text-center pt-4">
+            <p class="text-[10px] text-dim/30 font-bold uppercase tracking-widest text-center pt-4">
                 (Dette er en placeholder formular)
             </p>
         </form>
     </section>
 
     {/* Footer */}
-    <footer class="py-20 text-center border-t border-black/5">
-        <p class="text-black/40 text-sm font-medium">Anton Ebsen — 2026 — Grønjordskollegiet</p>
+    <footer class="py-20 text-center border-t border-white/5">
+        <p class="text-dim text-sm font-medium">Anton Ebsen — 2026 — Grønjordskollegiet</p>
     </footer>
 
   </main>
 </Layout>
 
 <style>
-  /* Inter / Outfit Vibes via Layout.astro should handle it, but adding local refinement */
-  .text-glow-accent { text-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+  .text-glow-accent { text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+  .outline-text-accent { -webkit-text-stroke: 1px rgba(212, 175, 55, 0.2); }
   
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
