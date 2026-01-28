@@ -1,0 +1,76 @@
+---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+
+export const prerender = false;
+---
+
+<StudyGroupLayout title="Krigsrådet" activePage="war-room">
+    <div class="space-y-32">
+        <div class="space-y-4">
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Krigsrådet <br/> <span class="text-red-600">& Strategi</span></h2>
+            <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                Visuelt braindump. Her pinner vi alt fra geniale grafer til de vildeste teorier.
+            </p>
+        </div>
+
+        {/* Pinboard Grid */}
+        <section class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+            {[
+                { type: 'image', content: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&q=80&w=400', caption: 'Ligningssystem v1.2' },
+                { type: 'note', title: 'Teoretisk Gennembrud', text: 'Hvad hvis vi kobler Solow-modellen med AI-adoption rater?' },
+                { type: 'equation', formula: 'Y = A K^\\alpha (L E)^{1-\\alpha}', desc: 'Basismodellen til seminar' },
+                { type: 'image', content: 'https://images.unsplash.com/photo-1551288049-bbbda543661e?auto=format&fit=crop&q=80&w=400', caption: 'Data-output fra Stata' },
+                { type: 'note', title: 'Husk', text: 'Spørg vejleder om heteroskedasticitet i vores datasæt.' },
+                { type: 'image', content: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80&w=400', caption: 'Inspirationsgraf' }
+            ].map(item => (
+                <div class="break-inside-avoid bg-white/[0.02] border border-white/5 rounded-3xl overflow-hidden hover:border-red-600/30 transition-all group cursor-pointer shadow-lg">
+                    {item.type === 'image' && (
+                        <div class="relative">
+                            <img src={item.content} alt={item.caption} class="w-full grayscale group-hover:grayscale-0 transition-all duration-700" />
+                            <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black to-transparent">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-white/80">{item.caption}</p>
+                            </div>
+                        </div>
+                    )}
+                    {item.type === 'note' && (
+                        <div class="p-8 space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full bg-red-600 shadow-glow-red"></div>
+                                <h4 class="font-bold text-white uppercase tracking-tight">{item.title}</h4>
+                            </div>
+                            <p class="text-white/40 text-sm italic leading-relaxed">"{item.text}"</p>
+                        </div>
+                    )}
+                    {item.type === 'equation' && (
+                        <div class="p-8 bg-red-600/5 text-center space-y-6">
+                            <div class="text-xl font-serif text-white/90 py-4">
+                                {item.formula}
+                            </div>
+                            <div class="pt-4 border-t border-red-600/20">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-red-600">{item.desc}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            ))}
+            
+            {/* Add New Slide */}
+            <div class="break-inside-avoid p-12 border-2 border-dashed border-white/5 rounded-3xl flex flex-col items-center justify-center gap-6 group hover:border-red-600/30 transition-all cursor-pointer">
+                <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center text-white/10 group-hover:bg-red-600 group-hover:text-white transition-all">
+                    <i class="fa-solid fa-plus text-2xl"></i>
+                </div>
+                <div class="text-center">
+                    <p class="font-black uppercase tracking-widest text-white/20 group-hover:text-white transition-all text-[10px]">Tilføj til Krigsrådet</p>
+                    <p class="text-[8px] text-white/5 uppercase mt-1">Billede, note eller ligning</p>
+                </div>
+            </div>
+        </section>
+
+        {/* Tactical Footer */}
+        <section class="max-w-2xl mx-auto p-10 bg-red-600/5 border border-red-600/10 rounded-[40px] text-center space-y-4">
+            <i class="fa-solid fa-shield-halved text-red-600 text-3xl"></i>
+            <h4 class="text-lg font-bold text-white uppercase tracking-tight italic">Strategisk Fortrolighed</h4>
+            <p class="text-white/30 text-xs italic">Alt indhold i Krigsrådet er underlagt kollektivets tavshedspligt. Ingen lækager til reaktionen (medstuderende).</p>
+        </section>
+    </div>
+</StudyGroupLayout>

@@ -1,0 +1,91 @@
+---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+
+export const prerender = false;
+---
+
+<StudyGroupLayout title="Statistik-Kommissariatet" activePage="analytics">
+    <div class="space-y-32">
+        <div class="space-y-4">
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Statistik- <br/> <span class="text-red-600">Kommissariatet</span></h2>
+            <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                Overvågning af kollektivets produktivitet. Fra ordtal til arbejdstimer – intet undgår kommissariatets blik.
+            </p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Chart 1: Words Written */}
+            <div class="bg-white/[0.02] border border-white/5 rounded-[48px] p-12 space-y-8">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-black uppercase tracking-widest text-white/80 italic">Produktion af Ord</h3>
+                    <span class="text-red-600 font-black text-xs uppercase tracking-widest">Sidste 7 dage</span>
+                </div>
+                <div class="h-64 flex items-end justify-between gap-4">
+                    {[
+                        { day: 'Man', val: 40 },
+                        { day: 'Tir', val: 70 },
+                        { day: 'Ons', val: 55 },
+                        { day: 'Tor', val: 90 },
+                        { day: 'Fre', val: 120 },
+                        { day: 'Lør', val: 30 },
+                        { day: 'Søn', val: 50 }
+                    ].map(item => (
+                        <div class="flex-1 flex flex-col items-center gap-4 group">
+                            <div class="w-full bg-red-600/10 rounded-t-xl group-hover:bg-red-600/30 transition-all relative" style={`height: ${item.val}%`}>
+                                <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    {item.val * 10}
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-black text-white/20 uppercase tracking-widest">{item.day}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Chart 2: Hours Worked */}
+            <div class="bg-white/[0.02] border border-white/5 rounded-[48px] p-12 space-y-8">
+                 <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-black uppercase tracking-widest text-white/80 italic">Arbejdskraft-Timer</h3>
+                    <span class="text-red-600 font-black text-xs uppercase tracking-widest">Akkumuleret</span>
+                </div>
+                <div class="space-y-8">
+                    {[
+                        { name: 'Stalin', hours: 45, max: 60 },
+                        { name: 'Mao', hours: 52, max: 60 },
+                        { name: 'Che', hours: 38, max: 60 }
+                    ].map(member => (
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-end">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Kamerat {member.name}</span>
+                                <span class="text-red-600 font-black text-xs">{member.hours}t / {member.max}t</span>
+                            </div>
+                            <div class="h-4 w-full bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-600 shadow-glow-red transition-all duration-1000" style={`width: ${(member.hours / member.max) * 100}%`}></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Global Stats Grid */}
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+                { label: "Total Ord", val: "12.450", icon: "fa-pen-nib" },
+                { label: "Læste Kilder", val: "28", icon: "fa-book-open" },
+                { label: "Møder Afholdt", val: "14", icon: "fa-handshake" },
+                { label: "Kaffeforbrug (kop)", val: "184", icon: "fa-coffee" }
+            ].map(stat => (
+                <div class="p-8 bg-white/[0.03] border border-white/5 rounded-[40px] text-center space-y-4 group hover:border-red-600/30 transition-all">
+                    <div class="w-12 h-12 bg-red-600/10 rounded-2xl flex items-center justify-center mx-auto text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
+                        <i class={`fa-solid ${stat.icon}`}></i>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-3xl font-black text-white italic tracking-tighter">{stat.val}</p>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-white/20">{stat.label}</p>
+                    </div>
+                </div>
+            ))}
+        </section>
+    </div>
+</StudyGroupLayout>
