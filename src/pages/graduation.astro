@@ -24,9 +24,12 @@ if (Astro.request.method === "POST") {
     error = "Der opstod en fejl. Prøv igen.";
   }
 }
+
+// Placeholder for the event date (e.g., June 1st, 2026)
+const eventDate = "2026-06-01T18:00:00"; 
 ---
 
-<Layout title="Graduering | Anton Ebsen" description="Fejring af min Masters gradudation">
+<Layout title="Dimission | Anton Ebsen" description="Fejring af min Masters dimission">
   <main class="min-h-[80vh] flex flex-col items-center justify-center px-4 py-20 relative overflow-hidden">
     
     {/* Background Glow */}
@@ -38,7 +41,7 @@ if (Astro.request.method === "POST") {
           <div class="w-16 h-16 bg-accent-soft rounded-2xl border border-accent/20 flex items-center justify-center mx-auto mb-6 shadow-glow">
              <i class="fa-solid fa-graduation-cap text-accent text-3xl"></i>
           </div>
-          <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Graduering</h1>
+          <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Dimission</h1>
           <p class="text-dim text-lg">Indtast adgangskoden for at se invitationen til fejringen.</p>
         </div>
 
@@ -66,7 +69,7 @@ if (Astro.request.method === "POST") {
         <p class="text-xs text-dim/50 italic">Hint: Titlen på min uddannelse (cand.xxxx)</p>
       </div>
     ) : (
-      <div class="max-w-2xl w-full text-center space-y-12 animate-in fade-in zoom-in-95 duration-1000">
+      <div id="celebration-content" class="max-w-3xl w-full text-center space-y-12 animate-in fade-in zoom-in-95 duration-1000" data-event-date={eventDate}>
         <div class="space-y-6">
           <div class="inline-block px-4 py-1.5 rounded-full bg-accent-soft border border-accent/20 text-accent font-bold text-sm tracking-widest uppercase mb-4 animate-bounce">
             Klar til fejring! 🎉
@@ -75,52 +78,92 @@ if (Astro.request.method === "POST") {
             Jeg er nu <span class="text-accent italic">Master.</span>
           </h1>
           <p class="text-xl text-dim leading-relaxed max-w-lg mx-auto">
-            Efter 5 års studier er jeg endelig cand.polit! Det skal fejres, og du er hermed inviteret til min graduationsfest.
+            Efter 5 års studier er jeg endelig cand.polit! Det skal fejres, og du er hermed inviteret til min dimissionsfest.
           </p>
+        </div>
+
+        {/* Countdown Timer */}
+        <div class="grid grid-cols-4 gap-4 max-w-lg mx-auto py-8 border-y border-glass-border">
+          <div class="space-y-1">
+            <span id="days" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Dage</p>
+          </div>
+          <div class="space-y-1">
+            <span id="hours" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Timer</p>
+          </div>
+          <div class="space-y-1">
+            <span id="minutes" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Min.</p>
+          </div>
+          <div class="space-y-1">
+            <span id="seconds" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Sek.</p>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-          <div class="p-6 rounded-3xl bg-white/[0.03] border border-glass-border space-y-4 hover:bg-white/[0.05] transition-colors">
-            <div class="w-10 h-10 bg-accent-soft rounded-xl flex items-center justify-center text-accent">
-              <i class="fa-solid fa-location-dot"></i>
+          <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500 group">
+            <div class="flex items-start justify-between">
+                <div class="w-12 h-12 bg-accent-soft rounded-2xl flex items-center justify-center text-accent">
+                    <i class="fa-solid fa-location-dot text-xl"></i>
+                </div>
+                <a 
+                    href="https://www.google.com/maps/search/?api=1&query=Hatten+Bar+København" 
+                    target="_blank" 
+                    class="text-xs font-bold text-accent/60 hover:text-accent flex items-center gap-2 border border-accent/20 px-3 py-1.5 rounded-full transition-colors"
+                >
+                    Vis på kort <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
             </div>
-            <div>
-              <h3 class="text-white font-bold text-lg">Lokation</h3>
-              <p class="text-dim">Hatten Bar</p>
-              <p class="text-dim/60 text-sm">København</p>
+            <div class="space-y-2">
+              <h3 class="text-white font-bold text-xl uppercase tracking-tighter">Lokation</h3>
+              <p class="text-dim text-lg">Hatten Bar</p>
+              <p class="text-dim/60 text-sm">Prinsensgade 12, 1305 København K</p>
             </div>
           </div>
 
-          <div class="p-6 rounded-3xl bg-white/[0.03] border border-glass-border space-y-4 hover:bg-white/[0.05] transition-colors">
-             <div class="w-10 h-10 bg-accent-soft rounded-xl flex items-center justify-center text-accent">
+          <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500">
+             <div class="w-12 h-12 bg-accent-soft rounded-2xl flex items-center justify-center text-accent text-xl">
               <i class="fa-solid fa-calendar-days"></i>
             </div>
-            <div>
-              <h3 class="text-white font-bold text-lg">Dato & Tid</h3>
-              <p class="text-dim">TBA (Placeholder)</p>
-              <p class="text-dim/60 text-sm">Opdateres snarest</p>
+            <div class="space-y-2">
+              <h3 class="text-white font-bold text-xl uppercase tracking-tighter">Dato & Tid</h3>
+              <p class="text-dim text-lg">TBA (Placeholder)</p>
+              <p class="text-dim/60 text-sm">Følg med her på siden for opdateringer</p>
             </div>
           </div>
         </div>
 
-        <div class="p-10 rounded-[40px] bg-gradient-to-b from-accent/10 to-transparent border border-accent/20 space-y-6">
-          <h2 class="text-2xl font-bold text-white italic">Invitation & RSVP</h2>
-          <p class="text-dim">
-            Glæder mig til at se dig til en kold drink og god stemning!
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="mailto:anton.ebsen@gmail.com?subject=Tilmeld: Graduationsfest" 
-              class="px-8 py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all shadow-xl"
-            >
-              Tilmeld via mail
-            </a>
-             <a 
-              href="/" 
-              class="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-2xl hover:bg-white/5 transition-all text-sm flex items-center justify-center"
-            >
-              Tilbage til forsiden
-            </a>
+        <div class="p-12 rounded-[48px] bg-gradient-to-b from-accent/10 to-transparent border border-accent/20 space-y-8 relative overflow-hidden group">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.05),transparent_70%)]"></div>
+          
+          <div class="relative z-10 space-y-4">
+            <h2 class="text-3xl font-bold text-white italic tracking-tight">Vi glæder os!</h2>
+            <p class="text-dim text-lg leading-relaxed max-w-md mx-auto">
+              Det bliver en aften fyldt med gode minder og masser af kolde drinks. 
+            </p>
+            
+            <div class="py-4">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold animate-pulse">
+                    <i class="fa-solid fa-clock"></i> RSVP Deadline: TBA
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <a 
+                    href="mailto:anton.ebsen@gmail.com?subject=Tilmeld: Dimissionsfest" 
+                    class="px-10 py-5 bg-white text-black font-extrabold rounded-2xl hover:bg-accent transition-all shadow-2xl hover:scale-105 duration-300"
+                >
+                    Tilmeld via mail
+                </a>
+                <a 
+                    href="/" 
+                    class="px-8 py-5 bg-transparent border border-white/20 text-white font-bold rounded-2xl hover:bg-white/5 transition-all text-sm flex items-center justify-center"
+                >
+                    Tilbage til forsiden
+                </a>
+            </div>
           </div>
         </div>
       </div>
@@ -129,10 +172,63 @@ if (Astro.request.method === "POST") {
   </main>
 </Layout>
 
+<script>
+  import confetti from 'canvas-confetti';
+
+  // Trigger Confetti if authenticated (element exists)
+  const celebration = document.getElementById('celebration-content');
+  if (celebration) {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0, colors: ['#d4af37', '#ffffff', '#b8860b'] };
+
+    function randomInRange(min: number, max: number) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval: any = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      // since particles fall down, start a bit higher than random
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+    }, 250);
+
+    // Countdown Logic
+    const eventDateStr = celebration.getAttribute('data-event-date');
+    if (eventDateStr) {
+        const targetDate = new Date(eventDateStr).getTime();
+        
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            if (distance < 0) return;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days')!.innerText = String(days).padStart(2, '0');
+            document.getElementById('hours')!.innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes')!.innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds')!.innerText = String(seconds).padStart(2, '0');
+        };
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+  }
+</script>
+
 <style>
-  /* Optional: Add some floating particles or confetti styles if needed */
-  @keyframes scanBar {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(100%); }
+  .shadow-glow {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
   }
 </style>
