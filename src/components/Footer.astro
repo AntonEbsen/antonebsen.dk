@@ -9,93 +9,93 @@ const isEn = lang === 'en';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer" role="contentinfo">
-  <div class="footer-container">
+<footer class="bg-[#020202] border-t border-glass-border text-dim mt-20 relative pb-5 before:content-[''] before:absolute before:-top-px before:left-[20%] before:right-[20%] before:h-px before:bg-[radial-gradient(circle,var(--accent)_0%,transparent_100%)] before:opacity-50" role="contentinfo">
+  <div class="max-w-[1200px] mx-auto px-5 py-7">
 
-    <div class="footer-top">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.15fr] gap-6 items-start pb-5 border-b border-glass-border">
       <!-- Brand / kort pitch -->
-      <section class="footer-col footer-brand" aria-label="Om siden">
-        <h2 class="footer-title">{t('footer.brand.title')}</h2>
-        <p class="footer-text">
+      <section class="flex flex-col" aria-label="Om siden">
+        <h2 class="text-lg m-0 mb-2 leading-tight font-bold text-white">{t('footer.brand.title')}</h2>
+        <p class="m-0 text-white/80 text-[14px] leading-relaxed">
           {t('footer.brand.text')}
         </p>
 
-        <div class="footer-cta">
-          <a class="footer-btn" href={isEn ? "/en/cv" : "/cv"}>
+        <div class="flex flex-wrap gap-2.5 mt-3">
+          <a class="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/15 font-bold no-underline text-text hover:bg-white/20 hover:no-underline" href={isEn ? "/en/cv" : "/cv"}>
             <i class="fa-solid fa-file-lines" aria-hidden="true"></i> {isEn ? "CV" : "CV"}
           </a>
-          <a class="footer-btn footer-btn-ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          <a class="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-transparent border border-white/20 font-bold no-underline text-text hover:bg-white/20 hover:no-underline" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
             <i class="fa-solid fa-download" aria-hidden="true"></i> {isEn ? "Download PDF" : "Download PDF"}
           </a>
         </div>
       </section>
 
       <!-- Navigation -->
-      <nav class="footer-col" aria-label="Footer navigation">
-        <h3 class="footer-title-sm">{t('footer.col.links')}</h3>
-        <ul class="footer-list">
+      <nav class="flex flex-col" aria-label="Footer navigation">
+        <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.links')}</h3>
+        <ul class="list-none m-0 p-0">
           {navItems.map(item => (
-            <li><a href={item.url}>{item.label}</a></li>
+            <li class="my-2"><a href={item.url} class="text-text no-underline hover:underline">{item.label}</a></li>
           ))}
         </ul>
       </nav>
 
       <!-- Udvalgte sider -->
-      <nav class="footer-col" aria-label="Udvalgte sider">
-        <h3 class="footer-title-sm">{t('footer.col.selected')}</h3>
-        <ul class="footer-list">
-            <li><a href={isEn ? "/en/resources" : "/resources"}>Downloads</a></li>
-            <li><a href={isEn ? "/en/gallery" : "/gallery"}>Galleri</a></li>
-            <li><a href={isEn ? "/en/timeline" : "/timeline"}>Milepæle</a></li>
-            <li><a href="/changelog">Versionshistorik 📜</a></li>
+      <nav class="flex flex-col" aria-label="Udvalgte sider">
+        <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.selected')}</h3>
+        <ul class="list-none m-0 p-0">
+            <li class="my-2"><a href={isEn ? "/en/resources" : "/resources"} class="text-text no-underline hover:underline">Downloads</a></li>
+            <li class="my-2"><a href={isEn ? "/en/gallery" : "/gallery"} class="text-text no-underline hover:underline">Galleri</a></li>
+            <li class="my-2"><a href={isEn ? "/en/timeline" : "/timeline"} class="text-text no-underline hover:underline">Milepæle</a></li>
+            <li class="my-2"><a href="/changelog" class="text-text no-underline hover:underline">Versionshistorik 📜</a></li>
         </ul>
       </nav>
 
       <!-- Kontakt + SoMe -->
-      <section class="footer-col footer-contact" aria-label="Kontakt og profiler">
-        <h3 class="footer-title-sm">{t('footer.col.contact')}</h3>
+      <section class="flex flex-col" aria-label="Kontakt og profiler">
+        <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.contact')}</h3>
 
-        <address class="footer-text footer-address">
-          <div class="footer-address-row">
-            <span class="footer-kicker">Email</span><br>
-            <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>
+        <address class="not-italic text-[14px] text-white/90">
+          <div class="mt-2.5 first:mt-0">
+            <span class="font-bold text-white/90 text-xs uppercase tracking-wide">Email</span><br>
+            <a href="mailto:anton.ebsen@gmail.com" class="text-text no-underline hover:underline">anton.ebsen@gmail.com</a>
           </div>
 
-          <div class="footer-address-row">
-            <span class="footer-kicker">{isEn ? "Phone" : "Telefon"}</span><br>
-            <a href="tel:+4525740131">+45 25 74 01 31</a>
+          <div class="mt-2.5">
+            <span class="font-bold text-white/90 text-xs uppercase tracking-wide">{isEn ? "Phone" : "Telefon"}</span><br>
+            <a href="tel:+4525740131" class="text-text no-underline hover:underline">+45 25 74 01 31</a>
           </div>
 
-          <div class="footer-address-row">
-            <span class="footer-kicker">{isEn ? "Location" : "Lokation"}</span><br>
+          <div class="mt-2.5">
+            <span class="font-bold text-white/90 text-xs uppercase tracking-wide">{isEn ? "Location" : "Lokation"}</span><br>
             {isEn ? "Copenhagen, DK" : "København, DK"}
           </div>
         </address>
 
-        <div class="footer-social" aria-label="Sociale links">
-          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <div class="flex gap-2.5 mt-3 sm:justify-start justify-center w-full sm:w-auto" aria-label="Sociale links">
+          <a href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
             <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
           </a>
-          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
+          <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
             <i class="fa-brands fa-github" aria-hidden="true"></i>
           </a>
         </div>
       </section>
     </div>
 
-    <div class="footer-bottom">
-      <nav class="footer-legal" aria-label="Juridiske sider">
-           <a href="#">Privacy</a>
+    <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between pt-4 sm:flex-row flex-col sm:items-center items-start">
+      <nav class="flex flex-wrap gap-2 items-center text-[13px] text-white/80" aria-label="Juridiske sider">
+           <a href="#" class="hover:underline text-text">Privacy</a>
            <span aria-hidden="true">·</span>
-           <a href="#">Terms</a>
+           <a href="#" class="hover:underline text-text">Terms</a>
            <span aria-hidden="true">·</span>
            <a href="/dashboard" class="opacity-10 hover:opacity-100 text-gold-500 transition-opacity" title="Quantum Analytics">π</a>
       </nav>
 
-      <p class="footer-copy">
+      <p class="m-0 text-[13px] text-white/80">
         &copy; {year} Anton Meier Ebsen Jørgensen. {isEn ? "All rights reserved." : "Alle rettigheder forbeholdes."}
-        <span class="footer-copy-muted">{isEn ? "Source code:" : "Kildekode:"}
-          <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener">GitHub</a>.
+        <span class="text-white/70 ml-2">{isEn ? "Source code:" : "Kildekode:"}
+          <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" rel="noopener" class="text-text underline">GitHub</a>.
         </span>
         <a href="https://www.oratorium.dk/" target="_blank" rel="noopener" class="opacity-80 hover:opacity-100 text-gold-500 ml-2 transition-opacity" title="Oratorium">
             <i class="fa-solid fa-cross"></i>

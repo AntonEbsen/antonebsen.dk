@@ -1,8 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const pdf = require("pdf-parse");
+import { PDFParse as pdf } from 'pdf-parse';
 
 const documentsDir = './src/data/documents';
 const outputFile = './src/lib/generated-rag.ts';
@@ -28,10 +26,12 @@ async function processDocs() {
             if (file.endsWith('.pdf')) {
                 console.log(`   - Reading PDF: ${file}`);
                 const buffer = await fs.readFile(filePath);
-                const data = await pdf(buffer);
+                const parser = new pdf({ data: buffer });
+                const data = await parser.getText();
                 // Clean up text slightly to save space
                 const cleanText = data.text.replace(/\n\s*\n/g, '\n').trim();
                 allText += `\n--- START DOCUMENT: ${file} ---\n${cleanText}\n--- END DOCUMENT ---\n`;
+                await parser.destroy();
             }
             else if (file.endsWith('.txt') || file.endsWith('.md')) {
                 console.log(`   - Reading Text: ${file}`);

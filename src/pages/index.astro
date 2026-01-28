@@ -14,7 +14,7 @@ import myImage from '@assets/img/billede-af-mig.jpg';
 
 import { createClient } from '@supabase/supabase-js';
 
-export const prerender = false;
+// export const prerender = false; // Switched to SSG for performance
 
 const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
 let { data: skillsRows, error } = await supabase.from('skills').select('*');
