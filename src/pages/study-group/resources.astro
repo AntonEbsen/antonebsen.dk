@@ -1,7 +1,24 @@
----
 import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
+
+// Supabase Init
+const supabaseUrl = import.meta.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Fetch Resources
+let { data: liveResources } = await supabase
+    .from('study_resources')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+const resources = liveResources && liveResources.length > 0 ? liveResources : [
+    { name: "Piketty_Capital_21st.pdf", type: "PDF", size: "4.2 MB", tag: "Teori", file_url: "#" },
+    { name: "DST_Micro_Extract_2024.xlsx", type: "DATA", size: "12.8 MB", tag: "Data", file_url: "#" },
+    { name: "Seminar_Draft_v2.1.tex", type: "LATEX", size: "145 KB", tag: "Udkast", file_url: "#" }
+];
 ---
 
 <StudyGroupLayout title="Ressource-Hvælvingen" activePage="resources">
@@ -27,14 +44,9 @@ export const prerender = false;
             {/* Folkets Bibliotek (Enhanced Resources) */}
             <div class="space-y-12">
                 <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Folkets Bibliotek</h3>
-                <div class="space-y-4">
-                    {[
-                        { name: "Piketty_Capital_21st.pdf", type: "PDF", size: "4.2 MB", tag: "Teori" },
-                        { name: "DST_Micro_Extract_2024.xlsx", type: "DATA", size: "12.8 MB", tag: "Data" },
-                        { name: "Seminar_Draft_v2.1.tex", type: "LATEX", size: "145 KB", tag: "Udkast" },
-                        { name: "Romer_Macroeconomics.pdf", type: "PDF", size: "2.1 MB", tag: "Pensum" }
-                    ].map(file => (
-                        <div class="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex items-center justify-between group hover:border-red-600/30 transition-all cursor-pointer">
+                <div class="space-y-4" id="resource-list">
+                    {resources.map(file => (
+                        <a href={file.file_url} target="_blank" class="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex items-center justify-between group hover:border-red-600/30 transition-all cursor-pointer">
                             <div class="flex items-center gap-6">
                                 <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 group-hover:bg-red-600 group-hover:text-white transition-all">
                                     <i class={`fa-solid ${file.type === 'PDF' ? 'fa-file-pdf' : file.type === 'DATA' ? 'fa-file-excel' : 'fa-file-code'}`}></i>
@@ -47,11 +59,63 @@ export const prerender = false;
                             <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[8px] font-black uppercase tracking-widest text-red-600">
                                 {file.tag}
                             </span>
-                        </div>
+                        </a>
                     ))}
-                    <button class="w-full py-4 border-2 border-dashed border-white/5 rounded-3xl text-white/20 font-black uppercase tracking-widest text-[10px] hover:border-red-600/30 hover:text-white transition-all mt-4">Upload til biblioteket +</button>
+                    
+                    <label class="w-full py-4 border-2 border-dashed border-white/5 rounded-3xl text-white/20 font-black uppercase tracking-widest text-[10px] hover:border-red-600/30 hover:text-white transition-all mt-4 flex items-center justify-center cursor-pointer group">
+                        <span class="group-hover:scale-110 transition-transform">Upload til biblioteket +</span>
+                        <input type="file" id="file-upload" class="hidden" />
+                    </label>
                 </div>
             </div>
+
+            <script>
+                import { createClient } from '@supabase/supabase-js';
+                const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+                const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+                const supabase = createClient(supabaseUrl, supabaseKey);
+
+                const fileInp = document.getElementById('file-upload') as HTMLInputElement;
+
+                fileInp?.addEventListener('change', async (e) => {
+                    const file = (e.target as HTMLInputElement).files?.[0];
+                    if (!file) return;
+
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const filePath = `resources/${fileName}`;
+
+                    // 1. Upload to Storage
+                    const { data: uploadData, error: uploadError } = await supabase.storage
+                        .from('study-resources')
+                        .upload(filePath, file);
+
+                    if (uploadError) {
+                        alert("Fejl ved upload: " + uploadError.message);
+                        return;
+                    }
+
+                    // 2. Get Public URL
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('study-resources')
+                        .getPublicUrl(filePath);
+
+                    // 3. Insert into Table
+                    const fileType = file.name.split('.').pop()?.toUpperCase() || 'FILE';
+                    const fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+                    const { error: dbError } = await supabase
+                        .from('study_resources')
+                        .insert([{
+                            name: file.name,
+                            type: fileType,
+                            size: fileSize,
+                            tag: 'Ny',
+                            file_url: publicUrl
+                        }]);
+
+                    if (!dbError) window.location.reload();
+                });
+            </script>
 
             {/* Vigtige Links */}
             <div class="space-y-12">

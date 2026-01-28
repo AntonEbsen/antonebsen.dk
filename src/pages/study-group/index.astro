@@ -1,8 +1,41 @@
----
 import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
 import group from '../../data/group.json';
+import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
+
+// Supabase Init
+const supabaseUrl = import.meta.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Fetch Moral Index
+let { data: liveMoral } = await supabase
+    .from('study_moral')
+    .select('*');
+
+// Fetch Decrees
+let { data: liveDecrees } = await supabase
+    .from('study_decrees')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(5);
+
+// Fallback to mock if empty
+const moralData = liveMoral && liveMoral.length > 0 ? liveMoral : [
+    { member_id: "stalin", mood_score: 85, status_text: "Revolutionær Gejst" },
+    { member_id: "mao", mood_score: 92, status_text: "Partiloyal Fokus" },
+    { member_id: "che", mood_score: 60, status_text: "Presset af Reaktionen" }
+];
+
+const decrees = liveDecrees && liveDecrees.length > 0 ? liveDecrees.map(d => ({
+    from: d.member_id.charAt(0).toUpperCase() + d.member_id.slice(1),
+    msg: d.message,
+    time: new Date(d.created_at).toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })
+})) : [
+    { from: "Stalin", msg: "Nyt udkast til seminaropgaven ligger på Overleaf. Til gennemsyn!", time: "2 timer siden" },
+    { from: "Che", msg: "Jeg tager kaffe og croissanter med på tirsdag. Husk kopper!", time: "5 timer siden" }
+];
 ---
 
 <StudyGroupLayout title="Hovedkvarter" activePage="dashboard">
@@ -73,24 +106,47 @@ export const prerender = false;
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Moral-indeks */}
             <div class="space-y-12">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Moral-indeks</h3>
+                <div class="flex justify-between items-end">
+                    <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Moral-indeks</h3>
+                    <button id="open-moral-modal" class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-red-600 transition-colors">Opdater Status +</button>
+                </div>
                 <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] space-y-10 relative overflow-hidden">
                     <div class="space-y-8">
-                        {[
-                            { name: "Stalin", mood: 85, status: "Revolutionær Gejst" },
-                            { name: "Mao", mood: 92, status: "Partiloyal Fokus" },
-                            { name: "Che", mood: 60, status: "Presset af Reaktionen" }
-                        ].map(member => (
+                        {moralData.map(m => (
                             <div class="space-y-3">
                                 <div class="flex justify-between items-end">
-                                    <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Kamerat {member.name}</span>
-                                    <span class="text-red-600 text-[8px] font-bold italic uppercase tracking-widest">{member.status}</span>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Kamerat {m.member_id.charAt(0).toUpperCase() + m.member_id.slice(1)}</span>
+                                    <span class="text-red-600 text-[8px] font-bold italic uppercase tracking-widest">{m.status_text}</span>
                                 </div>
                                 <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <div class="h-full bg-red-600 shadow-glow-red" style={`width: ${member.mood}%`}></div>
+                                    <div class="h-full bg-red-600 shadow-glow-red" style={`width: ${m.mood_score}%`}></div>
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+
+                {/* Moral Update Modal (hidden by default) */}
+                <div id="moral-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+                    <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-md w-full space-y-8 shadow-2xl">
+                         <div class="space-y-2">
+                             <h4 class="text-2xl font-black uppercase italic text-white leading-none">Status Opdatering</h4>
+                             <p class="text-[10px] font-black uppercase tracking-widest text-red-600">For Kollektivets Skyld</p>
+                         </div>
+                         <div class="space-y-6">
+                             <div class="space-y-2">
+                                 <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Revolutions-gejst (0-100)</label>
+                                 <input type="range" id="mood-range" min="0" max="100" class="w-full accent-red-600" />
+                             </div>
+                             <div class="space-y-2">
+                                 <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Kort status-besked</label>
+                                 <input type="text" id="status-input" placeholder="Fx: 'Partiloyal Fokus'" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                             </div>
+                             <div class="flex gap-4">
+                                 <button id="save-moral" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all">Gem Status</button>
+                                 <button id="close-moral-modal" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
+                             </div>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -99,11 +155,8 @@ export const prerender = false;
             <div class="space-y-12">
                 <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Dekret-tavlen</h3>
                 <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] space-y-8 relative overflow-hidden">
-                    <div class="space-y-6">
-                        {[
-                            { from: "Stalin", msg: "Nyt udkast til seminaropgaven ligger på Overleaf. Til gennemsyn!", time: "2 timer siden" },
-                            { from: "Che", msg: "Jeg tager kaffe og croissanter med på tirsdag. Husk kopper!", time: "5 timer siden" }
-                        ].map(decree => (
+                    <div class="space-y-6" id="decree-list">
+                        {decrees.map(decree => (
                             <div class="space-y-2 border-l-2 border-red-600/30 pl-6 py-2">
                                 <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-red-600">
                                     <span>Kamerat {decree.from}</span>
@@ -113,7 +166,21 @@ export const prerender = false;
                             </div>
                         ))}
                     </div>
-                    <button class="w-full py-4 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white font-black uppercase tracking-widest rounded-2xl transition-all border border-dashed border-white/10">Udsted nyt dekret +</button>
+
+                    {/* Live Decree Form */}
+                    <div class="pt-6 border-t border-white/5">
+                         <div class="flex gap-4">
+                            <input 
+                                type="text" 
+                                id="decree-input"
+                                placeholder="Udsted et nyt dekret..." 
+                                class="flex-1 bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-red-600/50 transition-all"
+                            />
+                            <button id="send-decree" class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-xl transition-all shadow-glow-red">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                         </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -145,4 +212,74 @@ export const prerender = false;
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Supabase Collaboration Logic
+    import { createClient } from '@supabase/supabase-js';
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const decreeInput = document.getElementById('decree-input');
+    const sendBtn = document.getElementById('send-decree');
+    const decreeList = document.getElementById('decree-list');
+    const comradeId = document.cookie.split('; ').find(row => row.startsWith('study_comrade='))?.split('=')[1];
+
+    async function sendDecree() {
+        if (!decreeInput.value || !comradeId) return;
+        
+        const { error } = await supabase
+            .from('study_decrees')
+            .insert([{ member_id: comradeId, message: decreeInput.value }]);
+        
+        if (!error) decreeInput.value = '';
+    }
+
+    sendBtn?.addEventListener('click', sendDecree);
+    decreeInput?.addEventListener('keypress', (e) => e.key === 'Enter' && sendDecree());
+
+    // Listen for new decrees
+    supabase
+        .channel('public:study_decrees')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'study_decrees' }, payload => {
+            const newD = payload.new;
+            const from = newD.member_id.charAt(0).toUpperCase() + newD.member_id.slice(1);
+            const time = new Date(newD.created_at).toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' });
+            
+            const html = `
+                <div class="space-y-2 border-l-2 border-red-600/30 pl-6 py-2 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-red-600">
+                        <span>Kamerat ${from}</span>
+                        <span class="text-white/20">${time}</span>
+                    </div>
+                    <p class="text-sm font-medium italic text-white/80">"${newD.message}"</p>
+                </div>
+            `;
+            decreeList.insertAdjacentHTML('afterbegin', html);
+        })
+        .subscribe();
+
+    // Moral Modal Logic
+    const openMoralBtn = document.getElementById('open-moral-modal');
+    const closeMoralBtn = document.getElementById('close-moral-modal');
+    const moralModal = document.getElementById('moral-modal');
+    const saveMoralBtn = document.getElementById('save-moral');
+    const moodRange = document.getElementById('mood-range');
+    const statusInput = document.getElementById('status-input');
+
+    openMoralBtn?.addEventListener('click', () => moralModal?.classList.remove('hidden'));
+    closeMoralBtn?.addEventListener('click', () => moralModal?.classList.add('hidden'));
+
+    saveMoralBtn?.addEventListener('click', async () => {
+        if (!comradeId) return;
+        const { error } = await supabase
+            .from('study_moral')
+            .upsert({ 
+                member_id: comradeId, 
+                mood_score: parseInt(moodRange.value), 
+                status_text: statusInput.value,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'member_id' });
+        
+        if (!error) window.location.reload();
+    });
 </script>

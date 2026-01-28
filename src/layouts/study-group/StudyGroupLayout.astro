@@ -1,6 +1,7 @@
 ---
 import Layout from '../Layout.astro';
 import group from '../../data/group.json';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -10,6 +11,7 @@ interface Props {
 const { title, activePage } = Astro.props;
 
 let authenticated = Astro.cookies.get('study_auth')?.value === 'manifestet';
+const comradeId = Astro.cookies.get('study_comrade')?.value;
 let error = "";
 
 if (Astro.request.method === "POST") {
@@ -30,9 +32,11 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title={`${title} | De tre kammerater`} description="Koordinationsportal for Stalin, Mao og Che">
+    <ViewTransitions />
     <main class="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-red-600/30">
         
         {!authenticated ? (
+            // Password Gate
             <div class="h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600 blur-[150px] rounded-full"></div>
@@ -60,6 +64,31 @@ if (Astro.request.method === "POST") {
                             Tilgå Portalen
                         </button>
                     </form>
+                </div>
+            </div>
+        ) : !Astro.cookies.get('study_comrade')?.value ? (
+            // Identity Selection (Individual Login)
+            <div class="h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
+                <div class="max-w-4xl w-full relative z-10 space-y-16 text-center">
+                    <div class="space-y-4">
+                        <h2 class="text-3xl font-black uppercase tracking-tighter italic text-white">Vælg din identitet</h2>
+                        <p class="text-white/20 text-[10px] font-black uppercase tracking-widest">For at personliggøre revolutionen</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {group.map(member => (
+                            <button 
+                                onclick={`document.cookie = "study_comrade=${member.id.toLowerCase()}; path=/study-group; max-age=${60 * 60 * 24 * 30}"; window.location.reload();`}
+                                class="bg-white/[0.02] border border-white/5 rounded-[40px] p-8 space-y-6 group hover:bg-white/[0.04] hover:border-red-600/20 transition-all duration-500 text-center"
+                            >
+                                <img src={member.image} alt={member.name} class="w-24 h-24 mx-auto rounded-2xl grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" />
+                                <div class="space-y-1">
+                                    <h3 class="text-xl font-black uppercase text-white">{member.alias}</h3>
+                                    <p class="text-red-600 text-[10px] font-black uppercase tracking-widest">{member.role}</p>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
         ) : (
@@ -111,9 +140,12 @@ if (Astro.request.method === "POST") {
                                 <img 
                                     src={member.image} 
                                     alt={member.alias} 
-                                    class="w-10 h-10 rounded-full border-2 border-[#0a0a0a] grayscale group-hover:grayscale-0 transition-all cursor-help" 
+                                    class={`w-10 h-10 rounded-full border-2 grayscale group-hover:grayscale-0 transition-all cursor-help ${comradeId === member.id ? 'border-red-600 grayscale-0 shadow-glow-red' : 'border-[#0a0a0a]'}`} 
                                     title={`Kamerat ${member.alias}`}
                                 />
+                                {comradeId === member.id && (
+                                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-red-600 rounded-full border-2 border-[#0a0a0a]"></div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -122,6 +154,14 @@ if (Astro.request.method === "POST") {
                     <i class="fa-solid fa-right-from-bracket"></i>
                     Log ud
                 </a>
+                {/* Logout / Switch Comrade */}
+                <button 
+                    onclick="document.cookie = 'study_comrade=; path=/study-group; expires=Thu, 01 Jan 1970 00:00:00 UTC;'; window.location.reload();"
+                    class="w-14 h-14 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center text-white/20 hover:text-red-600 hover:border-red-600/30 transition-all group mt-auto"
+                    title="Skift Kammerat"
+                >
+                    <i class="fa-solid fa-right-from-bracket group-hover:scale-110 transition-transform"></i>
+                </button>
             </div>
         </aside>
 

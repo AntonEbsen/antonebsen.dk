@@ -1,7 +1,37 @@
----
 import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
+
+// Supabase Init
+const supabaseUrl = import.meta.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Fetch Protocols
+let { data: liveProtocols } = await supabase
+    .from('study_protocols')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+const protocols = liveProtocols && liveProtocols.length > 0 ? liveProtocols.map(p => ({
+    ...p,
+    date: new Date(p.created_at).toLocaleDateString('da-DK', { day: '2-digit', month: 'long', year: 'numeric' }),
+    img: p.image_url || "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=600"
+})) : [
+    { 
+        date: "28. Januar 2026", 
+        location: "CSS Biblioteket", 
+        title: "Slaget om Metodeafsnittet",
+        decisions: ["Vi bruger 'Synthetic Control Method' til hovedanalysen.", "Deadline for udkast flyttes til mandag."],
+        action_points: [
+            { who: "Stalin", task: "Rense det store datasæt fra DST" },
+            { who: "Mao", task: "Skrive litteraturgennemgang for AI-delen" },
+            { who: "Che", task: "Finde kilder til institutionel teori" }
+        ],
+        img: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=600"
+    }
+];
 ---
 
 <StudyGroupLayout title="Protokollen" activePage="protocols">
@@ -14,30 +44,7 @@ export const prerender = false;
         </div>
 
         <div class="space-y-12">
-            {[
-                { 
-                    date: "28. Januar 2026", 
-                    location: "CSS Biblioteket", 
-                    title: "Slaget om Metodeafsnittet",
-                    decisions: ["Vi bruger 'Synthetic Control Method' til hovedanalysen.", "Deadline for udkast flyttes til mandag."],
-                    actionPoints: [
-                        { who: "Stalin", task: "Rense det store datasæt fra DST" },
-                        { who: "Mao", task: "Skrive litteraturgennemgang for AI-delen" },
-                        { who: "Che", task: "Finde kilder til institutionel teori" }
-                    ],
-                    img: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=600"
-                },
-                { 
-                    date: "21. Januar 2026", 
-                    location: "Grønjordskollegiet", 
-                    title: "Teoretisk Mobilisering",
-                    decisions: ["Seminaropgaven skal fokusere på vækstteori.", "Møder hver tirsdag kl. 10."],
-                    actionPoints: [
-                        { who: "Alle", task: "Læse Piketty kapitel 1-4" }
-                    ],
-                    img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600"
-                }
-            ].map(protocol => (
+            {protocols.map(protocol => (
                 <div class="bg-white/[0.02] border border-white/5 rounded-[48px] overflow-hidden group hover:border-red-600/20 transition-all shadow-xl">
                     <div class="grid grid-cols-1 lg:grid-cols-2">
                         <div class="p-12 space-y-10">
@@ -66,7 +73,7 @@ export const prerender = false;
                                 <div class="space-y-4">
                                     <h4 class="text-[10px] font-black uppercase tracking-widest text-white/20 italic">Aktionspunkter</h4>
                                     <div class="grid grid-cols-1 gap-3">
-                                        {protocol.actionPoints.map(ap => (
+                                        {protocol.action_points.map(ap => (
                                             <div class="flex items-center gap-4 p-4 bg-white/[0.03] border border-white/5 rounded-2xl">
                                                 <span class="text-red-600 font-bold text-[10px] uppercase w-12">{ap.who}</span>
                                                 <span class="text-white/60 text-xs italic">{ap.task}</span>
@@ -87,7 +94,7 @@ export const prerender = false;
                 </div>
             ))}
             
-            <button class="w-full py-20 border-2 border-dashed border-white/5 rounded-[48px] flex flex-col items-center justify-center gap-6 group hover:border-red-600/30 hover:bg-red-600/[0.02] transition-all">
+            <button id="open-protocol-modal" class="w-full py-20 border-2 border-dashed border-white/5 rounded-[48px] flex flex-col items-center justify-center gap-6 group hover:border-red-600/30 hover:bg-red-600/[0.02] transition-all">
                 <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-white/10 group-hover:bg-red-600 group-hover:text-white transition-all">
                     <i class="fa-solid fa-pen-nib text-3xl"></i>
                 </div>
@@ -97,5 +104,67 @@ export const prerender = false;
                 </div>
             </button>
         </div>
+
+        {/* Protocol Modal */}
+        <div id="protocol-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm overflow-y-auto">
+            <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-2xl w-full space-y-8 shadow-2xl my-auto">
+                 <div class="space-y-2">
+                     <h4 class="text-2xl font-black uppercase italic text-white leading-none">Ny Protokol</h4>
+                     <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Historisk Optegnelse</p>
+                 </div>
+                 <div class="space-y-6">
+                     <div class="grid grid-cols-2 gap-4">
+                         <div class="space-y-2">
+                             <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Titel</label>
+                             <input type="text" id="p-title" placeholder="Fx: Slaget om..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                         </div>
+                         <div class="space-y-2">
+                             <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Lokation</label>
+                             <input type="text" id="p-location" placeholder="Fx: CSS" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                         </div>
+                     </div>
+                     <div class="space-y-2">
+                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Beslutning (én per linje)</label>
+                         <textarea id="p-decisions" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs"></textarea>
+                     </div>
+                     <div class="flex gap-4">
+                         <button id="save-protocol" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all">Arkivér Protokol</button>
+                         <button id="close-p-modal" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <script>
+            import { createClient } from '@supabase/supabase-js';
+            const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+            const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+            const supabase = createClient(supabaseUrl, supabaseKey);
+
+            const openBtn = document.getElementById('open-protocol-modal');
+            const closeBtn = document.getElementById('close-p-modal');
+            const modal = document.getElementById('protocol-modal');
+            const saveBtn = document.getElementById('save-protocol');
+
+            openBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
+            closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+
+            saveBtn?.addEventListener('click', async () => {
+                const title = (document.getElementById('p-title') as HTMLInputElement).value;
+                const location = (document.getElementById('p-location') as HTMLInputElement).value;
+                const decisions = (document.getElementById('p-decisions') as HTMLTextAreaElement).value.split('\n').filter(d => d.trim());
+
+                const { error } = await supabase
+                    .from('study_protocols')
+                    .insert([{ 
+                        title, 
+                        location, 
+                        decisions,
+                        action_points: [] // Simplification for now
+                    }]);
+                
+                if (!error) window.location.reload();
+            });
+        </script>
     </div>
 </StudyGroupLayout>

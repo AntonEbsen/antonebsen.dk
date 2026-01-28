@@ -1,7 +1,24 @@
----
 import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
+
+// Supabase Init
+const supabaseUrl = import.meta.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Fetch Stats
+let { data: liveLeaderboard } = await supabase
+    .from('study_leaderboard')
+    .select('*')
+    .order('pomodoros', { ascending: false });
+
+const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveLeaderboard : [
+    { member_id: "stalin", pomodoros: 24, pages: 7.2, rank: 1 },
+    { member_id: "mao", pomodoros: 18, pages: 8.5, rank: 2 },
+    { member_id: "che", pomodoros: 15, pages: 5.8, rank: 3 }
+];
 ---
 
 <StudyGroupLayout title="Klassekampen" activePage="leaderboard">
@@ -16,24 +33,23 @@ export const prerender = false;
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Ugens Stakhanovit */}
             <div class="space-y-12">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Ugens Stakhanovit</h3>
+                <div class="flex justify-between items-end">
+                    <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Ugens Stakhanovit</h3>
+                    <button id="open-stats-modal" class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-red-600 transition-colors">Rapportér Arbejde +</button>
+                </div>
                 <p class="text-[10px] font-black uppercase tracking-widest text-white/20 -mt-8">Flest Pomodoro-sessions denne uge</p>
                 
                 <div class="space-y-6">
-                    {[
-                        { name: "Stalin", val: 24, max: 30, rank: 1 },
-                        { name: "Mao", val: 18, max: 30, rank: 2 },
-                        { name: "Che", val: 15, max: 30, rank: 3 }
-                    ].map(member => (
+                    {leaderboardEntries.map((member, index) => (
                         <div class="p-8 bg-white/[0.03] border border-white/5 rounded-[40px] flex items-center justify-between group hover:border-red-600/30 transition-all">
                             <div class="flex items-center gap-6">
-                                <div class={`w-12 h-12 rounded-2xl flex items-center justify-center font-black ${member.rank === 1 ? 'bg-red-600 text-white shadow-glow-red' : 'bg-white/5 text-white/20'}`}>
-                                    {member.rank}
+                                <div class={`w-12 h-12 rounded-2xl flex items-center justify-center font-black ${index === 0 ? 'bg-red-600 text-white shadow-glow-red' : 'bg-white/5 text-white/20'}`}>
+                                    {index + 1}
                                 </div>
-                                <span class="text-xl font-bold text-white uppercase tracking-tight">{member.name}</span>
+                                <span class="text-xl font-bold text-white uppercase tracking-tight">{member.member_id.charAt(0).toUpperCase() + member.member_id.slice(1)}</span>
                             </div>
                             <div class="text-right">
-                                <span class="text-2xl font-black tabular-nums text-red-600">{member.val}</span>
+                                <span class="text-2xl font-black tabular-nums text-red-600">{member.pomodoros}</span>
                                 <span class="text-[10px] font-black uppercase text-white/10 ml-2">Sessions</span>
                             </div>
                         </div>
@@ -47,13 +63,9 @@ export const prerender = false;
                 <p class="text-[10px] font-black uppercase tracking-widest text-white/20 -mt-8">Nettobidrag til seminaropgaven</p>
                 
                 <div class="bg-white/[0.02] border border-white/5 rounded-[48px] p-12 space-y-12">
-                    {[
-                        { name: "Mao", pages: 8.5 },
-                        { name: "Stalin", pages: 7.2 },
-                        { name: "Che", pages: 5.8 }
-                    ].map(member => (
+                    {leaderboardEntries.map(member => (
                         <div class="flex items-center gap-8">
-                            <span class="w-16 text-[10px] font-black uppercase tracking-widest text-white/40">{member.name}</span>
+                            <span class="w-16 text-[10px] font-black uppercase tracking-widest text-white/40">{member.member_id}</span>
                             <div class="flex-1 h-3 bg-white/5 rounded-full overflow-hidden">
                                 <div class="h-full bg-red-600 shadow-glow-red" style={`width: ${member.pages * 10}%`}></div>
                             </div>
@@ -63,6 +75,73 @@ export const prerender = false;
                 </div>
             </div>
         </section>
+
+        {/* Stats Update Modal */}
+        <div id="stats-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+            <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-md w-full space-y-8 shadow-2xl">
+                 <div class="space-y-2">
+                     <h4 class="text-2xl font-black uppercase italic text-white leading-none">Arbejds-Rapport</h4>
+                     <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Produktionsapparatets Indberetning</p>
+                 </div>
+                 <div class="space-y-6">
+                     <div class="space-y-2">
+                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Pomodoro-sessions tilføjet</label>
+                         <input type="number" id="pomodoro-input" placeholder="Fx: 4" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                     </div>
+                     <div class="space-y-2">
+                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Nye sider skrevet</label>
+                         <input type="number" step="0.1" id="pages-input" placeholder="Fx: 1.5" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                     </div>
+                     <div class="flex gap-4">
+                         <button id="save-stats" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all">Indsend Rapport</button>
+                         <button id="close-stats-modal" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <script>
+            import { createClient } from '@supabase/supabase-js';
+            const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+            const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+            const supabase = createClient(supabaseUrl, supabaseKey);
+
+            const openBtn = document.getElementById('open-stats-modal');
+            const closeBtn = document.getElementById('close-stats-modal');
+            const modal = document.getElementById('stats-modal');
+            const saveBtn = document.getElementById('save-stats');
+            const pomodoroInp = document.getElementById('pomodoro-input');
+            const pagesInp = document.getElementById('pages-input');
+            const comradeId = document.cookie.split('; ').find(row => row.startsWith('study_comrade='))?.split('=')[1];
+
+            openBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
+            closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+
+            saveBtn?.addEventListener('click', async () => {
+                if (!comradeId) return;
+                
+                // Get current stats first
+                const { data: current } = await supabase
+                    .from('study_leaderboard')
+                    .select('*')
+                    .eq('member_id', comradeId)
+                    .single();
+                
+                const newPomodoros = (current?.pomodoros || 0) + parseInt(pomodoroInp.value || 0);
+                const newPages = (current?.pages || 0) + parseFloat(pagesInp.value || 0);
+
+                const { error } = await supabase
+                    .from('study_leaderboard')
+                    .upsert({ 
+                        member_id: comradeId, 
+                        pomodoros: newPomodoros, 
+                        pages: newPages,
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'member_id' });
+                
+                if (!error) window.location.reload();
+            });
+        </script>
 
         {/* Mærkesager (Badges) */}
         <section class="space-y-16">
