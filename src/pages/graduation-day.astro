@@ -133,6 +133,62 @@ export const prerender = false;
         </div>
     </section>
 
+    {/* The Timeline Section (New) */}
+    <section class="max-w-4xl mx-auto px-6 py-40 space-y-24">
+        <div class="text-center space-y-4">
+            <span class="text-accent text-[10px] font-black uppercase tracking-[0.3em]">Programmet</span>
+            <h2 class="text-5xl font-black italic tracking-tighter text-white">Eftermiddagens forløb</h2>
+        </div>
+
+        <div class="relative space-y-12 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-accent/20 before:to-transparent">
+            {[
+                { time: "14:00", title: "Velkomst & Bobler", desc: "Vi skyder receptionen i gang med kolde bobler og lidt snacks.", icon: "fa-champagne-glasses" },
+                { time: "15:00", title: "Middagen Serveres", desc: "En uformel middag med mine yndlingsretter i køkkenet.", icon: "fa-utensils" },
+                { time: "16:30", title: "Taler & Kaffe", desc: "En stund med et par ord, kaffe og noget sødt.", icon: "fa-mug-hot" },
+                { time: "18:00", title: "Tak for i dag", desc: "Receptionen runder af, og jeg gør klar til aftenens fest.", icon: "fa-person-walking-arrow-right" }
+            ].map((item, i) => (
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-glass-border bg-black text-accent shadow-sm absolute left-0 md:left-1/2 md:-ml-5 z-10 transition-transform group-hover:scale-110">
+                        <i class={`fa-solid ${item.icon} text-xs`}></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-8 rounded-[32px] bg-white/[0.03] border border-glass-border hover:border-accent/40 transition-all duration-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-accent font-black italic">{item.time}</span>
+                            <h3 class="text-lg font-bold text-white uppercase tracking-tight">{item.title}</h3>
+                        </div>
+                        <p class="text-dim text-sm italic">{item.desc}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </section>
+
+    {/* "Min Rejse" Gallery (New) */}
+    <section class="max-w-6xl mx-auto px-6 py-40 border-t border-white/5 space-y-24">
+        <div class="text-center space-y-4">
+            <span class="text-accent text-[10px] font-black uppercase tracking-[0.3em]">Min Rejse</span>
+            <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white">5,5 år på cand.polit</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+                { img: "/assets/journey/start.png", label: "Første Dag", desc: "Hvor det hele startede i 2020." },
+                { img: "/assets/journey/study.png", label: "Utallige Nætter", desc: "Lange timer med tætskrevne bøger." },
+                { img: "/assets/journey/abroad.png", label: "Mod Nye Horisonter", desc: "Udveksling og nye perspektiver." },
+                { img: "/assets/journey/finish.png", label: "Målet er Nået", desc: "Nu er titlen endelig i hus." }
+            ].map(item => (
+                <div class="group relative aspect-[3/4] rounded-[32px] overflow-hidden bg-white/5 border border-glass-border">
+                    <img src={item.img} alt={item.label} class="w-full h-full object-cover grayscale opacity-50 transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                    <div class="absolute bottom-6 left-6 right-6 translate-y-4 transition-transform group-hover:translate-y-0">
+                        <h4 class="text-white font-bold uppercase tracking-widest text-[10px] mb-1">{item.label}</h4>
+                        <p class="text-dim text-[10px] italic opacity-0 group-hover:opacity-100 transition-opacity">{item.desc}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </section>
+
     {/* FAQ for Family */}
     <section class="max-w-4xl mx-auto px-6 py-40 border-b border-white/5 space-y-24">
         <div class="text-center space-y-4">
