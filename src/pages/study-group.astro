@@ -225,6 +225,82 @@ const milestones = [
 
                     </section>
 
+                    {/* Resource Vault & Productivity Section (New) */}
+                    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        
+                        {/* Resource Vault */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Ressource-Hvælvingen</h3>
+                            <div class="grid grid-cols-1 gap-4">
+                                {[
+                                    { name: "Overleaf: Seminaropgave", url: "#", icon: "fa-leaf" },
+                                    { name: "Fælles Google Drive", url: "#", icon: "fa-brands fa-google-drive" },
+                                    { name: "GitHub Repository", url: "#", icon: "fa-brands fa-github" },
+                                    { name: "Litteraturliste (Mendeley)", url: "#", icon: "fa-book" }
+                                ].map(link => (
+                                    <a href={link.url} class="flex items-center justify-between p-6 bg-white/[0.03] border border-white/5 rounded-3xl hover:border-red-600/30 transition-all group">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-12 h-12 bg-red-600/10 rounded-xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
+                                                <i class={`fa-solid ${link.icon}`}></i>
+                                            </div>
+                                            <span class="font-bold text-white uppercase tracking-tight">{link.name}</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-white/10 group-hover:text-red-600 transition-colors"></i>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Revolutionary Pomodoro Timer */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Arbejdsdisciplin</h3>
+                            <div class="p-10 bg-white/[0.03] border border-white/5 rounded-[48px] text-center space-y-8 relative overflow-hidden">
+                                <div class="space-y-2">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-white/40">Revolutionary Work-Timer</p>
+                                    <div id="timer-display" class="text-7xl font-black tabular-nums tracking-tighter text-white">25:00</div>
+                                </div>
+                                
+                                <div class="flex justify-center gap-4">
+                                    <button id="timer-start" class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-glow-red">Start</button>
+                                    <button id="timer-reset" class="px-8 py-3 bg-white/5 hover:bg-white/10 text-white/60 font-black uppercase tracking-widest rounded-xl transition-all">Reset</button>
+                                </div>
+
+                                <p class="text-[10px] font-medium text-white/20 uppercase tracking-widest italic pt-4">"Ingen pause uden produktion."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Collective Decisions (Polls) Section (New) */}
+                    <section class="max-w-4xl mx-auto space-y-16">
+                        <div class="flex items-center gap-6">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Kollektive Beslutninger</h3>
+                            <div class="h-px flex-1 bg-white/5"></div>
+                        </div>
+
+                        <div class="bg-white/[0.02] border border-white/5 rounded-[48px] p-12 space-y-8">
+                            <div class="space-y-2">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Næste afstemning</p>
+                                <h4 class="text-2xl font-bold text-white">Hvor skal vi mødes næste gang?</h4>
+                            </div>
+
+                            <div class="space-y-4">
+                                {[
+                                    { label: "CSS (Center for Sundhed og Samfund)", votes: 2, total: 3 },
+                                    { label: "Grønjordskollegiet (Hos Stalin)", votes: 1, total: 3 },
+                                    { label: "Det Kgl. Bibliotek", votes: 0, total: 3 }
+                                ].map(option => (
+                                    <button class="w-full relative p-6 bg-white/[0.03] border border-white/5 rounded-2xl hover:border-red-600/20 transition-all text-left group overflow-hidden">
+                                        <div class="relative z-10 flex justify-between items-center">
+                                            <span class="font-bold text-white/80 group-hover:text-white transition-colors">{option.label}</span>
+                                            <span class="text-red-600 font-black text-xs">{option.votes} / {option.total}</span>
+                                        </div>
+                                        <div class="absolute left-0 top-0 h-full bg-red-600/10 transition-all duration-1000" style={`width: ${(option.votes / option.total) * 100}%`}></div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
                     {/* Footer / Manifesto */}
                     <footer class="pt-20 border-t border-white/5 text-center space-y-8">
                         <div class="flex justify-center gap-4 text-red-600/20 text-4xl">
@@ -240,6 +316,53 @@ const milestones = [
 
     </main>
 </Layout>
+
+<script>
+    // Revolutionary timer logic
+    let timer;
+    let timeLeft = 25 * 60;
+    const display = document.getElementById('timer-display');
+    const startBtn = document.getElementById('timer-start');
+    const resetBtn = document.getElementById('timer-reset');
+
+    function updateDisplay() {
+        if (!display) return;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+                startBtn.textContent = 'Fortsæt';
+            } else {
+                startBtn.textContent = 'Pause';
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timer);
+                        alert("Arbejdet for kollektivet er afsluttet! Tag en velfortjent pause.");
+                    }
+                }, 1000);
+            }
+        });
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            clearInterval(timer);
+            timer = null;
+            timeLeft = 25 * 60;
+            updateDisplay();
+            if (startBtn) startBtn.textContent = 'Start';
+        });
+    }
+</script>
 
 <style>
     .shadow-glow-red {
