@@ -382,6 +382,135 @@ const milestones = [
                         <p class="text-center text-[10px] text-white/10 uppercase tracking-[0.2em]">Retfærdighed gennem ligelig fordeling af kaffe-omkostninger.</p>
                     </section>
 
+                    {/* Phase 4: Femårsplanen (Timeline) */}
+                    <section class="space-y-16">
+                        <div class="flex items-center gap-6">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Femårsplanen <span class="text-red-600 text-sm">(Strategisk Tidslinje)</span></h3>
+                            <div class="h-px flex-1 bg-white/5"></div>
+                        </div>
+
+                        <div class="relative pt-12 pb-8">
+                            <div class="absolute top-[3.5rem] left-0 w-full h-0.5 bg-white/5"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                {[
+                                    { date: "Maj 2026", title: "Seminar-aflevering", desc: "Den første store sejr over pensum.", status: "Nu" },
+                                    { date: "Sep 2026", title: "Specialestart", desc: "Mobilisering af alle akademiske kræfter.", status: "Fremtid" },
+                                    { date: "Jan 2027", title: "Midtvejsevaluering", desc: "Justering af den teoretiske kurs.", status: "Fremtid" },
+                                    { date: "Jun 2027", title: "Den Endelige Sejr", desc: "Forsvar af specialet og færdiguddannet!", status: "Målet" }
+                                ].map(item => (
+                                    <div class="relative space-y-4 group">
+                                        <div class={`w-4 h-4 rounded-full border-2 ${item.status === 'Nu' ? 'bg-red-600 border-red-600 shadow-glow-red' : 'bg-black border-white/20'} absolute -top-[0.45rem] left-0 z-10 transition-all group-hover:scale-125`}></div>
+                                        <div class="pt-8 space-y-2">
+                                            <span class="text-red-600 text-[10px] font-black uppercase tracking-widest">{item.date}</span>
+                                            <h4 class="text-lg font-bold text-white uppercase tracking-tight">{item.title}</h4>
+                                            <p class="text-white/30 text-xs italic leading-relaxed">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Phase 4: Kritik & Selvkritik & Hædersbevisninger */}
+                    <section class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        
+                        {/* Kritik & Selvkritik (Review Section) */}
+                        <div class="lg:col-span-2 space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Kritik & Selvkritik <span class="text-red-600 text-sm">(Review)</span></h3>
+                            <div class="space-y-4">
+                                {[
+                                    { title: "Metodeafsnit v2", author: "Che", status: "Venter på Stalin", link: "#" },
+                                    { title: "Data-analyse (Stata)", author: "Stalin", status: "Godkendt af Mao", link: "#" }
+                                ].map(review => (
+                                    <div class="flex items-center justify-between p-6 bg-white/[0.03] border border-white/5 rounded-3xl hover:border-red-600/30 transition-all group">
+                                        <div class="flex items-center gap-6">
+                                            <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-white/40 group-hover:text-red-600 transition-all">
+                                                <i class="fa-solid fa-file-signature"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-white uppercase tracking-tight">{review.title}</h4>
+                                                <p class="text-white/20 text-[10px] uppercase font-black tracking-widest leading-none mt-1">Af Kamerat {review.author}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-6">
+                                            <span class={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${review.status.includes('Godkendt') ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-red-600/10 text-red-600 border border-red-600/20'}`}>
+                                                {review.status}
+                                            </span>
+                                            <a href={review.link} class="text-white/10 hover:text-white transition-colors">
+                                                <i class="fa-solid fa-external-link text-sm"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Hædersbevisninger (Medals) */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Hæder</h3>
+                            <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] grid grid-cols-2 gap-6 relative overflow-hidden">
+                                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-red-600/5 blur-3xl rounded-full"></div>
+                                {[
+                                    { icon: "fa-medal", label: "Seminar-helt", to: "Stalin" },
+                                    { icon: "fa-award", label: "Latex-Magiker", to: "Mao" },
+                                    { icon: "fa-certificate", label: "Korrektur-K.", to: "Che" },
+                                    { icon: "fa-trophy", label: "Data-Hvisker", to: "Stalin" }
+                                ].map(medal => (
+                                    <div class="text-center space-y-2 group/medal">
+                                        <div class="w-12 h-12 bg-red-600/10 rounded-full flex items-center justify-center mx-auto text-red-600 border border-red-600/20 group-hover/medal:scale-110 transition-transform shadow-glow-red">
+                                            <i class={`fa-solid ${medal.icon}`}></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[9px] font-black uppercase tracking-widest text-white/60">{medal.label}</p>
+                                            <p class="text-[8px] font-bold text-red-600/40 italic">{medal.to}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Phase 4: Det Ideologiske Arkiv & Revolutionær Radio */}
+                    <section class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        
+                        {/* Det Ideologiske Arkiv (Idea Bank) */}
+                        <div class="lg:col-span-2 space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Det Ideologiske Arkiv</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {[
+                                    { title: "Teori om AI i Øk.", text: "Potentielt emne til specialet. Hvordan påvirker LLMs produktivitet?" },
+                                    { title: "Nye Økonometriske modeller", text: "Tjek 'Synthetic Control Method' til seminaropgaven." }
+                                ].map(note => (
+                                    <div class="p-8 bg-red-600/5 border border-red-600/10 rounded-[40px] space-y-4 hover:bg-red-600/10 transition-all cursor-pointer group">
+                                        <h4 class="font-bold text-white uppercase tracking-tight group-hover:text-red-600 transition-colors">{note.title}</h4>
+                                        <p class="text-white/40 text-xs italic leading-relaxed">{note.text}</p>
+                                    </div>
+                                ))}
+                                <div class="p-8 border-2 border-dashed border-white/5 rounded-[40px] flex flex-col items-center justify-center gap-4 hover:border-red-600/30 transition-all cursor-pointer group">
+                                    <i class="fa-solid fa-plus text-white/10 group-hover:text-red-600 transition-all"></i>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-white/20 group-hover:text-white transition-all">Tilføj ny idé</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Revolutionær Radio (Playlist) */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Radio</h3>
+                            <div class="p-8 bg-black border border-white/10 rounded-[48px] aspect-square flex flex-col items-center justify-center space-y-6 relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(185,28,28,0.4)] animate-pulse">
+                                    <i class="fa-solid fa-play text-white text-3xl ml-2"></i>
+                                </div>
+                                <div class="text-center space-y-2 relative z-10">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Focus Playlist</p>
+                                    <h4 class="font-bold text-white uppercase tracking-tight">Kollektiv Fokus</h4>
+                                    <p class="text-white/20 text-[10px] font-medium italic">Sovietwave & Lo-fi Beats</p>
+                                </div>
+                                <a href="https://open.spotify.com/playlist/37i9dQZF1DX8Ueb9W7zhR2" target="_blank" class="px-6 py-2 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white rounded-full text-[9px] font-black uppercase tracking-widest transition-all">Åbn i Spotify</a>
+                            </div>
+                        </div>
+                    </section>
+
                     {/* Footer / Manifesto */}
                     <footer class="pt-20 border-t border-white/5 text-center space-y-8">
                         <div class="flex justify-center gap-4 text-red-600/20 text-4xl">
