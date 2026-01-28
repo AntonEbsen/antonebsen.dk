@@ -530,7 +530,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
             {[
               { q: "Hvad er dresscoden?", a: "Dresscoden er Smart Casual. Kom som du er, men vi kan godt lide lidt glimmer for at fejre de 5,5 år!", icon: "fa-shirt" },
               { q: "Ledsager (+1)?", a: "Vi har begrænset plads, så tjek venligst din invitation for '+1' status eller kontakt mig direkte hvis du er i tvivl.", icon: "fa-user-plus" },
-              { q: "Gaveønsker?", a: "Din tilstedeværelse er den største gave! Hvis du absolut vil give noget, kan du finde min ønskeseddel her: [Link kommer snart].", icon: "fa-gift" },
+              { q: "Gaveønsker?", a: "Din tilstedeværelse er den største gave! Hvis du absolut vil give noget, kan du se min ønskeseddel her: ", icon: "fa-gift" },
               { q: "Transport?", a: "Baren ligger tæt på Nørreport Station. Vi fraråder bilkørsel da parkering i K er præcis så svært som man forestiller sig.", icon: "fa-train" }
             ].map((item, i) => (
               <div class="p-10 rounded-[40px] bg-white/5 border border-glass-border space-y-6 hover:bg-white/[0.08] transition-all hover:-translate-y-1 duration-500">
@@ -538,7 +538,13 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                     <i class={`fa-solid ${item.icon}`}></i>
                 </div>
                 <h4 class="text-white text-xl font-bold uppercase tracking-tight italic">{item.q}</h4>
-                <p class="text-dim leading-relaxed">{item.a}</p>
+                {item.q === "Gaveønsker?" ? (
+                    <p class="text-dim leading-relaxed">
+                        {item.a} <a href="/graduation-wishes" class="text-accent font-bold hover:text-white transition-colors underline underline-offset-4">Se ønskeseddel her <i class="fa-solid fa-arrow-right text-[10px]"></i></a>
+                    </p>
+                ) : (
+                    <p class="text-dim leading-relaxed">{item.a}</p>
+                )}
               </div>
             ))}
           </div>

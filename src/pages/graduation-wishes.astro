@@ -1,0 +1,105 @@
+---
+import Layout from '@layouts/Layout.astro';
+import wishes from '../data/wishes.json';
+
+// Password protection check (same as graduation.astro)
+export const prerender = false;
+let authenticated = true; // We assume they come from the graduation page which is already gated, but we can add a session check if needed.
+// For now, let's keep it simple or use the same password logic if they hit this directly.
+---
+
+<Layout title="Ønskeseddel | Anton Ebsen" description="Mine ønsker til dimissionsfesten">
+  <main class="min-h-screen bg-black text-white px-4 py-20 relative overflow-hidden flex flex-col items-center">
+    
+    {/* Background Glows */}
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+    <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+
+    {/* Header Section */}
+    <div class="max-w-4xl w-full text-center space-y-8 mb-20">
+        <a href="/graduation" class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-dim hover:text-accent transition-colors mb-6 group">
+            <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Tilbage til invitationen
+        </a>
+        
+        <div class="space-y-4">
+            <div class="w-20 h-20 bg-accent-soft rounded-3xl border border-accent/20 flex items-center justify-center mx-auto mb-8 shadow-glow">
+                <i class="fa-solid fa-gift text-accent text-4xl"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter">
+                Min <span class="text-accent text-glow-accent outline-text-accent">Ønskeseddel</span>
+            </h1>
+            <p class="text-dim text-lg max-w-xl mx-auto leading-relaxed">
+                Her er en oversigt over hvad jeg drømmer om til min dimission. 
+                Du kan se den fulde og opdaterede liste direkte på Ønskeskyen.
+            </p>
+        </div>
+
+        {/* Primary CTA */}
+        <div class="pt-8">
+            <a 
+                href="https://onskeskyen.dk/da/wishlists/GyqRcxg5dRdV5GyU" 
+                target="_blank"
+                class="inline-flex items-center gap-4 px-12 py-6 bg-white text-black font-black rounded-full hover:bg-accent hover:scale-105 transition-all shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)] group duration-500"
+            >
+                Se hele listen på Ønskeskyen <i class="fa-solid fa-cloud group-hover:translate-y-[-2px] transition-transform"></i>
+            </a>
+        </div>
+    </div>
+
+    {/* Wishes Grid */}
+    <section class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-40">
+        {wishes.map((wish, i) => (
+            <div 
+                class="p-10 rounded-[48px] bg-white/[0.03] border border-glass-border hover:bg-white/[0.06] hover:border-accent/40 transition-all duration-500 group relative overflow-hidden"
+                style={`animation: slideUp 0.8s ease-out ${i * 0.1}s both`}
+            >
+                <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                
+                <div class="relative z-10 space-y-6">
+                    <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-accent/40 group-hover:text-accent transition-colors border border-white/5 group-hover:border-accent/20 transform group-hover:rotate-12 duration-500">
+                        <i class={`fa-solid ${wish.icon} text-3xl`}></i>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold uppercase tracking-tight">{wish.title}</h3>
+                        <p class="text-dim text-sm leading-relaxed">{wish.description}</p>
+                    </div>
+
+                    <div class="pt-4">
+                        <div class="h-0.5 w-12 bg-white/10 group-hover:w-full group-hover:bg-accent transition-all duration-700"></div>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </section>
+
+    {/* Footer Callout */}
+    <div class="max-w-2xl w-full text-center p-12 rounded-[56px] border border-accent/20 bg-accent/5 backdrop-blur-xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.1),transparent)]"></div>
+        <p class="text-white/80 font-bold italic text-xl mb-4 relative z-10">
+            "Den største gave er din tilstedeværelse til min fest!"
+        </p>
+        <p class="text-dim text-sm relative z-10">
+            Jeg glæder mig helt vildt til at se dig d. 1. juni.
+        </p>
+    </div>
+
+  </main>
+</Layout>
+
+<style>
+  .shadow-glow { box-shadow: 0 0 60px rgba(212, 175, 55, 0.2); }
+  .text-glow-accent { text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+  .outline-text-accent { -webkit-text-stroke: 1px rgba(212, 175, 55, 0.2); }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Custom scrollbar for a premium feel */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #000; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+</style>
