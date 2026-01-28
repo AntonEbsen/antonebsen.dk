@@ -46,6 +46,12 @@ const { data: rsvps } = await supabase
     .select('name, created_at')
     .order('created_at', { ascending: false });
 
+// Combine for Activity Feed (Ticker)
+const activityFeed = [
+    ...(messages || []).map(m => ({ type: 'guestbook', name: m.name, time: new Date(m.created_at) })),
+    ...(rsvps || []).map(r => ({ type: 'rsvp', name: r.name, time: new Date(r.created_at) }))
+].sort((a, b) => b.time.getTime() - a.time.getTime()).slice(0, 10);
+
 // Placeholder for the event date
 const eventDate = "2026-06-01T18:00:00"; 
 const eventEndDate = "2026-06-02T02:00:00";
@@ -60,6 +66,9 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
 <Layout title="Dimission | Anton Ebsen" description="Fejring af min Masters dimission">
   <main class="min-h-[80vh] flex flex-col items-center justify-center px-4 py-20 relative overflow-hidden">
     
+    {/* Canvas for Mouse Trail (Phase 3) */}
+    {authenticated && <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-[1]" />}
+
     {/* Background Glow */}
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
 
@@ -97,19 +106,49 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         <p class="text-xs text-dim/50 italic">Hint: Titlen på min uddannelse (cand.xxxx)</p>
       </div>
     ) : (
-      <div id="celebration-content" class="max-w-5xl w-full text-center space-y-24 animate-in fade-in zoom-in-95 duration-1000" data-event-date={eventDate}>
+      <div id="celebration-content" class="max-w-5xl w-full text-center space-y-24 animate-in fade-in zoom-in-95 duration-1000 relative z-10" data-event-date={eventDate}>
         
+        {/* Live Activity Ticker (Phase 3) */}
+        {activityFeed.length > 0 && (
+            <div class="fixed top-20 left-0 w-full z-[100] h-10 bg-black/40 backdrop-blur-md border-y border-white/5 overflow-hidden flex items-center">
+                <div class="flex items-center gap-12 whitespace-nowrap animate-marquee">
+                    {[...activityFeed, ...activityFeed].map((item, i) => (
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-accent flex items-center gap-2">
+                             <div class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                             {item.type === 'rsvp' ? `${item.name} har tilmeldt sig festen!` : `${item.name} har skrevet i gæstebogen!`}
+                             <span class="opacity-40">• {item.time.toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })}</span>
+                        </span>
+                    ))}
+                </div>
+            </div>
+        )}
+
         {/* Hero Section */}
-        <div class="space-y-6">
+        <div class="space-y-6 pt-12">
           <div class="inline-block px-4 py-1.5 rounded-full bg-accent-soft border border-accent/20 text-accent font-bold text-sm tracking-widest uppercase mb-4 animate-bounce">
             Klar til fejring! 🎉
           </div>
           <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-9xl mb-4">
-            Jeg er nu <span class="text-accent italic">Master.</span>
+            Jeg er nu <span class="text-accent italic text-glow-accent">Master.</span>
           </h1>
           <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto">
             Efter 5 års studier er jeg endelig cand.polit! Det skal fejres, og du er hermed inviteret til min dimissionsfest.
           </p>
+
+          {/* Champagne Pop (Phase 3) */}
+          <div class="pt-8">
+            <button 
+                id="champagne-pop"
+                class="group relative inline-flex items-center gap-3 px-8 py-4 bg-accent-soft border border-accent/20 rounded-full text-accent font-black hover:bg-accent hover:text-black transition-all duration-500 shadow-glow"
+            >
+                <i class="fa-solid fa-bottle-droplet transition-transform group-hover:rotate-12"></i>
+                Pop en flaske!
+                <div class="absolute -top-1 -right-1 flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+                </div>
+            </button>
+          </div>
         </div>
 
         {/* Video Message Section */}
@@ -129,9 +168,10 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         {/* Countdown & Stats Grid */}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
              {/* Countdown Timer */}
-            <div class="p-10 rounded-[40px] bg-white/[0.02] border border-glass-border">
-                <h3 class="text-dim text-xs font-bold uppercase tracking-[0.2em] mb-8">Nedtælling til fest</h3>
-                <div class="grid grid-cols-4 gap-4">
+            <div class="p-10 rounded-[40px] bg-white/[0.02] border border-glass-border relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="text-dim text-xs font-bold uppercase tracking-[0.2em] mb-8 relative z-10">Nedtælling til fest</h3>
+                <div class="grid grid-cols-4 gap-4 relative z-10">
                     <div class="space-y-1">
                         <span id="days" class="text-4xl font-bold text-white tabular-nums sm:text-5xl text-glow-accent">00</span>
                         <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Dage</p>
@@ -159,7 +199,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                     { label: "Drukne kopper kaffe", value: "1.500+", icon: "fa-coffee" },
                     { label: "Master grad", value: "1", icon: "fa-medal" }
                 ].map(stat => (
-                    <div class="p-6 rounded-3xl bg-white/[0.03] border border-glass-border flex flex-col items-center text-center space-y-2 hover:bg-white/[0.06] transition-all">
+                    <div class="p-6 rounded-3xl bg-white/[0.03] border border-glass-border flex flex-col items-center text-center space-y-2 hover:bg-white/[0.06] hover:border-accent/20 transition-all">
                         <i class={`fa-solid ${stat.icon} text-accent/40 text-sm`}></i>
                         <p class="text-3xl font-black text-white">{stat.value}</p>
                         <p class="text-[10px] text-dim font-bold uppercase tracking-wider">{stat.label}</p>
@@ -171,14 +211,14 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         {/* Gallery Section */}
         <section class="space-y-10">
             <div class="space-y-2">
-                <h2 class="text-4xl font-bold text-white">Minder fra studiet</h2>
+                <h2 class="text-4xl font-bold text-white italic">Minder fra studiet</h2>
                 <p class="text-dim">Et lille tilbageblik på de sidste 5 år</p>
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-[400px]">
                 <div class="rounded-3xl bg-white/5 border border-glass-border overflow-hidden relative group md:col-span-2">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <p class="text-white font-bold">Bachelor Graduering</p>
+                        <p class="text-white font-bold uppercase tracking-widest text-xs">Bachelor Graduering</p>
                     </div>
                     <div class="w-full h-full bg-accent/5 flex items-center justify-center italic text-dim/20">Foto 1</div>
                 </div>
@@ -201,7 +241,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
           
           {/* Location & Map */}
-          <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500 group relative overflow-hidden">
+          <div class="p-8 rounded-[32px] bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500 group relative overflow-hidden">
             <div class="flex items-start justify-between relative z-10">
                 <div class="w-12 h-12 bg-accent-soft rounded-2xl flex items-center justify-center text-accent">
                     <i class="fa-solid fa-location-dot text-xl"></i>
@@ -236,7 +276,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
           </div>
 
           {/* Date & Time */}
-          <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-8 hover:bg-white/[0.05] transition-all duration-500">
+          <div class="p-8 rounded-[32px] bg-white/[0.03] border border-glass-border space-y-8 hover:bg-white/[0.05] transition-all duration-500">
              <div class="flex items-center justify-between">
                 <div class="w-12 h-12 bg-accent-soft rounded-2xl flex items-center justify-center text-accent text-xl">
                     <i class="fa-solid fa-calendar-days"></i>
@@ -269,11 +309,11 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         <section class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-5 gap-8">
             <div class="md:col-span-3 space-y-6 text-left">
                 <div class="space-y-2">
-                    <h2 class="text-4xl font-extrabold text-white">RSVP</h2>
+                    <h2 class="text-4xl font-extrabold text-white italic">RSVP</h2>
                     <p class="text-dim">Giv lyd om du kigger forbi, så vi har nok glas!</p>
                 </div>
 
-                <form id="rsvp-form" class="bg-white/5 border border-glass-border p-8 rounded-[32px] space-y-6">
+                <form id="rsvp-form" class="bg-white/5 border border-glass-border p-8 rounded-[32px] space-y-6 shadow-glow">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="space-y-1.5">
                             <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Navn</label>
@@ -291,7 +331,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                         <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Besked (Valgfrit)</label>
                         <textarea name="message" rows="2" placeholder="Glæder mig!..." class="w-full px-5 py-3 bg-white/5 border border-glass-border rounded-xl text-white outline-none focus:border-accent transition-all resize-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-accent transition-all active:scale-95 shadow-xl">
+                    <button type="submit" class="w-full py-4 bg-white text-black font-extrabold rounded-xl hover:bg-accent hover:scale-[1.01] transition-all active:scale-95 shadow-xl">
                         Send RSVP <i class="fa-solid fa-check ml-2"></i>
                     </button>
                     <p id="rsvp-status" class="text-center text-xs hidden font-bold"></p>
@@ -308,12 +348,12 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
                             </p>
                             <ul class="space-y-3">
                                 {rsvps.slice(0, 10).map((r) => (
-                                    <li class="flex items-center gap-3 animate-in slide-in-from-left-2">
-                                        <div class="w-2 h-2 rounded-full bg-accent"></div>
+                                    <li class="flex items-center gap-3 animate-in slide-in-from-left-2 transition-transform hover:translate-x-1">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
                                         <span class="text-dim text-sm font-bold">{r.name}</span>
                                     </li>
                                 ))}
-                                {rsvps.length > 10 && <li class="text-dim/40 text-[10px] italic">...og {rsvps.length - 10} andre</li>}
+                                {rsvps.length > 10 && <li class="text-dim/40 text-[10px] italic pt-2">...og {rsvps.length - 10} andre</li>}
                             </ul>
                         </div>
                     ) : (
@@ -329,9 +369,9 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         </section>
 
         {/* Practical Info (FAQ) */}
-        <section class="max-w-3xl mx-auto w-full space-y-8 text-left">
+        <section class="max-w-3xl mx-auto w-full space-y-12 text-left">
           <div class="text-center space-y-2">
-            <h2 class="text-4xl font-bold text-white">Praktisk Information</h2>
+            <h2 class="text-4xl font-bold text-white italic">Praktisk Info</h2>
             <p class="text-dim">Alt hvad du behøver at vide om festen</p>
           </div>
           
@@ -342,11 +382,11 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
               { q: "Har du nogle gaveønsker?", a: "Din tilstedeværelse er den største gave! Hvis du absolut vil give noget, kan du finde min ønskeseddel her: [Link kommer snart].", icon: "fa-gift" },
               { q: "Parkering og transport?", a: "Baren ligger tæt på Nørreport Station. Vi fraråder bilkørsel da parkering kan være svært.", icon: "fa-train" }
             ].map((item, i) => (
-              <div class="p-8 rounded-3xl bg-white/5 border border-glass-border space-y-4">
+              <div class="p-8 rounded-[32px] bg-white/5 border border-glass-border space-y-4 hover:bg-white/[0.08] transition-all">
                 <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent text-sm">
                     <i class={`fa-solid ${item.icon}`}></i>
                 </div>
-                <h4 class="text-white font-bold">{item.q}</h4>
+                <h4 class="text-white font-bold uppercase tracking-tight">{item.q}</h4>
                 <p class="text-dim text-sm leading-relaxed">{item.a}</p>
               </div>
             ))}
@@ -354,14 +394,14 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
         </section>
 
         {/* Guestbook Section */}
-        <section class="max-w-4xl mx-auto w-full space-y-12">
+        <section class="max-w-4xl mx-auto w-full space-y-12 pb-20">
           <div class="text-center space-y-2">
-            <h2 class="text-4xl font-extrabold text-white">Gæstebog</h2>
+            <h2 class="text-4xl font-extrabold text-white italic">Gæstebog</h2>
             <p class="text-dim">Efterlad en hilsen til den nye cand.polit!</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-             <form id="guestbook-form" class="lg:col-span-1 bg-white/5 border border-glass-border p-8 rounded-[32px] space-y-4 text-left sticky top-24">
+             <form id="guestbook-form" class="lg:col-span-1 bg-white/5 border border-glass-border p-8 rounded-[32px] space-y-4 text-left sticky top-32 z-10">
                 <div class="space-y-4">
                     <div class="space-y-1.5">
                         <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Dit Navn</label>
@@ -380,7 +420,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
 
             <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {messages && messages.map((m) => (
-                <div class="p-6 rounded-3xl bg-white/[0.02] border border-glass-border text-left hover:border-accent/20 transition-all duration-300 group">
+                <div class="p-6 rounded-[32px] bg-white/[0.02] border border-glass-border text-left hover:border-accent/20 transition-all duration-300 group">
                     <div class="mb-4">
                         <i class="fa-solid fa-quote-left text-accent/10 text-2xl group-hover:text-accent/30 transition-colors"></i>
                         <p class="text-white/90 italic -mt-2">"{m.message}"</p>
@@ -418,6 +458,7 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
   // Trigger Confetti if authenticated (element exists)
   const celebration = document.getElementById('celebration-content');
   if (celebration) {
+    // 1. Initial Confetti
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000, colors: ['#d4af37', '#ffffff', '#b8860b'] };
@@ -434,113 +475,171 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
       }
 
       const particleCount = 50 * (timeLeft / duration);
-      // since particles fall down, start a bit higher than random
       confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
       confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
     }, 250);
+
+    // 2. Champagne Pop (Phase 3)
+    const popBtn = document.getElementById('champagne-pop');
+    if (popBtn) {
+        popBtn.addEventListener('click', () => {
+            // Audio Synthesis (Champagne Pop)
+            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.1);
+
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+
+            // Confetti Burst
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.6 },
+                colors: ['#d4af37', '#ffffff', '#ff0000', '#00ff00']
+            });
+            
+            // Visual pulse on button
+            popBtn.classList.add('scale-95');
+            setTimeout(() => popBtn.classList.remove('scale-95'), 100);
+        });
+    }
+
+    // 3. Mouse Trail Particles (Phase 3)
+    const canvas = document.getElementById('particle-canvas') as HTMLCanvasElement;
+    if (canvas) {
+        const ctx = canvas.getContext('2d')!;
+        let particles: any[] = [];
+        
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            x: number; y: number; size: number; speedX: number; speedY: number; life: number;
+            constructor(x: number, y: number) {
+                this.x = x; this.y = y;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.life = 1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= 0.02;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.life})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            for (let i = 0; i < 2; i++) {
+                particles.push(new Particle(e.clientX, e.clientY));
+            }
+        });
+
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        };
+        animate();
+    }
 
     // Countdown Logic
     const eventDateStr = celebration.getAttribute('data-event-date');
     if (eventDateStr) {
         const targetDate = new Date(eventDateStr).getTime();
-        
         const updateCountdown = () => {
             const now = new Date().getTime();
             const distance = targetDate - now;
-            
             if (distance < 0) return;
-
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
             const dEl = document.getElementById('days');
             const hEl = document.getElementById('hours');
             const mEl = document.getElementById('minutes');
             const sEl = document.getElementById('seconds');
-
             if (dEl) dEl.innerText = String(days).padStart(2, '0');
             if (hEl) hEl.innerText = String(hours).padStart(2, '0');
             if (mEl) mEl.innerText = String(minutes).padStart(2, '0');
             if (sEl) sEl.innerText = String(seconds).padStart(2, '0');
         };
-
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
 
-    // Guestbook Submission Logic
+    // Form Submissions (existing logic)
     const gbForm = document.getElementById('guestbook-form') as HTMLFormElement;
     const gbStatus = document.getElementById('form-status');
-    
     if (gbForm && gbStatus) {
         gbForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(gbForm);
-            const name = formData.get('name');
-            const message = formData.get('message');
-            
             gbStatus.classList.remove('hidden', 'text-red-400', 'text-green-400');
             gbStatus.innerText = "Sender hilsen...";
-            gbStatus.classList.add('text-white/60');
-
             try {
                 const res = await fetch('/api/guestbook', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, message })
+                    body: JSON.stringify(Object.fromEntries(formData))
                 });
-                
                 if (res.ok) {
-                    gbStatus.innerText = "Tak! Din hilsen er modtaget og venter på godkendelse. 🎉";
-                    gbStatus.classList.replace('text-white/60', 'text-green-400');
+                    gbStatus.innerText = "Tak! Din hilsen er modtaget. 🎉";
+                    gbStatus.classList.add('text-green-400');
                     gbForm.reset();
-                } else {
-                    throw new Error();
-                }
+                } else throw new Error();
             } catch {
-                gbStatus.innerText = "Der opstod en fejl. Prøv igen senere.";
-                gbStatus.classList.replace('text-white/60', 'text-red-400');
+                gbStatus.innerText = "Fejl. Prøv igen.";
+                gbStatus.classList.add('text-red-400');
             }
         });
     }
 
-    // RSVP Submission Logic
     const rsvpForm = document.getElementById('rsvp-form') as HTMLFormElement;
     const rsvpStatus = document.getElementById('rsvp-status');
-    
     if (rsvpForm && rsvpStatus) {
         rsvpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(rsvpForm);
-            const name = formData.get('name');
-            const plus_one = formData.get('plus_one') === 'true';
-            const message = formData.get('message');
-            
             rsvpStatus.classList.remove('hidden', 'text-red-400', 'text-green-400');
             rsvpStatus.innerText = "Sender RSVP...";
-            rsvpStatus.classList.add('text-white/60');
-
             try {
                 const res = await fetch('/api/rsvp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, plus_one, message })
+                    body: JSON.stringify(Object.fromEntries(formData))
                 });
-                
                 if (res.ok) {
-                    rsvpStatus.innerText = "Fedt! Vi har modtaget din tilmelding. Ses til fest! 🍺";
-                    rsvpStatus.classList.replace('text-white/60', 'text-green-400');
+                    rsvpStatus.innerText = "Tilmelding modtaget! Ses til fest! 🍺";
+                    rsvpStatus.classList.add('text-green-400');
                     rsvpForm.reset();
-                    // Add a tiny extra confetti burst
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
-                } else {
-                    throw new Error();
-                }
+                } else throw new Error();
             } catch {
-                rsvpStatus.innerText = "Fejl ved tilmelding. Prøv venligst igen.";
-                rsvpStatus.classList.replace('text-white/60', 'text-red-400');
+                rsvpStatus.innerText = "Fejl ved tilmelding.";
+                rsvpStatus.classList.add('text-red-400');
             }
         });
     }
@@ -552,11 +651,19 @@ const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLAT
     box-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
   }
   .text-glow-accent {
-    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
   }
-  
-  /* Smooth scroll for anchor links */
   html {
     scroll-behavior: smooth;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
   }
 </style>
