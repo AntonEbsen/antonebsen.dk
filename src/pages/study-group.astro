@@ -511,6 +511,68 @@ const milestones = [
                         </div>
                     </section>
 
+                    {/* Phase 5: Planøkonomi-Modulet (Workload) & Moral-indeks (Mood) */}
+                    <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        
+                        {/* Planøkonomi-Modulet (Workload Planner) */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic">Planøkonomi-Modulet <span class="text-red-600 text-sm">(Arbejdskraft)</span></h3>
+                            <div class="space-y-4">
+                                {[
+                                    { task: "Metode & Teori", assigned: "Mao", status: "I gang", color: "red" },
+                                    { task: "Data-cleaning & Stata", assigned: "Stalin", status: "Færdig", color: "green" },
+                                    { task: "Konklusion & Diskussion", assigned: "Che", status: "Planlagt", color: "white" }
+                                ].map(item => (
+                                    <div class="p-6 bg-white/[0.03] border border-white/5 rounded-3xl flex items-center justify-between group hover:border-red-600/30 transition-all">
+                                        <div class="space-y-1">
+                                            <h4 class="font-bold text-white uppercase tracking-tight">{item.task}</h4>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-[10px] font-black uppercase tracking-widest text-white/20">Tildelt Kamerat:</span>
+                                                <span class="text-red-600 text-[10px] font-black uppercase tracking-widest">{item.assigned}</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class={`text-[10px] font-black uppercase tracking-[0.2em] ${item.status === 'Færdig' ? 'text-green-500' : item.status === 'I gang' ? 'text-red-600' : 'text-white/20'}`}>
+                                                {item.status}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                                <button class="w-full py-3 bg-white/5 hover:bg-white/10 text-white/20 hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border border-dashed border-white/5">Omfordel arbejdskraft +</button>
+                            </div>
+                        </div>
+
+                        {/* Kollektivets Moral-indeks (Mood tracker) */}
+                        <div class="space-y-12">
+                            <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Moral-indeks</h3>
+                            <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] space-y-10 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-red-600/5 blur-3xl rounded-full"></div>
+                                
+                                <div class="space-y-8">
+                                    {[
+                                        { name: "Stalin", mood: 85, status: "Revolutionær Gejst" },
+                                        { name: "Mao", mood: 92, status: "Partiloyal Fokus" },
+                                        { name: "Che", mood: 60, status: "Presset af Reaktionen" }
+                                    ].map(member => (
+                                        <div class="space-y-3">
+                                            <div class="flex justify-between items-end">
+                                                <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Kamerat {member.name}</span>
+                                                <span class="text-red-600 text-[8px] font-bold italic uppercase tracking-widest">{member.status}</span>
+                                            </div>
+                                            <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden group">
+                                                <div class="h-full bg-red-600 transition-all duration-1000 shadow-glow-red" style={`width: ${member.mood}%`}></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div class="pt-6 border-t border-white/5">
+                                    <button class="w-full py-4 bg-red-600/10 hover:bg-red-600 text-red-600 hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border border-red-600/20">Indmeld din gejst 👋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
                     {/* Footer / Manifesto */}
                     <footer class="pt-20 border-t border-white/5 text-center space-y-8">
                         <div class="flex justify-center gap-4 text-red-600/20 text-4xl">
