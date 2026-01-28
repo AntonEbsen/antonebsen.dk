@@ -52,7 +52,7 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .chapter {
-      margin-bottom: 6rem;
+      margin-bottom: 8rem;
       position: relative;
     }
 
@@ -64,6 +64,7 @@ import Layout from '../layouts/Layout.astro';
       top: -2rem;
       left: -2rem;
       font-weight: 900;
+      pointer-events: none;
     }
 
     h2 {
@@ -105,11 +106,11 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .contrast-card.past {
-      border-color: rgba(239, 68, 68, 0.2); /* Reddish */
+      border-color: rgba(239, 68, 68, 0.2);
     }
 
     .contrast-card.present {
-      border-color: rgba(34, 197, 94, 0.2); /* Greenish */
+      border-color: rgba(34, 197, 94, 0.2);
       background: rgba(var(--accent-rgb), 0.03);
     }
 
@@ -128,7 +129,7 @@ import Layout from '../layouts/Layout.astro';
       background: rgba(255,255,255,0.05);
       border-radius: 12px;
       display: flex;
-      items-center: center;
+      align-items: center;
       justify-content: center;
       margin-bottom: 1.5rem;
       font-size: 1.5rem;
@@ -180,26 +181,6 @@ import Layout from '../layouts/Layout.astro';
       color: #fff;
       font-weight: 600;
     }
-
-    .timeline-element {
-        display: flex;
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
-    
-    .timeline-icon {
-        flex-shrink: 0;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--accent);
-        color: #000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        margin-top: 0.5rem;
-    }
   </style>
 
   <main class="story-wrap">
@@ -231,43 +212,93 @@ import Layout from '../layouts/Layout.astro';
 
     <section class="chapter">
       <span class="chapter-number">02</span>
-      <h2>Dommen fra systemet</h2>
+      <h2>Dommen – og det nye håb</h2>
       <div class="content">
         <p>
-          Skolestarten blev ikke lettere. Jeg blev sendt i specialklasse, men heller ikke her fandt jeg en plads. Lærerne vurderede, at min fremtid lå på en specialskole for adfærdsvanskelige børn. De havde opgivet troen på, at jeg nogensinde ville kunne begå mig i et normalt skoleforløb.
+          Skolestarten blev ikke lettere. Lærerne vurderede, at min fremtid lå på en specialskole for adfærdsvanskelige børn. De havde opgivet troen på, at jeg nogensinde ville kunne begå mig i et normalt skoleforløb.
         </p>
         <p>
-          Men mine forældre nægtede at acceptere den skæbne. De havde fundet en plads til mig på en privatskole, men mødte hård modstand fra mine daværende lærere.
+          Men mine forældre nægtede at acceptere den skæbne. Da de fortalte min nye skolelærer på privatskolen, hvad systemet havde dømt mig til, faldt svaret prompte:
         </p>
-        <div class="quote-box" style="border-left-color: #ef4444;">
-          "Er du klar over hvad du gør ved dit barn? Anton vil aldrig kunne klare en normal skolegang."
+        <div class="quote-box" style="border-left-color: #22c55e;">
+          "Selvfølgelig kan Anton klare en normal skolegang."
         </div>
+        <p>
+          For første gang følte jeg mig set og hørt. Der var nu skabt en sprække af lys i det, der før var en lukket dør.
+        </p>
       </div>
     </section>
 
     <section class="chapter">
       <span class="chapter-number">03</span>
-      <h2>Viljen til at modbevise</h2>
+      <h2>En nat badet i frygt</h2>
       <div class="content">
         <p>
-          Disse ord blev ikke en begrænsning, men en katalysator. Gennem hele min skolegang og senere på universitetet har jeg båret den skepsis med mig som en motivation for at vise, at diagnoser og statistikker ikke definerer ens potentiale.
+          I tredje klasse nærmede jeg mig mit sidste epilepsianfald, men det skulle blive det voldsomste. Jeg var stoppet med min medicin, men samtidigt indtraf en tragedie, der rystede min verden: En pædagog i min SFO mistede livet i skoven, fordi han ikke havde taget sin epilepsimedicin og var faldet uheldigt.
         </p>
-        
+        <p>
+          Dødsfaldet ramte mig med en lammende frygt. Jeg spurgte mine forældre med tårer i øjnene: <em>"Kan jeg også dø, hvis jeg ikke tager min medicin?"</em>
+        </p>
+        <p>
+          Samme nat ramte anfaldet. Det var værre end nogensinde før. Min mor har senere fortalt, at det var første gang, hun så min far for alvor bange. Han ruskede i mig, mens tårerne løb ned ad hans kinder, og råbte: <strong>"Anton, du må ikke dø!"</strong>. Det øjeblik står prentet ind i vores familiehistorie som det endelige opgør med sygdommen.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">04</span>
+      <h2>Kampen mod de usynlige bogstaver</h2>
+      <div class="content">
+        <p>
+          Som om de fysiske udfordringer ikke var nok, fik jeg på mellemtrinnet diagnosen ordblind. Det kom ikke som en overraskelse – mine diktater var mest af alt en samling af gæt og frustrationer.
+        </p>
+        <p>
+          Min mor gav mig et ultimatum, der føltes hårdt dengang, men som blev min redning: Jeg skulle tage mig sammen og finde en vej, ellers ville hun ikke fortsætte med at betale for min skolegang. Jeg besluttede mig for at bekæmpe ordblindheden med min egen metode: Jeg begyndte at visualisere <strong>QWERTY-keyboardet</strong> for mit indre blik, når jeg skulle stave.
+        </p>
+        <p>
+          Det virkede. Jeg trænede min hjerne til at se bogstavernes placering i stedet for at kæmpe med deres lyde. Da jeg afsluttede grundskolen, stod der et <strong>12-tal</strong> på mit eksamensbevis i retskrivning.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">05</span>
+      <h2>Gnisten tændes</h2>
+      <div class="content">
+        <p>
+          Det første 12-tal nogensinde fik jeg imidlertid allerede i mellemtrinnet i Kristendomskundskab. Jeg kan stadig huske mine forældres ansigter og stoltheden i min mors stemme, da hun sagde:
+        </p>
+        <div class="quote-box">
+          "Og de sagde, at du aldrig ville klare en normal skolegang."
+        </div>
+        <p>
+          Det var her, gnisten blev tændt. Jeg følte mig stolt af mig selv for første gang. Jeg tænkte: <em>"Hvis jeg kan få topkarakter for at være klog på Bibelen og spiritualitet, så må jeg også kunne få det i alt det andet."</em>
+        </p>
+        <p>
+          Fra det øjeblik blev jeg en "hunter". Jeg jagtede det ene 12-tal efter det andet. Ikke for karakterens skyld alene, men som et bevis på, at ingen andre end mig selv skulle definere mine grænser.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">06</span>
+      <h2>Fra modgang til målrettethed</h2>
+      <div class="content">
         <div class="high-contrast">
           <div class="contrast-card past">
             <span class="label">Dengang</span>
             <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
-            <p>Vurderet uegnet til normal skolegang, sprogvanskeligheder og isoleret fra fællesskabet.</p>
+            <p>Vurderet uegnet til normal skolegang, sprog- og læsevanskeligheder og isoleret af sygdom.</p>
           </div>
           <div class="contrast-card present">
             <span class="label">I dag</span>
             <div class="icon-box"><i class="fa-solid fa-graduation-cap"></i></div>
-            <p>Snart færdiguddannet <strong>cand.polit</strong> fra Københavns Universitet med fokus på komplekse økonomiske modeller.</p>
+            <p>Snart færdiguddannet <strong>cand.polit</strong> fra Københavns Universitet med speciale i komplekse økonomiske sammenhænge.</p>
           </div>
         </div>
 
         <p>
-          I dag bruger jeg de samme kognitive evner, som man engang tvivlede på, til at analysere makroøkonomiske tidsrækker og bygge avancerede økonometriske modeller. Min baggrund har givet mig en unik vedholdenhed og et perspektiv, som jeg bringer med mig i alt, hvad jeg foretager mig professionelt.
+          I dag bruger jeg de samme kognitive strategier, som jeg udviklede for at overvinde ordblindheden, til at analysere makroøkonomiske tidsrækker og bygge avancerede økonometriske modeller. Min baggrund har givet mig en unik vedholdenhed og et perspektiv, som jeg bringer med mig i alt, hvad jeg foretager mig professionelt.
         </p>
       </div>
     </section>
