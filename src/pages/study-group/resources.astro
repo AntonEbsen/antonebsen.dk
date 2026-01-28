@@ -7,23 +7,60 @@ export const prerender = false;
 <StudyGroupLayout title="Ressource-Hvælvingen" activePage="resources">
     <div class="space-y-32">
         <div class="space-y-4">
-            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Hvælvingen & <br/> <span class="text-red-600">Den Røde Bog</span></h2>
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Hvælvingen & <br/> <span class="text-red-600">Folkets Bibliotek</span></h2>
             <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
-                Central opbevaring for kollektivets viden, kilder og vigtigste forbindelseslinjer.
+                Central opbevaring for kollektivets viden. Fra de store værker til de små noter – alt er her.
             </p>
         </div>
 
+        {/* Search Bar */}
+        <div class="relative max-w-3xl">
+            <i class="fa-solid fa-magnifying-glass absolute left-8 top-1/2 -translate-y-1/2 text-white/20"></i>
+            <input 
+                type="text" 
+                placeholder="Gennemsøg folkets bibliotek (PDF, artikler, noter)..." 
+                class="w-full bg-white/[0.03] border border-white/10 rounded-[32px] pl-20 pr-8 py-6 text-white placeholder:text-white/20 focus:outline-none focus:border-red-600/50 transition-all"
+            />
+        </div>
+
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Resource Vault */}
+            {/* Folkets Bibliotek (Enhanced Resources) */}
             <div class="space-y-12">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Vigtige Links</h3>
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Folkets Bibliotek</h3>
+                <div class="space-y-4">
+                    {[
+                        { name: "Piketty_Capital_21st.pdf", type: "PDF", size: "4.2 MB", tag: "Teori" },
+                        { name: "DST_Micro_Extract_2024.xlsx", type: "DATA", size: "12.8 MB", tag: "Data" },
+                        { name: "Seminar_Draft_v2.1.tex", type: "LATEX", size: "145 KB", tag: "Udkast" },
+                        { name: "Romer_Macroeconomics.pdf", type: "PDF", size: "2.1 MB", tag: "Pensum" }
+                    ].map(file => (
+                        <div class="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex items-center justify-between group hover:border-red-600/30 transition-all cursor-pointer">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 group-hover:bg-red-600 group-hover:text-white transition-all">
+                                    <i class={`fa-solid ${file.type === 'PDF' ? 'fa-file-pdf' : file.type === 'DATA' ? 'fa-file-excel' : 'fa-file-code'}`}></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm uppercase tracking-tight">{file.name}</h4>
+                                    <p class="text-[9px] text-white/20 font-black uppercase tracking-widest">{file.size} • {file.type}</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[8px] font-black uppercase tracking-widest text-red-600">
+                                {file.tag}
+                            </span>
+                        </div>
+                    ))}
+                    <button class="w-full py-4 border-2 border-dashed border-white/5 rounded-3xl text-white/20 font-black uppercase tracking-widest text-[10px] hover:border-red-600/30 hover:text-white transition-all mt-4">Upload til biblioteket +</button>
+                </div>
+            </div>
+
+            {/* Vigtige Links */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Vigtige Forbindelser</h3>
                 <div class="grid grid-cols-1 gap-4">
                     {[
-                        { name: "Overleaf: Seminaropgave", url: "#", icon: "fa-leaf" },
-                        { name: "Fælles Google Drive", url: "#", icon: "fa-brands fa-google-drive" },
-                        { name: "GitHub Repository", url: "#", icon: "fa-brands fa-github" },
-                        { name: "Litteraturliste (Mendeley)", url: "#", icon: "fa-book" },
-                        { name: "DST - Statistikbanken", url: "#", icon: "fa-database" }
+                        { name: "Overleaf: Seminar", url: "#", icon: "fa-leaf" },
+                        { name: "G-Drive: Speciale", url: "#", icon: "fa-brands fa-google-drive" },
+                        { name: "GitHub: Kollektivet", url: "#", icon: "fa-brands fa-github" }
                     ].map(link => (
                         <a href={link.url} class="flex items-center justify-between p-8 bg-white/[0.03] border border-white/5 rounded-[32px] hover:border-red-600/30 transition-all group">
                             <div class="flex items-center gap-6">
@@ -37,48 +74,37 @@ export const prerender = false;
                     ))}
                 </div>
             </div>
-
-            {/* Den Røde Bog (Reading List) */}
-            <div class="space-y-12">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Den Røde Bog <span class="text-white/40 text-sm">(Læseliste)</span></h3>
-                <div class="space-y-4">
-                    {[
-                        { title: "Capital in the 21st Century", author: "Piketty", readers: ["Stalin", "Mao"] },
-                        { title: "Macroeconomic Theory", author: "Romer", readers: ["Che"] },
-                        { title: "Seminar Core Paper #1", author: "Kollektivet", readers: ["Mao"] },
-                        { title: "Economic Models for Revolution", author: "Luxemburg", readers: ["Che", "Stalin"] }
-                    ].map(book => (
-                        <div class="p-8 bg-white/[0.02] border border-white/5 rounded-[32px] group hover:border-red-600/20 transition-all">
-                            <div class="flex justify-between items-start mb-6">
-                                <div class="space-y-1">
-                                    <h4 class="font-bold text-white text-lg uppercase tracking-tight">{book.title}</h4>
-                                    <p class="text-white/40 text-sm italic">{book.author}</p>
-                                </div>
-                                <i class="fa-solid fa-book-open text-red-600/20 group-hover:text-red-600 transition-colors text-xl"></i>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                {book.readers.map(reader => (
-                                    <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-600">
-                                        Læst af {reader}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                    <button class="w-full py-4 border-2 border-dashed border-white/5 rounded-[32px] text-white/20 font-black uppercase tracking-widest text-[10px] hover:border-red-600/30 hover:text-white transition-all mt-4">Tilføj Pensum +</button>
-                </div>
-            </div>
         </section>
 
-        {/* Archives */}
+        {/* Den Røde Bog (Reading List - Unified) */}
         <section class="space-y-16">
             <div class="flex items-center gap-6">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Revolutions-Arkivet</h3>
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Den Røde Bog <span class="text-white/40 text-sm ml-4">(Læseliste)</span></h3>
                 <div class="h-px flex-1 bg-white/5"></div>
             </div>
-            <div class="p-20 border-2 border-dashed border-white/5 rounded-[48px] text-center space-y-6">
-                <i class="fa-solid fa-folder-open text-white/5 text-6xl"></i>
-                <p class="text-white/20 font-medium italic">Arkivet er tomt. Gem dine noter fra seminaret her <br/> til senere brug i specialet.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[
+                    { title: "Capital in the 21st Century", author: "Piketty", readers: ["Stalin", "Mao"] },
+                    { title: "Macroeconomic Theory", author: "Romer", readers: ["Che"] },
+                    { title: "Economic Models", author: "Luxemburg", readers: ["Che", "Stalin"] }
+                ].map(book => (
+                    <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] group hover:border-red-600/20 transition-all">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-white text-xl uppercase tracking-tight leading-none">{book.title}</h4>
+                                <p class="text-white/20 text-xs italic uppercase tracking-widest">{book.author}</p>
+                            </div>
+                            <i class="fa-solid fa-book-open text-red-600/20 group-hover:text-red-600 transition-all text-2xl"></i>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-6 border-t border-white/5">
+                            {book.readers.map(reader => (
+                                <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-600">
+                                    Læst af {reader}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </section>
     </div>
