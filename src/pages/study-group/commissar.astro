@@ -1,0 +1,155 @@
+---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+
+export const prerender = false;
+---
+
+<StudyGroupLayout title="Kommissæren" activePage="commissar">
+    <div class="max-w-4xl mx-auto h-[calc(100vh-12rem)] flex flex-col">
+        {/* Header */}
+        <div class="mb-12 space-y-4">
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">AI <br/> <span class="text-red-600">Kommissæren</span></h2>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/20 rounded-full text-red-600 text-[10px] font-black uppercase tracking-widest">
+                    <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
+                    Operationel
+                </div>
+                <p class="text-white/40 text-sm italic">Propaganda-center og Ideologisk vejleder</p>
+            </div>
+        </div>
+
+        {/* Chat Area */}
+        <div class="flex-1 bg-white/[0.02] border border-white/5 rounded-[48px] overflow-hidden flex flex-col relative group hover:border-red-600/20 transition-all duration-500">
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+            
+            {/* Messages */}
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-12 space-y-8 scroll-smooth">
+                {/* Initial Message */}
+                <div class="flex flex-col items-start space-y-2 max-w-[80%]">
+                    <p class="text-[8px] font-black uppercase tracking-widest text-red-600">Kommissæren</p>
+                    <div class="bg-red-600/10 border border-red-600/20 p-6 rounded-[32px] rounded-tl-none">
+                        <p class="text-sm text-white/90 leading-relaxed font-medium">Hvad er status på produktionen, kammerat? Kollektivet venter ikke på dem, der sløser.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Input Area */}
+            <div class="p-8 border-t border-white/5 bg-white/[0.01]">
+                <div class="relative">
+                    <input 
+                        id="chat-input"
+                        type="text" 
+                        placeholder="Afgiv rapport..." 
+                        class="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 text-white placeholder:text-white/20 focus:outline-none focus:border-red-600/50 focus:ring-4 focus:ring-red-600/10 transition-all font-medium pr-16"
+                    />
+                    <button 
+                        id="send-btn"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-xl flex items-center justify-center transition-all shadow-glow-red"
+                    >
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+                <p class="text-[8px] font-black uppercase tracking-[0.3em] text-white/10 text-center mt-6">Hver besked gemmes i protokollen</p>
+            </div>
+        </div>
+    </div>
+
+    <script shadow:true>
+        const input = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const messages = document.getElementById('chat-messages');
+
+        let chatHistory = [];
+
+        async function sendMessage() {
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Clear input
+            input.value = '';
+
+            // 1. Add User Message to UI
+            addMessageToUI('user', message);
+
+            // 2. Add Loading State
+            const loadingId = addLoadingUI();
+
+            try {
+                // 3. Send to API
+                const res = await fetch('/api/commissar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, history: chatHistory })
+                });
+
+                const data = await res.json();
+
+                if (data.error) throw new Error(data.error);
+
+                // 4. Remove Loading & Add Response
+                removeLoadingUI(loadingId);
+                addMessageToUI('commissar', data.text);
+
+                // 5. Update History
+                chatHistory.push({ role: 'user', content: message });
+                chatHistory.push({ role: 'commissar', content: data.text });
+
+            } catch (err) {
+                console.error(err);
+                removeLoadingUI(loadingId);
+                addMessageToUI('commissar', "FEJL I FORBINDELSEN TIL HQ. KONTRAREVOLUTIONÆR AKTIVITET DETEKTERET.");
+            }
+        }
+
+        function addMessageToUI(role, content) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex flex-col ${role === 'user' ? 'items-end' : 'items-start'} space-y-2 max-w-[80%] ${role === 'user' ? 'ml-auto' : ''}`;
+            
+            const label = document.createElement('p');
+            label.className = `text-[8px] font-black uppercase tracking-widest ${role === 'user' ? 'text-white/20' : 'text-red-600'}`;
+            label.textContent = role === 'user' ? 'Dig' : 'Kommissæren';
+
+            const box = document.createElement('div');
+            box.className = `${role === 'user' ? 'bg-white/[0.05] border border-white/10' : 'bg-red-600/10 border border-red-600/20'} p-6 rounded-[32px] ${role === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'}`;
+            
+            const p = document.createElement('p');
+            p.className = "text-sm text-white/90 leading-relaxed font-medium";
+            p.textContent = content;
+
+            box.appendChild(p);
+            wrapper.appendChild(label);
+            wrapper.appendChild(box);
+            messages.appendChild(wrapper);
+
+            // Scroll to bottom
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function addLoadingUI() {
+            const id = 'loading-' + Date.now();
+            const wrapper = document.createElement('div');
+            wrapper.id = id;
+            wrapper.className = "flex flex-col items-start space-y-2";
+            wrapper.innerHTML = `
+                <p class="text-[8px] font-black uppercase tracking-widest text-red-600">Kommissæren</p>
+                <div class="bg-red-600/5 border border-white/5 p-4 rounded-full flex gap-2">
+                    <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce"></span>
+                    <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                    <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                </div>
+            `;
+            messages.appendChild(wrapper);
+            messages.scrollTop = messages.scrollHeight;
+            return id;
+        }
+
+        function removeLoadingUI(id) {
+            document.getElementById(id)?.remove();
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</StudyGroupLayout>
