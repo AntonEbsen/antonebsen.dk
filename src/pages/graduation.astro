@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import Button from '@components/ui/Button.astro';
+import { createClient } from '@supabase/supabase-js';
 
 // We use SSR to handle the password post without exposing it in a JS variable
 export const prerender = false;
@@ -9,24 +10,45 @@ export const prerender = false;
 let error = "";
 let authenticated = false;
 
+// Supabase Init
+const supabaseUrl = import.meta.env.SUPABASE_URL;
+const supabaseKey = import.meta.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
-    const password = data.get("password");
     
-    // The password is 'cand.polit' (case insensitive)
-    if (password?.toString().toLowerCase() === "cand.polit") {
-      authenticated = true;
-    } else {
-      error = "Forkert adgangskode. Prøv igen.";
+    // Handle Login
+    if (data.has("password")) {
+        const password = data.get("password");
+        if (password?.toString().toLowerCase() === "cand.polit") {
+            authenticated = true;
+        } else {
+            error = "Forkert adgangskode. Prøv igen.";
+        }
     }
   } catch (e) {
     error = "Der opstod en fejl. Prøv igen.";
   }
 }
 
-// Placeholder for the event date (e.g., June 1st, 2026)
+// Fetch Guestbook Messages
+const { data: messages, error: dbError } = await supabase
+    .from('guestbook')
+    .select('*')
+    .eq('approved', true)
+    .order('created_at', { ascending: false });
+
+// Placeholder for the event date
 const eventDate = "2026-06-01T18:00:00"; 
+const eventEndDate = "2026-06-02T02:00:00";
+const eventTitle = "Dimissionsfest: Anton Ebsen";
+const eventDetails = "Fejring af cand.polit graduering på Hatten Bar!";
+const eventLocation = "Hatten Bar, Prinsensgade 12, 1305 København K";
+
+// Calendar Links
+const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${eventDate.replace(/[-:]/g, '')}/${eventEndDate.replace(/[-:]/g, '')}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
 ---
 
 <Layout title="Dimission | Anton Ebsen" description="Fejring af min Masters dimission">
@@ -69,60 +91,78 @@ const eventDate = "2026-06-01T18:00:00";
         <p class="text-xs text-dim/50 italic">Hint: Titlen på min uddannelse (cand.xxxx)</p>
       </div>
     ) : (
-      <div id="celebration-content" class="max-w-3xl w-full text-center space-y-12 animate-in fade-in zoom-in-95 duration-1000" data-event-date={eventDate}>
+      <div id="celebration-content" class="max-w-4xl w-full text-center space-y-16 animate-in fade-in zoom-in-95 duration-1000" data-event-date={eventDate}>
+        
+        {/* Hero Section */}
         <div class="space-y-6">
           <div class="inline-block px-4 py-1.5 rounded-full bg-accent-soft border border-accent/20 text-accent font-bold text-sm tracking-widest uppercase mb-4 animate-bounce">
             Klar til fejring! 🎉
           </div>
-          <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-7xl mb-4">
+          <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-8xl mb-4">
             Jeg er nu <span class="text-accent italic">Master.</span>
           </h1>
-          <p class="text-xl text-dim leading-relaxed max-w-lg mx-auto">
+          <p class="text-xl text-dim leading-relaxed max-w-xl mx-auto">
             Efter 5 års studier er jeg endelig cand.polit! Det skal fejres, og du er hermed inviteret til min dimissionsfest.
           </p>
         </div>
 
         {/* Countdown Timer */}
-        <div class="grid grid-cols-4 gap-4 max-w-lg mx-auto py-8 border-y border-glass-border">
+        <div class="grid grid-cols-4 gap-4 max-w-lg mx-auto py-10 border-y border-glass-border">
           <div class="space-y-1">
-            <span id="days" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <span id="days" class="text-3xl font-bold text-white tabular-nums sm:text-4xl text-glow-accent">00</span>
             <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Dage</p>
           </div>
           <div class="space-y-1">
-            <span id="hours" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <span id="hours" class="text-3xl font-bold text-white tabular-nums sm:text-4xl text-glow-accent">00</span>
             <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Timer</p>
           </div>
           <div class="space-y-1">
-            <span id="minutes" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <span id="minutes" class="text-3xl font-bold text-white tabular-nums sm:text-4xl text-glow-accent">00</span>
             <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Min.</p>
           </div>
           <div class="space-y-1">
-            <span id="seconds" class="text-3xl font-bold text-white tabular-nums">00</span>
+            <span id="seconds" class="text-3xl font-bold text-white tabular-nums sm:text-4xl text-glow-accent">00</span>
             <p class="text-[10px] text-dim font-bold uppercase tracking-widest">Sek.</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-          <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500 group">
-            <div class="flex items-start justify-between">
+        {/* Info Grid */}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+          
+          {/* Location & Map */}
+          <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500 group relative overflow-hidden">
+            <div class="flex items-start justify-between relative z-10">
                 <div class="w-12 h-12 bg-accent-soft rounded-2xl flex items-center justify-center text-accent">
                     <i class="fa-solid fa-location-dot text-xl"></i>
                 </div>
-                <a 
-                    href="https://www.google.com/maps/search/?api=1&query=Hatten+Bar+København" 
-                    target="_blank" 
-                    class="text-xs font-bold text-accent/60 hover:text-accent flex items-center gap-2 border border-accent/20 px-3 py-1.5 rounded-full transition-colors"
-                >
-                    Vis på kort <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
+                <div class="flex gap-2">
+                    <a 
+                        href={googleCalendarUrl}
+                        target="_blank"
+                        class="text-xs font-bold text-white/40 hover:text-white flex items-center gap-2 border border-white/10 px-3 py-1.5 rounded-full transition-colors"
+                    >
+                        <i class="fa-solid fa-calendar-plus"></i> Kalender
+                    </a>
+                    <a 
+                        href="https://www.google.com/maps/search/?api=1&query=Hatten+Bar+København" 
+                        target="_blank" 
+                        class="text-xs font-bold text-accent/60 hover:text-accent flex items-center gap-2 border border-accent/20 px-3 py-1.5 rounded-full transition-colors"
+                    >
+                        Vis på kort <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
             </div>
-            <div class="space-y-2">
+            <div class="space-y-2 relative z-10">
               <h3 class="text-white font-bold text-xl uppercase tracking-tighter">Lokation</h3>
               <p class="text-dim text-lg">Hatten Bar</p>
-              <p class="text-dim/60 text-sm">Prinsensgade 12, 1305 København K</p>
+              <p class="text-dim/60 text-sm mb-4">Prinsensgade 12, 1305 København K</p>
+              <p class="text-dim/80 text-sm leading-relaxed italic border-l-2 border-accent/30 pl-4 py-1">
+                "Hatten Bar er en af byens hyggeligste oaser, perfekt til en festlig aften. Vi anbefaler at komme i god tid for at sikre en god plads!"
+              </p>
             </div>
           </div>
 
+          {/* Date & Time */}
           <div class="p-8 rounded-3xl bg-white/[0.03] border border-glass-border space-y-6 hover:bg-white/[0.05] transition-all duration-500">
              <div class="w-12 h-12 bg-accent-soft rounded-2xl flex items-center justify-center text-accent text-xl">
               <i class="fa-solid fa-calendar-days"></i>
@@ -130,11 +170,87 @@ const eventDate = "2026-06-01T18:00:00";
             <div class="space-y-2">
               <h3 class="text-white font-bold text-xl uppercase tracking-tighter">Dato & Tid</h3>
               <p class="text-dim text-lg">TBA (Placeholder)</p>
-              <p class="text-dim/60 text-sm">Følg med her på siden for opdateringer</p>
+              <p class="text-dim/60 text-sm">Mandag d. 1. juni 2026 (Forventet)</p>
+              <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-bold">
+                <i class="fa-solid fa-bell"></i> Følg med her på siden for opdateringer
+              </div>
             </div>
           </div>
         </div>
 
+        {/* FAQ Accordion */}
+        <section class="max-w-2xl mx-auto w-full space-y-8 text-left">
+          <div class="text-center space-y-2">
+            <h2 class="text-3xl font-bold text-white">Praktisk Information</h2>
+            <p class="text-dim">Alt hvad du behøver at vide om festen</p>
+          </div>
+          
+          <div class="space-y-4">
+            {[
+              { q: "Hvad er dresscoden?", a: "Dresscoden er Smart Casual. Kom som du er, men vi kan godt lide lidt glimmer!" },
+              { q: "Må jeg tage en ledsager med?", a: "Vi har begrænset plads, så tjek venligst din invitation for '+1' status eller kontakt mig direkte." },
+              { q: "Har du nogle gaveønsker?", a: "Din tilstedeværelse er den største gave! Hvis du absolut vil give noget, kan du finde min ønskeseddel her: [Link kommer snart]." },
+              { q: "Parkering og transport?", a: "Baren ligger tæt på Nørreport Station. Vi fraråder bilkørsel da parkering kan være svært." }
+            ].map((item, i) => (
+              <details class="group p-6 rounded-2xl bg-white/5 border border-glass-border hover:bg-white/[0.08] transition-all duration-300">
+                <summary class="flex items-center justify-between cursor-pointer list-none">
+                  <span class="text-white font-bold">{item.q}</span>
+                  <span class="text-accent transition-transform duration-300 group-open:rotate-180">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </span>
+                </summary>
+                <div class="mt-4 pt-4 border-t border-white/5 text-dim leading-relaxed">
+                  {item.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* Guestbook Section */}
+        <section class="max-w-2xl mx-auto w-full space-y-10">
+          <div class="text-center space-y-2">
+            <h2 class="text-4xl font-extrabold text-white">Gæstebog</h2>
+            <p class="text-dim">Efterlad en hilsen til den nye cand.polit!</p>
+          </div>
+
+          <form id="guestbook-form" class="bg-white/5 border border-glass-border p-8 rounded-[32px] space-y-4 text-left">
+            <div class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Dit Navn</label>
+                    <input name="name" type="text" required placeholder="Navn..." class="w-full px-5 py-3 bg-white/5 border border-glass-border rounded-xl text-white outline-none focus:border-accent transition-all" />
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-dim uppercase tracking-widest pl-1">Din Hilsen</label>
+                    <textarea name="message" required rows="3" placeholder="Skriv din hilsen her..." class="w-full px-5 py-3 bg-white/5 border border-glass-border rounded-xl text-white outline-none focus:border-accent transition-all resize-none"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="w-full py-4 bg-accent text-black font-extrabold rounded-xl hover:scale-[1.02] transition-all active:scale-95">
+                Send Hilsen <i class="fa-solid fa-paper-plane ml-2"></i>
+            </button>
+            <p id="form-status" class="text-center text-xs hidden pt-2 font-bold"></p>
+          </form>
+
+          {/* Messages Wall */}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {messages && messages.map((m) => (
+              <div class="p-6 rounded-2xl bg-white/[0.02] border border-glass-border text-left hover:border-accent/20 transition-all duration-300">
+                <p class="text-white/90 italic mb-4">"{m.message}"</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs font-bold">
+                        {m.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                        <p class="text-white text-xs font-bold">{m.name}</p>
+                        <p class="text-white/30 text-[10px] uppercase font-bold">{new Date(m.created_at).toLocaleDateString('da-DK')}</p>
+                    </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* RSVP Section */}
         <div class="p-12 rounded-[48px] bg-gradient-to-b from-accent/10 to-transparent border border-accent/20 space-y-8 relative overflow-hidden group">
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.05),transparent_70%)]"></div>
           
@@ -224,11 +340,50 @@ const eventDate = "2026-06-01T18:00:00";
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
+
+    // Guestbook Submission Logic
+    const gbForm = document.getElementById('guestbook-form') as HTMLFormElement;
+    const status = document.getElementById('form-status');
+    
+    if (gbForm && status) {
+        gbForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(gbForm);
+            const name = formData.get('name');
+            const message = formData.get('message');
+            
+            status.classList.remove('hidden', 'text-red-400', 'text-green-400');
+            status.innerText = "Sender hilsen...";
+            status.classList.add('text-white/60');
+
+            try {
+                const res = await fetch('/api/guestbook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, message })
+                });
+                
+                if (res.ok) {
+                    status.innerText = "Tak! Din hilsen er modtaget og venter på godkendelse. 🎉";
+                    status.classList.replace('text-white/60', 'text-green-400');
+                    gbForm.reset();
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                status.innerText = "Der opstod en fejl. Prøv igen senere.";
+                status.classList.replace('text-white/60', 'text-red-400');
+            }
+        });
+    }
   }
 </script>
 
 <style>
   .shadow-glow {
     box-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
+  }
+  .text-glow-accent {
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
   }
 </style>
