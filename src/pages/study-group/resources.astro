@@ -1,0 +1,85 @@
+---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+
+export const prerender = false;
+---
+
+<StudyGroupLayout title="Ressource-Hvælvingen" activePage="resources">
+    <div class="space-y-32">
+        <div class="space-y-4">
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Hvælvingen & <br/> <span class="text-red-600">Den Røde Bog</span></h2>
+            <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                Central opbevaring for kollektivets viden, kilder og vigtigste forbindelseslinjer.
+            </p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Resource Vault */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Vigtige Links</h3>
+                <div class="grid grid-cols-1 gap-4">
+                    {[
+                        { name: "Overleaf: Seminaropgave", url: "#", icon: "fa-leaf" },
+                        { name: "Fælles Google Drive", url: "#", icon: "fa-brands fa-google-drive" },
+                        { name: "GitHub Repository", url: "#", icon: "fa-brands fa-github" },
+                        { name: "Litteraturliste (Mendeley)", url: "#", icon: "fa-book" },
+                        { name: "DST - Statistikbanken", url: "#", icon: "fa-database" }
+                    ].map(link => (
+                        <a href={link.url} class="flex items-center justify-between p-8 bg-white/[0.03] border border-white/5 rounded-[32px] hover:border-red-600/30 transition-all group">
+                            <div class="flex items-center gap-6">
+                                <div class="w-14 h-14 bg-red-600/10 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all text-xl">
+                                    <i class={`fa-solid ${link.icon}`}></i>
+                                </div>
+                                <span class="font-bold text-white text-lg uppercase tracking-tight">{link.name}</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-white/10 group-hover:text-red-600 transition-colors"></i>
+                        </a>
+                    ))}
+                </div>
+            </div>
+
+            {/* Den Røde Bog (Reading List) */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Den Røde Bog <span class="text-white/40 text-sm">(Læseliste)</span></h3>
+                <div class="space-y-4">
+                    {[
+                        { title: "Capital in the 21st Century", author: "Piketty", readers: ["Stalin", "Mao"] },
+                        { title: "Macroeconomic Theory", author: "Romer", readers: ["Che"] },
+                        { title: "Seminar Core Paper #1", author: "Kollektivet", readers: ["Mao"] },
+                        { title: "Economic Models for Revolution", author: "Luxemburg", readers: ["Che", "Stalin"] }
+                    ].map(book => (
+                        <div class="p-8 bg-white/[0.02] border border-white/5 rounded-[32px] group hover:border-red-600/20 transition-all">
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="space-y-1">
+                                    <h4 class="font-bold text-white text-lg uppercase tracking-tight">{book.title}</h4>
+                                    <p class="text-white/40 text-sm italic">{book.author}</p>
+                                </div>
+                                <i class="fa-solid fa-book-open text-red-600/20 group-hover:text-red-600 transition-colors text-xl"></i>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                {book.readers.map(reader => (
+                                    <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-600">
+                                        Læst af {reader}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                    <button class="w-full py-4 border-2 border-dashed border-white/5 rounded-[32px] text-white/20 font-black uppercase tracking-widest text-[10px] hover:border-red-600/30 hover:text-white transition-all mt-4">Tilføj Pensum +</button>
+                </div>
+            </div>
+        </section>
+
+        {/* Archives */}
+        <section class="space-y-16">
+            <div class="flex items-center gap-6">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Revolutions-Arkivet</h3>
+                <div class="h-px flex-1 bg-white/5"></div>
+            </div>
+            <div class="p-20 border-2 border-dashed border-white/5 rounded-[48px] text-center space-y-6">
+                <i class="fa-solid fa-folder-open text-white/5 text-6xl"></i>
+                <p class="text-white/20 font-medium italic">Arkivet er tomt. Gem dine noter fra seminaret her <br/> til senere brug i specialet.</p>
+            </div>
+        </section>
+    </div>
+</StudyGroupLayout>

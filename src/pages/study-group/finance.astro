@@ -1,0 +1,113 @@
+---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+
+export const prerender = false;
+---
+
+<StudyGroupLayout title="Kollektiv Velfærd" activePage="finance">
+    <div class="space-y-32">
+        <div class="space-y-4">
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Velfærd & <br/> <span class="text-red-600">Fremtid</span></h2>
+            <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                Udligning af kaffe-omkostninger, uddeling af fortjenstmedaljer og de lange linjer i Femårsplanen.
+            </p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            {/* Kollektivkassen (Finance) */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Kollektivkassen</h3>
+                <div class="grid grid-cols-1 gap-6">
+                    {[
+                        { name: "Stalin", balance: -50, item: "Print & Papir" },
+                        { name: "Mao", balance: 120, item: "Specialkaffe" },
+                        { name: "Che", balance: -70, item: "Snacks på Grønjords" }
+                    ].map(entry => (
+                        <div class="p-10 bg-white/[0.03] border border-white/5 rounded-[48px] flex items-center justify-between group hover:border-red-600/30 transition-all">
+                            <div class="space-y-1">
+                                <h4 class="text-xl font-black uppercase tracking-tight text-white">{entry.name}</h4>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-white/20 italic">Sidste udlæg: {entry.item}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class={`text-4xl font-black tabular-nums tracking-tighter ${entry.balance >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                    {entry.balance >= 0 ? '+' : ''}{entry.balance} kr.
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    <button class="w-full py-5 bg-red-600/10 hover:bg-red-600 text-red-600 hover:text-white font-black uppercase tracking-widest rounded-[32px] transition-all border border-red-600/20 text-xs">Registrer nyt udlæg +</button>
+                </div>
+            </div>
+
+            {/* Hædersbevisninger & Radio */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Hæder & Kultur</h3>
+                
+                <div class="p-12 bg-white/[0.02] border border-white/5 rounded-[64px] grid grid-cols-2 gap-8 relative overflow-hidden">
+                    <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-red-600/5 blur-3xl rounded-full"></div>
+                    {[
+                        { icon: "fa-medal", label: "Seminar-helt", to: "Stalin" },
+                        { icon: "fa-award", label: "Latex-Magiker", to: "Mao" },
+                        { icon: "fa-certificate", label: "Korrektur-K.", to: "Che" },
+                        { icon: "fa-trophy", label: "Data-Hvisker", to: "Stalin" }
+                    ].map(medal => (
+                        <div class="text-center space-y-4 group/medal">
+                            <div class="w-20 h-20 bg-red-600/10 rounded-full flex items-center justify-center mx-auto text-red-600 border border-red-600/20 group-hover/medal:scale-110 transition-transform shadow-glow-red text-2xl">
+                                <i class={`fa-solid ${medal.icon}`}></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-white/60">{medal.label}</p>
+                                <p class="text-[9px] font-bold text-red-600/40 italic uppercase">{medal.to}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Revolutionær Radio */}
+                <div class="p-10 bg-black border border-white/10 rounded-[48px] flex items-center gap-8 relative overflow-hidden group">
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(185,28,28,0.3)] shrink-0 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-play text-white text-2xl ml-1"></i>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Nu Spiller: Revolutionær Radio</p>
+                        <h4 class="font-bold text-white text-lg uppercase tracking-tight leading-none">Kollektiv Fokus Mix</h4>
+                        <p class="text-white/20 text-[10px] italic">Lo-fi & Sovietwave Beats</p>
+                    </div>
+                    <a href="https://open.spotify.com/playlist/37i9dQZF1DX8Ueb9W7zhR2" target="_blank" class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-white/20 hover:text-white transition-colors">
+                        <i class="fa-brands fa-spotify text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        {/* Femårsplanen (Timeline) */}
+        <section class="space-y-16">
+            <div class="flex items-center gap-6">
+                <h2 class="text-4xl font-black uppercase tracking-tighter italic">Femårsplanen <span class="text-red-600 text-sm ml-4">(Strategisk Tidslinje)</span></h2>
+                <div class="h-px flex-1 bg-white/5"></div>
+            </div>
+
+            <div class="relative pt-12 pb-24">
+                <div class="absolute top-[3.5rem] left-0 w-full h-1 bg-white/[0.02]"></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                    {[
+                        { date: "Maj 2026", title: "Seminar-aflevering", desc: "Den første store sejr over pensum. Fejres med det store kollektivbord.", status: "Nu" },
+                        { date: "Sep 2026", title: "Specialestart", desc: "Mobilisering af alle akademiske kræfter til den endelige rapport.", status: "Fremtid" },
+                        { date: "Jan 2027", title: "Midtvejsevaluering", desc: "Justering af den teoretiske kurs for at maksimere karakteren.", status: "Fremtid" },
+                        { date: "Jun 2027", title: "Den Endelige Sejr", desc: "Forsvar af specialet og transformation til cand.polit.", status: "Målet" }
+                    ].map(item => (
+                        <div class="relative space-y-6 group">
+                            <div class={`w-6 h-6 rounded-full border-4 ${item.status === 'Nu' ? 'bg-red-600 border-red-600 shadow-glow-red' : 'bg-black border-white/10'} absolute -top-[0.65rem] left-0 z-10 transition-all group-hover:scale-125`}></div>
+                            <div class="pt-10 space-y-4">
+                                <span class="text-red-600 text-[12px] font-black uppercase tracking-widest">{item.date}</span>
+                                <h4 class="text-2xl font-black text-white uppercase tracking-tighter leading-tight italic">{item.title}</h4>
+                                <p class="text-white/30 text-sm italic leading-relaxed">{item.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    </div>
+</StudyGroupLayout>
