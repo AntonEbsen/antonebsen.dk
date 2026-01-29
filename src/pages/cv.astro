@@ -19,6 +19,16 @@ import '@styles/cv.css';
   bodyClass="cv-page"
 >
   <div class="cv-wrap">
+    <!-- Filter bar -->
+    <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none">
+      <div class="inline-flex items-center gap-1 p-1.5 bg-[#0a0a0c]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
+        <button class="cv-filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">Alle</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="tech">Teknisk</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="teaching">Undervisning</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="core">Kort version</button>
+      </div>
+    </div>
+
     <!-- TOC -->
     <TableOfContents />
 
@@ -30,7 +40,7 @@ import '@styles/cv.css';
 
       <div class="cv-main">
         <Section id="profile">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
             <SectionHeading>Profil</SectionHeading>
             <p class="mb-4 text-[15px] leading-relaxed opacity-90">
               Engageret økonomistuderende på kandidatuddannelsen ved Københavns Universitet med særligt fokus på
@@ -45,11 +55,11 @@ import '@styles/cv.css';
         </Section>
 
         <Section id="experience">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>Erhvervserfaring</SectionHeading>
-            <div class="space-y-0">
+            <div class="space-y-0 experience-list">
               {cv.experience.map(item => (
-                <article class="item">
+                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} · {item.organization}</h3>
                     <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
@@ -66,11 +76,11 @@ import '@styles/cv.css';
         </Section>
 
         <Section id="education">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>Uddannelse</SectionHeading>
-            <div class="space-y-0">
+            <div class="space-y-0 education-list">
               {cv.education.map(item => (
-                <article class="item">
+                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} · {item.institution}</h3>
                     <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
@@ -83,11 +93,11 @@ import '@styles/cv.css';
         </Section>
 
         <Section id="projects">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>Projekter</SectionHeading>
-            <div class="space-y-0">
+            <div class="space-y-0 project-list">
               {cv.projects.map(project => (
-                <article class="item">
+                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(project.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{project.title}</h3>
                     {project.meta && <span class="text-[13px] text-dim">{project.meta}</span>}
@@ -102,7 +112,7 @@ import '@styles/cv.css';
         </Section>
 
         <Section id="volunteer">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
             <SectionHeading>Frivilligt</SectionHeading>
             <article class="item border-none pt-0">
               <div class="item-head">
@@ -115,7 +125,7 @@ import '@styles/cv.css';
         </Section>
 
         <Section id="certifications">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
             <SectionHeading>Certificeringer</SectionHeading>
             
             <CertificationList />
@@ -124,7 +134,7 @@ import '@styles/cv.css';
         </Section>
 
         <Section id="contact">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
             <SectionHeading>Kontakt</SectionHeading>
             <div class="contact-row">
               <Button href="mailto:anton.ebsen@gmail.com" variant="ghost">
@@ -145,4 +155,68 @@ import '@styles/cv.css';
       </div>
     </section>
   </div>
+
+  <style>
+    .cv-filter-btn.active {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .cv-item.is-dimmed {
+      opacity: 0.15;
+      filter: grayscale(1) blur(1px);
+      pointer-events: none;
+    }
+
+    /* Short version logic: hide non-core items completely */
+    .filter-mode-core .cv-item:not(.is-core) {
+      display: none;
+    }
+  </style>
+
+  <script>
+    const buttons = document.querySelectorAll('.cv-filter-btn');
+    const items = document.querySelectorAll('.cv-item');
+    const wrap = document.querySelector('.cv-wrap');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        
+        // Update buttons
+        buttons.forEach(b => b.classList.remove('active', 'text-dim'));
+        buttons.forEach(b => {
+          if (b !== btn) b.classList.add('text-dim');
+        });
+        btn.classList.add('active');
+        btn.classList.remove('text-dim');
+
+        // Apply filtering classes
+        if (filter === 'all') {
+          wrap?.classList.remove('filter-mode-core');
+          items.forEach(item => item.classList.remove('is-dimmed', 'is-core'));
+        } else {
+          if (filter === 'core') {
+            wrap?.classList.add('filter-mode-core');
+          } else {
+            wrap?.classList.remove('filter-mode-core');
+          }
+
+          items.forEach(item => {
+            const categories = JSON.parse(item.getAttribute('data-categories') || '[]');
+            const isMatch = categories.includes(filter);
+            
+            if (isMatch) {
+              item.classList.remove('is-dimmed');
+              item.classList.add('is-core');
+            } else {
+              item.classList.add('is-dimmed');
+              item.classList.remove('is-core');
+            }
+          });
+        }
+      });
+    });
+  </script>
 </Layout>
