@@ -86,10 +86,36 @@ export const navigation: { [key: string]: { label: string; url: string; children
         {
             label: 'CV',
             url: '/en/cv',
-            // ...
+            children: [
+                { label: 'Profile', url: '/en/about' },
+                { label: 'Adversity & Resilience', url: '/en/modgang-og-maalrettethed' },
+                { label: 'Experience', url: '/en/experience' },
+                { label: 'Education', url: '/en/education' },
+                { label: 'Skills', url: '/en/skills' },
+                { label: 'Courses', url: '/en/courses' },
+                { label: 'Certifications', url: '/en/certifications' },
+                { label: 'Organizations', url: '/en/organizations' },
+                { label: 'Testimonials', url: '/en/referencer' },
+                { label: 'Milestones', url: '/en/timeline' },
+                { label: 'Video CV', url: '/en/video-cv' }
+            ]
+        },
+        {
+            label: 'Portfolio',
+            url: '/en/portfolio',
+            children: [
+                { label: 'Projects', url: '/en/portfolio' },
+                { label: 'Case Studies', url: '/en/cases' },
+                { label: 'Downloads', url: '/en/resources' },
+                { label: 'Press', url: '/en/media' },
+                { label: 'Notes', url: '/en/notes' },
+                { label: 'Gallery', url: '/en/gallery' },
+                { label: "About Anton's AI", url: '/en/ai-project' },
+                { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
+            ]
         },
         { label: 'Services', url: '/en/services' },
-        { label: 'Q&A', url: '/qa' },
+        { label: 'Q&A', url: '/en/qa' },
         { label: 'Blog', url: '/en/blog' },
         { label: 'Contact', url: '/en/contact' },
     ]

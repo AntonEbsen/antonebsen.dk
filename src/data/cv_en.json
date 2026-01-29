@@ -1,0 +1,228 @@
+{
+    "experience": [
+        {
+            "title": "Student Lecturer in Excel and VBA",
+            "organization": "Djøf",
+            "location": "Copenhagen K",
+            "period": "2023 – present",
+            "type": "Teaching",
+            "categories": [
+                "teaching",
+                "core"
+            ],
+            "description": [
+                "Teaching Excel and VBA (practical cases + workflows)",
+                "Developing and improving course materials and exercises",
+                "High interaction: Q&A, feedback, and live problem-solving"
+            ],
+            "highlights": [
+                {
+                    "label": "Result",
+                    "value": "Excellent evaluations / X+ students"
+                },
+                {
+                    "label": "Tools",
+                    "value": "Excel · VBA · PowerPoint"
+                }
+            ],
+            "links": [
+                {
+                    "text": "View Statistics",
+                    "href": "/en/kursusstatistik",
+                    "icon": "fa-chart-column"
+                },
+                {
+                    "text": "Collaboration",
+                    "href": "/en/services",
+                    "icon": "fa-handshake"
+                }
+            ]
+        },
+        {
+            "title": "Office Assistant",
+            "organization": "Handwerkskammer Lübeck",
+            "location": "Lübeck, Germany",
+            "period": "October 2019",
+            "type": "Support",
+            "categories": [
+                "core"
+            ],
+            "description": [
+                "Preparation of materials (guides/texts)",
+                "Scanning/printing and practical operations",
+                "Information processing and structuring"
+            ],
+            "highlights": [
+                {
+                    "label": "Focus",
+                    "value": "Quality · structure · delivery"
+                },
+                {
+                    "label": "Language",
+                    "value": "German (practical level)"
+                }
+            ],
+            "links": [
+                {
+                    "text": "Contact",
+                    "href": "/en/contact",
+                    "icon": "fa-envelope"
+                }
+            ]
+        }
+    ],
+    "education": [
+        {
+            "institution": "University of Copenhagen",
+            "degree": "BSc / MSc in Economics (cand.polit.)",
+            "period": "2021 – present",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "description": "Economics with a focus on macroeconomics, monetary policy, time series, and modeling. High emphasis on practical data work and programming.",
+            "bullets": [
+                "Macro & monetary policy (ECB/central banks)",
+                "Econometrics & time series (forecasting, SVAR, etc.)",
+                "Economic models (RBC/CGE)",
+                "Tools: Python, SAS, GAMS, Excel/VBA"
+            ],
+            "technologies": [
+                "Python",
+                "SAS",
+                "GAMS",
+                "Excel/VBA",
+                "Stata",
+                "MATLAB"
+            ]
+        },
+        {
+            "institution": "Handelsgymnasiet Lolland-Falster",
+            "degree": "HHX (Higher Commercial Examination)",
+            "period": "2018 – 2021",
+            "description": "Focusing on international economics and business economics.",
+            "bullets": [
+                "Projects and written communication",
+                "Foundational quantitative methods"
+            ]
+        }
+    ],
+    "courses": [
+        {
+            "title": "Advanced Macroeconomics: SVAR",
+            "tag": "Macro",
+            "institution": "UCPH",
+            "description": "Methods: identification, impulse responses, robustness. Tools: (SAS/Stata/Python).",
+            "links": [
+                {
+                    "text": "Notes",
+                    "href": "#"
+                },
+                {
+                    "text": "Project",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "Introduction to Programming & Numerical Analysis",
+            "tag": "Coding",
+            "institution": "UCPH",
+            "description": "Numerics, model simulation, and basic workflows. Tools: Python/MATLAB.",
+            "links": [
+                {
+                    "text": "Notes",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "CGE / Applied Economic Modelling",
+            "tag": "Models",
+            "institution": "UCPH",
+            "description": "Calibration, SAM, shocks, baseline checks. Tool: GAMS.",
+            "links": [
+                {
+                    "text": "Case",
+                    "href": "#"
+                }
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "title": "Bachelor's Thesis: Global Financial Cycle & Spillovers",
+            "tag": "Empirical",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "meta": "Theme: US Monetary Policy → Global Economy",
+            "description": "An econometric analysis of the spillovers from US monetary policy.",
+            "links": [
+                {
+                    "text": "PDF",
+                    "href": "#"
+                },
+                {
+                    "text": "Code",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "RBC Model: Steady State",
+            "tag": "Model",
+            "categories": [
+                "tech"
+            ],
+            "meta": "Theme: Numerics & Model Setup",
+            "description": "Implementing and simulating a real business cycle model.",
+            "links": [
+                {
+                    "text": "Notes",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "ECB Project: Heterogeneous Effects Across Countries",
+            "tag": "Monetary Policy",
+            "meta": "Theme: Taylor rules / synthetic rates",
+            "description": "Analyzing the divergence of interest rate rules in the Eurozone.",
+            "links": [
+                {
+                    "text": "Slides",
+                    "href": "#"
+                }
+            ]
+        }
+    ],
+    "certifications": [
+        {
+            "name": "MATLAB Onramp",
+            "url": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&",
+            "image": "/assets/img/matlab-onramp.PNG",
+            "categories": [
+                "tech"
+            ],
+            "description": "MATLAB fundamentals and workflows."
+        },
+        {
+            "name": "Calculations with Vectors...",
+            "displayName": "Calculations with Vectors and Matrices",
+            "url": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&",
+            "image": "/assets/img/calculations-with-vectors-and-matrices.PNG",
+            "description": "Linear algebra in practice."
+        }
+    ],
+    "organizations": [
+        {
+            "name": "Socio-Economic Society (Socialøkonomisk Samfund)",
+            "role": "Chairman",
+            "period": "2024 – present",
+            "description": "Planning and coordination of activities and events.",
+            "url": "#"
+        }
+    ]
+}

@@ -1,0 +1,213 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Collaboration & Services" 
+  description="Collaboration and services: student assistant/RA, data analysis, modeling work, Excel/VBA teaching."
+  bodyClass="services-page"
+>
+  <style>
+    .services-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .grid-2, .tool-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <main class="services-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Collaboration</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Collaboration & Services</h1>
+          <p class="text-lg text-dim mb-6">
+            I primarily take on student/part-time roles, student assistant positions, and research assistant tasks within
+            data, economics, and modeling — as well as lecturing in Excel/VBA.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="/en/contact">Contact me</Button>
+            <Button href="/en/cv" variant="ghost">View CV</Button>
+            <Button href="/en/portfolio" variant="ghost">View Portfolio</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2" aria-label="Focus">
+            <Pill variant="accent">Student Assistant</Pill>
+            <Pill variant="accent">Research Assistant</Pill>
+            <Pill variant="accent">Data/Analytics</Pill>
+            <Pill variant="accent">Macro/Monetary Policy</Pill>
+            <Pill variant="accent">Excel/VBA Teaching</Pill>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>In short</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              <li><strong>Location:</strong> Copenhagen (remote/hybrid possible)</li>
+              <li><strong>Response:</strong> typically 24–48 hours on weekdays</li>
+              <li><strong>Tools:</strong> Python, SAS, GAMS, Excel/VBA (+ Stata/MATLAB)</li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- MAIN GRID -->
+    <Section class="grid-2" aria-label="Services content">
+
+      <!-- SERVICES -->
+      <Card variant="glass" class="p-6" id="services">
+        <SectionHeading>How I can help</SectionHeading>
+
+        <div class="space-y-4">
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-2">1) Data Analysis & Econometric Tasks</h3>
+            <p class="text-sm text-dim mb-2 opacity-80">
+              Data cleaning, descriptive analysis, regression/econometrics, time series, and robustness checks.
+            </p>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim opacity-80">
+              <li>• Reproducible workflows</li>
+              <li>• Clear documentation and versioning</li>
+              <li>• Results communicated via figures/tables</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-2">2) Modeling Work (Macro/Structure)</h3>
+            <p class="text-sm text-dim mb-2 opacity-80">
+              Working with economic models (e.g., CGE/RBC), calibration, scenario analysis, and quality assurance.
+            </p>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim opacity-80">
+              <li>• Baseline → shock → comparison</li>
+              <li>• Consistency checks (e.g., “does it add up?”)</li>
+              <li>• Communication of assumptions and limitations</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-2">3) Excel/VBA Teaching & Materials</h3>
+            <p class="text-sm text-dim mb-2 opacity-80">
+              Practical cases, clear workflows, and "from problem to solution" — including templates and exercises.
+            </p>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim opacity-80">
+              <li>• Excel efficiency + best practices</li>
+              <li>• VBA automation</li>
+              <li>• Materials shared after the course</li>
+            </ul>
+          </div>
+        </div>
+      </Card>
+
+      <!-- HOW I WORK -->
+      <Card variant="glass" class="p-6" id="process">
+        <SectionHeading>How I work</SectionHeading>
+        <ol class="list-decimal p-0 pl-4 space-y-2 text-sm text-dim mb-6">
+          <li><strong>Clarify goals</strong> – What should be used for what?</li>
+          <li><strong>Data</strong> – access, quality, definitions, data documentation</li>
+          <li><strong>Method</strong> – choice of model/estimand and plan</li>
+          <li><strong>Robustness</strong> – sanity checks, sensitivity, alternative specs</li>
+          <li><strong>Communication</strong> – figures/tables + short, clear conclusion</li>
+          <li><strong>Delivery</strong> – code + output + short “README”</li>
+        </ol>
+
+        <hr class="border-0 h-px bg-glass-border my-4" />
+
+        <h3 class="font-bold mb-2 text-base">Can you share code/data from projects?</h3>
+        <p class="text-sm text-dim opacity-80">
+          Some projects are public (GitHub). Others cannot be shared due to course-related or confidentiality reasons. I can often share “sanitized” examples or a simplified demo.
+        </p>
+      </Card>
+
+      <!-- TOOLING -->
+      <Card variant="glass" class="p-6" id="tools">
+        <SectionHeading>Tools & Proficiency</SectionHeading>
+
+        <div class="tool-grid">
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">Python</h3>
+            <p class="text-xs text-dim opacity-70">Daily use</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">Excel/VBA</h3>
+            <p class="text-xs text-dim opacity-70">Daily use (teaching + automation)</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">SAS</h3>
+            <p class="text-xs text-dim opacity-70">Good knowledge (time series/forecasting)</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">GAMS</h3>
+            <p class="text-xs text-dim opacity-70">Good knowledge (CGE/modeling)</p>
+          </div>
+          <div class="border border-glass-border rounded-xl p-4 bg-glass">
+            <h3 class="font-bold mb-1 text-sm">Stata / MATLAB</h3>
+            <p class="text-xs text-dim opacity-70">Foundational</p>
+          </div>
+        </div>
+      </Card>
+
+      <!-- NO THANKS -->
+      <Card variant="glass" class="p-6" id="boundaries">
+        <SectionHeading>Tasks I typically decline</SectionHeading>
+        <ul class="list-none p-0 pl-4 space-y-2 text-sm text-dim opacity-80 mb-6">
+          <li>• Unclear requirements (“we don't know what we want, but it has to be done tomorrow”)</li>
+          <li>• Unreasonable deadlines without room for quality/robustness</li>
+          <li>• Tasks without data access or without the possibility to verify sources</li>
+          <li>• “Just make a model without assumptions” (it doesn't exist 😄)</li>
+        </ul>
+
+        <hr class="border-0 h-px bg-glass-border my-4" />
+
+        <h3 class="font-bold mb-2 text-base">Remote/hybrid?</h3>
+        <p class="text-sm text-dim opacity-80">Yes — based in Copenhagen, with hybrid/remote options depending on the task and data security.</p>
+      </Card>
+
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title="Let's have a chat"
+            text="Please write briefly: (1) what you want to achieve, (2) the type of data/theme, (3) timeframe, and (4) expected scope."
+            action="email"
+        />
+    </Section>
+
+  </main>
+</Layout>
