@@ -1,0 +1,106 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+import program from '@data/training-program.json';
+
+const days = [
+  { id: 'push1', title: 'Push 1', color: '#ffb3ba', data: program.push1 },
+  { id: 'pull1', title: 'Pull 1', color: '#baffc9', data: program.pull1 },
+  { id: 'legs1', title: 'Legs 1', color: '#bae1ff', data: program.legs1 },
+  { id: 'push2', title: 'Push 2', color: '#ffb3ba', data: program.push2 },
+  { id: 'pull2', title: 'Pull 2', color: '#baffc9', data: program.pull2 },
+  { id: 'legs2', title: 'Legs 2', color: '#bae1ff', data: program.legs2 }
+];
+---
+
+<Layout 
+  title="Mit Træningsprogram – Anton Meier Ebsen Jørgensen" 
+  description="Detaljeret overblik over mit 6-dages PPL træningssplit."
+>
+  <main class="container mx-auto px-4 py-12">
+    <Section class="max-w-5xl mx-auto">
+      <Card variant="glass" class="p-8 md:p-12">
+        <div class="mb-10 text-center">
+            <SectionHeading>Træning</SectionHeading>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">6-Dages PPL Split</h1>
+            <p class="text-xl text-dim max-w-2xl mx-auto mb-8">
+              Her er den fulde oversigt over mit aktuelle træningsprogram. Programmet er bygget op omkring et 
+              Push/Pull/Legs split med fokus på både styrke og hypertrofi.
+            </p>
+            <div class="flex flex-wrap justify-center gap-2">
+                {days.map(day => (
+                    <a href={`#${day.id}`} class="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+                        {day.title}
+                    </a>
+                ))}
+            </div>
+        </div>
+
+        <div class="space-y-16">
+            {days.map(day => (
+                <div id={day.id} class="reveal reveal-slide-up">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-bg font-black" style={`background-color: ${day.color}`}>
+                            {day.title.charAt(0)}
+                        </div>
+                        <h2 class="text-2xl font-bold">{day.title}</h2>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.02]">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-white/5 uppercase text-[10px] font-bold tracking-[0.2em] text-white/40">
+                                    <th class="px-6 py-4">Øvelse</th>
+                                    <th class="px-6 py-4">Muskelgruppe</th>
+                                    <th class="px-6 py-4 text-center">Sæt</th>
+                                    <th class="px-6 py-4 text-center">Tempo</th>
+                                    <th class="px-6 py-4 text-right">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                {day.data.map(ex => (
+                                    <tr class="hover:bg-white/[0.03] transition-colors group">
+                                        <td class="px-6 py-4">
+                                            <span class="text-sm font-semibold text-white group-hover:text-accent transition-colors">{ex.exercise}</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="text-[11px] text-white/50">{ex.muscle}</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center font-mono text-sm text-accent">{ex.sets}</td>
+                                        <td class="px-6 py-4 text-center font-mono text-[11px] text-white/40">{ex.tempo}</td>
+                                        <td class="px-6 py-4 text-right">
+                                            <span class={`text-[9px] px-2 py-0.5 rounded-full border uppercase font-bold tracking-tighter ${ex.type === 'Compound' ? 'border-accent/40 text-accent bg-accent/5' : 'border-white/10 text-white/30'}`}>
+                                                {ex.type}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            ))}
+        </div>
+
+        <div class="mt-16 pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-dim text-sm italic opacity-60">
+                <i class="fa-solid fa-circle-info mr-2"></i> Klik på de enkelte dage for at navigere hurtigt.
+            </div>
+            <div class="flex gap-4">
+                <Button href="/traeningsstatistik" variant="ghost">Se Statistik</Button>
+                <Button href="/blog">Tilbage til Blog</Button>
+            </div>
+        </div>
+      </Card>
+    </Section>
+  </main>
+</Layout>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

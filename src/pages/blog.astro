@@ -89,6 +89,36 @@ if (error || !posts) posts = [];
     </Section>
 
     <!-- ===================== -->
+    <!-- FASTE SIDER (Ressourcer) -->
+    <!-- ===================== -->
+    <Section id="featured">
+      <SectionHeading class="mb-4 text-xl font-bold">Faste Indlæg & Ressourcer</SectionHeading>
+      <div class="posts-grid mb-12">
+        <BlogCard 
+          title="Mit Træningsprogram (6-dages Split)"
+          tag="Træning"
+          meta="Komplet program · PPL"
+          description="Det fulde overblik over mine øvelser, sæt, tempo og fokusområder. Optimeret til progression."
+          links={[{ text: 'Se programmet', url: '/traeningsprogram', icon: 'arrow-right' }]}
+        />
+        <BlogCard 
+          title="Favoritbøger & Noter"
+          tag="Læring"
+          meta="Klassikere · Fagligt"
+          description="En kurateret liste over de bøger, der har formet min tankegang mest."
+          links={[{ text: 'Åbn bibliotek', url: '/books', icon: 'arrow-right' }]}
+        />
+        <BlogCard 
+          title="Mine Favoritpodcasts"
+          tag="Inspiration"
+          meta="Makro · Data · Humor"
+          description="En oversigt over de bedste kilder til viden og underholdning på farten."
+          links={[{ text: 'Se listen', url: '/podcasts', icon: 'arrow-right' }]}
+        />
+      </div>
+    </Section>
+
+    <!-- ===================== -->
     <!-- ALLE INDLÆG (DB) -->
     <!-- ===================== -->
     <Section id="latest">
