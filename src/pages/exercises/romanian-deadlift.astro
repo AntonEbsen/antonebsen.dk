@@ -93,22 +93,44 @@ const techInfo = {
 
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-200">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-rotate text-accent"></i> Smarte Alternativer
+                <i class="fa-solid fa-clock text-accent"></i> Smart Rest-Timer
             </h3>
-            <div class="grid grid-cols-1 gap-2">
-                <a href="/exercises/deadlift" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
-                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Base</div>
-                    <div class="text-sm font-bold">Deadlift</div>
-                </a>
-                <a href="/exercises/rack-pull" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
-                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Partial</div>
-                    <div class="text-sm font-bold">Rack Pull</div>
-                </a>
-                <a href="/exercises/hip-thrust" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
-                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Glutes</div>
-                    <div class="text-sm font-bold">Hip Thrust</div>
-                </a>
+            <div class="text-center py-4 bg-white/5 rounded-2xl mb-4">
+                <div id="timer-display" class="text-4xl font-black italic text-white mb-2">02:00</div>
+                <div class="flex justify-center gap-2">
+                    <button id="timer-start" class="px-4 py-1 bg-accent text-black text-[10px] font-black uppercase rounded-full hover:scale-105 transition-all">Start</button>
+                    <button id="timer-reset" class="px-4 py-1 bg-white/10 text-white text-[10px] font-black uppercase rounded-full hover:bg-white/20 transition-all">Reset</button>
+                </div>
             </div>
+            <div class="flex justify-between items-center text-[10px] uppercase font-bold text-white/30">
+                <span>Anbefalet pause</span>
+                <span class="text-accent">2-3 minutter</span>
+            </div>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-250">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-gauge-high text-accent"></i> Tempo Guide
+            </h3>
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center">
+                    <div class="text-lg font-black text-white italic">4</div>
+                    <div class="text-[8px] text-white/30 uppercase">Ned</div>
+                </div>
+                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center">
+                    <div class="text-lg font-black text-white italic">2</div>
+                    <div class="text-[8px] text-white/30 uppercase">Bund</div>
+                </div>
+                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center">
+                    <div class="text-lg font-black text-accent italic">1</div>
+                    <div class="text-[8px] text-white/30 uppercase">Op</div>
+                </div>
+                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center">
+                    <div class="text-lg font-black text-white italic">0</div>
+                    <div class="text-[8px] text-white/30 uppercase">Top</div>
+                </div>
+            </div>
+            <p class="text-[10px] text-dim mt-4 leading-relaxed italic">Langsom excentrisk (4s) og mærk strækket i bunden (2s) for maksimalt stræk-medieret hypertrofi.</p>
           </Card>
         </div>
 
@@ -222,6 +244,52 @@ const techInfo = {
                 msgEl.innerText = `Du har brug for ca. ${hoursLeft} timer mere for fuld restitution efter dit sidste pas (RPE ${latestRpe}).`;
             }
         }
+
+        // Rest Timer Logic
+        let timerSeconds = 120;
+        let timerInterval: any = null;
+        const display = document.getElementById('timer-display')!;
+        const startBtn = document.getElementById('timer-start')!;
+        const resetBtn = document.getElementById('timer-reset')!;
+
+        const updateDisplay = () => {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            display.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        };
+
+        startBtn.addEventListener('click', () => {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                startBtn.innerText = 'Start';
+                startBtn.classList.replace('bg-red-500', 'bg-accent');
+            } else {
+                startBtn.innerText = 'Stop';
+                startBtn.classList.replace('bg-accent', 'bg-red-500');
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        startBtn.innerText = 'Færdig!';
+                        display.classList.add('animate-bounce', 'text-accent');
+                    }
+                }, 1000);
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerSeconds = 120;
+            updateDisplay();
+            startBtn.innerText = 'Start';
+            startBtn.classList.replace('bg-red-500', 'bg-accent');
+            display.classList.remove('animate-bounce', 'text-accent');
+        });
         
         document.getElementById('stat-total-sessions')!.innerText = [...new Set(logs.map((l:any)=>l.date))].length.toString();
         const rpes = logs.map((l: any) => l.rpe).filter(Boolean);

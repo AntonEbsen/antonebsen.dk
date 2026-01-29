@@ -536,6 +536,83 @@ import Button from '../components/ui/Button.astro';
         }
       });
 
+      // 5. Atlas Timeline & Badges Logic
+      const timelineContainer = document.getElementById('milestone-timeline')!;
+      const badgesContainer = document.getElementById('badges-container')!;
+      timelineContainer.innerHTML = '';
+      badgesContainer.innerHTML = '';
+
+      const milestones: { date: string, title: string, desc: string, icon: string }[] = [];
+      const stats = {
+          maxSquat: 0,
+          maxDead: 0,
+          maxBench: 0,
+          totalSessions: logs.length,
+          maxTonnageDay: 0
+      };
+
+      const dailyTonnage: Record<string, number> = {};
+
+      logs.slice().reverse().forEach((log: any) => {
+          const weight = log.weight_kg || 0;
+          const name = (log.exercise_name || '').toLowerCase();
+          const d = log.date;
+
+          // Check for exercise PRs
+          if (name.includes('squat') && weight > stats.maxSquat) {
+              stats.maxSquat = weight;
+              if (weight >= 100 && stats.maxSquat === weight) milestones.push({ date: d, title: `Century Club: Squat ${weight}kg`, desc: 'Den magiske 100kg grænse er brudt i Squat!', icon: 'fa-crown' });
+          }
+          if (name.includes('deadlift') && weight > stats.maxDead) {
+              stats.maxDead = weight;
+              if (weight >= 150 && stats.maxDead === weight) milestones.push({ date: d, title: `Elite Pull: Deadlift ${weight}kg`, desc: '150kg+ i dødløft er officielt "Heavy Duty".', icon: 'fa-fire' });
+          }
+
+          dailyTonnage[d] = (dailyTonnage[d] || 0) + (log.tonnage_kg || 0);
+          if (dailyTonnage[d] > stats.maxTonnageDay) {
+              stats.maxTonnageDay = dailyTonnage[d];
+              if (stats.maxTonnageDay >= 10000 && dailyTonnage[d] === stats.maxTonnageDay) {
+                  milestones.push({ date: d, title: 'Tonnage Titan', desc: 'Du har løftet over 10 tons på én enkelt dag!', icon: 'fa-weight-hanging' });
+              }
+          }
+      });
+
+      // Sort and render timeline
+      milestones.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5).forEach(m => {
+          const item = `
+              <div class="relative pl-12 group">
+                  <div class="absolute left-0 mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 border border-accent/20 text-accent group-hover:scale-110 transition-transform">
+                      <i class="fa-solid ${m.icon}"></i>
+                  </div>
+                  <div class="flex flex-col">
+                      <span class="text-[10px] font-bold text-accent uppercase tracking-widest">${new Date(m.date).toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                      <h4 class="text-lg font-black text-white italic uppercase">${m.title}</h4>
+                      <p class="text-sm text-dim">${m.desc}</p>
+                  </div>
+              </div>
+          `;
+          timelineContainer.insertAdjacentHTML('beforeend', item);
+      });
+
+      // Render Badges
+      const badgeList = [
+          { active: stats.maxSquat >= 100, icon: 'fa-crown', name: '100kg Squat', desc: 'Century Club' },
+          { active: stats.maxDead >= 150, icon: 'fa-fire', name: '150kg Dead', desc: 'Iron Puller' },
+          { active: stats.maxTonnageDay >= 10000, icon: 'fa-weight-hanging', name: 'Titan', desc: '10T Day' },
+          { active: stats.totalSessions >= 50, icon: 'fa-award', name: 'Veteran', desc: '50+ Sessions' }
+      ];
+
+      badgeList.forEach(b => {
+          const badge = `
+              <div class="flex flex-col items-center justify-center p-4 rounded-xl border ${b.active ? 'bg-accent/10 border-accent/30 text-accent' : 'bg-white/5 border-white/5 text-white/20'} text-center transition-all">
+                  <i class="fa-solid ${b.icon} text-2xl mb-2"></i>
+                  <span class="text-[10px] font-black uppercase tracking-tighter">${b.name}</span>
+                  <span class="text-[8px] uppercase font-bold opacity-50">${b.desc}</span>
+              </div>
+          `;
+          badgesContainer.insertAdjacentHTML('beforeend', badge);
+      });
+
     } catch (err) {
       console.error("Stats Error", err);
     }
