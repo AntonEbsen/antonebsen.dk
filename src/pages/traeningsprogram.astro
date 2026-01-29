@@ -7,12 +7,12 @@ import Button from '@components/ui/Button.astro';
 import program from '@data/training-program.json';
 
 const days = [
-  { id: 'push1', title: 'Push 1', color: '#ffb3ba', data: program.push1 },
-  { id: 'pull1', title: 'Pull 1', color: '#baffc9', data: program.pull1 },
-  { id: 'legs1', title: 'Legs 1', color: '#bae1ff', data: program.legs1 },
-  { id: 'push2', title: 'Push 2', color: '#ffb3ba', data: program.push2 },
-  { id: 'pull2', title: 'Pull 2', color: '#baffc9', data: program.pull2 },
-  { id: 'legs2', title: 'Legs 2', color: '#bae1ff', data: program.legs2 }
+  { id: 'push1', title: 'Push I', color: '#ffb3ba', data: program.push1 },
+  { id: 'pull1', title: 'Pull I', color: '#baffc9', data: program.pull1 },
+  { id: 'legs1', title: 'Legs I', color: '#bae1ff', data: program.legs1 },
+  { id: 'push2', title: 'Push II', color: '#ffb3ba', data: program.push2 },
+  { id: 'pull2', title: 'Pull II', color: '#baffc9', data: program.pull2 },
+  { id: 'legs2', title: 'Legs II', color: '#bae1ff', data: program.legs2 }
 ];
 ---
 
@@ -66,8 +66,8 @@ const days = [
                                     <tr class="hover:bg-white/[0.03] transition-colors group">
                                         <td class="px-6 py-4">
                                             <div class="text-sm font-semibold text-white group-hover:text-accent transition-colors">
-                                                {ex.exercise === 'Incline Press' ? (
-                                                    <a href="/exercises/incline-press" class="hover:underline decoration-accent/40 underline-offset-4">{ex.exercise}</a>
+                                                {ex.exercise === 'Incline Press' || ex.exercise === 'Flat Chest Press' ? (
+                                                    <a href={`/exercises/${ex.exercise.toLowerCase().replace(/\s+/g, '-')}`} class="hover:underline decoration-accent/40 underline-offset-4">{ex.exercise}</a>
                                                 ) : ex.exercise}
                                             </div>
                                             <div class="md:hidden text-[10px] text-white/30 mt-1 font-mono">{ex.tempo}</div>
