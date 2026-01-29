@@ -35,16 +35,53 @@ import Button from '../components/ui/Button.astro';
           </div>
         </div>
 
-        <!-- CHARTS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-             <div class="p-4 bg-glass border border-glass-border rounded-xl min-h-[300px]">
-                <h3 class="text-left text-xs uppercase font-bold text-accent mb-4">Volumen pr uge (kg)</h3>
-                <canvas id="volChart"></canvas>
+        <!-- CHARTS SECTION -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+             <!-- Volume / Tonnage Chart -->
+             <div class="p-6 bg-glass border border-glass-border rounded-2xl min-h-[350px]">
+                <h3 class="text-left text-xs uppercase font-bold text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-bar"></i> Volumen pr uge (kg)
+                </h3>
+                <div class="h-[280px]"><canvas id="volChart"></canvas></div>
              </div>
-             <div class="p-4 bg-glass border border-glass-border rounded-xl min-h-[300px]">
-                <h3 class="text-left text-xs uppercase font-bold text-accent mb-4">Cardio (km)</h3>
-                <canvas id="cardioChart"></canvas>
+
+             <!-- Muscle Distribution Pie Chart -->
+             <div class="p-6 bg-glass border border-glass-border rounded-2xl min-h-[350px]">
+                <h3 class="text-left text-xs uppercase font-bold text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i> Muskelfordeling (Sæt)
+                </h3>
+                <div class="h-[280px] flex items-center justify-center">
+                    <canvas id="muscleDistChart"></canvas>
+                </div>
              </div>
+        </div>
+
+        <!-- WEEKLY VOLUME DASHBOARD -->
+        <div class="grid grid-cols-1 gap-6 mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold">Ugentlig Volumen-Tracking</h3>
+                        <p class="text-sm text-dim">Antal hårde sæt de sidste 7 dage vs. anbefalede mål.</p>
+                    </div>
+                </div>
+                
+                <div id="volume-bars" class="space-y-6">
+                    <!-- Bars will be injected here via JS -->
+                    <div class="animate-pulse space-y-4">
+                        <div class="h-4 bg-white/5 rounded w-1/4"></div>
+                        <div class="h-8 bg-white/5 rounded"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARDIO CHART -->
+        <div class="p-6 bg-glass border border-glass-border rounded-2xl mb-12">
+            <h3 class="text-left text-xs uppercase font-bold text-accent mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-person-running"></i> Cardio-historik (km)
+            </h3>
+            <div class="h-[300px] w-full"><canvas id="cardioChart"></canvas></div>
         </div>
 
         <div class="flex justify-center gap-4">
@@ -97,7 +134,88 @@ import Button from '../components/ui/Button.astro';
       const cDates = Object.keys(cardioByDate);
       const distances = cDates.map(d => cardioByDate[d]);
 
-      // 3. Render Charts
+      // 3. Muscle Group Volume Logic
+      const muscleMapping: Record<string, string> = {
+        'bryst': 'Chest', 'chest': 'Chest', 'incline press': 'Chest', 'fly': 'Chest',
+        'ryg': 'Back', 'back': 'Back', 'lat': 'Back', 'row': 'Back', 'deadlift': 'Back', 'pull': 'Back',
+        'ben': 'Legs', 'leg': 'Legs', 'squat': 'Legs', 'lunges': 'Legs', 'calf': 'Legs', 'læg': 'Legs', 'hip': 'Legs',
+        'skulder': 'Shoulders', 'shoulder': 'Shoulders', 'deltoid': 'Shoulders', 'face pull': 'Shoulders',
+        'triceps': 'Arms', 'biceps': 'Arms', 'curl': 'Arms', 'extension': 'Arms', 'pushdown': 'Arms',
+        'core': 'Core', 'abs': 'Core', 'mave': 'Core', 'plank': 'Core', 'crunch': 'Core'
+      };
+
+      const getMuscleGroup = (name: string) => {
+        name = name.toLowerCase();
+        for (const [key, value] of Object.entries(muscleMapping)) {
+            if (name.includes(key)) return value;
+        }
+        return 'Other';
+      };
+
+      const statsByMuscle: Record<string, { sets: number, weeklySets: number }> = {
+        'Chest': { sets: 0, weeklySets: 0 },
+        'Back': { sets: 0, weeklySets: 0 },
+        'Legs': { sets: 0, weeklySets: 0 },
+        'Shoulders': { sets: 0, weeklySets: 0 },
+        'Arms': { sets: 0, weeklySets: 0 },
+        'Core': { sets: 0, weeklySets: 0 }
+      };
+
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      logs.forEach((log: any) => {
+        const group = getMuscleGroup(log.exercise_name || '');
+        if (statsByMuscle[group]) {
+            statsByMuscle[group].sets += 1; // Assuming 1 log entry = 1 set from training-program schema, or we can use the sets from the program
+            if (new Date(log.date) >= sevenDaysAgo) {
+                statsByMuscle[group].weeklySets += 1;
+            }
+        }
+      });
+
+      // Targets
+      const targets: Record<string, { min: number, max: number }> = {
+        'Chest': { min: 10, max: 15 },
+        'Back': { min: 10, max: 15 },
+        'Legs': { min: 10, max: 15 },
+        'Shoulders': { min: 8, max: 12 },
+        'Arms': { min: 6, max: 10 },
+        'Core': { min: 6, max: 10 }
+      };
+
+      // Render Volume Bars
+      const barsContainer = document.getElementById('volume-bars')!;
+      barsContainer.innerHTML = '';
+      
+      Object.entries(statsByMuscle).forEach(([group, data]) => {
+        const target = targets[group];
+        if (!target) return;
+        
+        const percentage = Math.min((data.weeklySets / target.max) * 100, 100);
+        const statusColor = data.weeklySets >= target.min ? '#baffc9' : '#ffd700';
+        
+        const barHtml = `
+            <div>
+                <div class="flex justify-between items-end mb-2">
+                    <div>
+                        <span class="text-sm font-bold text-white uppercase tracking-wider">${group}</span>
+                        <span class="text-[10px] text-white/30 ml-2">Mål: ${target.min}-${target.max} sæt</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-black italic text-white">${data.weeklySets}</span>
+                        <span class="text-[10px] text-white/30 uppercase font-bold ml-1">Sets</span>
+                    </div>
+                </div>
+                <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full transition-all duration-1000" style="width: ${percentage}%; background-color: ${statusColor}; box-shadow: 0 0 10px ${statusColor}40"></div>
+                </div>
+            </div>
+        `;
+        barsContainer.insertAdjacentHTML('beforeend', barHtml);
+      });
+
+      // 4. Render Charts
       const ctxV = document.getElementById('volChart') as HTMLCanvasElement;
       new Chart(ctxV, {
         type: 'bar',
@@ -115,8 +233,34 @@ import Button from '../components/ui/Button.astro';
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            x: { ticks: { color: '#ffffff50' }, grid: { display: false } },
-            y: { ticks: { color: '#ffffff50' }, grid: { color: '#ffffff10' } }
+            x: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { color: '#ffffff10' } }
+          }
+        }
+      });
+
+      // Muscle Distribution Pie Chart
+      const ctxM = document.getElementById('muscleDistChart') as HTMLCanvasElement;
+      new Chart(ctxM, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(statsByMuscle),
+          datasets: [{
+            data: Object.values(statsByMuscle).map(d => d.sets),
+            backgroundColor: ['#ffb3ba', '#baffc9', '#bae1ff', '#ffffba', '#dbdcff', '#ffdfba'],
+            borderWidth: 0,
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: { 
+            legend: { 
+                position: 'right',
+                labels: { color: '#ffffff80', font: { size: 10 }, padding: 20, usePointStyle: true }
+            } 
           }
         }
       });
@@ -132,7 +276,9 @@ import Button from '../components/ui/Button.astro';
             borderColor: '#3b82f6',
             backgroundColor: 'rgba(59, 130, 246, 0.1)',
             fill: true,
-            tension: 0.4
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#3b82f6'
           }]
         },
         options: {
@@ -140,8 +286,8 @@ import Button from '../components/ui/Button.astro';
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            x: { ticks: { color: '#ffffff50' }, grid: { display: false } },
-            y: { ticks: { color: '#ffffff50' }, grid: { color: '#ffffff10' } }
+            x: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { color: '#ffffff10' } }
           }
         }
       });

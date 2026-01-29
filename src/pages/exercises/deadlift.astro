@@ -53,6 +53,20 @@ const techInfo = {
               </div>
             </div>
           </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-75">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-6 border-b border-white/5 pb-2">Styrke-niveau</h3>
+            <div class="text-center py-4">
+                <div id="strength-badge" class="inline-block px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-black uppercase tracking-widest mb-4 italic">Calculating...</div>
+                <p id="strength-next" class="text-[10px] text-white/30 uppercase font-bold">Næste mål: -- kg</p>
+            </div>
+            <div class="space-y-2 mt-4">
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Novice</span><span class="text-white/40">1.2x BW</span></div>
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Intermediate</span><span class="text-white/40">1.8x BW</span></div>
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Advanced</span><span class="text-white/40">2.4x BW</span></div>
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Elite</span><span class="text-white/40">3.0x BW</span></div>
+            </div>
+          </Card>
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-100">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Hvorfor dødløft?</h3>
             <ul class="space-y-4">
@@ -104,7 +118,39 @@ const techInfo = {
            const reps = l.reps || 5;
            return Math.round(l.weight_kg / (1.0278 - 0.0278 * reps));
         });
-        document.getElementById('stat-e1rm')!.innerText = `${Math.max(...e1rms)} kg`;
+        const currentE1RM = Math.max(...e1rms);
+        document.getElementById('stat-e1rm')!.innerText = `${currentE1RM} kg`;
+
+        // Strength Standards (Relative to 85kg BW for Deadlift)
+        const bw = 85;
+        const standards = [
+            { label: 'Novice', ratio: 1.2 },
+            { label: 'Intermediate', ratio: 1.8 },
+            { label: 'Advanced', ratio: 2.4 },
+            { label: 'Elite', ratio: 3.0 }
+        ];
+
+        let tier = standards[0];
+        let nextTier = standards[1];
+        
+        for (let i = 0; i < standards.length; i++) {
+            if (currentE1RM >= standards[i].ratio * bw) {
+                tier = standards[i];
+                nextTier = standards[i+1] || null;
+            }
+        }
+
+        const badge = document.getElementById('strength-badge')!;
+        badge.innerText = tier.label;
+        if (tier.label === 'Elite') badge.classList.add('text-accent', 'border-accent/40', 'bg-accent/10');
+        else if (tier.label === 'Advanced') badge.classList.add('text-blue-400', 'border-blue-400/40', 'bg-blue-400/10');
+        else if (tier.label === 'Intermediate') badge.classList.add('text-green-400', 'border-green-400/40', 'bg-green-400/10');
+
+        if (nextTier) {
+            document.getElementById('strength-next')!.innerText = `Næste mål: ${Math.ceil(nextTier.ratio * bw)} kg (${nextTier.label})`;
+        } else {
+            document.getElementById('strength-next')!.innerText = `Du er i toppen! 🔥`;
+        }
         
         const totalVol = logs.reduce((sum: number, l: any) => sum + (l.tonnage_kg || 0), 0);
         document.getElementById('stat-total-tons')!.innerText = `${(totalVol / 1000).toFixed(1)} t`;
