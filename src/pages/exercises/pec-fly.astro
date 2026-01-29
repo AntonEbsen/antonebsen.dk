@@ -1,0 +1,253 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+
+// Technical Content
+const techInfo = {
+  title: "Pec Fly / Machine Fly",
+  muscles: ["Bryst (Hele)", "Indre Bryst-separation", "Forside Skulder (Stabilisering)"],
+  benefits: [
+    "Isolerer brystmuskulaturen uden at belaste triceps.",
+    "Giver et ekstremt stræk i bunden, som er vigtigt for hypertrofi.",
+    "Nemmere at skabe 'mind-muscle connection' end ved presse-øvelser."
+  ],
+  setup: [
+    "Juster sædet så dine hænder/arme er på niveau med midten af brystet.",
+    "Træk skulderbladene sammen mod bænken og pres brystet frem.",
+    "Hold en let bøjning i albuerne gennem hele bevægelsen."
+  ],
+  execution: [
+    "Før hænderne sammen i en bue foran brystet. Tænk på at føre overarmene sammen.",
+    "Squeeze hårdt i toppen af bevægelsen i 1 sekund.",
+    "Sænk langsomt og kontrolleret tilbage til du mærker et godt stræk."
+  ]
+};
+---
+
+<Layout 
+  title="Pec Fly: Teknik & Personlig Statistik" 
+  description="Dybdegående guide og personlig data-analyse af Pec Fly."
+>
+  <main class="container mx-auto px-4 py-12">
+    <Section class="max-w-5xl mx-auto">
+      <!-- Header -->
+      <div class="mb-12 text-center reveal reveal-fade">
+        <SectionHeading>Øvelses-Fokus</SectionHeading>
+        <h1 class="text-4xl md:text-6xl font-black mb-6 uppercase italic tracking-tighter">Pec Fly</h1>
+        <div class="flex flex-wrap justify-center gap-3">
+          {techInfo.muscles.map(m => (
+            <span class="px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-bold uppercase tracking-widest text-accent">
+              {m}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Sidebar: Stats Overview -->
+        <div class="lg:col-span-1 space-y-6">
+          <Card variant="glass" class="p-6 reveal reveal-slide-right">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 border-b border-white/5 pb-2">Personlige Rekorder</h3>
+            <div class="space-y-6">
+              <div>
+                <p class="text-[10px] text-white/30 uppercase font-bold mb-1">All-time Max Weight</p>
+                <div id="stat-pb-weight" class="text-3xl font-black text-white italic">-- kg</div>
+              </div>
+              <div>
+                <p class="text-[10px] text-white/30 uppercase font-bold mb-1">Max Volumen-Sæt</p>
+                <div id="stat-max-vol-set" class="text-3xl font-black text-accent italic">-- kg</div>
+              </div>
+              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                <div>
+                  <p class="text-[10px] text-white/30 uppercase font-bold">Total Volumen</p>
+                  <p id="stat-total-vol" class="font-bold text-sm">-- kg</p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-white/30 uppercase font-bold">Gns. RPE</p>
+                  <p id="stat-avg-rpe" class="font-bold text-sm">--</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-100">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Hvorfor Pec Fly?</h3>
+            <ul class="space-y-4">
+              {techInfo.benefits.map(b => (
+                <li class="flex gap-3 text-[13px] leading-relaxed text-dim">
+                  <i class="fa-solid fa-circle-check text-accent mt-1 shrink-0"></i>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+          <!-- Charts Section -->
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-white/40">Volumen & Styrke</h3>
+                <div class="flex gap-2">
+                    <span class="flex items-center gap-1.5 text-[10px] text-white/30">
+                        <span class="w-2 h-2 rounded-full bg-accent"></span> Vægt (kg)
+                    </span>
+                </div>
+            </div>
+            <div class="min-h-[350px] w-full">
+              <canvas id="progressionChart"></canvas>
+            </div>
+          </Card>
+
+          <!-- Technical Instructions -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card variant="glass" class="p-6 reveal reveal-slide-up">
+               <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Set-up</h3>
+               <ul class="space-y-3">
+                 {techInfo.setup.map((s, i) => (
+                   <li class="text-[13px] text-dim flex gap-3 leading-relaxed">
+                     <span class="font-mono text-accent/50">{i+1}.</span>
+                     <span>{s}</span>
+                   </li>
+                 ))}
+               </ul>
+            </Card>
+            <Card variant="glass" class="p-6 reveal reveal-slide-up delay-100">
+               <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Udførelse</h3>
+               <ul class="space-y-3">
+                 {techInfo.execution.map((e, i) => (
+                   <li class="text-[13px] text-dim flex gap-3 leading-relaxed">
+                     <span class="font-mono text-accent/50">{i+1}.</span>
+                     <span>{e}</span>
+                   </li>
+                 ))}
+               </ul>
+            </Card>
+          </div>
+
+          <!-- Raw Data Table -->
+          <Card variant="glass" class="p-6 reveal reveal-slide-up delay-200">
+             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-6">Seneste Sessions</h3>
+             <div class="overflow-x-auto">
+               <table class="w-full text-left text-[12px] border-collapse">
+                 <thead>
+                    <tr class="border-b border-white/5 text-white/30 uppercase font-black tracking-wider">
+                      <th class="py-3 px-2">Dato</th>
+                      <th class="py-3 px-2">Vægt</th>
+                      <th class="py-3 px-2">Sæt x Reps</th>
+                      <th class="py-3 px-2">Volumen</th>
+                      <th class="py-3 px-2">RPE</th>
+                    </tr>
+                 </thead>
+                 <tbody id="raw-data-table" class="divide-y divide-white/[0.02]">
+                 </tbody>
+               </table>
+             </div>
+          </Card>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="mt-16 flex flex-wrap justify-center gap-6 reveal reveal-fade">
+         <Button href="/traeningsstatistik" variant="ghost">Global Statistik</Button>
+         <Button href="/traeningsprogram" variant="ghost">Træningsprogram</Button>
+      </div>
+    </Section>
+  </main>
+
+  <script>
+    import Chart from 'chart.js/auto';
+
+    async function initExerciseStats() {
+      try {
+        const res = await fetch('/api/training');
+        const allLogs = await res.json();
+        
+        // Filter specifically for Pec Fly entries
+        const logs = allLogs.filter((l: any) => 
+          l.exercise_name?.toLowerCase().includes('pec') && 
+          l.exercise_name?.toLowerCase().includes('fly')
+        ).sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+        if (logs.length === 0) return;
+
+        // 1. Calculate Statistics
+        const weights = logs.map((l: any) => l.weight_kg);
+        const pbWeight = Math.max(...weights);
+        document.getElementById('stat-pb-weight')!.innerText = `${pbWeight} kg`;
+
+        const tonnages = logs.map((l: any) => l.tonnage_kg || 0);
+        document.getElementById('stat-max-vol-set')!.innerText = `${Math.max(...tonnages)} kg`;
+
+        const totalVol = tonnages.reduce((sum: number, t: number) => sum + t, 0);
+        document.getElementById('stat-total-vol')!.innerText = `${(totalVol / 1000).toFixed(1)} tons`;
+
+        const rpes = logs.map((l: any) => l.rpe).filter(Boolean);
+        const avgRpe = rpes.length > 0 ? (rpes.reduce((a:number, b:number) => a+b, 0) / rpes.length).toFixed(1) : '--';
+        document.getElementById('stat-avg-rpe')!.innerText = avgRpe;
+
+        // 2. Render Chart
+        const ctx = document.getElementById('progressionChart') as HTMLCanvasElement;
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: logs.map((l: any) => new Date(l.date).toLocaleDateString('da-DK', { day: 'numeric', month: 'short' })),
+                datasets: [
+                    {
+                        label: 'Vægt (kg)',
+                        data: weights,
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#FFD700',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Volumen (kg)',
+                        data: tonnages.map(t => t / 10), // Scale volume for visibility
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: 'rgba(255, 255, 255, 0.3)', font: { size: 10 } }, grid: { display: false } },
+                    y: { ticks: { color: 'rgba(255, 255, 255, 0.5)', font: { size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } }
+                }
+            }
+        });
+
+        // 3. Render Table
+        const tableBody = document.getElementById('raw-data-table');
+        if (tableBody) {
+          tableBody.innerHTML = logs.slice().reverse().slice(0, 10).map((l: any) => `
+            <tr class="hover:bg-white/[0.02]">
+              <td class="py-4 px-2 text-white/40">${new Date(l.date).toLocaleDateString('da-DK')}</td>
+              <td class="py-4 px-2 font-bold">${l.weight_kg} kg</td>
+              <td class="py-4 px-2 text-dim">${l.sets} x ${l.reps}</td>
+              <td class="py-4 px-2 text-dim">${l.tonnage_kg} kg</td>
+              <td class="py-4 px-2"><span class="text-accent/60">@</span> ${l.rpe || '--'}</td>
+            </tr>
+          `).join('');
+        }
+
+      } catch (e) {
+        console.error("Failed to load pec fly stats", e);
+      }
+    }
+
+    initExerciseStats();
+  </script>
+</Layout>

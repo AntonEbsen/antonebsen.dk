@@ -66,8 +66,8 @@ const days = [
                                     <tr class="hover:bg-white/[0.03] transition-colors group">
                                         <td class="px-6 py-4">
                                             <div class="text-sm font-semibold text-white group-hover:text-accent transition-colors">
-                                                {ex.exercise === 'Incline Press' || ex.exercise === 'Flat Chest Press' ? (
-                                                    <a href={`/exercises/${ex.exercise.toLowerCase().replace(/\s+/g, '-')}`} class="hover:underline decoration-accent/40 underline-offset-4">{ex.exercise}</a>
+                                                {['Incline Press', 'Flat Chest Press', 'Pec Fly', 'Pec Flys'].includes(ex.exercise) ? (
+                                                    <a href={`/exercises/${ex.exercise.toLowerCase().replace(/\s+/g, '-').replace('pec-flys', 'pec-fly')}`} class="hover:underline decoration-accent/40 underline-offset-4">{ex.exercise}</a>
                                                 ) : ex.exercise}
                                             </div>
                                             <div class="md:hidden text-[10px] text-white/30 mt-1 font-mono">{ex.tempo}</div>
