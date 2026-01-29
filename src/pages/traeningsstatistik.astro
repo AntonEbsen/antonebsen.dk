@@ -542,7 +542,7 @@ import Button from '../components/ui/Button.astro';
       timelineContainer.innerHTML = '';
       badgesContainer.innerHTML = '';
 
-      const milestones: { date: string, title: string, desc: string, icon: string }[] = [];
+      const achievementMilestones: { date: string, title: string, desc: string, icon: string }[] = [];
       const stats = {
           maxSquat: 0,
           maxDead: 0,
@@ -561,24 +561,24 @@ import Button from '../components/ui/Button.astro';
           // Check for exercise PRs
           if (name.includes('squat') && weight > stats.maxSquat) {
               stats.maxSquat = weight;
-              if (weight >= 100 && stats.maxSquat === weight) milestones.push({ date: d, title: `Century Club: Squat ${weight}kg`, desc: 'Den magiske 100kg grænse er brudt i Squat!', icon: 'fa-crown' });
+              if (weight >= 100 && stats.maxSquat === weight) achievementMilestones.push({ date: d, title: `Century Club: Squat ${weight}kg`, desc: 'Den magiske 100kg grænse er brudt i Squat!', icon: 'fa-crown' });
           }
           if (name.includes('deadlift') && weight > stats.maxDead) {
               stats.maxDead = weight;
-              if (weight >= 150 && stats.maxDead === weight) milestones.push({ date: d, title: `Elite Pull: Deadlift ${weight}kg`, desc: '150kg+ i dødløft er officielt "Heavy Duty".', icon: 'fa-fire' });
+              if (weight >= 150 && stats.maxDead === weight) achievementMilestones.push({ date: d, title: `Elite Pull: Deadlift ${weight}kg`, desc: '150kg+ i dødløft er officielt "Heavy Duty".', icon: 'fa-fire' });
           }
 
           dailyTonnage[d] = (dailyTonnage[d] || 0) + (log.tonnage_kg || 0);
           if (dailyTonnage[d] > stats.maxTonnageDay) {
               stats.maxTonnageDay = dailyTonnage[d];
               if (stats.maxTonnageDay >= 10000 && dailyTonnage[d] === stats.maxTonnageDay) {
-                  milestones.push({ date: d, title: 'Tonnage Titan', desc: 'Du har løftet over 10 tons på én enkelt dag!', icon: 'fa-weight-hanging' });
+                  achievementMilestones.push({ date: d, title: 'Tonnage Titan', desc: 'Du har løftet over 10 tons på én enkelt dag!', icon: 'fa-weight-hanging' });
               }
           }
       });
 
       // Sort and render timeline
-      milestones.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5).forEach(m => {
+      achievementMilestones.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5).forEach(m => {
           const item = `
               <div class="relative pl-12 group">
                   <div class="absolute left-0 mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 border border-accent/20 text-accent group-hover:scale-110 transition-transform">
