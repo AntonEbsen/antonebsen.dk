@@ -1,0 +1,352 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Adversity & Resilience – My Story" 
+  description="A story about overcoming adversity, from epilepsy, severe asthma, and dyslexia to an 11.9 average and the cand.polit program."
+  bodyClass="history-page"
+>
+  <style>
+    .story-wrap {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .story-hero {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .quote-box {
+      background: rgba(var(--accent-rgb), 0.05);
+      border-left: 4px solid var(--accent);
+      padding: 2rem;
+      border-radius: 0 16px 16px 0;
+      margin: 3rem 0;
+      font-style: italic;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .chapter {
+      margin-bottom: 8rem;
+      position: relative;
+    }
+
+    .chapter-number {
+      font-family: serif;
+      font-size: 5rem;
+      opacity: 0.05;
+      position: absolute;
+      top: -2rem;
+      left: -2rem;
+      font-weight: 900;
+      pointer-events: none;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+    }
+
+    .content {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .content p {
+      margin-bottom: 1.5rem;
+    }
+
+    .high-contrast {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .high-contrast {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .contrast-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .contrast-card.past {
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .contrast-card.present {
+      border-color: rgba(34, 197, 94, 0.2);
+      background: rgba(var(--accent-rgb), 0.03);
+    }
+
+    .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0.5;
+    }
+
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .navigation-footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 3rem;
+      margin-top: 6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--accent);
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(var(--accent-rgb), 0.2);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(var(--accent-rgb), 0.05);
+    }
+
+    strong {
+      color: #fff;
+      font-weight: 600;
+    }
+  </style>
+
+  <main class="story-wrap">
+    <header class="story-hero">
+      <span class="eyebrow">My Story</span>
+      <h1>Adversity and Resilience</h1>
+      <p class="content" style="font-size: 1.3rem; opacity: 0.8;">
+        My journey has not been a straight line. It is shaped by the moments where others questioned my abilities, and where the will to prove them wrong became my greatest driving force.
+      </p>
+    </header>
+
+    <section class="chapter">
+      <span class="chapter-number">01</span>
+      <h2>The Foundation of Doubt</h2>
+      <div class="content">
+        <p>
+          My upbringing was marked by illness on multiple fronts. I suffered from severe epilepsy and was hospitalized up to 11 times a month. A brain scan confirmed that I had brain damage in the left hemisphere – the aftereffects of a stroke I had survived as a child.
+        </p>
+        <p>
+          But the story also hides another truth. The fact that I was perceived as "mentally behind" was largely due to a systemic failure: the staff in my kindergarten often forgot to give me my epilepsy medication. This meant my parents had to give me a <strong>double dose</strong> when I got home – a medication that is extremely sedating for the brain. My cognitive sluggishness was thus as much medically induced as it was biological.
+        </p>
+        <p>
+          In kindergarten, I felt the isolation deeply. Because I had difficulty speaking, I took refuge in my own world. I would go up on a hill in the playground and seek comfort in God and Jesus. When the system failed to show me care, I found love in faith.
+        </p>
+        <div class="quote-box">
+          While the staff mockingly called me <strong>"Moses"</strong>, the Christian message hit me with euphoria: Jesus loves everyone. That childhood faith remains my foundation to this day.
+        </div>
+        <div class="quote-box" style="border-left-color: rgba(255,255,255,0.2);">
+          "None of the other children want to play with Anton."
+          <br>
+          <small style="font-style: normal; opacity: 0.6; font-size: 0.9rem;">— Said by my special educator to my parents</small>
+        </div>
+        <p>
+          Yet, amidst the system's cold judgment, there is a small light I carry with me: a memory of one of the girls in kindergarten who said to the others, <strong>"You shouldn't bully Anton."</strong> It was a small gesture, but it showed that even in the toughest environments, glimmers of human kindness exist.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">02</span>
+      <h2>The Judgment – and New Hope</h2>
+      <div class="content">
+        <p>
+          Starting school didn't get easier. Teachers assessed that my future lay in a special school for children with behavioral challenges. They had given up on me.
+        </p>
+        <p>
+          But my parents refused to accept that verdict. When they told my new teacher at the private school what the system had said, the answer came promptly:
+        </p>
+        <div class="quote-box" style="border-left-color: #22c55e;">
+          "Of course Anton can manage a normal school education."
+        </div>
+        <p>
+          For the first time, I felt seen and heard. It was the starting signal to show the world – and the system – who I really was.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">03</span>
+      <h2>A Night Bathed in Fear</h2>
+      <div class="content">
+        <p>
+          In third grade, I approached my last epileptic seizure. I had stopped my medication, but at the same time, a tragedy occurred: a staff member at my after-school club lost his life in the forest after an epileptic seizure because he hadn't taken his medication.
+        </p>
+        <p>
+          That death struck me with a paralyzing fear for my own life. That same night, my worst seizure yet occurred. My father shook me as tears ran down his cheeks, shouting, <strong>"Anton, you mustn't die!"</strong> That moment marked the final chapter of my time as a patient.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">04</span>
+      <h2>When the Body Almost Gave Up</h2>
+      <div class="content">
+        <p>
+          During middle school, my asthma hit its absolute low point. I was born with severe asthma and have only <strong>72 percent lung capacity</strong>. I was hospitalized for several days while my body fought a battle it was dangerously close to losing.
+        </p>
+        <p>
+          The doctor later said words to my parents that still give me chills: <strong>"If he had gone to sleep at home, he would have passed away quietly."</strong>
+        </p>
+        <p>
+          Knowing you've been so close to the edge gives you a unique perspective. It has shaped my humanistic view: we are all of equal value, regardless of cognitive abilities, physics, or background.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">05</span>
+      <h2>The Battle Against Invisible Letters</h2>
+      <div class="content">
+        <p>
+          Dyslexia became the next obstacle. My dictations were marked by frustration, but my mother set a limit: either I found a way, or she would no longer pay for my schooling.
+        </p>
+        <p>
+          I developed my own visual method and began to visualize the <strong>QWERTY keyboard</strong> in my mind when I had to spell. The strategy bore fruit, and I finished primary school with a <strong>top grade</strong> in spelling.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">06</span>
+      <h2>The Spark Ignited: The "Hunter" Mentality</h2>
+      <div class="content">
+        <p>
+          My first top grade ever was in Religious Studies. That was where the spark was ignited. I realized I had the abilities to reach the top. I became a "hunter."
+        </p>
+        <p>
+          This hunter mentality culminated in business high school (HHX), where I became the <strong>top scorer of the year</strong> with an average of <strong>11.9</strong>. But it came at a price: at 18, I developed a stomach ulcer from the enormous pressure I put on myself.
+        </p>
+        <div class="quote-box" style="border-left-color: #ef4444;">
+          I balanced school, my driver's license, and a candidacy for the European Parliament all at once. I learned that no matter how strong your will is, the body has its limits.
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">07</span>
+      <h2>Motivation's New Character</h2>
+      <div class="content">
+        <p>
+          Today, in the <strong>cand.polit (economics) program</strong>, I no longer chase grades for their own sake. Grade-chasing culture is unhealthy, and in a study program with high difficulty, you learn to appreciate the learning process itself.
+        </p>
+        <p>
+          But when motivation fails, I find my way back to the core: that old voice from the system that said I would never make it. It ignites a fire in me – both in my studies and at the gym.
+        </p>
+        <div class="quote-box">
+          "I will damn well show you."
+        </div>
+        <p>
+          This is the foundation of my values: you shouldn't talk down to others, regardless of the circumstances. Because I have been at the bottom of the system myself, I know that potential is often found beneath the surface of diagnoses and medication.
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <span class="chapter-number">08</span>
+      <h2>From Adversity to Resilience</h2>
+      <div class="content">
+        <div class="high-contrast">
+          <div class="contrast-card past">
+            <span class="label">Back Then</span>
+            <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
+            <p>Deemed unfit for normal schooling, misdosed with medication, and physically limited by illness.</p>
+          </div>
+          <div class="contrast-card present">
+            <span class="label">Today</span>
+            <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+            <p><strong>Top scorer at HHX (11.9 avg)</strong> and soon finishing my <strong>MSc in Economics (cand.polit)</strong> from the University of Copenhagen.</p>
+          </div>
+        </div>
+
+        <p>
+          My journey has taught me that human value must never be defined by cognitive abilities or physical limitations. I bring this deep empathy and ironclad persistence into everything I do professionally.
+        </p>
+      </div>
+    </section>
+
+    <footer class="navigation-footer">
+      <div>
+        <h3 style="margin-bottom: 0.5rem; font-weight: 700;">Want to read more about my professional profile?</h3>
+        <p style="opacity: 0.6; margin-bottom: 0;">Check out my CV or my projects to see how I work today.</p>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <a href="/en/cv" class="btn ghost">View CV</a>
+        <a href="/en/portfolio" class="btn">Go to Portfolio <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </main>
+</Layout>

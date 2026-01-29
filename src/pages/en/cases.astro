@@ -1,0 +1,310 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Project Cases" 
+  description="Three selected project cases: data, methodology, results, and tools."
+  bodyClass="cases-page"
+>
+  <style>
+    .cases-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .cases-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .case-body {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .case-body { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="cases-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Project Cases</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Three Selected Cases</h1>
+          <p class="text-lg text-dim mb-6">
+            Here are three cases that show how I work: from problem formulation and data to methodology, robustness, and communication.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="/en/portfolio">View Portfolio</Button>
+            <Button href="/en/cv" variant="ghost">View CV</Button>
+            <Button href="/en/contact" variant="ghost">Contact</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <Pill variant="accent">Macro & Monetary Policy</Pill>
+            <Pill variant="accent">Time Series</Pill>
+            <Pill variant="accent">CGE/RBC</Pill>
+            <Pill variant="accent">Reproducible Analysis</Pill>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Format</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              <li><strong>Problem</strong> → what needed solving?</li>
+              <li><strong>Data</strong> → what was the analysis based on?</li>
+              <li><strong>Methodology</strong> → how was it solved?</li>
+              <li><strong>Result</strong> → what came out?</li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- CASES GRID -->
+    <Section class="cases-grid" aria-label="Project Cases">
+
+      <!-- CASE 1 -->
+      <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id="case-gfc">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <h2 class="text-xl font-bold leading-tight">Case 1: Global Financial Cycle & Spillovers from US Monetary Policy</h2>
+          <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">Empirical Macro</span>
+        </div>
+
+        <p class="text-dim opacity-70 mb-4">
+          (Bachelor's Project) Investigation of how US monetary policy affects global financial conditions and macroeconomic outcomes.
+        </p>
+
+        <div class="case-body">
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Problem</h3>
+            <p class="text-sm text-dim">Which spillover effects can be observed from US monetary policy to the global economy, and how do they vary across periods?</p>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Data</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Macro/financial time series (e.g., interest rates, credit spreads, volatility, output indicators)</li>
+              <li>• Country/region panel where applicable</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Methodology</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Structural time series models / SVAR inspiration</li>
+              <li>• Robustness: alternative specifications and subperiods</li>
+              <li>• Visualization: IRF plots, tables with key estimates</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Result</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Main findings: (insert 1-2 lines when applicable)</li>
+              <li>• Practical delivery: report + figures + code appendix</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">My Role</h3>
+            <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+              <li>• Design of empirical strategy</li>
+              <li>• Data processing + estimation</li>
+              <li>• Communication of results and limitations</li>
+            </ul>
+          </div>
+
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+            <h3 class="font-bold mb-2 text-sm">Tools</h3>
+            <div class="flex flex-wrap gap-2">
+              <Pill variant="accent">Python</Pill>
+              <Pill variant="accent">SAS/Stata</Pill>
+              <Pill variant="accent">LaTeX</Pill>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mt-4">
+          <Button href="#" variant="ghost" size="sm">Report (upcoming)</Button>
+          <Button href="#" variant="ghost" size="sm">Code (if public)</Button>
+        </div>
+      </Card>
+
+      <!-- CASE 2 -->
+      <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id="case-cge">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <h2 class="text-xl font-bold leading-tight">Case 2: CGE Model – CO2 Tax, Sectoral Effects, and Revenue Recycling</h2>
+          <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">Modeling</span>
+        </div>
+
+        <p class="text-dim opacity-70 mb-4">
+          (Course Project/Exam Case) Calibration of a simple open economy with multiple sectors and policy shocks.
+        </p>
+
+        <div class="case-body">
+          <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Problem</h3>
+              <p class="text-sm text-dim">How does a CO2 tax affect production, prices, and welfare across sectors – and what is the impact of revenue recycling?</p>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Data</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Social Accounting Matrix (SAM) based calibration</li>
+                <li>• Sector-specific input shares, consumption, export/import</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Methodology</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Calibrate baseline reproducing the SAM</li>
+                <li>• Shock scenarios: tax + alternative closures</li>
+                <li>• Checks: budget constraints, zero-profit, Walras law</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Result</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Output: percentage changes in prices/output/consumption</li>
+                <li>• Interpretation: winners/losers and mechanisms</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">My Role</h3>
+              <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                <li>• Implementation in GAMS</li>
+                <li>• Calibration + documentation</li>
+                <li>• Scenario setup and final reporting</li>
+              </ul>
+            </div>
+  
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+              <h3 class="font-bold mb-2 text-sm">Tools</h3>
+              <div class="flex flex-wrap gap-2">
+                <Pill variant="accent">GAMS</Pill>
+                <Pill variant="accent">Excel</Pill>
+                <Pill variant="accent">LaTeX</Pill>
+              </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mt-4">
+          <Button href="#" variant="ghost" size="sm">Slides/Report (upcoming)</Button>
+          <Button href="#" variant="ghost" size="sm">Model Code (if public)</Button>
+        </div>
+      </Card>
+
+      <!-- CASE 3 -->
+      <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id="case-ts">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+          <h2 class="text-xl font-bold leading-tight">Case 3: Time Series – Forecasting and Seasonal Patterns</h2>
+          <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">Time Series</span>
+        </div>
+
+        <p class="text-dim opacity-70 mb-4">
+          (SAS Course/Exam Case) Model selection, diagnostics, and forecasting with a focus on robustness and communication.
+        </p>
+
+        <div class="case-body">
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Problem</h3>
+                <p class="text-sm text-dim">How to create a stable and explainable forecast that goes beyond simple black-box modeling?</p>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Data</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Time series with seasonality and trend</li>
+                  <li>• Handling of outliers and structural breaks</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Methodology</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Decomposition / UCM / ETS approach</li>
+                  <li>• Diagnostics: residuals, stability, holdout evaluation</li>
+                  <li>• Benchmark vs. complex model comparison</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Result</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Forecast + uncertainty bands</li>
+                  <li>• Conclusion: Why this specific model was chosen for robust results</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">My Role</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                  <li>• Data preparation and model selection</li>
+                  <li>• Evaluation + documentation</li>
+                  <li>• Visualization and write-up</li>
+                </ul>
+              </div>
+    
+              <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">Tools</h3>
+                <div class="flex flex-wrap gap-2">
+                  <Pill variant="accent">SAS</Pill>
+                  <Pill variant="accent">Python</Pill>
+                  <Pill variant="accent">Excel</Pill>
+                </div>
+              </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mt-4">
+          <Button href="#" variant="ghost" size="sm">Notebook/Report (upcoming)</Button>
+          <Button href="#" variant="ghost" size="sm">Code (if public)</Button>
+        </div>
+      </Card>
+
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title="Want to see more details?"
+            text="Some projects cannot be shared fully due to confidentiality, but I can often share sanitized examples or walk through the methodology."
+            action="contact"
+        />
+    </Section>
+
+  </main>
+</Layout>

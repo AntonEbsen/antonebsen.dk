@@ -1,0 +1,243 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: certifications, error } = await supabase
+  .from('certifications')
+  .select('*')
+  .eq('visible', true)
+  .order('id', { ascending: false });
+
+if (error) certifications = [];
+
+const pythonCerts = certifications?.filter(c => c.category === 'Python') || [];
+const matlabCerts = certifications?.filter(c => c.category === 'MATLAB') || [];
+const sasCerts = certifications?.filter(c => c.category === 'SAS') || [];
+const writingCerts = certifications?.filter(c => c.category === 'Formidling' || c.category === 'Writing') || [];
+const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category)) || [];
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Certifications" 
+  description="Certifications in Python, MATLAB, SAS, and more."
+  bodyClass="cert-page"
+>
+  <style>
+    .cert-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .certs-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="cert-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Certifications</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Courses, Badges, and Documentation</h1>
+          <p class="text-lg text-dim mb-6">
+            A comprehensive overview of my certifications in programming, data analysis, and communication.
+            I link to certificates and credentials whenever possible.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#cat-python">Python</Button>
+            <Button href="#cat-matlab">MATLAB</Button>
+            <Button href="#cat-sas">SAS</Button>
+            <Button href="#cat-writing">Writing</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2" aria-label="Themes">
+            <Pill variant="accent">Data</Pill>
+            <Pill variant="accent">Coding</Pill>
+            <Pill variant="accent">Economics</Pill>
+            <Pill variant="accent">Communication</Pill>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Tip</SectionHeading>
+            <p class="text-sm text-dim leading-relaxed">
+              When adding new certifications: keep titles consistent and write a one-line summary of "what can I do now".
+              It's 10/10 more valuable than "I took a course".
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    {certifications?.length === 0 && (
+        <Section>
+            <Card variant="glass" class="p-8 text-center text-dim bg-purple-500/10 border-purple-500/20">
+                <p>No certifications found yet. <br/>Add your credentials in the <a href="/dashboard" class="text-white underline">Dashboard</a>.</p>
+            </Card>
+        </Section>
+    )}
+
+    <!-- PYTHON -->
+    <Section id="cat-python" aria-label="Python certifications">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Python</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">Data analysis, workflows, and practical programming.</p>
+
+        <div class="certs-grid">
+          {pythonCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">Python</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Proof</Button>}
+                </div>
+              </Card>
+          ))}
+          {pythonCerts.length === 0 && <p class="text-dim text-sm italic">No Python certifications yet.</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- MATLAB -->
+    <Section id="cat-matlab" aria-label="MATLAB certifications">
+      <Card variant="bordered" class="p-6">
+         <SectionHeading>MATLAB</SectionHeading>
+         <p class="text-dim opacity-70 mb-6 text-sm">Numerical analysis, matrix algebra, and workflows.</p>
+
+        <div class="certs-grid">
+           {matlabCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">MATLAB</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Proof</Button>}
+                </div>
+              </Card>
+          ))}
+          {matlabCerts.length === 0 && <p class="text-dim text-sm italic">No MATLAB certifications yet.</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- SAS -->
+    <Section id="cat-sas" aria-label="SAS certifications">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>SAS</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">Time series, data management, and analysis.</p>
+
+        <div class="certs-grid">
+           {sasCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">SAS</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Proof</Button>}
+                </div>
+              </Card>
+          ))}
+          {sasCerts.length === 0 && <p class="text-dim text-sm italic">No SAS certifications yet.</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- WRITING -->
+    <Section id="cat-writing" aria-label="Writing Academy">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Writing & Communication</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">Writing, structure, and professional communication.</p>
+
+        <div class="certs-grid">
+           {writingCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">Communication</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Proof</Button>}
+                </div>
+              </Card>
+          ))}
+          {writingCerts.length === 0 && <p class="text-dim text-sm italic">No writing certifications yet.</p>}
+        </div>
+      </Card>
+    </Section>
+
+    {otherCerts.length > 0 && (
+        <Section id="cat-other">
+          <Card variant="bordered" class="p-6">
+            <SectionHeading>Other</SectionHeading>
+            <div class="certs-grid">
+              {otherCerts.map(c => (
+                 <Card variant="glass" class="p-4 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-2 gap-2">
+                      <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                      <Pill variant="accent">{c.category}</Pill>
+                    </div>
+                    <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                    <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                      {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">Proof</Button>}
+                    </div>
+                  </Card>
+              ))}
+            </div>
+          </Card>
+        </Section>
+    )}
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title="Want to see the full CV?"
+            text="Certifications are 'appendices'. The CV is the 'story'. Both have their place."
+            action="cv"
+        />
+    </Section>
+
+  </main>
+</Layout>

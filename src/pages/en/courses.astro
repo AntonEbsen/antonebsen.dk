@@ -1,0 +1,133 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import cv from '@data/cv_en.json';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Courses" 
+  description="Courses: university subjects, online courses, and certification programs."
+  bodyClass="courses-page"
+>
+  <style>
+    .courses-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .courses-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="courses-wrap">
+
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">Courses</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Subjects, Programs, and Courses</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            Here I gather all the courses I've taken — both university and online. Focus is on
+            macroeconomics, econometrics, programming, and modeling.
+          </p>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#university">University</Button>
+            <Button href="#programming" variant="ghost">Programming</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>How to use this page</SectionHeading>
+            <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
+              Use search and filters. Each card can link to the syllabus, course page, or certificate.
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <Section id="university">
+       <Card variant="default" class="p-6">
+         <SectionHeading>University Courses (University of Copenhagen)</SectionHeading>
+         <div class="courses-grid">
+           {cv.courses.filter(c => c.institution.includes("Copenhagen")).map(course => (
+              <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{course.title}</h3>
+                  <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
+                </div>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
+                {course.links && course.links.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-auto">
+                    {course.links.map(l => (
+                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} →</a>
+                    ))}
+                  </div>
+                )}
+              </Card>
+           ))}
+         </div>
+       </Card>
+    </Section>
+
+    <Section id="programming">
+       <Card variant="bordered" class="p-6">
+         <SectionHeading>Programming & Other Courses</SectionHeading>
+         <div class="courses-grid">
+           {cv.courses.filter(c => !c.institution.includes("Copenhagen")).map(course => (
+              <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{course.title}</h3>
+                  <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{course.institution}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
+                {course.links && course.links.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-auto">
+                    {course.links.map(l => (
+                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} →</a>
+                    ))}
+                  </div>
+                )}
+              </Card>
+           ))}
+         </div>
+       </Card>
+    </Section>
+
+    <Section>
+      <ContactCard 
+        variant="glass"
+        title="Want to see more?"
+        text="Contact me or go back to the overview."
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>

@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: references, error } = await supabase
+  .from('references')
+  .select('*')
+  .eq('visible', true)
+  .order('id', { ascending: false });
+
+if (error) references = [];
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Testimonials" 
+  description="Testimonials and recommendations about my work in economics, data, and teaching."
+  bodyClass="testimonials-page"
+>
+  <style>
+    .testimonials-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .quotes-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="testimonials-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">Testimonials</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">What Others Say</h1>
+          <p class="text-lg text-dim mb-6">
+            Here you can read brief testimonials from partners and individuals I have worked with.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <Button href="/en/contact">Contact</Button>
+            <Button href="/en/cv" variant="ghost">View CV</Button>
+            <Button href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" variant="ghost">LinkedIn</Button>
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Core Qualities</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              <li><strong>Analytical Strength & Structure</strong></li>
+              <li><strong>High Quality & Deadline Discipline</strong></li>
+              <li><strong>Communication & Collaboration</strong></li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- TESTIMONIAL GRID -->
+    <Section class="quotes-grid" aria-label="Testimonials">
+
+      {references?.length === 0 && (
+           <Card variant="glass" class="p-8 col-span-full text-center text-dim bg-white/5 border-white/10">
+                <p>No testimonials found yet. Add them via the <a href="/dashboard" class="text-white underline">Dashboard</a>.</p>
+           </Card>
+      )}
+
+      {references?.map(ref => (
+          <Card variant="glass" class="p-6 relative flex flex-col h-full">
+            <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">“</div>
+            <p class="text-base text-gray-200 italic mt-4 mb-6 relative z-10 leading-relaxed flex-grow">
+              {ref.quote}
+            </p>
+            <div class="border-t border-white/10 pt-4 flex justify-between items-end">
+                <div>
+                  <div class="font-bold text-white">{ref.name}</div>
+                  <div class="text-xs text-dim">{ref.role}{ref.company ? `, ${ref.company}` : ''}</div>
+                </div>
+                {ref.linkedin_url && (
+                    <a href={ref.linkedin_url} target="_blank" class="text-white/20 hover:text-[#0077b5] transition-colors no-underline"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                )}
+            </div>
+          </Card>
+      ))}
+
+    </Section>
+
+    <!-- OPTIONAL: CTA CARD -->
+    <Section>
+        <ContactCard 
+            title="Want to leave a testimonial?"
+            text="If we've worked together, you are more than welcome to send a brief testimonial or recommendation."
+            action="linkedin"
+        />
+    </Section>
+
+  </main>
+</Layout>

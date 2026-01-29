@@ -1,0 +1,188 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/ui/Section.astro';
+import Card from '../../components/ui/Card.astro';
+import Button from '../../components/ui/Button.astro';
+import Pill from '../../components/ui/Pill.astro';
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Resources & Downloads" 
+  description="Free resources and downloads: Excel templates, code, notes, and guides."
+  bodyClass="resources-page"
+>
+  <style>
+    .resources-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .dl-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="resources-wrap">
+
+    <!-- HERO -->
+    <Section class="hero">
+      <Card variant="glass" class="p-6">
+        <p class="text-xs font-extrabold uppercase tracking-wider text-[var(--text-dim)] mb-3">Resources</p>
+        <h1 class="text-[clamp(26px,4vw,40px)] leading-tight mb-4 font-bold">Downloads & Templates</h1>
+        <p class="text-lg leading-relaxed text-[var(--text-dim)] mb-6">
+          Small, practical resources I use myself: templates, cheat sheets, and examples.
+          Everything is designed to be plug-and-play.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+          <Pill variant="accent">Excel</Pill>
+          <Pill variant="accent">VBA</Pill>
+          <Pill variant="accent">Python</Pill>
+          <Pill variant="accent">SAS</Pill>
+          <Pill variant="accent">GAMS</Pill>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <Button href="#downloads">View downloads</Button>
+          <Button href="/en/kursusstatistik" variant="ghost">
+            <i class="fa-solid fa-chart-column mr-2"></i> View course stats
+          </Button>
+          <Button href="/en/contact" variant="ghost">Ask about something specific</Button>
+        </div>
+      </Card>
+
+      <div class="hidden md:block">
+        <Card variant="glass" class="p-4">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">Note</h2>
+          <p class="text-[13px] text-[var(--text-dim)] mb-4 opacity-70">
+            Some files may be "sanitized" (data/names removed) due to course or confidentiality reasons.
+          </p>
+          <p class="text-[13px] text-[var(--text-dim)] opacity-70">
+            Have a specific need? Drop me a message — I can often create a template that fits.
+          </p>
+        </Card>
+      </div>
+    </Section>
+
+    <!-- DOWNLOADS -->
+    <Section id="downloads">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-2">Downloads</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6">Place files in the <code>assets/downloads/</code> folder and link them here.</p>
+
+        <div class="dl-grid">
+
+          <!-- NEW: Course Statistics -->
+          <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="text-[16px] font-bold leading-tight m-0">Course Stats: Evaluations & Key Figures</h3>
+              <Pill variant="accent" class="shrink-0">Teaching</Pill>
+            </div>
+            <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">Webpage · updated: (insert date)</p>
+            <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+              Overview of course evaluations and statistics across classes. Brief, concrete, and easy to skim.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <Button href="/en/kursusstatistik" class="px-4 py-2 text-xs">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> View page
+              </Button>
+              <Button href="/assets/downloads/kursusevalueringer-statistik.xlsx" download variant="ghost" class="px-4 py-2 text-xs">
+                <i class="fa-solid fa-download mr-2"></i> Download data
+              </Button>
+            </div>
+          </Card>
+
+          <!-- Download card 1 -->
+          <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="text-[16px] font-bold leading-tight m-0">Excel: Budget & Model Template</h3>
+              <Pill variant="accent" class="shrink-0">Excel</Pill>
+            </div>
+            <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">Template · updated: (insert date)</p>
+            <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+              A clean template for structure: inputs, calculations, output, checks, and scenarios.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <Button href="/assets/downloads/excel-template.xlsx" download class="px-4 py-2 text-xs">
+                <i class="fa-solid fa-download mr-2"></i> Download
+              </Button>
+              <Button href="#" variant="ghost" class="px-4 py-2 text-xs opacity-50 cursor-not-allowed">Description</Button>
+            </div>
+          </Card>
+
+          <!-- Download card 2 -->
+          <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="text-[16px] font-bold leading-tight m-0">VBA: Snippets (Quick Shortcuts)</h3>
+              <Pill variant="accent" class="shrink-0">VBA</Pill>
+            </div>
+            <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">ZIP/Text · updated: (insert date)</p>
+            <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+              Short code blocks: import/cleaning, formatting, loops, and performance tips.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <Button href="/assets/downloads/vba-snippets.zip" download class="px-4 py-2 text-xs">
+                <i class="fa-solid fa-download mr-2"></i> Download
+              </Button>
+              <Button href="https://github.com/AntonEbsen" target="_blank" rel="noopener" variant="ghost" class="px-4 py-2 text-xs">
+                <i class="fa-brands fa-github mr-2"></i> GitHub
+              </Button>
+            </div>
+          </Card>
+
+          <!-- Download card 3 -->
+          <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
+            <div class="flex justify-between items-start mb-2 gap-2">
+              <h3 class="text-[16px] font-bold leading-tight m-0">Python: Data-Cleaning Checklist</h3>
+              <Pill variant="accent" class="shrink-0">Python</Pill>
+            </div>
+            <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">PDF · updated: (insert date)</p>
+            <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+              A practical checklist for reproducible data prep (missing, outliers, splits, logs).
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <Button href="/assets/downloads/python-checklist.pdf" download class="px-4 py-2 text-xs">
+                <i class="fa-solid fa-download mr-2"></i> Download
+              </Button>
+              <Button href="#" variant="ghost" class="px-4 py-2 text-xs opacity-50 cursor-not-allowed">See example</Button>
+            </div>
+          </Card>
+
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <Card variant="default">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">Want something specific?</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6">
+          If you tell me your preferred format (Excel/Python/SAS) and goal (e.g., forecasting, dashboards, data-cleaning),
+          I can suggest a template structure that fits your needs.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/en/contact">Contact</Button>
+          <Button href="/en/services" variant="ghost">View services</Button>
+        </div>
+      </Card>
+    </Section>
+
+  </main>
+</Layout>

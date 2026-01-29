@@ -1,0 +1,108 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: media, error } = await supabase
+  .from('media_mentions')
+  .select('*')
+  .eq('visible', true)
+  .order('date', { ascending: false });
+
+if (error) media = [];
+---
+
+<Layout 
+  title="Anton Meier Ebsen Jørgensen – Media" 
+  description="Media coverage, articles, and media appearances: selected links and highlights."
+  bodyClass="media-page"
+>
+  <style>
+    .media-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .mentions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .mentions-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="media-wrap">
+
+    <Section class="mb-12">
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Media</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">Articles & Mentions</h1>
+          <p class="text-lg text-dim mb-6">
+            Selected places where I have been featured – along with links and brief highlights.
+          </p>
+          <div class="flex flex-wrap gap-3">
+             <a href="#press" class="px-6 py-2 bg-accent text-black rounded-full font-bold no-underline">Press Kit</a>
+             <a href="/en/contact" class="px-6 py-2 border border-accent text-accent rounded-full font-bold no-underline">Contact</a>
+          </div>
+        </Card>
+      </div>
+    </Section>
+
+    <Section id="mentions" class="mb-20">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Selected Mentions</SectionHeading>
+
+        {media?.length === 0 && (
+            <p class="text-dim text-center py-8">No mentions found yet. Add them in the <a href="/dashboard" class="underline">Dashboard</a>.</p>
+        )}
+
+        <div class="mentions-grid">
+          {media?.map(m => (
+              <Card variant="glass" class="p-6 flex flex-col h-full hover:bg-white/5 transition-colors group">
+                 <div class="flex justify-between items-start mb-2">
+                     <span class="text-xs uppercase tracking-wider text-accent font-bold">{m.source}</span>
+                     <span class="text-xs text-dim opacity-50">{m.date}</span>
+                 </div>
+                 <h3 class="font-bold text-lg mb-2 leading-tight group-hover:text-white transition-colors">
+                    <a href={m.url} target="_blank" class="hover:underline decoration-accent underline-offset-4 no-underline text-white">{m.title}</a>
+                 </h3>
+                 <a href={m.url} target="_blank" class="mt-auto text-sm text-dim hover:text-white flex items-center gap-2 pt-4 no-underline">
+                    Read article <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                 </a>
+              </Card>
+          ))}
+        </div>
+      </Card>
+    </Section>
+
+    <Section>
+        <ContactCard 
+          title="Want to collaborate?"
+          text="If you have an inquiry or need material for an article, please reach out."
+          action="contact"
+        />
+    </Section>
+
+  </main>
+</Layout>
