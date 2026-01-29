@@ -1,0 +1,116 @@
+---
+import Layout from '@layouts/Layout.astro';
+---
+
+<Layout 
+  title="404 – Page not found" 
+  description="Page not found"
+  bodyClass="notfound-page"
+>
+<style>
+.notfound-wrap {
+  max-width: 1100px;
+  margin: 28px auto;
+  padding: 0 16px 48px;
+}
+
+.notfound-card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 18px;
+  padding: 22px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.notfound-card .eyebrow {
+  margin: 0 0 12px;
+  color: var(--text-dim);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+}
+
+.notfound-card h1 {
+  margin: 0 0 10px;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.15;
+}
+
+.notfound-card .lead { 
+  margin: 0 0 24px; 
+  color: var(--text-dim); 
+  font-size: 18px; 
+  line-height: 1.6; 
+}
+
+.notfound-card .quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.notfound-card .help {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #050506;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+.btn.ghost {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+/* Små tweaks til mobil */
+@media (max-width: 720px) {
+  .notfound-card {
+    padding: 18px;
+  }
+}
+</style>
+
+  <main class="notfound-wrap">
+    <section class="card notfound-card" aria-label="404 content">
+      <p class="eyebrow">404</p>
+      <h1>Page not found</h1>
+      <p class="lead">
+        The page you tried to open does not exist (or has been moved).
+      </p>
+
+      <div class="quick">
+        <a class="btn" href="/en/">Go Home</a>
+        <a class="btn ghost" href="/en/portfolio">Portfolio</a>
+        <a class="btn ghost" href="/en/blog">Blog</a>
+        <a class="btn ghost" href="/en/contact">Contact</a>
+      </div>
+
+      <div class="help">
+        <p class="muted" style="margin:0;">
+          Tip: check the URL for a typo — or use the menu above.
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>
