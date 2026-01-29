@@ -1,0 +1,194 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Section from '@components/ui/Section.astro';
+import ExperienceCard from '@components/experience/ExperienceCard.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import cvDa from '@data/cv.json';
+import cvEn from '@data/cv_en.json';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const cv = isDa ? cvDa : cvEn;
+const experience = cv.experience || [];
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Erhvervserfaring",
+    desc: "Erhvervserfaring: undervisning, data og analyse. Rollen, ansvar, resultater og værktøjer.",
+    heroTitle: "Undervisning, data og leverancer – i praksis",
+    heroText: "Her er min erhvervserfaring samlet i et format, der er let at skimme: rolle → ansvar → resultater → værktøjer. (No fluff, kun signal.)",
+    pills: ["Undervisning", "Excel/VBA", "Data & analyse", "Formidling", "Struktur & kvalitet"],
+    buttons: { role: "Se roller", stats: "Kursusstatistik", contact: "Kontakt" },
+    shortTitle: "Kort version",
+    shortList: ["Excel/VBA-underviser med stærke evalueringer", "Bygger materialer og workflows, der kan genbruges", "Trives i deadlines og “delivery mode”"],
+    rolesTitle: "Roller",
+    workTitle: "Hvordan jeg typisk arbejder",
+    workSteps: [
+      { step: "1) Afklar mål", desc: "Hvad er outputtet? Hvem er modtageren? Hvad er “done”?" },
+      { step: "2) Data & kontekst", desc: "Input, constraints, antagelser. Hellere klarhed end magi." },
+      { step: "3) Metode", desc: "Vælg det simplest mulige, der stadig er korrekt." },
+      { step: "4) Formidling & leverance", desc: "Tydeligt output: struktur, noter, og “hvad betyder det?”" }
+    ],
+    ctaTitle: "Vil du samarbejde?",
+    ctaText: "Hvis du har et konkret behov (undervisning, templates, dataarbejde), så skriv kort."
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Professional Experience",
+    desc: "Professional experience: teaching, data, and analysis. Roles, responsibilities, results, and tools.",
+    heroTitle: "Teaching, Data, and Deliverables – in Practice",
+    heroText: "Here is my professional experience gathered in a format that's easy to skim: role → responsibility → results → tools. (No fluff, just signal.)",
+    pills: ["Teaching", "Excel/VBA", "Data & Analysis", "Communication", "Structure & Quality"],
+    buttons: { role: "View Roles", stats: "Course Stats", contact: "Contact" },
+    shortTitle: "Short Version",
+    shortList: ["Excel/VBA instructor with strong evaluations", "Builds reusable materials and workflows", "Thrives on deadlines and \"delivery mode\""],
+    rolesTitle: "Roles",
+    workTitle: "How I Typically Work",
+    workSteps: [
+      { step: "1) Clarify Goals", desc: "What is the output? Who is the audience? What defines 'done'?" },
+      { step: "2) Data & Context", desc: "Inputs, constraints, assumptions. Clarity over magic." },
+      { step: "3) Methodology", desc: "Choose the simplest possible approach that remains correct." },
+      { step: "4) Delivery", desc: "Clear output: structure, notes, and the 'so what?' factor." }
+    ],
+    ctaTitle: "Want to collaborate?",
+    ctaText: "If you have a concrete need (teaching, templates, data work), please reach out."
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
+const contactLink = isDa ? '/contact' : '/en/contact';
+
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="experience-page"
+>
+  <style>
+    .experience-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .roles-grid, .process-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="experience-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-6">
+          <SectionHeading class="text-dim mb-3">{isDa ? 'Erhvervserfaring' : 'Experience'}</SectionHeading>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.heroTitle}</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            {content.heroText}
+          </p>
+  
+          <div class="flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
+            {content.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#roles"><i class="fa-solid fa-briefcase mr-2"></i> {content.buttons.role}</Button>
+            <Button href={statsLink} variant="ghost"><i class="fa-solid fa-chart-column mr-2"></i> {content.buttons.stats}</Button>
+            <Button href={contactLink} variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> {content.buttons.contact}</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-4">
+            <SectionHeading>{content.shortTitle}</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
+              {content.shortList.map(li => <li>{li}</li>)}
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ROLLER -->
+    <Section id="roles" aria-label="Roller">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.rolesTitle}</SectionHeading>
+        <div class="roles-grid">
+          {experience.map((role) => (
+            <ExperienceCard 
+              title={role.title}
+              organization={role.organization}
+              location={role.location}
+              period={role.period}
+              type={role.type}
+              description={role.description}
+              highlights={role.highlights}
+              links={role.links}
+            />
+          ))}
+          {experience.length === 0 && <p class="text-dim">Ingen data fundet.</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- HOW I WORK -->
+    <Section>
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.workTitle}</SectionHeading>
+
+        <div class="process-grid">
+          {content.workSteps.map((item) => (
+            <Card variant="bordered" class="p-4 bg-glass">
+              <h3 class="text-[15px] font-bold m-0 mb-2">{item.step}</h3>
+              <p class="text-[13px] text-dim m-0 opacity-80 leading-relaxed">{item.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="default" 
+        title={content.ctaTitle} 
+        text={content.ctaText}
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>

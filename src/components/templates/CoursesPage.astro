@@ -1,0 +1,181 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import cvDa from '@data/cv.json';
+import cvEn from '@data/cv_en.json';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const cv = isDa ? cvDa : cvEn;
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Kurser",
+    desc: "Kurser: universitetsfag, online-kurser og certificeringsforløb.",
+    heroTitle: "Fag, forløb og kurser",
+    heroText: "Her samler jeg alle de kurser, jeg har taget — både universitet og online. Fokus er på makro, økonometri, programmering og modeller.",
+    buttons: { uni: "Universitet", prog: "Programmering" },
+    gridTitle: "Universitetskurser (Københavns Universitet)",
+    progTitle: "Programmering & Andre kurser",
+    helpTitle: "Sådan bruger du siden",
+    helpText: "Brug søgning og filtre. Hver “card” kan have link til pensum, kursus-side og evt. certifikat.",
+    contactTitle: "Vil du se mere?",
+    contactText: "Kontakt mig eller gå tilbage til oversigten.",
+    contactBtn: "Kontakt"
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Courses",
+    desc: "Courses: university subjects, online courses, and certification programs.",
+    heroTitle: "Subjects, Programs, and Courses",
+    heroText: "Here I gather all the courses I've taken — both university and online. Focus is on macroeconomics, econometrics, programming, and modeling.",
+    buttons: { uni: "University", prog: "Programming" },
+    gridTitle: "University Courses (University of Copenhagen)",
+    progTitle: "Programming & Other Courses",
+    helpTitle: "How to use this page",
+    helpText: "Use search and filters. Each card can link to the syllabus, course page, or certificate.",
+    contactTitle: "Want to see more?",
+    contactText: "Contact me or go back to the overview.",
+    contactBtn: "Contact"
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+// Separate courses into Uni and Other
+// We use 'institution' string check as a heuristic, or we could add a 'type' field in JSON.
+// Using 'Copenhagen' check as per English page logic.
+const uniCourses = cv.courses.filter(c => c.institution.includes("Copenhagen") || c.institution.includes("Københavns Universitet") || c.institution === "UCPH" || c.institution === "KU");
+const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="courses-page"
+>
+  <style>
+    .courses-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .courses-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="courses-wrap">
+
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Kurser' : 'Courses'}</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">{content.heroTitle}</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            {content.heroText}
+          </p>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#university">{content.buttons.uni}</Button>
+            <Button href="#programming" variant="ghost">{content.buttons.prog}</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>{content.helpTitle}</SectionHeading>
+            <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
+              {content.helpText}
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <Section id="university">
+       <Card variant="default" class="p-6">
+         <SectionHeading>{content.gridTitle}</SectionHeading>
+         <div class="courses-grid">
+           {uniCourses.map(course => (
+              <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{course.title}</h3>
+                  <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
+                </div>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
+                {course.links && course.links.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-auto">
+                    {course.links.map(l => (
+                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} →</a>
+                    ))}
+                  </div>
+                )}
+              </Card>
+           ))}
+           {uniCourses.length === 0 && <p class="text-dim text-sm italic">Ingen kurser fundet i JSON.</p>}
+         </div>
+       </Card>
+    </Section>
+
+    <Section id="programming">
+       <Card variant="bordered" class="p-6">
+         <SectionHeading>{content.progTitle}</SectionHeading>
+         <div class="courses-grid">
+           {otherCourses.map(course => (
+              <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{course.title}</h3>
+                  <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{course.institution}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
+                {course.links && course.links.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-auto">
+                    {course.links.map(l => (
+                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} →</a>
+                    ))}
+                  </div>
+                )}
+              </Card>
+           ))}
+         </div>
+       </Card>
+    </Section>
+
+    <Section>
+      <ContactCard 
+        variant="glass"
+        title={content.contactTitle}
+        text={content.contactText}
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>

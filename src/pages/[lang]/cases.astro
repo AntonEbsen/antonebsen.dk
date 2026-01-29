@@ -1,0 +1,13 @@
+---
+import CasesPage from '@components/templates/CasesPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<CasesPage lang={lang} />

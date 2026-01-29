@@ -1,0 +1,189 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import resourcesData from '@data/resources.json';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Ressourcer & Downloads",
+    desc: "Gratis ressourcer og downloads: Excel-skabeloner, kode, noter og guides.",
+    eyebrow: "Ressourcer",
+    heroTitle: "Downloads & templates",
+    heroText: "Små, praktiske ressourcer jeg selv bruger: skabeloner, cheat sheets og eksempler. Alt er lavet til at være plug-and-play.",
+    downloadBtn: "Se downloads",
+    statsBtn: "Se kursusstatistik",
+    askBtn: "Spørg om noget specifikt",
+    noteTitle: "Note",
+    noteText1: "Nogle filer kan være “sanitized” (fjernet data/navne) pga. kursus/fortrolighed.",
+    noteText2: "Har du et konkret behov? Skriv — jeg kan ofte lave en skabelon, der passer.",
+    catTitle: "Downloads",
+    catText: "Placér filer i mappen assets/downloads/ og link dem her.",
+    ctaTitle: "Vil du have noget specifikt?",
+    ctaText: "Hvis du fortæller mig dit format (Excel/Python/SAS) og mål (fx forecasting, dashboards, data-cleaning), kan jeg foreslå en template-struktur, der passer.",
+    ctaContact: "Kontakt",
+    ctaServices: "Se services"
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Resources & Downloads",
+    desc: "Free resources and downloads: Excel templates, code, notes, and guides.",
+    eyebrow: "Resources",
+    heroTitle: "Downloads & Templates",
+    heroText: "Small, practical resources I use myself: templates, cheat sheets, and examples. Everything is made to be plug-and-play.",
+    downloadBtn: "See Downloads",
+    statsBtn: "View Course Stats",
+    askBtn: "Ask for something specific",
+    noteTitle: "Note",
+    noteText1: "Some files may be 'sanitized' (data/names removed) due to course/confidentiality.",
+    noteText2: "Do you have a specific need? Write me — I can often create a template that fits.",
+    catTitle: "Downloads",
+    catText: "Place files in the assets/downloads/ folder and link them here.",
+    ctaTitle: "Need something specific?",
+    ctaText: "If you tell me your format (Excel/Python/SAS) and goal (e.g., forecasting, dashboards, data-cleaning), I can suggest a template structure that fits.",
+    ctaContact: "Contact",
+    ctaServices: "View Services"
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const contactLink = isDa ? '/contact' : '/en/contact';
+const servicesLink = isDa ? '/services' : '/en/services';
+const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="resources-page"
+>
+  <style>
+    .resources-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .dl-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="resources-wrap">
+
+    <!-- HERO -->
+    <Section class="hero">
+      <Card variant="glass" class="p-6">
+        <p class="text-xs font-extrabold uppercase tracking-wider text-[var(--text-dim)] mb-3">{content.eyebrow}</p>
+        <h1 class="text-[clamp(26px,4vw,40px)] leading-tight mb-4 font-bold">{content.heroTitle}</h1>
+        <p class="text-lg leading-relaxed text-[var(--text-dim)] mb-6">
+          {content.heroText}
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+          <Pill variant="accent">Excel</Pill>
+          <Pill variant="accent">VBA</Pill>
+          <Pill variant="accent">Python</Pill>
+          <Pill variant="accent">SAS</Pill>
+          <Pill variant="accent">GAMS</Pill>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <Button href="#downloads">{content.downloadBtn}</Button>
+          <Button href={statsLink} variant="ghost">
+            <i class="fa-solid fa-chart-column mr-2"></i> {content.statsBtn}
+          </Button>
+          <Button href={contactLink} variant="ghost">{content.askBtn}</Button>
+        </div>
+      </Card>
+
+      <div class="hidden md:block">
+        <Card variant="glass" class="p-4">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">{content.noteTitle}</h2>
+          <p class="text-[13px] text-[var(--text-dim)] mb-4 opacity-70">
+            {content.noteText1}
+          </p>
+          <p class="text-[13px] text-[var(--text-dim)] opacity-70">
+            {content.noteText2}
+          </p>
+        </Card>
+      </div>
+    </Section>
+
+    <!-- DOWNLOADS -->
+    <Section id="downloads">
+      <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-2">{content.catTitle}</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6">{content.catText}</p>
+
+        <div class="dl-grid">
+          {resourcesData.map(res => (
+            <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="text-[16px] font-bold leading-tight m-0">{isDa ? res.title_da : res.title_en}</h3>
+                  <Pill variant="accent" class="shrink-0">{isDa ? (res.pill_da || res.pill) : (res.pill_en || res.pill)}</Pill>
+                </div>
+                <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">{isDa ? res.meta_da : res.meta_en}</p>
+                <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+                  {isDa ? res.desc_da : res.desc_en}
+                </p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    {res.links.map(l => (
+                        <Button 
+                            href={l.url} 
+                            download={l.download ? true : undefined}
+                            target={l.external ? "_blank" : undefined}
+                            rel={l.external ? "noopener" : undefined} 
+                            variant={l.ghost ? "ghost" : "primary"}
+                            class={`px-4 py-2 text-xs ${l.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            {l.icon && <i class={`${l.icon} mr-2`}></i>} {isDa ? l.text_da : l.text_en}
+                        </Button>
+                    ))}
+                </div>
+              </Card>
+          ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <Card variant="default">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">{content.ctaTitle}</h2>
+        <p class="text-[var(--text-dim)] opacity-70 mb-6">
+          {content.ctaText}
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Button href={contactLink}>{content.ctaContact}</Button>
+          <Button href={servicesLink} variant="ghost">{content.ctaServices}</Button>
+        </div>
+      </Card>
+    </Section>
+
+  </main>
+</Layout>

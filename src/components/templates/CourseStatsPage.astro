@@ -1,0 +1,83 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Kursusstatistik – Anton Meier Ebsen Jørgensen",
+    desc: "Oversigt over evalueringer og nøgletal fra min undervisning i Excel og VBA.",
+    heading: "Kursusstatistik",
+    h1: "Undervisningsevalueringer",
+    text: "Denne side er under udarbejdelse. Her vil jeg præsentere aggregerede data fra mine kursusevalueringer, inklusive score-fordeling, deltagerfeedback og udvikling over tid.",
+    preview: "Nøgletal (Preview)",
+    stats: [
+        "Gennemsnitlig score: <strong>4.8 / 5.0</strong>",
+        "Antal kursister: <strong>500+</strong>",
+        "Primære emner: <strong>Excel, VBA, Power Query</strong>"
+    ],
+    contactBtn: "Kontakt mig for detaljer",
+    expBtn: "Se erhvervserfaring"
+  },
+  en: {
+    title: "Course Statistics – Anton Meier Ebsen Jørgensen",
+    desc: "Overview of evaluations and key figures from my teaching in Excel and VBA.",
+    heading: "Course Statistics",
+    h1: "Teaching Evaluations",
+    text: "This page is under construction. Here, I will present aggregated data from my course evaluations, including score distribution, participant feedback, and development over time.",
+    preview: "Key Figures (Preview)",
+    stats: [
+        "Average Score: <strong>4.8 / 5.0</strong>",
+        "Number of Students: <strong>500+</strong>",
+        "Primary Subjects: <strong>Excel, VBA, Power Query</strong>"
+    ],
+    contactBtn: "Contact for details",
+    expBtn: "View experience"
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const contactLink = isDa ? '/contact' : '/en/contact';
+const expLink = isDa ? '/experience' : '/en/experience';
+---
+
+<Layout 
+  title={content.title} 
+  description={content.desc}
+>
+  <main class="container mx-auto px-4 py-12">
+    <Section class="max-w-4xl mx-auto">
+      <Card variant="glass" class="p-12 text-center">
+        <SectionHeading class="mb-6">{content.heading}</SectionHeading>
+        <h1 class="text-4xl font-bold mb-6">{content.h1}</h1>
+        <p class="text-xl text-dim mb-8 max-w-2xl mx-auto">
+          {content.text}
+        </p>
+        
+        <div class="p-6 bg-accent/5 rounded-xl border border-accent/10 mb-8 inline-block text-left">
+          <h3 class="font-bold mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-check-circle text-accent"></i> 
+            {content.preview}
+          </h3>
+          <ul class="space-y-2 text-dim text-sm">
+            {content.stats.map(s => <li set:html={`• ${s}`} />)}
+          </ul>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <Button href={contactLink}>{content.contactBtn}</Button>
+          <Button href={expLink} variant="ghost">{content.expBtn}</Button>
+        </div>
+      </Card>
+    </Section>
+  </main>
+</Layout>

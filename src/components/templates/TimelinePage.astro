@@ -1,10 +1,72 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
+import timelineData from '@data/timeline.json';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Milepæle",
+    desc: "Timeline med milepæle inden for økonomi, data, undervisning, projekter og omtale.",
+    eyebrow: "Milepæle",
+    heroTitle: "Min timeline",
+    heroText: "Et hurtigt overblik over udvalgte milepæle inden for studier, projekter, undervisning og omtale. Kort, konkret, og opdateres løbende.",
+    filters: {
+        all: "Alle",
+        professional: "Fagligt",
+        teaching: "Undervisning",
+        projects: "Projekter",
+        media: "Omtale",
+        training: "Træning",
+        travel: "Rejser"
+    },
+    usageTitle: "Hvordan jeg bruger den",
+    usageList: ["År / dato", "Hvad skete der?", "Resultat (tal/impact hvis muligt)", "Link til case, artikel eller repo"],
+    sectionTitle: "Udvalgte milepæle",
+    ctaTitle: "Vil du foreslå en milepæl?",
+    ctaText: "Hvis du mener der mangler noget (fx en publikation, et projekt eller en omtale), så skriv endelig.",
+    ctaBtn: "Kontakt",
+    ctaMail: "Send mail"
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Milestones",
+    desc: "Timeline with milestones in economics, data, teaching, projects, and media coverage.",
+    eyebrow: "Milestones",
+    heroTitle: "My Timeline",
+    heroText: "A quick overview of selected milestones within studies, projects, teaching, and media coverage. Brief, concrete, and updated regularly.",
+    filters: {
+        all: "All",
+        professional: "Professional",
+        teaching: "Teaching",
+        projects: "Projects",
+        media: "Media",
+        training: "Training",
+        travel: "Travel"
+    },
+    usageTitle: "How I Use It",
+    usageList: ["Year / Date", "What happened?", "Result (stats/impact if possible)", "Link to case, article, or repo"],
+    sectionTitle: "Selected Milestones",
+    ctaTitle: "Want to suggest a milestone?",
+    ctaText: "If you think something is missing (e.g., a publication, a project, or mention), please reach out.",
+    ctaBtn: "Contact",
+    ctaMail: "Send email"
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+// Localized Contact Link
+const contactLink = isDa ? '/contact' : '/en/contact';
 ---
 
 <Layout 
-  title="Anton Meier Ebsen Jørgensen – Milestones" 
-  description="Timeline with milestones in economics, data, teaching, projects, and media coverage."
+  title={content.title}
+  description={content.desc}
   bodyClass="timeline-page"
 >
   <style>
@@ -224,32 +286,28 @@ import Layout from '../../layouts/Layout.astro';
     <!-- HERO -->
     <section class="card hero">
       <div>
-        <p class="eyebrow">Milestones</p>
-        <h1>My Timeline</h1>
+        <p class="eyebrow">{content.eyebrow}</p>
+        <h1>{content.heroTitle}</h1>
         <p class="lead">
-          A quick overview of selected milestones within studies, projects, teaching, and media coverage.
-          Brief, concrete, and updated regularly.
+          {content.heroText}
         </p>
 
-        <div class="pill-wrap" aria-label="Filters">
-          <button class="pill-btn is-active" type="button" data-filter="all">All</button>
-          <button class="pill-btn" type="button" data-filter="professional">Professional</button>
-          <button class="pill-btn" type="button" data-filter="teaching">Teaching</button>
-          <button class="pill-btn" type="button" data-filter="projects">Projects</button>
-          <button class="pill-btn" type="button" data-filter="media">Media</button>
-          <button class="pill-btn" type="button" data-filter="training">Training</button>
-          <button class="pill-btn" type="button" data-filter="travel">Travel</button>
+        <div class="pill-wrap" aria-label="Filtre">
+          <button class="pill-btn is-active" type="button" data-filter="all">{content.filters.all}</button>
+          <button class="pill-btn" type="button" data-filter="fagligt">{content.filters.professional}</button>
+          <button class="pill-btn" type="button" data-filter="undervisning">{content.filters.teaching}</button>
+          <button class="pill-btn" type="button" data-filter="projekter">{content.filters.projects}</button>
+          <button class="pill-btn" type="button" data-filter="omtale">{content.filters.media}</button>
+          <button class="pill-btn" type="button" data-filter="traening">{content.filters.training}</button>
+          <button class="pill-btn" type="button" data-filter="rejser">{content.filters.travel}</button>
         </div>
       </div>
 
       <div class="hero-side">
         <div class="mini-card">
-          <h2 class="section-title">How I Use It</h2>
+          <h2 class="section-title">{content.usageTitle}</h2>
           <ul class="clean-list muted">
-            <li>Year / Date</li>
-            <li>What happened?</li>
-            <li>Result (stats/impact if possible)</li>
-            <li>Link to case, article, or repo</li>
+            {content.usageList.map(item => <li>{item}</li>)}
           </ul>
         </div>
       </div>
@@ -257,90 +315,44 @@ import Layout from '../../layouts/Layout.astro';
 
     <!-- TIMELINE -->
     <section class="card">
-      <h2 class="section-title">Selected Milestones</h2>
+      <h2 class="section-title">{content.sectionTitle}</h2>
 
       <ol class="tl" aria-label="Timeline">
-
-        <li class="tl-item" data-cat="teaching">
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <div class="tl-head">
-              <h3 class="tl-title">Student Lecturer: Excel/VBA – Ongoing Teaching</h3>
-              <span class="tl-date">2023 – present</span>
-            </div>
-            <p class="tl-meta">Category: Teaching</p>
-            <p class="muted">
-              Brief description of what you do + e.g., a result: evaluations, participant numbers, course development, etc.
-            </p>
-            <div class="tl-links">
-              <a class="btn ghost" href="/en/cv">View experience</a>
-            </div>
-          </div>
-        </li>
-
-        <li class="tl-item" data-cat="projects">
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <div class="tl-head">
-              <h3 class="tl-title">Project: (insert title) – Data/Model/Report</h3>
-              <span class="tl-date">(year)</span>
-            </div>
-            <p class="tl-meta">Category: Projects</p>
-            <p class="muted">
-              What was the goal, what did you do, and what was the outcome (report, code, presentation)?
-            </p>
-            <div class="tl-links">
-              <a class="btn ghost" href="/en/portfolio">View Portfolio</a>
-            </div>
-          </div>
-        </li>
-
-        <li class="tl-item" data-cat="media">
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <div class="tl-head">
-              <h3 class="tl-title">Media Coverage</h3>
-              <span class="tl-date">(year)</span>
-            </div>
-            <p class="tl-meta">Category: Media</p>
-            <p class="muted">
-              Briefly: where and why. Link to the article (if permitted and still online).
-            </p>
-            <div class="tl-links">
-              <a class="btn ghost" href="/en/media">Media / Mentions</a>
-            </div>
-          </div>
-        </li>
-
-        <li class="tl-item" data-cat="training">
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <div class="tl-head">
-              <h3 class="tl-title">Training: (e.g., new PR / new routine)</h3>
-              <span class="tl-date">(date)</span>
-            </div>
-            <p class="tl-meta">Category: Training</p>
-            <p class="muted">
-              Focus on discipline, structure, and progression.
-            </p>
-            <div class="tl-links">
-              <a class="btn ghost" href="/en/traeningsstatistik">Training Stats</a>
-            </div>
-          </div>
-        </li>
-
+        {timelineData.map(item => (
+            <li class="tl-item" data-cat={item.category}>
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div class="tl-card">
+                <div class="tl-head">
+                  <h3 class="tl-title">{isDa ? item.title_da : item.title_en}</h3>
+                  <span class="tl-date">{item.year}</span>
+                </div>
+                <p class="tl-meta">{isDa ? item.meta_da : item.meta_en}</p>
+                <p class="muted">
+                  {isDa ? item.desc_da : item.desc_en}
+                </p>
+                <div class="tl-links">
+                  {item.link && (
+                      <a class="btn ghost" href={item.link}>{isDa ? item.linkText_da : item.linkText_en}</a>
+                  )}
+                  {item.links && item.links.map(l => (
+                      <a class="btn ghost" href={l.url}>{isDa ? l.text_da : l.text_en}</a>
+                  ))}
+                </div>
+              </div>
+            </li>
+        ))}
       </ol>
     </section>
 
     <!-- CTA -->
     <section class="card">
-      <h2 class="section-title">Want to suggest a milestone?</h2>
+      <h2 class="section-title">{content.ctaTitle}</h2>
       <p class="muted">
-        If you think something is missing (e.g., a publication, a project, or mention), please reach out.
+        {content.ctaText}
       </p>
       <div class="cta">
-        <a class="btn" href="/en/contact">Contact</a>
-        <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">Send email</a>
+        <a class="btn" href={contactLink}>{content.ctaBtn}</a>
+        <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">{content.ctaMail}</a>
       </div>
     </section>
 
@@ -350,6 +362,17 @@ import Layout from '../../layouts/Layout.astro';
     (function(){
       const btns = document.querySelectorAll(".pill-btn");
       const items = document.querySelectorAll(".tl-item");
+      
+      // Map EN categories to DA categories for filtering if needed, 
+      // or just ensure data-cat matches the button data-filter.
+      // In this case, we use the raw category keys (fagligt, undervisning) 
+      // which are localized in the UI labels but keys remain same.
+
+      // Mapping for buttons if they use English keys in English mode:
+      // Actually my button rendering uses fixed keys: data-filter="fagligt" even in EN mode?
+      // Check the template above:
+      // <button class="pill-btn" type="button" data-filter="fagligt">{content.filters.professional}</button>
+      // Yes, keys are consistent. So filtering works.
 
       btns.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -360,6 +383,8 @@ import Layout from '../../layouts/Layout.astro';
           items.forEach(it => {
             const cat = it.getAttribute("data-cat");
             if (it instanceof HTMLElement) {
+               // Handle 'all' or exact match
+               // Also handle mapping if the JSON categories differ (they seem consistent)
                it.style.display = (f === "all" || f === cat) ? "" : "none";
             }
           });

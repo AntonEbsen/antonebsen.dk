@@ -1,0 +1,114 @@
+[
+    {
+        "type": "custom_card",
+        "id": "course-stats",
+        "title_da": "Kursusstatistik: evalueringer & nøgletal",
+        "title_en": "Course Stats: Evaluations & Metrics",
+        "pill_da": "Undervisning",
+        "pill_en": "Teaching",
+        "meta_da": "Webside · opdateret: (indsæt dato)",
+        "meta_en": "Website · updated: (date)",
+        "desc_da": "Overblik over kursusevalueringer og statistik på tværs af hold. Kort, konkret og let at skimme.",
+        "desc_en": "Overview of course evaluations and statistics across classes. Brief, concrete, and easy to skim.",
+        "links": [
+            {
+                "url": "/kursusstatistik",
+                "text_da": "Se side",
+                "text_en": "View Page",
+                "icon": "fa-solid fa-arrow-up-right-from-square"
+            },
+            {
+                "url": "/assets/downloads/kursusevalueringer-statistik.xlsx",
+                "text_da": "Download data",
+                "text_en": "Download Data",
+                "icon": "fa-solid fa-download",
+                "ghost": true,
+                "download": true
+            }
+        ]
+    },
+    {
+        "type": "file",
+        "id": "excel-template",
+        "title_da": "Excel: Budget & model-skabelon",
+        "title_en": "Excel: Budget & Model Template",
+        "pill": "Excel",
+        "meta_da": "Template · opdateret: (indsæt dato)",
+        "meta_en": "Template · updated: (date)",
+        "desc_da": "En ren skabelon til struktur: inputs, beregninger, output, checks og scenarier.",
+        "desc_en": "A clean template for structure: inputs, calculations, output, checks, and scenarios.",
+        "links": [
+            {
+                "url": "/assets/downloads/excel-template.xlsx",
+                "text_da": "Download",
+                "text_en": "Download",
+                "icon": "fa-solid fa-download",
+                "download": true
+            },
+            {
+                "url": "#",
+                "text_da": "Beskrivelse",
+                "text_en": "Description",
+                "icon": null,
+                "ghost": true,
+                "disabled": true
+            }
+        ]
+    },
+    {
+        "type": "file",
+        "id": "vba-snippets",
+        "title_da": "VBA: Snippets (hurtige genveje)",
+        "title_en": "VBA: Snippets (Quick Shortcuts)",
+        "pill": "VBA",
+        "meta_da": "ZIP/tekst · opdateret: (indsæt dato)",
+        "meta_en": "ZIP/text · updated: (date)",
+        "desc_da": "Korte code blocks: import/cleaning, formatting, loops, performance tips.",
+        "desc_en": "Short code blocks: import/cleaning, formatting, loops, performance tips.",
+        "links": [
+            {
+                "url": "/assets/downloads/vba-snippets.zip",
+                "text_da": "Download",
+                "text_en": "Download",
+                "icon": "fa-solid fa-download",
+                "download": true
+            },
+            {
+                "url": "https://github.com/AntonEbsen",
+                "text_da": "GitHub",
+                "text_en": "GitHub",
+                "icon": "fa-brands fa-github",
+                "ghost": true,
+                "external": true
+            }
+        ]
+    },
+    {
+        "type": "file",
+        "id": "python-checklist",
+        "title_da": "Python: Data-cleaning checklist",
+        "title_en": "Python: Data-cleaning Checklist",
+        "pill": "Python",
+        "meta_da": "PDF · opdateret: (indsæt dato)",
+        "meta_en": "PDF · updated: (date)",
+        "desc_da": "En praktisk tjekliste til reproducérbar data prep (missing, outliers, splits, logs).",
+        "desc_en": "A practical checklist for reproducible data prep (missing, outliers, splits, logs).",
+        "links": [
+            {
+                "url": "/assets/downloads/python-checklist.pdf",
+                "text_da": "Download",
+                "text_en": "Download",
+                "icon": "fa-solid fa-download",
+                "download": true
+            },
+            {
+                "url": "#",
+                "text_da": "Se eksempel",
+                "text_en": "View Example",
+                "icon": null,
+                "ghost": true,
+                "disabled": true
+            }
+        ]
+    }
+]

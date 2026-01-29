@@ -1,0 +1,299 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Projekt-cases",
+    desc: "Tre udvalgte projekt-cases: data, metode, resultater og værktøjer.",
+    heroTitle: "Tre udvalgte cases",
+    heroText: "Her er tre cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.",
+    badges: ["Makro & pengepolitik", "Tidsrækker", "CGE/RBC", "Reproducerbar analyse"],
+    btns: { portfolio: "Se portefølje", cv: "Se CV", contact: "Kontakt" },
+    formatTitle: "Format",
+    formatList: ["<strong>Problem</strong> → hvad skulle løses?", "<strong>Data</strong> → hvad byggede analysen på?", "<strong>Metode</strong> → hvordan blev det løst?", "<strong>Resultat</strong> → hvad kom der ud?"],
+    contactTitle: "Vil du se noget mere konkret?",
+    contactText: "Nogle projekter kan ikke deles fuldt ud pga. kursus/fortrolighed, men jeg kan ofte dele “sanitized” eksempler eller gennemgå metoder/struktur.",
+    labels: {
+        problem: "Problem",
+        data: "Data",
+        method: "Metode",
+        result: "Resultat",
+        role: "Min rolle",
+        tools: "Tools",
+        report: "Rapport (kommer)",
+        code: "Kode (hvis public)"
+    },
+    cases: [
+        {
+            id: "case-gfc",
+            title: "Case 1: Global Financial Cycle & spillovers fra US pengepolitik",
+            pill: "Empirisk makro",
+            desc: "(Bachelorprojekt) Undersøgelse af hvordan amerikansk pengepolitik påvirker globale finansielle forhold og makroøkonomiske outcomes.",
+            problem: "Hvilke spillover-effekter kan observeres fra US pengepolitik til global økonomi, og hvordan varierer de på tværs af perioder?",
+            data: ["• Makro/finansielle tidsserier (fx renter, kreditspreads, volatilitet, output-indikatorer)", "• Land-/region-panel (hvis relevant)"],
+            method: ["• Strukturel tidsrækkemodel / SVAR-inspiration (tilpas efter dit faktiske setup)", "• Robusthed: alternative specifikationer og subperioder", "• Visualisering: IRF/effektplot, tabeller med nøgleestimater"],
+            result: ["• Hovedfund: (indsæt 1–2 linjer, når du vil)", "• Praktisk leverance: rapport + figurer + kode/appendiks"],
+            role: ["• Design af empirisk strategi", "• Databehandling + estimation", "• Formidling af resultater og begrænsninger"],
+            tools: ["Python", "SAS/Stata", "LaTeX"]
+        },
+        {
+            id: "case-cge",
+            title: "Case 2: CGE-model – CO₂-afgift, sektor-effekter og provenu-recycling",
+            pill: "Modelarbejde",
+            desc: "(Kursusprojekt/eksamenscase) Kalibrering af en simpel åben økonomi med flere sektorer og policy-shocks.",
+            problem: "Hvordan påvirker en CO₂-afgift produktion, priser og velfærd på tværs af sektorer – og hvad betyder valget af provenu-tilbageførsel?",
+            data: ["• Social Accounting Matrix / nationalregnskabs-baseret kalibrering", "• Sektorspecifikke inputandele, forbrug, eksport/import"],
+            method: ["• Kalibrér baseline der reproducerer SAM", "• Shock-scenarier: skat + alternative lukninger", "• Checks: budgetrestriktioner, nul-profit, (Walras-lov hvor relevant)"],
+            result: ["• Output: procentændringer i priser/output/forbrug", "• Fortolkning: vindere/tabere og mekanismer (kort)"],
+            role: ["• Implementering i GAMS", "• Kalibrering + dokumentation", "• Scenario-opsætning og tabeller/figurer"],
+            tools: ["GAMS", "Excel", "LaTeX"]
+        },
+        {
+            id: "case-ts",
+            title: "Case 3: Tidsrækker – forecasting og sæsonmønstre",
+            pill: "Tidsrækker",
+            desc: "(SAS-kursus/eksamenscase) Modelvalg, diagnosticering og forecast med fokus på robusthed og kommunikation.",
+            problem: "Hvordan laver man et forecast, der er stabilt og forklarligt — og ikke bare “en model der passer”?",
+            data: ["• Tidsserie med sæson og trend (fx månedlige/ugentlige observationer)", "• Evt. outliers/strukturelle brud"],
+            method: ["• Decomposition / UCM / ETS-tilgang (tilpas)", "• Modeldiagnostik: residualer, stabilitet, holdout", "• Alternativer: simple benchmarks vs. mere kompleks model"],
+            result: ["• Forecast + usikkerhedsbånd", "• Konklusion: hvorfor netop denne model er valgt"],
+            role: ["• Data-prep og modelvalg", "• Evaluation + dokumentation", "• Visualisering og write-up"],
+            tools: ["SAS", "Python", "Excel"]
+        }
+    ]
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Project Cases",
+    desc: "Three selected project cases: data, methodology, results, and tools.",
+    heroTitle: "Three Selected Cases",
+    heroText: "Here are three cases that show how I work: from problem formulation and data to methodology, robustness, and communication.",
+    badges: ["Macro & Monetary Policy", "Time Series", "CGE/RBC", "Reproducible Analysis"],
+    btns: { portfolio: "View Portfolio", cv: "View CV", contact: "Contact" },
+    formatTitle: "Format",
+    formatList: ["<strong>Problem</strong> → what needed solving?", "<strong>Data</strong> → what was the analysis based on?", "<strong>Methodology</strong> → how was it solved?", "<strong>Result</strong> → what came out?"],
+    contactTitle: "Want to see more details?",
+    contactText: "Some projects cannot be shared fully due to confidentiality, but I can often share sanitized examples or walk through the methodology.",
+    labels: {
+        problem: "Problem",
+        data: "Data",
+        method: "Methodology",
+        result: "Result",
+        role: "My Role",
+        tools: "Tools",
+        report: "Report (upcoming)",
+        code: "Code (if public)"
+    },
+    cases: [
+        {
+            id: "case-gfc",
+            title: "Case 1: Global Financial Cycle & Spillovers from US Monetary Policy",
+            pill: "Empirical Macro",
+            desc: "(Bachelor's Project) Investigation of how US monetary policy affects global financial conditions and macroeconomic outcomes.",
+            problem: "Which spillover effects can be observed from US monetary policy to the global economy, and how do they vary across periods?",
+            data: ["• Macro/financial time series (e.g., interest rates, credit spreads, volatility, output indicators)", "• Country/region panel where applicable"],
+            method: ["• Structural time series models / SVAR inspiration", "• Robustness: alternative specifications and subperiods", "• Visualization: IRF plots, tables with key estimates"],
+            result: ["• Main findings: (insert 1-2 lines when applicable)", "• Practical delivery: report + figures + code appendix"],
+            role: ["• Design of empirical strategy", "• Data processing + estimation", "• Communication of results and limitations"],
+            tools: ["Python", "SAS/Stata", "LaTeX"]
+        },
+        {
+            id: "case-cge",
+            title: "Case 2: CGE Model – CO2 Tax, Sectoral Effects, and Revenue Recycling",
+            pill: "Modeling",
+            desc: "(Course Project/Exam Case) Calibration of a simple open economy with multiple sectors and policy shocks.",
+            problem: "How does a CO2 tax affect production, prices, and welfare across sectors – and what is the impact of revenue recycling?",
+            data: ["• Social Accounting Matrix (SAM) based calibration", "• Sector-specific input shares, consumption, export/import"],
+            method: ["• Calibrate baseline reproducing the SAM", "• Shock scenarios: tax + alternative closures", "• Checks: budget constraints, zero-profit, Walras law"],
+            result: ["• Output: percentage changes in prices/output/consumption", "• Interpretation: winners/losers and mechanisms"],
+            role: ["• Implementation in GAMS", "• Calibration + documentation", "• Scenario setup and final reporting"],
+            tools: ["GAMS", "Excel", "LaTeX"]
+        },
+        {
+            id: "case-ts",
+            title: "Case 3: Time Series – Forecasting and Seasonal Patterns",
+            pill: "Time Series",
+            desc: "(SAS Course/Exam Case) Model selection, diagnostics, and forecasting with a focus on robustness and communication.",
+            problem: "How to create a stable and explainable forecast that goes beyond simple black-box modeling?",
+            data: ["• Time series with seasonality and trend", "• Handling of outliers and structural breaks"],
+            method: ["• Decomposition / UCM / ETS approach", "• Diagnostics: residuals, stability, holdout evaluation", "• Benchmark vs. complex model comparison"],
+            result: ["• Forecast + uncertainty bands", "• Conclusion: Why this specific model was chosen for robust results"],
+            role: ["• Data preparation and model selection", "• Evaluation + documentation", "• Visualization and write-up"],
+            tools: ["SAS", "Python", "Excel"]
+        }
+    ]
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const portfolioLink = isDa ? '/portfolio' : '/en/portfolio';
+const cvLink = isDa ? '/cv' : '/en/cv';
+const contactLink = isDa ? '/contact' : '/en/contact';
+
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="cases-page"
+>
+  <style>
+    .cases-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .cases-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .case-body {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .case-body { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="cases-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{isDa ? 'Projekt-cases' : 'Project Cases'}</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">{content.heroTitle}</h1>
+          <p class="text-lg text-dim mb-6">
+            {content.heroText}
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href={portfolioLink}>{content.btns.portfolio}</Button>
+            <Button href={cvLink} variant="ghost">{content.btns.cv}</Button>
+            <Button href={contactLink} variant="ghost">{content.btns.contact}</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            {content.badges.map(b => <Pill variant="accent">{b}</Pill>)}
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>{content.formatTitle}</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              {content.formatList.map(li => <li set:html={li}></li>)}
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- CASES GRID -->
+    <Section class="cases-grid" aria-label="Projekt-cases">
+
+      {content.cases.map((c) => (
+        <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id={c.id}>
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+            <h2 class="text-xl font-bold leading-tight">{c.title}</h2>
+            <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">{c.pill}</span>
+            </div>
+
+            <p class="text-dim opacity-70 mb-4">
+            {c.desc}
+            </p>
+
+            <div class="case-body">
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">{content.labels.problem}</h3>
+                <p class="text-sm text-dim">{c.problem}</p>
+            </div>
+
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">{content.labels.data}</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                {c.data.map(i => <li>{i}</li>)}
+                </ul>
+            </div>
+
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">{content.labels.method}</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                {c.method.map(i => <li>{i}</li>)}
+                </ul>
+            </div>
+
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">{content.labels.result}</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                {c.result.map(i => <li>{i}</li>)}
+                </ul>
+            </div>
+
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">{content.labels.role}</h3>
+                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
+                {c.role.map(i => <li>{i}</li>)}
+                </ul>
+            </div>
+
+            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
+                <h3 class="font-bold mb-2 text-sm">{content.labels.tools}</h3>
+                <div class="flex flex-wrap gap-2">
+                {c.tools.map(tool => <Pill variant="accent">{tool}</Pill>)}
+                </div>
+            </div>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mt-4">
+            <Button href="#" variant="ghost" size="sm">{content.labels.report}</Button>
+            <Button href="#" variant="ghost" size="sm">{content.labels.code}</Button>
+            </div>
+        </Card>
+      ))}
+
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title={content.contactTitle}
+            text={content.contactText}
+            action="contact"
+        />
+    </Section>
+
+  </main>
+</Layout>

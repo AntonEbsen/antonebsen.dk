@@ -1,0 +1,13 @@
+---
+import TrainingStatsPage from '@components/templates/TrainingStatsPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<TrainingStatsPage lang={lang} />

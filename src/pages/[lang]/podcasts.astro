@@ -1,0 +1,13 @@
+---
+import PodcastsPage from '@components/templates/PodcastsPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<PodcastsPage lang={lang} />

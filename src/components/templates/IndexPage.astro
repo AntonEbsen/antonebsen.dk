@@ -1,0 +1,228 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import FeatureCard from '@components/ui/FeatureCard.astro';
+import TechStack from '@components/ui/TechStack.astro';
+import { Image } from 'astro:assets';
+import myImage from '@assets/img/billede-af-mig.jpg';
+import { createClient } from '@supabase/supabase-js';
+
+// Dummy static data backup for skills if DB fails or if you prefer local JSON
+import skillsDataJson from '@data/skills.json';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Økonomistuderende & Analytiker",
+    desc: "Velkommen til Anton Meier Ebsen Jørgensens personlige hjemmeside. Her finder du mit CV, portefølje og blog om økonomi og data.",
+    hero: {
+      tag: "Økonomistuderende @ KU",
+      text: "Jeg kombinerer økonomisk teori med stærke kvantitative metoder og programmering for at skabe indsigt i komplekse problemstillinger.",
+      btnPort: "Se projekter",
+      btnCV: "Mit CV",
+      btnGuest: "Skriv i Gæstebogen"
+    },
+    cards: {
+      model: { title: "Model & Data", text: "Erfaring med Python, SAS og GAMS til økonomiske modeller og statistisk analyse." },
+      focus: { title: "Akademisk Fokus", text: "Fokus på makroøkonomi, pengepolitik og økonometri på kandidaten ved KU." },
+      teach: { title: "Undervisning", text: "Jeg formidler komplekse emner i Excel og VBA gennem struktureret undervisning." }
+    },
+    feature: {
+      badge: "Udvalgt Analyse",
+      title: "Global Financial Cycle & Spillovers",
+      desc: "En økonometrisk analyse af spillover-effekter fra amerikansk pengepolitik.",
+      tags: "Makroøkonomi · SVAR · Python"
+    },
+    skills: {
+      title: "Værktøjskassen"
+    },
+    cta: {
+      title: "Skal vi tage en snak?",
+      text: "Jeg er altid interesseret i faglige diskussioner omkring økonomi, data og mulige samarbejder.",
+      btn: "Kontakt mig her"
+    }
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Economics Student & Analyst",
+    desc: "Welcome to Anton Meier Ebsen Jørgensen's personal website. Here you will find my CV, portfolio, and blog about economics and data.",
+    hero: {
+      tag: "Economics Student @ UCPH",
+      text: "I combine economic theory with strong quantitative methods and programming to create insights into complex issues.",
+      btnPort: "View Projects",
+      btnCV: "My CV",
+      btnGuest: "Sign Guestbook"
+    },
+    cards: {
+      model: { title: "Model & Data", text: "Experience with Python, SAS, and GAMS for economic modeling and statistical analysis." },
+      focus: { title: "Academic Focus", text: "Focusing on macroeconomics, monetary policy, and econometrics in my Master's at UCPH." },
+      teach: { title: "Teaching", text: "I communicate complex topics in Excel and VBA through structured teaching." }
+    },
+    feature: {
+      badge: "Featured Analysis",
+      title: "Global Financial Cycle & Spillovers",
+      desc: "An econometric analysis of US monetary policy spillovers.",
+      tags: "Macroeconomics · SVAR · Python"
+    },
+    skills: {
+      title: "Toolkit"
+    },
+    cta: {
+      title: "Let's have a chat?",
+      text: "I am always interested in professional discussions about economics, data, and potential collaborations.",
+      btn: "Contact me here"
+    }
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const portLink = isDa ? '/portfolio' : '/en/portfolio';
+const cvLink = isDa ? '/cv' : '/en/cv';
+const contactLink = isDa ? '/contact' : '/en/contact';
+const guestbookLink = isDa ? '/guestbook' : '/en/guestbook';
+
+// Data Fetching
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: skillsRows, error } = await supabase.from('skills').select('*');
+
+if (error || !skillsRows) {
+    // Fallback to local JSON if DB fails
+    // skillsDataJson structure might be different, but assuming we can map or it's similar
+    skillsRows = []; 
+    // In a real scenario, we might want to map skillsDataJson here
+}
+
+// Group by category
+const skillsData = {
+  programming: skillsRows?.filter(s => s.category === 'programming') || [],
+  professional: skillsRows?.filter(s => s.category === 'professional') || []
+};
+
+// If DB empty, use fallback for Programming at least
+if (skillsData.programming.length === 0 && skillsDataJson?.programming) {
+   // Mapping JSON format to DB format if necessary
+   skillsData.programming = skillsDataJson.programming.map(s => ({ name: s.name, level: s.level, category: 'programming', icon: s.icon }));
+}
+if (skillsData.professional.length === 0 && skillsDataJson?.professional) {
+    skillsData.professional = skillsDataJson.professional.map(s => ({ name: s.name, category: 'professional' }));
+}
+
+---
+
+<Layout 
+  title={content.title} 
+  description={content.desc}
+>
+  <main class="container mx-auto px-4 py-12">
+    <!-- HERO SECTION -->
+    <Section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+      <div class="space-y-6">
+        <div class="inline-block px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold uppercase tracking-wider">
+          {content.hero.tag}
+        </div>
+        <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
+          Anton Meier <span class="text-accent underline decoration-4 underline-offset-8">Ebsen</span> Jørgensen
+        </h1>
+        <p class="text-xl text-dim leading-relaxed max-w-lg">
+          {content.hero.text}
+        </p>
+        <div class="flex flex-wrap gap-4 pt-4">
+          <Button href={portLink} size="lg">{content.hero.btnPort}</Button>
+          <Button href={cvLink} variant="ghost" size="lg">{content.hero.btnCV}</Button>
+          <Button href={guestbookLink} variant="ghost" size="lg" class="text-gold-400 border-gold-500/30 hover:bg-gold-500/10">{content.hero.btnGuest}</Button>
+        </div>
+      </div>
+      
+      <div class="relative group">
+        <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <div class="relative aspect-square overflow-hidden rounded-2xl border border-glass-border shadow-2xl">
+          <Image 
+            src={myImage} 
+            alt="Anton Meier Ebsen Jørgensen" 
+            class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </Section>
+
+    <!-- QUICK STATS / CARDS -->
+    <Section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+      <Card variant="glass" class="p-8 hover-glow group">
+        <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+          <i class="fa-solid fa-code text-accent text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">{content.cards.model.title}</h3>
+        <p class="text-dim text-sm leading-relaxed">
+          {content.cards.model.text}
+        </p>
+      </Card>
+      
+      <Card variant="glass" class="p-8 hover-glow group">
+        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+          <i class="fa-solid fa-graduation-cap text-blue-400 text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">{content.cards.focus.title}</h3>
+        <p class="text-dim text-sm leading-relaxed">
+          {content.cards.focus.text}
+        </p>
+      </Card>
+      
+      <Card variant="glass" class="p-8 hover-glow group">
+        <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
+          <i class="fa-solid fa-chalkboard-user text-purple-400 text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">{content.cards.teach.title}</h3>
+        <p class="text-dim text-sm leading-relaxed">
+          {content.cards.teach.text}
+        </p>
+      </Card>
+    </Section>
+
+    <!-- FEATURED PROJECT -->
+    <Section class="mb-24">
+      <FeatureCard
+        badge={content.feature.badge}
+        title={content.feature.title}
+        description={content.feature.desc}
+        tagString={content.feature.tags}
+        url={portLink}
+      />
+    </Section>
+
+    <!-- SKILLS PREVIEW -->
+    <Section class="mb-24">
+      <div class="text-center max-w-4xl mx-auto mb-16">
+        <SectionHeading class="text-3xl font-bold mb-8">{content.skills.title}</SectionHeading>
+        
+        <!-- Visual Tech Stack -->
+        <TechStack skills={skillsData.programming} />
+
+        <!-- Professional Areas (Secondary) -->
+        <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
+          {skillsData.professional.map(skill => (
+            <Pill variant="default" class="text-sm">{skill.name}</Pill>
+          ))}
+        </div>
+      </div>
+    </Section>
+
+    <!-- CTA -->
+    <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10">
+      <h2 class="text-3xl font-bold mb-6">{content.cta.title}</h2>
+      <p class="text-xl text-dim mb-10 max-w-xl mx-auto">
+        {content.cta.text}
+      </p>
+      <Button href={contactLink} size="lg">{content.cta.btn}</Button>
+    </Section>
+  </main>
+</Layout>

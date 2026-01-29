@@ -1,0 +1,13 @@
+---
+import ReferencesPage from '@components/templates/ReferencesPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<ReferencesPage lang={lang} />

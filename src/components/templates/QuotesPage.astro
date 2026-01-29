@@ -1,0 +1,456 @@
+---
+import Layout from '@layouts/Layout.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Favoritcitater – Anton Meier Ebsen Jørgensen",
+    desc: "En kurateret liste med mine favoritcitater – humor, tro, disciplin, læring og liv.",
+    eyebrow: "Om mig · Noter",
+    heroTitle: "Mine favoritcitater",
+    heroText: "Små linjer, stor effekt. Citater jeg bruger som mentale genveje til disciplin, læring, tro, humor og perspektiv.",
+    themes: ["Disciplin", "Læring", "Tro", "Humor", "Perspektiv"],
+    btns: { list: "Se listen", send: "Send mig et citat" },
+    noteTitle: "Note",
+    noteText1: "Jeg holder dem korte og brugbare. Hvis et citat kræver en hel Wikipedia-side for at give mening, ryger det typisk ud.",
+    noteText2: "Tip: Skriv altid kilde og evt. kontekst — fremtidige dig siger tak.",
+    listTitle: "Citater (Live DB)",
+    searchPlace: "Søg (tekst, forfatter, tema)...",
+    allThemes: "Alle temaer",
+    reset: "Nulstil",
+    loading: "Loading wisdom...",
+    empty: "Biblioteket er tomt.",
+    fail: "Failed to load quotes.",
+    ctaTitle: "Send et citat",
+    ctaText: "Hvis du sender mig et citat, så skriv gerne: (1) forfatter/kilde, (2) tema, (3) hvorfor det rammer.",
+    ctaMail: "Send mail",
+    ctaBack: "Tilbage til blog",
+    js: { copied: "Kopieret", copy: "Kopiér", source: "Kilde", sLabel: "Kilde:" }
+  },
+  en: {
+    title: "Favorite Quotes – Anton Meier Ebsen Jørgensen",
+    desc: "A curated list of my favorite quotes – humor, faith, discipline, learning, and life.",
+    eyebrow: "About me · Notes",
+    heroTitle: "My Favorite Quotes",
+    heroText: "Small lines, big impact. Quotes I use as mental shortcuts for discipline, learning, faith, humor, and perspective.",
+    themes: ["Discipline", "Learning", "Faith", "Humor", "Perspective"],
+    btns: { list: "View List", send: "Send me a quote" },
+    noteTitle: "Note",
+    noteText1: "I keep them short and useful. If a quote requires an entire Wikipedia page to make sense, it typically doesn't make the cut.",
+    noteText2: "Tip: Always record the source and context — your future self will thank you.",
+    listTitle: "Quotes (Live DB)",
+    searchPlace: "Search (text, author, theme)...",
+    allThemes: "All themes",
+    reset: "Reset",
+    loading: "Loading wisdom...",
+    empty: "The library is empty.",
+    fail: "Failed to load quotes.",
+    ctaTitle: "Send a quote",
+    ctaText: "If you send me a quote, please include: (1) author/source, (2) theme, (3) why it resonates with you.",
+    ctaMail: "Send Email",
+    ctaBack: "Back to Blog",
+    js: { copied: "Copied", copy: "Copy", source: "Source", sLabel: "Source:" }
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const contactLink = isDa ? '/contact' : '/en/contact';
+const blogLink = isDa ? '/blog' : '/en/blog';
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="quotes-page"
+>
+  <style>
+    .quotes-wrap {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .hero {
+      display: grid;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+      .hero { grid-template-columns: 1.5fr 1fr; }
+    }
+    
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+    
+    .lead {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .pill {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+    }
+    
+    .btn:not(.ghost) {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .muted { color: rgba(255, 255, 255, 0.6); line-height: 1.6; }
+    .small { font-size: 0.9rem; }
+    
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .search {
+      flex: 1;
+      display: flex;
+      gap: 0.5rem;
+      min-width: 300px;
+    }
+    
+    input[type="search"], select {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    input[type="search"] { flex: 1; }
+    input[type="search"]:focus, select:focus { border-color: var(--accent); }
+    
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .quote {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s;
+    }
+    
+    .quote:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    blockquote {
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin: 0 0 1rem 0;
+      color: rgba(255, 255, 255, 0.9);
+      flex-grow: 1;
+    }
+    
+    .quote-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .who { font-weight: 600; color: var(--accent); }
+    .tag { font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; }
+    
+    .quote-actions {
+      display: flex;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.75rem;
+    }
+    
+    .quote-actions .btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  </style>
+
+  <main class="quotes-wrap">
+
+    <!-- HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">{content.eyebrow}</p>
+        <h1>{content.heroTitle}</h1>
+        <p class="lead">
+          {content.heroText}
+        </p>
+
+        <div class="pill-wrap" aria-label="Temaer">
+          {content.themes.map(t => (
+            <span class="pill">{t}</span>
+          ))}
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#list"><i class="fa-solid fa-quote-left"></i> {content.btns.list}</a>
+          <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.btns.send}</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">{content.noteTitle}</h2>
+          <p class="muted small" style="margin:0;">
+            {content.noteText1}
+          </p>
+          <p class="muted small" style="margin-top:10px;" set:html={content.noteText2.replace('kilde', '<strong>kilde</strong>').replace('source', '<strong>source</strong>').replace('kontekst', '<strong>kontekst</strong>').replace('context', '<strong>context</strong>')}>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTE -->
+    <section class="card" id="list">
+      <h2 class="section-title">{content.listTitle}</h2>
+
+      <!-- Toolbar -->
+      <div class="toolbar" aria-label="Filtre">
+        <div class="search">
+          <input id="qSearch" type="search" placeholder={content.searchPlace} aria-label="Søg" />
+          <select id="qTag" aria-label="Filtrer">
+            <option value="all">{content.allThemes}</option>
+            {content.themes.map(t => (
+              <option value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+
+        <button class="btn ghost" type="button" onclick="resetQuotes()">
+          <i class="fa-solid fa-rotate-left"></i> {content.reset}
+        </button>
+      </div>
+
+      <div class="grid" id="quotesGrid" data-loading={content.loading} data-empty={content.empty} data-fail={content.fail}
+         data-js-copy={content.js.copy} data-js-copied={content.js.copied} data-js-source={content.js.source} data-js-slabel={content.js.sLabel}>
+         <p class="text-dim col-span-full text-center py-12">{content.loading}</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2 class="section-title">{content.ctaTitle}</h2>
+      <p class="muted">
+        {content.ctaText}
+      </p>
+      <div class="cta">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> {content.ctaMail}</a>
+        <a class="btn ghost" href={blogLink}><i class="fa-solid fa-arrow-left"></i> {content.ctaBack}</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const qSearch = document.getElementById("qSearch");
+      const qTag = document.getElementById("qTag");
+      const grid = document.getElementById("quotesGrid");
+      
+      const txt = {
+         loading: grid.getAttribute('data-loading'),
+         empty: grid.getAttribute('data-empty'),
+         fail: grid.getAttribute('data-fail'),
+         copy: grid.getAttribute('data-js-copy'),
+         copied: grid.getAttribute('data-js-copied'),
+         source: grid.getAttribute('data-js-source'),
+         sLabel: grid.getAttribute('data-js-slabel')
+      };
+
+      let allQuotes = [];
+
+      // 1. Fetch Quotes
+      async function loadQuotes() {
+        try {
+            const res = await fetch('/api/quotes');
+            allQuotes = await res.json();
+            renderQuotes(allQuotes);
+        } catch (err) {
+            grid.innerHTML = `<p class="text-dim col-span-full text-center py-12">${txt.fail}</p>`;
+            console.error(err);
+        }
+      }
+
+      // 2. Render Quotes
+      function renderQuotes(quotes) {
+        if (!grid) return;
+        grid.innerHTML = '';
+        
+        if (quotes.length === 0) {
+            grid.innerHTML = `<p class="text-dim col-span-full text-center py-12">${txt.empty}</p>`;
+            return;
+        }
+
+        quotes.forEach(q => {
+            const article = document.createElement('article');
+            article.className = 'quote';
+            const tag = (q.tags && q.tags.length > 0) ? q.tags[0] : 'General';
+            article.setAttribute('data-tag', tag);
+
+            article.innerHTML = `
+                <blockquote class="italic text-lg mb-4 text-white/90">"${q.text}"</blockquote>
+                <div class="quote-foot flex justify-between items-center mb-4 text-sm">
+                    <span class="who font-bold text-accent">— ${q.author || 'Unknown'}</span>
+                    <span class="tag text-[10px] uppercase tracking-wider border border-white/20 px-2 py-0.5 rounded opacity-60">${tag}</span>
+                </div>
+                <div class="quote-actions flex gap-2 pt-3 border-t border-white/10">
+                    <button class="btn ghost text-xs py-1 px-3" type="button" onclick="copyQuote(this)">
+                        <i class="fa-solid fa-copy mr-1"></i> ${txt.copy}
+                    </button>
+                    ${q.source ? `
+                    <button class="btn ghost text-xs py-1 px-3" type="button" onclick="toggleNote(this)">
+                        <i class="fa-solid fa-note-sticky mr-1"></i> ${txt.source}
+                    </button>` : ''}
+                </div>
+                ${q.source ? `
+                <p class="muted small text-xs mt-3 opacity-60" data-note style="display:none; margin:0;">
+                    ${txt.sLabel} ${q.source}
+                </p>` : ''}
+            `;
+            grid.appendChild(article);
+        });
+      }
+
+      // 3. Filter Logic
+      function applyFilters(){
+        if (!qSearch || !qTag) return;
+        const term = (qSearch.value || "").trim().toLowerCase();
+        const tag = qTag.value;
+
+        const filtered = allQuotes.filter(q => {
+            const textMatch = q.text.toLowerCase().includes(term) || (q.author && q.author.toLowerCase().includes(term));
+            const tagMatch = (tag === "all") || (q.tags && q.tags.includes(tag));
+            return textMatch && tagMatch;
+        });
+        
+        renderQuotes(filtered);
+      }
+
+      window.resetQuotes = function(){
+        if (!qSearch || !qTag) return;
+        qSearch.value = "";
+        qTag.value = "all";
+        applyFilters();
+      }
+
+      window.copyQuote = function(btn){
+        const card = btn.closest(".quote");
+        const quote = card.querySelector("blockquote")?.innerText?.trim() || "";
+        const who = card.querySelector(".who")?.innerText?.trim() || "";
+        const out = quote && who ? `${quote}\n${who}` : quote || who;
+
+        navigator.clipboard.writeText(out).then(() => {
+          const old = btn.innerHTML;
+          // Use 'Copied' text
+          const copiedTxt = grid.getAttribute('data-js-copied');
+          btn.innerHTML = `<i class="fa-solid fa-check mr-1"></i> ${copiedTxt}`;
+          setTimeout(() => (btn.innerHTML = old), 900);
+        });
+      }
+
+      window.toggleNote = function(btn){
+        const card = btn.closest(".quote");
+        const note = card.querySelector("[data-note]");
+        if(!note) return;
+        const isHidden = note.style.display === "none";
+        note.style.display = isHidden ? "block" : "none";
+      }
+
+      if (qSearch) qSearch.addEventListener("input", applyFilters);
+      if (qTag) qTag.addEventListener("change", applyFilters);
+
+      // Init
+      loadQuotes();
+    });
+  </script>
+</Layout>

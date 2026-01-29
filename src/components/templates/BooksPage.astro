@@ -1,0 +1,191 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Button from '@components/ui/Button.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import Pill from '@components/ui/Pill.astro';
+import { createClient } from '@supabase/supabase-js';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+// UI Strings
+const t = {
+  da: {
+    title: "Favoritbøger – Anton Meier Ebsen Jørgensen",
+    desc: "En kurateret liste med mine favoritbøger – klassikere, faglige bøger og bøger jeg vender tilbage til.",
+    eyebrow: "Om mig · Læseliste",
+    heroTitle: "Mine favoritbøger",
+    heroText: "En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på, eller fordi jeg vender tilbage til dem igen og igen.",
+    categories: ["Klassikere", "Fagligt", "Biografier", "Tro & etik", "Sprog & skrivning"],
+    listBtn: "Se listen",
+    recommendBtn: "Anbefal en bog",
+    usageTitle: "Hvordan jeg bruger listen",
+    usageText1: "Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.",
+    usageText2: "Tip: Tilføj gerne årstal og noter — det gør listen mere personlig.",
+    listTitle: "Favoritter (Live DB)",
+    listSub: "Hentet direkte fra \"Living Library\" databasen.",
+    empty: "Biblioteket er tomt.",
+    ctaTitle: "Anbefal mig en bog",
+    ctaText: "Send gerne en mail hvis du har forslag til spændende læsning."
+  },
+  en: {
+    title: "Favorite Books – Anton Meier Ebsen Jørgensen",
+    desc: "A curated list of my favorite books – classics, professional books, and books I return to.",
+    eyebrow: "About Me · Reading List",
+    heroTitle: "My Favorite Books",
+    heroText: "A curated list of books that I have gotten the most out of — either because they shaped my thinking, or because I return to them again and again.",
+    categories: ["Classics", "Professional", "Biographies", "Faith & Ethics", "Language & Writing"],
+    listBtn: "See List",
+    recommendBtn: "Recommend a Book",
+    usageTitle: "How I use this list",
+    usageText1: "I update this regularly. Some are 'must-reads', others just hit right at a certain time in life.",
+    usageText2: "Tip: Add years and notes — it makes the list more personalized.",
+    listTitle: "Favorites (Live DB)",
+    listSub: "Fetched directly from the \"Living Library\" database.",
+    empty: "The library is empty.",
+    ctaTitle: "Recommend a Book",
+    ctaText: "Feel free to send an email if you have suggestions for interesting reading."
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+// Data Fetching (SSR) - Replaces client-side API fetch
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: books, error } = await supabase
+  .from('books')
+  .select('*')
+  .order('created_at', { ascending: false });
+
+if (error || !books) books = [];
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="books-page"
+>
+
+  <style>
+    .books-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <main class="books-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">{content.eyebrow}</p>
+          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">{content.heroTitle}</h1>
+          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
+            {content.heroText}
+          </p>
+  
+          <div class="flex flex-wrap gap-2 mb-8" aria-label="Categories">
+            {content.categories.map(cat => <Pill variant="accent">{cat}</Pill>)}
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#list"><i class="fa-solid fa-book mr-2"></i> {content.listBtn}</Button>
+            <Button href={isDa ? "/contact" : "/en/contact"} variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> {content.recommendBtn}</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>{content.usageTitle}</SectionHeading>
+            <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
+              {content.usageText1}
+            </p>
+            <p class="text-[13px] text-dim opacity-70 leading-relaxed">
+              {content.usageText2}
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- LIST -->
+    <Section id="list">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.listTitle}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">
+          {content.listSub}
+        </p>
+
+        <div class="books-grid">
+           {books.length === 0 ? (
+               <p class="text-dim col-span-full text-center py-12">{content.empty}</p>
+           ) : (
+             books.map((book: any) => {
+                const ratingStars = '★'.repeat(book.rating || 0) + '☆'.repeat(5 - (book.rating || 0));
+                
+                return (
+                 <div class="group relative flex flex-col gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-black/20">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-white/90 group-hover:text-gold-400 transition-colors">{book.title}</h3>
+                        <span class="text-xs bg-white/10 px-2 py-1 rounded text-white/60">{book.status || 'Read'}</span>
+                    </div>
+                    
+                    <div class="text-sm text-white/50 mb-2">
+                        {book.author || 'Unknown'}
+                    </div>
+    
+                    {book.notes && <p class="text-sm text-white/70 italic line-clamp-3">"{book.notes}"</p>}
+                    
+                    <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-white/40">
+                        <span class="text-gold-500/80 tracking-widest">{ratingStars}</span>
+                        <span>{new Date(book.created_at).getFullYear()}</span>
+                    </div>
+                 </div>
+                );
+             })
+           )}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="glass" 
+        title={content.ctaTitle} 
+        text={content.ctaText}
+        action="email"
+      />
+    </Section>
+
+  </main>
+</Layout>

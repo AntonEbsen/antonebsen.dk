@@ -1,0 +1,305 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Certificeringer",
+    desc: "Certificeringer i Python, MATLAB, SAS m.m.",
+    heroEyebrow: "Certificeringer",
+    heroTitle: "Kurser, badges og dokumentation",
+    heroText: "Samlet oversigt over mine certificeringer inden for programmering, dataanalyse og formidling. Jeg linker til beviser når muligt.",
+    heroTipTitle: "Tip",
+    heroTipText: "Når du tilføjer nye certs: hold titler ensartede og skriv 1 linje om “hvad kan jeg nu”. Det er 10/10 mere værd end “jeg har taget et kursus”.",
+    themes: ["Data", "Coding", "Økonomi", "Formidling"],
+    empty: "Ingen certificeringer fundet endnu.",
+    emptyDash: "Tilføj dine diplomer i",
+    dashLink: "Dashboardet",
+    cats: {
+        python: { title: "Python", text: "Dataanalyse, workflows, og praktisk programmering.", empty: "Ingen Python certificeringer endnu." },
+        matlab: { title: "MATLAB", text: "Numerisk analyse, matrixregning og workflows.", empty: "Ingen MATLAB certificeringer endnu." },
+        sas: { title: "SAS", text: "Tidsrækker, data management og analyse.", empty: "Ingen SAS certificeringer endnu." },
+        writing: { title: "Politikens Skriveakademi", text: "Skrivning, struktur og formidling.", empty: "Ingen Formidlings-certificeringer endnu." },
+        other: "Andet"
+    },
+    btnProof: "Bevis",
+    otherPill: "Andet",
+    contact: {
+        title: "Vil du se CV’et samlet?",
+        text: "Certificeringer er “bilag”. CV’et er “historien”. Begge dele har sin plads."
+    }
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Certifications",
+    desc: "Certifications in Python, MATLAB, SAS, and more.",
+    heroEyebrow: "Certifications",
+    heroTitle: "Courses, Badges, and Documentation",
+    heroText: "A comprehensive overview of my certifications in programming, data analysis, and communication. I link to certificates and credentials whenever possible.",
+    heroTipTitle: "Tip",
+    heroTipText: "When adding new certifications: keep titles consistent and write a one-line summary of \"what can I do now\". It's 10/10 more valuable than \"I took a course\".",
+    themes: ["Data", "Coding", "Economics", "Communication"],
+    empty: "No certifications found yet.",
+    emptyDash: "Add your credentials in the",
+    dashLink: "Dashboard",
+    cats: {
+        python: { title: "Python", text: "Data analysis, workflows, and practical programming.", empty: "No Python certifications yet." },
+        matlab: { title: "MATLAB", text: "Numerical analysis, matrix algebra, and workflows.", empty: "No MATLAB certifications yet." },
+        sas: { title: "SAS", text: "Time series, data management, and analysis.", empty: "No SAS certifications yet." },
+        writing: { title: "Writing & Communication", text: "Writing, structure, and professional communication.", empty: "No writing certifications yet." },
+        other: "Other"
+    },
+    btnProof: "Proof",
+    otherPill: "Other",
+    contact: {
+        title: "Want to see the full CV?",
+        text: "Certifications are 'appendices'. The CV is the 'story'. Both have their place."
+    }
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+// Data Fetching
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: certifications, error } = await supabase
+  .from('certifications')
+  .select('*')
+  .eq('visible', true)
+  .order('id', { ascending: false });
+
+if (error) certifications = [];
+
+// Filtering
+// We assume DB categories are consistent (e.g. 'Python', 'MATLAB', 'SAS', 'Formidling'/'Writing').
+// If DB has 'Formidling' and 'Writing' as separate, we unify them here.
+const pythonCerts = certifications?.filter(c => c.category === 'Python') || [];
+const matlabCerts = certifications?.filter(c => c.category === 'MATLAB') || [];
+const sasCerts = certifications?.filter(c => c.category === 'SAS') || [];
+const writingCerts = certifications?.filter(c => c.category === 'Formidling' || c.category === 'Writing') || [];
+const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category)) || [];
+
+---
+
+<Layout 
+  title={content.title} 
+  description={content.desc}
+  bodyClass="cert-page"
+>
+  <style>
+    .cert-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .certs-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="cert-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.heroEyebrow}</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">{content.heroTitle}</h1>
+          <p class="text-lg text-dim mb-6">
+            {content.heroText}
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#cat-python">Python</Button>
+            <Button href="#cat-matlab">MATLAB</Button>
+            <Button href="#cat-sas">SAS</Button>
+            <Button href="#cat-writing">Writing</Button>
+          </div>
+
+          <div class="flex flex-wrap gap-2" aria-label="Themes">
+            {content.themes.map(th => <Pill variant="accent">{th}</Pill>)}
+          </div>
+        </Card>
+
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>{content.heroTipTitle}</SectionHeading>
+            <p class="text-sm text-dim leading-relaxed">
+              {content.heroTipText}
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    {certifications?.length === 0 && (
+        <Section>
+            <Card variant="glass" class="p-8 text-center text-dim bg-purple-500/10 border-purple-500/20">
+                <p>{content.empty} <br/>{content.emptyDash} <a href="/dashboard" class="text-white underline">{content.dashLink}</a>.</p>
+            </Card>
+        </Section>
+    )}
+
+    <!-- PYTHON -->
+    <Section id="cat-python" aria-label="Python">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.cats.python.title}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.python.text}</p>
+
+        <div class="certs-grid">
+          {pythonCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">Python</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> {content.btnProof}</Button>}
+                </div>
+              </Card>
+          ))}
+          {pythonCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.python.empty}</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- MATLAB -->
+    <Section id="cat-matlab" aria-label="MATLAB">
+      <Card variant="bordered" class="p-6">
+         <SectionHeading>{content.cats.matlab.title}</SectionHeading>
+         <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.matlab.text}</p>
+
+        <div class="certs-grid">
+           {matlabCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">MATLAB</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                </div>
+              </Card>
+          ))}
+          {matlabCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.matlab.empty}</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- SAS -->
+    <Section id="cat-sas" aria-label="SAS">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.cats.sas.title}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.sas.text}</p>
+
+        <div class="certs-grid">
+           {sasCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">SAS</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                </div>
+              </Card>
+          ))}
+          {sasCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.sas.empty}</p>}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- WRITING -->
+    <Section id="cat-writing" aria-label="Writing">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.cats.writing.title}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.writing.text}</p>
+
+        <div class="certs-grid">
+           {writingCerts.map(c => (
+             <Card variant="glass" class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                  <Pill variant="accent">Formidling</Pill>
+                </div>
+                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                </div>
+              </Card>
+          ))}
+          {writingCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.writing.empty}</p>}
+        </div>
+      </Card>
+    </Section>
+
+    {otherCerts.length > 0 && (
+        <Section id="cat-other">
+          <Card variant="bordered" class="p-6">
+            <SectionHeading>{content.cats.other}</SectionHeading>
+            <div class="certs-grid">
+              {otherCerts.map(c => (
+                 <Card variant="glass" class="p-4 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-2 gap-2">
+                      <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+                      <Pill variant="accent">{c.category}</Pill>
+                    </div>
+                    <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                    <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                      {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                    </div>
+                  </Card>
+              ))}
+            </div>
+          </Card>
+        </Section>
+    )}
+
+    <!-- CTA -->
+    <Section>
+        <ContactCard 
+            title={content.contact.title}
+            text={content.contact.text}
+            action="cv"
+        />
+    </Section>
+
+  </main>
+</Layout>

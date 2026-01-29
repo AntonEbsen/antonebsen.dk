@@ -1,0 +1,260 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Button from '@components/ui/Button.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import BlogCard from '@components/blog/BlogCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+// UI Strings
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Blog",
+    desc: "Blog med indlæg om faglige emner, træning og rejser.",
+    heroTitle: "Indlæg og noter",
+    heroText: "Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression) og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).",
+    latestBtn: "Seneste",
+    bucketBtn: "Bucket List",
+    statusPre: "Viser",
+    statusPost: "indlæg.",
+    statusEmpty: "Ingen indlæg endnu.",
+    featuredTitle: "Faste Indlæg & Ressourcer",
+    latestTitle: "Seneste Indlæg",
+    latestSub: "Direkte fra databasen.",
+    readMore: "Læs mere",
+    noPosts: "Ingen indlæg fundet. Tjek din database.",
+    ctaTitle: "Forslag til indlæg?",
+    ctaText: "Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.",
+    featured: [
+      {
+        title: "Mit Træningsprogram (6-dages Split)",
+        tag: "Træning",
+        meta: "Komplet program · PPL",
+        desc: "Det fulde overblik over mine øvelser, sæt, tempo og fokusområder. Optimeret til progression.",
+        link: "/traeningsprogram",
+        linkText: "Se programmet"
+      },
+      {
+        title: "Favoritbøger & Noter",
+        tag: "Læring",
+        meta: "Klassikere · Fagligt",
+        desc: "En kurateret liste over de bøger, der har formet min tankegang mest.",
+        link: "/books",
+        linkText: "Åbn bibliotek"
+      },
+      {
+        title: "Øvelses-Fokus: Incline Press",
+        tag: "Træning",
+        meta: "Teknik · Data · Progression",
+        desc: "Hvorfor den øvre del af brystet er vigtig, og hvordan min styrke har rykket sig det sidste år.",
+        link: "/da/exercises/incline-press", // Explicit DA link
+        linkText: "Læs dybdedykket"
+      },
+      {
+        title: "Mine Favoritpodcasts",
+        tag: "Inspiration",
+        meta: "Makro · Data · Humor",
+        desc: "En oversigt over de bedste kilder til viden og underholdning på farten.",
+        link: "/podcasts",
+        linkText: "Se listen"
+      }
+    ]
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Blog",
+    desc: "Blog with posts about professional topics, training, and travel.",
+    heroTitle: "Posts and Notes",
+    heroText: "Three tracks: <strong>Professional</strong> (economics, data, models), <strong>Training</strong> (structure and progression) and <strong>Travel</strong> (hiking, routes, and practical experiences).",
+    latestBtn: "Latest",
+    bucketBtn: "Bucket List",
+    statusPre: "Displaying",
+    statusPost: "posts.",
+    statusEmpty: "No posts yet.",
+    featuredTitle: "Featured Posts & Resources",
+    latestTitle: "Latest Posts",
+    latestSub: "Directly from the database.",
+    readMore: "Read more",
+    noPosts: "No posts found. Check your database.",
+    ctaTitle: "Suggestions for posts?",
+    ctaText: "If you have a topic you'd like me to write about, please feel free to reach out.",
+    featured: [
+      {
+        title: "My Training Program (6-day Split)",
+        tag: "Training",
+        meta: "Full Program · PPL",
+        desc: "A complete overview of my exercises, sets, tempo, and focus areas. Optimized for progression.",
+        link: "/en/training-program",
+        linkText: "View Program"
+      },
+      {
+        title: "Favorite Books & Notes",
+        tag: "Learning",
+        meta: "Classics · Professional",
+        desc: "A curated list of the books that have shaped my thinking the most.",
+        link: "/en/books",
+        linkText: "Open Library"
+      },
+      {
+        title: "Exercise Focus: Incline Press",
+        tag: "Training",
+        meta: "Technique · Data · Progression",
+        desc: "Why the upper chest is important, and how my strength has progressed over the past year.",
+        link: "/en/exercises/incline-press",
+        linkText: "Read Deep Dive"
+      },
+      {
+        title: "My Favorite Podcasts",
+        tag: "Inspiration",
+        meta: "Macro · Data · Humor",
+        desc: "An overview of the best sources for knowledge and entertainment on the go.",
+        link: "/en/podcasts",
+        linkText: "See List"
+      }
+    ]
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+// Data Fetching (SSR)
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: posts, error } = await supabase
+  .from('posts')
+  .select('*')
+  .eq('published', true)
+  .order('created_at', { ascending: false });
+
+if (error || !posts) posts = [];
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="blog-page"
+>
+
+  <style>
+    .blog-wrap { 
+      max-width: 1200px; 
+      margin: 24px auto; 
+      padding: 0 16px 32px; 
+    }
+
+    .hero-grid {
+      display: grid; 
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px; 
+      align-items: start; 
+    }
+
+    .posts-grid {
+      display: grid; 
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px; 
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .posts-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="blog-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">Blog</p>
+          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">{content.heroTitle}</h1>
+          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90" set:html={content.heroText} />
+  
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#latest">{content.latestBtn}</Button>
+            <Button href={isDa ? "/bucketlist" : "/en/bucketlist"} variant="ghost" class="text-gold-400 hover:text-gold-300"><i class="fa-solid fa-trophy mr-2"></i>{content.bucketBtn}</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>Status</SectionHeading>
+            <p class="text-dim opacity-80 m-0">
+              {posts.length > 0 ? `${content.statusPre} ${posts.length} ${content.statusPost}` : content.statusEmpty}
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ===================== -->
+    <!-- FEATURED POSTS -->
+    <!-- ===================== -->
+    <Section id="featured">
+      <SectionHeading class="mb-4 text-xl font-bold">{content.featuredTitle}</SectionHeading>
+      <div class="posts-grid mb-12">
+        {content.featured.map(feat => (
+            <BlogCard 
+              title={feat.title}
+              tag={feat.tag}
+              meta={feat.meta}
+              description={feat.desc}
+              links={[{ label: feat.linkText, url: feat.link, icon: 'arrow-right' }]}
+            />
+        ))}
+      </div>
+    </Section>
+
+    <!-- ===================== -->
+    <!-- ALL POSTS (DB) -->
+    <!-- ===================== -->
+    <Section id="latest">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+        <SectionHeading class="mb-0 text-xl font-bold">{content.latestTitle}</SectionHeading>
+        <p class="m-0 text-dim text-sm opacity-80">{content.latestSub}</p>
+      </div>
+
+      <div class="posts-grid">
+        {posts.map(p => (
+            <BlogCard 
+              title={p.title}
+              tag={p.category || "Blog"}
+              meta={new Date(p.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}
+              description={p.excerpt || ""}
+              links={[{ text: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
+            />
+        ))}
+        {posts.length === 0 && (
+            <div class="col-span-3 text-center py-12 border border-white/5 rounded-lg bg-white/5">
+                <i class="fa-solid fa-feather text-4xl text-dim mb-4 opacity-50"></i>
+                <p class="text-dim">{content.noPosts}</p>
+            </div>
+        )}
+      </div>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="glass" 
+        title={content.ctaTitle}
+        text={content.ctaText}
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>

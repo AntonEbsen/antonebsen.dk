@@ -1,0 +1,13 @@
+---
+import BucketListPage from '@components/templates/BucketListPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<BucketListPage lang={lang} />

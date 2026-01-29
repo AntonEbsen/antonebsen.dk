@@ -1,0 +1,455 @@
+---
+import Layout from '@layouts/Layout.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Modgang og Målrettethed – Min historie",
+    desc: "En fortælling om at overvinde modgang, fra epilepsi, lungesygdom og ordblindhed til 11,9 i snit og cand.polit-studiet.",
+    eyebrow: "Min historie",
+    h1: "Modgang og Målrettethed",
+    intro: "Min rejse har ikke været en lige linje. Den er formet af de øjeblikke, hvor andre tvivlede på mine evner, og hvor viljen til at modbevise dem blev min største drivkraft.",
+    chapters: [
+      {
+        id: "01",
+        title: "Tvivlens Fundament",
+        content: [
+          "Min opvækst var præget af sygdom på flere fronter. Jeg led af svær epilepsi og var indlagt op til 11 gange om måneden. En hjernescanning bekræftede, at jeg havde en hjerneskade i venstre hjernehalvdel – efterdønningerne af en blodprop, jeg havde overlevet som barn.",
+          "Men historien gemmer også på en anden sandhed. At jeg blev opfattet som \"mentalt bagud\", skyldtes i høj grad et systemsvigt: personalet i min børnehave glemte ofte at give mig min epilepsimedicin. Det betød, at mine forældre måtte give mig en <strong>dobbelt dosis</strong>, når jeg kom hjem – en medicin, der er ekstremt sløvende for hjernen. Min kognitive langsommelighed var altså lige så meget medicinsk fremkaldt som biologisk.",
+          "I børnehaven mærkede jeg isolationen dybt. Fordi jeg havde svært ved at tale, søgte jeg tilflugt i min egen verden. Jeg gik op på en bakke på legepladsen og søgte tryghed hos Gud og Jesus. Når systemet svigtede mig i omsorg, fandt jeg kærligheden i troen."
+        ],
+        quotes: [
+          { text: "Mens pædagogerne hånligt kaldte mig <strong>\"Moses\"</strong>, ramte det kristne budskab mig med eufori: Jesus elsker alle. Den barnetro er mit fundament den dag i dag.", style: "default" },
+          { text: "\"Der er ingen af de andre børn, der vil lege med Anton.\"", author: "— Sagt af min støttepædagog til mine forældre", style: "border-left-color: rgba(255,255,255,0.2);" }
+        ],
+        outro: "Men midt i systemets kolde dom findes der et lille lys, jeg bærer med mig: et minde om en af pigerne i børnehaven, der sagde til de andre: <strong>\"I skal ikke drille Anton.\"</strong> Det var en lille gestus, men den viste, at selv i de hårdeste miljøer findes der glimt af medmenneskelighed."
+      },
+      {
+        id: "02",
+        title: "Dommen – og det nye håb",
+        content: [
+          "Skolestarten blev ikke lettere. Lærerne vurderede, at min fremtid lå på en specialskole for børn med adfærdsvanskeligheder. De havde opgivet mig.",
+          "Men mine forældre nægtede at acceptere den dom. Da de fortalte min nye lærer på privatskolen, hvad systemet havde sagt, faldt svaret prompte:"
+        ],
+        quotes: [
+          { text: "\"Selvfølgelig kan Anton klare en normal skolegang.\"", style: "border-left-color: #22c55e;" }
+        ],
+        outro: "For første gang følte jeg mig set og hørt. Det var startskuddet til at vise verden – og systemet – hvem jeg egentlig var."
+      },
+      {
+        id: "03",
+        title: "En nat badet i angst",
+        content: [
+          "I 3. klasse nærmede jeg mig mit sidste epileptiske anfald. Jeg var trappet ud af medicinen, men samtidig skete en tragedie: en pædagog i min SFO mistede livet i skoven efter et epilepsianfald, fordi han ikke havde taget sin medicin.",
+          "Det dødsfald ramte mig med en lammende angst for mit eget liv. Samme nat fik jeg mit værste anfald hidtil. Min far ruskede i mig, mens tårerne løb ned ad hans kinder, og råbte: <strong>\"Anton, du må ikke dø!\"</strong> Det øjeblik markerede det sidste kapitel i min tid som patient."
+        ]
+      },
+      {
+        id: "04",
+        title: "Da kroppen næsten gav op",
+        content: [
+          "I løbet af mellemtrinnet ramte min astma sit absolutte nulpunkt. Jeg er født med svær astma og har kun <strong>72 procent lungekapacitet</strong>. Jeg lå indlagt i flere dage, mens min krop kæmpede en kamp, den var faretruende tæt på at tabe.",
+          "Lægen sagde senere nogle ord til mine forældre, der stadig giver mig kuldegysninger: <strong>\"Hvis han havde lagt sig til at sove derhjemme, var han sovet stille ind.\"</strong>",
+          "At vide, man har været så tæt på kanten, giver et unikt perspektiv. Det har formet mit humanistiske menneskesyn: vi er alle lige meget værd, uanset kognitive evner, fysik eller baggrund."
+        ]
+      },
+      {
+        id: "05",
+        title: "Kampen mod de usynlige bogstaver",
+        content: [
+          "Ordblindhed blev den næste forhindring. Mine diktater var præget af frustration, men min mor satte en grænse: enten fandt jeg en vej, ellers ville hun ikke længere betale for min skolegang.",
+          "Jeg udviklede min egen visuelle metode og begyndte at visualisere <strong>QWERTY-tastaturet</strong> for mit indre blik, når jeg skulle stave. Strategien bar frugt, og jeg afsluttede folkeskolen med en <strong>topkarakter</strong> i retstavning."
+        ]
+      },
+      {
+        id: "06",
+        title: "Gnisten tændes: \"Jæger\"-mentaliteten",
+        content: [
+          "Min første 12-tal nogensinde fik jeg i Kristendomskundskab. Det var der, gnisten blev tændt. Jeg indså, at jeg havde evnerne til at nå toppen. Jeg blev en \"jæger\".",
+          "Denne jæger-mentalitet kulminerede på handelsgymnasiet (HHX), hvor jeg blev <strong>årets topscorer</strong> med et snit på <strong>11,9</strong>. Men det havde en pris: som 18-årig fik jeg mavesår af det enorme pres, jeg lagde på mig selv."
+        ],
+        quotes: [
+          { text: "Jeg balancerede skole, kørekort og et kandidatur til Europaparlamentet på én gang. Jeg lærte, at uanset hvor stærk viljen er, har kroppen en grænse.", style: "border-left-color: #ef4444;" }
+        ]
+      },
+      {
+        id: "07",
+        title: "Motivationens nye karakter",
+        content: [
+          "I dag, på <strong>cand.polit-studiet</strong>, jager jeg ikke længere karakterer for deres egen skyld. Karakterræs er usundt, og på et studie med høj sværhedsgrad lærer man at værdsætte selve læringsprocessen.",
+          "Men når motivationen svigter, finder jeg tilbage til kernen: den gamle stemme fra systemet, der sagde, at jeg aldrig ville klare den. Det tænder en ild i mig – både i studiet og i træningscenteret."
+        ],
+        quotes: [
+          { text: "\"Jeg skal fandeme vise jer.\"", style: "default" }
+        ],
+        outro: "Det er fundamentet for mine værdier: man skal ikke tale ned til andre, uanset omstændighederne. For jeg har selv været i bunden af systemet, og jeg ved, at potentiale ofte findes under overfladen af diagnoser og medicin."
+      },
+      {
+        id: "08",
+        title: "Fra modgang til drivkraft",
+        cards: true,
+        content: [
+          "Min rejse har lært mig, at menneskelig værdi aldrig må defineres af kognitive evner eller fysiske begrænsninger. Den dybe empati og jernvilje tager jeg med mig i alt, hvad jeg gør professionelt."
+        ]
+      }
+    ],
+    cards: {
+      past: { label: "Dengang", text: "Dømt uegnet til normal skolegang, fejlmedicineret og fysisk begrænset af sygdom." },
+      present: { label: "I dag", text: "<strong>Topscorer på HHX (11,9)</strong> og snart færdiguddannet <strong>cand.polit</strong> fra Københavns Universitet." }
+    },
+    footer: {
+      title: "Vil du læse mere om min faglige profil?",
+      text: "Tjek mit CV eller mine projekter for at se, hvordan jeg arbejder i dag.",
+      btnCV: "Se CV",
+      btnPort: "Gå til Portefølje"
+    }
+  },
+  en: {
+    title: "Adversity & Resilience – My Story",
+    desc: "A story about overcoming adversity, from epilepsy, severe asthma, and dyslexia to an 11.9 average and the cand.polit program.",
+    eyebrow: "My Story",
+    h1: "Adversity and Resilience",
+    intro: "My journey has not been a straight line. It is shaped by the moments where others questioned my abilities, and where the will to prove them wrong became my greatest driving force.",
+    chapters: [
+      {
+        id: "01",
+        title: "The Foundation of Doubt",
+        content: [
+            "My upbringing was marked by illness on multiple fronts. I suffered from severe epilepsy and was hospitalized up to 11 times a month. A brain scan confirmed that I had brain damage in the left hemisphere – the aftereffects of a stroke I had survived as a child.",
+            "But the story also hides another truth. The fact that I was perceived as \"mentally behind\" was largely due to a systemic failure: the staff in my kindergarten often forgot to give me my epilepsy medication. This meant my parents had to give me a <strong>double dose</strong> when I got home – a medication that is extremely sedating for the brain. My cognitive sluggishness was thus as much medically induced as it was biological.",
+            "In kindergarten, I felt the isolation deeply. Because I had difficulty speaking, I took refuge in my own world. I would go up on a hill in the playground and seek comfort in God and Jesus. When the system failed to show me care, I found love in faith."
+        ],
+        quotes: [
+            { text: "While the staff mockingly called me <strong>\"Moses\"</strong>, the Christian message hit me with euphoria: Jesus loves everyone. That childhood faith remains my foundation to this day.", style: "default" },
+            { text: "\"None of the other children want to play with Anton.\"", author: "— Said by my special educator to my parents", style: "border-left-color: rgba(255,255,255,0.2);" }
+        ],
+        outro: "Yet, amidst the system's cold judgment, there is a small light I carry with me: a memory of one of the girls in kindergarten who said to the others, <strong>\"You shouldn't bully Anton.\"</strong> It was a small gesture, but it showed that even in the toughest environments, glimmers of human kindness exist."
+      },
+      {
+        id: "02",
+        title: "The Judgment – and New Hope",
+        content: [
+            "Starting school didn't get easier. Teachers assessed that my future lay in a special school for children with behavioral challenges. They had given up on me.",
+            "But my parents refused to accept that verdict. When they told my new teacher at the private school what the system had said, the answer came promptly:"
+        ],
+        quotes: [
+            { text: "\"Of course Anton can manage a normal school education.\"", style: "border-left-color: #22c55e;" }
+        ],
+        outro: "For the first time, I felt seen and heard. It was the starting signal to show the world – and the system – who I really was."
+      },
+      {
+        id: "03",
+        title: "A Night Bathed in Fear",
+        content: [
+             "In third grade, I approached my last epileptic seizure. I had stopped my medication, but at the same time, a tragedy occurred: a staff member at my after-school club lost his life in the forest after an epileptic seizure because he hadn't taken his medication.",
+             "That death struck me with a paralyzing fear for my own life. That same night, my worst seizure yet occurred. My father shook me as tears ran down his cheeks, shouting, <strong>\"Anton, you mustn't die!\"</strong> That moment marked the final chapter of my time as a patient."
+        ]
+      },
+      {
+        id: "04",
+        title: "When the Body Almost Gave Up",
+        content: [
+            "During middle school, my asthma hit its absolute low point. I was born with severe asthma and have only <strong>72 percent lung capacity</strong>. I was hospitalized for several days while my body fought a battle it was dangerously close to losing.",
+            "The doctor later said words to my parents that still give me chills: <strong>\"If he had gone to sleep at home, he would have passed away quietly.\"</strong>",
+            "Knowing you've been so close to the edge gives you a unique perspective. It has shaped my humanistic view: we are all of equal value, regardless of cognitive abilities, physics, or background."
+        ]
+      },
+      {
+        id: "05",
+        title: "The Battle Against Invisible Letters",
+        content: [
+            "Dyslexia became the next obstacle. My dictations were marked by frustration, but my mother set a limit: either I found a way, or she would no longer pay for my schooling.",
+            "I developed my own visual method and began to visualize the <strong>QWERTY keyboard</strong> in my mind when I had to spell. The strategy bore fruit, and I finished primary school with a <strong>top grade</strong> in spelling."
+        ]
+      },
+      {
+        id: "06",
+        title: "The Spark Ignited: The \"Hunter\" Mentality",
+        content: [
+            "My first top grade ever was in Religious Studies. That was where the spark was ignited. I realized I had the abilities to reach the top. I became a \"hunter\".",
+            "This hunter mentality culminated in business high school (HHX), where I became the <strong>top scorer of the year</strong> with an average of <strong>11.9</strong>. But it came at a price: at 18, I developed a stomach ulcer from the enormous pressure I put on myself."
+        ],
+        quotes: [
+            { text: "I balanced school, my driver's license, and a candidacy for the European Parliament all at once. I learned that no matter how strong your will is, the body has its limits.", style: "border-left-color: #ef4444;" }
+        ]
+      },
+      {
+        id: "07",
+        title: "Motivation's New Character",
+        content: [
+            "Today, in the <strong>cand.polit (economics) program</strong>, I no longer chase grades for their own sake. Grade-chasing culture is unhealthy, and in a study program with high difficulty, you learn to appreciate the learning process itself.",
+            "But when motivation fails, I find my way back to the core: that old voice from the system that said I would never make it. It ignites a fire in me – both in my studies and at the gym."
+        ],
+        quotes: [{ text: "\"I will damn well show you.\"", style: "default" }],
+        outro: "This is the foundation of my values: you shouldn't talk down to others, regardless of the circumstances. Because I have been at the bottom of the system myself, I know that potential is often found beneath the surface of diagnoses and medication."
+      },
+      {
+        id: "08",
+        title: "From Adversity to Resilience",
+        cards: true,
+        content: [
+            "My journey has taught me that human value must never be defined by cognitive abilities or physical limitations. I bring this deep empathy and ironclad persistence into everything I do professionally."
+        ]
+      }
+    ],
+    cards: {
+        past: { label: "Back Then", text: "Deemed unfit for normal schooling, misdosed with medication, and physically limited by illness." },
+        present: { label: "Today", text: "<strong>Top scorer at HHX (11.9 avg)</strong> and soon finishing my <strong>MSc in Economics (cand.polit)</strong> from the University of Copenhagen." }
+    },
+    footer: {
+      title: "Want to read more about my professional profile?",
+      text: "Check out my CV or my projects to see how I work today.",
+      btnCV: "View CV",
+      btnPort: "Go to Portfolio"
+    }
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const cvLink = isDa ? '/cv' : '/en/cv';
+const portLink = isDa ? '/portfolio' : '/en/portfolio';
+
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="history-page"
+>
+  <style>
+    .story-wrap {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .story-hero {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .quote-box {
+      background: rgba(var(--accent-rgb), 0.05);
+      border-left: 4px solid var(--accent);
+      padding: 2rem;
+      border-radius: 0 16px 16px 0;
+      margin: 3rem 0;
+      font-style: italic;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .chapter {
+      margin-bottom: 8rem;
+      position: relative;
+    }
+
+    .chapter-number {
+      font-family: serif;
+      font-size: 5rem;
+      opacity: 0.05;
+      position: absolute;
+      top: -2rem;
+      left: -2rem;
+      font-weight: 900;
+      pointer-events: none;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+    }
+
+    .content {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .content p {
+      margin-bottom: 1.5rem;
+    }
+
+    .high-contrast {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .high-contrast {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .contrast-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .contrast-card.past {
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .contrast-card.present {
+      border-color: rgba(34, 197, 94, 0.2);
+      background: rgba(var(--accent-rgb), 0.03);
+    }
+
+    .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0.5;
+    }
+
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .navigation-footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 3rem;
+      margin-top: 6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--accent);
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(var(--accent-rgb), 0.2);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(var(--accent-rgb), 0.05);
+    }
+
+    strong {
+      color: #fff;
+      font-weight: 600;
+    }
+  </style>
+
+  <main class="story-wrap">
+    <header class="story-hero">
+      <span class="eyebrow">{content.eyebrow}</span>
+      <h1>{content.h1}</h1>
+      <p class="content" style="font-size: 1.3rem; opacity: 0.8;">
+        {content.intro}
+      </p>
+    </header>
+
+    {content.chapters.map(c => (
+        <section class="chapter">
+           <span class="chapter-number">{c.id}</span>
+           <h2>{c.title}</h2>
+           <div class="content">
+              {c.content.map(p => <p set:html={p} />)}
+              
+              {c.quotes && c.quotes.map(q => (
+                  <div class="quote-box" style={q.style !== 'default' ? q.style : ''}>
+                    <span set:html={q.text} />
+                    {q.author && <><br/><small style="font-style: normal; opacity: 0.6; font-size: 0.9rem;">{q.author}</small></>}
+                  </div>
+              ))}
+              
+              {c.outro && <p set:html={c.outro} />}
+
+              {c.cards && (
+                <div class="high-contrast">
+                    <div class="contrast-card past">
+                        <span class="label">{content.cards.past.label}</span>
+                        <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
+                        <p set:html={content.cards.past.text} />
+                    </div>
+                    <div class="contrast-card present">
+                        <span class="label">{content.cards.present.label}</span>
+                        <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                        <p set:html={content.cards.present.text} />
+                    </div>
+                </div>
+              )}
+           </div>
+        </section>
+    ))}
+
+    <footer class="navigation-footer">
+      <div>
+        <h3 style="margin-bottom: 0.5rem; font-weight: 700;">{content.footer.title}</h3>
+        <p style="opacity: 0.6; margin-bottom: 0;">{content.footer.text}</p>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <a href={cvLink} class="btn ghost">{content.footer.btnCV}</a>
+        <a href={portLink} class="btn">{content.footer.btnPort} <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </main>
+</Layout>

@@ -1,0 +1,13 @@
+---
+import EducationPage from '@components/templates/EducationPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<EducationPage lang={lang} />

@@ -1,0 +1,13 @@
+---
+import ResourcesPage from '@components/templates/ResourcesPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<ResourcesPage lang={lang} />

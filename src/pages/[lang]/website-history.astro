@@ -1,0 +1,12 @@
+---
+import WebsiteHistoryPage from '@components/templates/WebsiteHistoryPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<WebsiteHistoryPage lang={lang} />

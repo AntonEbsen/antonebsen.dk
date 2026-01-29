@@ -1,0 +1,232 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+import program from '@data/training-program.json';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Mit Træningsprogram – Anton Meier Ebsen Jørgensen",
+    desc: "Fuldt indblik i min trænings-split (Upper/Lower), øvelsesvalg og progression.",
+    heroTitle: "Mit Træningsprogram",
+    heroText: "Her er det program, jeg følger lige nu. Det er baseret på et Upper/Lower split med fokus på hypertrofi og kontrolleret progression.",
+    heroButtons: { stats: "Se Statistik", blog: "Læs om Filosofien" },
+    days: {
+      push1: { title: "Dag 1: Upper Body (Bryst/Skulder)", desc: "Fokus på bryst, skuldre og triceps." },
+      pull1: { title: "Dag 2: Upper Body (Ryg/Arme)", desc: "Fokus på rygtykkelse, bagskulder og biceps." },
+      legs1: { title: "Dag 3: Lower Body (Quad/Squat)", desc: "Fokus på forlår (Quads) og Squat-styrke." },
+      push2: { title: "Dag 4: Upper Body (Volume)", desc: "Højere volumen, fokus på metabolisk stress." },
+      pull2: { title: "Dag 5: Upper Body (Rygvidde)", desc: "Fokus på lats (bredde) og detaljer." },
+      legs2: { title: "Dag 6: Lower Body (Posterior)", desc: "Fokus på bagkæden (Glutes/Hamstrings)." }
+    },
+    labels: {
+      sets: "Sæt",
+      reps: "Reps",
+      tempo: "Tempo",
+      rest: "Pause",
+      rpe: "RPE",
+      notes: "Noter"
+    },
+    contact: {
+      title: "Vil du vide mere?",
+      text: "Tjek min træningsstatistik for at se, hvordan programmet virker i praksis."
+    }
+  },
+  en: {
+    title: "My Training Program – Anton Meier Ebsen Jørgensen",
+    desc: "Full insight into my training split (Upper/Lower), exercise selection, and progression.",
+    heroTitle: "My Training Program",
+    heroText: "Here is the program I am currently following. It is based on an Upper/Lower split focused on hypertrophy and controlled progression.",
+    heroButtons: { stats: "See Statistics", blog: "Read Philosophy" },
+    days: {
+      push1: { title: "Day 1: Upper Body (Chest/Shoulders)", desc: "Focus on chest, shoulders, and triceps." },
+      pull1: { title: "Day 2: Upper Body (Back/Arms)", desc: "Focus on back thickness, rear delts, and biceps." },
+      legs1: { title: "Day 3: Lower Body (Quad/Squat)", desc: "Focus on quads and Squat strength." },
+      push2: { title: "Day 4: Upper Body (Volume)", desc: "Higher volume, focus on metabolic stress." },
+      pull2: { title: "Day 5: Upper Body (Back Width)", desc: "Focus on lats (width) and details." },
+      legs2: { title: "Day 6: Lower Body (Posterior)", desc: "Focus on posterior chain (Glutes/Hamstrings)." }
+    },
+    labels: {
+      sets: "Sets",
+      reps: "Reps",
+      tempo: "Tempo",
+      rest: "Rest",
+      rpe: "RPE",
+      notes: "Notes"
+    },
+    contact: {
+      title: "Want to know more?",
+      text: "Check my training statistics to see how the program works in practice."
+    }
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const days = ['push1', 'pull1', 'legs1', 'push2', 'pull2', 'legs2'];
+
+const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats'; 
+// Wait, course-stats is NOT training-stats. 
+// Correct link is /traeningsstatistik or /en/training-stats
+const trainingStatsLink = isDa ? '/traeningsstatistik' : '/en/training-stats';
+const blogLink = isDa ? '/blog' : '/en/blog';
+
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="program-page"
+>
+  <style>
+    .program-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .day-card {
+      margin-bottom: 2rem;
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .exercise-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .table-header {
+      display: grid; 
+      grid-template-columns: 2fr 1fr 1fr 1fr; 
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .ex-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .ex-row:last-child {
+      border-bottom: none;
+    }
+
+    .ex-row:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* Mobile view for tables */
+    @media (max-width: 640px) {
+      .table-header { display: none; }
+      .ex-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+
+  <main class="program-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <Card variant="glass" class="p-8 text-center">
+        <SectionHeading>{content.heroTitle}</SectionHeading>
+        <p class="text-xl text-dim mb-8 max-w-2xl mx-auto">
+          {content.heroText}
+        </p>
+        <div class="flex justify-center gap-4">
+          <Button href={trainingStatsLink}>{content.heroButtons.stats}</Button>
+          <Button href={blogLink} variant="ghost">{content.heroButtons.blog}</Button>
+        </div>
+      </Card>
+    </Section>
+
+    {days.map((dayKey) => {
+        const dayData = program[dayKey];
+        // @ts-ignore
+        const dayInfo = content.days[dayKey];
+
+        return (
+            <Section id={dayKey}>
+                <Card variant="bordered" class="p-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">{dayInfo.title}</h2>
+                            <p class="text-dim opacity-80">{dayInfo.desc}</p>
+                        </div>
+                        <Pill variant="accent">{dayData.length} {isDa ? 'Øvelser' : 'Exercises'}</Pill>
+                    </div>
+
+                    <div class="bg-glass border border-glass-border rounded-xl overflow-hidden">
+                        <div class="table-header hidden sm:grid">
+                            <div>{isDa ? 'Øvelse' : 'Exercise'}</div>
+                            <div>{content.labels.sets}</div>
+                            <div>{content.labels.tempo}</div>
+                            <div>{content.labels.rest}</div>
+                        </div>
+                        
+                        {dayData.map((ex) => (
+                            <div class="ex-row">
+                                <div>
+                                    <span class="font-bold text-white block">{ex.exercise}</span>
+                                    <span class="text-xs text-dim block mt-1">{ex.muscle}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="sm:hidden text-xs text-dim uppercase font-bold w-16">{content.labels.sets}:</span>
+                                    <span class="text-white font-mono">{ex.sets} x {content.labels.rpe} {ex.rpe}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="sm:hidden text-xs text-dim uppercase font-bold w-16">{content.labels.tempo}:</span>
+                                    <span class="text-dim font-mono text-sm">{ex.tempo}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="sm:hidden text-xs text-dim uppercase font-bold w-16">{content.labels.rest}:</span>
+                                    <span class="text-dim font-mono text-sm">{ex.rest}</span>
+                                </div>
+                                {ex.notes && (
+                                    <div class="col-span-1 sm:col-span-4 mt-2 sm:mt-1 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">
+                                        <p class="text-xs text-accent italic"><i class="fa-solid fa-note-sticky mr-1"></i> {ex.notes}</p>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+            </Section>
+        );
+    })}
+
+    <Section>
+        <Card variant="glass" class="p-6 text-center">
+            <h3 class="text-xl font-bold mb-2">{content.contact.title}</h3>
+            <p class="text-dim mb-4">{content.contact.text}</p>
+            <Button href={trainingStatsLink}>{content.heroButtons.stats} <i class="fa-solid fa-arrow-right ml-2"></i></Button>
+        </Card>
+    </Section>
+
+  </main>
+</Layout>

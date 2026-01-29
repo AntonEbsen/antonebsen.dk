@@ -1,0 +1,224 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { createClient } from '@supabase/supabase-js';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Kompetencer",
+    desc: "Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning.",
+    heroTitle: "Værktøjer, metoder og det jeg leverer",
+    heroText: "Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan, <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.",
+    btns: { core: "Kernekompetencer", tools: "Værktøjer", deliv: "Leverancer" },
+    quickTitle: "Hurtig oversigt",
+    quickList: ["Strukturerer data → model → output", "Bygger templates og workflows", "Formidler komplekse ting"],
+    coreTitle: "Programmeringssprog & Metoder",
+    toolsTitle: "Værktøjs-matrix",
+    delivTitle: "Typiske leverancer",
+    delivs: [
+      { title: "Templates & workflows", desc: "Excel-templates, standardiserede dashboards." },
+      { title: "Analyse & rapportering", desc: "Reproducerbare analyser og figurer klar til rapport." }
+    ],
+    ctaTitle: "Har du et konkret behov?",
+    ctaText: "Skriv format + mål. Så foreslår jeg en struktur."
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Competencies",
+    desc: "Competencies: tools, methods, and focus areas in macroeconomics, econometrics, data, and teaching.",
+    heroTitle: "Tools, Methods, and Deliverables",
+    heroText: "Competencies in a format that's easy to use: <strong>what</strong> I can do, <strong>how</strong> I work, and <strong>what output</strong> you can expect.",
+    btns: { core: "Core Competencies", tools: "Tools", deliv: "Deliverables" },
+    quickTitle: "Quick Overview",
+    quickList: ["Structures data → model → output", "Builds templates and workflows", "Communicates complex concepts clearly"],
+    coreTitle: "Programming Languages & Methods",
+    toolsTitle: "Tool Matrix",
+    delivTitle: "Typical Deliverables",
+    delivs: [
+      { title: "Templates & Workflows", desc: "Excel templates, standardized dashboards, and automation scripts." },
+      { title: "Analysis & Reporting", desc: "Reproducible analyses and figures ready for professional reports." }
+    ],
+    ctaTitle: "Have a specific need?",
+    ctaText: "Let me know the format and goal. I'll suggest a structure."
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+let { data: skills, error } = await supabase
+  .from('skills')
+  .select('*')
+  .order('proficiency', { ascending: false });
+
+if (error) skills = [];
+
+const coreSkills = skills?.filter(s => s.category === 'Core') || [];
+const toolSkills = skills?.filter(s => s.category === 'Tools') || [];
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="skills-page"
+>
+  <style>
+    .skills-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .grid-3, .grid-2 { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="skills-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-6">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Kompetencer' : 'Competencies'}</p>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.heroTitle}</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6" set:html={content.heroText}></p>
+  
+          <div class="pill-wrap flex flex-wrap gap-2 mb-6" aria-label="Key Competencies">
+            {coreSkills.length > 0 ? coreSkills.slice(0,5).map(s => <Pill variant="accent">{s.name}</Pill>) : (
+                <>
+                    <Pill variant="accent">Excel/VBA</Pill>
+                    <Pill variant="accent">Python</Pill>
+                    <Pill variant="accent">SAS</Pill>
+                </>
+            )}
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#core"><i class="fa-solid fa-bolt mr-2"></i> {content.btns.core}</Button>
+            <Button href="#tools" variant="ghost"><i class="fa-solid fa-screwdriver-wrench mr-2"></i> {content.btns.tools}</Button>
+            <Button href="#deliverables" variant="ghost"><i class="fa-solid fa-box-open mr-2"></i> {content.btns.deliv}</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-4">
+            <SectionHeading>{content.quickTitle}</SectionHeading>
+            <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
+              {content.quickList.map(li => <li>{li}</li>)}
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    {skills?.length === 0 && (
+      <Section>
+         <Card variant="glass" class="p-8 text-center text-dim bg-green-500/10 border-green-500/20">
+            <p>Skill Tree is empty. Add your skills in the dashboard to see them here. 🌱</p>
+        </Card>
+      </Section>
+    )}
+
+    <!-- CORE COMPETENCIES -->
+    <Section id="core">
+      <Card variant="default" class="p-6">
+        <SectionHeading>{content.coreTitle}</SectionHeading>
+        <div class="grid-3">
+            {coreSkills.map(s => (
+                <Card variant="glass" class="p-4 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                         {s.icon && <i class={`${s.icon} text-4xl`}></i>}
+                    </div>
+                  <h3 class="font-bold mb-2">{s.name}</h3>
+                  <p class="text-dim text-sm">{s.description}</p>
+                  {s.proficiency && (
+                      <div class="w-full bg-gray-800 h-1 mt-3 rounded overflow-hidden">
+                          <div class="bg-gold-500 h-full" style={`width: ${s.proficiency}%`}></div>
+                      </div>
+                  )}
+                </Card>
+            ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- TOOLS -->
+    <Section id="tools">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.toolsTitle}</SectionHeading>
+        <div class="grid-3">
+           {toolSkills.map(s => (
+             <Card variant="glass" class="p-4">
+                <div class="flex justify-between items-center mb-1">
+                   <h3 class="text-sm font-bold">{s.name}</h3>
+                   {s.icon && <i class={`${s.icon} text-dim text-xs`}></i>}
+                </div>
+                <p class="text-xs text-dim">{s.description}</p>
+             </Card>
+           ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- DELIVERABLES -->
+    <Section id="deliverables">
+      <Card variant="default" class="p-6">
+        <SectionHeading>{content.delivTitle}</SectionHeading>
+        <div class="grid-2">
+           {content.delivs.map(d => (
+             <Card variant="glass" class="p-4">
+               <h3 class="font-bold mb-2">{d.title}</h3>
+               <p class="text-dim text-sm">{d.desc}</p>
+             </Card>
+           ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="glass" 
+        title={content.ctaTitle}
+        text={content.ctaText}
+        action="contact"
+      />
+    </Section>
+
+  </main>
+</Layout>

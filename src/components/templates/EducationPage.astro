@@ -1,0 +1,293 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import cvDa from '@data/cv.json';
+import cvEn from '@data/cv_en.json';
+import { createClient } from '@supabase/supabase-js';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const cv = isDa ? cvDa : cvEn;
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Uddannelse",
+    desc: "Uddannelsesprofil: cand.polit./ba.polit., relevante kurser, projekter og fokusområder.",
+    heroTitle: "Kurser, projekter og faglig profil",
+    heroText: "Her samler jeg det, der ellers bliver for langt til CV’et: udvalgte kurser, projektarbejde og hvad jeg konkret har lært (metoder, værktøjer, modeller).",
+    buttons: { ku: "Københavns Universitet", hhx: "HHX", course: "Kursusoversigt", proj: "Projektarbejde" },
+    pills: ["Makro", "Økonometri", "Modeller", "Tidsrækker", "Python/SAS/GAMS"],
+    shortTitle: "Kort version?",
+    shortText: "CV-siden har den “HR-venlige” oversigt. Denne side er til dem, der faktisk læser.",
+    shortBtn: "Til CV-oversigt",
+    progTitle: "Program & fokus",
+    toolsTitle: "Nøgleværktøjer",
+    toolsText: "(Tjek også porteføljen for konkrete eksempler på brug af værktøjerne.)",
+    courseTitle: "Kursusoversigt (udvalg)",
+    courseTip: "Tip: Disse kurser repræsenterer min faglige kerne og specialisering.",
+    projTitle: "Projektarbejde (udvalg)",
+    portfolioBtn: "Se hel portefølje",
+    ctaTitle: "Vil du se certificeringer også?",
+    ctaText: "Certificeringer er “beviser”. Uddannelse er “forløb”. Begge styrker troværdigheden.",
+    ctaBtn: "Til certificeringer",
+    contactBtn: "Kontakt"
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Education",
+    desc: "Education profile: cand.polit./ba.polit., relevant courses, projects, and focus areas.",
+    heroTitle: "Courses, Projects, and Professional Profile",
+    heroText: "Here I gather what becomes too long for the CV: selected courses, project work, and concretely what I've learned (methods, tools, models).",
+    buttons: { ku: "University of Copenhagen", hhx: "HHX", course: "Course Overview", proj: "Project Work" },
+    pills: ["Macro", "Econometrics", "Modeling", "Time Series", "Python/SAS/GAMS"],
+    shortTitle: "Short Version?",
+    shortText: "The CV page has the \"HR-friendly\" overview. This page is for those who actually want to dive deep.",
+    shortBtn: "To CV Overview",
+    progTitle: "Program & Focus",
+    toolsTitle: "Key Tools",
+    toolsText: "(Check the portfolio for concrete examples of how I use these tools.)",
+    courseTitle: "Course Overview (Selection)",
+    courseTip: "Note: These courses represent my academic core and specialization.",
+    projTitle: "Project Work (Selection)",
+    portfolioBtn: "View Full Portfolio",
+    ctaTitle: "Want to see certifications as well?",
+    ctaText: "Certifications are \"proof\". Education is the \"process\". Both strengthen credibility.",
+    ctaBtn: "To Certifications",
+    contactBtn: "Contact"
+  }
+};
+
+const content = isDa ? t.da : t.en;
+
+// Data Fetching for Education (JSON)
+const experience = cv.education || [];
+// Matches based on keywords, could be improved with IDs in JSON
+const ku = experience.find(e => e.institution.includes("Copenhagen") || e.institution.includes("Københavns Universitet"));
+const hhx = experience.find(e => e.degree.includes("HHX"));
+
+// Data Fetching for Projects (Supabase)
+// We retain Supabase fetching to keep it dynamic, same as original pages.
+const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+
+let { data: projects, error: projError } = await supabase
+  .from('projects')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(3);
+
+if (projError) projects = [];
+
+const certificationLink = isDa ? '/certifications' : '/en/certifications';
+const cvLink = isDa ? '/cv' : '/en/cv';
+
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="edu-page"
+>
+  <style>
+    .edu-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .two-col, .courses-grid { 
+        grid-template-columns: 1fr; 
+      }
+    }
+  </style>
+
+  <main class="edu-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-6">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Uddannelse' : 'Education'}</p>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.heroTitle}</h1>
+          <p class="text-lg leading-relaxed text-dim mb-6">
+            {content.heroText}
+          </p>
+  
+          <div class="flex flex-wrap gap-3 mb-6">
+            <Button href="#ku">{content.buttons.ku}</Button>
+            <Button href="#hhx" variant="ghost">{content.buttons.hhx}</Button>
+            <Button href="#courses" variant="ghost">{content.buttons.course}</Button>
+            <Button href="#projects" variant="ghost">{content.buttons.proj}</Button>
+          </div>
+  
+          <div class="flex flex-wrap gap-2">
+            {content.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-4">
+            <SectionHeading>{content.shortTitle}</SectionHeading>
+            <p class="text-[13px] text-dim mb-4 opacity-70">
+              {content.shortText}
+            </p>
+            <Button href={`${cvLink}#education`} variant="ghost" class="w-full">{content.shortBtn}</Button>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- KU -->
+    {ku && (
+      <Section id="ku">
+        <Card variant="default" class="p-6">
+          <SectionHeading>{ku.institution} ({ku.degree})</SectionHeading>
+
+          <div class="two-col">
+            <Card variant="glass" class="p-4">
+              <h3 class="text-base font-bold mb-2">{content.progTitle}</h3>
+              <p class="text-dim text-[14px] leading-relaxed mb-4">
+                {ku.description}
+              </p>
+              <ul class="list-none p-0 m-0 space-y-2 text-[13px] text-dim">
+                {ku.bullets && ku.bullets.map(item => (
+                  <li class="relative pl-3 before:content-['-'] before:absolute before:left-0 before:text-accent">{item}</li>
+                ))}
+              </ul>
+            </Card>
+
+            <Card variant="glass" class="p-4">
+              <h3 class="text-base font-bold mb-2">{content.toolsTitle}</h3>
+              <div class="flex flex-wrap gap-2 mb-4">
+                {ku.technologies && ku.technologies.map(tech => (
+                  <Pill variant="default">{tech}</Pill>
+                ))}
+              </div>
+              <p class="text-[13px] text-dim opacity-70">
+                {content.toolsText}
+              </p>
+            </Card>
+          </div>
+        </Card>
+      </Section>
+    )}
+
+    <!-- COURSES -->
+    <Section id="courses">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.courseTitle}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6">
+          {content.courseTip}
+        </p>
+
+        <div class="courses-grid">
+          {cv.courses && cv.courses.map(course => (
+            <Card variant="bordered" class="flex flex-col h-full bg-glass">
+              <div class="flex justify-between items-start mb-3 gap-2">
+                <h3 class="text-[16px] font-bold leading-tight m-0">{course.title}</h3>
+                <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
+              </div>
+              <p class="text-[13px] text-dim mb-3">{course.institution}</p>
+              <p class="text-[14px] text-dim opacity-80 leading-relaxed mb-4 flex-grow">
+                {course.description}
+              </p>
+              <div class="flex flex-wrap gap-2 mt-auto">
+                {course.links && course.links.map(link => (
+                  <a href={link.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{link.text} →</a>
+                ))}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </Card>
+    </Section>
+
+    <!-- PROJECTS -->
+    <Section id="projects">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>{content.projTitle}</SectionHeading>
+
+        <div class="courses-grid">
+          {projects.map(proj => (
+            <Card variant="bordered" class="flex flex-col h-full bg-glass">
+              <div class="flex justify-between items-start mb-3 gap-2">
+                <h3 class="text-[16px] font-bold leading-tight m-0">{proj.title}</h3>
+                <Pill variant="accent" class="shrink-0">{proj.tags && proj.tags[0] ? proj.tags[0] : 'Project'}</Pill>
+              </div>
+              <p class="text-[14px] text-dim opacity-80 leading-relaxed mb-4 flex-grow">
+                {proj.description}
+              </p>
+              <div class="flex flex-wrap gap-2 mt-auto">
+                 {proj.url && (
+                  <a href={proj.url} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">View Project →</a>
+                 )}
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div class="mt-6 text-center">
+            <Button href={isDa ? '/portfolio' : '/en/portfolio'} variant="ghost">{content.portfolioBtn}</Button>
+        </div>
+      </Card>
+    </Section>
+
+    <!-- HHX -->
+    {hhx && (
+      <Section id="hhx">
+        <Card variant="glass" class="p-6">
+          <SectionHeading>{hhx.degree} ({hhx.institution})</SectionHeading>
+          <p class="text-dim mb-4 leading-relaxed">
+            {hhx.description}
+          </p>
+          <ul class="list-none p-0 m-0 space-y-2 text-[14px] text-dim">
+            {hhx.bullets && hhx.bullets.map(item => (
+              <li class="relative pl-3 before:content-['-'] before:absolute before:left-0 before:text-accent">{item}</li>
+            ))}
+          </ul>
+        </Card>
+      </Section>
+    )}
+
+    <!-- CTA -->
+    <Section>
+      <Card variant="default" class="p-6">
+        <SectionHeading>{content.ctaTitle}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6">{content.ctaText}</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href={certificationLink}>{content.ctaBtn}</Button>
+          <Button href={isDa ? '/contact' : '/en/contact'} variant="ghost">{content.contactBtn}</Button>
+        </div>
+      </Card>
+    </Section>
+
+  </main>
+</Layout>

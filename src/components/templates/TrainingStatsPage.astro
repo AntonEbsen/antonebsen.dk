@@ -1,0 +1,693 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Træningsstatistik – Anton Meier Ebsen Jørgensen",
+    desc: "Dashboard over min træningsprogression, volumen og PRs.",
+    heroTitle: "Træningsstatistik",
+    heroText: "Live-opdateret data direkte fra min træningslog. Fordi det der bliver målt, bliver forbedret.",
+    readiness: {
+      title: "Global Readiness Score",
+      calc: "Beregner din form...",
+      desc: "Baseret på din volumen, intensitet og tid siden sidste pas, beregner vi din teoretiske restitution."
+    },
+    consistency: {
+        title: "Consistency Heatmap (Sidste 6 mdr.)",
+        less: "Mindre",
+        more: "Mere"
+    },
+    milestones: {
+        title: "Tonnage Milestones",
+        text_prefix: "Du har løftet svarende til",
+        text_suffix: "i denne måned.",
+        desc: "Din samlede indsats svarer til vægten af tunge objekter. En sjov måde at forstå dit hårde arbejde på!"
+    },
+    kpi: {
+        vol: "Total Volumen (All Time)",
+        sess: "Sessions (Total)",
+        fav: "Favorit Løft",
+        favVal: "Squat"
+    },
+    charts: {
+        volTitle: "Volumen pr uge (kg)",
+        volLabel: "Tonnage (kg)",
+        muscTitle: "Muskelfordeling (Sæt)",
+        cardioTitle: "Cardio-historik (km)",
+        cardioLabel: "Distance (km)"
+    },
+    weekly: {
+        title: "Ugentlig Volumen-Tracking",
+        desc: "Antal hårde sæt de sidste 7 dage vs. anbefalede mål.",
+        goal: "Mål",
+        sets: "Sæt"
+    },
+    anatomy: {
+        title: "Interactive Anatomy Map (Ugentlig Fokus)",
+        front: "Forfra",
+        back: "Bagfra",
+        legend: "Farveintensitet indikerer ugentlig træningsmængde (Sæt)"
+    },
+    cta: {
+        blog: "Læs om min tilgang",
+        home: "Tilbage til forsiden"
+    },
+    js: {
+        fullRecovTitle: "Fuldt restitueret 🚀",
+        fullRecovDesc: "Dine batterier er ladet op. Det er tid til at smadre nogle PRs!",
+        readyTitle: "Klar til kamp 🔥",
+        readyDesc: "Du er næsten fuldt restitueret. Et tungt pas er muligt, men lyt til kroppen.",
+        modTitle: "Moderat Restitution 🔋",
+        modDesc: "Du er stadig ved at komme dig. Overvej et moderato pas eller fokus på en anden muskelgruppe.",
+        recovTitle: "Recovery Mode 🛌",
+        recovDesc: "Din krop har brug for hvile. Fokusér på søvn, mad og let bevægelse i dag.",
+        elephants: "Afrikanske Elefanter",
+        golfs: "VW Golf'er",
+        whales: "Blåhvaler",
+        shuttles: "Rumfærger"
+    }
+  },
+  en: {
+    title: "Training Statistics – Anton Meier Ebsen Jørgensen",
+    desc: "Dashboard of my training progression, volume, and PRs.",
+    heroTitle: "Training Statistics",
+    heroText: "Live updated data directly from my training log. Because what gets measured, gets improved.",
+    readiness: {
+      title: "Global Readiness Score",
+      calc: "Calculating form...",
+      desc: "Based on volume, intensity, and time since last session, we calculate theoretical recovery."
+    },
+    consistency: {
+        title: "Consistency Heatmap (Last 6 months)",
+        less: "Less",
+        more: "More"
+    },
+    milestones: {
+        title: "Tonnage Milestones",
+        text_prefix: "You have lifted equivalent to",
+        text_suffix: "this month.",
+        desc: "Your total effort corresponds to the weight of heavy objects. A fun way to understand your hard work!"
+    },
+    kpi: {
+        vol: "Total Volume (All Time)",
+        sess: "Sessions (Total)",
+        fav: "Favorite Lift",
+        favVal: "Squat"
+    },
+    charts: {
+        volTitle: "Weekly Volume (kg)",
+        volLabel: "Tonnage (kg)",
+        muscTitle: "Muscle Distribution (Sets)",
+        cardioTitle: "Cardio History (km)",
+        cardioLabel: "Distance (km)"
+    },
+    weekly: {
+        title: "Weekly Volume Tracking",
+        desc: "Number of hard sets last 7 days vs. recommended goals.",
+        goal: "Goal",
+        sets: "Sets"
+    },
+    anatomy: {
+        title: "Interactive Anatomy Map (Weekly Focus)",
+        front: "Front",
+        back: "Back",
+        legend: "Color intensity indicates weekly training volume (Sets)"
+    },
+    cta: {
+        blog: "Read about my approach",
+        home: "Back to home"
+    },
+    js: {
+        fullRecovTitle: "Fully Recovered 🚀",
+        fullRecovDesc: "Your batteries are charged. It's time to crush some PRs!",
+        readyTitle: "Ready for Battle 🔥",
+        readyDesc: "You are almost fully recovered. A heavy session is possible, but listen to your body.",
+        modTitle: "Moderate Recovery 🔋",
+        modDesc: "You are still recovering. Consider a moderate session or focus on a different muscle group.",
+        recovTitle: "Recovery Mode 🛌",
+        recovDesc: "Your body needs rest. Focus on sleep, nutrition, and light movement today.",
+        elephants: "African Elephants",
+        golfs: "VW Golfs",
+        whales: "Blue Whales",
+        shuttles: "Space Shuttles"
+    }
+  }
+};
+
+const content = isDa ? t.da : t.en;
+const blogLink = isDa ? '/blog' : '/en/blog';
+const homeLink = isDa ? '/' : '/en';
+
+---
+
+<Layout 
+  title={content.title}
+  description={content.desc}
+  bodyClass="stats-page"
+>
+  <main class="container mx-auto px-4 py-12" id="stats-container" data-i18n={JSON.stringify(content.js)} data-labels={JSON.stringify(content.weekly)}>
+    <Section class="max-w-4xl mx-auto">
+      <Card variant="glass" class="p-12 text-center">
+        <SectionHeading class="mb-6">Training (Live Data)</SectionHeading>
+        <h1 class="text-4xl font-bold mb-6">{content.heroTitle}</h1>
+        <p class="text-xl text-dim mb-8 max-w-2xl mx-auto">
+          {content.heroText}
+        </p>
+
+        <!-- READINESS / RECOVERY DASHBOARD -->
+        <div class="mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i class="fa-solid fa-battery-half text-8xl"></i>
+                </div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> {content.readiness.title}
+                </h3>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="relative w-32 h-32 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" class="text-white/5" />
+                            <circle id="readiness-circle" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" stroke-dasharray="364.4" stroke-dashoffset="364.4" class="text-accent transition-all duration-1000" />
+                        </svg>
+                        <span id="readiness-value" class="absolute text-3xl font-black italic">--%</span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <h4 id="readiness-title" class="text-xl font-bold uppercase italic">{content.readiness.calc}</h4>
+                        <p id="readiness-desc" class="text-sm text-dim max-w-lg">
+                            {content.readiness.desc}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CONSISTENCY HEATMAP -->
+        <div class="mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-fire"></i> {content.consistency.title}
+                </h3>
+                <div id="heatmap-container" class="overflow-x-auto pb-4">
+                    <div id="training-heatmap" class="grid grid-flow-col grid-rows-7 gap-1 min-w-[800px]">
+                        <!-- Squares will be injected here -->
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center justify-end gap-2 text-[10px] text-white/30 font-bold uppercase">
+                    <span>{content.consistency.less}</span>
+                    <div class="flex gap-1">
+                        <div class="w-2.5 h-2.5 rounded-sm bg-white/5"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent/20"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent/40"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent/70"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent"></div>
+                    </div>
+                    <span>{content.consistency.more}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TONNAGE MILESTONES -->
+        <div class="mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:rotate-12 transition-transform duration-700">
+                    <i id="milestone-icon" class="fa-solid fa-elephant text-[140px]"></i>
+                </div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced"></i> {content.milestones.title}
+                </h3>
+                <div class="space-y-4">
+                    <p class="text-2xl font-black italic text-white" id="milestone-text">
+                        {content.milestones.text_prefix} <span class="text-accent" id="milestone-count">...</span> 
+                        <span id="milestone-name">...</span> {content.milestones.text_suffix}
+                    </p>
+                    <p class="text-sm text-dim max-w-lg">
+                        {content.milestones.desc}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI METRICS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
+          <div class="p-4 bg-glass border border-glass-border rounded-xl">
+            <span class="text-xs uppercase text-accent font-bold">{content.kpi.vol}</span>
+            <div id="stat-tonnage" class="text-2xl font-bold mt-1 animate-pulse">...</div>
+          </div>
+          <div class="p-4 bg-glass border border-glass-border rounded-xl">
+            <span class="text-xs uppercase text-accent font-bold">{content.kpi.sess}</span>
+            <div id="stat-sessions" class="text-2xl font-bold mt-1 animate-pulse">...</div>
+          </div>
+          <div class="p-4 bg-glass border border-glass-border rounded-xl">
+            <span class="text-xs uppercase text-accent font-bold">{content.kpi.fav}</span>
+            <div class="text-2xl font-bold mt-1">{content.kpi.favVal}</div>
+          </div>
+        </div>
+
+        <!-- CHARTS SECTION -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+             <!-- Volume / Tonnage Chart -->
+             <div class="p-6 bg-glass border border-glass-border rounded-2xl min-h-[350px]">
+                <h3 class="text-left text-xs uppercase font-bold text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-bar"></i> {content.charts.volTitle}
+                </h3>
+                <div class="h-[280px]"><canvas id="volChart" data-label={content.charts.volLabel}></canvas></div>
+             </div>
+
+             <!-- Muscle Distribution Pie Chart -->
+             <div class="p-6 bg-glass border border-glass-border rounded-2xl min-h-[350px]">
+                <h3 class="text-left text-xs uppercase font-bold text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i> {content.charts.muscTitle}
+                </h3>
+                <div class="h-[280px] flex items-center justify-center">
+                    <canvas id="muscleDistChart"></canvas>
+                </div>
+             </div>
+        </div>
+
+        <!-- WEEKLY VOLUME DASHBOARD -->
+        <div class="grid grid-cols-1 gap-6 mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold">{content.weekly.title}</h3>
+                        <p class="text-sm text-dim">{content.weekly.desc}</p>
+                    </div>
+                </div>
+                
+                <div id="volume-bars" class="space-y-6">
+                    <!-- Bars will be injected here via JS -->
+                    <div class="animate-pulse space-y-4">
+                        <div class="h-4 bg-white/5 rounded w-1/4"></div>
+                        <div class="h-8 bg-white/5 rounded"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARDIO CHART -->
+        <div class="p-6 bg-glass border border-glass-border rounded-2xl mb-12">
+            <h3 class="text-left text-xs uppercase font-bold text-accent mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-person-running"></i> {content.charts.cardioTitle}
+            </h3>
+            <div class="h-[300px] w-full"><canvas id="cardioChart" data-label={content.charts.cardioLabel}></canvas></div>
+        </div>
+
+        <!-- ANATOMY HEATMAP -->
+        <div class="grid grid-cols-1 gap-6 mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-8 flex items-center gap-2">
+                    <i class="fa-solid fa-dna"></i> {content.anatomy.title}
+                </h3>
+                <div class="flex flex-col lg:flex-row items-center justify-around gap-12">
+                    <!-- Front View -->
+                    <div class="flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-white/20 mb-4">{content.anatomy.front}</span>
+                        <div class="w-64 h-96 relative" id="body-front">
+                            <svg viewBox="0 0 200 400" class="w-full h-full">
+                                <!-- Base Body Outline -->
+                                <path d="M100,20 C80,20 70,35 70,50 C70,65 80,80 100,80 C120,80 130,65 130,50 C130,35 120,20 100,20" fill="#ffffff05" stroke="#ffffff10" />
+                                <path d="M100,80 L70,80 L60,100 L50,150 L60,200 L80,200 L80,250 L70,380 L100,380 L130,380 L120,250 L120,200 L140,200 L150,150 L140,100 L130,80 Z" fill="#ffffff05" stroke="#ffffff10" />
+                                
+                                <!-- Muscle Groups -->
+                                <path id="muscle-Chest" d="M75,90 Q100,120 125,90 L125,120 Q100,140 75,120 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Shoulders-Front" d="M60,90 L75,85 L75,110 L65,120 Z M125,85 L140,90 L135,120 L125,110 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Core" d="M85,130 L115,130 L115,180 L85,180 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Arms-Biceps" d="M55,130 L65,130 L65,170 L55,170 Z M135,130 L145,130 L145,170 L135,170 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Legs-Quads" d="M80,210 L95,210 L95,300 L80,300 Z M105,210 L120,210 L120,300 L105,300 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Back View -->
+                    <div class="flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-white/20 mb-4">{content.anatomy.back}</span>
+                        <div class="w-64 h-96 relative" id="body-back">
+                            <svg viewBox="0 0 200 400" class="w-full h-full">
+                                <path d="M100,20 C80,20 70,35 70,50 C70,65 80,80 100,80 C120,80 130,65 130,50 C130,35 120,20 100,20" fill="#ffffff05" stroke="#ffffff10" />
+                                <path d="M100,80 L70,80 L60,100 L50,150 L60,200 L80,200 L80,250 L70,380 L100,380 L130,380 L120,250 L120,200 L140,200 L150,150 L140,100 L130,80 Z" fill="#ffffff05" stroke="#ffffff10" />
+                                
+                                <path id="muscle-Back" d="M75,90 Q100,110 125,90 L125,170 L75,170 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Arms-Triceps" d="M55,110 L65,110 L65,160 L55,160 Z M135,110 L145,110 L145,160 L135,160 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Legs-Glutes" d="M80,185 L120,185 L120,210 L80,210 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Legs-Hams" d="M80,220 L95,220 L95,300 L80,300 Z M105,220 L120,220 L120,300 L105,300 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-white/20 mt-8 italic text-center uppercase tracking-widest font-bold">{content.anatomy.legend}</p>
+            </div>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <Button href={blogLink}>{content.cta.blog}</Button>
+          <Button href={homeLink} variant="ghost">{content.cta.home}</Button>
+        </div>
+      </Card>
+    </Section>
+  </main>
+</Layout>
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  async function initStats() {
+    try {
+      const container = document.getElementById('stats-container');
+      const i18n = JSON.parse(container?.getAttribute('data-i18n') || '{}');
+      const labels = JSON.parse(container?.getAttribute('data-labels') || '{}');
+
+      const res = await fetch('/api/training');
+      const logs = await res.json();
+      
+      if (!logs || logs.length === 0) {
+        document.getElementById('stat-tonnage')!.innerText = '0 kg';
+        document.getElementById('stat-sessions')!.innerText = '0';
+        return;
+      }
+
+      // 1. Calculate KPIs
+      const totalTonnage = logs.reduce((sum: number, log: any) => sum + (log.tonnage_kg || 0), 0);
+      const totalSessions = logs.length;
+
+      document.getElementById('stat-tonnage')!.innerText = (totalTonnage / 1000).toFixed(1) + ' tons';
+      document.getElementById('stat-tonnage')!.classList.remove('animate-pulse');
+      
+      document.getElementById('stat-sessions')!.innerText = totalSessions.toString();
+      document.getElementById('stat-sessions')!.classList.remove('animate-pulse');
+
+      // 1.1 Tonnage Milestones (Monthly)
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const monthlyTonnage = logs.reduce((sum: number, log: any) => {
+          const d = new Date(log.date);
+          if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
+              return sum + (log.tonnage_kg || 0);
+          }
+          return sum;
+      }, 0);
+
+      const milestones = [
+          { name: i18n.elephants, weight: 6000, icon: 'fa-elephant' },
+          { name: i18n.golfs, weight: 1400, icon: 'fa-car' },
+          { name: i18n.whales, weight: 150000, icon: 'fa-fish' },
+          { name: i18n.shuttles, weight: 75000, icon: 'fa-shuttle-space' }
+      ];
+
+      // Find the most appropriate milestone
+      let bestMilestone = milestones[1]; // Golf as default
+      for (const m of milestones) {
+          const count = monthlyTonnage / m.weight;
+          if (count >= 0.5 && count <= 20) {
+              bestMilestone = m;
+              break;
+          }
+      }
+
+      const mCount = (monthlyTonnage / bestMilestone.weight).toFixed(1);
+      document.getElementById('milestone-count')!.innerText = mCount;
+      document.getElementById('milestone-name')!.innerText = bestMilestone.name;
+      const mIcon = document.getElementById('milestone-icon')!;
+      mIcon.className = `fa-solid ${bestMilestone.icon} text-[140px]`;
+
+      // 2. Prepare Chart Data
+      const tonnageByDate: Record<string, number> = {};
+      const cardioByDate: Record<string, number> = {};
+
+      logs.slice().reverse().forEach((log: any) => {
+         const d = log.date;
+         if (log.tonnage_kg) tonnageByDate[d] = (tonnageByDate[d] || 0) + log.tonnage_kg;
+         if (log.distance_km) cardioByDate[d] = (cardioByDate[d] || 0) + log.distance_km;
+      });
+
+      const dates = Object.keys(tonnageByDate);
+      const tonnages = dates.map(d => tonnageByDate[d]);
+      
+      const cDates = Object.keys(cardioByDate);
+      const distances = cDates.map(d => cardioByDate[d]);
+
+      // 3. Readiness Logic
+      const latestSessions = logs.slice(0, 10);
+      let totalRecovery = 0;
+      const now = new Date();
+
+      latestSessions.forEach((log: any) => {
+          const hoursSince = (now.getTime() - new Date(log.date).getTime()) / (1000 * 60 * 60);
+          const rpe = log.rpe || 8;
+          let target = 24;
+          if (rpe >= 9) target = 72;
+          else if (rpe >= 8) target = 48;
+          
+          totalRecovery += Math.min(100, (hoursSince / target) * 100);
+      });
+
+      const readiness = Math.round(totalRecovery / latestSessions.length);
+      const circle = document.getElementById('readiness-circle')!;
+      const readinessValue = document.getElementById('readiness-value')!;
+      const readinessTitle = document.getElementById('readiness-title')!;
+      const readinessDesc = document.getElementById('readiness-desc')!;
+
+      const offset = 364.4 - (364.4 * readiness) / 100;
+      circle.style.strokeDashoffset = offset.toString();
+      readinessValue.innerText = `${readiness}%`;
+
+      if (readiness >= 90) {
+          readinessTitle.innerText = i18n.fullRecovTitle;
+          readinessDesc.innerText = i18n.fullRecovDesc;
+      } else if (readiness >= 70) {
+          readinessTitle.innerText = i18n.readyTitle;
+          readinessDesc.innerText = i18n.readyDesc;
+      } else if (readiness >= 50) {
+          readinessTitle.innerText = i18n.modTitle;
+          readinessDesc.innerText = i18n.modDesc;
+      } else {
+          readinessTitle.innerText = i18n.recovTitle;
+          readinessDesc.innerText = i18n.recovDesc;
+      }
+
+      // 4. Consistency Heatmap Logic
+      const heatmapContainer = document.getElementById('training-heatmap')!;
+      heatmapContainer.innerHTML = '';
+      
+      const today = new Date();
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(today.getMonth() - 6);
+      
+      const startDate = new Date(sixMonthsAgo);
+      startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
+
+      const logsByDate: Record<string, number> = {};
+      logs.forEach((log: any) => {
+          const d = log.date;
+          logsByDate[d] = (logsByDate[d] || 0) + 1;
+      });
+
+      const dayCount = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 7;
+      
+      for (let i = 0; i < dayCount; i++) {
+          const current = new Date(startDate);
+          current.setDate(startDate.getDate() + i);
+          const dateStr = current.toISOString().split('T')[0];
+          const count = logsByDate[dateStr] || 0;
+          
+          let opacity = 'bg-white/5';
+          if (count > 0) opacity = 'bg-accent/20';
+          if (count > 2) opacity = 'bg-accent/40';
+          if (count > 5) opacity = 'bg-accent/70';
+          if (count > 10) opacity = 'bg-accent';
+
+          const square = document.createElement('div');
+          square.className = `w-3 h-3 rounded-sm ${opacity} hover:ring-1 hover:ring-white transition-all`;
+          square.title = `${dateStr}: ${count}`;
+          heatmapContainer.appendChild(square);
+      }
+
+      // 4. Muscle Group Volume Logic
+      const muscleMapping: Record<string, string> = {
+        'bryst': 'Chest', 'chest': 'Chest', 'incline press': 'Chest', 'fly': 'Chest',
+        'ryg': 'Back', 'back': 'Back', 'lat': 'Back', 'row': 'Back', 'deadlift': 'Back', 'pull': 'Back',
+        'ben': 'Legs', 'leg': 'Legs', 'squat': 'Legs', 'lunges': 'Legs', 'calf': 'Legs', 'læg': 'Legs', 'hip': 'Legs',
+        'skulder': 'Shoulders', 'shoulder': 'Shoulders', 'deltoid': 'Shoulders', 'face pull': 'Shoulders',
+        'triceps': 'Arms', 'biceps': 'Arms', 'curl': 'Arms', 'extension': 'Arms', 'pushdown': 'Arms',
+        'core': 'Core', 'abs': 'Core', 'mave': 'Core', 'plank': 'Core', 'crunch': 'Core'
+      };
+
+      const getMuscleGroup = (name: string) => {
+        name = name.toLowerCase();
+        for (const [key, value] of Object.entries(muscleMapping)) {
+            if (name.includes(key)) return value;
+        }
+        return 'Other';
+      };
+
+      const statsByMuscle: Record<string, { sets: number, weeklySets: number }> = {
+        'Chest': { sets: 0, weeklySets: 0 },
+        'Back': { sets: 0, weeklySets: 0 },
+        'Legs': { sets: 0, weeklySets: 0 },
+        'Shoulders': { sets: 0, weeklySets: 0 },
+        'Arms': { sets: 0, weeklySets: 0 },
+        'Core': { sets: 0, weeklySets: 0 }
+      };
+
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      logs.forEach((log: any) => {
+        const group = getMuscleGroup(log.exercise_name || '');
+        if (statsByMuscle[group]) {
+            statsByMuscle[group].sets += 1; 
+            if (new Date(log.date) >= sevenDaysAgo) {
+                statsByMuscle[group].weeklySets += 1;
+            }
+        }
+      });
+
+      // Targets
+      const targets: Record<string, { min: number, max: number }> = {
+        'Chest': { min: 10, max: 15 },
+        'Back': { min: 10, max: 15 },
+        'Legs': { min: 10, max: 15 },
+        'Shoulders': { min: 8, max: 12 },
+        'Arms': { min: 6, max: 10 },
+        'Core': { min: 6, max: 10 }
+      };
+
+      // Render Volume Bars
+      const barsContainer = document.getElementById('volume-bars')!;
+      barsContainer.innerHTML = '';
+      
+      Object.entries(statsByMuscle).forEach(([group, data]) => {
+        const target = targets[group];
+        if (!target) return;
+        
+        const percentage = Math.min((data.weeklySets / target.max) * 100, 100);
+        const statusColor = data.weeklySets >= target.min ? '#baffc9' : '#ffd700';
+        
+        const barHtml = `
+            <div>
+                <div class="flex justify-between items-end mb-2">
+                    <div>
+                        <span class="text-sm font-bold text-white uppercase tracking-wider">${group}</span>
+                        <span class="text-[10px] text-white/30 ml-2">${labels.goal}: ${target.min}-${target.max} ${labels.sets}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-black italic text-white">${data.weeklySets}</span>
+                        <span class="text-[10px] text-white/30 uppercase font-bold ml-1">${labels.sets}</span>
+                    </div>
+                </div>
+                <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full transition-all duration-1000" style="width: ${percentage}%; background-color: ${statusColor}; box-shadow: 0 0 10px ${statusColor}40"></div>
+                </div>
+            </div>
+        `;
+        barsContainer.insertAdjacentHTML('beforeend', barHtml);
+
+        // Update Anatomy Heatmap Colors
+        const intensityScale = (sets: number) => {
+            if (sets === 0) return '#ffffff05';
+            const ratio = Math.min(sets / 15, 1); 
+            return `hsla(45, 100%, ${50 + (1 - ratio) * 30}%, ${0.2 + ratio * 0.8})`;
+        };
+
+        const muscleId = `muscle-${group}`;
+        const paths = document.querySelectorAll(`[id^="${muscleId}"]`);
+        paths.forEach(p => {
+            (p as SVGPathElement).style.fill = intensityScale(data.weeklySets);
+            (p as SVGPathElement).style.stroke = data.weeklySets > 0 ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 255, 255, 0.1)';
+        });
+      });
+
+      // 4. Render Charts
+      const ctxV = document.getElementById('volChart') as HTMLCanvasElement;
+      new Chart(ctxV, {
+        type: 'bar',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: ctxV.getAttribute('data-label') || 'Tonnage',
+            data: tonnages,
+            backgroundColor: '#FFD700',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { color: '#ffffff10' } }
+          }
+        }
+      });
+
+      // Muscle Distribution Pie Chart
+      const ctxM = document.getElementById('muscleDistChart') as HTMLCanvasElement;
+      new Chart(ctxM, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(statsByMuscle),
+          datasets: [{
+            data: Object.values(statsByMuscle).map(d => d.sets),
+            backgroundColor: ['#ffb3ba', '#baffc9', '#bae1ff', '#ffffba', '#dbdcff', '#ffdfba'],
+            borderWidth: 0,
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: { 
+            legend: { 
+                position: 'right',
+                labels: { color: '#ffffff80', font: { size: 10 }, padding: 20, usePointStyle: true }
+            } 
+          }
+        }
+      });
+
+      const ctxC = document.getElementById('cardioChart') as HTMLCanvasElement;
+      new Chart(ctxC, {
+        type: 'line',
+        data: {
+          labels: cDates,
+          datasets: [{
+            label: ctxC.getAttribute('data-label') || 'Distance',
+            data: distances,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#3b82f6'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#ffffff50', font: { size: 10 } }, grid: { color: '#ffffff10' } }
+          }
+        }
+      });
+
+    } catch (err) {
+      console.error("Stats Error", err);
+    }
+  }
+
+  // Run on load
+  initStats();
+</script>
