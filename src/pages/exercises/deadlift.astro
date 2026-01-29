@@ -104,6 +104,26 @@ const techInfo = {
             <p class="text-[10px] text-white/20 leading-relaxed uppercase font-bold">Progressiv overload sikrer kontinuerlig fremgang.</p>
           </Card>
 
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-[350ms]">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-6 border-b border-white/5 pb-2">
+                <i class="fa-solid fa-ghost text-accent mr-2"></i> The Iron Ghost
+            </h3>
+            <div id="ghost-container" class="space-y-4">
+                <div class="flex items-center justify-between text-[10px] text-white/20 uppercase font-black">
+                    <span>Din Ghost (4 uger siden)</span>
+                    <span id="ghost-date">Indlæser...</span>
+                </div>
+                <div class="p-4 bg-white/5 rounded-xl border border-dashed border-white/10">
+                    <div id="ghost-stats" class="text-2xl font-black italic text-white/40 mb-1">-- kg x --</div>
+                    <div class="text-[10px] text-white/20 uppercase font-bold">Session Tonnage: <span id="ghost-tonnage">--</span></div>
+                </div>
+                <div class="pt-2">
+                    <div class="text-[10px] text-accent uppercase font-black mb-2">Dit mål i dag:</div>
+                    <p id="ghost-directive" class="text-xs font-bold text-white leading-relaxed">Du skal slå din Ghost med mindst 2.5 kg eller én ekstra rep for at holde din progression!</p>
+                </div>
+            </div>
+          </Card>
+
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-200">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-clock text-accent"></i> Smart Rest-Timer
@@ -277,6 +297,26 @@ const techInfo = {
             } else {
                 const hoursLeft = Math.ceil(targetRecovery - hoursSince);
                 msgEl.innerText = `Du har brug for ca. ${hoursLeft} timer mere for fuld restitution efter dit sidste pas (RPE ${latestRpe}).`;
+            }
+
+            // Iron Ghost Logic
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() - 28);
+            const ghostSession = logs.find((l: any) => new Date(l.date) <= targetDate);
+            
+            if (ghostSession) {
+                document.getElementById('ghost-date')!.innerText = new Date(ghostSession.date).toLocaleDateString('da-DK', { day: 'numeric', month: 'short' });
+                document.getElementById('ghost-stats')!.innerText = `${ghostSession.weight_kg} kg x ${ghostSession.reps}`;
+                document.getElementById('ghost-tonnage')!.innerText = `${ghostSession.tonnage_kg} kg`;
+                
+                const diff = (latestLog.weight_kg * latestLog.reps) - (ghostSession.weight_kg * ghostSession.reps);
+                if (diff > 0) {
+                    document.getElementById('ghost-directive')!.innerText = `Du fører med ${diff} kg i volumen over din Ghost fra sidste måned! Fortsæt presset. 🔥`;
+                } else {
+                    document.getElementById('ghost-directive')!.innerText = `Din Ghost løftede det samme som dig. Giv den gas i dag for at bryde overtaget! 🦾`;
+                }
+            } else {
+                document.getElementById('ghost-container')!.innerHTML = `<p class="text-center py-4 text-dim text-xs italic">Ingen data for din Ghost endnu. Følg programmet i 4 uger for at aktivere sammenligning!</p>`;
             }
         }
 
