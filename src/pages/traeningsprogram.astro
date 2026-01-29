@@ -54,9 +54,10 @@ const days = [
                             <thead>
                                 <tr class="bg-white/5 uppercase text-[10px] font-bold tracking-[0.2em] text-white/40">
                                     <th class="px-6 py-4">Øvelse</th>
-                                    <th class="px-6 py-4">Muskelgruppe</th>
+                                    <th class="px-6 py-4">Fokus / Muskel</th>
                                     <th class="px-6 py-4 text-center">Sæt</th>
-                                    <th class="px-6 py-4 text-center">Tempo</th>
+                                    <th class="px-6 py-4 text-center">RPE / Hvile</th>
+                                    <th class="px-6 py-4">Tekniske Noter</th>
                                     <th class="px-6 py-4 text-right">Type</th>
                                 </tr>
                             </thead>
@@ -64,13 +65,20 @@ const days = [
                                 {day.data.map(ex => (
                                     <tr class="hover:bg-white/[0.03] transition-colors group">
                                         <td class="px-6 py-4">
-                                            <span class="text-sm font-semibold text-white group-hover:text-accent transition-colors">{ex.exercise}</span>
+                                            <div class="text-sm font-semibold text-white group-hover:text-accent transition-colors">{ex.exercise}</div>
+                                            <div class="md:hidden text-[10px] text-white/30 mt-1 font-mono">{ex.tempo}</div>
                                         </td>
                                         <td class="px-6 py-4">
                                             <span class="text-[11px] text-white/50">{ex.muscle}</span>
                                         </td>
                                         <td class="px-6 py-4 text-center font-mono text-sm text-accent">{ex.sets}</td>
-                                        <td class="px-6 py-4 text-center font-mono text-[11px] text-white/40">{ex.tempo}</td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="text-[11px] text-white/60 font-mono">RPE {ex.rpe}</div>
+                                            <div class="text-[9px] text-white/30 font-mono italic">{ex.rest}</div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <p class="text-[11px] text-white/40 max-w-[200px] leading-relaxed italic">"{ex.notes}"</p>
+                                        </td>
                                         <td class="px-6 py-4 text-right">
                                             <span class={`text-[9px] px-2 py-0.5 rounded-full border uppercase font-bold tracking-tighter ${ex.type === 'Compound' ? 'border-accent/40 text-accent bg-accent/5' : 'border-white/10 text-white/30'}`}>
                                                 {ex.type}

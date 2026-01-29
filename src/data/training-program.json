@@ -5,70 +5,100 @@
             "sets": 4,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Øvre Bryst, Skuldre, Triceps"
+            "muscle": "Øvre Bryst, Skuldre, Triceps",
+            "rpe": "8-9",
+            "rest": "2-3 min",
+            "notes": "Fokus på langsom eccentrisk fase."
         },
         {
             "exercise": "Flat Chest Press",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Bryst, Skuldre, Triceps"
+            "muscle": "Bryst, Skuldre, Triceps",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Fuldt stræk i bunden."
         },
         {
             "exercise": "Pec Fly",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Bryst"
+            "muscle": "Bryst",
+            "rpe": "9",
+            "rest": "60-90 sek",
+            "notes": "Hold spændingen, undgå at banke vægtene sammen."
         },
         {
             "exercise": "Shoulder Press",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Skuldre, Triceps"
+            "muscle": "Skuldre, Triceps",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Kontrolleret lock-out."
         },
         {
             "exercise": "Leaning Lateral Raise",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Sideliggende Deltoid"
+            "muscle": "Sideliggende Deltoid",
+            "rpe": "9-10",
+            "rest": "60 sek",
+            "notes": "Læn dig væk for konstant spænding."
         },
         {
             "exercise": "Overhead Cable L-U Raise",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Sideliggende Deltoid, Øvre Traps"
+            "muscle": "Sideliggende Deltoid, Øvre Traps",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Diagonal bane."
         },
         {
             "exercise": "High-Incline DB Shrug/Row",
             "sets": 2,
             "tempo": "1-1-2",
             "type": "Isolation",
-            "muscle": "Øvre Traps, Bagskulder"
+            "muscle": "Øvre Traps, Bagskulder",
+            "rpe": "8",
+            "rest": "90 sek",
+            "notes": "Hold sammentrækningen i 1 sek."
         },
         {
             "exercise": "Neck Curls & Extensions (superset)",
             "sets": 3,
             "tempo": "2-0-3",
             "type": "Isolation",
-            "muscle": "Nakke"
+            "muscle": "Nakke",
+            "rpe": "7",
+            "rest": "60 sek",
+            "notes": "Gøres roligt, ingen voldsomme bevægelser."
         },
         {
             "exercise": "Overhead Triceps Extensions",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Triceps (Lange hoved)"
+            "muscle": "Triceps (Lange hoved)",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Hold albuerne ind til hovedet."
         },
         {
             "exercise": "Triceps Pushdowns",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Triceps"
+            "muscle": "Triceps",
+            "rpe": "9-10",
+            "rest": "60 sek",
+            "notes": "Pres helt igennem i bunden."
         }
     ],
     "pull1": [
@@ -77,91 +107,130 @@
             "sets": 3,
             "tempo": "1-0-2",
             "type": "Compound",
-            "muscle": "Baglår, Baller, Lænd"
+            "muscle": "Baglår, Baller, Lænd",
+            "rpe": "8-9",
+            "rest": "3-5 min",
+            "notes": "Læg stangen død mellem hver rep."
         },
         {
             "exercise": "Lat Pulldown",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Lats, Øvre Ryg, Biceps"
+            "muscle": "Lats, Øvre Ryg, Biceps",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Tænk på at trække gennem albuerne."
         },
         {
             "exercise": "Lat Prayer",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Lats"
+            "muscle": "Lats",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Fokuser på den dybe strækfase."
         },
         {
             "exercise": "Low Row",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Midtryg, Lats, Biceps"
+            "muscle": "Midtryg, Lats, Biceps",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Hold brystet kørende fremad."
         },
         {
             "exercise": "Chest-supported Row",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Midtryg, Bagskulder, Biceps"
+            "muscle": "Midtryg, Bagskulder, Biceps",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Undgå at bruge moment."
         },
         {
             "exercise": "Sideways Reverse Flys",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Bagskulder"
+            "muscle": "Bagskulder",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Sørg for kontrolleret eccentrisk fase."
         },
         {
             "exercise": "Face Pulls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Bagskulder, Øvre Ryg"
+            "muscle": "Bagskulder, Øvre Ryg",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Træk mod panden og spred tovene."
         },
         {
             "exercise": "Preacher Curls",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Biceps"
+            "muscle": "Biceps",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Fuldt stræk uden at låse albuerne hårdt."
         },
         {
             "exercise": "Cable Curls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Biceps"
+            "muscle": "Biceps",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Hold overarmene fikseret."
         },
         {
             "exercise": "Preacher Hammer Curls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Brachialis, Underarme"
+            "muscle": "Brachialis, Underarme",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Neutralt greb (tommelfinger op)."
         },
         {
             "exercise": "Reverse Wrist Curls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Underarms-extensorer"
+            "muscle": "Underarms-extensorer",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Let vægt, høj kontakt."
         },
         {
             "exercise": "Wrist Curls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Underarms-flexorer"
+            "muscle": "Underarms-flexorer",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Rul stangen helt ud i fingrene."
         },
         {
             "exercise": "Farmer's Hold",
             "sets": 1,
             "tempo": "Hold",
             "type": "Isolation",
-            "muscle": "Underarme, Traps, Greb"
+            "muscle": "Underarme, Traps, Greb",
+            "rpe": "10",
+            "rest": "2 min",
+            "notes": "Hold så længe som muligt med god holdning."
         }
     ],
     "legs1": [
@@ -170,77 +239,110 @@
             "sets": 4,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Forlår, Baller, Core"
+            "muscle": "Forlår, Baller, Core",
+            "rpe": "8-9",
+            "rest": "3-5 min",
+            "notes": "Hold vægten på midtfoden."
         },
         {
             "exercise": "Leg Press",
             "sets": 4,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Forlår, Baller"
+            "muscle": "Forlår, Baller",
+            "rpe": "8",
+            "rest": "2-3 min",
+            "notes": "Placer fødderne skulderbredt."
         },
         {
             "exercise": "Prone Leg Curls",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Baglår"
+            "muscle": "Baglår",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Undgå at løfte hoften fra bænken."
         },
         {
             "exercise": "Leg Extension",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Forlår"
+            "muscle": "Forlår",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Squeeze i 1 sek i toppen."
         },
         {
             "exercise": "Walking Lunges",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Forlår, Baller"
+            "muscle": "Forlår, Baller",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Store kontrollerede skridt."
         },
         {
             "exercise": "Hip Abduction",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Abduktorer (Sideballe)"
+            "muscle": "Abduktorer (Sideballe)",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Leun dig en smule fremad."
         },
         {
             "exercise": "Hip Adduction",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Adduktorer (Inderlår)"
+            "muscle": "Adduktorer (Inderlår)",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Rolig bevægelse."
         },
         {
             "exercise": "Calf Press",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Lægge"
+            "muscle": "Lægge",
+            "rpe": "10",
+            "rest": "60-90 sek",
+            "notes": "Dyb stræk i bunden."
         },
         {
             "exercise": "Cable Crunch",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Mave"
+            "muscle": "Mave",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Crunsh sammen, undgå kun at bruge hoften."
         },
         {
             "exercise": "Hanging Leg Raises",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Nedre Mave"
+            "muscle": "Nedre Mave",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Undgå sving."
         },
         {
             "exercise": "Ab Wheel",
             "sets": 2,
             "tempo": "3-1-3",
             "type": "Isolation",
-            "muscle": "Core"
+            "muscle": "Core",
+            "rpe": "8",
+            "rest": "60-90 sek",
+            "notes": "Hold lænden rundet, pas på ryggen."
         }
     ],
     "push2": [
@@ -249,70 +351,100 @@
             "sets": 4,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Bryst, Skuldre, Triceps"
+            "muscle": "Bryst, Skuldre, Triceps",
+            "rpe": "8-9",
+            "rest": "2-3 min",
+            "notes": "Fokus på dybt stræk."
         },
         {
             "exercise": "Incline Cable Press",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Øvre Bryst, Skuldre"
+            "muscle": "Øvre Bryst, Skuldre",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Kablers bane skal følge armene."
         },
         {
             "exercise": "High-to-Low Fly",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Nedre Bryst"
+            "muscle": "Nedre Bryst",
+            "rpe": "9",
+            "rest": "60-90 sek",
+            "notes": "Tænk på at føre albuerne sammen."
         },
         {
             "exercise": "Machine Shoulder Press",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Skuldre, Triceps"
+            "muscle": "Skuldre, Triceps",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Juster sædet så du har god mekanisk fordel."
         },
         {
             "exercise": "Leaning Lateral Raise",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Sideliggende Deltoid"
+            "muscle": "Sideliggende Deltoid",
+            "rpe": "9-10",
+            "rest": "60 sek",
+            "notes": "Konstant spænding."
         },
         {
             "exercise": "Cable Y-Raise",
             "sets": 2,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Sideliggende Deltoid, Traps"
+            "muscle": "Sideliggende Deltoid, Traps",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Armene i Y-position."
         },
         {
             "exercise": "Overhead Cable L-U Raise",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Sideliggende Deltoid, Øvre Traps"
+            "muscle": "Sideliggende Deltoid, Øvre Traps",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Kontrolleret tempo."
         },
         {
             "exercise": "Neck Extensions",
             "sets": 3,
             "tempo": "2-0-3",
             "type": "Isolation",
-            "muscle": "Nakke"
+            "muscle": "Nakke",
+            "rpe": "7",
+            "rest": "60 sek",
+            "notes": "Ingen hast."
         },
         {
             "exercise": "Rope Overhead Extensions",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Triceps (Lange hoved)"
+            "muscle": "Triceps (Lange hoved)",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Få det fulde stræk."
         },
         {
             "exercise": "Single-arm Pushdown",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Triceps"
+            "muscle": "Triceps",
+            "rpe": "9-10",
+            "rest": "60 sek",
+            "notes": "Skift arm uden pause."
         }
     ],
     "pull2": [
@@ -321,77 +453,110 @@
             "sets": 3,
             "tempo": "2-0-2",
             "type": "Compound",
-            "muscle": "Baglår, Baller, Lænd"
+            "muscle": "Baglår, Baller, Lænd",
+            "rpe": "8",
+            "rest": "3 min",
+            "notes": "Hoften så langt tilbage som muligt."
         },
         {
             "exercise": "Wide Pulldown",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Lats (Bredde), Øvre Ryg"
+            "muscle": "Lats (Bredde), Øvre Ryg",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Bredt greb, brystet højt."
         },
         {
             "exercise": "Kneeling Lat Row",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Lats, Midtryg"
+            "muscle": "Lats, Midtryg",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Træk mod hoften."
         },
         {
             "exercise": "Seated Cable Row",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Midtryg, Lats, Biceps"
+            "muscle": "Midtryg, Lats, Biceps",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Squeeze skulderbladene."
         },
         {
             "exercise": "1-arm DB Row",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Lats, Midtryg, Biceps"
+            "muscle": "Lats, Midtryg, Biceps",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Undgå rotation i overkroppen."
         },
         {
             "exercise": "Reverse Pec Deck",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Bagskulder"
+            "muscle": "Bagskulder",
+            "rpe": "9",
+            "rest": "60-90 sek",
+            "notes": "Fokus på bagsiden."
         },
         {
             "exercise": "Face Pulls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Bagskulder, Øvre Ryg"
+            "muscle": "Bagskulder, Øvre Ryg",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Ekstern rotation i toppen."
         },
         {
             "exercise": "Preacher Curl",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Biceps"
+            "muscle": "Biceps",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "God kontakt."
         },
         {
             "exercise": "Incline DB Curl",
             "sets": 2,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Biceps (Lange hoved)"
+            "muscle": "Biceps (Lange hoved)",
+            "rpe": "9",
+            "rest": "60-90 sek",
+            "notes": "Hold overarmene bag lodret."
         },
         {
             "exercise": "Preacher Hammer Curls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Brachialis, Underarme"
+            "muscle": "Brachialis, Underarme",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Stabilt greb."
         },
         {
             "exercise": "Wrist Curls",
             "sets": 2,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Underarms-flexorer"
+            "muscle": "Underarms-flexorer",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Maksimalt ROM."
         }
     ],
     "legs2": [
@@ -400,63 +565,90 @@
             "sets": 4,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Forlår, Baller"
+            "muscle": "Forlår, Baller",
+            "rpe": "9",
+            "rest": "3-4 min",
+            "notes": "Tung dag, fokus på stabilitet."
         },
         {
             "exercise": "Hack Squat",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Forlår"
+            "muscle": "Forlår",
+            "rpe": "8",
+            "rest": "2-3 min",
+            "notes": "Dybde er vigtigere end vægt."
         },
         {
             "exercise": "RDL DB",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Compound",
-            "muscle": "Baglår, Baller"
+            "muscle": "Baglår, Baller",
+            "rpe": "8",
+            "rest": "2 min",
+            "notes": "Overkrop næsten vandret."
         },
         {
             "exercise": "Leg Curls",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Baglår"
+            "muscle": "Baglår",
+            "rpe": "9",
+            "rest": "90 sek",
+            "notes": "Hold spændingen."
         },
         {
             "exercise": "Hip Thrust",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Compound",
-            "muscle": "Baller"
+            "muscle": "Baller",
+            "rpe": "9",
+            "rest": "2-3 min",
+            "notes": "Hold squeeze i 1 sek i toppen."
         },
         {
             "exercise": "Calves",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Lægge"
+            "muscle": "Lægge",
+            "rpe": "10",
+            "rest": "60 sek",
+            "notes": "Helt op på tæerne."
         },
         {
             "exercise": "Reverse Cable Crunch",
             "sets": 3,
             "tempo": "2-1-3",
             "type": "Isolation",
-            "muscle": "Nedre Mave"
+            "muscle": "Nedre Mave",
+            "rpe": "9",
+            "rest": "60 sek",
+            "notes": "Træk knæene mod brystet."
         },
         {
             "exercise": "Cable Woodchoppers",
             "sets": 3,
             "tempo": "2-1-2",
             "type": "Isolation",
-            "muscle": "Skrå mavemuskler"
+            "muscle": "Skrå mavemuskler",
+            "rpe": "8",
+            "rest": "60 sek",
+            "notes": "Rotér med maven, ikke armene."
         },
         {
             "exercise": "Weighted Plank",
             "sets": 3,
             "tempo": "Hold",
             "type": "Isolation",
-            "muscle": "Core"
+            "muscle": "Core",
+            "rpe": "9-10",
+            "rest": "90 sek",
+            "notes": "Hold kroppen som en stiv plade."
         }
     ]
 }
