@@ -6,33 +6,33 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import Button from '@components/ui/Button.astro';
 
 const techInfo = {
-  title: "Sideways Reverse Flys",
-  muscles: ["Bagskulder (Posterior Deltoid)", "Midterste Trapezius", "Rhomboids"],
+  title: "1-arm DB Row",
+  muscles: ["Lats", "Midtryg (Rhomboids)", "Biceps", "Core-stabilitet"],
   benefits: [
-    "Isolerer bagskulderen uden at inddrage lats.",
-    "Vigtigt for skulder-stabilitet og holdning.",
-    "Giver det færdige og 3D-look til skuldrene."
+    "Uovertruffen unilateral rygtræning for at rette asymmetri.",
+    "Giver et ekstremt stræk i bunden og en dyb sammentrækning.",
+    "Træner core-stabiliteten i en anti-rotations position."
   ],
   setup: [
-    "Stå med siden til et kabelstativ eller brug håndvægte.",
-    "Bøj let i hoften og hold ryggen flad.",
-    "Grib håndtaget/vægten med armen strakt foran dig."
+    "Støt det ene knæ og hånd på en bænk, eller stå med fødderne forskudt.",
+    "Hold ryggen helt vandret og undgå at svaje i lænden.",
+    "Lad armen med håndvægten hænge frit i bunden (fuldt stræk)."
   ],
   execution: [
-    "Løft armen ud til siden og bagud i en bue.",
-    "Fokuser på at bevæge skulderbladet mod midten af ryggen.",
-    "Hold spændingen i toppen i et kort sekund.",
-    "Sænk langsomt og kontrolleret tilbage."
+    "Træk vægten op mod din hofte ved at føre albuen bagud.",
+    "Undgå at rotere i overkroppen - hold skuldrene parallelle med gulvet.",
+    "Squeeze ryggen i toppen i et sekund.",
+    "Sænk vægten kontrolleret tilbage til start."
   ]
 };
 ---
 
-<Layout title="Sideways Reverse Flys: Teknik & Stats">
+<Layout title="1-arm DB Row: Teknik & Stats">
   <main class="container mx-auto px-4 py-12">
     <Section class="max-w-5xl mx-auto">
       <div class="mb-12 text-center reveal reveal-fade">
         <SectionHeading>Øvelses-Fokus</SectionHeading>
-        <h1 class="text-4xl md:text-6xl font-black mb-6 uppercase italic tracking-tighter italic">Sideways Reverse Flys</h1>
+        <h1 class="text-4xl md:text-6xl font-black mb-6 uppercase italic tracking-tighter italic">1-arm DB Row</h1>
         <div class="flex flex-wrap justify-center gap-3">
           {techInfo.muscles.map(m => (
             <span class="px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-bold uppercase tracking-widest text-accent">{m}</span>
@@ -48,7 +48,7 @@ const techInfo = {
               <div><p class="text-[10px] text-white/30 uppercase font-bold mb-1">Max Weight</p><div id="stat-pb-weight" class="text-3xl font-black text-white italic">-- kg</div></div>
               <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                 <div><p class="text-[10px] text-white/30 uppercase font-bold">Total Sessions</p><p id="stat-total-sessions" class="font-bold text-sm">--</p></div>
-                <div><p class="text-[10px] text-white/30 uppercase font-bold">Gns. RPE</p><p id="stat-avg-rpe" class="font-bold text-sm">--</p></div>
+                <div><p class="text-[10px] text-white/30 uppercase font-bold">Avg RPE</p><p id="stat-avg-rpe" class="font-bold text-sm">--</p></div>
               </div>
             </div>
           </Card>
@@ -70,11 +70,11 @@ const techInfo = {
       try {
         const res = await fetch('/api/training');
         const allLogs = await res.json();
-        const logs = allLogs.filter((l: any) => l.exercise_name?.toLowerCase().includes('reverse fly') || l.exercise_name?.toLowerCase().includes('reverse pec deck')).sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        const logs = allLogs.filter((l: any) => l.exercise_name?.toLowerCase().includes('db row')).sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
         if (logs.length === 0) return;
 
         document.getElementById('stat-pb-weight')!.innerText = `${Math.max(...logs.map((l:any)=>l.weight_kg))} kg`;
-        document.getElementById('stat-total-sessions')!.innerText = logs.length.toString();
+        document.getElementById('stat-total-sessions')!.innerText = [...new Set(logs.map((l:any)=>l.date))].length.toString();
         const rpes = logs.map((l: any) => l.rpe).filter(Boolean);
         document.getElementById('stat-avg-rpe')!.innerText = rpes.length > 0 ? (rpes.reduce((a:number, b:number) => a+b, 0) / rpes.length).toFixed(1) : '--';
 
