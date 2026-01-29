@@ -3,6 +3,7 @@ import Navbar from '@components/Navbar.astro';
 import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
 import ChatWidget from '@components/common/ChatWidget.astro';
+import CommandPalette from '@components/common/CommandPalette.astro';
 import '@styles/styles.css';
 import '@styles/themes.css';
 
@@ -46,5 +47,6 @@ const lang = getLangFromUrl(Astro.url);
   <Footer />
   
   <ChatWidget />
+  <CommandPalette />
 </body>
 </html>
