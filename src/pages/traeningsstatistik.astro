@@ -71,6 +71,27 @@ import Button from '../components/ui/Button.astro';
             </div>
         </div>
 
+        <!-- TONNAGE MILESTONES -->
+        <div class="mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 opacity-5 group-hover:rotate-12 transition-transform duration-700">
+                    <i id="milestone-icon" class="fa-solid fa-elephant text-[140px]"></i>
+                </div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced"></i> Tonnage Milestones
+                </h3>
+                <div class="space-y-4">
+                    <p class="text-2xl font-black italic text-white" id="milestone-text">
+                        Du har løftet svarende til <span class="text-accent" id="milestone-count">...</span> 
+                        <span id="milestone-name">...</span> i denne måned.
+                    </p>
+                    <p class="text-sm text-dim max-w-lg">
+                        Din samlede indsats svarer til vægten af tunge objekter. En sjov måde at forstå dit hårde arbejde på!
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <!-- KPI METRICS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
           <div class="p-4 bg-glass border border-glass-border rounded-xl">
@@ -136,6 +157,51 @@ import Button from '../components/ui/Button.astro';
             <div class="h-[300px] w-full"><canvas id="cardioChart"></canvas></div>
         </div>
 
+        <!-- ANATOMY HEATMAP -->
+        <div class="grid grid-cols-1 gap-6 mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-8 flex items-center gap-2">
+                    <i class="fa-solid fa-dna"></i> Interactive Anatomy Map (Ugentlig Fokus)
+                </h3>
+                <div class="flex flex-col lg:flex-row items-center justify-around gap-12">
+                    <!-- Front View -->
+                    <div class="flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-white/20 mb-4">Forfra</span>
+                        <div class="w-64 h-96 relative" id="body-front">
+                            <svg viewBox="0 0 200 400" class="w-full h-full">
+                                <!-- Base Body Outline -->
+                                <path d="M100,20 C80,20 70,35 70,50 C70,65 80,80 100,80 C120,80 130,65 130,50 C130,35 120,20 100,20" fill="#ffffff05" stroke="#ffffff10" />
+                                <path d="M100,80 L70,80 L60,100 L50,150 L60,200 L80,200 L80,250 L70,380 L100,380 L130,380 L120,250 L120,200 L140,200 L150,150 L140,100 L130,80 Z" fill="#ffffff05" stroke="#ffffff10" />
+                                
+                                <!-- Muscle Groups -->
+                                <path id="muscle-Chest" d="M75,90 Q100,120 125,90 L125,120 Q100,140 75,120 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Shoulders-Front" d="M60,90 L75,85 L75,110 L65,120 Z M125,85 L140,90 L135,120 L125,110 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Core" d="M85,130 L115,130 L115,180 L85,180 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Arms-Biceps" d="M55,130 L65,130 L65,170 L55,170 Z M135,130 L145,130 L145,170 L135,170 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Legs-Quads" d="M80,210 L95,210 L95,300 L80,300 Z M105,210 L120,210 L120,300 L105,300 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Back View -->
+                    <div class="flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-white/20 mb-4">Bagfra</span>
+                        <div class="w-64 h-96 relative" id="body-back">
+                            <svg viewBox="0 0 200 400" class="w-full h-full">
+                                <path d="M100,20 C80,20 70,35 70,50 C70,65 80,80 100,80 C120,80 130,65 130,50 C130,35 120,20 100,20" fill="#ffffff05" stroke="#ffffff10" />
+                                <path d="M100,80 L70,80 L60,100 L50,150 L60,200 L80,200 L80,250 L70,380 L100,380 L130,380 L120,250 L120,200 L140,200 L150,150 L140,100 L130,80 Z" fill="#ffffff05" stroke="#ffffff10" />
+                                
+                                <path id="muscle-Back" d="M75,90 Q100,110 125,90 L125,170 L75,170 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Arms-Triceps" d="M55,110 L65,110 L65,160 L55,160 Z M135,110 L145,110 L145,160 L135,160 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Legs-Glutes" d="M80,185 L120,185 L120,210 L80,210 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                                <path id="muscle-Legs-Hams" d="M80,220 L95,220 L95,300 L80,300 Z M105,220 L120,220 L120,300 L105,300 Z" fill="#ffffff05" class="transition-colors duration-1000" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-white/20 mt-8 italic text-center uppercase tracking-widest font-bold">Farveintensitet indikerer ugentlig træningsmængde (Sæt)</p>
+            </div>
+        </div>
+
         <div class="flex justify-center gap-4">
           <Button href="/blog">Læs om min tilgang</Button>
           <Button href="/" variant="ghost">Tilbage til forsiden</Button>
@@ -168,6 +234,40 @@ import Button from '../components/ui/Button.astro';
       
       document.getElementById('stat-sessions')!.innerText = totalSessions.toString();
       document.getElementById('stat-sessions')!.classList.remove('animate-pulse');
+
+      // 1.1 Tonnage Milestones (Monthly)
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const monthlyTonnage = logs.reduce((sum: number, log: any) => {
+          const d = new Date(log.date);
+          if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
+              return sum + (log.tonnage_kg || 0);
+          }
+          return sum;
+      }, 0);
+
+      const milestones = [
+          { name: 'Afrikanske Elefanter', weight: 6000, icon: 'fa-elephant' },
+          { name: 'VW Golf\'er', weight: 1400, icon: 'fa-car' },
+          { name: 'Blåhvaler', weight: 150000, icon: 'fa-fish' },
+          { name: 'Rumfærger', weight: 75000, icon: 'fa-shuttle-space' }
+      ];
+
+      // Find the most appropriate milestone (one where count is between 0.5 and 50 if possible)
+      let bestMilestone = milestones[1]; // Golf as default
+      for (const m of milestones) {
+          const count = monthlyTonnage / m.weight;
+          if (count >= 0.5 && count <= 20) {
+              bestMilestone = m;
+              break;
+          }
+      }
+
+      const mCount = (monthlyTonnage / bestMilestone.weight).toFixed(1);
+      document.getElementById('milestone-count')!.innerText = mCount;
+      document.getElementById('milestone-name')!.innerText = bestMilestone.name;
+      const mIcon = document.getElementById('milestone-icon')!;
+      mIcon.className = `fa-solid ${bestMilestone.icon} text-[140px]`;
 
       // 2. Prepare Chart Data (Group by Week/Date)
       // Simple grouping by Date for now
@@ -342,6 +442,21 @@ import Button from '../components/ui/Button.astro';
             </div>
         `;
         barsContainer.insertAdjacentHTML('beforeend', barHtml);
+
+        // Update Anatomy Heatmap Colors
+        const intensityScale = (sets: number) => {
+            if (sets === 0) return '#ffffff05';
+            const ratio = Math.min(sets / 15, 1); // Max intensity at 15 sets
+            // From subtle accent (low) to deep gold/red (high)
+            return `hsla(45, 100%, ${50 + (1 - ratio) * 30}%, ${0.2 + ratio * 0.8})`;
+        };
+
+        const muscleId = `muscle-${group}`;
+        const paths = document.querySelectorAll(`[id^="${muscleId}"]`);
+        paths.forEach(p => {
+            (p as SVGPathElement).style.fill = intensityScale(data.weeklySets);
+            (p as SVGPathElement).style.stroke = data.weeklySets > 0 ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 255, 255, 0.1)';
+        });
       });
 
       // 4. Render Charts
