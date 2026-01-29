@@ -1,0 +1,835 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getLangFromUrl } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+  da: {
+    title: "Anton's AI Assistent",
+    desc: "Stil mig spørgsmål om Antons CV, projekter, blogindlæg og erfaring.",
+    intro: "Hej! Jeg er den store udgave af Antons AI. Jeg kan analysere hele portfolioen og endda <strong>lave grafer</strong> over dataene. Prøv det!",
+    placeholder: "Stil mig et spørgsmål...",
+    disclaimer: "Drevet af Google Gemini · Kan lave fejl",
+    back: "Tilbage til forsiden",
+    prompts: ["📊 Vis mig en graf over Antons skills", "💼 Opsummer Antons erfaring", "📋 Analysér Jobopslag"]
+  },
+  en: {
+    title: "Anton's AI Assistant",
+    desc: "Ask me questions about Anton's CV, projects, blog posts, and experience.",
+    intro: "Hi! I'm the full-screen AI. I can analyze the portfolio and even <strong>generate charts</strong> from the data. Give it a try!",
+    placeholder: "Try: 'Visualize your experience timeline'...",
+    disclaimer: "Powered by Google Gemini · May produce inaccuracies",
+    back: "Back to Home",
+    prompts: ["📊 Graph Anton's skills", "💼 Summarize Anton's experience", "📋 Analyze Job Match"]
+  }
+}[lang];
+---
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script is:inline>
+    // Initialize PDF.js worker
+    if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+</script>
+
+<Layout 
+  title={t.title} 
+  description={t.desc}
+>
+  <style>
+    /* Background Animation */
+    .tech-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    
+    .tech-grid {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        transform: perspective(500px) rotateX(60deg);
+        animation: grid-move 20s linear infinite;
+    }
+
+    @keyframes grid-move {
+        0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+        100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+    }
+
+    .ambient-glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(var(--accent), 0.15) 0%, transparent 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .chat-container {
+      max-width: 950px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      height: 90vh; /* Taller on desktop */
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .chat-card {
+      background: rgba(10, 10, 15, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 
+        0 20px 50px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+
+    /* Mobile Optimization: Full Screen App Feel */
+    @media (max-width: 768px) {
+        .chat-container {
+            height: 100dvh; /* Use dynamic viewport height */
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .chat-card {
+            border-radius: 0;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.05); /* subtle divider */
+        }
+        
+        /* Adjust header padding for mobile */
+        .mb-4.flex {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0 !important;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+    }
+
+    /* Status Bar */
+    .status-bar {
+        background: rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #10b981;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 8px #10b981;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; box-shadow: 0 0 8px #10b981; }
+        50% { opacity: 0.5; box-shadow: 0 0 2px #10b981; }
+        100% { opacity: 1; box-shadow: 0 0 8px #10b981; }
+    }
+  </style>
+
+  <div class="tech-bg">
+    <div class="tech-grid"></div>
+  </div>
+  <div class="ambient-glow"></div>
+
+  <main class="chat-container">
+    <div class="mb-4 flex justify-between items-center px-2">
+      <div>
+        <h1 class="text-2xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-accent"></i> {t.title}
+        </h1>
+        <p class="text-xs text-dim uppercase tracking-widest mt-1 opacity-70">
+            {lang === 'da' ? 'AI Drevet Analyse' : 'AI Powered Analytics'}
+        </p>
+      </div>
+      <a href="/ai-project" class="text-xs font-bold text-dim hover:text-white flex items-center gap-2 border border-white/10 px-3 py-2 rounded-full hover:bg-white/5 transition-all mr-2">
+        <i class="fa-solid fa-circle-info"></i> {lang === 'da' ? 'Om denne AI' : 'About this AI'}
+      </a>
+      <a href="/" class="text-xs font-bold text-dim hover:text-white flex items-center gap-2 border border-white/10 px-3 py-2 rounded-full hover:bg-white/5 transition-all">
+        <i class="fa-solid fa-arrow-left"></i> {t.back}
+      </a>
+    </div>
+
+    <!-- Main Chat Window -->
+    <div class="chat-card" id="fp-chat-card" data-lang={lang}>
+      <!-- Status Header -->
+      <div class="status-bar">
+        <div class="flex items-center gap-3">
+            <span class="flex items-center gap-2">
+                <span class="status-dot"></span>
+                <span class="hidden md:inline">ONLINE</span>
+            </span>
+            <span class="opacity-50 hidden md:inline">|</span>
+            <span class="text-[10px] md:text-xs">MODEL: GEMINI 2.5 FLASH</span>
+            <span class="opacity-50 mx-2">|</span>
+            <!-- Persona Selector -->
+            <div class="relative group">
+                <select id="fp-persona-select" class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none uppercase tracking-wide">
+                    <option value="default" class="bg-neutral-900 text-white">STANDARD</option>
+                    <option value="recruiter" class="bg-neutral-900 text-white">💼 RECRUITER</option>
+                    <option value="tech" class="bg-neutral-900 text-white">💻 TECH LEAD</option>
+                    <option value="eli5" class="bg-neutral-900 text-white">👶 ELI5</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-3">
+            <span>LATENCY: 24ms</span>
+            <span class="opacity-50">|</span>
+            <span>SECURE CONN</span>
+            <button id="fp-clear-chat" class="ml-4 text-dim hover:text-red-400 transition-colors" title="Clear History">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+      </div>
+
+      <!-- Messages Area -->
+      <div id="fp-chat-messages" class="flex-1 p-6 overflow-y-auto space-y-6 scrollbar-hide">
+        <!-- Intro Message -->
+        <div class="flex gap-4">
+          <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 mt-1 border border-accent/20">
+            <i class="fa-solid fa-robot text-lg"></i>
+          </div>
+          <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent max-w-[85%] leading-relaxed">
+            <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide">System Message</p>
+            <p set:html={t.intro} />
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="p-4 border-t border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.2)]">
+        <!-- Quick Prompts -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+            {t.prompts.map(p => (
+              <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-3 text-dim hover:text-white quick-prompt-btn flex items-center gap-2 shadow-md">
+                <span class="truncate">{p}</span>
+              </button>
+            ))}
+        </div>
+
+        <form id="fp-chat-form" class="flex gap-3 relative">
+          <input 
+            type="text" 
+            id="fp-chat-input"
+            placeholder={t.placeholder}
+            class="flex-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl px-5 pr-44 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[rgba(255,255,255,0.08)] transition-all placeholder:text-dim/40"
+            autocomplete="off"
+            autofocus
+          />
+
+          <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
+          <!-- Button Spacing: Send(2) <-[8px]-> Voice(16) <-[8px]-> File(30) -->
+          <button type="button" id="fp-file-btn" class="absolute right-[7.5rem] top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
+            <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
+          </button>
+          <button type="button" id="fp-voice-btn" class="absolute right-16 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-dim hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
+            <i class="fa-solid fa-microphone text-lg group-hover:scale-110 transition-transform"></i>
+             <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="fp-voice-indicator"></span>
+          </button>
+          <button type="submit" class="absolute right-2 top-2 bottom-2 bg-accent text-bg w-12 rounded-lg flex items-center justify-center hover:bg-white transition-all transform hover:scale-105 shadow-lg">
+            <i class="fa-solid fa-paper-plane text-lg"></i>
+          </button>
+        </form>
+        <div class="text-center mt-3 text-xs text-dim opacity-60">
+          {t.disclaimer}
+        </div>
+      </div>
+        <div id="fp-file-display" class="hidden mt-2 px-3 py-2 bg-accent/10 border border-accent/20 rounded-lg flex items-center justify-between text-xs text-accent">
+            <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-2"></i><span id="fp-filename"></span></span>
+            <button type="button" id="fp-remove-file" class="ml-2 hover:text-white"><i class="fa-solid fa-times"></i></button>
+        </div>
+      </div>
+
+
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('fp-chat-form');
+    const input = document.getElementById('fp-chat-input') as HTMLInputElement;
+    const messages = document.getElementById('fp-chat-messages');
+    const card = document.getElementById('fp-chat-card');
+    const lang = card?.getAttribute('data-lang') || 'da';
+    const voiceBtn = document.getElementById('fp-voice-btn');
+    const voiceIndicator = document.getElementById('fp-voice-indicator');
+    
+    // File Upload Logic
+    const fileInput = document.getElementById('fp-chat-file') as HTMLInputElement;
+    const fileBtn = document.getElementById('fp-file-btn');
+    const fileDisplay = document.getElementById('fp-file-display');
+    const fileNameSpan = document.getElementById('fp-filename');
+    const removeFileBtn = document.getElementById('fp-remove-file');
+    let currentFileContent = null;
+
+    fileBtn?.addEventListener('click', () => fileInput.click());
+
+    fileInput?.addEventListener('change', async (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+
+        // Show loading state or name
+        if(fileDisplay && fileNameSpan) {
+            fileDisplay.classList.remove('hidden');
+            fileNameSpan.textContent = "Processing " + file.name + "...";
+        }
+
+        try {
+            let text = "";
+            if (file.type === 'application/pdf') {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+                    text += content.items.map((item: any) => item.str).join(' ') + "\n";
+                }
+                currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
+            
+            } else if (file.type.startsWith('image/')) {
+                // Image Handling
+                 const reader = new FileReader();
+                 reader.onload = () => {
+                     const base64 = (reader.result as string).split(',')[1];
+                     currentFileContent = {
+                         type: 'image',
+                         data: base64,
+                         mimeType: file.type,
+                         name: file.name
+                     };
+                 };
+                 reader.readAsDataURL(file);
+                 if(fileNameSpan) fileNameSpan.textContent = file.name + " (Image Ready)";
+                 return; // Async read, we return early
+
+            } else {
+                // Text based
+                text = await file.text();
+                currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
+            }
+
+            if(fileNameSpan) fileNameSpan.textContent = file.name + " (Ready)";
+            
+        } catch (err) {
+            console.error("File read error:", err);
+            if(fileNameSpan) fileNameSpan.textContent = "Error reading file";
+            currentFileContent = null;
+        }
+    });
+
+    removeFileBtn?.addEventListener('click', () => {
+        currentFileContent = null;
+        fileInput.value = '';
+        fileDisplay?.classList.add('hidden');
+    });
+    
+    // Persona Logic
+    const fpPersonaSelect = document.getElementById('fp-persona-select');
+    if (fpPersonaSelect) {
+        const savedPersona = localStorage.getItem('anton_ai_persona');
+        if (savedPersona) fpPersonaSelect.value = savedPersona;
+        
+        fpPersonaSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            localStorage.setItem('anton_ai_persona', val);
+        });
+    }
+
+    // Voice Logic (Full Page)
+    let recognition;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = lang === 'da' ? 'da-DK' : 'en-US';
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            console.log("🎤 FP Voice recognition started");
+            voiceIndicator.classList.remove('opacity-0');
+            voiceIndicator.classList.add('animate-pulse', 'border-red-500');
+            voiceBtn.classList.add('text-red-400');
+        };
+
+        recognition.onend = () => {
+             console.log("🎤 FP Voice recognition ended");
+             voiceIndicator.classList.add('opacity-0');
+             voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
+             voiceBtn.classList.remove('text-red-400');
+        };
+
+        recognition.onerror = (event) => {
+            console.error("🎤 FP Voice error:", event.error);
+            voiceIndicator.classList.add('opacity-0');
+            voiceBtn.classList.remove('text-red-400');
+            if (event.error === 'not-allowed') {
+                alert("Microphone access denied. Please allow microphone permissions in your browser settings.");
+            }
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            console.log("🎤 FP Transcript:", transcript);
+            input.value = transcript;
+            input.focus();
+        };
+
+        voiceBtn?.addEventListener('click', () => {
+            console.log("🎤 FP Mic button clicked");
+            try {
+                recognition.start();
+            } catch (e) {
+                console.log("Recognition already started or error:", e);
+                recognition.stop();
+            }
+        });
+    } else {
+         if(voiceBtn) voiceBtn.style.display = 'none';
+    }
+
+    // Quick Prompts Logic
+    document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const text = (e.currentTarget as HTMLElement).textContent?.trim();
+          if(text) {
+              input.value = text;
+              form?.dispatchEvent(new Event('submit'));
+              // Remove prompts after first click
+             (e.currentTarget as HTMLElement).parentElement?.remove();
+          }
+      });
+    });
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let query = input.value.trim();
+      if (!query && !currentFileContent) return;
+
+      const persona = localStorage.getItem('anton_ai_persona') || 'default';
+
+      // User Message (Text)
+      addMessage(query || (currentFileContent ? `[Attached: ${fileInput.files?.[0]?.name}]` : "Empty message"), 'user', false, persona);
+      
+      // Build Payload
+      let payload: any = { message: query, lang: lang };
+      let fullPayload = query; // Initialize fullPayload
+
+      if (currentFileContent) {
+          if (typeof currentFileContent === 'string') {
+              // Text/PDF context
+              payload.message += currentFileContent;
+              fullPayload += currentFileContent; // Update fullPayload
+          } else if ((currentFileContent as any).type === 'image') {
+              // Vision Upload
+              payload.image = {
+                  data: (currentFileContent as any).data,
+                  mimeType: (currentFileContent as any).mimeType
+              };
+              payload.message += `\n[User uploaded an image: ${(currentFileContent as any).name}]`;
+              fullPayload += `\n[User uploaded an image: ${(currentFileContent as any).name}]`; 
+          }
+           // Clear file after sending
+           removeFileBtn?.click();
+      }
+
+      // Loading
+      showTyping();
+
+        const currentLang = document.getElementById('fp-chat-card')?.dataset.lang || 'da';
+        
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: fullPayload, lang: currentLang, persona, image: payload.image }) // Pass image if present
+          });
+        
+        removeTyping();
+
+        if (!res.ok) {
+           // Handle error JSON
+           let data = await res.json();
+           addMessage("⚠️ " + (data.message || "Error"), 'ai', false, persona);
+           return;
+        }
+
+        // Create a placeholder message for the stream (Skip saving initially)
+        const messageContent = addMessage("", 'ai', true, persona);
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+        let accumulatedText = "";
+
+        if (reader) {
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                
+                const chunk = decoder.decode(value, { stream: true });
+                accumulatedText += chunk;
+                
+                // Update the UI
+                if (messageContent) {
+                    messageContent.innerHTML = formatText(accumulatedText);
+                }
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Save complete message to history
+        saveMessageToHistory(accumulatedText, 'ai', persona);
+
+        // Final processing for regex tags (Charts/Navigation) on the complete text
+        // Pass the container div (grandparent of the message content p tag)
+        if (messageContent) {
+             const wrapper = messageContent.closest('.ai-content-wrapper');
+             processSpecialTags(accumulatedText, wrapper); 
+        }
+
+      } catch (err) {
+        removeTyping();
+        console.error(err);
+        addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
+      }
+    });
+
+    function processSpecialTags(text, containerDiv) {
+       if (!containerDiv) return;
+
+       // Check for Chart Block
+       const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
+       if (chartMatch) {
+           const jsonStr = chartMatch[1];
+           try {
+               const chartData = JSON.parse(jsonStr);
+               const canvasId = 'chart-' + Date.now();
+               const canvasContainer = document.createElement('div');
+               canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
+               canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+               
+               const textDiv = containerDiv.querySelector('.message-bubble') || containerDiv;
+               textDiv.appendChild(canvasContainer);
+               messages.scrollTop = messages.scrollHeight;
+
+               // Render Chart
+               import('chart.js/auto').then(({ default: Chart }) => {
+                   const ctx = document.getElementById(canvasId);
+                   if (ctx) {
+                       new Chart(ctx, {
+                           type: chartData.type,
+                           data: chartData.data,
+                           options: {
+                               ...chartData.options,
+                               color: 'rgba(255, 255, 255, 0.8)',
+                               borderColor: 'rgba(255, 255, 255, 0.2)',
+                               scale: {
+                                  ticks: { color: 'rgba(255, 255, 255, 0.6)' },
+                                  grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                               },
+                               plugins: {
+                                  legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
+                               }
+                           }
+                       });
+                   }
+               });
+
+           } catch (e) {
+               console.error("Chart Render Error", e);
+           }
+       }
+       // Check for Navigation Block
+       const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
+       if (navMatch) {
+           const rawPath = navMatch[1].trim();
+           const path = rawPath.replace(/\.$/, '');
+
+           // Show navigation indicator
+           const navDiv = document.createElement('div');
+           navDiv.className = "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse";
+           navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
+           const bubble = containerDiv.querySelector('.message-bubble');
+           if (bubble) bubble.appendChild(navDiv); 
+           else containerDiv.appendChild(navDiv); // Fallback
+           messages.scrollTop = messages.scrollHeight;
+
+           console.log("Concierge navigating to:", path);
+
+           // Execute navigation faster
+           setTimeout(() => {
+               window.location.href = path;
+           }, 500);
+       }
+
+
+       // Scheduler
+       const schedulerMatch = text.match(/<<<ACTION: SCHEDULER>>>/);
+       if (schedulerMatch) {
+            const schedulerDiv = document.createElement('div');
+            schedulerDiv.className = 'mt-4 p-4 bg-accent/5 border border-accent/20 rounded-xl backdrop-blur-sm self-start max-w-sm';
+            schedulerDiv.innerHTML = `
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                        <i class="fa-solid fa-calendar-check text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Let's Connect</h4>
+                        <p class="text-xs text-dim">Ready to discuss a project?</p>
+                    </div>
+                </div>
+                <a href="mailto:anton@antonebsen.dk?subject=Interview%20Request%20via%20AI%20Assistant" 
+                   class="block w-full py-2 bg-accent hover:bg-accent-light text-bg font-bold text-center rounded-lg transition-colors text-sm">
+                   <i class="fa-solid fa-envelope mr-2"></i> Send Email / Schedule
+                </a>
+            `;
+            // Append to the bubble container or create a new wrapper if needed
+            const bubble = containerDiv.querySelector('.message-bubble');
+            if (bubble) bubble.appendChild(schedulerDiv);
+            else containerDiv.appendChild(schedulerDiv);
+            
+            messages.scrollTop = messages.scrollHeight;
+       }
+
+       // Check for Suggestions Block
+       const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
+       if (suggestMatch) {
+            const jsonStr = suggestMatch[1];
+            try {
+                const suggestions = JSON.parse(jsonStr);
+                const chipsContainer = document.createElement('div');
+                chipsContainer.className = "flex flex-wrap gap-2 mt-4 w-full"; // Removed pl-14, added w-full
+                
+                suggestions.forEach(s => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm";
+                    btn.innerText = s;
+                    btn.addEventListener('click', () => {
+                        const input = document.getElementById('fp-chat-input');
+                        const form = document.getElementById('fp-chat-form');
+                        if (input && form) {
+                            input.value = s;
+                            form.dispatchEvent(new Event('submit'));
+                            chipsContainer.remove();
+                        }
+                    });
+                    chipsContainer.appendChild(btn);
+                });
+                
+                containerDiv.appendChild(chipsContainer); // Append to the main flex container
+                messages.scrollTop = messages.scrollHeight;
+
+            } catch (e) {
+                console.error("Suggestion Parse Error", e);
+            }
+       }
+    }
+
+    const STORAGE_KEY = 'anton_ai_chat_history';
+
+    function loadHistory() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            try {
+                const history = JSON.parse(stored);
+                // Clear default intro if history exists (optional, but cleaner)
+                // messages.innerHTML = ''; 
+                history.forEach(msg => addMessage(msg.text, msg.role, true, msg.persona));
+            } catch (e) {
+                console.error("History parse error", e);
+            }
+        }
+    }
+
+    function saveMessageToHistory(text, role, persona) {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        let history = stored ? JSON.parse(stored) : [];
+        history.push({ text, role, persona, timestamp: Date.now() });
+        // Limit to last 100 messages
+        if (history.length > 100) history = history.slice(-100);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    }
+
+    document.getElementById('fp-clear-chat')?.addEventListener('click', () => {
+       if(confirm("Are you sure you want to clear the chat history?")) {
+           localStorage.removeItem(STORAGE_KEY);
+           location.reload();
+       }
+    });
+
+    function addMessage(text, role, skipSave = false, persona = 'default') {
+      if (!messages) return;
+      
+      if (!skipSave) saveMessageToHistory(text, role, persona);
+      const div = document.createElement('div');
+      div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
+
+      let contentElement;
+
+      // Map personas to titles
+      const titles = {
+            'default': 'AI Analysis',
+            'recruiter': '💼 Recruiter Mode',
+            'tech': '💻 Tech Lead Mode',
+            'eli5': '👶 ELI5 Mode'
+      };
+      const displayTitle = titles[persona] || titles['default'];
+
+      if (role === 'ai') {
+        div.innerHTML = `
+          <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 mt-1 border border-accent/20">
+            <i class="fa-solid fa-robot text-lg"></i>
+          </div>
+          <div class="flex flex-col max-w-[85%] ai-content-wrapper">
+              <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim-100 message-bubble shadow-lg">
+                <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide flex justify-between items-center">
+                    <span>${displayTitle}</span>
+                    ${persona !== 'default' ? '<i class="fa-solid fa-check-circle opacity-50"></i>' : ''}
+                </p>
+                <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
+                  ${formatText(text)}
+                </div>
+              </div>
+          </div>
+        `;
+        contentElement = div.querySelector('.prose');
+        if (text) contentElement.innerHTML = formatText(text);
+
+        // Add Speak Button
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = "flex justify-end mt-2 gap-2";
+        
+        const safeText = encodeURIComponent(text);
+        actionsDiv.innerHTML = `
+           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
+              <i class="fa-solid fa-volume-high text-xs"></i>
+           </button>
+        `;
+        div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
+        
+        
+        // No inline onclick needed due to delegation script
+
+        // Process Tags (Charts, Suggestions) for restored history
+        if (text) {
+             const wrapper = div.querySelector('.ai-content-wrapper');
+             processSpecialTags(text, wrapper); 
+        }
+
+      } else {
+        div.innerHTML = `
+          <div class="bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
+            <p class="text-neutral-950 font-semibold">${text}</p>
+          </div>
+        `;
+      }
+
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+
+      return contentElement;
+    }
+
+    let typingInterval;
+
+    function showTyping() {
+      if (!messages) return;
+      const div = document.createElement('div');
+      div.id = 'fp-typing';
+      div.className = 'flex gap-4';
+      
+      div.innerHTML = `
+         <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1 animate-pulse">
+            <i class="fa-solid fa-microchip text-lg"></i>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.05)] border border-accent/20 p-4 rounded-2xl rounded-tl-none flex items-center">
+            <span id="typing-text" class="text-xs font-mono text-accent tracking-wider">⚡ Initializing Quantum Core...</span>
+          </div>
+      `;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+
+      const states = [
+          "⚡ Initializing Quantum Core...",
+          "🌪️ Reading Context & Metadata...",
+          "📚 Searching Knowledge Base...",
+          "🧠 Analyzing Economic Models...",
+          "✨ Generating Response..."
+      ];
+      
+      let stateIdx = 0;
+      const textSpan = div.querySelector('#typing-text');
+      
+      if (textSpan) {
+          typingInterval = setInterval(() => {
+              stateIdx = (stateIdx + 1) % states.length;
+              textSpan.textContent = states[stateIdx];
+          }, 800);
+      }
+    }
+
+    function removeTyping() {
+      if (typingInterval) clearInterval(typingInterval);
+      const el = document.getElementById('fp-typing');
+      if (el) el.remove();
+    }
+
+
+
+    // Simple markdown-ish formatter
+    function formatText(text) {
+      // Remove Chart JSON from text display
+      let t = text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '');
+      t = t.replace(/<<<NAVIGATE:.*?>>>/gi, '').replace(/<<<SUGGESTIONS:.*?>>>/g, '');
+      // Citation Badges
+      t = t.replace(/<<<CITATION:(.*?)>>>/g, '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[10px] uppercase tracking-wider text-accent mx-1 select-none cursor-help" title="Source: Uploaded Document"><i class="fa-solid fa-file-pdf"></i> $1</span>');
+      // Replace **text** with bold
+      t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // Replace * items with bullets
+      t = t.replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc">$1</li>');
+      // Handling newlines
+      t = t.replace(/\n/g, '<br>');
+      return t;
+    }
+    
+    // Init History
+    loadHistory();
+  </script>
+  <script is:inline src="/assets/js/voice-widget.js"></script>
+</Layout>
