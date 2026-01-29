@@ -18,6 +18,33 @@ import Button from '../components/ui/Button.astro';
         <p class="text-xl text-dim mb-8 max-w-2xl mx-auto">
           Live-opdateret data direkte fra min træningslog. Fordi det der bliver målt, bliver forbedret.
         </p>
+
+        <!-- READINESS / RECOVERY DASHBOARD -->
+        <div class="mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i class="fa-solid fa-battery-half text-8xl"></i>
+                </div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Global Readiness Score
+                </h3>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="relative w-32 h-32 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" class="text-white/5" />
+                            <circle id="readiness-circle" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" stroke-dasharray="364.4" stroke-dashoffset="364.4" class="text-accent transition-all duration-1000" />
+                        </svg>
+                        <span id="readiness-value" class="absolute text-3xl font-black italic">--%</span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <h4 id="readiness-title" class="text-xl font-bold uppercase italic">Beregner din form...</h4>
+                        <p id="readiness-desc" class="text-sm text-dim max-w-lg">
+                            Baseret på din volumen, intensitet og tid siden sidste pas, beregner vi din teoretiske restitution.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- CONSISTENCY HEATMAP -->
         <div class="mb-12 text-left">
@@ -159,7 +186,46 @@ import Button from '../components/ui/Button.astro';
       const cDates = Object.keys(cardioByDate);
       const distances = cDates.map(d => cardioByDate[d]);
 
-      // 3. Consistency Heatmap Logic
+      // 3. Readiness Logic
+      const latestSessions = logs.slice(0, 10);
+      let totalRecovery = 0;
+      const now = new Date();
+
+      latestSessions.forEach((log: any) => {
+          const hoursSince = (now.getTime() - new Date(log.date).getTime()) / (1000 * 60 * 60);
+          const rpe = log.rpe || 8;
+          let target = 24;
+          if (rpe >= 9) target = 72;
+          else if (rpe >= 8) target = 48;
+          
+          totalRecovery += Math.min(100, (hoursSince / target) * 100);
+      });
+
+      const readiness = Math.round(totalRecovery / latestSessions.length);
+      const circle = document.getElementById('readiness-circle')!;
+      const readinessValue = document.getElementById('readiness-value')!;
+      const readinessTitle = document.getElementById('readiness-title')!;
+      const readinessDesc = document.getElementById('readiness-desc')!;
+
+      const offset = 364.4 - (364.4 * readiness) / 100;
+      circle.style.strokeDashoffset = offset.toString();
+      readinessValue.innerText = `${readiness}%`;
+
+      if (readiness >= 90) {
+          readinessTitle.innerText = "Fuldt restitueret 🚀";
+          readinessDesc.innerText = "Dine batterier er ladet op. Det er tid til at smadre nogle PRs!";
+      } else if (readiness >= 70) {
+          readinessTitle.innerText = "Klar til kamp 🔥";
+          readinessDesc.innerText = "Du er næsten fuldt restitueret. Et tungt pas er muligt, men lyt til kroppen.";
+      } else if (readiness >= 50) {
+          readinessTitle.innerText = "Moderat Restitution 🔋";
+          readinessDesc.innerText = "Du er stadig ved at komme dig. Overvej et moderato pas eller fokus på en anden muskelgruppe.";
+      } else {
+          readinessTitle.innerText = "Recovery Mode 🛌";
+          readinessDesc.innerText = "Din krop har brug for hvile. Fokusér på søvn, mad og let bevægelse i dag.";
+      }
+
+      // 4. Consistency Heatmap Logic
       const heatmapContainer = document.getElementById('training-heatmap')!;
       heatmapContainer.innerHTML = '';
       

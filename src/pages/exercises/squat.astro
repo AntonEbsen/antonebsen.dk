@@ -53,7 +53,6 @@ const techInfo = {
               </div>
             </div>
           </Card>
-
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-75">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-6 border-b border-white/5 pb-2">Styrke-niveau</h3>
             <div class="text-center py-4">
@@ -67,7 +66,21 @@ const techInfo = {
                 <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Elite</span><span class="text-white/40">2.5x BW</span></div>
             </div>
           </Card>
+
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-100">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-battery-half text-accent"></i> Recovery Status
+            </h3>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="text-3xl font-black italic text-white" id="stat-recovery-percent">--%</div>
+                <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div id="stat-recovery-bar" class="h-full bg-accent transition-all duration-1000" style="width: 0%"></div>
+                </div>
+            </div>
+            <p id="stat-recovery-msg" class="text-[11px] text-dim leading-relaxed">Beregner din restitution...</p>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-150">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-robot text-accent"></i> AI Progression Guide
             </h3>
@@ -75,6 +88,26 @@ const techInfo = {
                 <p class="text-[13px] text-dim italic">Analyserer dine seneste løft...</p>
             </div>
             <p class="text-[10px] text-white/20 leading-relaxed uppercase font-bold">Progressiv overload sikrer kontinuerlig fremgang.</p>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-200">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-rotate text-accent"></i> Smarte Alternativer
+            </h3>
+            <div class="grid grid-cols-1 gap-2">
+                <a href="/exercises/hack-squat" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
+                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Maskine</div>
+                    <div class="text-sm font-bold">Hack Squat</div>
+                </a>
+                <a href="/exercises/leg-press" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
+                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Maskine</div>
+                    <div class="text-sm font-bold">Leg Press</div>
+                </a>
+                <a href="/exercises/walking-lunges" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
+                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Unilateral</div>
+                    <div class="text-sm font-bold">Walking Lunges</div>
+                </a>
+            </div>
           </Card>
           
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-150">
@@ -188,6 +221,27 @@ const techInfo = {
                 <div class="text-2xl font-black text-white italic mb-2">${suggestion}</div>
                 <p class="text-[11px] text-dim leading-relaxed font-medium">${reason}</p>
             `;
+
+            // Recovery Status Calculation
+            const lastDate = new Date(latestLog.date);
+            const hoursSince = (new Date().getTime() - lastDate.getTime()) / (1000 * 60 * 60);
+            const latestRpe = latestLog.rpe || 8;
+            let targetRecovery = 24;
+            if (latestRpe >= 9) targetRecovery = 72;
+            else if (latestRpe >= 8) targetRecovery = 48;
+
+            const recoveryPercent = Math.min(100, Math.round((hoursSince / targetRecovery) * 100));
+            document.getElementById('stat-recovery-percent')!.innerText = `${recoveryPercent}%`;
+            document.getElementById('stat-recovery-bar')!.style.width = `${recoveryPercent}%`;
+
+            const msgEl = document.getElementById('stat-recovery-msg')!;
+            if (recoveryPercent >= 100) {
+                msgEl.innerText = "Du er 100% restitueret og klar til et tungt pas! 🚀";
+                document.getElementById('stat-recovery-bar')!.classList.replace('bg-accent', 'bg-green-400');
+            } else {
+                const hoursLeft = Math.ceil(targetRecovery - hoursSince);
+                msgEl.innerText = `Du har brug for ca. ${hoursLeft} timer mere for fuld restitution efter dit sidste pas (RPE ${latestRpe}).`;
+            }
         }
         
         const totalVol = logs.reduce((sum: number, l: any) => sum + (l.tonnage_kg || 0), 0);

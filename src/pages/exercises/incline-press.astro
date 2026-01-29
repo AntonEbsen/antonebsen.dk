@@ -87,7 +87,34 @@ const techInfo = {
             </div>
           </Card>
 
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-75">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-6 border-b border-white/5 pb-2">Styrke-niveau</h3>
+            <div class="text-center py-4">
+                <div id="strength-badge" class="inline-block px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-black uppercase tracking-widest mb-4 italic">Calculating...</div>
+                <p id="strength-next" class="text-[10px] text-white/30 uppercase font-bold">Næste mål: -- kg</p>
+            </div>
+            <div class="space-y-2 mt-4">
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Novice</span><span class="text-white/40">0.7x BW</span></div>
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Intermediate</span><span class="text-white/40">1.0x BW</span></div>
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Advanced</span><span class="text-white/40">1.3x BW</span></div>
+                <div class="flex justify-between text-[10px] uppercase font-bold tracking-tighter"><span class="text-white/20">Elite</span><span class="text-white/40">1.5x BW</span></div>
+            </div>
+          </Card>
+
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-100">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-battery-half text-accent"></i> Recovery Status
+            </h3>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="text-3xl font-black italic text-white" id="stat-recovery-percent">--%</div>
+                <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div id="stat-recovery-bar" class="h-full bg-accent transition-all duration-1000" style="width: 0%"></div>
+                </div>
+            </div>
+            <p id="stat-recovery-msg" class="text-[11px] text-dim leading-relaxed">Beregner din restitution...</p>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-150">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-robot text-accent"></i> AI Progression Guide
             </h3>
@@ -95,6 +122,26 @@ const techInfo = {
                 <p class="text-[13px] text-dim italic">Analyserer dine seneste løft...</p>
             </div>
             <p class="text-[10px] text-white/20 leading-relaxed uppercase font-bold">Progressiv overload sikrer kontinuerlig fremgang.</p>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-200">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-rotate text-accent"></i> Smarte Alternativer
+            </h3>
+            <div class="grid grid-cols-1 gap-2">
+                <a href="/exercises/flat-chest-press" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
+                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Base</div>
+                    <div class="text-sm font-bold">Flat Chest Press</div>
+                </a>
+                <a href="/exercises/pec-fly" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
+                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Isolation</div>
+                    <div class="text-sm font-bold">Pec Fly</div>
+                </a>
+                <a href="/exercises/shoulder-press" class="p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-accent/10 hover:border-accent/20 transition-all text-left group">
+                    <div class="text-[10px] text-white/30 uppercase font-black group-hover:text-accent tracking-widest">Variation</div>
+                    <div class="text-sm font-bold">Shoulder Press</div>
+                </a>
+            </div>
           </Card>
 
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-150">
@@ -277,6 +324,27 @@ const techInfo = {
                 <div class="text-2xl font-black text-white italic mb-2">${suggestion}</div>
                 <p class="text-[11px] text-dim leading-relaxed font-medium">${reason}</p>
             `;
+
+            // Recovery Status Calculation
+            const lastDate = new Date(latestLog.date);
+            const hoursSince = (new Date().getTime() - lastDate.getTime()) / (1000 * 60 * 60);
+            const latestRpe = latestLog.rpe || 8;
+            let targetRecovery = 24;
+            if (latestRpe >= 9) targetRecovery = 72;
+            else if (latestRpe >= 8) targetRecovery = 48;
+
+            const recoveryPercent = Math.min(100, Math.round((hoursSince / targetRecovery) * 100));
+            document.getElementById('stat-recovery-percent')!.innerText = `${recoveryPercent}%`;
+            document.getElementById('stat-recovery-bar')!.style.width = `${recoveryPercent}%`;
+
+            const msgEl = document.getElementById('stat-recovery-msg')!;
+            if (recoveryPercent >= 100) {
+                msgEl.innerText = "Du er 100% restitueret og klar til et tungt pas! 🚀";
+                document.getElementById('stat-recovery-bar')!.classList.replace('bg-accent', 'bg-green-400');
+            } else {
+                const hoursLeft = Math.ceil(targetRecovery - hoursSince);
+                msgEl.innerText = `Du har brug for ca. ${hoursLeft} timer mere for fuld restitution efter dit sidste pas (RPE ${latestRpe}).`;
+            }
         }
 
         // 2. Render Chart
