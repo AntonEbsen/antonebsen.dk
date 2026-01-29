@@ -1,0 +1,13 @@
+---
+import GuestbookPage from '@components/templates/GuestbookPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<GuestbookPage lang={lang} />

@@ -1,0 +1,128 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Collaboration & Services",
+    "description": "Collaboration and services: Student assistant/RA, data analysis, modeling, Excel/VBA teaching.",
+    "bodyClass": "services-page",
+    "hero": {
+        "eyebrow": "Collaboration",
+        "title": "Collaboration & Services",
+        "text": "I primarily take on student/part-time tasks, student assistant roles, and research assistant tasks within data, economics, and models — as well as Excel/VBA teaching.",
+        "cta": {
+            "contact": "Contact Me",
+            "cv": "View CV",
+            "portfolio": "View Portfolio"
+        },
+        "pills": [
+            "Student Assistant",
+            "Research Assistant",
+            "Data/Analytics",
+            "Macro/Monetary Policy",
+            "Excel/VBA Teaching"
+        ]
+    },
+    "quickInfo": {
+        "title": "In Short",
+        "items": [
+            {
+                "label": "Base:",
+                "value": "Copenhagen (remote/hybrid possible)"
+            },
+            {
+                "label": "Response:",
+                "value": "Typically 24–48 hours on weekdays"
+            },
+            {
+                "label": "Tools:",
+                "value": "Python, SAS, GAMS, Excel/VBA (+ Stata/MATLAB)"
+            }
+        ]
+    },
+    "services": {
+        "title": "What I can help with",
+        "items": [
+            {
+                "title": "1) Data Analysis & Econometric Tasks",
+                "description": "Data cleaning, descriptive analysis, regression/econometrics, time series, and robustness checks.",
+                "points": [
+                    "• Reproducible workflows",
+                    "• Clear documentation and versioning",
+                    "• Results presented in figures/tables"
+                ]
+            },
+            {
+                "title": "2) Modeling (Macro/Structural)",
+                "description": "Working with economic models (e.g., CGE/RBC), calibration, scenarios, and quality checks.",
+                "points": [
+                    "• Baseline → shock → comparison",
+                    "• Consistency checks (e.g., “does it add up?”)",
+                    "• Communication of assumptions and limitations"
+                ]
+            },
+            {
+                "title": "3) Excel/VBA Teaching & Materials",
+                "description": "Practical cases, clear workflows, and “from problem to solution” — including templates and exercises.",
+                "points": [
+                    "• Excel efficiency + best practices",
+                    "• VBA automations",
+                    "• Materials shared after the course"
+                ]
+            }
+        ]
+    },
+    "process": {
+        "title": "How I work",
+        "steps": [
+            "<strong>Clarify Goal</strong> – What is it for?",
+            "<strong>Data</strong> – Access, quality, definitions, documentation",
+            "<strong>Methodology</strong> – Choice of model/estimator and plan",
+            "<strong>Robustness</strong> – Sanity checks, sensitivity, alternative specs",
+            "<strong>Communication</strong> – Figures/tables + short, clear conclusion",
+            "<strong>Delivery</strong> – Code + output + short “README”"
+        ],
+        "faq": {
+            "title": "Can you share code/data from projects?",
+            "text": "Some projects are public (GitHub). Others cannot be shared due to coursework/confidentiality. I can often share “sanitized” examples or a simplified demo."
+        }
+    },
+    "tools": {
+        "title": "Tools & Proficiency",
+        "items": [
+            {
+                "name": "Python",
+                "level": "Daily use"
+            },
+            {
+                "name": "Excel/VBA",
+                "level": "Daily use (teaching + automations)"
+            },
+            {
+                "name": "SAS",
+                "level": "Solid knowledge (time series/forecasting)"
+            },
+            {
+                "name": "GAMS",
+                "level": "Solid knowledge (CGE/modeling)"
+            },
+            {
+                "name": "Stata / MATLAB",
+                "level": "Basic"
+            }
+        ]
+    },
+    "boundaries": {
+        "title": "Tasks I typically decline",
+        "points": [
+            "• Unclear requirements (“we don't know what we want, but we need it tomorrow”)",
+            "• Unreasonable deadlines without room for quality/robustness",
+            "• Tasks without data access or ability to verify sources",
+            "• “Just make a model without assumptions” (that doesn't exist 😄)"
+        ],
+        "faq": {
+            "title": "Remote/hybrid?",
+            "text": "Yes — Copenhagen based, but hybrid/remote depends on the task and data security."
+        }
+    },
+    "contact": {
+        "title": "Let's have a chat",
+        "text": "Please write briefly: (1) what you want to achieve, (2) what type of data/theme, (3) time horizon, and (4) expected scope."
+    }
+}

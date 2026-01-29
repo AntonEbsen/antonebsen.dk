@@ -1,0 +1,29 @@
+{
+    "title": "Guestbook | Anton Ebsen",
+    "description": "Leave a message in the digital logbook.",
+    "bodyClass": "guestbook-page",
+    "header": {
+        "title": "Guestbook",
+        "lead": "A digital time capsule. Leave a message, a thought, or just say \"Hi\".",
+        "approval": "(All messages are approved before showing)."
+    },
+    "form": {
+        "title": "Sign the Book",
+        "nameLabel": "Name / Alias",
+        "namePlaceholder": "e.g. CyberPunk2077",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Your message here...",
+        "btnSubmit": "Sign",
+        "btnSending": "Sending...",
+        "feedback": "Thanks! Your message is now awaiting approval.",
+        "error": "Error sending message. Please try again."
+    },
+    "feed": {
+        "title": "Recent Messages",
+        "empty": "No messages yet. Be the first!",
+        "error": "Could not load guestbook."
+    },
+    "ui": {
+        "back": "← Back to Home"
+    }
+}

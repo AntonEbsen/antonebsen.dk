@@ -1,0 +1,30 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Map",
+    "description": "Interactive map of selected places I've been: travels, events, and studies.",
+    "bodyClass": "map-page",
+    "hero": {
+        "eyebrow": "Map",
+        "title": "Places I've Been",
+        "lead": "A small visual overview of travels, events, and studies. Click a pin for details."
+    },
+    "filters": {
+        "title": "Filters",
+        "text": "Select a category to filter pins. You can also zoom and pan.",
+        "options": {
+            "all": "All",
+            "home": "Home/Base",
+            "travel": "Travels",
+            "study": "Studies",
+            "work": "Work/Events"
+        },
+        "hint": "Tip: Add new pins via the Dashboard (Category: Hjem, Rejser, Studier, Arbejde)."
+    },
+    "list": {
+        "title": "Places",
+        "empty": "Map is empty. Add locations in Dashboard.",
+        "error": "Failed to load map data."
+    },
+    "ui": {
+        "openMap": "Open in Maps →"
+    }
+}

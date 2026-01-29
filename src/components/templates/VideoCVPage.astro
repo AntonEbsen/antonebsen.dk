@@ -1,0 +1,117 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const entry = await getEntry('pages', `${lang}/video-cv`);
+
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/video-cv`);
+}
+
+const content = entry.data;
+
+// Resolve links based on lang
+const contactLink = lang === 'en' ? '/en/contact' : '/contact';
+const cvLink = lang === 'en' ? '/en/cv' : '/cv';
+---
+
+<Layout 
+  title={content.title} 
+  description={content.description}
+  bodyClass={content.bodyClass}
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/video-cv.css" slot="head" />
+
+  <main class="video-wrap">
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">{content.hero.eyebrow}</p>
+        <h1>{content.hero.title}</h1>
+        <p class="lead">
+          {content.hero.lead}
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#video"><i class="fa-solid fa-play"></i> {content.hero.cta.video}</a>
+          <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+            <i class="fa-solid fa-file-pdf"></i> {content.hero.cta.pdf}
+          </a>
+          <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.hero.cta.contact}</a>
+        </div>
+
+        <p class="muted small" style="margin:0;">
+          {content.hero.tip}
+        </p>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">{content.sidebar.title}</h2>
+          <ul class="clean-list">
+            {content.sidebar.points.map((pt: string) => (
+                <li>{pt}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="stack">
+
+      <section class="card" id="video">
+        <h2 class="section-title">Video</h2>
+
+        <!-- OPTION A: Lokal MP4 -->
+        <div class="video-box" style="margin-top:12px;">
+          <video controls preload="metadata">
+            <source src={content.video.src} type="video/mp4">
+            {content.video.downloadText}
+            <a href={content.video.src}>{content.video.downloadLink}</a>.
+          </video>
+        </div>
+
+        <div class="two-col">
+          <div class="mini-card">
+            <h3 style="margin:0 0 8px;">{content.summary.title}</h3>
+            <ul class="clean-list">
+                {content.summary.items.map((item: string) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+          </div>
+
+          <div class="mini-card">
+            <h3 style="margin:0 0 8px;">{content.chapters.title}</h3>
+            <ul class="chapters">
+                {content.chapters.items.map((item: string) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+            <p class="muted small" style="margin:10px 0 0;">
+                {content.chapters.note}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">{content.links.title}</h2>
+        <p class="muted">{content.links.text}</p>
+
+        <div class="cta">
+          <a class="btn" href={cvLink}><i class="fa-solid fa-id-card"></i> {content.links.items.cv}</a>
+          <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf"></i> {content.links.items.pdf}</a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> {content.links.items.linkedin}</a>
+          <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> {content.links.items.github}</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,71 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Gallery",
+    "description": "Gallery: selected photos from projects, events, training, and travels.",
+    "bodyClass": "gallery-page",
+    "hero": {
+        "eyebrow": "Gallery",
+        "title": "Photos",
+        "lead": "A curated selection from projects, events, training, and travels. (Same content as my social media — just gathered in one place.)",
+        "btnView": "View Gallery",
+        "btnPropose": "Suggest a Photo",
+        "tip": "Tip: put images in <code>assets/gallery/</code> and update the cards below.",
+        "categoriesTitle": "Categories",
+        "categoriesText": "Use tags to keep it tidy: Training, Travel, Events, Teaching."
+    },
+    "filters": {
+        "all": "All",
+        "training": "Training",
+        "travel": "Travel",
+        "events": "Events",
+        "teaching": "Teaching"
+    },
+    "ui": {
+        "searchPlaceholder": "Search captions…",
+        "moreTitle": "More",
+        "moreText": "I update the portfolio regularly. You can also find more on",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+    },
+    "items": [
+        {
+            "src": "/assets/gallery/sample1.jpg",
+            "tags": [
+                "training"
+            ],
+            "tagLabel": "Training",
+            "caption": "PUSH 1 – week 1, progression and focus",
+            "title": "PUSH 1 – week 1",
+            "text": "Short note: focus on technique and consistency."
+        },
+        {
+            "src": "/assets/gallery/sample2.jpg",
+            "tags": [
+                "travel"
+            ],
+            "tagLabel": "Travel",
+            "caption": "Hiking trip – route, view and pace",
+            "title": "Hiking Trip",
+            "text": "Short note: solid day on the trail."
+        },
+        {
+            "src": "/assets/gallery/sample3.jpg",
+            "tags": [
+                "teaching"
+            ],
+            "tagLabel": "Teaching",
+            "caption": "Excel Course – teaching and cases",
+            "title": "Excel Course",
+            "text": "Short note: hands-on cases and good energy."
+        },
+        {
+            "src": "/assets/gallery/sample4.jpg",
+            "tags": [
+                "events"
+            ],
+            "tagLabel": "Events",
+            "caption": "Event – professional meetup and networking",
+            "title": "Professional Event",
+            "text": "Short note: exciting talk + great conversations."
+        }
+    ]
+}

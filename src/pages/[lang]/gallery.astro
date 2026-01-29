@@ -1,0 +1,13 @@
+---
+import GalleryPage from '@components/templates/GalleryPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<GalleryPage lang={lang} />

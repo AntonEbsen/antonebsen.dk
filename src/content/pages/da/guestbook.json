@@ -1,0 +1,29 @@
+{
+    "title": "Gæstebog | Anton Ebsen",
+    "description": "Læg en hilsen i den digitale logbog.",
+    "bodyClass": "guestbook-page",
+    "header": {
+        "title": "Gæstebog",
+        "lead": "En digital tidskapsel. Skriv en besked, en tanke eller bare \"Hej\".",
+        "approval": "(Alle beskeder godkendes før de vises)."
+    },
+    "form": {
+        "title": "Skriv i bogen",
+        "nameLabel": "Navn / Alias",
+        "namePlaceholder": "f.eks. CyberPunk2077",
+        "messageLabel": "Besked",
+        "messagePlaceholder": "Din hilsen her...",
+        "btnSubmit": "Underskriv",
+        "btnSending": "Sender...",
+        "feedback": "Tak! Din besked venter nu på godkendelse.",
+        "error": "Fejl ved afsendelse. Prøv igen."
+    },
+    "feed": {
+        "title": "Seneste Hilsner",
+        "empty": "Ingen hilsner endnu. Vær den første!",
+        "error": "Kunne ikke hente gæstebogen."
+    },
+    "ui": {
+        "back": "← Tilbage til forsiden"
+    }
+}

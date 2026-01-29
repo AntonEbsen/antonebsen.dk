@@ -1,0 +1,113 @@
+{
+  "$ref": "#/definitions/exercises",
+  "definitions": {
+    "exercises": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "muscles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "benefits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "setup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "execution": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "focusPoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "icon": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "icon",
+              "title",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tempo": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": [
+            {
+              "type": [
+                "number",
+                "string"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "string"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "string"
+              ]
+            },
+            {
+              "type": [
+                "number",
+                "string"
+              ]
+            }
+          ],
+          "default": [
+            3,
+            0,
+            1,
+            0
+          ]
+        },
+        "tempoNote": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "muscles",
+        "benefits",
+        "setup",
+        "execution",
+        "focusPoints"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

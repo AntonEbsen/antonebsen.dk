@@ -1,0 +1,13 @@
+---
+import ChatPage from '@components/templates/ChatPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<ChatPage lang={lang} />

@@ -1,0 +1,30 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Kort",
+    "description": "Interaktivt kort med udvalgte steder jeg har været: rejser, events og studier.",
+    "bodyClass": "map-page",
+    "hero": {
+        "eyebrow": "Kort",
+        "title": "Steder jeg har været",
+        "lead": "Et lille visuelt overblik over rejser, events og studier. Klik på en pin for detaljer."
+    },
+    "filters": {
+        "title": "Filtre",
+        "text": "Vælg en kategori for at filtrere pins. Du kan også zoome og panorere.",
+        "options": {
+            "all": "Alle",
+            "home": "Hjem/Base",
+            "travel": "Rejser",
+            "study": "Studier",
+            "work": "Arbejde/Events"
+        },
+        "hint": "Tip: Tilføj nye pins via Dashboardet (Category: Hjem, Rejser, Studier, Arbejde)."
+    },
+    "list": {
+        "title": "Steder",
+        "empty": "Kortet er tomt. Tilføj lokationer i Dashboard.",
+        "error": "Kunne ikke hente kortdata."
+    },
+    "ui": {
+        "openMap": "Åbn i Maps →"
+    }
+}

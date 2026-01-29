@@ -1,12 +1,18 @@
 ---
 import { Image } from 'astro:assets';
-import skillsData from '@data/skills.json';
 
 // Images
 import myImage from '@assets/img/billede-af-mig.jpg';
 import dkFlag from '@assets/img/dansk-flag.png';
 import ukFlag from '@assets/img/britisk-flag.png';
 import deFlag from '@assets/img/tysk-flag.png';
+
+interface Props {
+  data: any; // Skills data
+  ui: any;   // UI labels
+}
+
+const { data, ui } = Astro.props;
 
 const flagMap: Record<string, ImageMetadata> = {
   '/assets/img/dansk-flag.png': dkFlag,
@@ -21,30 +27,30 @@ const flagMap: Record<string, ImageMetadata> = {
 
     <div class="profile-head">
       <h1>Anton Meier Ebsen Jørgensen</h1>
-      <p class="subtitle">Økonomistuderende (cand.polit.) · Makroøkonomi · Økonometri · Økonomiske modeller</p>
+      <p class="subtitle">{ui.subtitle}</p>
     </div>
 
     <div class="meta">
       <div class="meta-row">
-        <span class="meta-label">Lokation</span>
+        <span class="meta-label">{ui.location}</span>
         <span class="meta-value">
-          <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn" target="_blank" rel="noopener">København</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=K%C3%B8benhavn" target="_blank" rel="noopener">{ui.city}</a>
         </span>
       </div>
 
       <div class="meta-row">
-        <span class="meta-label">Email</span>
+        <span class="meta-label">{ui.email}</span>
         <span class="meta-value"><a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></span>
       </div>
 
       <div class="meta-row">
-        <span class="meta-label">Telefon</span>
+        <span class="meta-label">{ui.phone}</span>
         <span class="meta-value"><a href="tel:+4525740131">+45 25 74 01 31</a></span>
       </div>
 
       <div class="meta-row">
-        <span class="meta-label">Profiler</span>
-        <span class="meta-value icon-links" aria-label="Profiler">
+        <span class="meta-label">{ui.profiles}</span>
+        <span class="meta-value icon-links" aria-label={ui.profiles}>
           <a class="icon-link" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
           </a>
@@ -57,16 +63,16 @@ const flagMap: Record<string, ImageMetadata> = {
 
     <div class="cta-row">
       <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
-        <i class="fa-solid fa-download" aria-hidden="true"></i> Download CV (PDF)
+        <i class="fa-solid fa-download" aria-hidden="true"></i> {ui.downloadCV}
       </a>
     </div>
   </div>
 
   <div class="card" id="skills">
-    <h2>Kompetencer</h2>
-    <h3>Faglige kompetencer</h3>
-    <div class="focus-grid" aria-label="Faglige kompetencer">
-      {skillsData.professional.map(skill => (
+    <h2>{ui.competencies}</h2>
+    <h3>{ui.professional}</h3>
+    <div class="focus-grid" aria-label={ui.professional}>
+      {data.professional.map((skill: any) => (
         <a class="focus-box" href={`/skills#${skill.id}`} title={skill.title}>
           <i class={skill.icon} aria-hidden="true"></i>
           <span>{skill.name}</span>
@@ -75,9 +81,9 @@ const flagMap: Record<string, ImageMetadata> = {
     </div>
 
     <hr class="divider">
-    <h3>Programmeringssprog</h3>
-    <div class="skills-grid" aria-label="Programmeringssprog">
-      {skillsData.programming.map(skill => (
+    <h3>{ui.programming}</h3>
+    <div class="skills-grid" aria-label={ui.programming}>
+      {data.programming.map((skill: any) => (
         <a class="skill-box" href={`/skills#${skill.id}`} title={skill.title}>
           <i class={skill.icon} aria-hidden="true"></i>
           <span>{skill.name}</span>
@@ -87,10 +93,10 @@ const flagMap: Record<string, ImageMetadata> = {
   
     <hr class="divider">
   
-    <h3>Fokusområder</h3>
+    <h3>{ui.focus}</h3>
     
-    <div class="focus-grid" aria-label="Fokusområder">
-      {skillsData.focus.map(skill => (
+    <div class="focus-grid" aria-label={ui.focus}>
+      {data.focus.map((skill: any) => (
         <div class="focus-box">
           <i class={skill.icon} aria-hidden="true"></i>
           <span>{skill.name}</span>
@@ -101,7 +107,7 @@ const flagMap: Record<string, ImageMetadata> = {
     <hr class="divider">
 
     <div class="lang-grid" aria-label="Sprog">
-      {skillsData.languages.map(lang => (
+      {data.languages.map((lang: any) => (
         <div class="lang-box">
           {flagMap[lang.flag] && <Image src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
           <div class="lang-text">

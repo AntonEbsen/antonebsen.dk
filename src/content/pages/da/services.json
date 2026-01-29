@@ -1,0 +1,128 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Samarbejde & Services",
+    "description": "Samarbejde og services: studentermedhjælper/RA, dataanalyse, modelarbejde, Excel/VBA undervisning.",
+    "bodyClass": "services-page",
+    "hero": {
+        "eyebrow": "Samarbejde",
+        "title": "Samarbejde & services",
+        "text": "Jeg tager især studie-/deltidsopgaver, studentermedhjælper-roller og research assistant-opgaver inden for data, økonomi og modeller — samt undervisning i Excel/VBA.",
+        "cta": {
+            "contact": "Kontakt mig",
+            "cv": "Se CV",
+            "portfolio": "Se portefølje"
+        },
+        "pills": [
+            "Studentermedhjælper",
+            "Research assistant",
+            "Data/Analytics",
+            "Makro/pengepolitik",
+            "Excel/VBA undervisning"
+        ]
+    },
+    "quickInfo": {
+        "title": "Kort fortalt",
+        "items": [
+            {
+                "label": "Base:",
+                "value": "København (remote/hybrid muligt)"
+            },
+            {
+                "label": "Respons:",
+                "value": "typisk 24–48 timer på hverdage"
+            },
+            {
+                "label": "Tools:",
+                "value": "Python, SAS, GAMS, Excel/VBA (+ Stata/MATLAB)"
+            }
+        ]
+    },
+    "services": {
+        "title": "Hvad jeg kan hjælpe med",
+        "items": [
+            {
+                "title": "1) Dataanalyse & økonometriske opgaver",
+                "description": "Data cleaning, deskriptiv analyse, regression/økonometri, tidsrækker og robusthedstjek.",
+                "points": [
+                    "• Reproducerbare workflows",
+                    "• Klar dokumentation og versionering",
+                    "• Resultater formidlet i figurer/tabeller"
+                ]
+            },
+            {
+                "title": "2) Modelarbejde (makro/struktur)",
+                "description": "Arbejde med økonomiske modeller (fx CGE/RBC), kalibrering, scenarier og kvalitetstjek.",
+                "points": [
+                    "• Baseline → shock → sammenligning",
+                    "• Konsistenschecks (fx “does it add up?”)",
+                    "• Formidling af antagelser og begrænsninger"
+                ]
+            },
+            {
+                "title": "3) Excel/VBA undervisning & materialer",
+                "description": "Praktiske cases, klare arbejdsgange, og “fra problem til løsning” — inkl. templates og øvelser.",
+                "points": [
+                    "• Excel effektivitet + best practice",
+                    "• VBA automations",
+                    "• Materialer delt efter kurset"
+                ]
+            }
+        ]
+    },
+    "process": {
+        "title": "Hvordan jeg arbejder",
+        "steps": [
+            "<strong>Afklar mål</strong> – Hvad skal bruges til hvad?",
+            "<strong>Data</strong> – adgang, kvalitet, definitioner, datadokumentation",
+            "<strong>Metode</strong> – valg af model/estimand og plan",
+            "<strong>Robusthed</strong> – sanity checks, sensitivitet, alternative specs",
+            "<strong>Formidling</strong> – figurer/tabeller + kort, klar konklusion",
+            "<strong>Leverance</strong> – kode + output + kort “README”"
+        ],
+        "faq": {
+            "title": "Kan du dele kode/data fra projekter?",
+            "text": "Nogle projekter er offentlige (GitHub). Andre kan ikke deles pga. kursus-/fortrolighed. Jeg kan ofte dele “sanitized” eksempler eller en forsimplet demo."
+        }
+    },
+    "tools": {
+        "title": "Værktøjer & niveau",
+        "items": [
+            {
+                "name": "Python",
+                "level": "Daglig brug"
+            },
+            {
+                "name": "Excel/VBA",
+                "level": "Daglig brug (undervisning + automations)"
+            },
+            {
+                "name": "SAS",
+                "level": "Godt kendskab (tidsrækker/forecasting)"
+            },
+            {
+                "name": "GAMS",
+                "level": "Godt kendskab (CGE/modelarbejde)"
+            },
+            {
+                "name": "Stata / MATLAB",
+                "level": "Grundlæggende"
+            }
+        ]
+    },
+    "boundaries": {
+        "title": "Opgaver jeg typisk siger nej tak til",
+        "points": [
+            "• Uklare krav (“vi ved ikke hvad vi vil have, men det skal være færdigt i morgen”)",
+            "• Urimelige deadlines uden mulighed for kvalitet/robusthed",
+            "• Opgaver uden dataadgang eller uden mulighed for at verificere kilder",
+            "• “Lav lige en model uden antagelser” (den findes ikke 😄)"
+        ],
+        "faq": {
+            "title": "Remote/hybrid?",
+            "text": "Ja — København som base, og hybrid/remote afhænger af opgaven og datasikkerhed."
+        }
+    },
+    "contact": {
+        "title": "Lad os tage en snak",
+        "text": "Skriv gerne kort: (1) hvad du vil opnå, (2) hvilken type data/tema, (3) tidshorisont og (4) forventet omfang."
+    }
+}

@@ -1,0 +1,103 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const entry = await getEntry('pages', `${lang}/contact`);
+
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/contact`);
+}
+
+const content = entry.data;
+---
+
+<Layout 
+  title={content.title}
+  description={content.description}
+  bodyClass={content.bodyClass}
+>
+  <style>
+    .contact-wrap {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 16px;
+    }
+  </style>
+
+  <main class="contact-wrap">
+     <Section>
+        <Card variant="glass" class="p-8 md:p-12">
+            <h1 class="text-4xl font-bold mb-6 text-center">{content.heading}</h1>
+            <p class="text-dim text-center mb-8 text-lg" set:html={content.text} />
+
+            <form id="contact-form" class="space-y-6 max-w-lg mx-auto" 
+                  data-msg-error-api={content.form.errorAPI} 
+                  data-msg-error-net={content.form.errorNet}
+            >
+                <div>
+                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">{content.form.name}</label>
+                    <input type="text" id="c-name" name="name" required class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder={content.form.namePlaceholder} />
+                </div>
+                
+                <div>
+                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">{content.form.email}</label>
+                    <input type="email" id="c-email" name="email" required class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder={content.form.emailPlaceholder} />
+                </div>
+
+                <div>
+                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">{content.form.message}</label>
+                    <textarea id="c-message" name="message" required rows="5" class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder={content.form.messagePlaceholder}></textarea>
+                </div>
+
+                <div id="form-status" class="hidden p-4 rounded bg-accent/20 text-accent text-center text-sm mb-4">
+                    {content.form.success}
+                </div>
+
+                <Button type="submit" size="lg" icon="paper-plane" class="w-full justify-center">{content.form.submit}</Button>
+            </form>
+        </Card>
+     </Section>
+  </main>
+</Layout>
+
+<script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const status = document.getElementById('form-status')!;
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        // Read localized messages from data attributes
+        const msgErrorAPI = form.dataset.msgErrorApi || 'Error';
+        const msgErrorNet = form.dataset.msgErrorNet || 'Network Error';
+
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                form.reset();
+                status.classList.remove('hidden');
+                setTimeout(() => status.classList.add('hidden'), 5000);
+            } else {
+                alert(msgErrorAPI);
+            }
+        } catch (err) {
+            console.error(err);
+            alert(msgErrorNet);
+        }
+    });
+</script>

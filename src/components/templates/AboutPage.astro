@@ -1,0 +1,351 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const entry = await getEntry('pages', `${lang}/about`);
+
+// Fallback or Error Handling
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/about`);
+}
+
+const data = entry.data;
+---
+
+<Layout 
+  title={data.title}
+  description={data.description}
+  bodyClass={data.bodyClass}
+>
+  <!-- Page specific CSS (Inlined to avoid missing file error) -->
+  <style>
+    .about-wrap {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .hero {
+      display: grid;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+      .hero { grid-template-columns: 1.5fr 1fr; }
+    }
+    
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .lead {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .pill {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      font-size: 0.95rem;
+    }
+    
+    .btn:not(.ghost) {
+      background: var(--accent);
+      color: #000;
+    }
+    
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    
+    .btn:hover { transform: translateY(-2px); }
+    .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .quickfacts .fact {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      align-items: flex-start;
+    }
+    .quickfacts .fact i {
+      color: var(--accent);
+      margin-top: 3px;
+    }
+
+    .subnav { display: flex; flex-direction: column; gap: 0.5rem; }
+    .subnav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .subnav a:hover { color: var(--accent); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media(min-width:768px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+    .muted { color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0 2rem;
+    }
+    .timeline li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: rgba(255,255,255,0.8);
+    }
+    .timeline li::before {
+      content: "•";
+      color: var(--accent);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+  </style>
+
+  <main class="about-wrap">
+    <div class="stack">
+
+      <!-- HERO -->
+      <section class="card hero">
+        <div>
+          <p class="eyebrow">{data.hero.eyebrow}</p>
+          <h1 set:html={data.hero.title} />
+          <p class="lead" set:html={data.hero.lead} />
+
+          <div class="pill-wrap" aria-label="Keywords">
+            {data.hero.pills && data.hero.pills.map((pill: string) => (
+                <span class="pill">{pill}</span>
+            ))}
+          </div>
+
+          <div class="cta">
+            {data.hero.cta.map((btn: any) => (
+              <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
+                <i class={btn.icon}></i> {btn.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="mini-card">
+            <h2 class="section-title">{data.hero.quickFacts.title}</h2>
+            <div class="quickfacts">
+                {data.hero.quickFacts.facts.map((fact: any) => (
+                    <div class="fact"><i class={fact.icon}></i><span>{fact.text}</span></div>
+                ))}
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <h2 class="section-title">{data.hero.nav.title}</h2>
+            <nav class="subnav" aria-label="Submenu">
+                {data.hero.nav.links.map((link: any) => (
+                    <a href={link.url}>{link.label}</a>
+                ))}
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <!-- Story Teaser -->
+      <section class="card" style="border-left: 4px solid var(--accent); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.03; pointer-events: none;">
+          <i class="fa-solid fa-quote-right"></i>
+        </div>
+        <h2 class="section-title">{data.sections.story.title}</h2>
+        <p class="muted" style="max-width: 600px; margin-bottom: 2rem;">
+            {data.sections.story.text}
+        </p>
+        <div class="cta">
+          <a class="btn" href={data.sections.story.cta.url}>
+            <i class="fa-solid fa-book-open"></i> {data.sections.story.cta.label}
+          </a>
+        </div>
+      </section>
+
+      <!-- Focus -->
+      <section class="card" id="focus">
+        <h2 class="section-title">{data.sections.focus.title}</h2>
+
+        <div class="grid-2">
+            {data.sections.focus.items.map((item: any) => (
+                <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+                    <h3 style="margin:0 0 8px;">{item.title}</h3>
+                    <p class="muted" style="margin:0;">
+                    {item.text}
+                    </p>
+                </div>
+            ))}
+        </div>
+      </section>
+
+      <!-- Working Style -->
+      <section class="card" id={data.hero.nav.links.find((l:any) => l.url === '#working-style' || l.url === '#arbejdsstil')?.url.replace('#','')}>
+        <h2 class="section-title">{data.sections.workingStyle.title}</h2>
+        <p class="muted">
+          {data.sections.workingStyle.intro}
+        </p>
+
+        <ul class="timeline">
+            {data.sections.workingStyle.steps.map((step: string) => (
+                <li set:html={step} />
+            ))}
+        </ul>
+
+        <div class="cta">
+            {data.sections.workingStyle.cta.map((btn: any) => (
+              <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
+                <i class={btn.icon}></i> {btn.label}
+              </a>
+            ))}
+        </div>
+      </section>
+
+      <!-- Teaching -->
+      <section class="card" id="teaching">
+        <h2 class="section-title">{data.sections.teaching.title}</h2>
+        <p class="muted">
+            {data.sections.teaching.intro}
+        </p>
+
+        <div class="grid-2">
+            {data.sections.teaching.styles.map((style: any) => (
+                <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
+                    <h3 style="margin:0 0 8px;">{style.title}</h3>
+                    <ul style="margin:0;">
+                    {style.points.map((p: string) => (
+                        <li>{p}</li>
+                    ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
+      </section>
+
+      <!-- Outside -->
+      <section class="card" id="outside">
+        <h2 class="section-title">{data.sections.outside.title}</h2>
+        <p class="muted">
+            {data.sections.outside.text}
+        </p>
+
+        <div class="cta">
+            {data.sections.outside.cta.map((btn: any) => (
+              <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
+                <i class={btn.icon}></i> {btn.label}
+              </a>
+            ))}
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="card" id="contact">
+        <h2 class="section-title">{data.sections.contact.title}</h2>
+        <p class="muted">
+            {data.sections.contact.text}
+        </p>
+        <div class="cta">
+            {data.sections.contact.cta.map((btn: any) => (
+              <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
+                <i class={btn.icon}></i> {btn.label}
+              </a>
+            ))}
+        </div>
+      </section>
+
+    </div>
+  </main>
+</Layout>

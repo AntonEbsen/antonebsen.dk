@@ -1,0 +1,200 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Profile / About me",
+    "description": "Profile / About me: macroeconomics, econometrics, models, and communication. Working style, focus areas, and how I can help.",
+    "bodyClass": "about-page",
+    "hero": {
+        "eyebrow": "Profile / About me",
+        "title": "Macro, econometrics and models — with a focus on making it useful",
+        "lead": "I work at the intersection of <strong>economics</strong>, <strong>data</strong>, and <strong>communication</strong>. I value \"classic craftsmanship\": clear assumptions, proper documentation, and results that can be explained without requiring the reader to have 300 pages of prior knowledge.",
+        "pills": [
+            "Macro & Monetary Policy",
+            "Econometrics & Time Series",
+            "Economic Models",
+            "Python / SAS / GAMS",
+            "Excel/VBA Training"
+        ],
+        "cta": [
+            {
+                "label": "Working Style",
+                "url": "#working-style",
+                "icon": "fa-solid fa-compass"
+            },
+            {
+                "label": "Focus Areas",
+                "url": "#focus",
+                "icon": "fa-solid fa-bullseye",
+                "variant": "ghost"
+            },
+            {
+                "label": "Contact",
+                "url": "#contact",
+                "icon": "fa-solid fa-envelope",
+                "variant": "ghost"
+            }
+        ],
+        "quickFacts": {
+            "title": "Quick Facts",
+            "facts": [
+                {
+                    "icon": "fa-solid fa-location-dot",
+                    "text": "Copenhagen"
+                },
+                {
+                    "icon": "fa-solid fa-chart-line",
+                    "text": "Interests: Central banks, transmission mechanisms, heterogeneity"
+                },
+                {
+                    "icon": "fa-solid fa-code",
+                    "text": "Tools: Python, SAS, GAMS + Excel/VBA"
+                },
+                {
+                    "icon": "fa-solid fa-chalkboard-user",
+                    "text": "Communication: Lecturer (Excel/VBA) and case building"
+                }
+            ]
+        },
+        "nav": {
+            "title": "On this page",
+            "links": [
+                {
+                    "label": "Focus Areas",
+                    "url": "#focus"
+                },
+                {
+                    "label": "How I work",
+                    "url": "#working-style"
+                },
+                {
+                    "label": "Teaching & Communication",
+                    "url": "#teaching"
+                },
+                {
+                    "label": "Outside the studies",
+                    "url": "#outside"
+                },
+                {
+                    "label": "Contact",
+                    "url": "#contact"
+                }
+            ]
+        }
+    },
+    "sections": {
+        "story": {
+            "title": "The Will to Disprove",
+            "text": "My path to becoming an economist has not been straightforward. I have learned to turn skepticism into courage and adversity into resolve. Read my personal story about the journey from epilepsy and special education to cand.polit.",
+            "cta": {
+                "label": "Read my story",
+                "url": "/en/modgang-og-maalrettethed"
+            }
+        },
+        "focus": {
+            "title": "Focus Areas",
+            "items": [
+                {
+                    "title": "Macroeconomics & Monetary Policy",
+                    "text": "I am particularly interested in how monetary policy \"lands\" in practice: through financial markets, expectations, credit channels, and differences across countries/sectors."
+                },
+                {
+                    "title": "Econometrics & Time Series",
+                    "text": "Forecasting, identification, and robustness. I enjoy methods that are both technically solid and can be explained to a regular person without them falling asleep."
+                },
+                {
+                    "title": "Models & Structure",
+                    "text": "CGE/RBC/DSGE thinking: clear assumptions, consistency, checks, and baseline/zero-shock discipline."
+                },
+                {
+                    "title": "Data & Tooling",
+                    "text": "I build small pipelines and templates: from data cleaning to output, ensuring reproducibility and reuse."
+                }
+            ]
+        },
+        "workingStyle": {
+            "title": "How I work",
+            "intro": "My standard workflow (a bit boring — but that's exactly why it works):",
+            "steps": [
+                "1) Clarify goals: what should the decision-maker/reader be able to do afterwards?",
+                "2) Document data: sources, definitions, units, missing/outliers, transformations.",
+                "3) Choose method: simple first, then \"fancier\" if it adds real value.",
+                "4) Checks: sanity checks, robustness, alternative specifications, edge cases.",
+                "5) Communication: conclusions, limitations, and \"what does this mean in practice?\""
+            ],
+            "cta": [
+                {
+                    "label": "View Portfolio",
+                    "url": "/en/portfolio",
+                    "icon": "fa-solid fa-folder-open",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "View Resources",
+                    "url": "/en/resources",
+                    "icon": "fa-solid fa-download"
+                }
+            ]
+        },
+        "teaching": {
+            "title": "Teaching & Communication",
+            "intro": "I have experience teaching Excel/VBA and like to keep things practical: cases, exercises, the \"why\" behind functions, and small shortcuts that make a big difference.",
+            "styles": [
+                {
+                    "title": "My Teaching Style",
+                    "points": [
+                        "Structure first (goal → solution → quality check)",
+                        "Hands-on: better one good case than 30 slides",
+                        "Reusable templates"
+                    ]
+                },
+                {
+                    "title": "What I typically help with",
+                    "points": [
+                        "Excel models, dashboards, and logic",
+                        "Data cleaning and reproducible workflows",
+                        "Small scripts and automation"
+                    ]
+                }
+            ]
+        },
+        "outside": {
+            "title": "Outside of studies",
+            "text": "I enjoy routines and progression — both in training and in projects. It might sound a bit \"office-geeky,\" but it's honestly quite satisfying to see curves going in the right direction.",
+            "cta": [
+                {
+                    "label": "Training posts",
+                    "url": "/en/blog#cat-training",
+                    "icon": "fa-solid fa-dumbbell",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Travel",
+                    "url": "/en/blog#cat-travel",
+                    "icon": "fa-solid fa-person-hiking",
+                    "variant": "ghost"
+                }
+            ]
+        },
+        "contact": {
+            "title": "Contact",
+            "text": "If you want to discuss a project, a case, or a collaboration, please feel free to reach out.",
+            "cta": [
+                {
+                    "label": "Send email",
+                    "url": "mailto:anton.ebsen@gmail.com",
+                    "icon": "fa-solid fa-envelope"
+                },
+                {
+                    "label": "Contact page",
+                    "url": "/en/contact",
+                    "icon": "fa-solid fa-message",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Back to CV",
+                    "url": "/en/cv",
+                    "icon": "fa-solid fa-file-lines",
+                    "variant": "ghost"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "title": "Anton's AI Assistant",
+    "description": "Ask me questions about Anton's CV, projects, blog posts, and experience.",
+    "bodyClass": "chat-page",
+    "hero": {
+        "eyebrow": "AI Powered Analytics",
+        "back": "Back to Home",
+        "about": "About this AI"
+    },
+    "ui": {
+        "intro": "Hi! I'm the full-screen AI. I can analyze the portfolio and even <strong>generate charts</strong> from the data. Give it a try!",
+        "placeholder": "Try: 'Visualize your experience timeline'...",
+        "disclaimer": "Powered by Google Gemini · May produce inaccuracies",
+        "prompts": [
+            "📊 Graph Anton's skills",
+            "💼 Summarize Anton's experience",
+            "📋 Analyze Job Match"
+        ],
+        "status": {
+            "online": "ONLINE",
+            "model": "MODEL: GEMINI 2.5 FLASH",
+            "secure": "SECURE CONN",
+            "latency": "LATENCY: 24ms"
+        }
+    }
+}

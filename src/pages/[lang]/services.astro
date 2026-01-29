@@ -1,0 +1,13 @@
+---
+import ServicesPage from '@components/templates/ServicesPage.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'da' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+<ServicesPage lang={lang} />

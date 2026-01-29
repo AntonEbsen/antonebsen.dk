@@ -1,0 +1,19 @@
+{
+    "title": "Contact | Anton Ebsen",
+    "description": "Contact form for Anton Ebsen.",
+    "bodyClass": "contact-page",
+    "heading": "Contact",
+    "text": "Do you have a question, an idea for a project, or just want to say hello? <br/> Fill out the form below, and the message will land directly in my system.",
+    "form": {
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "namePlaceholder": "Your name",
+        "emailPlaceholder": "your@email.com",
+        "messagePlaceholder": "What is on your mind?",
+        "submit": "Send Message",
+        "success": "Thanks for your message! I will get back to you as soon as possible.",
+        "errorAPI": "An error occurred. Please try again later.",
+        "errorNet": "Could not connect to the server."
+    }
+}

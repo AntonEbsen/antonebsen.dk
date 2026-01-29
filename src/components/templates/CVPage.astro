@@ -1,0 +1,241 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Sidebar from '@components/cv/Sidebar.astro';
+import TableOfContents from '@components/cv/TableOfContents.astro';
+import CertificationList from '@components/cv/CertificationList.astro';
+
+import { getEntry } from 'astro:content';
+
+// Import RAW JSON data files for list content
+import cvDataDa from '@data/cv.json';
+import cvDataEn from '@data/cv_en.json';
+import skillsDataDa from '@data/skills.json';
+import skillsDataEn from '@data/skills_en.json';
+
+import '@styles/cv.css';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const entry = await getEntry('pages', `${lang}/cv`);
+
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/cv`);
+}
+
+const content = entry.data; // The UI labels and static text
+const cvData = lang === 'en' ? cvDataEn : cvDataDa; // The list data (experience etc)
+const skillsData = lang === 'en' ? skillsDataEn : skillsDataDa; // The skills data
+---
+
+<Layout 
+  title={content.title}
+  description={content.description}
+  bodyClass={content.bodyClass}
+>
+  <div class="cv-wrap">
+    <!-- Filter bar -->
+    <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none">
+      <div class="inline-flex items-center gap-1 p-1.5 bg-[#0a0a0c]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
+        <button class="cv-filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">{content.ui.filter.all}</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="tech">{content.ui.filter.tech}</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="teaching">{content.ui.filter.teaching}</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="core">{content.ui.filter.core}</button>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <TableOfContents />
+
+    <!-- CV grid -->
+    <section class="cv-grid" aria-label="CV content">
+
+      <!-- Sidebar -->
+      <Sidebar data={skillsData} ui={content.ui.sidebar} />
+
+      <div class="cv-main">
+        <Section id="profile">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
+            <SectionHeading>{content.ui.headings.profile}</SectionHeading>
+            {content.profile.text.map((p: string, i: number) => (
+                <p class={`text-[15px] leading-relaxed opacity-90 ${i < content.profile.text.length - 1 ? 'mb-4' : ''}`}>
+                    {p}
+                </p>
+            ))}
+          </Card>
+        </Section>
+
+        <Section id="experience">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+            <SectionHeading>{content.ui.headings.experience}</SectionHeading>
+            <div class="space-y-0 experience-list">
+              {cvData.experience.map((item: any) => (
+                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
+                  <div class="item-head">
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} · {item.organization}</h3>
+                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
+                  </div>
+                  <ul class="list-none p-0 m-0 mt-3 space-y-1">
+                    {item.description.map((bullet: string) => (
+                      <li class="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-accent text-[14px] opacity-90">{bullet}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </Card>
+        </Section>
+
+        <Section id="education">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+            <SectionHeading>{content.ui.headings.education}</SectionHeading>
+            <div class="space-y-0 education-list">
+              {cvData.education.map((item: any) => (
+                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
+                  <div class="item-head">
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} · {item.institution}</h3>
+                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
+                  </div>
+                  {item.description && <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>}
+                </article>
+              ))}
+            </div>
+          </Card>
+        </Section>
+
+        <Section id="projects">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+            <SectionHeading>{content.ui.headings.projects}</SectionHeading>
+            <div class="space-y-0 project-list">
+              {cvData.projects.map((project: any) => (
+                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(project.categories || [])}>
+                  <div class="item-head">
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{project.title}</h3>
+                    {project.meta && <span class="text-[13px] text-dim">{project.meta}</span>}
+                  </div>
+                  <p class="text-[14px] text-dim mt-2 opacity-80">
+                    {project.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </Card>
+        </Section>
+
+        <Section id="volunteer">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
+            <SectionHeading>{content.ui.headings.volunteer}</SectionHeading>
+            {content.volunteer.items.map((item: any) => (
+                <article class="item border-none pt-0">
+                <div class="item-head">
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.title}</h3>
+                    <span class="text-[13px] text-dim">{item.meta}</span>
+                </div>
+                <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>
+                </article>
+            ))}
+          </Card>
+        </Section>
+
+        <Section id="certifications">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
+            <SectionHeading>{content.ui.headings.certifications}</SectionHeading>
+            
+            <CertificationList />
+
+          </Card>
+        </Section>
+
+        <Section id="contact">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
+            <SectionHeading>{content.ui.headings.contact}</SectionHeading>
+            <div class="contact-row">
+              <Button href="mailto:anton.ebsen@gmail.com" variant="ghost">
+                <i class="fa-solid fa-envelope mr-2" aria-hidden="true"></i>
+                anton.ebsen@gmail.com
+              </Button>
+  
+              <Button href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn" variant="ghost">
+                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+              </Button>
+  
+              <Button href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub" variant="ghost">
+                <i class="fa-brands fa-github" aria-hidden="true"></i>
+              </Button>
+            </div>
+          </Card>
+        </Section>
+      </div>
+    </section>
+  </div>
+
+  <style>
+    .cv-filter-btn.active {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .cv-item.is-dimmed {
+      opacity: 0.15;
+      filter: grayscale(1) blur(1px);
+      pointer-events: none;
+    }
+
+    /* Short version logic: hide non-core items completely */
+    .filter-mode-core .cv-item:not(.is-core) {
+      display: none;
+    }
+  </style>
+
+  <script>
+    const buttons = document.querySelectorAll('.cv-filter-btn');
+    const items = document.querySelectorAll('.cv-item');
+    const wrap = document.querySelector('.cv-wrap');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        
+        // Update buttons
+        buttons.forEach(b => b.classList.remove('active', 'text-dim'));
+        buttons.forEach(b => {
+          if (b !== btn) b.classList.add('text-dim');
+        });
+        btn.classList.add('active');
+        btn.classList.remove('text-dim');
+
+        // Apply filtering classes
+        if (filter === 'all') {
+          wrap?.classList.remove('filter-mode-core');
+          items.forEach(item => item.classList.remove('is-dimmed', 'is-core'));
+        } else {
+          if (filter === 'core') {
+            wrap?.classList.add('filter-mode-core');
+          } else {
+            wrap?.classList.remove('filter-mode-core');
+          }
+
+          items.forEach(item => {
+            const categories = JSON.parse(item.getAttribute('data-categories') || '[]');
+            const isMatch = categories.includes(filter);
+            
+            if (isMatch) {
+              item.classList.remove('is-dimmed');
+              item.classList.add('is-core');
+            } else {
+              item.classList.add('is-dimmed');
+              item.classList.remove('is-core');
+            }
+          });
+        }
+      });
+    });
+  </script>
+</Layout>

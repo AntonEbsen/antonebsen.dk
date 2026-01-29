@@ -1,0 +1,26 @@
+{
+    "title": "Anton's AI Assistent",
+    "description": "Stil mig spørgsmål om Antons CV, projekter, blogindlæg og erfaring.",
+    "bodyClass": "chat-page",
+    "hero": {
+        "eyebrow": "AI Drevet Analyse",
+        "back": "Tilbage til forsiden",
+        "about": "Om denne AI"
+    },
+    "ui": {
+        "intro": "Hej! Jeg er den store udgave af Antons AI. Jeg kan analysere hele portfolioen og endda <strong>lave grafer</strong> over dataene. Prøv det!",
+        "placeholder": "Stil mig et spørgsmål...",
+        "disclaimer": "Drevet af Google Gemini · Kan lave fejl",
+        "prompts": [
+            "📊 Vis mig en graf over Antons skills",
+            "💼 Opsummer Antons erfaring",
+            "📋 Analysér Jobopslag"
+        ],
+        "status": {
+            "online": "ONLINE",
+            "model": "MODEL: GEMINI 2.5 FLASH",
+            "secure": "SECURE CONN",
+            "latency": "LATENCY: 24ms"
+        }
+    }
+}

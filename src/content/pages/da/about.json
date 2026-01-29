@@ -1,0 +1,200 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Profil / Om mig",
+    "description": "Profil / Om mig: makroøkonomi, økonometri, modeller og formidling. Arbejdsstil, fokusområder og hvad jeg kan hjælpe med.",
+    "bodyClass": "about-page",
+    "hero": {
+        "eyebrow": "Profil / Om mig",
+        "title": "Makro, økonometri og modeller — med fokus på at gøre det brugbart",
+        "lead": "Jeg arbejder i krydsfeltet mellem <strong>økonomi</strong>, <strong>data</strong> og <strong>formidling</strong>. Jeg kan godt lide “klassisk håndværk”: klare antagelser, ordentlig dokumentation og resultater, der kan forklares uden at man skal have læst 300 sider først.",
+        "pills": [
+            "Makro & pengepolitik",
+            "Økonometri & tidsrækker",
+            "Økonomiske modeller",
+            "Python / SAS / GAMS",
+            "Excel/VBA undervisning"
+        ],
+        "cta": [
+            {
+                "label": "Arbejdsstil",
+                "url": "#arbejdsstil",
+                "icon": "fa-solid fa-compass"
+            },
+            {
+                "label": "Fokusområder",
+                "url": "#fokus",
+                "icon": "fa-solid fa-bullseye",
+                "variant": "ghost"
+            },
+            {
+                "label": "Kontakt",
+                "url": "#kontakt",
+                "icon": "fa-solid fa-envelope",
+                "variant": "ghost"
+            }
+        ],
+        "quickFacts": {
+            "title": "Hurtige facts",
+            "facts": [
+                {
+                    "icon": "fa-solid fa-location-dot",
+                    "text": "København"
+                },
+                {
+                    "icon": "fa-solid fa-chart-line",
+                    "text": "Interesse: centralbanker, transmissionsmekanismer, heterogenitet"
+                },
+                {
+                    "icon": "fa-solid fa-code",
+                    "text": "Værktøjer: Python, SAS, GAMS + Excel/VBA"
+                },
+                {
+                    "icon": "fa-solid fa-chalkboard-user",
+                    "text": "Formidling: underviser (Excel/VBA) og bygger cases"
+                }
+            ]
+        },
+        "nav": {
+            "title": "På siden",
+            "links": [
+                {
+                    "label": "Fokusområder",
+                    "url": "#fokus"
+                },
+                {
+                    "label": "Hvordan jeg arbejder",
+                    "url": "#arbejdsstil"
+                },
+                {
+                    "label": "Undervisning & formidling",
+                    "url": "#formidling"
+                },
+                {
+                    "label": "Uden for studiet",
+                    "url": "#udenfor"
+                },
+                {
+                    "label": "Kontakt",
+                    "url": "#kontakt"
+                }
+            ]
+        }
+    },
+    "sections": {
+        "story": {
+            "title": "Viljen til at modbevise",
+            "text": "Min vej til at blive økonom har ikke været snorlige. Jeg har lært at vende skepsis til mod og modgang til målrettethed. Læs min personlige fortælling om rejsen fra epilepsi og specialklasse til cand.polit.",
+            "cta": {
+                "label": "Læs min historie",
+                "url": "/modgang-og-maalrettethed"
+            }
+        },
+        "focus": {
+            "title": "Fokusområder",
+            "items": [
+                {
+                    "title": "Makroøkonomi & pengepolitik",
+                    "text": "Jeg er især optaget af, hvordan pengepolitik “landes” i praksis: gennem finansielle markeder, forventninger, kreditkanaler og forskelle på tværs af lande/sektorer."
+                },
+                {
+                    "title": "Økonometri & tidsrækker",
+                    "text": "Forecasting, identifikation og robusthed. Jeg kan godt lide metoder der både er teknisk solide og kan forklares til en normal person uden at de går i søvn."
+                },
+                {
+                    "title": "Modeller & “structure”",
+                    "text": "CGE/RBC/DSGE-tænkning: tydelige antagelser, konsistens, checks og baseline/zero-shock disciplin."
+                },
+                {
+                    "title": "Data & tooling",
+                    "text": "Jeg bygger små pipelines og templates: fra data cleaning til output, så det kan genbruges og ikke kun virker én gang."
+                }
+            ]
+        },
+        "workingStyle": {
+            "title": "Hvordan jeg arbejder",
+            "intro": "Min standard-arbejdsgang (lidt kedelig — men det er præcis derfor den virker):",
+            "steps": [
+                "1) Afklar mål: hvad skal beslutningstager/læser kunne gøre bagefter?",
+                "2) Dokumentér data: kilder, definitioner, enheder, missing/outliers, transformationer.",
+                "3) Vælg metode: simpelt først, derefter “mere fancy” hvis det giver noget reelt.",
+                "4) Checks: sanity checks, robusthed, alternative specifikationer, edge cases.",
+                "5) Formidling: konklusioner, begrænsninger og “hvad betyder det i praksis?”"
+            ],
+            "cta": [
+                {
+                    "label": "Se portefølje",
+                    "url": "/portfolio",
+                    "icon": "fa-solid fa-folder-open",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Se ressourcer",
+                    "url": "/resources",
+                    "icon": "fa-solid fa-download"
+                }
+            ]
+        },
+        "teaching": {
+            "title": "Undervisning & formidling",
+            "intro": "Jeg har erfaring med at undervise i Excel/VBA og kan lide at gøre ting konkrete: cases, øvelser, “hvorfor” bag funktioner og små genveje der gør en stor forskel.",
+            "styles": [
+                {
+                    "title": "Min undervisningsstil",
+                    "points": [
+                        "Struktur først (mål → løsning → kvalitetstjek)",
+                        "Hands-on: hellere én god case end 30 slides",
+                        "Templates der kan genbruges"
+                    ]
+                },
+                {
+                    "title": "Hvad jeg typisk hjælper med",
+                    "points": [
+                        "Excel-modeller, dashboards og logik",
+                        "Data cleaning og reproducérbare workflows",
+                        "Små scripts og automatisering"
+                    ]
+                }
+            ]
+        },
+        "outside": {
+            "title": "Uden for studiet",
+            "text": "Jeg holder af rutiner og progression — både i træning og i projekter. Det lyder måske lidt “kontor-nørdet”, men det er ærligt talt ret tilfredsstillende at se kurver gå den rigtige vej.",
+            "cta": [
+                {
+                    "label": "Træningsindlæg",
+                    "url": "/blog#cat-traening",
+                    "icon": "fa-solid fa-dumbbell",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Rejser",
+                    "url": "/blog#cat-rejser",
+                    "icon": "fa-solid fa-person-hiking",
+                    "variant": "ghost"
+                }
+            ]
+        },
+        "contact": {
+            "title": "Kontakt",
+            "text": "Hvis du vil sparre om et projekt, en case eller et samarbejde, så skriv endelig.",
+            "cta": [
+                {
+                    "label": "Send mail",
+                    "url": "mailto:anton.ebsen@gmail.com",
+                    "icon": "fa-solid fa-envelope"
+                },
+                {
+                    "label": "Kontakt-side",
+                    "url": "/contact",
+                    "icon": "fa-solid fa-message",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Tilbage til CV",
+                    "url": "/cv",
+                    "icon": "fa-solid fa-file-lines",
+                    "variant": "ghost"
+                }
+            ]
+        }
+    }
+}

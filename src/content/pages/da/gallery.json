@@ -1,0 +1,71 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Galleri",
+    "description": "Galleri: udvalgte billeder fra projekter, events, træning og rejser.",
+    "bodyClass": "gallery-page",
+    "hero": {
+        "eyebrow": "Galleri",
+        "title": "Billeder",
+        "lead": "Et kurateret udvalg fra projekter, events, træning og rejser. (Samme content som på mine sociale medier — bare samlet ét sted.)",
+        "btnView": "Se galleri",
+        "btnPropose": "Foreslå et billede",
+        "tip": "Tip: læg billeder i <code>assets/gallery/</code> og opdatér kortene nedenfor.",
+        "categoriesTitle": "Kategorier",
+        "categoriesText": "Brug tags til at holde det ryddeligt: Træning, Rejser, Events, Undervisning."
+    },
+    "filters": {
+        "all": "Alle",
+        "training": "Træning",
+        "travel": "Rejser",
+        "events": "Events",
+        "teaching": "Undervisning"
+    },
+    "ui": {
+        "searchPlaceholder": "Søg i captions…",
+        "moreTitle": "Mere",
+        "moreText": "Jeg opdaterer løbende porteføljen. Du kan også finde mere på",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+    },
+    "items": [
+        {
+            "src": "/assets/gallery/sample1.jpg",
+            "tags": [
+                "training"
+            ],
+            "tagLabel": "Træning",
+            "caption": "PUSH 1 – uge 1, progression og fokus",
+            "title": "PUSH 1 – uge 1",
+            "text": "Kort note: fokus på teknik og konsistens."
+        },
+        {
+            "src": "/assets/gallery/sample2.jpg",
+            "tags": [
+                "travel"
+            ],
+            "tagLabel": "Rejser",
+            "caption": "Vandretur – rute, udsigt og tempo",
+            "title": "Vandretur",
+            "text": "Kort note: solid dag på ruten."
+        },
+        {
+            "src": "/assets/gallery/sample3.jpg",
+            "tags": [
+                "teaching"
+            ],
+            "tagLabel": "Undervisning",
+            "caption": "Excel-kursus – undervisning og cases",
+            "title": "Excel-kursus",
+            "text": "Kort note: hands-on cases og god energi."
+        },
+        {
+            "src": "/assets/gallery/sample4.jpg",
+            "tags": [
+                "events"
+            ],
+            "tagLabel": "Events",
+            "caption": "Event – fagligt meetup og netværk",
+            "title": "Fagligt event",
+            "text": "Kort note: spændende talk + gode samtaler."
+        }
+    ]
+}
