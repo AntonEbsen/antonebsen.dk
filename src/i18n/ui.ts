@@ -116,7 +116,17 @@ export const navigation: { [key: string]: { label: string; url: string; children
         },
         { label: 'Services', url: '/en/services' },
         { label: 'Q&A', url: '/en/qa' },
-        { label: 'Blog', url: '/en/blog' },
+        {
+            label: 'Blog',
+            url: '/en/blog',
+            children: [
+                { label: 'Latest Posts', url: '/en/blog' },
+                { label: 'Bucket List', url: '/en/bucketlist' },
+                { label: 'Library (Books)', url: '/en/books' },
+                { label: 'Podcasts', url: '/en/podcasts' },
+                { label: 'Favorite Quotes', url: '/en/quotes' }
+            ]
+        },
         { label: 'Contact', url: '/en/contact' },
     ]
 };

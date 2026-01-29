@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="The Story Behind My Website – Blog" 
+  description="A blog post about why and how my personal website was built – from the first version to structure, pages, statistics, and next steps."
+  bodyClass="blog-page"
+>
+  <!-- Page specific CSS -->
+  <link rel="stylesheet" href="/assets/css/blog.css" slot="head" />
+
+  <main class="blog-wrap">
+
+    <!-- POST HERO -->
+    <section class="card hero">
+      <div>
+        <p class="eyebrow">Blog · Professional</p>
+        <h1>The Story Behind My Personal Website</h1>
+        <p class="lead">
+          Why I built it, how it evolved, and what it tries to do "right" 
+          (spoiler: structure + documentation - noise).
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#tldr"><i class="fa-solid fa-bolt"></i> TL;DR</a>
+          <a class="btn ghost" href="#timeline"><i class="fa-solid fa-clock"></i> Timeline</a>
+          <a class="btn ghost" href="#next"><i class="fa-solid fa-forward"></i> Next Steps</a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-card">
+          <h2 class="section-title">Meta</h2>
+          <p class="muted" style="margin:0;">
+            Updated: <strong>January 2026</strong><br/>
+            Read time: <strong>5–7 min</strong><br/>
+            Tags: <strong>portfolio, structure, documentation</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT -->
+    <article class="card post" style="margin-top:14px;">
+
+      <!-- TL;DR -->
+      <section id="tldr">
+        <h2 class="section-title">TL;DR</h2>
+        <ul>
+          <li>The website started as a place to gather CV + projects in one place (and avoid the "where is that now?"-trap).</li>
+          <li>It quickly evolved into a small system: Portfolio, Resources/Downloads, and a Blog for notes.</li>
+          <li>I built statistics pages (course stats and training stats) to show progression rather than just claims.</li>
+          <li>The goal is to make things easy to find: fewer clicks, clear navigation, and documentable content.</li>
+        </ul>
+      </section>
+
+      <hr class="divider">
+
+      <!-- WHY -->
+      <section>
+        <h2 class="section-title">Why build a personal website at all?</h2>
+        <p>
+          I've always had a fairly classic challenge: many projects, many files, many versions.
+          And when you work with study projects, code, teaching materials, and a CV, "link chaos"
+          quickly becomes a reality.
+        </p>
+        <p>
+          So the idea was actually simple and a bit old-school: one place that I own, where the most important things live.
+          Not just a profile — but a structured base where I can update things continuously without having to
+          reinvent everything every time.
+        </p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- BUILD -->
+      <section>
+        <h2 class="section-title">How it was built (without making it unnecessarily fancy)</h2>
+        <p>
+          I chose a "keep it clean" approach: pure HTML/CSS, a clear navbar, and reusable cards for content.
+          It sounds simple — but that's exactly what makes it maintainable.
+        </p>
+
+        <div class="grid" style="margin-top:12px;">
+          <div class="card post p-6">
+            <div class="post-top flex justify-between items-center mb-4">
+              <h3 class="post-title font-bold text-lg">Principle 1: Structure over aesthetics</h3>
+              <span class="tag text-xs bg-accent/20 px-2 py-0.5 rounded text-accent">Design</span>
+            </div>
+            <p class="muted text-sm" style="margin:0;">
+              If the navigation is logical, the site can look 20% less "fancy" and still be 10x more useful.
+            </p>
+          </div>
+
+          <div class="card post p-6">
+            <div class="post-top flex justify-between items-center mb-4">
+              <h3 class="post-title font-bold text-lg">Principle 2: It must be extensible</h3>
+              <span class="tag text-xs bg-accent/20 px-2 py-0.5 rounded text-accent">System</span>
+            </div>
+            <p class="muted text-sm" style="margin:0;">
+              New pages (courses, certs, notes, media) must be plug-and-play: same layout, same footer, same style.
+            </p>
+          </div>
+
+          <div class="card post p-6">
+            <div class="post-top flex justify-between items-center mb-4">
+              <h3 class="post-title font-bold text-lg">Principle 3: Documentation beats vibes</h3>
+              <span class="tag text-xs bg-accent/20 px-2 py-0.5 rounded text-accent">Proof</span>
+            </div>
+            <p class="muted text-sm" style="margin:0;">
+              That's why the statistics pages became a thing. It's hard to argue against data when it's presented clearly.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- TIMELINE -->
+      <section id="timeline">
+        <h2 class="section-title">Timeline: from "CV page" to mini-portfolio</h2>
+
+        <div class="card p-6" style="background:rgba(255,215,0,0.02); border:1px solid rgba(255,215,0,0.1);">
+          <ul class="space-y-2" style="margin:0; padding-left:18px;">
+            <li><strong>Version 1:</strong> CV + contact. (The minimum requirement.)</li>
+            <li><strong>Version 2:</strong> Portfolio with projects + cases. (The extra mile.)</li>
+            <li><strong>Version 3:</strong> Resources/Downloads. (Tools I use myself and can share.)</li>
+            <li><strong>Version 4:</strong> Blog with three tracks: professional, training, travel.</li>
+            <li><strong>Version 5:</strong> Statistics pages: course evaluations and training data. (Progression, not just words.)</li>
+            <li><strong>Now:</strong> Multiple sub-pages under CV (skills, experience, courses, certs) + "Press/Media".</li>
+          </ul>
+        </div>
+
+        <p class="muted mt-4" style="margin-top:12px;">
+          And yes — some of it sounds like "overkill". But when you update often, structure suddenly becomes a superpower.
+        </p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- WHAT IT ENABLES -->
+      <section>
+        <h2 class="section-title">What the website enables (that LinkedIn doesn't do as well)</h2>
+        <ul class="space-y-2">
+          <li><strong>Long-form:</strong> explanations, notes, and reflections without being trapped in a feed format.</li>
+          <li><strong>Artifacts:</strong> downloads, templates, code examples, and how-to's in a fixed structure.</li>
+          <li><strong>Dashboards:</strong> statistics pages that can be updated continuously and show development over time.</li>
+          <li><strong>Control:</strong> layout, language (DA/EN), and what is highlighted where.</li>
+        </ul>
+      </section>
+
+      <hr class="divider">
+
+      <!-- NEXT -->
+      <section id="next">
+        <h2 class="section-title">Next Steps</h2>
+        <p>
+          The most obvious next upgrade is to make the blog more robust: either with more individual posts 
+          (like this page) or a simple tag system. Additionally, it makes sense to expand the CV section 
+          further into dedicated sub-pages to keep the main CV from becoming a wall of text.
+        </p>
+
+        <div class="cta mt-6 flex gap-3">
+          <a class="btn" href="/en/blog"><i class="fa-solid fa-arrow-left"></i> Back to Blog</a>
+          <a class="btn ghost" href="/en/resources"><i class="fa-solid fa-download"></i> View Resources</a>
+          <a class="btn ghost" href="/en/contact"><i class="fa-solid fa-envelope"></i> Contact</a>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- CTA card -->
+    <section class="card p-8 mt-4 text-center">
+      <h2 class="section-title">Do you have feedback?</h2>
+      <p class="muted mb-6">
+        If you find something hard to find, or if you have suggestions for a page that's missing, please let me know. 
+        I try to optimize this website as a tool — not just a brochure.
+      </p>
+      <div class="cta flex justify-center gap-4">
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> Send Email</a>
+        <a class="btn ghost" href="/en/contact">Contact Page</a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

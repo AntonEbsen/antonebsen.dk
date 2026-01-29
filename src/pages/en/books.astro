@@ -1,0 +1,164 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const booksData = await getCollection('books');
+---
+
+<Layout 
+  title="Favorite Books – Anton Meier Ebsen Jørgensen" 
+  description="A curated list of my favorite books – classics, professional books, and books I return to again and again."
+  bodyClass="books-page"
+>
+
+  <style>
+    .books-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <main class="books-wrap">
+
+    <!-- HERO -->
+    <Section>
+      <div class="hero-grid">
+        <Card variant="glass" class="p-8">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">About me · Reading List</p>
+          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">My Favorite Books</h1>
+          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
+            A curated list of books I've gained the most from — either because they shaped my way of thinking,
+            or because I return to them regularly.
+          </p>
+  
+          <div class="pill-wrap flex flex-wrap gap-2 mb-8" aria-label="Categories">
+            <Pill variant="accent">Classics</Pill>
+            <Pill variant="accent">Professional</Pill>
+            <Pill variant="accent">Biographies</Pill>
+            <Pill variant="accent">Faith & Ethics</Pill>
+            <Pill variant="accent">Language & Writing</Pill>
+          </div>
+  
+          <div class="flex flex-wrap gap-3">
+            <Button href="#list"><i class="fa-solid fa-book mr-2"></i> View List</Button>
+            <Button href="/en/contact" variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> Recommend a book</Button>
+          </div>
+        </Card>
+  
+        <div class="hidden md:block">
+          <Card variant="glass" class="p-6">
+            <SectionHeading>How I use this list</SectionHeading>
+            <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
+              I update this list continuously. Some are must-reads, others just resonated at a specific time in my life.
+            </p>
+            <p class="text-[13px] text-dim opacity-70 leading-relaxed">
+              Tip: I try to include years and notes — it makes the list more personal.
+            </p>
+          </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- LIST -->
+    <Section id="list">
+      <Card variant="bordered" class="p-6">
+        <SectionHeading>Library (Live DB)</SectionHeading>
+        <p class="text-dim opacity-70 mb-6 text-sm">
+          Fetched directly from the "Living Library" database.
+        </p>
+
+        <div id="books-grid" class="books-grid">
+           <p class="text-dim col-span-full text-center py-12">Loading Library...</p>
+        </div>
+      </Card>
+    </Section>
+
+    <script>
+      async function loadBooks() {
+        try {
+          const res = await fetch('/api/books');
+          const books = await res.json();
+          const grid = document.getElementById('books-grid');
+          
+          if (!grid) return;
+          grid.innerHTML = '';
+
+          if (books.length === 0) {
+             grid.innerHTML = '<p class="text-dim col-span-full text-center py-12">The library is empty.</p>';
+             return;
+          }
+
+          books.forEach((book: any) => {
+            const card = document.createElement('div');
+            card.className = 'group relative flex flex-col gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-black/20';
+            
+            const ratingStars = '★'.repeat(book.rating || 0) + '☆'.repeat(5 - (book.rating || 0));
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <h3 class="text-lg font-bold text-white/90 group-hover:text-gold-400 transition-colors">${book.title}</h3>
+                    <span class="text-xs bg-white/10 px-2 py-1 rounded text-white/60">${book.status || 'Read'}</span>
+                </div>
+                
+                <div class="text-sm text-white/50 mb-2">
+                    ${book.author || 'Unknown'}
+                </div>
+
+                ${book.notes ? `<p class="text-sm text-white/70 italic line-clamp-3">"${book.notes}"</p>` : ''}
+                
+                <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-white/40">
+                    <span class="text-gold-500/80 tracking-widest">${ratingStars}</span>
+                    <span>${new Date(book.created_at).getFullYear()}</span>
+                </div>
+            `;
+            grid.appendChild(card);
+          });
+
+        } catch (err) {
+          console.error("Failed to load books", err);
+        }
+      }
+      loadBooks();
+    </script>
+
+    <!-- CTA -->
+    <Section>
+      <ContactCard 
+        variant="glass" 
+        title="Recommend a book" 
+        text="Feel free to send me an email if you have suggestions for interesting reads."
+        action="email"
+      />
+    </Section>
+
+  </main>
+</Layout>
