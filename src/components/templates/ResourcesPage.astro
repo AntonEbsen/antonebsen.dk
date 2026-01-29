@@ -4,7 +4,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
-import resourcesData from '@data/resources.json';
+import { getEntry } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
@@ -13,48 +13,20 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const t = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Ressourcer & Downloads",
-    desc: "Gratis ressourcer og downloads: Excel-skabeloner, kode, noter og guides.",
-    eyebrow: "Ressourcer",
-    heroTitle: "Downloads & templates",
-    heroText: "Små, praktiske ressourcer jeg selv bruger: skabeloner, cheat sheets og eksempler. Alt er lavet til at være plug-and-play.",
-    downloadBtn: "Se downloads",
-    statsBtn: "Se kursusstatistik",
-    askBtn: "Spørg om noget specifikt",
-    noteTitle: "Note",
-    noteText1: "Nogle filer kan være “sanitized” (fjernet data/navne) pga. kursus/fortrolighed.",
-    noteText2: "Har du et konkret behov? Skriv — jeg kan ofte lave en skabelon, der passer.",
-    catTitle: "Downloads",
-    catText: "Placér filer i mappen assets/downloads/ og link dem her.",
-    ctaTitle: "Vil du have noget specifikt?",
-    ctaText: "Hvis du fortæller mig dit format (Excel/Python/SAS) og mål (fx forecasting, dashboards, data-cleaning), kan jeg foreslå en template-struktur, der passer.",
-    ctaContact: "Kontakt",
-    ctaServices: "Se services"
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Resources & Downloads",
-    desc: "Free resources and downloads: Excel templates, code, notes, and guides.",
-    eyebrow: "Resources",
-    heroTitle: "Downloads & Templates",
-    heroText: "Small, practical resources I use myself: templates, cheat sheets, and examples. Everything is made to be plug-and-play.",
-    downloadBtn: "See Downloads",
-    statsBtn: "View Course Stats",
-    askBtn: "Ask for something specific",
-    noteTitle: "Note",
-    noteText1: "Some files may be 'sanitized' (data/names removed) due to course/confidentiality.",
-    noteText2: "Do you have a specific need? Write me — I can often create a template that fits.",
-    catTitle: "Downloads",
-    catText: "Place files in the assets/downloads/ folder and link them here.",
-    ctaTitle: "Need something specific?",
-    ctaText: "If you tell me your format (Excel/Python/SAS) and goal (e.g., forecasting, dashboards, data-cleaning), I can suggest a template structure that fits.",
-    ctaContact: "Contact",
-    ctaServices: "View Services"
-  }
-};
+// 1. Fetch Page Content (UI strings)
+const entry = await getEntry('pages', `${lang}/resources`);
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/resources`);
+}
+const content = entry.data;
 
-const content = isDa ? t.da : t.en;
+// 2. Fetch Resources Data (Items)
+const resEntry = await getEntry('resources', lang);
+if (!resEntry) {
+   throw new Error(`Could not find resources data for ${lang}`);
+}
+const resourcesData = resEntry.data.items;
+
 const contactLink = isDa ? '/contact' : '/en/contact';
 const servicesLink = isDa ? '/services' : '/en/services';
 const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
@@ -144,12 +116,12 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
           {resourcesData.map(res => (
             <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]!">
                 <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="text-[16px] font-bold leading-tight m-0">{isDa ? res.title_da : res.title_en}</h3>
-                  <Pill variant="accent" class="shrink-0">{isDa ? (res.pill_da || res.pill) : (res.pill_en || res.pill)}</Pill>
+                  <h3 class="text-[16px] font-bold leading-tight m-0">{res.title}</h3>
+                  <Pill variant="accent" class="shrink-0">{res.pill}</Pill>
                 </div>
-                <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">{isDa ? res.meta_da : res.meta_en}</p>
+                <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">{res.meta}</p>
                 <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
-                  {isDa ? res.desc_da : res.desc_en}
+                  {res.desc}
                 </p>
                 <div class="flex flex-wrap gap-2 mt-auto">
                     {res.links.map(l => (
@@ -161,7 +133,7 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
                             variant={l.ghost ? "ghost" : "primary"}
                             class={`px-4 py-2 text-xs ${l.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
-                            {l.icon && <i class={`${l.icon} mr-2`}></i>} {isDa ? l.text_da : l.text_en}
+                            {l.icon && <i class={`${l.icon} mr-2`}></i>} {l.text}
                         </Button>
                     ))}
                 </div>

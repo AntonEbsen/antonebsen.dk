@@ -6,8 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import cvDa from '@data/cv.json';
-import cvEn from '@data/cv_en.json';
+import { getEntry } from 'astro:content';
 import { createClient } from '@supabase/supabase-js';
 
 interface Props {
@@ -16,56 +15,16 @@ interface Props {
 
 const { lang } = Astro.props;
 const isDa = lang === 'da';
-const cv = isDa ? cvDa : cvEn;
 
-const t = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Uddannelse",
-    desc: "Uddannelsesprofil: cand.polit./ba.polit., relevante kurser, projekter og fokusområder.",
-    heroTitle: "Kurser, projekter og faglig profil",
-    heroText: "Her samler jeg det, der ellers bliver for langt til CV’et: udvalgte kurser, projektarbejde og hvad jeg konkret har lært (metoder, værktøjer, modeller).",
-    buttons: { ku: "Københavns Universitet", hhx: "HHX", course: "Kursusoversigt", proj: "Projektarbejde" },
-    pills: ["Makro", "Økonometri", "Modeller", "Tidsrækker", "Python/SAS/GAMS"],
-    shortTitle: "Kort version?",
-    shortText: "CV-siden har den “HR-venlige” oversigt. Denne side er til dem, der faktisk læser.",
-    shortBtn: "Til CV-oversigt",
-    progTitle: "Program & fokus",
-    toolsTitle: "Nøgleværktøjer",
-    toolsText: "(Tjek også porteføljen for konkrete eksempler på brug af værktøjerne.)",
-    courseTitle: "Kursusoversigt (udvalg)",
-    courseTip: "Tip: Disse kurser repræsenterer min faglige kerne og specialisering.",
-    projTitle: "Projektarbejde (udvalg)",
-    portfolioBtn: "Se hel portefølje",
-    ctaTitle: "Vil du se certificeringer også?",
-    ctaText: "Certificeringer er “beviser”. Uddannelse er “forløb”. Begge styrker troværdigheden.",
-    ctaBtn: "Til certificeringer",
-    contactBtn: "Kontakt"
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Education",
-    desc: "Education profile: cand.polit./ba.polit., relevant courses, projects, and focus areas.",
-    heroTitle: "Courses, Projects, and Professional Profile",
-    heroText: "Here I gather what becomes too long for the CV: selected courses, project work, and concretely what I've learned (methods, tools, models).",
-    buttons: { ku: "University of Copenhagen", hhx: "HHX", course: "Course Overview", proj: "Project Work" },
-    pills: ["Macro", "Econometrics", "Modeling", "Time Series", "Python/SAS/GAMS"],
-    shortTitle: "Short Version?",
-    shortText: "The CV page has the \"HR-friendly\" overview. This page is for those who actually want to dive deep.",
-    shortBtn: "To CV Overview",
-    progTitle: "Program & Focus",
-    toolsTitle: "Key Tools",
-    toolsText: "(Check the portfolio for concrete examples of how I use these tools.)",
-    courseTitle: "Course Overview (Selection)",
-    courseTip: "Note: These courses represent my academic core and specialization.",
-    projTitle: "Project Work (Selection)",
-    portfolioBtn: "View Full Portfolio",
-    ctaTitle: "Want to see certifications as well?",
-    ctaText: "Certifications are \"proof\". Education is the \"process\". Both strengthen credibility.",
-    ctaBtn: "To Certifications",
-    contactBtn: "Contact"
-  }
-};
+// 1. UI Content
+const pageEntry = await getEntry('pages', `${lang}/education`);
+if (!pageEntry) throw new Error(`Missing pages entry for ${lang}/education`);
+const content = pageEntry.data; 
 
-const content = isDa ? t.da : t.en;
+// 2. CV Data
+const cvEntry = await getEntry('cv', lang);
+if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
+const cv = cvEntry.data;
 
 // Data Fetching for Education (JSON)
 const experience = cv.education || [];
@@ -137,30 +96,30 @@ const cvLink = isDa ? '/cv' : '/en/cv';
       <div class="hero-grid">
         <Card variant="glass" class="p-6">
           <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Uddannelse' : 'Education'}</p>
-          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.heroTitle}</h1>
+          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.hero.title}</h1>
           <p class="text-lg leading-relaxed text-dim mb-6">
-            {content.heroText}
+            {content.hero.text}
           </p>
   
           <div class="flex flex-wrap gap-3 mb-6">
-            <Button href="#ku">{content.buttons.ku}</Button>
-            <Button href="#hhx" variant="ghost">{content.buttons.hhx}</Button>
-            <Button href="#courses" variant="ghost">{content.buttons.course}</Button>
-            <Button href="#projects" variant="ghost">{content.buttons.proj}</Button>
+            <Button href="#ku">{content.hero.buttons.ku}</Button>
+            <Button href="#hhx" variant="ghost">{content.hero.buttons.hhx}</Button>
+            <Button href="#courses" variant="ghost">{content.hero.buttons.course}</Button>
+            <Button href="#projects" variant="ghost">{content.hero.buttons.proj}</Button>
           </div>
   
           <div class="flex flex-wrap gap-2">
-            {content.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+            {content.hero.pills.map(p => <Pill variant="accent">{p}</Pill>)}
           </div>
         </Card>
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-4">
-            <SectionHeading>{content.shortTitle}</SectionHeading>
+            <SectionHeading>{content.short.title}</SectionHeading>
             <p class="text-[13px] text-dim mb-4 opacity-70">
-              {content.shortText}
+              {content.short.text}
             </p>
-            <Button href={`${cvLink}#education`} variant="ghost" class="w-full">{content.shortBtn}</Button>
+            <Button href={`${cvLink}#education`} variant="ghost" class="w-full">{content.short.btn}</Button>
           </Card>
         </div>
       </div>
@@ -174,7 +133,7 @@ const cvLink = isDa ? '/cv' : '/en/cv';
 
           <div class="two-col">
             <Card variant="glass" class="p-4">
-              <h3 class="text-base font-bold mb-2">{content.progTitle}</h3>
+              <h3 class="text-base font-bold mb-2">{content.prog.title}</h3>
               <p class="text-dim text-[14px] leading-relaxed mb-4">
                 {ku.description}
               </p>
@@ -186,14 +145,14 @@ const cvLink = isDa ? '/cv' : '/en/cv';
             </Card>
 
             <Card variant="glass" class="p-4">
-              <h3 class="text-base font-bold mb-2">{content.toolsTitle}</h3>
+              <h3 class="text-base font-bold mb-2">{content.tools.title}</h3>
               <div class="flex flex-wrap gap-2 mb-4">
                 {ku.technologies && ku.technologies.map(tech => (
                   <Pill variant="default">{tech}</Pill>
                 ))}
               </div>
               <p class="text-[13px] text-dim opacity-70">
-                {content.toolsText}
+                {content.tools.text}
               </p>
             </Card>
           </div>
@@ -204,9 +163,9 @@ const cvLink = isDa ? '/cv' : '/en/cv';
     <!-- COURSES -->
     <Section id="courses">
       <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.courseTitle}</SectionHeading>
+        <SectionHeading>{content.courses.title}</SectionHeading>
         <p class="text-dim opacity-70 mb-6">
-          {content.courseTip}
+          {content.courses.tip}
         </p>
 
         <div class="courses-grid">
@@ -234,7 +193,7 @@ const cvLink = isDa ? '/cv' : '/en/cv';
     <!-- PROJECTS -->
     <Section id="projects">
       <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.projTitle}</SectionHeading>
+        <SectionHeading>{content.projects.title}</SectionHeading>
 
         <div class="courses-grid">
           {projects.map(proj => (
@@ -255,7 +214,7 @@ const cvLink = isDa ? '/cv' : '/en/cv';
           ))}
         </div>
         <div class="mt-6 text-center">
-            <Button href={isDa ? '/portfolio' : '/en/portfolio'} variant="ghost">{content.portfolioBtn}</Button>
+            <Button href={isDa ? '/portfolio' : '/en/portfolio'} variant="ghost">{content.projects.btn}</Button>
         </div>
       </Card>
     </Section>
@@ -280,11 +239,11 @@ const cvLink = isDa ? '/cv' : '/en/cv';
     <!-- CTA -->
     <Section>
       <Card variant="default" class="p-6">
-        <SectionHeading>{content.ctaTitle}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6">{content.ctaText}</p>
+        <SectionHeading>{content.cta.title}</SectionHeading>
+        <p class="text-dim opacity-70 mb-6">{content.cta.text}</p>
         <div class="flex flex-wrap gap-3">
-          <Button href={certificationLink}>{content.ctaBtn}</Button>
-          <Button href={isDa ? '/contact' : '/en/contact'} variant="ghost">{content.contactBtn}</Button>
+          <Button href={certificationLink}>{content.cta.btn}</Button>
+          <Button href={isDa ? '/contact' : '/en/contact'} variant="ghost">{content.cta.contactBtn}</Button>
         </div>
       </Card>
     </Section>

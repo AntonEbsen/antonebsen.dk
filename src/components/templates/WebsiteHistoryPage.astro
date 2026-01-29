@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import { getEntry } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
@@ -8,134 +9,12 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const t = {
-  da: {
-    title: "Historien bag min hjemmeside – Blog",
-    desc: "Et blogindlæg om hvorfor og hvordan min personlige hjemmeside blev bygget – fra første version til struktur, sider, statistik og næste skridt.",
-    eyebrow: "Blog · Fagligt",
-    h1: "Historien bag min personlige hjemmeside",
-    lead: "Hvorfor jeg byggede den, hvordan den udviklede sig, og hvad den prøver at gøre “rigtigt” (spoiler: struktur + dokumentation + mindre støj).",
-    btns: { tldr: "TL;DR", time: "Tidslinje", next: "Næste skridt" },
-    meta: { title: "Meta", updated: "Opdateret:", date: "Januar 2026", time: "Læsetid:", val: "5–7 min", tags: "Tags:", tagsVal: "portfolio, struktur, dokumentation" },
-    tldr: {
-        title: "TL;DR",
-        list: [
-            "Hjemmesiden startede som et sted at samle CV + projekter ét sted (og slippe for “hvor ligger det nu?”).",
-            "Den blev hurtigt til et lille system: Portefølje, Ressourcer/Downloads, og en Blog til noter.",
-            "Jeg byggede statistik-sider (kursusstatistik og træningsstatistik) for at vise progression og ikke bare påstande.",
-            "Målet er at gøre tingene nemme at finde: færre klik, klar navigation, og indhold der kan dokumenteres."
-        ]
-    },
-    why: {
-        title: "Hvorfor overhovedet lave en personlig hjemmeside?",
-        p1: "Jeg har altid haft en ret klassisk udfordring: mange projekter, mange filer, mange versioner. Og når man både arbejder med studieprojekter, kode, undervisningsmateriale og CV, så bliver “link-kaos” hurtigt en ting.",
-        p2: "Så ideen var egentlig simpel og lidt oldschool: ét sted, som jeg ejer selv, hvor det vigtigste ligger. Ikke bare en profil — men en struktureret base, hvor jeg kan opdatere ting løbende uden at skulle genopfinde alt hver gang."
-    },
-    build: {
-        title: "Hvordan den blev bygget (uden at gøre det unødigt fancy)",
-        intro: "Jeg valgte en “keep it clean” tilgang: ren HTML/CSS, en tydelig navbar, og genbrugelige kort (“cards”) til indhold. Det lyder banalt — men det er præcis det, der gør det vedligeholdelsesvenligt.",
-        p1: { title: "Princip 1: Struktur før pynt", tag: "Design", text: "Hvis navigationen er logisk, kan siden se 20% mindre “flot” ud og stadig være 10x mere brugbar." },
-        p2: { title: "Princip 2: Det skal kunne udbygges", tag: "System", text: "Nye sider (kurser, certs, noter, omtale) skal være plug-and-play: samme layout, samme footer, samme stil." },
-        p3: { title: "Princip 3: Dokumentation beats vibe", tag: "Proof", text: "Derfor blev statistik-siderne en ting. Det er svært at argumentere imod data, når de er pænt præsenteret." }
-    },
-    timeline: {
-        title: "Tidslinje: fra “CV-side” til mini-portfolio",
-        list: [
-            "<strong>Version 1:</strong> CV + kontakt. (Det man “skal” have.)",
-            "<strong>Version 2:</strong> Portefølje med projekter + cases. (Det man <em>kan</em> have.)",
-            "<strong>Version 3:</strong> Ressourcer/Downloads. (Det man selv bruger og kan dele.)",
-            "<strong>Version 4:</strong> Blog med tre spor: fagligt, træning, rejser.",
-            "<strong>Version 5:</strong> Statistik-sider: kursusevalueringer og træningsdata. (Progression, ikke bare ord.)",
-            "<strong>Nu:</strong> Flere undersider under CV (kompetencer, erhvervserfaring, kurser, certs) + “omtale”."
-        ],
-        outro: "Og ja — noget af det lyder som “overkill”. Men når man opdaterer ofte, bliver struktur pludselig en superpower."
-    },
-    enables: {
-        title: "Hvad hjemmesiden gør muligt (som LinkedIn ikke gør lige så godt)",
-        list: [
-            "<strong>Langform:</strong> forklaringer, noter og refleksioner uden at være fanget i feed-formatet.",
-            "<strong>Artefakter:</strong> downloads, templates, kodeeksempler og “how-to” i en fast struktur.",
-            "<strong>Dashboards:</strong> statistik-sider, der kan opdateres løbende og viser udvikling over tid.",
-            "<strong>Kontrol:</strong> layout, sprog (DA/EN/DE), og hvad der fremhæves hvor."
-        ]
-    },
-    next: {
-        title: "Næste skridt",
-        text: "Den mest oplagte næste opgradering er at gøre bloggen mere “rigtig”: enten med individuelle posts (som denne side) eller et simpelt tagsystem. Derudover giver det mening at udbygge CV-sektionen til dedikerede undersider (kurser, certifikater, kompetencer), så CV-siden ikke bliver en mur af tekst.",
-        btns: { back: "Tilbage til blog", res: "Se ressourcer", contact: "Kontakt" }
-    },
-    feedback: {
-        title: "Har du feedback?",
-        text: "Hvis du synes noget er svært at finde, eller du har forslag til en side, der mangler, så skriv gerne. Jeg prøver at optimere hjemmesiden som et værktøj — ikke som en brochure.",
-        mail: "Send mail",
-        page: "Kontakt-side"
-    }
-  },
-  en: {
-    title: "The Story Behind My Website – Blog",
-    desc: "A blog post about why and how my personal website was built – from the first version to structure, pages, statistics, and next steps.",
-    eyebrow: "Blog · Professional",
-    h1: "The Story Behind My Personal Website",
-    lead: "Why I built it, how it evolved, and what it tries to do \"right\" (spoiler: structure + documentation - noise).",
-    btns: { tldr: "TL;DR", time: "Timeline", next: "Next Steps" },
-    meta: { title: "Meta", updated: "Updated:", date: "January 2026", time: "Read time:", val: "5–7 min", tags: "Tags:", tagsVal: "portfolio, structure, documentation" },
-    tldr: {
-        title: "TL;DR",
-        list: [
-            "The website started as a place to gather CV + projects in one place (and avoid the \"where is that now?\"-trap).",
-            "It quickly evolved into a small system: Portfolio, Resources/Downloads, and a Blog for notes.",
-            "I built statistics pages (course stats and training stats) to show progression rather than just claims.",
-            "The goal is to make things easy to find: fewer clicks, clear navigation, and documentable content."
-        ]
-    },
-    why: {
-        title: "Why build a personal website at all?",
-        p1: "I've always had a fairly classic challenge: many projects, many files, many versions. And when you work with study projects, code, teaching materials, and a CV, \"link chaos\" quickly becomes a reality.",
-        p2: "So the idea was actually simple and a bit old-school: one place that I own, where the most important things live. Not just a profile — but a structured base where I can update things continuously without having to reinvent everything every time."
-    },
-    build: {
-        title: "How it was built (without making it unnecessarily fancy)",
-        intro: "I chose a \"keep it clean\" approach: pure HTML/CSS, a clear navbar, and reusable cards for content. It sounds simple — but that's exactly what makes it maintainable.",
-        p1: { title: "Principle 1: Structure over aesthetics", tag: "Design", text: "If the navigation is logical, the site can look 20% less \"fancy\" and still be 10x more useful." },
-        p2: { title: "Principle 2: It must be extensible", tag: "System", text: "New pages (courses, certs, notes, media) must be plug-and-play: same layout, same footer, same style." },
-        p3: { title: "Principle 3: Documentation beats vibe", tag: "Proof", text: "That's why the statistics pages became a thing. It's hard to argue against data when it's presented clearly." }
-    },
-    timeline: {
-        title: "Timeline: from \"CV page\" to mini-portfolio",
-        list: [
-            "<strong>Version 1:</strong> CV + contact. (The minimum requirement.)",
-            "<strong>Version 2:</strong> Portfolio with projects + cases. (The extra mile.)",
-            "<strong>Version 3:</strong> Resources/Downloads. (Tools I use myself and can share.)",
-            "<strong>Version 4:</strong> Blog with three tracks: professional, training, travel.",
-            "<strong>Version 5:</strong> Statistics pages: course evaluations and training data. (Progression, not just words.)",
-            "<strong>Now:</strong> Multiple sub-pages under CV (skills, experience, courses, certs) + \"Press/Media\"."
-        ],
-        outro: "And yes — some of it sounds like \"overkill\". But when you update often, structure suddenly becomes a superpower."
-    },
-    enables: {
-        title: "What the website enables (that LinkedIn doesn't do as well)",
-        list: [
-            "<strong>Long-form:</strong> explanations, notes, and reflections without being trapped in a feed format.",
-            "<strong>Artifacts:</strong> downloads, templates, code examples, and how-to's in a fixed structure.",
-            "<strong>Dashboards:</strong> statistics pages that can be updated continuously and show development over time.",
-            "<strong>Control:</strong> layout, language (DA/EN), and what is highlighted where."
-        ]
-    },
-    next: {
-        title: "Next Steps",
-        text: "The most obvious next upgrade is to make the blog more robust: either with more individual posts (like this page) or a simple tag system. Additionally, it makes sense to expand the CV section further into dedicated sub-pages to keep the main CV from becoming a wall of text.",
-        btns: { back: "Back to Blog", res: "View Resources", contact: "Contact" }
-    },
-    feedback: {
-        title: "Do you have feedback?",
-        text: "If you find something hard to find, or if you have suggestions for a page that's missing, please let me know. I try to optimize this website as a tool — not just a brochure.",
-        mail: "Send Email",
-        page: "Contact Page"
-    }
-  }
-};
+const entry = await getEntry('website-history', lang);
+if (!entry) {
+  throw new Error(`Could not find website-history content for ${lang}`);
+}
+const content = entry.data;
 
-const content = isDa ? t.da : t.en;
 const contactLink = isDa ? '/contact' : '/en/contact';
 const blogLink = isDa ? '/blog' : '/en/blog';
 const resLink = isDa ? '/resources' : '/en/resources';

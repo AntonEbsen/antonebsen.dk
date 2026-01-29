@@ -5,6 +5,8 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import { createClient } from '@supabase/supabase-js';
 
+import { getEntry } from 'astro:content';
+
 interface Props {
   lang: 'da' | 'en';
 }
@@ -12,28 +14,12 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const t = {
-  da: {
-    title: "Bucket List | Anton Ebsen",
-    desc: "Min liste over mål og drømme.",
-    heroTitle: "The Bucket List 🏆",
-    heroText: "Livet er kort. Her er hvad jeg arbejder hen imod.",
-    doingTitle: "Active Quests (Doing)",
-    doneTitle: "Trophy Room (Completed)",
-    todoTitle: "The Vault (To-Do)"
-  },
-  en: {
-    title: "Bucket List | Anton Ebsen",
-    desc: "My list of goals and dreams.",
-    heroTitle: "The Bucket List 🏆",
-    heroText: "Life is short. Here's what I'm working towards.",
-    doingTitle: "Active Quests (Doing)",
-    doneTitle: "Trophy Room (Completed)",
-    todoTitle: "The Vault (To-Do)"
-  }
-};
+const entry = await getEntry('pages', `${lang}/bucketlist`);
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/bucketlist`);
+}
 
-const content = isDa ? t.da : t.en;
+const content = entry.data;
 
 // Data Fetching
 const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);

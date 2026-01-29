@@ -8,69 +8,17 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { createClient } from '@supabase/supabase-js';
 
+import { getEntry } from 'astro:content';
+
 interface Props {
   lang: 'da' | 'en';
 }
 
 const { lang } = Astro.props;
-const isDa = lang === 'da';
 
-const t = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Certificeringer",
-    desc: "Certificeringer i Python, MATLAB, SAS m.m.",
-    heroEyebrow: "Certificeringer",
-    heroTitle: "Kurser, badges og dokumentation",
-    heroText: "Samlet oversigt over mine certificeringer inden for programmering, dataanalyse og formidling. Jeg linker til beviser når muligt.",
-    heroTipTitle: "Tip",
-    heroTipText: "Når du tilføjer nye certs: hold titler ensartede og skriv 1 linje om “hvad kan jeg nu”. Det er 10/10 mere værd end “jeg har taget et kursus”.",
-    themes: ["Data", "Coding", "Økonomi", "Formidling"],
-    empty: "Ingen certificeringer fundet endnu.",
-    emptyDash: "Tilføj dine diplomer i",
-    dashLink: "Dashboardet",
-    cats: {
-        python: { title: "Python", text: "Dataanalyse, workflows, og praktisk programmering.", empty: "Ingen Python certificeringer endnu." },
-        matlab: { title: "MATLAB", text: "Numerisk analyse, matrixregning og workflows.", empty: "Ingen MATLAB certificeringer endnu." },
-        sas: { title: "SAS", text: "Tidsrækker, data management og analyse.", empty: "Ingen SAS certificeringer endnu." },
-        writing: { title: "Politikens Skriveakademi", text: "Skrivning, struktur og formidling.", empty: "Ingen Formidlings-certificeringer endnu." },
-        other: "Andet"
-    },
-    btnProof: "Bevis",
-    otherPill: "Andet",
-    contact: {
-        title: "Vil du se CV’et samlet?",
-        text: "Certificeringer er “bilag”. CV’et er “historien”. Begge dele har sin plads."
-    }
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Certifications",
-    desc: "Certifications in Python, MATLAB, SAS, and more.",
-    heroEyebrow: "Certifications",
-    heroTitle: "Courses, Badges, and Documentation",
-    heroText: "A comprehensive overview of my certifications in programming, data analysis, and communication. I link to certificates and credentials whenever possible.",
-    heroTipTitle: "Tip",
-    heroTipText: "When adding new certifications: keep titles consistent and write a one-line summary of \"what can I do now\". It's 10/10 more valuable than \"I took a course\".",
-    themes: ["Data", "Coding", "Economics", "Communication"],
-    empty: "No certifications found yet.",
-    emptyDash: "Add your credentials in the",
-    dashLink: "Dashboard",
-    cats: {
-        python: { title: "Python", text: "Data analysis, workflows, and practical programming.", empty: "No Python certifications yet." },
-        matlab: { title: "MATLAB", text: "Numerical analysis, matrix algebra, and workflows.", empty: "No MATLAB certifications yet." },
-        sas: { title: "SAS", text: "Time series, data management, and analysis.", empty: "No SAS certifications yet." },
-        writing: { title: "Writing & Communication", text: "Writing, structure, and professional communication.", empty: "No writing certifications yet." },
-        other: "Other"
-    },
-    btnProof: "Proof",
-    otherPill: "Other",
-    contact: {
-        title: "Want to see the full CV?",
-        text: "Certifications are 'appendices'. The CV is the 'story'. Both have their place."
-    }
-  }
-};
-
-const content = isDa ? t.da : t.en;
+const entry = await getEntry('certifications', lang);
+if (!entry) throw new Error(`Missing certifications content for ${lang}`);
+const content = entry.data;
 
 // Data Fetching
 const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
@@ -132,10 +80,10 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.heroEyebrow}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{content.heroTitle}</h1>
+          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+          <h1 class="text-4xl font-bold leading-tight mb-4">{content.hero.title}</h1>
           <p class="text-lg text-dim mb-6">
-            {content.heroText}
+            {content.hero.text}
           </p>
 
           <div class="flex flex-wrap gap-3 mb-6">
@@ -146,15 +94,15 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
           </div>
 
           <div class="flex flex-wrap gap-2" aria-label="Themes">
-            {content.themes.map(th => <Pill variant="accent">{th}</Pill>)}
+            {content.hero.themes.map(th => <Pill variant="accent">{th}</Pill>)}
           </div>
         </Card>
 
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <SectionHeading>{content.heroTipTitle}</SectionHeading>
+            <SectionHeading>{content.hero.tipTitle}</SectionHeading>
             <p class="text-sm text-dim leading-relaxed">
-              {content.heroTipText}
+              {content.hero.tipText}
             </p>
           </Card>
         </div>

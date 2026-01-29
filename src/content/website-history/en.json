@@ -1,0 +1,90 @@
+{
+    "title": "The Story Behind My Website – Blog",
+    "desc": "A blog post about why and how my personal website was built – from the first version to structure, pages, statistics, and next steps.",
+    "eyebrow": "Blog · Professional",
+    "h1": "The Story Behind My Personal Website",
+    "lead": "Why I built it, how it evolved, and what it tries to do \"right\" (spoiler: structure + documentation - noise).",
+    "btns": {
+        "tldr": "TL;DR",
+        "time": "Timeline",
+        "next": "Next Steps"
+    },
+    "meta": {
+        "title": "Meta",
+        "updated": "Updated:",
+        "date": "January 2026",
+        "time": "Read time:",
+        "val": "5–7 min",
+        "tags": "Tags:",
+        "tagsVal": "portfolio, structure, documentation"
+    },
+    "tldr": {
+        "title": "TL;DR",
+        "list": [
+            "The website started as a place to gather CV + projects in one place (and avoid the \"where is that now?\"-trap).",
+            "It quickly evolved into a small system: Portfolio, Resources/Downloads, and a Blog for notes.",
+            "I built statistics pages (course stats and training stats) to show progression rather than just claims.",
+            "The goal is to make things easy to find: fewer clicks, clear navigation, and documentable content."
+        ]
+    },
+    "why": {
+        "title": "Why build a personal website at all?",
+        "p1": "I've always had a fairly classic challenge: many projects, many files, many versions. And when you work with study projects, code, teaching materials, and a CV, \"link chaos\" quickly becomes a reality.",
+        "p2": "So the idea was actually simple and a bit old-school: one place that I own, where the most important things live. Not just a profile — but a structured base where I can update things continuously without having to reinvent everything every time."
+    },
+    "build": {
+        "title": "How it was built (without making it unnecessarily fancy)",
+        "intro": "I chose a \"keep it clean\" approach: pure HTML/CSS, a clear navbar, and reusable cards for content. It sounds simple — but that's exactly what makes it maintainable.",
+        "p1": {
+            "title": "Principle 1: Structure over aesthetics",
+            "tag": "Design",
+            "text": "If the navigation is logical, the site can look 20% less \"fancy\" and still be 10x more useful."
+        },
+        "p2": {
+            "title": "Principle 2: It must be extensible",
+            "tag": "System",
+            "text": "New pages (courses, certs, notes, media) must be plug-and-play: same layout, same footer, same style."
+        },
+        "p3": {
+            "title": "Principle 3: Documentation beats vibe",
+            "tag": "Proof",
+            "text": "That's why the statistics pages became a thing. It's hard to argue against data when it's presented clearly."
+        }
+    },
+    "timeline": {
+        "title": "Timeline: from \"CV page\" to mini-portfolio",
+        "list": [
+            "<strong>Version 1:</strong> CV + contact. (The minimum requirement.)",
+            "<strong>Version 2:</strong> Portfolio with projects + cases. (The extra mile.)",
+            "<strong>Version 3:</strong> Resources/Downloads. (Tools I use myself and can share.)",
+            "<strong>Version 4:</strong> Blog with three tracks: professional, training, travel.",
+            "<strong>Version 5:</strong> Statistics pages: course evaluations and training data. (Progression, not just words.)",
+            "<strong>Now:</strong> Multiple sub-pages under CV (skills, experience, courses, certs) + \"Press/Media\"."
+        ],
+        "outro": "And yes — some of it sounds like \"overkill\". But when you update often, structure suddenly becomes a superpower."
+    },
+    "enables": {
+        "title": "What the website enables (that LinkedIn doesn't do as well)",
+        "list": [
+            "<strong>Long-form:</strong> explanations, notes, and reflections without being trapped in a feed format.",
+            "<strong>Artifacts:</strong> downloads, templates, code examples, and how-to's in a fixed structure.",
+            "<strong>Dashboards:</strong> statistics pages that can be updated continuously and show development over time.",
+            "<strong>Control:</strong> layout, language (DA/EN), and what is highlighted where."
+        ]
+    },
+    "next": {
+        "title": "Next Steps",
+        "text": "The most obvious next upgrade is to make the blog more robust: either with more individual posts (like this page) or a simple tag system. Additionally, it makes sense to expand the CV section further into dedicated sub-pages to keep the main CV from becoming a wall of text.",
+        "btns": {
+            "back": "Back to Blog",
+            "res": "View Resources",
+            "contact": "Contact"
+        }
+    },
+    "feedback": {
+        "title": "Do you have feedback?",
+        "text": "If you find something hard to find, or if you have suggestions for a page that's missing, please let me know. I try to optimize this website as a tool — not just a brochure.",
+        "mail": "Send Email",
+        "page": "Contact Page"
+    }
+}

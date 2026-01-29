@@ -1,0 +1,86 @@
+{
+    "title": "Resources Data",
+    "items": [
+        {
+            "title": "Course Stats: Evaluations & Metrics",
+            "pill": "Teaching",
+            "meta": "Website · updated: (date)",
+            "desc": "Overview of course evaluations and statistics across classes. Brief, concrete, and easy to skim.",
+            "links": [
+                {
+                    "url": "/en/course-stats",
+                    "text": "View Page",
+                    "icon": "fa-solid fa-arrow-up-right-from-square"
+                },
+                {
+                    "url": "/assets/downloads/kursusevalueringer-statistik.xlsx",
+                    "text": "Download Data",
+                    "icon": "fa-solid fa-download",
+                    "ghost": true,
+                    "download": true
+                }
+            ]
+        },
+        {
+            "title": "Excel: Budget & Model Template",
+            "pill": "Excel",
+            "meta": "Template · updated: (date)",
+            "desc": "A clean template for structure: inputs, calculations, output, checks, and scenarios.",
+            "links": [
+                {
+                    "url": "/assets/downloads/excel-template.xlsx",
+                    "text": "Download",
+                    "icon": "fa-solid fa-download",
+                    "download": true
+                },
+                {
+                    "url": "#",
+                    "text": "Description",
+                    "ghost": true,
+                    "disabled": true
+                }
+            ]
+        },
+        {
+            "title": "VBA: Snippets (Quick Shortcuts)",
+            "pill": "VBA",
+            "meta": "ZIP/text · updated: (date)",
+            "desc": "Short code blocks: import/cleaning, formatting, loops, performance tips.",
+            "links": [
+                {
+                    "url": "/assets/downloads/vba-snippets.zip",
+                    "text": "Download",
+                    "icon": "fa-solid fa-download",
+                    "download": true
+                },
+                {
+                    "url": "https://github.com/AntonEbsen",
+                    "text": "GitHub",
+                    "icon": "fa-brands fa-github",
+                    "ghost": true,
+                    "external": true
+                }
+            ]
+        },
+        {
+            "title": "Python: Data-cleaning Checklist",
+            "pill": "Python",
+            "meta": "PDF · updated: (date)",
+            "desc": "A practical checklist for reproducible data prep (missing, outliers, splits, logs).",
+            "links": [
+                {
+                    "url": "/assets/downloads/python-checklist.pdf",
+                    "text": "Download",
+                    "icon": "fa-solid fa-download",
+                    "download": true
+                },
+                {
+                    "url": "#",
+                    "text": "View Example",
+                    "ghost": true,
+                    "disabled": true
+                }
+            ]
+        }
+    ]
+}

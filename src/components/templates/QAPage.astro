@@ -3,7 +3,7 @@ import Layout from '@layouts/Layout.astro';
 import Section from '@components/ui/Section.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import { createClient } from '@supabase/supabase-js';
-import qaStatic from '@data/qa.json';
+import { getEntry } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
@@ -12,51 +12,15 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-// UI Strings
-const t = {
-  da: {
-    title: "Q&A | Anton Ebsen",
-    desc: "Spørg mig om alt. Økonomi, kode, træning.",
-    heroTitle: "Ask Me Anything 🎤",
-    heroText: "Ingen spørgsmål er for dumme. Her samler jeg svarene.",
-    writeTitle: "Stil et spørgsmål",
-    writeText: "Det kan være om studiet, kode, træning eller hvilken pizza der er bedst.",
-    labelName: "Navn (Valgfrit)",
-    holderName: "Anonym",
-    labelQ: "Spørgsmål",
-    holderQ: "Skriv løs...",
-    btnSend: "Send Spørgsmål",
-    btnSending: "Sender...",
-    success: "Modtaget! Venter på svar.",
-    error: "Der skete en fejl. Prøv igen.",
-    pinnedTitle: "Ofte Stillede",
-    recentTitle: "Nylige Svar",
-    noRecent: "Ingen nye spørgsmål besvaret endnu. Vær den første!",
-    anonymous: "Anonym"
-  },
-  en: {
-    title: "Q&A | Anton Ebsen",
-    desc: "Ask me anything. Economics, code, training.",
-    heroTitle: "Ask Me Anything 🎤",
-    heroText: "No question is too stupid. Here I collect the answers.",
-    writeTitle: "Ask a Question",
-    writeText: "It can be about studies, code, training, or which pizza is best.",
-    labelName: "Name (Optional)",
-    holderName: "Anonymous",
-    labelQ: "Question",
-    holderQ: "Type away...",
-    btnSend: "Send Question",
-    btnSending: "Sending...",
-    success: "Received! Waiting for answer.",
-    error: "An error occurred. Try again.",
-    pinnedTitle: "Frequently Asked",
-    recentTitle: "Recent Answers",
-    noRecent: "No new questions answered yet. Be the first!",
-    anonymous: "Anonymous"
-  }
-};
+// 1. UI Strings
+const entry = await getEntry('pages', `${lang}/qa`);
+if (!entry) throw new Error(`Missing pages entry for ${lang}/qa`);
+const content = entry.data;
 
-const content = isDa ? t.da : t.en;
+// 2. Static Questions
+const staticEntry = await getEntry('qa', lang);
+if (!staticEntry) throw new Error(`Missing qa entry for ${lang}`);
+const qaStatic = staticEntry.data;
 
 // Data Fetching
 const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
@@ -77,10 +41,10 @@ if (error) questions = [];
      <Section>
         <div class="text-center mb-16">
             <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
-                {content.heroTitle}
+                {content.hero.title}
             </h1>
             <p class="text-dim text-lg">
-                {content.heroText}
+                {content.hero.text}
             </p>
         </div>
 
@@ -90,24 +54,24 @@ if (error) questions = [];
             <div>
                 <div class="sticky top-24">
                     <div class="bg-gray-900/40 p-6 rounded-lg border border-gold-500/20 shadow-[0_0_20px_rgba(255,215,0,0.05)]">
-                        <SectionHeading>{content.writeTitle}</SectionHeading>
-                        <p class="text-sm text-dim mb-6">{content.writeText}</p>
+                        <SectionHeading>{content.write.title}</SectionHeading>
+                        <p class="text-sm text-dim mb-6">{content.write.text}</p>
                         
                         <form id="qa-public-form" class="space-y-4">
                             <div>
-                                <label class="block text-xs uppercase text-dim font-bold mb-1">{content.labelName}</label>
-                                <input type="text" id="qa-name" placeholder={content.holderName} class="w-full bg-black/50 border border-gray-700 p-3 rounded text-gray-200 focus:border-gold-500 focus:outline-none transition-colors" />
+                                <label class="block text-xs uppercase text-dim font-bold mb-1">{content.write.labels.name}</label>
+                                <input type="text" id="qa-name" placeholder={content.write.placeholders.name} class="w-full bg-black/50 border border-gray-700 p-3 rounded text-gray-200 focus:border-gold-500 focus:outline-none transition-colors" />
                             </div>
                             <div>
-                                <label class="block text-xs uppercase text-dim font-bold mb-1">{content.labelQ}</label>
-                                <textarea id="qa-text" rows="4" required placeholder={content.holderQ} class="w-full bg-black/50 border border-gray-700 p-3 rounded text-gray-200 focus:border-gold-500 focus:outline-none transition-colors"></textarea>
+                                <label class="block text-xs uppercase text-dim font-bold mb-1">{content.write.labels.q}</label>
+                                <textarea id="qa-text" rows="4" required placeholder={content.write.placeholders.q} class="w-full bg-black/50 border border-gray-700 p-3 rounded text-gray-200 focus:border-gold-500 focus:outline-none transition-colors"></textarea>
                             </div>
                             <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-black font-bold py-3 rounded transition-colors flex items-center justify-center gap-2"
-                                    data-send={content.btnSend} data-sending={content.btnSending}>
-                                <i class="fa-solid fa-paper-plane"></i> {content.btnSend}
+                                    data-send={content.write.btn.send} data-sending={content.write.btn.sending}>
+                                <i class="fa-solid fa-paper-plane"></i> {content.write.btn.send}
                             </button>
-                            <p id="qa-success" class="text-green-400 text-xs text-center hidden"><i class="fa-solid fa-check mr-1"></i> {content.success}</p>
-                            <p id="qa-error" class="text-red-400 text-xs text-center hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> {content.error}</p>
+                            <p id="qa-success" class="text-green-400 text-xs text-center hidden"><i class="fa-solid fa-check mr-1"></i> {content.write.status.success}</p>
+                            <p id="qa-error" class="text-red-400 text-xs text-center hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> {content.write.status.error}</p>
                         </form>
                     </div>
                 </div>
@@ -118,12 +82,12 @@ if (error) questions = [];
                 
                 <!-- PINNED -->
                 <div class="mb-8">
-                    <h3 class="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4 border-b border-gray-800 pb-2">{content.pinnedTitle}</h3>
+                    <h3 class="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4 border-b border-gray-800 pb-2">{content.read.pinnedTitle}</h3>
                     <div class="space-y-6">
-                        {qaStatic.pinned.map(item => (
+                        {qaStatic.items.map(item => (
                             <div class="opacity-80 hover:opacity-100 transition-opacity">
-                                <h4 class="font-bold text-white mb-1"><i class="fa-solid fa-thumbtack text-gold-500/50 mr-2 text-xs"></i>{isDa ? item.q_da : item.q_en}</h4>
-                                <p class="text-dim text-sm leading-relaxed pl-5 border-l-2 border-gray-800">{isDa ? item.a_da : item.a_en}</p>
+                                <h4 class="font-bold text-white mb-1"><i class="fa-solid fa-thumbtack text-gold-500/50 mr-2 text-xs"></i>{item.question}</h4>
+                                <p class="text-dim text-sm leading-relaxed pl-5 border-l-2 border-gray-800">{item.answer}</p>
                             </div>
                         ))}
                     </div>
@@ -131,13 +95,13 @@ if (error) questions = [];
 
                 <!-- DYNAMIC -->
                 <div>
-                    <h3 class="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4 border-b border-gray-800 pb-2">{content.recentTitle}</h3>
+                    <h3 class="text-gold-500 text-sm font-bold uppercase tracking-widest mb-4 border-b border-gray-800 pb-2">{content.read.recentTitle}</h3>
                     <div class="space-y-8">
                         {questions?.map(q => (
                             <div class="group">
                                 <h4 class="font-bold text-white mb-2 text-lg">{q.question}</h4>
                                 <div class="flex items-center gap-2 mb-3 text-xs text-dim opacity-60">
-                                    <span class="bg-gray-800 px-1.5 rounded">{q.asker_name || content.anonymous}</span>
+                                    <span class="bg-gray-800 px-1.5 rounded">{q.asker_name || content.read.anonymous}</span>
                                     <span>•</span>
                                     <span>{new Date(q.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}</span>
                                 </div>

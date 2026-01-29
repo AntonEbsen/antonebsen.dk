@@ -4,41 +4,23 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import cvDA from '@data/cv.json';
-import cvEN from '@data/cv_en.json';
+import { getEntry } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
 }
 
 const { lang } = Astro.props;
-const isDa = lang === 'da';
-const cv = isDa ? cvDA : cvEN;
 
-const content = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Organisationer",
-    metaDescription: "Organisationer og foreninger: roller, ansvar og engagement.",
-    eyebrow: "Organisationer",
-    heroTitle: "Foreninger, roller og ansvar",
-    heroText: "Her samler jeg organisationer og foreninger jeg er tilknyttet.",
-    sectionRoles: "Mine roller",
-    contactTitle: "Kontakt",
-    contactText: "Har du en forening eller et projekt, du mangler en hånd til?"
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Organizations",
-    metaDescription: "Organizations and associations: roles, responsibilities, and engagement.",
-    eyebrow: "Organizations",
-    heroTitle: "Associations, roles & responsibility",
-    heroText: "Here I collect organizations and associations I am affiliated with.",
-    sectionRoles: "My Roles",
-    contactTitle: "Contact",
-    contactText: "Do you have an association or project you need a hand with?"
-  }
-};
+// 1. UI Content
+const pageEntry = await getEntry('pages', `${lang}/organizations`);
+if (!pageEntry) throw new Error(`Missing pages entry for ${lang}/organizations`);
+const t = pageEntry.data; 
 
-const t = isDa ? content.da : content.en;
+// 2. CV Data
+const cvEntry = await getEntry('cv', lang);
+if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
+const cv = cvEntry.data;
 ---
 
 <Layout 
@@ -80,9 +62,9 @@ const t = isDa ? content.da : content.en;
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
           <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{t.heroTitle}</h1>
+          <h1 class="text-4xl font-bold leading-tight mb-4">{t.hero.title}</h1>
           <p class="text-lg text-dim">
-            {t.heroText}
+            {t.hero.text}
           </p>
         </Card>
       </div>
@@ -90,7 +72,7 @@ const t = isDa ? content.da : content.en;
 
     <Section id="orgs" class="mb-20">
       <Card variant="bordered" class="p-6">
-        <SectionHeading>{t.sectionRoles}</SectionHeading>
+        <SectionHeading>{t.roles.title}</SectionHeading>
         <div class="orgs-grid">
           {cv.organizations.map(org => (
             <Card variant="glass" class="p-6">
@@ -104,7 +86,7 @@ const t = isDa ? content.da : content.en;
     </Section>
 
     <Section>
-        <ContactCard />
+        <ContactCard title={t.contact.title} text={t.contact.text} />
     </Section>
 
   </main>

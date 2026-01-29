@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import timelineData from '@data/timeline.json';
+import { getEntry, getCollection } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
@@ -9,56 +9,19 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const t = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Milepæle",
-    desc: "Timeline med milepæle inden for økonomi, data, undervisning, projekter og omtale.",
-    eyebrow: "Milepæle",
-    heroTitle: "Min timeline",
-    heroText: "Et hurtigt overblik over udvalgte milepæle inden for studier, projekter, undervisning og omtale. Kort, konkret, og opdateres løbende.",
-    filters: {
-        all: "Alle",
-        professional: "Fagligt",
-        teaching: "Undervisning",
-        projects: "Projekter",
-        media: "Omtale",
-        training: "Træning",
-        travel: "Rejser"
-    },
-    usageTitle: "Hvordan jeg bruger den",
-    usageList: ["År / dato", "Hvad skete der?", "Resultat (tal/impact hvis muligt)", "Link til case, artikel eller repo"],
-    sectionTitle: "Udvalgte milepæle",
-    ctaTitle: "Vil du foreslå en milepæl?",
-    ctaText: "Hvis du mener der mangler noget (fx en publikation, et projekt eller en omtale), så skriv endelig.",
-    ctaBtn: "Kontakt",
-    ctaMail: "Send mail"
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Milestones",
-    desc: "Timeline with milestones in economics, data, teaching, projects, and media coverage.",
-    eyebrow: "Milestones",
-    heroTitle: "My Timeline",
-    heroText: "A quick overview of selected milestones within studies, projects, teaching, and media coverage. Brief, concrete, and updated regularly.",
-    filters: {
-        all: "All",
-        professional: "Professional",
-        teaching: "Teaching",
-        projects: "Projects",
-        media: "Media",
-        training: "Training",
-        travel: "Travel"
-    },
-    usageTitle: "How I Use It",
-    usageList: ["Year / Date", "What happened?", "Result (stats/impact if possible)", "Link to case, article, or repo"],
-    sectionTitle: "Selected Milestones",
-    ctaTitle: "Want to suggest a milestone?",
-    ctaText: "If you think something is missing (e.g., a publication, a project, or mention), please reach out.",
-    ctaBtn: "Contact",
-    ctaMail: "Send email"
-  }
-};
+// 1. Fetch Page Content (UI strings)
+const entry = await getEntry('pages', `${lang}/timeline`);
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/timeline`);
+}
+const content = entry.data;
 
-const content = isDa ? t.da : t.en;
+// 2. Fetch Timeline Data (Items)
+const timelineEntry = await getEntry('timeline', lang);
+if (!timelineEntry) {
+   throw new Error(`Could not find timeline data for ${lang}`);
+}
+const timelineData = timelineEntry.data.items;
 
 // Localized Contact Link
 const contactLink = isDa ? '/contact' : '/en/contact';
@@ -319,23 +282,23 @@ const contactLink = isDa ? '/contact' : '/en/contact';
 
       <ol class="tl" aria-label="Timeline">
         {timelineData.map(item => (
-            <li class="tl-item" data-cat={item.category}>
+            <li class="tl-item" data-cat={item.category || 'all'}>
               <div class="tl-dot" aria-hidden="true"></div>
               <div class="tl-card">
                 <div class="tl-head">
-                  <h3 class="tl-title">{isDa ? item.title_da : item.title_en}</h3>
+                  <h3 class="tl-title">{item.title}</h3>
                   <span class="tl-date">{item.year}</span>
                 </div>
-                <p class="tl-meta">{isDa ? item.meta_da : item.meta_en}</p>
+                {item.meta && <p class="tl-meta">{item.meta}</p>}
                 <p class="muted">
-                  {isDa ? item.desc_da : item.desc_en}
+                  {item.description}
                 </p>
                 <div class="tl-links">
                   {item.link && (
-                      <a class="btn ghost" href={item.link}>{isDa ? item.linkText_da : item.linkText_en}</a>
+                      <a class="btn ghost" href={item.link}>{item.linkText || 'View'}</a>
                   )}
                   {item.links && item.links.map(l => (
-                      <a class="btn ghost" href={l.url}>{isDa ? l.text_da : l.text_en}</a>
+                      <a class="btn ghost" href={l.url}>{l.text}</a>
                   ))}
                 </div>
               </div>

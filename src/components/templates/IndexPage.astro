@@ -11,94 +11,23 @@ import { Image } from 'astro:assets';
 import myImage from '@assets/img/billede-af-mig.jpg';
 import { createClient } from '@supabase/supabase-js';
 
-// Dummy static data backup for skills if DB fails or if you prefer local JSON
-import skillsDataJson from '@data/skills.json';
-
-interface Props {
-  lang: 'da' | 'en';
-}
-
-const { lang } = Astro.props;
-const isDa = lang === 'da';
-
-const t = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Økonomistuderende & Analytiker",
-    desc: "Velkommen til Anton Meier Ebsen Jørgensens personlige hjemmeside. Her finder du mit CV, portefølje og blog om økonomi og data.",
-    hero: {
-      tag: "Økonomistuderende @ KU",
-      text: "Jeg kombinerer økonomisk teori med stærke kvantitative metoder og programmering for at skabe indsigt i komplekse problemstillinger.",
-      btnPort: "Se projekter",
-      btnCV: "Mit CV",
-      btnGuest: "Skriv i Gæstebogen"
-    },
-    cards: {
-      model: { title: "Model & Data", text: "Erfaring med Python, SAS og GAMS til økonomiske modeller og statistisk analyse." },
-      focus: { title: "Akademisk Fokus", text: "Fokus på makroøkonomi, pengepolitik og økonometri på kandidaten ved KU." },
-      teach: { title: "Undervisning", text: "Jeg formidler komplekse emner i Excel og VBA gennem struktureret undervisning." }
-    },
-    feature: {
-      badge: "Udvalgt Analyse",
-      title: "Global Financial Cycle & Spillovers",
-      desc: "En økonometrisk analyse af spillover-effekter fra amerikansk pengepolitik.",
-      tags: "Makroøkonomi · SVAR · Python"
-    },
-    skills: {
-      title: "Værktøjskassen"
-    },
-    cta: {
-      title: "Skal vi tage en snak?",
-      text: "Jeg er altid interesseret i faglige diskussioner omkring økonomi, data og mulige samarbejder.",
-      btn: "Kontakt mig her"
-    }
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Economics Student & Analyst",
-    desc: "Welcome to Anton Meier Ebsen Jørgensen's personal website. Here you will find my CV, portfolio, and blog about economics and data.",
-    hero: {
-      tag: "Economics Student @ UCPH",
-      text: "I combine economic theory with strong quantitative methods and programming to create insights into complex issues.",
-      btnPort: "View Projects",
-      btnCV: "My CV",
-      btnGuest: "Sign Guestbook"
-    },
-    cards: {
-      model: { title: "Model & Data", text: "Experience with Python, SAS, and GAMS for economic modeling and statistical analysis." },
-      focus: { title: "Academic Focus", text: "Focusing on macroeconomics, monetary policy, and econometrics in my Master's at UCPH." },
-      teach: { title: "Teaching", text: "I communicate complex topics in Excel and VBA through structured teaching." }
-    },
-    feature: {
-      badge: "Featured Analysis",
-      title: "Global Financial Cycle & Spillovers",
-      desc: "An econometric analysis of US monetary policy spillovers.",
-      tags: "Macroeconomics · SVAR · Python"
-    },
-    skills: {
-      title: "Toolkit"
-    },
-    cta: {
-      title: "Let's have a chat?",
-      text: "I am always interested in professional discussions about economics, data, and potential collaborations.",
-      btn: "Contact me here"
-    }
-  }
-};
-
-const content = isDa ? t.da : t.en;
-const portLink = isDa ? '/portfolio' : '/en/portfolio';
-const cvLink = isDa ? '/cv' : '/en/cv';
-const contactLink = isDa ? '/contact' : '/en/contact';
-const guestbookLink = isDa ? '/guestbook' : '/en/guestbook';
-
 // Data Fetching
+import { getEntry } from 'astro:content';
 const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
 let { data: skillsRows, error } = await supabase.from('skills').select('*');
 
-if (error || !skillsRows) {
-    // Fallback to local JSON if DB fails
-    // skillsDataJson structure might be different, but assuming we can map or it's similar
-    skillsRows = []; 
-    // In a real scenario, we might want to map skillsDataJson here
+// Fallback logic using content collections if DB is empty or fails
+if (error || !skillsRows || skillsRows.length === 0) {
+    const skillsEntry = await getEntry('skills', lang);
+    if (skillsEntry) {
+        // Map structured content data to the flat array structure expected by the component logic below
+        const fd = skillsEntry.data;
+        const prog = fd.programming.map(s => ({ ...s, category: 'programming' }));
+        const prof = fd.professional.map(s => ({ ...s, category: 'professional' }));
+        skillsRows = [...prog, ...prof] as any;
+    } else {
+        skillsRows = [];
+    }
 }
 
 // Group by category
@@ -106,15 +35,6 @@ const skillsData = {
   programming: skillsRows?.filter(s => s.category === 'programming') || [],
   professional: skillsRows?.filter(s => s.category === 'professional') || []
 };
-
-// If DB empty, use fallback for Programming at least
-if (skillsData.programming.length === 0 && skillsDataJson?.programming) {
-   // Mapping JSON format to DB format if necessary
-   skillsData.programming = skillsDataJson.programming.map(s => ({ name: s.name, level: s.level, category: 'programming', icon: s.icon }));
-}
-if (skillsData.professional.length === 0 && skillsDataJson?.professional) {
-    skillsData.professional = skillsDataJson.professional.map(s => ({ name: s.name, category: 'professional' }));
-}
 
 ---
 

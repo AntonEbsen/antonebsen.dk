@@ -10,12 +10,6 @@ import CertificationList from '@components/cv/CertificationList.astro';
 
 import { getEntry } from 'astro:content';
 
-// Import RAW JSON data files for list content
-import cvDataDa from '@data/cv.json';
-import cvDataEn from '@data/cv_en.json';
-import skillsDataDa from '@data/skills.json';
-import skillsDataEn from '@data/skills_en.json';
-
 import '@styles/cv.css';
 
 interface Props {
@@ -23,15 +17,23 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const entry = await getEntry('pages', `${lang}/cv`);
 
-if (!entry) {
+// 1. UI Content
+const pageEntry = await getEntry('pages', `${lang}/cv`);
+if (!pageEntry) {
   throw new Error(`Could not find content for ${lang}/cv`);
 }
+const content = pageEntry.data;
 
-const content = entry.data; // The UI labels and static text
-const cvData = lang === 'en' ? cvDataEn : cvDataDa; // The list data (experience etc)
-const skillsData = lang === 'en' ? skillsDataEn : skillsDataDa; // The skills data
+// 2. CV Data
+const cvEntry = await getEntry('cv', lang);
+if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
+const cvData = cvEntry.data; 
+
+// 3. Skills Data
+const skillsEntry = await getEntry('skills', lang);
+if (!skillsEntry) throw new Error(`Missing skills entry for ${lang}`);
+const skillsData = skillsEntry.data;
 ---
 
 <Layout 
@@ -147,7 +149,7 @@ const skillsData = lang === 'en' ? skillsDataEn : skillsDataDa; // The skills da
           <Card variant="glass" class="p-6 reveal reveal-fade">
             <SectionHeading>{content.ui.headings.certifications}</SectionHeading>
             
-            <CertificationList />
+            <CertificationList certifications={cvData.certifications as any} />
 
           </Card>
         </Section>

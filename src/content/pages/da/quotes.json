@@ -1,0 +1,48 @@
+{
+    "title": "Favoritcitater – Anton Meier Ebsen Jørgensen",
+    "description": "En kurateret liste med mine favoritcitater – humor, tro, disciplin, læring og liv.",
+    "hero": {
+        "eyebrow": "Om mig · Noter",
+        "title": "Mine favoritcitater",
+        "text": "Små linjer, stor effekt. Citater jeg bruger som mentale genveje til disciplin, læring, tro, humor og perspektiv.",
+        "themes": [
+            "Disciplin",
+            "Læring",
+            "Tro",
+            "Humor",
+            "Perspektiv"
+        ],
+        "btns": {
+            "list": "Se listen",
+            "send": "Send mig et citat"
+        }
+    },
+    "sections": {
+        "note": {
+            "title": "Note",
+            "text1": "Jeg holder dem korte og brugbare. Hvis et citat kræver en hel Wikipedia-side for at give mening, ryger det typisk ud.",
+            "text2": "Tip: Skriv altid kilde og evt. kontekst — fremtidige dig siger tak."
+        },
+        "list": {
+            "title": "Citater (Live DB)",
+            "searchPlace": "Søg (tekst, forfatter, tema)...",
+            "allThemes": "Alle temaer",
+            "reset": "Nulstil",
+            "loading": "Loading wisdom...",
+            "empty": "Biblioteket er tomt.",
+            "fail": "Failed to load quotes.",
+            "js": {
+                "copied": "Kopieret",
+                "copy": "Kopiér",
+                "source": "Kilde",
+                "sLabel": "Kilde:"
+            }
+        },
+        "cta": {
+            "title": "Send et citat",
+            "text": "Hvis du sender mig et citat, så skriv gerne: (1) forfatter/kilde, (2) tema, (3) hvorfor det rammer.",
+            "mail": "Send mail",
+            "back": "Tilbage til blog"
+        }
+    }
+}

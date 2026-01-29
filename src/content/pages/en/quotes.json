@@ -1,0 +1,48 @@
+{
+    "title": "Favorite Quotes – Anton Meier Ebsen Jørgensen",
+    "description": "A curated list of my favorite quotes – humor, faith, discipline, learning, and life.",
+    "hero": {
+        "eyebrow": "About me · Notes",
+        "title": "My Favorite Quotes",
+        "text": "Small lines, big impact. Quotes I use as mental shortcuts for discipline, learning, faith, humor, and perspective.",
+        "themes": [
+            "Discipline",
+            "Learning",
+            "Faith",
+            "Humor",
+            "Perspective"
+        ],
+        "btns": {
+            "list": "View List",
+            "send": "Send me a quote"
+        }
+    },
+    "sections": {
+        "note": {
+            "title": "Note",
+            "text1": "I keep them short and useful. If a quote requires an entire Wikipedia page to make sense, it typically doesn't make the cut.",
+            "text2": "Tip: Always record the source and context — your future self will thank you."
+        },
+        "list": {
+            "title": "Quotes (Live DB)",
+            "searchPlace": "Search (text, author, theme)...",
+            "allThemes": "All themes",
+            "reset": "Reset",
+            "loading": "Loading wisdom...",
+            "empty": "The library is empty.",
+            "fail": "Failed to load quotes.",
+            "js": {
+                "copied": "Copied",
+                "copy": "Copy",
+                "source": "Source",
+                "sLabel": "Source:"
+            }
+        },
+        "cta": {
+            "title": "Send a quote",
+            "text": "If you send me a quote, please include: (1) author/source, (2) theme, (3) why it resonates with you.",
+            "mail": "Send Email",
+            "back": "Back to Blog"
+        }
+    }
+}

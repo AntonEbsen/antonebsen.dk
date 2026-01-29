@@ -1,10 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import cvData from '@data/cv.json';
-
 // We need to map the images since dynamic imports in Astro are tricky with JSON data
-// Ideally these images should probably be moved to public/assets if we want to avoid this mapping
-// but for now we'll stick to the existing pattern
 import matlabCert from '@assets/img/matlab-onramp.PNG';
 import vectorCert from '@assets/img/calculations-with-vectors-and-matrices.PNG';
 
@@ -13,7 +9,6 @@ const certImageMap: Record<string, ImageMetadata> = {
   '/assets/img/calculations-with-vectors-and-matrices.PNG': vectorCert
 };
 
-// Simple Fallback interface if the JSON type isn't globally available
 interface Certification {
   name: string;
   url: string;
@@ -22,7 +17,11 @@ interface Certification {
   displayName?: string;
 }
 
-const certifications = (cvData.certifications || []) as Certification[];
+interface Props {
+  certifications?: Certification[];
+}
+
+const { certifications = [] } = Astro.props;
 
 ---
 

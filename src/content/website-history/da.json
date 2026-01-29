@@ -1,0 +1,90 @@
+{
+    "title": "Historien bag min hjemmeside – Blog",
+    "desc": "Et blogindlæg om hvorfor og hvordan min personlige hjemmeside blev bygget – fra første version til struktur, sider, statistik og næste skridt.",
+    "eyebrow": "Blog · Fagligt",
+    "h1": "Historien bag min personlige hjemmeside",
+    "lead": "Hvorfor jeg byggede den, hvordan den udviklede sig, og hvad den prøver at gøre “rigtigt” (spoiler: struktur + dokumentation + mindre støj).",
+    "btns": {
+        "tldr": "TL;DR",
+        "time": "Tidslinje",
+        "next": "Næste skridt"
+    },
+    "meta": {
+        "title": "Meta",
+        "updated": "Opdateret:",
+        "date": "Januar 2026",
+        "time": "Læsetid:",
+        "val": "5–7 min",
+        "tags": "Tags:",
+        "tagsVal": "portfolio, struktur, dokumentation"
+    },
+    "tldr": {
+        "title": "TL;DR",
+        "list": [
+            "Hjemmesiden startede som et sted at samle CV + projekter ét sted (og slippe for “hvor ligger det nu?”).",
+            "Den blev hurtigt til et lille system: Portefølje, Ressourcer/Downloads, og en Blog til noter.",
+            "Jeg byggede statistik-sider (kursusstatistik og træningsstatistik) for at vise progression og ikke bare påstande.",
+            "Målet er at gøre tingene nemme at finde: færre klik, klar navigation, og indhold der kan dokumenteres."
+        ]
+    },
+    "why": {
+        "title": "Hvorfor overhovedet lave en personlig hjemmeside?",
+        "p1": "Jeg har altid haft en ret klassisk udfordring: mange projekter, mange filer, mange versioner. Og når man både arbejder med studieprojekter, kode, undervisningsmateriale og CV, så bliver “link-kaos” hurtigt en ting.",
+        "p2": "Så ideen var egentlig simpel og lidt oldschool: ét sted, som jeg ejer selv, hvor det vigtigste ligger. Ikke bare en profil — men en struktureret base, hvor jeg kan opdatere ting løbende uden at skulle genopfinde alt hver gang."
+    },
+    "build": {
+        "title": "Hvordan den blev bygget (uden at gøre det unødigt fancy)",
+        "intro": "Jeg valgte en “keep it clean” tilgang: ren HTML/CSS, en tydelig navbar, og genbrugelige kort (“cards”) til indhold. Det lyder banalt — men det er præcis det, der gør det vedligeholdelsesvenligt.",
+        "p1": {
+            "title": "Princip 1: Struktur før pynt",
+            "tag": "Design",
+            "text": "Hvis navigationen er logisk, kan siden se 20% mindre “flot” ud og stadig være 10x mere brugbar."
+        },
+        "p2": {
+            "title": "Princip 2: Det skal kunne udbygges",
+            "tag": "System",
+            "text": "Nye sider (kurser, certs, noter, omtale) skal være plug-and-play: samme layout, samme footer, samme stil."
+        },
+        "p3": {
+            "title": "Princip 3: Dokumentation beats vibe",
+            "tag": "Proof",
+            "text": "Derfor blev statistik-siderne en ting. Det er svært at argumentere imod data, når de er pænt præsenteret."
+        }
+    },
+    "timeline": {
+        "title": "Tidslinje: fra “CV-side” til mini-portfolio",
+        "list": [
+            "<strong>Version 1:</strong> CV + kontakt. (Det man “skal” have.)",
+            "<strong>Version 2:</strong> Portefølje med projekter + cases. (Det man <em>kan</em> have.)",
+            "<strong>Version 3:</strong> Ressourcer/Downloads. (Det man selv bruger og kan dele.)",
+            "<strong>Version 4:</strong> Blog med tre spor: fagligt, træning, rejser.",
+            "<strong>Version 5:</strong> Statistik-sider: kursusevalueringer og træningsdata. (Progression, ikke bare ord.)",
+            "<strong>Nu:</strong> Flere undersider under CV (kompetencer, erhvervserfaring, kurser, certs) + “omtale”."
+        ],
+        "outro": "Og ja — noget af det lyder som “overkill”. Men når man opdaterer ofte, bliver struktur pludselig en superpower."
+    },
+    "enables": {
+        "title": "Hvad hjemmesiden gør muligt (som LinkedIn ikke gør lige så godt)",
+        "list": [
+            "<strong>Langform:</strong> forklaringer, noter og refleksioner uden at være fanget i feed-formatet.",
+            "<strong>Artefakter:</strong> downloads, templates, kodeeksempler og “how-to” i en fast struktur.",
+            "<strong>Dashboards:</strong> statistik-sider, der kan opdateres løbende og viser udvikling over tid.",
+            "<strong>Kontrol:</strong> layout, sprog (DA/EN/DE), og hvad der fremhæves hvor."
+        ]
+    },
+    "next": {
+        "title": "Næste skridt",
+        "text": "Den mest oplagte næste opgradering er at gøre bloggen mere “rigtig”: enten med individuelle posts (som denne side) eller et simpelt tagsystem. Derudover giver det mening at udbygge CV-sektionen til dedikerede undersider (kurser, certifikater, kompetencer), så CV-siden ikke bliver en mur af tekst.",
+        "btns": {
+            "back": "Tilbage til blog",
+            "res": "Se ressourcer",
+            "contact": "Kontakt"
+        }
+    },
+    "feedback": {
+        "title": "Har du feedback?",
+        "text": "Hvis du synes noget er svært at finde, eller du har forslag til en side, der mangler, så skriv gerne. Jeg prøver at optimere hjemmesiden som et værktøj — ikke som en brochure.",
+        "mail": "Send mail",
+        "page": "Kontakt-side"
+    }
+}

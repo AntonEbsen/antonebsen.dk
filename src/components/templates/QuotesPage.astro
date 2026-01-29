@@ -1,6 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
 
+import { getEntry } from 'astro:content';
+
 interface Props {
   lang: 'da' | 'en';
 }
@@ -8,58 +10,12 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const t = {
-  da: {
-    title: "Favoritcitater – Anton Meier Ebsen Jørgensen",
-    desc: "En kurateret liste med mine favoritcitater – humor, tro, disciplin, læring og liv.",
-    eyebrow: "Om mig · Noter",
-    heroTitle: "Mine favoritcitater",
-    heroText: "Små linjer, stor effekt. Citater jeg bruger som mentale genveje til disciplin, læring, tro, humor og perspektiv.",
-    themes: ["Disciplin", "Læring", "Tro", "Humor", "Perspektiv"],
-    btns: { list: "Se listen", send: "Send mig et citat" },
-    noteTitle: "Note",
-    noteText1: "Jeg holder dem korte og brugbare. Hvis et citat kræver en hel Wikipedia-side for at give mening, ryger det typisk ud.",
-    noteText2: "Tip: Skriv altid kilde og evt. kontekst — fremtidige dig siger tak.",
-    listTitle: "Citater (Live DB)",
-    searchPlace: "Søg (tekst, forfatter, tema)...",
-    allThemes: "Alle temaer",
-    reset: "Nulstil",
-    loading: "Loading wisdom...",
-    empty: "Biblioteket er tomt.",
-    fail: "Failed to load quotes.",
-    ctaTitle: "Send et citat",
-    ctaText: "Hvis du sender mig et citat, så skriv gerne: (1) forfatter/kilde, (2) tema, (3) hvorfor det rammer.",
-    ctaMail: "Send mail",
-    ctaBack: "Tilbage til blog",
-    js: { copied: "Kopieret", copy: "Kopiér", source: "Kilde", sLabel: "Kilde:" }
-  },
-  en: {
-    title: "Favorite Quotes – Anton Meier Ebsen Jørgensen",
-    desc: "A curated list of my favorite quotes – humor, faith, discipline, learning, and life.",
-    eyebrow: "About me · Notes",
-    heroTitle: "My Favorite Quotes",
-    heroText: "Small lines, big impact. Quotes I use as mental shortcuts for discipline, learning, faith, humor, and perspective.",
-    themes: ["Discipline", "Learning", "Faith", "Humor", "Perspective"],
-    btns: { list: "View List", send: "Send me a quote" },
-    noteTitle: "Note",
-    noteText1: "I keep them short and useful. If a quote requires an entire Wikipedia page to make sense, it typically doesn't make the cut.",
-    noteText2: "Tip: Always record the source and context — your future self will thank you.",
-    listTitle: "Quotes (Live DB)",
-    searchPlace: "Search (text, author, theme)...",
-    allThemes: "All themes",
-    reset: "Reset",
-    loading: "Loading wisdom...",
-    empty: "The library is empty.",
-    fail: "Failed to load quotes.",
-    ctaTitle: "Send a quote",
-    ctaText: "If you send me a quote, please include: (1) author/source, (2) theme, (3) why it resonates with you.",
-    ctaMail: "Send Email",
-    ctaBack: "Back to Blog",
-    js: { copied: "Copied", copy: "Copy", source: "Source", sLabel: "Source:" }
-  }
-};
+const entry = await getEntry('pages', `${lang}/quotes`);
+if (!entry) {
+  throw new Error(`Could not find content for ${lang}/quotes`);
+}
 
-const content = isDa ? t.da : t.en;
+const content = entry.data;
 const contactLink = isDa ? '/contact' : '/en/contact';
 const blogLink = isDa ? '/blog' : '/en/blog';
 ---

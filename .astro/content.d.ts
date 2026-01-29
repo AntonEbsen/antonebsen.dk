@@ -162,7 +162,15 @@ declare module 'astro:content' {
 	};
 
 	type DataEntryMap = {
-		"blog": Record<string, {
+		"adversity": Record<string, {
+  id: string;
+  body?: string;
+  collection: "adversity";
+  data: InferEntrySchema<"adversity">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"blog": Record<string, {
   id: string;
   body?: string;
   collection: "blog";
@@ -175,6 +183,22 @@ declare module 'astro:content' {
   body?: string;
   collection: "books";
   data: InferEntrySchema<"books">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"certifications": Record<string, {
+  id: string;
+  body?: string;
+  collection: "certifications";
+  data: InferEntrySchema<"certifications">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"cv": Record<string, {
+  id: string;
+  body?: string;
+  collection: "cv";
+  data: InferEntrySchema<"cv">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -199,6 +223,46 @@ declare module 'astro:content' {
   body?: string;
   collection: "portfolio";
   data: InferEntrySchema<"portfolio">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"qa": Record<string, {
+  id: string;
+  body?: string;
+  collection: "qa";
+  data: InferEntrySchema<"qa">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"resources": Record<string, {
+  id: string;
+  body?: string;
+  collection: "resources";
+  data: InferEntrySchema<"resources">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"skills": Record<string, {
+  id: string;
+  body?: string;
+  collection: "skills";
+  data: InferEntrySchema<"skills">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"timeline": Record<string, {
+  id: string;
+  body?: string;
+  collection: "timeline";
+  data: InferEntrySchema<"timeline">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"website-history": Record<string, {
+  id: string;
+  body?: string;
+  collection: "website-history";
+  data: InferEntrySchema<"website-history">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;

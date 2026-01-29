@@ -6,8 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import cvDa from '@data/cv.json';
-import cvEn from '@data/cv_en.json';
+import { getEntry } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
@@ -15,44 +14,18 @@ interface Props {
 
 const { lang } = Astro.props;
 const isDa = lang === 'da';
-const cv = isDa ? cvDa : cvEn;
 
-const t = {
-  da: {
-    title: "Anton Meier Ebsen Jørgensen – Kurser",
-    desc: "Kurser: universitetsfag, online-kurser og certificeringsforløb.",
-    heroTitle: "Fag, forløb og kurser",
-    heroText: "Her samler jeg alle de kurser, jeg har taget — både universitet og online. Fokus er på makro, økonometri, programmering og modeller.",
-    buttons: { uni: "Universitet", prog: "Programmering" },
-    gridTitle: "Universitetskurser (Københavns Universitet)",
-    progTitle: "Programmering & Andre kurser",
-    helpTitle: "Sådan bruger du siden",
-    helpText: "Brug søgning og filtre. Hver “card” kan have link til pensum, kursus-side og evt. certifikat.",
-    contactTitle: "Vil du se mere?",
-    contactText: "Kontakt mig eller gå tilbage til oversigten.",
-    contactBtn: "Kontakt"
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Courses",
-    desc: "Courses: university subjects, online courses, and certification programs.",
-    heroTitle: "Subjects, Programs, and Courses",
-    heroText: "Here I gather all the courses I've taken — both university and online. Focus is on macroeconomics, econometrics, programming, and modeling.",
-    buttons: { uni: "University", prog: "Programming" },
-    gridTitle: "University Courses (University of Copenhagen)",
-    progTitle: "Programming & Other Courses",
-    helpTitle: "How to use this page",
-    helpText: "Use search and filters. Each card can link to the syllabus, course page, or certificate.",
-    contactTitle: "Want to see more?",
-    contactText: "Contact me or go back to the overview.",
-    contactBtn: "Contact"
-  }
-};
+// 1. UI Content
+const pageEntry = await getEntry('pages', `${lang}/courses`);
+if (!pageEntry) throw new Error(`Missing pages entry for ${lang}/courses`);
+const content = pageEntry.data; 
 
-const content = isDa ? t.da : t.en;
+// 2. CV Data
+const cvEntry = await getEntry('cv', lang);
+if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
+const cv = cvEntry.data;
 
 // Separate courses into Uni and Other
-// We use 'institution' string check as a heuristic, or we could add a 'type' field in JSON.
-// Using 'Copenhagen' check as per English page logic.
 const uniCourses = cv.courses.filter(c => c.institution.includes("Copenhagen") || c.institution.includes("Københavns Universitet") || c.institution === "UCPH" || c.institution === "KU");
 const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
 ---
@@ -96,22 +69,22 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
           <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Kurser' : 'Courses'}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{content.heroTitle}</h1>
+          <h1 class="text-4xl font-bold leading-tight mb-4">{content.hero.title}</h1>
           <p class="text-lg leading-relaxed text-dim mb-6">
-            {content.heroText}
+            {content.hero.text}
           </p>
   
           <div class="flex flex-wrap gap-3">
-            <Button href="#university">{content.buttons.uni}</Button>
-            <Button href="#programming" variant="ghost">{content.buttons.prog}</Button>
+            <Button href="#university">{content.hero.buttons.uni}</Button>
+            <Button href="#programming" variant="ghost">{content.hero.buttons.prog}</Button>
           </div>
         </Card>
   
         <div class="hidden md:block">
           <Card variant="glass" class="p-6">
-            <SectionHeading>{content.helpTitle}</SectionHeading>
+            <SectionHeading>{content.help.title}</SectionHeading>
             <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
-              {content.helpText}
+              {content.help.text}
             </p>
           </Card>
         </div>
@@ -120,7 +93,7 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
 
     <Section id="university">
        <Card variant="default" class="p-6">
-         <SectionHeading>{content.gridTitle}</SectionHeading>
+         <SectionHeading>{content.grid.university.title}</SectionHeading>
          <div class="courses-grid">
            {uniCourses.map(course => (
               <Card variant="glass" class="p-4 flex flex-col h-full">
@@ -138,14 +111,14 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
                 )}
               </Card>
            ))}
-           {uniCourses.length === 0 && <p class="text-dim text-sm italic">Ingen kurser fundet i JSON.</p>}
+           {uniCourses.length === 0 && <p class="text-dim text-sm italic">{content.grid.university.empty}</p>}
          </div>
        </Card>
     </Section>
 
     <Section id="programming">
        <Card variant="bordered" class="p-6">
-         <SectionHeading>{content.progTitle}</SectionHeading>
+         <SectionHeading>{content.grid.programming.title}</SectionHeading>
          <div class="courses-grid">
            {otherCourses.map(course => (
               <Card variant="glass" class="p-4 flex flex-col h-full">
@@ -171,8 +144,8 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
     <Section>
       <ContactCard 
         variant="glass"
-        title={content.contactTitle}
-        text={content.contactText}
+        title={content.contact.title}
+        text={content.contact.text}
         action="contact"
       />
     </Section>
