@@ -1,0 +1,117 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+
+const techInfo = {
+  title: "High-Incline DB Shrug/Row",
+  muscles: ["Øvre og Midterste Trapezius", "Rhomboids", "Bagskulder"],
+  benefits: [
+    "Isolerer traps i en vinkel der matcher muskelfibrenes retning.",
+    "Bryst-understøttet position eliminerer brugen af moment.",
+    "Mindre stress på lænden sammenlignet med stående shrugs."
+  ],
+  setup: [
+    "Indstil en bænk til en stejl vinkel (60-75 grader).",
+    "Lig med brystet mod bænken og lad armene hænge lodret ned.",
+    "Hold en håndvægt i hver hånd med et neutralt greb."
+  ],
+  execution: [
+    "Træk skuldrene op mod ørerne (shrug) og bagud (row) i én flydende bevægelse.",
+    "Squeeze skulderbladene hårdt sammen i toppen.",
+    "Sænk kontrolleret tilbage til fuldt stræk."
+  ]
+};
+---
+
+<Layout title="High-Incline DB Shrug/Row: Teknik & Stats">
+  <main class="container mx-auto px-4 py-12">
+    <Section class="max-w-5xl mx-auto">
+      <div class="mb-12 text-center reveal reveal-fade">
+        <SectionHeading>Øvelses-Fokus</SectionHeading>
+        <h1 class="text-4xl md:text-6xl font-black mb-6 uppercase italic tracking-tighter">High-Incline DB Shrug/Row</h1>
+        <div class="flex flex-wrap justify-center gap-3">
+          {techInfo.muscles.map(m => (
+            <span class="px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-bold uppercase tracking-widest text-accent">{m}</span>
+          ))}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-1 space-y-6">
+          <Card variant="glass" class="p-6 reveal reveal-slide-right">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 border-b border-white/5 pb-2">Personlige Rekorder</h3>
+            <div class="space-y-6">
+              <div><p class="text-[10px] text-white/30 uppercase font-bold mb-1">Max Weight</p><div id="stat-pb-weight" class="text-3xl font-black text-white italic">-- kg</div></div>
+              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                <div><p class="text-[10px] text-white/30 uppercase font-bold">Total Vol</p><p id="stat-total-vol" class="font-bold text-sm">-- kg</p></div>
+                <div><p class="text-[10px] text-white/30 uppercase font-bold">Gns. RPE</p><p id="stat-avg-rpe" class="font-bold text-sm">--</p></div>
+              </div>
+            </div>
+          </Card>
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-100">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Hvorfor Shrug/Row?</h3>
+            <ul class="space-y-4">
+              {techInfo.benefits.map(b => (
+                <li class="flex gap-3 text-[13px] leading-relaxed text-dim"><i class="fa-solid fa-circle-check text-accent mt-1 shrink-0"></i><span>{b}</span></li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+
+        <div class="lg:col-span-2 space-y-8">
+          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-8">Vægt-udvikling</h3>
+            <div class="min-h-[350px] w-full"><canvas id="progressionChart"></canvas></div>
+          </Card>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card variant="glass" class="p-6 reveal reveal-slide-up">
+               <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Set-up</h3>
+               <ul class="space-y-3">
+                 {techInfo.setup.map((s, i) => (<li class="text-[13px] text-dim flex gap-3 leading-relaxed"><span class="font-mono text-accent/50">{i+1}.</span><span>{s}</span></li>))}
+               </ul>
+            </Card>
+            <Card variant="glass" class="p-6 reveal reveal-slide-up delay-100">
+               <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Udførelse</h3>
+               <ul class="space-y-3">
+                 {techInfo.execution.map((e, i) => (<li class="text-[13px] text-dim flex gap-3 leading-relaxed"><span class="font-mono text-accent/50">{i+1}.</span><span>{e}</span></li>))}
+               </ul>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </Section>
+  </main>
+
+  <script>
+    import Chart from 'chart.js/auto';
+    async function initStats() {
+      try {
+        const res = await fetch('/api/training');
+        const allLogs = await res.json();
+        const logs = allLogs.filter((l: any) => l.exercise_name?.toLowerCase().includes('shrug') && l.exercise_name?.toLowerCase().includes('row')).sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        if (logs.length === 0) return;
+
+        document.getElementById('stat-pb-weight')!.innerText = `${Math.max(...logs.map((l:any)=>l.weight_kg))} kg`;
+        const totalVol = logs.reduce((sum: number, l: any) => sum + (l.tonnage_kg || 0), 0);
+        document.getElementById('stat-total-vol')!.innerText = `${(totalVol / 1000).toFixed(1)} tons`;
+        const rpes = logs.map((l: any) => l.rpe).filter(Boolean);
+        document.getElementById('stat-avg-rpe')!.innerText = rpes.length > 0 ? (rpes.reduce((a:number, b:number) => a+b, 0) / rpes.length).toFixed(1) : '--';
+
+        const ctx = document.getElementById('progressionChart') as HTMLCanvasElement;
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: logs.map((l: any) => new Date(l.date).toLocaleDateString('da-DK', { day: 'numeric', month: 'short' })),
+                datasets: [{ label: 'Vægt (kg)', data: logs.map((l:any)=>l.weight_kg), borderColor: '#FFD700', backgroundColor: 'rgba(212, 175, 55, 0.1)', borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#FFD700', fill: true, tension: 0.3 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: 'rgba(255, 255, 255, 0.3)', font: { size: 10 } }, grid: { display: false } }, y: { ticks: { color: 'rgba(255, 255, 255, 0.5)', font: { size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } } } }
+        });
+      } catch (e) { console.error(e); }
+    }
+    initStats();
+  </script>
+</Layout>
