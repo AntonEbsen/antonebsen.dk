@@ -88,6 +88,16 @@ const techInfo = {
           </Card>
 
           <Card variant="glass" class="p-6 reveal reveal-slide-right delay-100">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-robot text-accent"></i> AI Progression Guide
+            </h3>
+            <div id="ai-suggestion" class="p-4 bg-accent/5 border border-accent/10 rounded-xl mb-4">
+                <p class="text-[13px] text-dim italic">Analyserer dine seneste løft...</p>
+            </div>
+            <p class="text-[10px] text-white/20 leading-relaxed uppercase font-bold">Progressiv overload sikrer kontinuerlig fremgang.</p>
+          </Card>
+
+          <Card variant="glass" class="p-6 reveal reveal-slide-right delay-150">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Hvorfor Incline?</h3>
             <ul class="space-y-4">
               {techInfo.benefits.map(b => (
@@ -239,6 +249,34 @@ const techInfo = {
             document.getElementById('strength-next')!.innerText = `Næste mål: ${Math.ceil(nextTier.ratio * bw)} kg (${nextTier.label})`;
         } else {
             document.getElementById('strength-next')!.innerText = `Du er i toppen! 🔥`;
+        }
+
+        // AI Progression Analysis
+        const latestLog = logs[logs.length - 1];
+        const aiContainer = document.getElementById('ai-suggestion')!;
+        
+        if (latestLog) {
+            const rpe = latestLog.rpe || 8;
+            const weight = latestLog.weight_kg;
+            let suggestion = "";
+            let reason = "";
+
+            if (rpe <= 8) {
+                suggestion = `${weight + 2.5} kg`;
+                reason = `Sidst løftede du ${weight} kg med RPE ${rpe}. Det ser ud til, at der er overskud, så jeg foreslår en lille øgning på 2.5 kg.`;
+            } else if (rpe === 9) {
+                suggestion = `${weight} kg`;
+                reason = `Du ramte en RPE 9 sidst. Hold vægten her i næste pas, og fokusér på at gøre reps'ne endnu mere præcise eller snappe en ekstra rep.`;
+            } else {
+                suggestion = `${weight} kg`;
+                reason = `RPE ${rpe} er meget høj (tæt på failure). Hold vægten eller overvej et lille deload, hvis formen lider under det.`;
+            }
+
+            aiContainer.innerHTML = `
+                <div class="text-[10px] text-accent uppercase font-black mb-1">Næste Pas Forslag:</div>
+                <div class="text-2xl font-black text-white italic mb-2">${suggestion}</div>
+                <p class="text-[11px] text-dim leading-relaxed font-medium">${reason}</p>
+            `;
         }
 
         // 2. Render Chart

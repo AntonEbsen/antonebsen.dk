@@ -19,6 +19,31 @@ import Button from '../components/ui/Button.astro';
           Live-opdateret data direkte fra min træningslog. Fordi det der bliver målt, bliver forbedret.
         </p>
         
+        <!-- CONSISTENCY HEATMAP -->
+        <div class="mb-12 text-left">
+            <div class="p-8 bg-glass border border-glass-border rounded-2xl">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-fire"></i> Consistency Heatmap (Sidste 6 mdr.)
+                </h3>
+                <div id="heatmap-container" class="overflow-x-auto pb-4">
+                    <div id="training-heatmap" class="grid grid-flow-col grid-rows-7 gap-1 min-w-[800px]">
+                        <!-- Squares will be injected here -->
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center justify-end gap-2 text-[10px] text-white/30 font-bold uppercase">
+                    <span>Mindre</span>
+                    <div class="flex gap-1">
+                        <div class="w-2.5 h-2.5 rounded-sm bg-white/5"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent/20"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent/40"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent/70"></div>
+                        <div class="w-2.5 h-2.5 rounded-sm bg-accent"></div>
+                    </div>
+                    <span>Mere</span>
+                </div>
+            </div>
+        </div>
+
         <!-- KPI METRICS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
           <div class="p-4 bg-glass border border-glass-border rounded-xl">
@@ -134,7 +159,45 @@ import Button from '../components/ui/Button.astro';
       const cDates = Object.keys(cardioByDate);
       const distances = cDates.map(d => cardioByDate[d]);
 
-      // 3. Muscle Group Volume Logic
+      // 3. Consistency Heatmap Logic
+      const heatmapContainer = document.getElementById('training-heatmap')!;
+      heatmapContainer.innerHTML = '';
+      
+      const today = new Date();
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(today.getMonth() - 6);
+      
+      // Calculate start date to be a Monday etc
+      const startDate = new Date(sixMonthsAgo);
+      startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
+
+      const logsByDate: Record<string, number> = {};
+      logs.forEach((log: any) => {
+          const d = log.date;
+          logsByDate[d] = (logsByDate[d] || 0) + 1;
+      });
+
+      const dayCount = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 7;
+      
+      for (let i = 0; i < dayCount; i++) {
+          const current = new Date(startDate);
+          current.setDate(startDate.getDate() + i);
+          const dateStr = current.toISOString().split('T')[0];
+          const count = logsByDate[dateStr] || 0;
+          
+          let opacity = 'bg-white/5';
+          if (count > 0) opacity = 'bg-accent/20';
+          if (count > 2) opacity = 'bg-accent/40';
+          if (count > 5) opacity = 'bg-accent/70';
+          if (count > 10) opacity = 'bg-accent';
+
+          const square = document.createElement('div');
+          square.className = `w-3 h-3 rounded-sm ${opacity} hover:ring-1 hover:ring-white transition-all`;
+          square.title = `${dateStr}: ${count} øvelser`;
+          heatmapContainer.appendChild(square);
+      }
+
+      // 4. Muscle Group Volume Logic
       const muscleMapping: Record<string, string> = {
         'bryst': 'Chest', 'chest': 'Chest', 'incline press': 'Chest', 'fly': 'Chest',
         'ryg': 'Back', 'back': 'Back', 'lat': 'Back', 'row': 'Back', 'deadlift': 'Back', 'pull': 'Back',
