@@ -65,7 +65,11 @@ const days = [
                                 {day.data.map(ex => (
                                     <tr class="hover:bg-white/[0.03] transition-colors group">
                                         <td class="px-6 py-4">
-                                            <div class="text-sm font-semibold text-white group-hover:text-accent transition-colors">{ex.exercise}</div>
+                                            <div class="text-sm font-semibold text-white group-hover:text-accent transition-colors">
+                                                {ex.exercise === 'Incline Press' ? (
+                                                    <a href="/exercises/incline-press" class="hover:underline decoration-accent/40 underline-offset-4">{ex.exercise}</a>
+                                                ) : ex.exercise}
+                                            </div>
                                             <div class="md:hidden text-[10px] text-white/30 mt-1 font-mono">{ex.tempo}</div>
                                         </td>
                                         <td class="px-6 py-4">
