@@ -64,7 +64,24 @@ export const collections = {
             title: z.string(),
             description: z.string(),
             bodyClass: z.string().optional(),
-            hero: z.any().optional(), // Flexible for now
+            // Strict Hero Schema
+            hero: z.object({
+                title: z.string().optional(),
+                eyebrow: z.string().optional(),
+                text: z.string().optional(),
+                pills: z.array(z.string()).optional(),
+                buttons: z.record(z.string()).optional(),
+                actions: z.array(z.object({
+                    text: z.string(),
+                    href: z.string(),
+                    icon: z.string().optional(),
+                    variant: z.string().optional()
+                })).optional(),
+                image: z.object({
+                    src: z.string(),
+                    alt: z.string()
+                }).optional()
+            }).optional(),
             sections: z.record(z.any()).optional(),
             roles: z.any().optional(),
             contact: z.any().optional(),

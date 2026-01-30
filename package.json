@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
-        "build": "node scripts/process-docs.mjs && astro build",
+        "build": "node scripts/validate-env.mjs && node scripts/process-docs.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
@@ -32,7 +32,9 @@
         "node": ">=20.0.0 <23.0.0"
     },
     "devDependencies": {
+        "@playwright/test": "^1.58.1",
         "@types/canvas-confetti": "^1.9.0",
+        "http-server": "^14.1.1",
         "pdf-parse": "^2.4.5"
     }
 }

@@ -13,7 +13,74 @@
         "bodyClass": {
           "type": "string"
         },
-        "hero": {},
+        "hero": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "eyebrow": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "pills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "buttons": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "href": {
+                    "type": "string"
+                  },
+                  "icon": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text",
+                  "href"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "image": {
+              "type": "object",
+              "properties": {
+                "src": {
+                  "type": "string"
+                },
+                "alt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "src",
+                "alt"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
         "sections": {
           "type": "object",
           "additionalProperties": {}
