@@ -25,6 +25,9 @@
             "text": {
               "type": "string"
             },
+            "tag": {
+              "type": "string"
+            },
             "pills": {
               "type": "array",
               "items": {
@@ -36,6 +39,15 @@
               "additionalProperties": {
                 "type": "string"
               }
+            },
+            "btnPort": {
+              "type": "string"
+            },
+            "btnCV": {
+              "type": "string"
+            },
+            "btnGuest": {
+              "type": "string"
             },
             "actions": {
               "type": "array",
@@ -79,7 +91,7 @@
               "additionalProperties": false
             }
           },
-          "additionalProperties": false
+          "additionalProperties": true
         },
         "sections": {
           "type": "object",

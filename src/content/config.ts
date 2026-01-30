@@ -69,8 +69,13 @@ export const collections = {
                 title: z.string().optional(),
                 eyebrow: z.string().optional(),
                 text: z.string().optional(),
+                tag: z.string().optional(), // Added for home.json
                 pills: z.array(z.string()).optional(),
                 buttons: z.record(z.string()).optional(),
+                // Flat buttons for home.json compatibility
+                btnPort: z.string().optional(),
+                btnCV: z.string().optional(),
+                btnGuest: z.string().optional(),
                 actions: z.array(z.object({
                     text: z.string(),
                     href: z.string(),
@@ -81,7 +86,7 @@ export const collections = {
                     src: z.string(),
                     alt: z.string()
                 }).optional()
-            }).optional(),
+            }).passthrough().optional(),
             sections: z.record(z.any()).optional(),
             roles: z.any().optional(),
             contact: z.any().optional(),
