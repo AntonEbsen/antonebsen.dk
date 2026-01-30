@@ -12,14 +12,6 @@ export default defineConfig({
   },
   site: 'https://antonebsen.dk',
 
-  i18n: {
-    defaultLocale: "da",
-    locales: ["da", "en"],
-    routing: {
-      prefixDefaultLocale: false
-    }
-  },
-
   integrations: [
     react(),
     sitemap(),

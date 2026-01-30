@@ -192,7 +192,9 @@ const blogLink = isDa ? '/blog' : '/en/blog';
                         {dayData.map((ex) => (
                             <div class="ex-row">
                                 <div>
-                                    <span class="font-bold text-white block">{ex.exercise}</span>
+                                    <a href={isDa ? `/exercises/${ex.exercise.toLowerCase().replace(/ /g, '-').replace(/æ/g, 'ae').replace(/ø/g, 'oe').replace(/å/g, 'aa')}` : `/en/exercises/${ex.exercise.toLowerCase().replace(/ /g, '-').replace(/æ/g, 'ae').replace(/ø/g, 'oe').replace(/å/g, 'aa')}`} class="font-bold text-white block hover:text-gold-400 transition-colors underline decoration-gold-500/30">
+                                        {ex.exercise}
+                                    </a>
                                     <span class="text-xs text-dim block mt-1">{ex.muscle}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
