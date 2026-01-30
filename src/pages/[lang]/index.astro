@@ -1,6 +1,8 @@
 ---
 import IndexPage from '@components/templates/IndexPage.astro';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   return [
     { params: { lang: 'da' } },
