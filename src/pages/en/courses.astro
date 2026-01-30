@@ -7,7 +7,9 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { getEntry } from 'astro:content';
-const cv = (await getEntry('cv', 'en')).data;
+const cvEntry = await getEntry('cv', 'en');
+const cv = cvEntry ? cvEntry.data : { courses: [] }; // Fallback
+if (!cvEntry) console.error("Critical: 'cv/en' content not found.");
 ---
 
 <Layout 

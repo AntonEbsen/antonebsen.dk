@@ -13,7 +13,9 @@ import { Image } from 'astro:assets';
 import myImage from '@assets/img/billede-af-mig.jpg';
 
 import { getEntry } from 'astro:content';
-const skillsData = (await getEntry('skills', 'en')).data;
+const skillsEntry = await getEntry('skills', 'en');
+const skillsData = skillsEntry ? skillsEntry.data : { programming: [], professional: [] }; // Fallback
+if (!skillsEntry) console.error("Critical: 'skills/en' content not found.");
 
 // Dummy implementation of English skills mapping if needed, or just use English names if they are universal
 // Assuming skills.json names are universal (Python, Excel, R, etc.)
