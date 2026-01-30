@@ -14,22 +14,22 @@ const isDa = lang === 'da';
 
 const t = {
   da: {
-    title: "Kursusstatistik â€“ Anton Meier Ebsen JÃ¸rgensen",
-    desc: "Oversigt over evalueringer og nÃ¸gletal fra min undervisning i Excel og VBA.",
+    title: "Kursusstatistik – Anton Meier Ebsen Jørgensen",
+    desc: "Oversigt over evalueringer og nøgletal fra min undervisning i Excel og VBA.",
     heading: "Kursusstatistik",
     h1: "Undervisningsevalueringer",
-    text: "Denne side er under udarbejdelse. Her vil jeg prÃ¦sentere aggregerede data fra mine kursusevalueringer, inklusive score-fordeling, deltagerfeedback og udvikling over tid.",
-    preview: "NÃ¸gletal (Preview)",
+    text: "Denne side er under udarbejdelse. Her vil jeg præsentere aggregerede data fra mine kursusevalueringer, inklusive score-fordeling, deltagerfeedback og udvikling over tid.",
+    preview: "Nøgletal (Preview)",
     stats: [
         "Gennemsnitlig score: <strong>4.8 / 5.0</strong>",
         "Antal kursister: <strong>500+</strong>",
-        "PrimÃ¦re emner: <strong>Excel, VBA, Power Query</strong>"
+        "Primære emner: <strong>Excel, VBA, Power Query</strong>"
     ],
     contactBtn: "Kontakt mig for detaljer",
     expBtn: "Se erhvervserfaring"
   },
   en: {
-    title: "Course Statistics â€“ Anton Meier Ebsen JÃ¸rgensen",
+    title: "Course Statistics – Anton Meier Ebsen Jørgensen",
     desc: "Overview of evaluations and key figures from my teaching in Excel and VBA.",
     heading: "Course Statistics",
     h1: "Teaching Evaluations",
@@ -69,7 +69,7 @@ const expLink = isDa ? '/experience' : '/en/experience';
             {content.preview}
           </h3>
           <ul class="space-y-2 text-dim text-sm">
-            {content.stats.map(s => <li set:html={`â€¢ ${s}`} />)}
+            {content.stats.map(s => <li set:html={`”¢ ${s}`} />)}
           </ul>
         </div>
 

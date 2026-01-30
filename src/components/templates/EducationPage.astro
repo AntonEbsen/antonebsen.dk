@@ -29,7 +29,7 @@ const cv = cvEntry.data;
 // Data Fetching for Education (JSON)
 const experience = cv.education || [];
 // Matches based on keywords, could be improved with IDs in JSON
-const ku = experience.find(e => e.institution.includes("Copenhagen") || e.institution.includes("KÃ¸benhavns Universitet"));
+const ku = experience.find(e => e.institution.includes("Copenhagen") || e.institution.includes("Københavns Universitet"));
 const hhx = experience.find(e => e.degree.includes("HHX"));
 
 // Data Fetching for Projects (Supabase)

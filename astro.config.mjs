@@ -2,10 +2,11 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
-// import node from '@astrojs/node'; // Keeping import but unused in adapter
+import vercel from '@astrojs/vercel/static';
 
 export default defineConfig({
   output: 'static',
+  adapter: vercel(),
   image: {
     service: passthroughImageService()
   },
@@ -26,7 +27,4 @@ export default defineConfig({
       applyBaseStyles: false,
     })
   ],
-
-  // Adapter disabled to prevent stream crash
-  // adapter: node({ mode: 'standalone' }),
 });

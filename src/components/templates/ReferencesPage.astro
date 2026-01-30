@@ -16,19 +16,19 @@ const isDa = lang === 'da';
 
 const t = {
   da: {
-    title: "Anton Meier Ebsen JÃ¸rgensen â€“ Anbefalinger",
-    desc: "Anbefalinger og udtalelser om mit arbejde inden for Ã¸konomi, data og undervisning.",
+    title: "Anton Meier Ebsen Jørgensen – Anbefalinger",
+    desc: "Anbefalinger og udtalelser om mit arbejde inden for økonomi, data og undervisning.",
     heroTitle: "Udtalelser om mit arbejde",
-    heroText: "Her kan du lÃ¦se korte udtalelser fra samarbejdspartnere og personer, jeg har arbejdet sammen med.",
+    heroText: "Her kan du læse korte udtalelser fra samarbejdspartnere og personer, jeg har arbejdet sammen med.",
     btns: { contact: "Kontakt", cv: "Se CV" },
     focusTitle: "Fokus",
-    focusList: ["<strong>Analytisk styrke & struktur</strong>", "<strong>HÃ¸j kvalitet og deadline-disciplin</strong>", "<strong>Formidling og samarbejde</strong>"],
+    focusList: ["<strong>Analytisk styrke & struktur</strong>", "<strong>Høj kvalitet og deadline-disciplin</strong>", "<strong>Formidling og samarbejde</strong>"],
     empty: "Ingen anbefalinger fundet endnu.",
     ctaTitle: "Vil du give en anbefaling?",
     ctaText: "Hvis vi har arbejdet sammen, er du meget velkommen til at sende en kort udtalelse."
   },
   en: {
-    title: "Anton Meier Ebsen JÃ¸rgensen â€“ Testimonials",
+    title: "Anton Meier Ebsen Jørgensen – Testimonials",
     desc: "Testimonials and recommendations about my work in economics, data, and teaching.",
     heroTitle: "What Others Say",
     heroText: "Here you can read brief testimonials from partners and individuals I have worked with.",
@@ -133,7 +133,7 @@ if (error) references = [];
 
       {references?.map(ref => (
           <Card variant="glass" class="p-6 relative flex flex-col h-full">
-            <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">â€œ</div>
+            <div class="absolute top-4 left-6 text-4xl text-accent opacity-10 select-none font-serif">“</div>
             <p class="text-base text-gray-200 italic mt-4 mb-6 relative z-10 leading-relaxed flex-grow">
               {ref.quote}
             </p>

@@ -26,7 +26,7 @@ if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
 const cv = cvEntry.data;
 
 // Separate courses into Uni and Other
-const uniCourses = cv.courses.filter(c => c.institution.includes("Copenhagen") || c.institution.includes("KÃ¸benhavns Universitet") || c.institution === "UCPH" || c.institution === "KU");
+const uniCourses = cv.courses.filter(c => c.institution.includes("Copenhagen") || c.institution.includes("Københavns Universitet") || c.institution === "UCPH" || c.institution === "KU");
 const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
 ---
 

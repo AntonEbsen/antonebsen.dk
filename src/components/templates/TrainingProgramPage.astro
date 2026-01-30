@@ -16,21 +16,21 @@ const isDa = lang === 'da';
 
 const t = {
   da: {
-    title: "Mit TrÃ¦ningsprogram â€“ Anton Meier Ebsen JÃ¸rgensen",
-    desc: "Fuldt indblik i min trÃ¦nings-split (Upper/Lower), Ã¸velsesvalg og progression.",
-    heroTitle: "Mit TrÃ¦ningsprogram",
-    heroText: "Her er det program, jeg fÃ¸lger lige nu. Det er baseret pÃ¥ et Upper/Lower split med fokus pÃ¥ hypertrofi og kontrolleret progression.",
-    heroButtons: { stats: "Se Statistik", blog: "LÃ¦s om Filosofien" },
+    title: "Mit Træningsprogram – Anton Meier Ebsen Jørgensen",
+    desc: "Fuldt indblik i min trænings-split (Upper/Lower), øvelsesvalg og progression.",
+    heroTitle: "Mit Træningsprogram",
+    heroText: "Her er det program, jeg følger lige nu. Det er baseret på et Upper/Lower split med fokus på hypertrofi og kontrolleret progression.",
+    heroButtons: { stats: "Se Statistik", blog: "Læs om Filosofien" },
     days: {
-      push1: { title: "Dag 1: Upper Body (Bryst/Skulder)", desc: "Fokus pÃ¥ bryst, skuldre og triceps." },
-      pull1: { title: "Dag 2: Upper Body (Ryg/Arme)", desc: "Fokus pÃ¥ rygtykkelse, bagskulder og biceps." },
-      legs1: { title: "Dag 3: Lower Body (Quad/Squat)", desc: "Fokus pÃ¥ forlÃ¥r (Quads) og Squat-styrke." },
-      push2: { title: "Dag 4: Upper Body (Volume)", desc: "HÃ¸jere volumen, fokus pÃ¥ metabolisk stress." },
-      pull2: { title: "Dag 5: Upper Body (Rygvidde)", desc: "Fokus pÃ¥ lats (bredde) og detaljer." },
-      legs2: { title: "Dag 6: Lower Body (Posterior)", desc: "Fokus pÃ¥ bagkÃ¦den (Glutes/Hamstrings)." }
+      push1: { title: "Dag 1: Upper Body (Bryst/Skulder)", desc: "Fokus på bryst, skuldre og triceps." },
+      pull1: { title: "Dag 2: Upper Body (Ryg/Arme)", desc: "Fokus på rygtykkelse, bagskulder og biceps." },
+      legs1: { title: "Dag 3: Lower Body (Quad/Squat)", desc: "Fokus på forlår (Quads) og Squat-styrke." },
+      push2: { title: "Dag 4: Upper Body (Volume)", desc: "Højere volumen, fokus på metabolisk stress." },
+      pull2: { title: "Dag 5: Upper Body (Rygvidde)", desc: "Fokus på lats (bredde) og detaljer." },
+      legs2: { title: "Dag 6: Lower Body (Posterior)", desc: "Fokus på bagkæden (Glutes/Hamstrings)." }
     },
     labels: {
-      sets: "SÃ¦t",
+      sets: "Sæt",
       reps: "Reps",
       tempo: "Tempo",
       rest: "Pause",
@@ -39,11 +39,11 @@ const t = {
     },
     contact: {
       title: "Vil du vide mere?",
-      text: "Tjek min trÃ¦ningsstatistik for at se, hvordan programmet virker i praksis."
+      text: "Tjek min træningsstatistik for at se, hvordan programmet virker i praksis."
     }
   },
   en: {
-    title: "My Training Program â€“ Anton Meier Ebsen JÃ¸rgensen",
+    title: "My Training Program – Anton Meier Ebsen Jørgensen",
     desc: "Full insight into my training split (Upper/Lower), exercise selection, and progression.",
     heroTitle: "My Training Program",
     heroText: "Here is the program I am currently following. It is based on an Upper/Lower split focused on hypertrophy and controlled progression.",
@@ -178,12 +178,12 @@ const blogLink = isDa ? '/blog' : '/en/blog';
                             <h2 class="text-2xl font-bold text-white">{dayInfo.title}</h2>
                             <p class="text-dim opacity-80">{dayInfo.desc}</p>
                         </div>
-                        <Pill variant="accent">{dayData.length} {isDa ? 'Ã˜velser' : 'Exercises'}</Pill>
+                        <Pill variant="accent">{dayData.length} {isDa ? 'Øvelser' : 'Exercises'}</Pill>
                     </div>
 
                     <div class="bg-glass border border-glass-border rounded-xl overflow-hidden">
                         <div class="table-header hidden sm:grid">
-                            <div>{isDa ? 'Ã˜velse' : 'Exercise'}</div>
+                            <div>{isDa ? 'Øvelse' : 'Exercise'}</div>
                             <div>{content.labels.sets}</div>
                             <div>{content.labels.tempo}</div>
                             <div>{content.labels.rest}</div>

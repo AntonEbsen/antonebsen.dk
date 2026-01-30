@@ -759,7 +759,7 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
         
         const safeText = encodeURIComponent(text);
         actionsDiv.innerHTML = `
-           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="LÃ¦s hÃ¸jt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
+           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
               <i class="fa-solid fa-volume-high text-xs"></i>
            </button>
         `;

@@ -253,7 +253,7 @@ const blogLink = isDa ? '/blog' : '/en/blog';
       <!-- Toolbar -->
       <div class="toolbar" aria-label="Filtre">
         <div class="search">
-          <input id="qSearch" type="search" placeholder={content.sections.list.searchPlace} aria-label="SÃ¸g" />
+          <input id="qSearch" type="search" placeholder={content.sections.list.searchPlace} aria-label="Søg" />
           <select id="qTag" aria-label="Filtrer">
             <option value="all">{content.sections.list.allThemes}</option>
             {content.hero.themes.map((t: string) => (
@@ -336,7 +336,7 @@ const blogLink = isDa ? '/blog' : '/en/blog';
             article.innerHTML = `
                 <blockquote class="italic text-lg mb-4 text-white/90">"${q.text}"</blockquote>
                 <div class="quote-foot flex justify-between items-center mb-4 text-sm">
-                    <span class="who font-bold text-accent">â€” ${q.author || 'Unknown'}</span>
+                    <span class="who font-bold text-accent">”” ${q.author || 'Unknown'}</span>
                     <span class="tag text-[10px] uppercase tracking-wider border border-white/20 px-2 py-0.5 rounded opacity-60">${tag}</span>
                 </div>
                 <div class="quote-actions flex gap-2 pt-3 border-t border-white/10">
