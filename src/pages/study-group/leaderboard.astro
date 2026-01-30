@@ -1,5 +1,5 @@
 ---
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -177,5 +177,6 @@ const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveL
         </section>
     </div>
 </StudyGroupLayout>
+
 
 

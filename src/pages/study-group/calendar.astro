@@ -1,5 +1,5 @@
 ---
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -82,5 +82,6 @@ const hours = Array.from({ length: 14 }, (_, i) => i + 8); // 8:00 to 21:00
         </section>
     </div>
 </StudyGroupLayout>
+
 
 
