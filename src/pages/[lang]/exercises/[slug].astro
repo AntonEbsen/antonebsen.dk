@@ -5,6 +5,8 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import { getCollection, getEntry } from 'astro:content';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const daExercises = await getCollection('exercises', ({ id }) => id.startsWith('da/'));
   const enExercises = await getCollection('exercises', ({ id }) => id.startsWith('en/'));
