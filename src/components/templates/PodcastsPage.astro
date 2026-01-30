@@ -41,10 +41,17 @@ const content = isDa ? t.da : t.en;
 
 // Data Fetching
 // Supabase client from @lib/supabase
-let { data: podcasts, error } = await supabase
-  .from('podcasts')
-  .select('*')
-  .order('rating', { ascending: false });
+let podcasts = [];
+let error = null;
+
+if (supabase) {
+    const res = await supabase
+      .from('podcasts')
+      .select('*')
+      .order('rating', { ascending: false });
+    podcasts = res.data || [];
+    error = res.error;
+}
 
 if (error) podcasts = [];
 

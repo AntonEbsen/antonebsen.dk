@@ -30,10 +30,17 @@ const t = {
 const content = isDa ? t.da : t.en;
 
 // Supabase client imported from @lib/supabase
-let { data: logs, error } = await supabase
-    .from('changelog')
-    .select('*')
-    .order('created_at', { ascending: false });
+let logs = [];
+let error = null;
+
+if (supabase) {
+    const res = await supabase
+        .from('changelog')
+        .select('*')
+        .order('created_at', { ascending: false });
+    logs = res.data || [];
+    error = res.error;
+}
 
 if (error) logs = [];
 

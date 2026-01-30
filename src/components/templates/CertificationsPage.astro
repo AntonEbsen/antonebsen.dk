@@ -22,11 +22,18 @@ const content = entry.data;
 
 // Data Fetching
 // Supabase client imported from @lib/supabase
-let { data: certifications, error } = await supabase
-  .from('certifications')
-  .select('*')
-  .eq('visible', true)
-  .order('id', { ascending: false });
+let certifications = [];
+let error = null;
+
+if (supabase) {
+  const res = await supabase
+    .from('certifications')
+    .select('*')
+    .eq('visible', true)
+    .order('id', { ascending: false });
+  certifications = res.data || [];
+  error = res.error;
+}
 
 if (error) certifications = [];
 

@@ -23,10 +23,17 @@ const content = entry.data;
 
 // Data Fetching
 // Supabase client is imported from @lib/supabase
-let { data: items, error } = await supabase
-    .from('bucket_list')
-    .select('*')
-    .order('created_at', { ascending: true });
+let items = [];
+let error = null;
+
+if (supabase) {
+    const res = await supabase
+        .from('bucket_list')
+        .select('*')
+        .order('created_at', { ascending: true });
+    items = res.data || [];
+    error = res.error;
+}
 
 if (error) items = [];
 

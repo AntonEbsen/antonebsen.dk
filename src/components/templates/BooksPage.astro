@@ -27,7 +27,7 @@ const t = {
     listBtn: "Se listen",
     recommendBtn: "Anbefal en bog",
     usageTitle: "Hvordan jeg bruger listen",
-    usageText1: "Jeg opdaterer lÃ¸bende. Nogle er â€œmust-readsâ€, andre er bare bÃ¸ger der ramte et tidspunkt i livet.",
+    usageText1: "Jeg opdaterer lÃ¸bende. Nogle er â€œmust-readsâ€ , andre er bare bÃ¸ger der ramte et tidspunkt i livet.",
     usageText2: "Tip: TilfÃ¸j gerne Ã¥rstal og noter â€” det gÃ¸r listen mere personlig.",
     listTitle: "Favoritter (Live DB)",
     listSub: "Hentet direkte fra \"Living Library\" databasen.",
@@ -59,10 +59,17 @@ const content = isDa ? t.da : t.en;
 
 // Data Fetching (SSR) - Replaces client-side API fetch
 // Supabase client is imported from @lib/supabase
-let { data: books, error } = await supabase
-  .from('books')
-  .select('*')
-  .order('created_at', { ascending: false });
+let books = [];
+let error = null;
+
+if (supabase) {
+  const res = await supabase
+    .from('books')
+    .select('*')
+    .order('created_at', { ascending: false });
+  books = res.data || [];
+  error = res.error;
+}
 
 if (error || !books) books = [];
 ---

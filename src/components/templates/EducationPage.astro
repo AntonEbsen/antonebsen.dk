@@ -36,11 +36,20 @@ const hhx = experience.find(e => e.degree.includes("HHX"));
 // We retain Supabase fetching to keep it dynamic, same as original pages.
 // Supabase client imported from @lib/supabase
 
-let { data: projects, error: projError } = await supabase
-  .from('projects')
-  .select('*')
-  .order('created_at', { ascending: false })
-  .limit(3);
+// We retain Supabase fetching to keep it dynamic, same as original pages.
+// Supabase client imported from @lib/supabase
+let projects = [];
+let projError = null;
+
+if (supabase) {
+  const res = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(3);
+  projects = res.data || [];
+  projError = res.error;
+}
 
 if (projError) projects = [];
 
