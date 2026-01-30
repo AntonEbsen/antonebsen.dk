@@ -19,13 +19,14 @@ let { data: skillsRows, error } = await supabase.from('skills').select('*');
 // Fallback logic using content collections if DB is empty or fails
 if (error || !skillsRows || skillsRows.length === 0) {
     const skillsEntry = await getEntry('skills', lang);
-    if (skillsEntry) {
+    if (skillsEntry && skillsEntry.data) {
         // Map structured content data to the flat array structure expected by the component logic below
         const fd = skillsEntry.data;
-        const prog = fd.programming.map(s => ({ ...s, category: 'programming' }));
-        const prof = fd.professional.map(s => ({ ...s, category: 'professional' }));
+        const prog = (fd.programming || []).map(s => ({ ...s, category: 'programming' }));
+        const prof = (fd.professional || []).map(s => ({ ...s, category: 'professional' }));
         skillsRows = [...prog, ...prof] as any;
     } else {
+        console.error(`IndexPage: 'skills/${lang}' content missing.`);
         skillsRows = [];
     }
 }
