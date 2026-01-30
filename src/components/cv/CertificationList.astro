@@ -1,12 +1,12 @@
 ---
 
-// We need to map the images since dynamic imports in Astro are tricky with JSON data
-import matlabCert from '@assets/img/matlab-onramp.PNG';
-import vectorCert from '@assets/img/calculations-with-vectors-and-matrices.PNG';
+// Image imports removed to bypass Sharp on Windows
+const matlabCertSrc = "/assets/img/matlab-onramp.PNG";
+const vectorCertSrc = "/assets/img/calculations-with-vectors-and-matrices.PNG";
 
-const certImageMap: Record<string, ImageMetadata> = {
-  '/assets/img/matlab-onramp.PNG': matlabCert,
-  '/assets/img/calculations-with-vectors-and-matrices.PNG': vectorCert
+const certImageMap: Record<string, string> = {
+  '/assets/img/matlab-onramp.PNG': matlabCertSrc,
+  '/assets/img/calculations-with-vectors-and-matrices.PNG': vectorCertSrc
 };
 
 interface Certification {
@@ -30,7 +30,7 @@ const { certifications = [] } = Astro.props;
     <div class="cert">
       <a href={cert.url} target="_blank" rel="noopener">
         {certImageMap[cert.image] && (
-            <img src={certImageMap[cert.image].src} alt={`${cert.name} certifikat`} class="cert-img" />
+            <img src={certImageMap[cert.image]} alt={`${cert.name} certifikat`} class="cert-img" />
         )}
       </a>
       <h3 class="text-sm font-bold mt-2 mb-1">

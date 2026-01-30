@@ -2,7 +2,7 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
-import node from '@astrojs/node'; // Keeping import but unused in adapter
+// import node from '@astrojs/node'; // Keeping import but unused in adapter
 
 export default defineConfig({
   output: 'static',

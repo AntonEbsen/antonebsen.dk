@@ -1,12 +1,9 @@
 ---
-// import { Image } from 'astro:assets';
-
-
-// Images
-import myImage from '@assets/img/billede-af-mig.jpg';
-import dkFlag from '@assets/img/dansk-flag.png';
-import ukFlag from '@assets/img/britisk-flag.png';
-import deFlag from '@assets/img/tysk-flag.png';
+// Image imports removed to bypass Sharp on Windows
+const myImageSrc = "/assets/img/billede-af-mig.jpg";
+const dkFlagSrc = "/assets/img/dansk-flag.png";
+const ukFlagSrc = "/assets/img/britisk-flag.png";
+const deFlagSrc = "/assets/img/tysk-flag.png";
 
 interface Props {
   data: any; // Skills data
@@ -15,16 +12,16 @@ interface Props {
 
 const { data, ui } = Astro.props;
 
-const flagMap: Record<string, ImageMetadata> = {
-  '/assets/img/dansk-flag.png': dkFlag,
-  '/assets/img/britisk-flag.png': ukFlag,
-  '/assets/img/tysk-flag.png': deFlag
+const flagMap: Record<string, string> = {
+  '/assets/img/dansk-flag.png': dkFlagSrc,
+  '/assets/img/britisk-flag.png': ukFlagSrc,
+  '/assets/img/tysk-flag.png': deFlagSrc
 };
 ---
 
 <aside class="cv-side">
   <div class="card profile-card">
-    <img src={myImage.src} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
+    <img src={myImageSrc} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
 
     <div class="profile-head">
       <h1>Anton Meier Ebsen Jørgensen</h1>
@@ -110,7 +107,7 @@ const flagMap: Record<string, ImageMetadata> = {
     <div class="lang-grid" aria-label="Sprog">
       {data.languages.map((lang: any) => (
         <div class="lang-box">
-          {flagMap[lang.flag] && <img src={flagMap[lang.flag].src} alt={lang.name} class="lang-flag-sm" />}
+          {flagMap[lang.flag] && <img src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
           <div class="lang-text">
             <div class="lang-name">{lang.name}</div>
             <div class="lang-level">{lang.level}</div>
