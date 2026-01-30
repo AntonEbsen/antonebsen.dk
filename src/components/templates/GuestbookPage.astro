@@ -54,6 +54,12 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
                           data-btn-sending={content.form.btnSending}
                           data-error={content.form.error}
                     >
+                        {/* Honeypot for spam bots */}
+                        <div style="opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1;">
+                            <label for="distraction">Do not fill this out</label>
+                            <input type="text" id="distraction" name="distraction" autocomplete="off" tabindex="-1" />
+                        </div>
+
                         <div>
                             <label class="block text-xs uppercase text-gray-500 mb-1">{content.form.nameLabel}</label>
                             <input type="text" id="g-name" required class="w-full bg-black border border-gray-700 p-3 rounded text-gold-100 focus:border-gold-500 focus:outline-none transition-colors" placeholder={content.form.namePlaceholder} />
@@ -172,11 +178,13 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
 
         const name = (document.getElementById('g-name') as HTMLInputElement).value;
         const message = (document.getElementById('g-message') as HTMLTextAreaElement).value;
+        const distraction = (document.getElementById('distraction') as HTMLInputElement).value;
 
         try {
             await fetch('/api/guestbook', {
                 method: 'POST',
-                body: JSON.stringify({ name, message })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, message, distraction })
             });
             
             f.reset();

@@ -31,6 +31,7 @@ export interface Database {
                     message?: string
                     is_approved?: boolean
                 }
+                Relationships: []
             }
             subscribers: {
                 Row: {
@@ -48,6 +49,7 @@ export interface Database {
                     created_at?: string
                     email?: string
                 }
+                Relationships: []
             }
             chat_messages: { // Assuming structure based on usage
                 Row: {
@@ -62,7 +64,20 @@ export interface Database {
                     content: string;
                     session_id?: string;
                 }
+                Relationships: []
             }
         }
+    }
+    Views: {
+        [_ in never]: never
+    }
+    Functions: {
+        [_ in never]: never
+    }
+    Enums: {
+        [_ in never]: never
+    }
+    CompositeTypes: {
+        [_ in never]: never
     }
 }
