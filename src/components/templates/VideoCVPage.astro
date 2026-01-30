@@ -1,5 +1,5 @@
 ---
-import Layout from '@layouts/Layout.astro';
+import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -115,3 +115,5 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
     </div>
   </main>
 </Layout>
+
+

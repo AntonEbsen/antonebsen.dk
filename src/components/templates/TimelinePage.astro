@@ -1,5 +1,5 @@
 ---
-import Layout from '@layouts/Layout.astro';
+import Layout from '@layouts/BaseLayout.astro';
 import { getEntry, getCollection } from 'astro:content';
 
 interface Props {
@@ -356,3 +356,5 @@ const contactLink = isDa ? '/contact' : '/en/contact';
     })();
   </script>
 </Layout>
+
+

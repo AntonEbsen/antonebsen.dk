@@ -1,5 +1,5 @@
 ---
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -188,3 +188,5 @@ const leaderboardEntries = stats || [];
     {/* Hidden Data Store */}
     <div id="stats-data" data-entries={JSON.stringify(leaderboardEntries)}></div>
 </StudyGroupLayout>
+
+

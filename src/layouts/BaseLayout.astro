@@ -4,27 +4,17 @@ import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
 import ChatWidget from '@components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
+import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
 import '@styles/themes.css';
----
 
-<!DOCTYPE html>
-<html lang={lang}>
-<head>
-  <SEO title={title} description={description} image={image} article={article} />
-  <meta name="design-version" content="dark-gold-v1" />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-	title: string;
-	description?: string;
-	image?: string;
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
   article?: boolean;
-	bodyClass?: string;
+  bodyClass?: string;
 }
-
-import { getLangFromUrl } from '@i18n/utils';
 
 const { title, description, image, article, bodyClass = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -35,9 +25,11 @@ const lang = getLangFromUrl(Astro.url);
 <head>
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
-  <!-- <title>{title}</title> -->
-
-  <!-- Fonts & Icons -->
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
   <!-- Scripts -->

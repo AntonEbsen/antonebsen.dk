@@ -1,5 +1,5 @@
 ---
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import group from '../../data/group.json';
 import { createClient } from '@supabase/supabase-js';
 
@@ -330,3 +330,5 @@ const decrees = liveDecrees && liveDecrees.length > 0 ? liveDecrees.map(d => ({
         })
         .subscribe();
 </script>
+
+

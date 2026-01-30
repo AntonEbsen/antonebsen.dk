@@ -1,5 +1,5 @@
 ---
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -136,3 +136,5 @@ const nodeList = nodes && nodes.length > 0 ? nodes : [
         });
     </script>
 </StudyGroupLayout>
+
+

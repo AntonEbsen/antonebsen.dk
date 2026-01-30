@@ -1,5 +1,5 @@
 ---
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupLayout.astro';
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -174,3 +174,5 @@ const resources = liveResources && liveResources.length > 0 ? liveResources : [
         </section>
     </div>
 </StudyGroupLayout>
+
+
