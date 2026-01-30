@@ -10,7 +10,7 @@ export const prerender = false;
 
 async function getSystemPrompt(lang: string = 'da', persona: string = 'default') {
     // Load RAG content from generated file
-    const documentContext = ragContent;
+    const documentContext = (typeof ragContent !== 'undefined' && ragContent) ? ragContent : "No context available.";
 
     // Convert JSONs to a readable string format
     const cvText = JSON.stringify(cv, null, 2);
