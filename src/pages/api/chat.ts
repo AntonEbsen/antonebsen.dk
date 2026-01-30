@@ -4,13 +4,13 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 // Import from code-file instead of JSON logic to be "bulletproof" against bundlers
 import { cv, portfolio, blog, skills, training } from '../../lib/all-data';
 // RAG Content (Generated at build time)
-import { ragContent } from '../../lib/generated-rag';
+// import { ragContent } from '../../lib/generated-rag';
 
 export const prerender = false;
 
 async function getSystemPrompt(lang: string = 'da', persona: string = 'default') {
     // Load RAG content from generated file
-    const documentContext = (typeof ragContent !== 'undefined' && ragContent) ? ragContent : "No context available.";
+    const documentContext = ""; // ragContent disabled for debugging
 
     // Convert JSONs to a readable string format
     const cvText = JSON.stringify(cv, null, 2);
