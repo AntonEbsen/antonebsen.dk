@@ -7,7 +7,8 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import Section from '@components/ui/Section.astro';
 import ExperienceCard from '@components/experience/ExperienceCard.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import cv from '@data/cv_en.json';
+import { getEntry } from 'astro:content';
+const cv = (await getEntry('cv', 'en')).data;
 
 // Use data from cv_en.json instead of database to ensure English content
 const experience = cv.experience;

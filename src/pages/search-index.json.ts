@@ -1,20 +1,14 @@
-import { getLangFromUrl, useTranslations } from '@i18n/utils';
-import { navigation, ui } from '@i18n/ui';
-import portfolioData from '@data/portfolio.json';
-import blogData from '@data/blog.json';
-import skillsData from '@data/skills.json';
+import { getCollection, getEntry } from 'astro:content';
+import { navigation } from '@i18n/ui';
 
-export async function GET(context) {
-    const searchIndex = [];
+import type { APIRoute } from 'astro';
+
+export const GET: APIRoute = async (context) => {
+    const searchIndex: any[] = [];
 
     // Helper to add unique items
     const addedUrls = new Set();
-    const addItem = (item) => {
-        // We allow same URL if lang is different (but here URL is shared? No, they should differ usually, but /#anchors)
-        // If we want to support same item in both languages, we'd need separate entries.
-        // But for simpler filtering, we just add everything.
-        // Note: addedUrls checks might prevent adding same URL for second language if they share URL.
-        // Actually, da/en urls are different mostly.
+    const addItem = (item: any) => {
         const key = item.url + '|' + item.lang;
         if (addedUrls.has(key)) return;
         searchIndex.push(item);
@@ -65,45 +59,66 @@ export async function GET(context) {
         }
     });
 
-    // 3. Portfolio Items (DA)
-    portfolioData.forEach(item => {
-        addItem({
-            title: item.title,
-            url: '/portfolio',
-            content: item.description + " " + item.tools,
-            tags: ['portfolio', 'project', item.tagString],
-            lang: 'da'
-        });
-    });
+    // 3. Portfolio Items (DA & EN)
+    /*
+    const portfolioDa = await getEntry('portfolio', 'da');
+    const portfolioEn = await getEntry('portfolio', 'en');
+    
+    // Note: Use a loop or check if entries exist before processing
+    // Implementation pending Portfolio update to generic collection or keeping separate
+    // Assuming portfolio collection is still TODO or exists as 'portfolio' 
+    // Checking previous 'src/data/portfolio.json' usage -> It was likely a single file.
+    // If migrated to collections, it would be 'src/content/portfolio'
+    
+    // For now, removing broken legacy import.
+    // TODO: Re-integrate portfolio search when collection is fully standardized.
+    */
 
-    // 4. Blog Posts (DA)
-    Object.values(blogData).flat().forEach((post: any) => {
-        const url = post.links?.[0]?.url || '#';
-        if (url === '#' || url.startsWith('#')) return;
+    // 4. Blog Posts
+    const blogPosts = await getCollection('blog');
+    blogPosts.forEach(post => {
+        // Checking if it has legacy structure or new
+        const url = `/blog/${post.id}`; // using id as slug usually works or filePath processing
 
         addItem({
-            title: post.title,
+            title: post.data.title,
             url: url,
-            content: post.description || '',
-            tags: ['blog', post.tag || ''],
-            lang: 'da'
+            content: post.data.description || '',
+            tags: ['blog', post.data.tag || ''],
+            lang: 'da' // Assuming blog is mostly DA or mixed? Defaulting DA for now or checking category
         });
     });
 
-    // 5. Skills (DA)
-    skillsData.programming.forEach(skill => {
-        addItem({
-            title: skill.name,
-            url: '/cv#skills',
-            content: `Erfaring med ${skill.name}. ${skill.title || ''}`,
-            tags: ['skill', 'tool'],
-            lang: 'da'
+    // 5. Skills (DA & EN)
+    const skillsDa = await getEntry('skills', 'da');
+    if (skillsDa && skillsDa.data.programming) {
+        skillsDa.data.programming.forEach(skill => {
+            addItem({
+                title: skill.name,
+                url: '/cv#skills',
+                content: `Erfaring med ${skill.name}. ${skill.title || ''}`,
+                tags: ['skill', 'tool'],
+                lang: 'da'
+            });
         });
-    });
+    }
+
+    const skillsEn = await getEntry('skills', 'en');
+    if (skillsEn && skillsEn.data.programming) {
+        skillsEn.data.programming.forEach(skill => {
+            addItem({
+                title: skill.name,
+                url: '/en/cv#skills',
+                content: `Experience with ${skill.name}. ${skill.title || ''}`,
+                tags: ['skill', 'tool', 'en'],
+                lang: 'en'
+            });
+        });
+    }
 
     return new Response(JSON.stringify(searchIndex), {
         headers: {
             'Content-Type': 'application/json'
         }
     });
-}
+};

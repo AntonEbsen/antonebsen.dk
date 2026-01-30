@@ -6,7 +6,8 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import cv from '@data/cv_en.json';
+import { getEntry } from 'astro:content';
+const cv = (await getEntry('cv', 'en')).data;
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
