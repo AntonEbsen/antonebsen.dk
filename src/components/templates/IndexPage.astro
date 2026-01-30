@@ -13,8 +13,23 @@ import { createClient } from '@supabase/supabase-js';
 
 // Data Fetching
 import { getEntry } from 'astro:content';
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
-let { data: skillsRows, error } = await supabase.from('skills').select('*');
+
+let skillsRows = [];
+let error = null;
+
+try {
+  if (import.meta.env.SUPABASE_URL && import.meta.env.SUPABASE_ANON_KEY) {
+    const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+    const { data, error: dbError } = await supabase.from('skills').select('*');
+    if (dbError) throw dbError;
+    skillsRows = data;
+  } else {
+    console.warn("Supabase env vars missing. using fallback.");
+  }
+} catch (e) {
+  console.error("Supabase fetch failed", e);
+  error = e;
+}
 
 // Fallback logic using content collections if DB is empty or fails
 if (error || !skillsRows || skillsRows.length === 0) {
