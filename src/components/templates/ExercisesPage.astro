@@ -1,0 +1,61 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+// Fetch page content
+const entry = await getEntry('pages', `${lang}/exercises`);
+const content = entry?.data || {
+  title: isDa ? "Øvelsesbibliotek" : "Exercise Library",
+  description: isDa ? "Oversigt over øvelser" : "Exercise overview",
+  hero: {
+    title: isDa ? "Øvelsesbibliotek" : "Exercise Library",
+    text: isDa ? "En samling af øvelser med guides og tips." : "A collection of exercises with guides and tips."
+  }
+};
+
+// Fetch exercises
+const allExercises = await getCollection('exercises');
+const exercises = allExercises.filter(e => e.id.startsWith(`${lang}/`)).map(e => ({
+  ...e,
+  slug: e.id.replace(`${lang}/`, '')
+}));
+---
+
+<Layout title={content.title} description={content.description || 'Exercise Library'}>
+  <main class="container mx-auto px-4 py-12">
+    <Section>
+      <Card variant="glass" class="p-8 text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4 text-gold-400">{content.hero?.title || 'Exercises'}</h1>
+        <p class="text-lg text-dim">{content.hero?.text || ''}</p>
+      </Card>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {exercises.map(ex => (
+          <Card variant="bordered" class="p-6 hover:border-gold-500/30 transition-colors">
+            <h2 class="text-xl font-bold text-white mb-2">{ex.data?.title || 'Unknown Exercise'}</h2>
+            <div class="flex flex-wrap gap-2 mb-4">
+              {ex.data?.muscles?.map(m => (
+                <span class="text-xs bg-white/10 px-2 py-1 rounded text-dim">{m}</span>
+              ))}
+            </div>
+            <Button href={isDa ? `/exercises/${ex.slug}` : `/en/exercises/${ex.slug}`} variant="ghost" size="sm">
+              {isDa ? 'Se Guide' : 'View Guide'}
+            </Button>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  </main>
+</Layout>

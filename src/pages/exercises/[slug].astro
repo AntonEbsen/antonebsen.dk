@@ -1,0 +1,22 @@
+---
+import ExerciseDetailPage from '@components/templates/ExerciseDetailPage.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const exercises = await getCollection('exercises');
+  return exercises
+    .filter(entry => entry.id.startsWith('da/'))
+    .map(entry => {
+      const slug = entry.id.replace(/^da\//, '');
+      return {
+        params: { slug },
+        props: { entry },
+      };
+    });
+}
+
+const { entry } = Astro.props;
+---
+<ExerciseDetailPage entry={entry} />

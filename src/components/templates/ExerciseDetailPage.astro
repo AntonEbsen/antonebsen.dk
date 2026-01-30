@@ -1,0 +1,97 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const exercises = await getCollection('exercises');
+  return exercises.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { lang } = Astro.params; // Note: This might need adjustment for dynamic routes structure
+/* 
+  Actually, for dynamic routes in Astro [slug].astro usually handles one lang.
+  I'll assume this template is used by `src/pages/exercises/[slug].astro` (defaults to Da)
+  and `src/pages/en/exercises/[slug].astro`.
+*/
+const isDa = !Astro.url.pathname.startsWith('/en');
+
+const t = {
+  muscles: isDa ? "Muskler" : "Muscles",
+  benefits: isDa ? "Fordele" : "Benefits",
+  setup: isDa ? "Opsætning" : "Setup",
+  execution: isDa ? "Udførsel" : "Execution",
+  tempo: isDa ? "Tempo" : "Tempo",
+  back: isDa ? "Tilbage til oversigt" : "Back to overview"
+};
+
+const backLink = isDa ? '/exercises' : '/en/exercises';
+
+---
+
+<Layout title={data.title} description={`Guide for ${data.title}`}>
+  <main class="container mx-auto px-4 py-12 max-w-4xl">
+    <Button href={backLink} variant="ghost" class="mb-8"><i class="fa-solid fa-arrow-left mr-2"></i> {t.back}</Button>
+
+    <Section>
+        <Card variant="glass" class="p-8">
+            <h1 class="text-4xl font-bold text-gold-400 mb-6">{data.title}</h1>
+            
+            <div class="flex flex-wrap gap-2 mb-8">
+                {data.muscles?.map(m => <Pill variant="accent">{m}</Pill>)}
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <SectionHeading>{t.benefits}</SectionHeading>
+                    <ul class="list-disc pl-5 text-dim space-y-2 mb-8">
+                        {data.benefits?.map(b => <li>{b}</li>) || <li>No benefits listed.</li>}
+                    </ul>
+
+                    <SectionHeading>{t.tempo}</SectionHeading>
+                    <div class="bg-black/30 p-4 rounded border border-white/10 font-mono text-accent mb-8">
+                        {data.tempo?.join(' - ') || 'N/A'}
+                        {data.tempoNote && <p class="text-xs text-dim mt-2 font-sans italic">{data.tempoNote}</p>}
+                    </div>
+                </div>
+
+                <div>
+                    <SectionHeading>{t.setup}</SectionHeading>
+                    <ol class="list-decimal pl-5 text-dim space-y-2 mb-8">
+                        {data.setup?.map(s => <li>{s}</li>) || <li>No setup instructions.</li>}
+                    </ol>
+
+                    <SectionHeading>{t.execution}</SectionHeading>
+                    <ol class="list-decimal pl-5 text-dim space-y-2">
+                        {data.execution?.map(e => <li>{e}</li>) || <li>No execution steps.</li>}
+                    </ol>
+                </div>
+            </div>
+
+            {data.focusPoints && data.focusPoints.length > 0 && (
+                <div class="mt-8 pt-8 border-t border-white/10">
+                    <SectionHeading>Focus Points</SectionHeading>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        {data.focusPoints.map(p => (
+                            <div class="bg-white/5 p-4 rounded">
+                                <i class={`${p.icon} text-gold-500 text-xl mb-2`}></i>
+                                <h3 class="font-bold text-white">{p.title}</h3>
+                                <p class="text-sm text-dim">{p.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </Card>
+    </Section>
+  </main>
+</Layout>

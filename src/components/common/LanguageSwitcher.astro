@@ -9,26 +9,17 @@ const label = lang === 'en' ? 'Language' : 'Sprog';
   </button>
 
   <div class="dropdown" role="menu" aria-label="Sprogvalg">
-    <a href="/" role="menuitem">
-      <span class="lang-row">
-        <img src="/assets/img/dansk-flag.png" alt="" class="lang-flag">
-        Dansk
-      </span>
+    <a href="/" role="menuitem" class="lang-link">
+      <span class="lang-text">Dansk</span>
     </a>
 
-    <a href="/en" role="menuitem">
-      <span class="lang-row">
-        <img src="/assets/img/britisk-flag.png" alt="" class="lang-flag">
-        English
-      </span>
+    <a href="/en" role="menuitem" class="lang-link">
+      <span class="lang-text">English</span>
     </a>
 
-    <a href="/de" role="menuitem">
-      <span class="lang-row">
-        <img src="/assets/img/tysk-flag.png" alt="" class="lang-flag">
-        Deutsch
-      </span>
-    </a>
+    <!-- <a href="/de" role="menuitem" class="lang-link">
+      <span class="lang-text">Deutsch</span>
+    </a> -->
   </div>
 </div>
 
@@ -77,6 +68,45 @@ const label = lang === 'en' ? 'Language' : 'Sprog';
         align-items: center;
         gap: 4px;
         padding: 0 12px; 
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        min-width: 120px;
+        right: 0;
+        background: #111;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 8px 0;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.2s ease;
+        z-index: 1000;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .has-dropdown.open .dropdown,
+    .has-dropdown:hover .dropdown { /* Optional: Uncomment for hover behavior */
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .lang-link {
+        display: block;
+        padding: 8px 16px;
+        color: #888;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.2s;
+    }
+
+    .lang-link:hover {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
     }
 </style>
 

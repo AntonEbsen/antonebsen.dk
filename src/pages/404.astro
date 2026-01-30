@@ -1,0 +1,18 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Button from '@components/ui/Button.astro';
+
+const title = "404 - Side ikke fundet";
+const desc = "Siden du leder efter findes ikke.";
+---
+
+<Layout title={title} description={desc}>
+  <main class="h-screen flex items-center justify-center">
+    <Section class="text-center">
+      <h1 class="text-6xl font-bold text-gold-500 mb-4">404</h1>
+      <p class="text-xl text-dim mb-8">Siden blev ikke fundet.</p>
+      <Button href="/">Gå til forsiden</Button>
+    </Section>
+  </main>
+</Layout>
