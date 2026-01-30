@@ -211,7 +211,7 @@ const data = entry.data;
           </div>
 
           <div class="cta">
-            {data.hero.cta.map((btn: any) => (
+            {data.hero.cta?.map((btn: any) => (
               <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
                 <i class={btn.icon}></i> {btn.label}
               </a>
@@ -223,7 +223,7 @@ const data = entry.data;
           <div class="mini-card">
             <h2 class="section-title">{data.hero.quickFacts.title}</h2>
             <div class="quickfacts">
-                {data.hero.quickFacts.facts.map((fact: any) => (
+                {data.hero.quickFacts?.facts?.map((fact: any) => (
                     <div class="fact"><i class={fact.icon}></i><span>{fact.text}</span></div>
                 ))}
             </div>
@@ -232,7 +232,7 @@ const data = entry.data;
           <div class="mini-card">
             <h2 class="section-title">{data.hero.nav.title}</h2>
             <nav class="subnav" aria-label="Submenu">
-                {data.hero.nav.links.map((link: any) => (
+                {data.hero.nav?.links?.map((link: any) => (
                     <a href={link.url}>{link.label}</a>
                 ))}
             </nav>
@@ -261,7 +261,7 @@ const data = entry.data;
         <h2 class="section-title">{data.sections.focus.title}</h2>
 
         <div class="grid-2">
-            {data.sections.focus.items.map((item: any) => (
+            {data.sections?.focus?.items?.map((item: any) => (
                 <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
                     <h3 style="margin:0 0 8px;">{item.title}</h3>
                     <p class="muted" style="margin:0;">
@@ -280,13 +280,13 @@ const data = entry.data;
         </p>
 
         <ul class="timeline">
-            {data.sections.workingStyle.steps.map((step: string) => (
+            {data.sections?.workingStyle?.steps?.map((step: string) => (
                 <li set:html={step} />
             ))}
         </ul>
 
         <div class="cta">
-            {data.sections.workingStyle.cta.map((btn: any) => (
+            {data.sections?.workingStyle?.cta?.map((btn: any) => (
               <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
                 <i class={btn.icon}></i> {btn.label}
               </a>
@@ -302,11 +302,11 @@ const data = entry.data;
         </p>
 
         <div class="grid-2">
-            {data.sections.teaching.styles.map((style: any) => (
+            {data.sections?.teaching?.styles?.map((style: any) => (
                 <div class="card" style="box-shadow:none; border:1px solid rgba(0,0,0,.06); background:rgba(17,24,39,.02);">
                     <h3 style="margin:0 0 8px;">{style.title}</h3>
                     <ul style="margin:0;">
-                    {style.points.map((p: string) => (
+                    {style.points?.map((p: string) => (
                         <li>{p}</li>
                     ))}
                     </ul>
@@ -323,7 +323,7 @@ const data = entry.data;
         </p>
 
         <div class="cta">
-            {data.sections.outside.cta.map((btn: any) => (
+            {data.sections?.outside?.cta?.map((btn: any) => (
               <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
                 <i class={btn.icon}></i> {btn.label}
               </a>
@@ -338,7 +338,7 @@ const data = entry.data;
             {data.sections.contact.text}
         </p>
         <div class="cta">
-            {data.sections.contact.cta.map((btn: any) => (
+            {data.sections?.contact?.cta?.map((btn: any) => (
               <a class={`btn ${btn.variant === 'ghost' ? 'ghost' : ''}`} href={btn.url}>
                 <i class={btn.icon}></i> {btn.label}
               </a>
