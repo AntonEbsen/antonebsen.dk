@@ -7,8 +7,8 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import FeatureCard from '@components/ui/FeatureCard.astro';
 import TechStack from '@components/ui/TechStack.astro';
-// Image import removed to bypass Sharp on Windows
-const myImageSrc = "/assets/img/billede-af-mig.jpg";
+import { Image } from 'astro:assets';
+import myImageSrc from '../../assets/img/billede-af-mig.jpg';
 import { supabase } from '@lib/supabase';
 
 import { getEntry } from 'astro:content';
@@ -87,11 +87,13 @@ const skillsData = {
       <div class="relative group">
         <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
         <div class="relative aspect-square overflow-hidden rounded-2xl border border-glass-border shadow-2xl">
-          <img 
+          <Image 
             src={myImageSrc} 
             alt="Anton Meier Ebsen Jørgensen" 
             class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
             loading="eager"
+            width={600}
+            height={600}
           />
         </div>
       </div>

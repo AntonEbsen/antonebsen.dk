@@ -56,4 +56,14 @@ test.describe('Site Health Check', () => {
             expect(response?.status()).toBe(200);
         }
     });
+
+    // Visual Verification
+    test('homepage visual snapshot', async ({ page }) => {
+        await page.goto('/');
+        // Mask dynamic content (like random quotes or time-based elements) if necessary
+        // await expect(page).toHaveScreenshot('homepage.png', { maxDiffPixels: 100 });
+        // For now, just taking a screenshot for manual review artifact
+        await page.screenshot({ path: 'homepage-snapshot.png' });
+        console.log('📸 Taken homepage snapshot for review.');
+    });
 });
