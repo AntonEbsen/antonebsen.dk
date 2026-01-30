@@ -14,6 +14,23 @@ import { createClient } from '@supabase/supabase-js';
 // Data Fetching
 import { getEntry } from 'astro:content';
 
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const portLink = isDa ? '/portfolio' : '/en/portfolio';
+const cvLink = isDa ? '/cv' : '/en/cv';
+const guestbookLink = isDa ? '/guestbook' : '/en/guestbook';
+const contactLink = isDa ? '/contact' : '/en/contact';
+
+// Fetch Content (UI)
+const entry = await getEntry('pages', `${lang}/home`); // assuming home.json exists, checking in a moment
+if (!entry) throw new Error(`Missing content for ${lang}/home`);
+const content = entry.data;
+
 let skillsRows = [];
 let error = null;
 

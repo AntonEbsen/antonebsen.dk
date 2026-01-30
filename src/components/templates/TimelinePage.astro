@@ -249,28 +249,28 @@ const contactLink = isDa ? '/contact' : '/en/contact';
     <!-- HERO -->
     <section class="card hero">
       <div>
-        <p class="eyebrow">{content.eyebrow}</p>
-        <h1>{content.heroTitle}</h1>
+        <p class="eyebrow">{content.hero.eyebrow}</p>
+        <h1>{content.hero.title}</h1>
         <p class="lead">
-          {content.heroText}
+          {content.hero.text}
         </p>
 
         <div class="pill-wrap" aria-label="Filtre">
-          <button class="pill-btn is-active" type="button" data-filter="all">{content.filters.all}</button>
-          <button class="pill-btn" type="button" data-filter="fagligt">{content.filters.professional}</button>
-          <button class="pill-btn" type="button" data-filter="undervisning">{content.filters.teaching}</button>
-          <button class="pill-btn" type="button" data-filter="projekter">{content.filters.projects}</button>
-          <button class="pill-btn" type="button" data-filter="omtale">{content.filters.media}</button>
-          <button class="pill-btn" type="button" data-filter="traening">{content.filters.training}</button>
-          <button class="pill-btn" type="button" data-filter="rejser">{content.filters.travel}</button>
+          <button class="pill-btn is-active" type="button" data-filter="all">{content.hero.filters.all}</button>
+          <button class="pill-btn" type="button" data-filter="fagligt">{content.hero.filters.professional}</button>
+          <button class="pill-btn" type="button" data-filter="undervisning">{content.hero.filters.teaching}</button>
+          <button class="pill-btn" type="button" data-filter="projekter">{content.hero.filters.projects}</button>
+          <button class="pill-btn" type="button" data-filter="omtale">{content.hero.filters.media}</button>
+          <button class="pill-btn" type="button" data-filter="traening">{content.hero.filters.training}</button>
+          <button class="pill-btn" type="button" data-filter="rejser">{content.hero.filters.travel}</button>
         </div>
       </div>
 
       <div class="hero-side">
         <div class="mini-card">
-          <h2 class="section-title">{content.usageTitle}</h2>
+          <h2 class="section-title">{content.sections.usage.title}</h2>
           <ul class="clean-list muted">
-            {content.usageList.map(item => <li>{item}</li>)}
+            {content.sections.usage.list.map((item: string) => <li>{item}</li>)}
           </ul>
         </div>
       </div>
@@ -278,10 +278,10 @@ const contactLink = isDa ? '/contact' : '/en/contact';
 
     <!-- TIMELINE -->
     <section class="card">
-      <h2 class="section-title">{content.sectionTitle}</h2>
+      <h2 class="section-title">{content.sections.list.title}</h2>
 
       <ol class="tl" aria-label="Timeline">
-        {timelineData.map(item => (
+        {timelineData.map((item: any) => (
             <li class="tl-item" data-cat={item.category || 'all'}>
               <div class="tl-dot" aria-hidden="true"></div>
               <div class="tl-card">
@@ -297,7 +297,7 @@ const contactLink = isDa ? '/contact' : '/en/contact';
                   {item.link && (
                       <a class="btn ghost" href={item.link}>{item.linkText || 'View'}</a>
                   )}
-                  {item.links && item.links.map(l => (
+                  {item.links && item.links.map((l: any) => (
                       <a class="btn ghost" href={l.url}>{l.text}</a>
                   ))}
                 </div>
@@ -309,13 +309,13 @@ const contactLink = isDa ? '/contact' : '/en/contact';
 
     <!-- CTA -->
     <section class="card">
-      <h2 class="section-title">{content.ctaTitle}</h2>
+      <h2 class="section-title">{content.sections.cta.title}</h2>
       <p class="muted">
-        {content.ctaText}
+        {content.sections.cta.text}
       </p>
       <div class="cta">
-        <a class="btn" href={contactLink}>{content.ctaBtn}</a>
-        <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">{content.ctaMail}</a>
+        <a class="btn" href={contactLink}>{content.sections.cta.btn}</a>
+        <a class="btn ghost" href="mailto:anton.ebsen@gmail.com">{content.sections.cta.mail}</a>
       </div>
     </section>
 

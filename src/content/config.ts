@@ -67,8 +67,9 @@ export const collections = {
             hero: z.any().optional(), // Flexible for now
             sections: z.record(z.any()).optional(),
             roles: z.any().optional(),
-            contact: z.any().optional()
-        })
+            contact: z.any().optional(),
+            ui: z.any().optional()
+        }).passthrough()
     }),
     'exercises': defineCollection({
         type: 'data',

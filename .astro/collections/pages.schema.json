@@ -20,6 +20,7 @@
         },
         "roles": {},
         "contact": {},
+        "ui": {},
         "$schema": {
           "type": "string"
         }
@@ -28,7 +29,7 @@
         "title",
         "description"
       ],
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#"

@@ -216,31 +216,31 @@ const blogLink = isDa ? '/blog' : '/en/blog';
     <!-- HERO -->
     <section class="card hero">
       <div>
-        <p class="eyebrow">{content.eyebrow}</p>
-        <h1>{content.heroTitle}</h1>
+        <p class="eyebrow">{content.hero.eyebrow}</p>
+        <h1>{content.hero.title}</h1>
         <p class="lead">
-          {content.heroText}
+          {content.hero.text}
         </p>
 
         <div class="pill-wrap" aria-label="Temaer">
-          {content.themes.map(t => (
+          {content.hero.themes.map((t: string) => (
             <span class="pill">{t}</span>
           ))}
         </div>
 
         <div class="cta">
-          <a class="btn" href="#list"><i class="fa-solid fa-quote-left"></i> {content.btns.list}</a>
-          <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.btns.send}</a>
+          <a class="btn" href="#list"><i class="fa-solid fa-quote-left"></i> {content.hero.btns.list}</a>
+          <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.hero.btns.send}</a>
         </div>
       </div>
 
       <div class="hero-side">
         <div class="mini-card">
-          <h2 class="section-title">{content.noteTitle}</h2>
+          <h2 class="section-title">{content.sections.note.title}</h2>
           <p class="muted small" style="margin:0;">
-            {content.noteText1}
+            {content.sections.note.text1}
           </p>
-          <p class="muted small" style="margin-top:10px;" set:html={content.noteText2.replace('kilde', '<strong>kilde</strong>').replace('source', '<strong>source</strong>').replace('kontekst', '<strong>kontekst</strong>').replace('context', '<strong>context</strong>')}>
+          <p class="muted small" style="margin-top:10px;" set:html={content.sections.note.text2.replace('kilde', '<strong>kilde</strong>').replace('source', '<strong>source</strong>').replace('kontekst', '<strong>kontekst</strong>').replace('context', '<strong>context</strong>')}>
           </p>
         </div>
       </div>
@@ -248,40 +248,40 @@ const blogLink = isDa ? '/blog' : '/en/blog';
 
     <!-- LISTE -->
     <section class="card" id="list">
-      <h2 class="section-title">{content.listTitle}</h2>
+      <h2 class="section-title">{content.sections.list.title}</h2>
 
       <!-- Toolbar -->
       <div class="toolbar" aria-label="Filtre">
         <div class="search">
-          <input id="qSearch" type="search" placeholder={content.searchPlace} aria-label="SÃ¸g" />
+          <input id="qSearch" type="search" placeholder={content.sections.list.searchPlace} aria-label="SÃ¸g" />
           <select id="qTag" aria-label="Filtrer">
-            <option value="all">{content.allThemes}</option>
-            {content.themes.map(t => (
+            <option value="all">{content.sections.list.allThemes}</option>
+            {content.hero.themes.map((t: string) => (
               <option value={t}>{t}</option>
             ))}
           </select>
         </div>
 
         <button class="btn ghost" type="button" onclick="resetQuotes()">
-          <i class="fa-solid fa-rotate-left"></i> {content.reset}
+          <i class="fa-solid fa-rotate-left"></i> {content.sections.list.reset}
         </button>
       </div>
 
-      <div class="grid" id="quotesGrid" data-loading={content.loading} data-empty={content.empty} data-fail={content.fail}
-         data-js-copy={content.js.copy} data-js-copied={content.js.copied} data-js-source={content.js.source} data-js-slabel={content.js.sLabel}>
-         <p class="text-dim col-span-full text-center py-12">{content.loading}</p>
+      <div class="grid" id="quotesGrid" data-loading={content.sections.list.loading} data-empty={content.sections.list.empty} data-fail={content.sections.list.fail}
+         data-js-copy={content.sections.list.js.copy} data-js-copied={content.sections.list.js.copied} data-js-source={content.sections.list.js.source} data-js-slabel={content.sections.list.js.sLabel}>
+         <p class="text-dim col-span-full text-center py-12">{content.sections.list.loading}</p>
       </div>
     </section>
 
     <!-- CTA -->
     <section class="card">
-      <h2 class="section-title">{content.ctaTitle}</h2>
+      <h2 class="section-title">{content.sections.cta.title}</h2>
       <p class="muted">
-        {content.ctaText}
+        {content.sections.cta.text}
       </p>
       <div class="cta">
-        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> {content.ctaMail}</a>
-        <a class="btn ghost" href={blogLink}><i class="fa-solid fa-arrow-left"></i> {content.ctaBack}</a>
+        <a class="btn" href="mailto:anton.ebsen@gmail.com"><i class="fa-solid fa-paper-plane"></i> {content.sections.cta.mail}</a>
+        <a class="btn ghost" href={blogLink}><i class="fa-solid fa-arrow-left"></i> {content.sections.cta.back}</a>
       </div>
     </section>
 
