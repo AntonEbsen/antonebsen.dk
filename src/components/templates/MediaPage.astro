@@ -4,7 +4,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 interface Props {
   lang: 'da' | 'en';
@@ -43,12 +43,12 @@ const t = {
 const content = isDa ? t.da : t.en;
 const contactLink = isDa ? '/contact' : '/en/contact';
 
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Supabase client from @lib/supabase
 let { data: media, error } = await supabase
   .from('media_mentions')
   .select('*')
   .eq('visible', true)
-  .order('date', { ascending: false });
+  .order('date', { ascending: false })) as { data: any[], error: any };
 
 if (error) media = [];
 ---

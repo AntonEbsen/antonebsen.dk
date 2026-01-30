@@ -3,7 +3,7 @@ import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 import { getEntry } from 'astro:content';
 
@@ -22,7 +22,7 @@ if (!entry) {
 const content = entry.data;
 
 // Data Fetching
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Supabase client is imported from @lib/supabase
 let { data: items, error } = await supabase
     .from('bucket_list')
     .select('*')

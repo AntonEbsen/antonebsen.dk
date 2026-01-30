@@ -1,5 +1,6 @@
 ---
-import { Image } from 'astro:assets';
+// import { Image } from 'astro:assets';
+
 
 // Images
 import myImage from '@assets/img/billede-af-mig.jpg';
@@ -23,7 +24,7 @@ const flagMap: Record<string, ImageMetadata> = {
 
 <aside class="cv-side">
   <div class="card profile-card">
-    <Image src={myImage} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
+    <img src={myImage.src} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
 
     <div class="profile-head">
       <h1>Anton Meier Ebsen Jørgensen</h1>
@@ -109,7 +110,7 @@ const flagMap: Record<string, ImageMetadata> = {
     <div class="lang-grid" aria-label="Sprog">
       {data.languages.map((lang: any) => (
         <div class="lang-box">
-          {flagMap[lang.flag] && <Image src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
+          {flagMap[lang.flag] && <img src={flagMap[lang.flag].src} alt={lang.name} class="lang-flag-sm" />}
           <div class="lang-text">
             <div class="lang-name">{lang.name}</div>
             <div class="lang-level">{lang.level}</div>

@@ -6,7 +6,7 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import Pill from '@components/ui/Pill.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 interface Props {
   lang: 'da' | 'en';
@@ -58,7 +58,7 @@ const t = {
 const content = isDa ? t.da : t.en;
 
 // Data Fetching (SSR) - Replaces client-side API fetch
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Supabase client is imported from @lib/supabase
 let { data: books, error } = await supabase
   .from('books')
   .select('*')

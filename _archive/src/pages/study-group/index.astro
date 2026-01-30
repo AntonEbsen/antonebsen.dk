@@ -1,0 +1,353 @@
+---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
+import group from '../../data/group.json';
+import { supabase } from '@lib/supabase';
+
+export const prerender = false;
+
+// Supabase Data Fetching
+// Client imported from @lib/supabase
+
+// Fetch Moral Index
+let { data: liveMoral } = await supabase
+    .from('study_moral')
+    .select('*');
+
+// Fetch Decrees
+let { data: liveDecrees } = await supabase
+    .from('study_decrees')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(5);
+
+// Fallback to mock if empty
+const moralData = liveMoral && liveMoral.length > 0 ? liveMoral : [
+    { member_id: "stalin", mood_score: 85, status_text: "Revolutionær Gejst" },
+    { member_id: "mao", mood_score: 92, status_text: "Partiloyal Fokus" },
+    { member_id: "che", mood_score: 60, status_text: "Presset af Reaktionen" }
+];
+
+const decrees = liveDecrees && liveDecrees.length > 0 ? liveDecrees.map(d => ({
+    from: d.member_id.charAt(0).toUpperCase() + d.member_id.slice(1),
+    msg: d.message,
+    time: new Date(d.created_at).toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })
+})) : [
+    { from: "Stalin", msg: "Nyt udkast til seminaropgaven ligger på Overleaf. Til gennemsyn!", time: "2 timer siden" },
+    { from: "Che", msg: "Jeg tager kaffe og croissanter med på tirsdag. Husk kopper!", time: "5 timer siden" }
+];
+---
+
+<StudyGroupLayout title="Hovedkvarter" activePage="dashboard">
+    <div class="space-y-32">
+        {/* Header Section */}
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-end">
+            <div class="space-y-8">
+                <div class="space-y-4">
+                    <span class="bg-red-600/10 text-red-600 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-600/20 shadow-sm">Kollektiv Status: Aktiv</span>
+                    <h2 class="text-6xl md:text-8xl font-black italic tracking-tighter leading-none text-white">Den Akademiske <br/> <span class="text-red-600">Revolution</span></h2>
+                </div>
+                
+                {/* Mobiliserings-alarmen (Countdown) */}
+                <div class="p-8 bg-red-600 border border-red-700 rounded-[32px] shadow-glow-red flex items-center gap-8 group">
+                    <div class="w-16 h-16 bg-white flex items-center justify-center rounded-2xl animate-pulse">
+                        <i class="fa-solid fa-person-running text-red-600 text-2xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-white/60 mb-1">Mobiliserings-alarmen: Seminar-aflevering</p>
+                        <div id="deadline-timer" class="text-3xl font-black tabular-nums tracking-tighter text-white">
+                            00d 00h 00m 00s
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-white/40">Mod Sejren!</p>
+                    </div>
+                </div>
+
+                <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                    Placeringscenter for seminaropgaven og det kommende speciale. Her koordinerer vi vores indsats for at opnå det ultimative akademiske resultat.
+                </p>
+            </div>
+            
+            <div class="space-y-8">
+                <div class="bg-white/[0.03] border border-white/5 rounded-[48px] p-10 flex items-center justify-between group hover:border-red-600/30 transition-all duration-500">
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Dagens Manifest</p>
+                        <p class="text-xl font-bold italic text-white/90">"Hver yder efter evne, hver modtager efter behov."</p>
+                    </div>
+                    <i class="fa-solid fa-quote-right text-4xl text-red-600/20 group-hover:text-red-600/40 transition-colors"></i>
+                </div>
+
+                {/* Active Workers Section */}
+                <div id="active-workers-container" class="hidden animate-in fade-in slide-in-from-right-8 duration-700">
+                    <div class="bg-red-600/5 border border-red-600/10 rounded-[48px] p-10 flex items-center gap-8 group">
+                        <div class="relative">
+                            <i class="fa-solid fa-person-digging text-4xl text-red-600 animate-bounce"></i>
+                            <div class="absolute -top-2 -right-2 w-4 h-4 bg-red-600 rounded-full border-4 border-[#0a0a0a]"></div>
+                        </div>
+                        <div class="flex-1 space-y-1">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Mobilisering i gang</p>
+                            <h4 id="active-workers-text" class="text-xl font-bold italic text-white uppercase tracking-tighter leading-none">Indlæser indsats...</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {/* Members Grid */}
+        <section class="space-y-16">
+            <div class="flex items-center gap-6">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Kameraterne</h3>
+                <div class="h-px flex-1 bg-white/5"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {group.map(member => (
+                    <div class="bg-white/[0.02] border border-white/5 rounded-[40px] p-8 space-y-6 group hover:bg-white/[0.04] hover:border-red-600/20 transition-all duration-500">
+                        <div class="relative w-20 h-20 mx-auto">
+                            <div class="absolute inset-0 bg-red-600 rounded-2xl blur-2xl opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                            <img src={member.image} alt={member.name} class="w-full h-full rounded-2xl grayscale group-hover:grayscale-0 transition-all duration-700 relative z-10" />
+                        </div>
+                        <div class="text-center space-y-2">
+                            <h4 class="text-lg font-black uppercase tracking-tight text-white">{member.alias}</h4>
+                            <p class="text-red-600 text-[10px] font-black uppercase tracking-widest">{member.role}</p>
+                            <p class="text-white/30 text-[11px] leading-relaxed italic pt-4">{member.description}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        {/* Quick Status: Moral & Decrees */}
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Moral-indeks */}
+            <div class="space-y-12">
+                <div class="flex justify-between items-end">
+                    <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Moral-indeks</h3>
+                    <button id="open-moral-modal" class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-red-600 transition-colors">Opdater Status +</button>
+                </div>
+                <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] space-y-10 relative overflow-hidden">
+                    <div class="space-y-8">
+                        {moralData.map(m => (
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-end">
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Kamerat {m.member_id.charAt(0).toUpperCase() + m.member_id.slice(1)}</span>
+                                    <span class="text-red-600 text-[8px] font-bold italic uppercase tracking-widest">{m.status_text}</span>
+                                </div>
+                                <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full bg-red-600 shadow-glow-red" style={`width: ${m.mood_score}%`}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Moral Update Modal (hidden by default) */}
+                <div id="moral-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+                    <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-md w-full space-y-8 shadow-2xl">
+                         <div class="space-y-2">
+                             <h4 class="text-2xl font-black uppercase italic text-white leading-none">Status Opdatering</h4>
+                             <p class="text-[10px] font-black uppercase tracking-widest text-red-600">For Kollektivets Skyld</p>
+                         </div>
+                         <div class="space-y-6">
+                             <div class="space-y-2">
+                                 <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Revolutions-gejst (0-100)</label>
+                                 <input type="range" id="mood-range" min="0" max="100" class="w-full accent-red-600" />
+                             </div>
+                             <div class="space-y-2">
+                                 <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Kort status-besked</label>
+                                 <input type="text" id="status-input" placeholder="Fx: 'Partiloyal Fokus'" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                             </div>
+                             <div class="flex gap-4">
+                                 <button id="save-moral" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all">Gem Status</button>
+                                 <button id="close-moral-modal" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Dekret-tavlen */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Dekret-tavlen</h3>
+                <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] space-y-8 relative overflow-hidden">
+                    <div class="space-y-6" id="decree-list">
+                        {decrees.map(decree => (
+                            <div class="space-y-2 border-l-2 border-red-600/30 pl-6 py-2">
+                                <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-red-600">
+                                    <span>Kamerat {decree.from}</span>
+                                    <span class="text-white/20">{decree.time}</span>
+                                </div>
+                                <p class="text-sm font-medium italic text-white/80">"{decree.msg}"</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Live Decree Form */}
+                    <div class="pt-6 border-t border-white/5">
+                         <div class="flex gap-4">
+                            <input 
+                                type="text" 
+                                id="decree-input"
+                                placeholder="Udsted et nyt dekret..." 
+                                class="flex-1 bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-red-600/50 transition-all"
+                            />
+                            <button id="send-decree" class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-xl transition-all shadow-glow-red">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</StudyGroupLayout>
+
+<script>
+    // Mobiliserings-alarmen logic
+    const deadline = new Date("2026-05-15T12:00:00").getTime();
+    const timerDisplay = document.getElementById('deadline-timer');
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = deadline - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (timerDisplay) {
+            timerDisplay.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        if (distance < 0) {
+            if (timerDisplay) timerDisplay.innerHTML = "SEJREN ER VUNDET!";
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    const decreeInput = document.getElementById('decree-input');
+    const sendBtn = document.getElementById('send-decree');
+    const decreeList = document.getElementById('decree-list');
+    const comradeId = document.cookie.split('; ').find(row => row.startsWith('study_comrade='))?.split('=')[1];
+
+    async function sendDecree() {
+        if (!decreeInput.value || !comradeId) return;
+        
+        try {
+            const res = await fetch('/api/study_gateway', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    table: 'study_decrees',
+                    action: 'insert',
+                    data: { member_id: comradeId, message: decreeInput.value }
+                })
+            });
+            if (res.ok) {
+                decreeInput.value = '';
+                fetchDecrees(); // Immediate refresh
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    sendBtn?.addEventListener('click', sendDecree);
+    decreeInput?.addEventListener('keypress', (e) => e.key === 'Enter' && sendDecree());
+
+    // Polling for Decrees
+    async function fetchDecrees() {
+        try {
+            const res = await fetch('/api/study_gateway?table=study_decrees&limit=5&orderBy=created_at&ascending=false');
+            if (res.ok) {
+                const decrees = await res.json();
+                if (decreeList) {
+                    decreeList.innerHTML = decrees.map(d => {
+                        const from = d.member_id.charAt(0).toUpperCase() + d.member_id.slice(1);
+                        const time = new Date(d.created_at).toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' });
+                        return `
+                            <div class="space-y-2 border-l-2 border-red-600/30 pl-6 py-2">
+                                <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-red-600">
+                                    <span>Kamerat ${from}</span>
+                                    <span class="text-white/20">${time}</span>
+                                </div>
+                                <p class="text-sm font-medium italic text-white/80">"${d.message}"</p>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        } catch (e) {}
+    }
+    // Poll every 10s
+    setInterval(fetchDecrees, 10000);
+
+    // Moral Modal Logic
+    const openMoralBtn = document.getElementById('open-moral-modal');
+    const closeMoralBtn = document.getElementById('close-moral-modal');
+    const moralModal = document.getElementById('moral-modal');
+    const saveMoralBtn = document.getElementById('save-moral');
+    const moodRange = document.getElementById('mood-range');
+    const statusInput = document.getElementById('status-input');
+
+    openMoralBtn?.addEventListener('click', () => moralModal?.classList.remove('hidden'));
+    closeMoralBtn?.addEventListener('click', () => moralModal?.classList.add('hidden'));
+
+    saveMoralBtn?.addEventListener('click', async () => {
+        if (!comradeId) return;
+        
+        try {
+            const res = await fetch('/api/study_gateway', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    table: 'study_moral',
+                    action: 'upsert',
+                    match: 'member_id',
+                    data: { 
+                        member_id: comradeId, 
+                        mood_score: parseInt(moodRange.value), 
+                        status_text: statusInput.value,
+                        updated_at: new Date().toISOString()
+                    }
+                })
+            });
+            if (res.ok) window.location.reload();
+        } catch (e) {
+            alert('Fejl ved opdatering');
+        }
+    });
+
+    // Active Workers Polling Logic
+    const workersContainer = document.getElementById('active-workers-container');
+    const workersText = document.getElementById('active-workers-text');
+
+    async function updateActiveWorkers() {
+        try {
+            const res = await fetch('/api/study_gateway?table=study_active_timers&activeOnly=true');
+            if (res.ok) {
+                const active = await res.json();
+                
+                if (active && active.length > 0) {
+                    workersContainer?.classList.remove('hidden');
+                    const names = active.map(a => a.member_id.charAt(0).toUpperCase() + a.member_id.slice(1)).join(' & ');
+                    workersText.textContent = `${names} producerer lige nu...`;
+                } else {
+                    workersContainer?.classList.add('hidden');
+                }
+            }
+        } catch (e) {}
+    }
+
+    // Initial check
+    updateActiveWorkers();
+    
+    // Poll workers every 5s
+    setInterval(updateActiveWorkers, 5000);
+</script>
+
+
+

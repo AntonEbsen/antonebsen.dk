@@ -6,7 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 interface Props {
   lang: 'da' | 'en';
@@ -56,11 +56,16 @@ const t = {
 
 const content = isDa ? t.da : t.en;
 
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
-let { data: skills, error } = await supabase
-  .from('skills')
-  .select('*')
-  .order('proficiency', { ascending: false });
+// Supabase client from @lib/supabase
+let skills: any[] | null = [];
+let error: any = null;
+
+if (supabase) {
+    ({ data: skills, error } = await supabase
+      .from('skills')
+      .select('*')
+      .order('proficiency', { ascending: false }));
+}
 
 if (error) skills = [];
 

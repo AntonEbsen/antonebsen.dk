@@ -1,7 +1,7 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 interface Props {
   lang: 'da' | 'en';
@@ -29,7 +29,7 @@ const t = {
 
 const content = isDa ? t.da : t.en;
 
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Supabase client imported from @lib/supabase
 let { data: logs, error } = await supabase
     .from('changelog')
     .select('*')

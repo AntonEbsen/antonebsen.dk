@@ -7,11 +7,10 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import FeatureCard from '@components/ui/FeatureCard.astro';
 import TechStack from '@components/ui/TechStack.astro';
-import { Image } from 'astro:assets';
+// import { Image } from 'astro:assets';
 import myImage from '@assets/img/billede-af-mig.jpg';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
-// Data Fetching
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -26,49 +25,40 @@ const cvLink = isDa ? '/cv' : '/en/cv';
 const guestbookLink = isDa ? '/guestbook' : '/en/guestbook';
 const contactLink = isDa ? '/contact' : '/en/contact';
 
-// Fetch Content (UI)
-const entry = await getEntry('pages', `${lang}/home`); // assuming home.json exists, checking in a moment
+const entry = await getEntry('pages', `${lang}/home`);
 if (!entry) throw new Error(`Missing content for ${lang}/home`);
 const content = entry.data;
 
 let skillsRows = [];
 let error = null;
 
-try {
-  if (import.meta.env.SUPABASE_URL && import.meta.env.SUPABASE_ANON_KEY) {
-    const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
-    const { data, error: dbError } = await supabase.from('skills').select('*');
-    if (dbError) throw dbError;
-    skillsRows = data;
-  } else {
-    console.warn("Supabase env vars missing. using fallback.");
-  }
-} catch (e) {
-  console.error("Supabase fetch failed", e);
-  error = e;
-}
+// try {
+//   if (supabase) {
+//     const { data, error: dbError } = await supabase.from('skills').select('*');
+//     if (dbError) throw dbError;
+//     skillsRows = data;
+//   }
+// } catch (e) {
+//   console.error("Supabase fetch failed", e);
+//   error = e;
+// }
 
-// Fallback logic using content collections if DB is empty or fails
 if (error || !skillsRows || skillsRows.length === 0) {
     const skillsEntry = await getEntry('skills', lang);
     if (skillsEntry && skillsEntry.data) {
-        // Map structured content data to the flat array structure expected by the component logic below
         const fd = skillsEntry.data;
         const prog = (fd.programming || []).map(s => ({ ...s, category: 'programming' }));
         const prof = (fd.professional || []).map(s => ({ ...s, category: 'professional' }));
-        skillsRows = [...prog, ...prof] as any;
+        skillsRows = [...prog, ...prof];
     } else {
-        console.error(`IndexPage: 'skills/${lang}' content missing.`);
         skillsRows = [];
     }
 }
 
-// Group by category
 const skillsData = {
   programming: skillsRows?.filter(s => s.category === 'programming') || [],
   professional: skillsRows?.filter(s => s.category === 'professional') || []
 };
-
 ---
 
 <Layout 
@@ -76,14 +66,13 @@ const skillsData = {
   description={content.desc}
 >
   <main class="container mx-auto px-4 py-12">
-    <!-- HERO SECTION -->
     <Section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
       <div class="space-y-6">
         <div class="inline-block px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold uppercase tracking-wider">
           {content.hero.tag}
         </div>
         <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
-          Anton Meier <span class="text-accent underline decoration-4 underline-offset-8">Ebsen</span> JÃ¸rgensen
+          Anton Meier <span class="text-accent underline decoration-4 underline-offset-8">Ebsen</span> Jørgensen
         </h1>
         <p class="text-xl text-dim leading-relaxed max-w-lg">
           {content.hero.text}
@@ -98,9 +87,9 @@ const skillsData = {
       <div class="relative group">
         <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
         <div class="relative aspect-square overflow-hidden rounded-2xl border border-glass-border shadow-2xl">
-          <Image 
-            src={myImage} 
-            alt="Anton Meier Ebsen JÃ¸rgensen" 
+          <img 
+            src={myImage.src} 
+            alt="Anton Meier Ebsen Jørgensen" 
             class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
             loading="eager"
           />
@@ -108,7 +97,6 @@ const skillsData = {
       </div>
     </Section>
 
-    <!-- QUICK STATS / CARDS -->
     <Section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
       <Card variant="glass" class="p-8 hover-glow group">
         <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
@@ -141,7 +129,6 @@ const skillsData = {
       </Card>
     </Section>
 
-    <!-- FEATURED PROJECT -->
     <Section class="mb-24">
       <FeatureCard
         badge={content.feature.badge}
@@ -151,16 +138,11 @@ const skillsData = {
         url={portLink}
       />
     </Section>
-
-    <!-- SKILLS PREVIEW -->
+    
     <Section class="mb-24">
       <div class="text-center max-w-4xl mx-auto mb-16">
         <SectionHeading class="text-3xl font-bold mb-8">{content.skills.title}</SectionHeading>
-        
-        <!-- Visual Tech Stack -->
         <TechStack skills={skillsData.programming} />
-
-        <!-- Professional Areas (Secondary) -->
         <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
           {skillsData.professional.map(skill => (
             <Pill variant="default" class="text-sm">{skill.name}</Pill>
@@ -169,7 +151,6 @@ const skillsData = {
       </div>
     </Section>
 
-    <!-- CTA -->
     <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10">
       <h2 class="text-3xl font-bold mb-6">{content.cta.title}</h2>
       <p class="text-xl text-dim mb-10 max-w-xl mx-auto">
@@ -179,6 +160,3 @@ const skillsData = {
     </Section>
   </main>
 </Layout>
-
-
-

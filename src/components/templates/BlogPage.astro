@@ -6,7 +6,7 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import BlogCard from '@components/blog/BlogCard.astro';
-import { createClient } from '@supabase/supabase-js';
+import BlogCard from '@components/blog/BlogCard.astro';
 
 interface Props {
   lang: 'da' | 'en';
@@ -126,11 +126,20 @@ const t = {
 const content = isDa ? t.da : t.en;
 
 // Data Fetching (SSR)
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
-let { data: posts, error } = await supabase
-  .from('posts')
-  .select('*')
-  .eq('published', true)
+// Data Fetching (SSR)
+import { supabase } from '@lib/supabase';
+let posts = [];
+let error = null;
+
+// if (supabase) {
+//   const { data, error: dbError } = await supabase
+//     .from('posts')
+//     .select('*')
+//     .eq('published', true);
+//   posts = data;
+//   error = dbError;
+// }
+
 if (error || !posts) posts = [];
 ---
 

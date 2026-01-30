@@ -7,7 +7,7 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { getEntry } from 'astro:content';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 interface Props {
   lang: 'da' | 'en';
@@ -34,7 +34,7 @@ const hhx = experience.find(e => e.degree.includes("HHX"));
 
 // Data Fetching for Projects (Supabase)
 // We retain Supabase fetching to keep it dynamic, same as original pages.
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Supabase client imported from @lib/supabase
 
 let { data: projects, error: projError } = await supabase
   .from('projects')

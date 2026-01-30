@@ -1,17 +1,14 @@
-import { defineConfig } from 'astro/config';
-// Design System: Dark & Gold
+import { defineConfig, passthroughImageService } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
-// import node from '@astrojs/node'; // Removed Node adapter
-import vercel from '@astrojs/vercel';
+import node from '@astrojs/node'; // Keeping import but unused in adapter
 
-// https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  adapter: vercel({
-    webAnalytics: { enabled: true }
-  }),
+  output: 'static',
+  image: {
+    service: passthroughImageService()
+  },
   site: 'https://antonebsen.dk',
 
   i18n: {
@@ -29,4 +26,7 @@ export default defineConfig({
       applyBaseStyles: false,
     })
   ],
+
+  // Adapter disabled to prevent stream crash
+  // adapter: node({ mode: 'standalone' }),
 });

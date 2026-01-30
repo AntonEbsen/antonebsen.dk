@@ -74,7 +74,7 @@ const cv = cvEntry.data;
       <Card variant="bordered" class="p-6">
         <SectionHeading>{t.roles.title}</SectionHeading>
         <div class="orgs-grid">
-          {cv.organizations.map(org => (
+          {cv.organizations.map((org: any) => (
             <Card variant="glass" class="p-6">
                <h3 class="font-bold mb-2">{org.name}</h3>
                <p class="text-xs text-accent font-bold mb-3">{org.role} Â· {org.period}</p>

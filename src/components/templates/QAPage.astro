@@ -2,7 +2,7 @@
 import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -23,12 +23,17 @@ if (!staticEntry) throw new Error(`Missing qa entry for ${lang}`);
 const qaStatic = staticEntry.data;
 
 // Data Fetching
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
-let { data: questions, error } = await supabase
-    .from('questions')
-    .select('*')
-    .eq('status', 'answered')
-    .order('created_at', { ascending: false });
+// Client imported from @lib/supabase
+let questions: any[] | null = [];
+let error: any = null;
+
+if (supabase) {
+    ({ data: questions, error } = await supabase
+        .from('questions')
+        .select('*')
+        .eq('status', 'answered')
+        .order('created_at', { ascending: false }));
+}
 
 if (error) questions = [];
 ---

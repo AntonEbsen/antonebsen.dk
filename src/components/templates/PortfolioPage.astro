@@ -7,10 +7,10 @@ import Button from '@components/ui/Button.astro';
 import ProjectCard from '@components/portfolio/ProjectCard.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
 
-export const prerender = false;
+export const prerender = true;
 
 interface Props {
   lang: 'da' | 'en';
@@ -26,10 +26,12 @@ if (!entry) {
 const content = entry.data;
 
 // Supabase Data Fetching
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
-let { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-
-if (error) projects = [];
+// Client imported from @lib/supabase
+let projects = [];
+if (supabase) {
+  const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+  if (!error && data) projects = data;
+}
 
 // Helper to determine link URL (English vs Danish)
 const cvLink = lang === 'en' ? '/en/cv' : '/cv';

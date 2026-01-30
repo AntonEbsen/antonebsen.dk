@@ -2,7 +2,7 @@
 import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@lib/supabase';
 
 interface Props {
   lang: 'da' | 'en';
@@ -40,7 +40,7 @@ const t = {
 const content = isDa ? t.da : t.en;
 
 // Data Fetching
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Supabase client from @lib/supabase
 let { data: podcasts, error } = await supabase
   .from('podcasts')
   .select('*')

@@ -1,0 +1,144 @@
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
+import { supabase } from '@lib/supabase';
+
+export const prerender = false;
+
+// Supabase Data Fetching
+// Client imported from @lib/supabase
+
+// Fetch Nodes
+let { data: nodes } = await supabase
+    .from('study_theory_nodes')
+    .select('*');
+
+const nodeList = nodes && nodes.length > 0 ? nodes : [
+    { title: "Seminar-Opgaven", subtitle: "Hovedtese", description: "Det centrale omdrejningspunkt", pos_x: 50, pos_y: 50, is_core: true }
+];
+---
+
+<StudyGroupLayout title="Den RÃ¸de TrÃ¥d" activePage="theory">
+    <div class="space-y-16">
+        <div class="flex justify-between items-end">
+            <div class="space-y-4">
+                <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">Den RÃ¸de <br/> <span class="text-red-600">TrÃ¥d</span></h2>
+                <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                    Visuel kortlÃ¦gning af den teoretiske infrastruktur. TilfÃ¸j nye noder og forbindelser for at styrke analysen.
+                </p>
+            </div>
+            <button id="open-node-modal" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-glow-red">
+                TilfÃ¸j Node +
+            </button>
+        </div>
+
+        {/* Interactive Mind Map Area */}
+        <div class="bg-white/[0.02] border border-white/5 rounded-[64px] p-10 relative overflow-hidden min-h-[700px] flex items-center justify-center" id="mindmap-container">
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+            
+            <div class="relative w-full h-full min-h-[600px]">
+                {/* SVG Connections (Simple lines to core for now) */}
+                <svg class="absolute inset-0 w-full h-full pointer-events-none overflow-visible" xmlns="http://www.w3.org/2000/svg">
+                    {nodeList.map(node => !node.is_core && (
+                        <line 
+                            x1="50%" y1="50%" 
+                            x2={`${node.pos_x}%`} y2={`${node.pos_y}%`} 
+                            stroke="currentColor" 
+                            class="text-red-600/20" 
+                            stroke-width="1" 
+                        />
+                    ))}
+                </svg>
+
+                {/* Nodes */}
+                {nodeList.map(node => (
+                    <div 
+                        class={`absolute -translate-x-1/2 -translate-y-1/2 p-6 transition-all cursor-pointer group hover:scale-105 z-10
+                            ${node.is_core 
+                                ? 'w-56 h-56 bg-red-600 rounded-full flex flex-col items-center justify-center text-center shadow-glow-red' 
+                                : 'w-48 bg-white/[0.03] border border-white/10 rounded-[32px] hover:border-red-600/40'}`}
+                        style={`left: ${node.pos_x}%; top: ${node.pos_y}%;`}
+                    >
+                        {node.is_core && <i class="fa-solid fa-book-journal-whills text-3xl mb-3 text-white"></i>}
+                        <h3 class={`font-black uppercase tracking-tight leading-tight ${node.is_core ? 'text-white text-base' : 'text-red-600 text-xs mb-1 italic'}`}>
+                            {node.title}
+                        </h3>
+                        {node.subtitle && <p class={`uppercase tracking-widest font-bold ${node.is_core ? 'text-[8px] text-white/60 mt-2 italic' : 'text-white text-base'}`}>{node.subtitle}</p>}
+                        {node.description && <p class="text-white/20 text-[9px] mt-4 italic leading-relaxed hidden group-hover:block">{node.description}</p>}
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+
+    {/* Add Node Modal */}
+    <div id="node-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+        <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-md w-full space-y-8 shadow-2xl">
+             <div class="space-y-2">
+                 <h4 class="text-2xl font-black uppercase italic text-white leading-none">Ny Teoretisk Node</h4>
+                 <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Udvid Den RÃ¸de TrÃ¥d</p>
+             </div>
+             <div class="space-y-6">
+                 <div class="space-y-2">
+                     <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Titel (Fx: Teori A)</label>
+                     <input type="text" id="node-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                 </div>
+                 <div class="space-y-2">
+                     <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Undertitel (Fx: VÃ¦kstmodeller)</label>
+                     <input type="text" id="node-subtitle" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                 </div>
+                 <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-white/40">X Position (0-100)</label>
+                        <input type="number" id="node-x" value="20" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Y Position (0-100)</label>
+                        <input type="number" id="node-y" value="20" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                    </div>
+                 </div>
+                 <div class="flex gap-4">
+                     <button id="save-node" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all shadow-glow-red">Gem Node</button>
+                     <button id="close-node-modal" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById('open-node-modal');
+        const closeBtn = document.getElementById('close-node-modal');
+        const modal = document.getElementById('node-modal');
+        const saveBtn = document.getElementById('save-node');
+
+        openBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
+        closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+
+        saveBtn?.addEventListener('click', async () => {
+            const title = (document.getElementById('node-title') as HTMLInputElement).value;
+            const subtitle = (document.getElementById('node-subtitle') as HTMLInputElement).value;
+            const x = parseInt((document.getElementById('node-x') as HTMLInputElement).value);
+            const y = parseInt((document.getElementById('node-y') as HTMLInputElement).value);
+
+            if (!title) return;
+
+            try {
+                const res = await fetch('/api/study_gateway', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        table: 'study_theory_nodes',
+                        action: 'insert',
+                        data: { title, subtitle, pos_x: x, pos_y: y }
+                    })
+                });
+
+                if (res.ok) window.location.reload();
+            } catch (e) {
+                alert("Fejl ved oprettelse");
+            }
+        });
+    </script>
+</StudyGroupLayout>
+
+
+

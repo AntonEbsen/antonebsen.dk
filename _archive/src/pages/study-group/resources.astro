@@ -1,0 +1,189 @@
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
+import { supabase } from '@lib/supabase';
+
+export const prerender = false;
+
+// Supabase Data Fetching
+// Client imported from @lib/supabase
+
+// Fetch Resources
+let { data: liveResources } = await supabase
+    .from('study_resources')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+const resources = liveResources && liveResources.length > 0 ? liveResources : [
+    { name: "Piketty_Capital_21st.pdf", type: "PDF", size: "4.2 MB", tag: "Teori", file_url: "#" },
+    { name: "DST_Micro_Extract_2024.xlsx", type: "DATA", size: "12.8 MB", tag: "Data", file_url: "#" },
+    { name: "Seminar_Draft_v2.1.tex", type: "LATEX", size: "145 KB", tag: "Udkast", file_url: "#" }
+];
+---
+
+<StudyGroupLayout title="Ressource-HvÃ¦lvingen" activePage="resources">
+    <div class="space-y-32">
+        <div class="space-y-4">
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">HvÃ¦lvingen & <br/> <span class="text-red-600">Folkets Bibliotek</span></h2>
+            <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
+                Central opbevaring for kollektivets viden. Fra de store vÃ¦rker til de smÃ¥ noter â€“ alt er her.
+            </p>
+        </div>
+
+        {/* Search Bar */}
+        <div class="relative max-w-3xl">
+            <i class="fa-solid fa-magnifying-glass absolute left-8 top-1/2 -translate-y-1/2 text-white/20"></i>
+            <input 
+                type="text" 
+                placeholder="GennemsÃ¸g folkets bibliotek (PDF, artikler, noter)..." 
+                class="w-full bg-white/[0.03] border border-white/10 rounded-[32px] pl-20 pr-8 py-6 text-white placeholder:text-white/20 focus:outline-none focus:border-red-600/50 transition-all"
+            />
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Folkets Bibliotek (Enhanced Resources) */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Folkets Bibliotek</h3>
+                <div class="space-y-4" id="resource-list">
+                    {resources.map(file => (
+                        <a href={file.file_url} target="_blank" class="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex items-center justify-between group hover:border-red-600/30 transition-all cursor-pointer">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 group-hover:bg-red-600 group-hover:text-white transition-all">
+                                    <i class={`fa-solid ${file.type === 'PDF' ? 'fa-file-pdf' : file.type === 'DATA' ? 'fa-file-excel' : 'fa-file-code'}`}></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm uppercase tracking-tight">{file.name}</h4>
+                                    <p class="text-[9px] text-white/20 font-black uppercase tracking-widest">{file.size} â€¢ {file.type}</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[8px] font-black uppercase tracking-widest text-red-600">
+                                {file.tag}
+                            </span>
+                        </a>
+                    ))}
+                    
+                    <label class="w-full py-4 border-2 border-dashed border-white/5 rounded-3xl text-white/20 font-black uppercase tracking-widest text-[10px] hover:border-red-600/30 hover:text-white transition-all mt-4 flex items-center justify-center cursor-pointer group">
+                        <span class="group-hover:scale-110 transition-transform">Upload til biblioteket +</span>
+                        <input type="file" id="file-upload" class="hidden" />
+                    </label>
+                </div>
+            </div>
+
+            <script>
+                const fileInp = document.getElementById('file-upload') as HTMLInputElement;
+
+                fileInp?.addEventListener('change', async (e) => {
+                    const file = (e.target as HTMLInputElement).files?.[0];
+                    if (!file) return;
+
+                    // Dynamically import Supabase only when needed for upload
+                    const { createClient } = await import('@supabase/supabase-js');
+                    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL;
+                    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
+                    const supabase = createClient(supabaseUrl, supabaseKey);
+
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const filePath = `resources/${fileName}`;
+
+                    // 1. Upload to Storage
+                    const { data: uploadData, error: uploadError } = await supabase.storage
+                        .from('study-resources')
+                        .upload(filePath, file);
+
+                    if (uploadError) {
+                        alert("Fejl ved upload: " + uploadError.message);
+                        return;
+                    }
+
+                    // 2. Get Public URL
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('study-resources')
+                        .getPublicUrl(filePath);
+
+                    // 3. Insert into Table using Gateway
+                    const fileType = file.name.split('.').pop()?.toUpperCase() || 'FILE';
+                    const fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+                    try {
+                        const res = await fetch('/api/study_gateway', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                table: 'study_resources',
+                                action: 'insert',
+                                data: {
+                                    name: file.name,
+                                    type: fileType,
+                                    size: fileSize,
+                                    tag: 'Ny',
+                                    file_url: publicUrl
+                                }
+                            })
+                        });
+
+                        if (res.ok) window.location.reload();
+                        else alert("Database fejl ved gem");
+                    } catch (e) {
+                         alert("Kunne ikke gemme filinfo");
+                    }
+                });
+            </script>
+
+            {/* Vigtige Links */}
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Vigtige Forbindelser</h3>
+                <div class="grid grid-cols-1 gap-4">
+                    {[
+                        { name: "Overleaf: Seminar", url: "#", icon: "fa-leaf" },
+                        { name: "G-Drive: Speciale", url: "#", icon: "fa-brands fa-google-drive" },
+                        { name: "GitHub: Kollektivet", url: "#", icon: "fa-brands fa-github" }
+                    ].map(link => (
+                        <a href={link.url} class="flex items-center justify-between p-8 bg-white/[0.03] border border-white/5 rounded-[32px] hover:border-red-600/30 transition-all group">
+                            <div class="flex items-center gap-6">
+                                <div class="w-14 h-14 bg-red-600/10 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all text-xl">
+                                    <i class={`fa-solid ${link.icon}`}></i>
+                                </div>
+                                <span class="font-bold text-white text-lg uppercase tracking-tight">{link.name}</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-white/10 group-hover:text-red-600 transition-colors"></i>
+                        </a>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Den RÃ¸de Bog (Reading List - Unified) */}
+        <section class="space-y-16">
+            <div class="flex items-center gap-6">
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Den RÃ¸de Bog <span class="text-white/40 text-sm ml-4">(LÃ¦seliste)</span></h3>
+                <div class="h-px flex-1 bg-white/5"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[
+                    { title: "Capital in the 21st Century", author: "Piketty", readers: ["Stalin", "Mao"] },
+                    { title: "Macroeconomic Theory", author: "Romer", readers: ["Che"] },
+                    { title: "Economic Models", author: "Luxemburg", readers: ["Che", "Stalin"] }
+                ].map(book => (
+                    <div class="p-10 bg-white/[0.02] border border-white/5 rounded-[48px] group hover:border-red-600/20 transition-all">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-white text-xl uppercase tracking-tight leading-none">{book.title}</h4>
+                                <p class="text-white/20 text-xs italic uppercase tracking-widest">{book.author}</p>
+                            </div>
+                            <i class="fa-solid fa-book-open text-red-600/20 group-hover:text-red-600 transition-all text-2xl"></i>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-6 border-t border-white/5">
+                            {book.readers.map(reader => (
+                                <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-600">
+                                    LÃ¦st af {reader}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    </div>
+</StudyGroupLayout>
+
+
+
