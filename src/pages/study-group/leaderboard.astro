@@ -1,5 +1,5 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -27,7 +27,7 @@ const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveL
         <div class="space-y-4">
             <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Klassekampen <br/> <span class="text-red-600">& Udfordringer</span></h2>
             <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
-                En venlig konkurrence for kollektivets bedste. Præstation hos den enkelte er sejr for alle.
+                En venlig konkurrence for kollektivets bedste. PrÃ¦station hos den enkelte er sejr for alle.
             </p>
         </div>
 
@@ -36,7 +36,7 @@ const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveL
             <div class="space-y-12">
                 <div class="flex justify-between items-end">
                     <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Ugens Stakhanovit</h3>
-                    <button id="open-stats-modal" class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-red-600 transition-colors">Rapportér Arbejde +</button>
+                    <button id="open-stats-modal" class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-red-600 transition-colors">RapportÃ©r Arbejde +</button>
                 </div>
                 <p class="text-[10px] font-black uppercase tracking-widest text-white/20 -mt-8">Flest Pomodoro-sessions denne uge</p>
                 
@@ -86,7 +86,7 @@ const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveL
                  </div>
                  <div class="space-y-6">
                      <div class="space-y-2">
-                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Pomodoro-sessions tilføjet</label>
+                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Pomodoro-sessions tilfÃ¸jet</label>
                          <input type="number" id="pomodoro-input" placeholder="Fx: 4" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
                      </div>
                      <div class="space-y-2">
@@ -144,17 +144,17 @@ const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveL
             });
         </script>
 
-        {/* Mærkesager (Badges) */}
+        {/* MÃ¦rkesager (Badges) */}
         <section class="space-y-16">
             <div class="flex items-center gap-6">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic">Mærkesager <span class="text-red-600 text-sm ml-4">(Missions & Badges)</span></h3>
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic">MÃ¦rkesager <span class="text-red-600 text-sm ml-4">(Missions & Badges)</span></h3>
                 <div class="h-px flex-1 bg-white/5"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 {[
                     { title: "Natuglen", desc: "Arbejde efter midnat", icon: "fa-owl", status: "Stalin", active: true },
-                    { title: "Korrektur-K.", desc: "Færrest stavefejl", icon: "fa-spell-check", status: "Che", active: true },
+                    { title: "Korrektur-K.", desc: "FÃ¦rrest stavefejl", icon: "fa-spell-check", status: "Che", active: true },
                     { title: "Kaffe-K.", desc: "Mest kaffe brygget", icon: "fa-mug-hot", status: "Ingen", active: false },
                     { title: "Excel-Ekspert", desc: "Mest komplekse model", icon: "fa-table", status: "Mao", active: true }
                 ].map(badge => (
@@ -168,7 +168,7 @@ const leaderboardEntries = liveLeaderboard && liveLeaderboard.length > 0 ? liveL
                         </div>
                         {badge.active && (
                             <div class="pt-4 border-t border-red-600/10">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-red-600">Bæres af {badge.status}</span>
+                                <span class="text-[9px] font-black uppercase tracking-widest text-red-600">BÃ¦res af {badge.status}</span>
                             </div>
                         )}
                     </div>

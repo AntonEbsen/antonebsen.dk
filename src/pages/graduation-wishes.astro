@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import wishes from '../data/wishes.json';
 
 // Password protection check (same as graduation.astro)
@@ -7,7 +7,7 @@ export const prerender = false;
 let authenticated = true; // We assume they come from the graduation page which is already gated
 ---
 
-<Layout title="Ønskeseddel | Anton Ebsen" description="Mine ønsker til dimissionsfesten">
+<Layout title="Ã˜nskeseddel | Anton Ebsen" description="Mine Ã¸nsker til dimissionsfesten">
   <main id="wishes-content" class="min-h-screen bg-black text-white px-4 py-20 relative overflow-hidden flex flex-col items-center">
     
     {/* Canvas for Mouse Trail */}
@@ -28,7 +28,7 @@ let authenticated = true; // We assume they come from the graduation page which 
                 id="copy-link-btn"
                 class="inline-flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-dim hover:text-white hover:border-accent/40 transition-all group"
             >
-                <i class="fa-solid fa-link group-hover:rotate-12 transition-transform"></i> Del ønskeseddel
+                <i class="fa-solid fa-link group-hover:rotate-12 transition-transform"></i> Del Ã¸nskeseddel
             </button>
         </div>
         
@@ -37,11 +37,11 @@ let authenticated = true; // We assume they come from the graduation page which 
                 <i class="fa-solid fa-gift text-accent text-4xl"></i>
             </div>
             <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter">
-                Min <span class="text-accent text-glow-accent outline-text-accent">Ønskeseddel</span>
+                Min <span class="text-accent text-glow-accent outline-text-accent">Ã˜nskeseddel</span>
             </h1>
             <p class="text-dim text-lg max-w-xl mx-auto leading-relaxed">
-                Her er en oversigt over hvad jeg drømmer om til min dimission. 
-                Du kan se den fulde og opdaterede liste direkte på Ønskeskyen.
+                Her er en oversigt over hvad jeg drÃ¸mmer om til min dimission. 
+                Du kan se den fulde og opdaterede liste direkte pÃ¥ Ã˜nskeskyen.
             </p>
         </div>
 
@@ -52,7 +52,7 @@ let authenticated = true; // We assume they come from the graduation page which 
                 target="_blank"
                 class="inline-flex items-center gap-4 px-12 py-6 bg-white text-black font-black rounded-full hover:bg-accent hover:scale-105 transition-all shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)] group duration-500"
             >
-                Se hele listen på Ønskeskyen <i class="fa-solid fa-cloud group-hover:translate-y-[-2px] transition-transform"></i>
+                Se hele listen pÃ¥ Ã˜nskeskyen <i class="fa-solid fa-cloud group-hover:translate-y-[-2px] transition-transform"></i>
             </a>
         </div>
     </div>
@@ -64,7 +64,7 @@ let authenticated = true; // We assume they come from the graduation page which 
                 <div class="inline-flex items-center gap-2 text-accent text-[10px] font-black uppercase tracking-widest mb-2">
                     <i class="fa-solid fa-bolt"></i> Quick-Gift
                 </div>
-                <h3 class="text-3xl font-bold italic">Et bidrag til de næste 5,5 år?</h3>
+                <h3 class="text-3xl font-bold italic">Et bidrag til de nÃ¦ste 5,5 Ã¥r?</h3>
                 <p class="text-dim text-sm max-w-sm">Hvis du hellere vil give et bidrag til mine fremtidige eventyr og rejser, er en skilling til MobilePay altid velkommen.</p>
             </div>
             
@@ -117,10 +117,10 @@ let authenticated = true; // We assume they come from the graduation page which 
     <div class="max-w-2xl w-full text-center p-12 rounded-[56px] border border-accent/20 bg-accent/5 backdrop-blur-xl relative overflow-hidden mb-20 z-10">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.1),transparent)]"></div>
         <p class="text-white/80 font-bold italic text-xl mb-4 relative z-10">
-            "Den største gave er din tilstedeværelse til min fest!"
+            "Den stÃ¸rste gave er din tilstedevÃ¦relse til min fest!"
         </p>
         <p class="text-dim text-sm relative z-10">
-            Jeg glæder mig helt vildt til at se dig d. 1. juni.
+            Jeg glÃ¦der mig helt vildt til at se dig d. 1. juni.
         </p>
     </div>
 

@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import { createClient } from '@supabase/supabase-js';
@@ -102,7 +102,7 @@ if (error) questions = [];
                                 <h4 class="font-bold text-white mb-2 text-lg">{q.question}</h4>
                                 <div class="flex items-center gap-2 mb-3 text-xs text-dim opacity-60">
                                     <span class="bg-gray-800 px-1.5 rounded">{q.asker_name || content.read.anonymous}</span>
-                                    <span>•</span>
+                                    <span>â€¢</span>
                                     <span>{new Date(q.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}</span>
                                 </div>
                                 <div class="bg-gray-900/30 p-4 rounded border border-white/5 relative group-hover:border-gold-500/20 transition-colors">

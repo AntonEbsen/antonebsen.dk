@@ -1,5 +1,5 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -19,17 +19,17 @@ const nodeList = nodes && nodes.length > 0 ? nodes : [
 ];
 ---
 
-<StudyGroupLayout title="Den Røde Tråd" activePage="theory">
+<StudyGroupLayout title="Den RÃ¸de TrÃ¥d" activePage="theory">
     <div class="space-y-16">
         <div class="flex justify-between items-end">
             <div class="space-y-4">
-                <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">Den Røde <br/> <span class="text-red-600">Tråd</span></h2>
+                <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">Den RÃ¸de <br/> <span class="text-red-600">TrÃ¥d</span></h2>
                 <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
-                    Visuel kortlægning af den teoretiske infrastruktur. Tilføj nye noder og forbindelser for at styrke analysen.
+                    Visuel kortlÃ¦gning af den teoretiske infrastruktur. TilfÃ¸j nye noder og forbindelser for at styrke analysen.
                 </p>
             </div>
             <button id="open-node-modal" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-glow-red">
-                Tilføj Node +
+                TilfÃ¸j Node +
             </button>
         </div>
 
@@ -77,7 +77,7 @@ const nodeList = nodes && nodes.length > 0 ? nodes : [
         <div class="bg-[#0a0a0a] border border-white/10 rounded-[48px] p-12 max-w-md w-full space-y-8 shadow-2xl">
              <div class="space-y-2">
                  <h4 class="text-2xl font-black uppercase italic text-white leading-none">Ny Teoretisk Node</h4>
-                 <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Udvid Den Røde Tråd</p>
+                 <p class="text-[10px] font-black uppercase tracking-widest text-red-600">Udvid Den RÃ¸de TrÃ¥d</p>
              </div>
              <div class="space-y-6">
                  <div class="space-y-2">
@@ -85,7 +85,7 @@ const nodeList = nodes && nodes.length > 0 ? nodes : [
                      <input type="text" id="node-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
                  </div>
                  <div class="space-y-2">
-                     <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Undertitel (Fx: Vækstmodeller)</label>
+                     <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Undertitel (Fx: VÃ¦kstmodeller)</label>
                      <input type="text" id="node-subtitle" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
                  </div>
                  <div class="grid grid-cols-2 gap-4">

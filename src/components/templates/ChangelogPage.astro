@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import { createClient } from '@supabase/supabase-js';
 
@@ -13,15 +13,15 @@ const isDa = lang === 'da';
 const t = {
   da: {
     title: "Versionshistorik | Anton Ebsen",
-    desc: "Historik over opdateringer og ændringer.",
-    heroTitle: "Versionshistorik 📜",
+    desc: "Historik over opdateringer og Ã¦ndringer.",
+    heroTitle: "Versionshistorik ðŸ“œ",
     heroText: "Jeg bygger i offentligheden. Her er logbogen over sidens udvikling.",
     empty: "Ingen opdateringer endnu."
   },
   en: {
     title: "Version History | Anton Ebsen",
     desc: "History of updates and changes.",
-    heroTitle: "Version History 📜",
+    heroTitle: "Version History ðŸ“œ",
     heroText: "I build in public. Here is the log of the site's development.",
     empty: "No updates yet."
   }

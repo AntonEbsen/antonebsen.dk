@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -14,14 +14,14 @@ const isDa = lang === 'da';
 
 const t = {
   da: {
-    title: "Træningsstatistik – Anton Meier Ebsen Jørgensen",
-    desc: "Dashboard over min træningsprogression, volumen og PRs.",
-    heroTitle: "Træningsstatistik",
-    heroText: "Live-opdateret data direkte fra min træningslog. Fordi det der bliver målt, bliver forbedret.",
+    title: "TrÃ¦ningsstatistik â€“ Anton Meier Ebsen JÃ¸rgensen",
+    desc: "Dashboard over min trÃ¦ningsprogression, volumen og PRs.",
+    heroTitle: "TrÃ¦ningsstatistik",
+    heroText: "Live-opdateret data direkte fra min trÃ¦ningslog. Fordi det der bliver mÃ¥lt, bliver forbedret.",
     readiness: {
       title: "Global Readiness Score",
       calc: "Beregner din form...",
-      desc: "Baseret på din volumen, intensitet og tid siden sidste pas, beregner vi din teoretiske restitution."
+      desc: "Baseret pÃ¥ din volumen, intensitet og tid siden sidste pas, beregner vi din teoretiske restitution."
     },
     consistency: {
         title: "Consistency Heatmap (Sidste 6 mdr.)",
@@ -30,56 +30,56 @@ const t = {
     },
     milestones: {
         title: "Tonnage Milestones",
-        text_prefix: "Du har løftet svarende til",
-        text_suffix: "i denne måned.",
-        desc: "Din samlede indsats svarer til vægten af tunge objekter. En sjov måde at forstå dit hårde arbejde på!"
+        text_prefix: "Du har lÃ¸ftet svarende til",
+        text_suffix: "i denne mÃ¥ned.",
+        desc: "Din samlede indsats svarer til vÃ¦gten af tunge objekter. En sjov mÃ¥de at forstÃ¥ dit hÃ¥rde arbejde pÃ¥!"
     },
     kpi: {
         vol: "Total Volumen (All Time)",
         sess: "Sessions (Total)",
-        fav: "Favorit Løft",
+        fav: "Favorit LÃ¸ft",
         favVal: "Squat"
     },
     charts: {
         volTitle: "Volumen pr uge (kg)",
         volLabel: "Tonnage (kg)",
-        muscTitle: "Muskelfordeling (Sæt)",
+        muscTitle: "Muskelfordeling (SÃ¦t)",
         cardioTitle: "Cardio-historik (km)",
         cardioLabel: "Distance (km)"
     },
     weekly: {
         title: "Ugentlig Volumen-Tracking",
-        desc: "Antal hårde sæt de sidste 7 dage vs. anbefalede mål.",
-        goal: "Mål",
-        sets: "Sæt"
+        desc: "Antal hÃ¥rde sÃ¦t de sidste 7 dage vs. anbefalede mÃ¥l.",
+        goal: "MÃ¥l",
+        sets: "SÃ¦t"
     },
     anatomy: {
         title: "Interactive Anatomy Map (Ugentlig Fokus)",
         front: "Forfra",
         back: "Bagfra",
-        legend: "Farveintensitet indikerer ugentlig træningsmængde (Sæt)"
+        legend: "Farveintensitet indikerer ugentlig trÃ¦ningsmÃ¦ngde (SÃ¦t)"
     },
     cta: {
-        blog: "Læs om min tilgang",
+        blog: "LÃ¦s om min tilgang",
         home: "Tilbage til forsiden"
     },
     js: {
-        fullRecovTitle: "Fuldt restitueret 🚀",
+        fullRecovTitle: "Fuldt restitueret ðŸš€",
         fullRecovDesc: "Dine batterier er ladet op. Det er tid til at smadre nogle PRs!",
-        readyTitle: "Klar til kamp 🔥",
-        readyDesc: "Du er næsten fuldt restitueret. Et tungt pas er muligt, men lyt til kroppen.",
-        modTitle: "Moderat Restitution 🔋",
-        modDesc: "Du er stadig ved at komme dig. Overvej et moderato pas eller fokus på en anden muskelgruppe.",
-        recovTitle: "Recovery Mode 🛌",
-        recovDesc: "Din krop har brug for hvile. Fokusér på søvn, mad og let bevægelse i dag.",
+        readyTitle: "Klar til kamp ðŸ”¥",
+        readyDesc: "Du er nÃ¦sten fuldt restitueret. Et tungt pas er muligt, men lyt til kroppen.",
+        modTitle: "Moderat Restitution ðŸ”‹",
+        modDesc: "Du er stadig ved at komme dig. Overvej et moderato pas eller fokus pÃ¥ en anden muskelgruppe.",
+        recovTitle: "Recovery Mode ðŸ›Œ",
+        recovDesc: "Din krop har brug for hvile. FokusÃ©r pÃ¥ sÃ¸vn, mad og let bevÃ¦gelse i dag.",
         elephants: "Afrikanske Elefanter",
         golfs: "VW Golf'er",
-        whales: "Blåhvaler",
-        shuttles: "Rumfærger"
+        whales: "BlÃ¥hvaler",
+        shuttles: "RumfÃ¦rger"
     }
   },
   en: {
-    title: "Training Statistics – Anton Meier Ebsen Jørgensen",
+    title: "Training Statistics â€“ Anton Meier Ebsen JÃ¸rgensen",
     desc: "Dashboard of my training progression, volume, and PRs.",
     heroTitle: "Training Statistics",
     heroText: "Live updated data directly from my training log. Because what gets measured, gets improved.",
@@ -129,13 +129,13 @@ const t = {
         home: "Back to home"
     },
     js: {
-        fullRecovTitle: "Fully Recovered 🚀",
+        fullRecovTitle: "Fully Recovered ðŸš€",
         fullRecovDesc: "Your batteries are charged. It's time to crush some PRs!",
-        readyTitle: "Ready for Battle 🔥",
+        readyTitle: "Ready for Battle ðŸ”¥",
         readyDesc: "You are almost fully recovered. A heavy session is possible, but listen to your body.",
-        modTitle: "Moderate Recovery 🔋",
+        modTitle: "Moderate Recovery ðŸ”‹",
         modDesc: "You are still recovering. Consider a moderate session or focus on a different muscle group.",
-        recovTitle: "Recovery Mode 🛌",
+        recovTitle: "Recovery Mode ðŸ›Œ",
         recovDesc: "Your body needs rest. Focus on sleep, nutrition, and light movement today.",
         elephants: "African Elephants",
         golfs: "VW Golfs",
@@ -515,7 +515,7 @@ const homeLink = isDa ? '/' : '/en';
       const muscleMapping: Record<string, string> = {
         'bryst': 'Chest', 'chest': 'Chest', 'incline press': 'Chest', 'fly': 'Chest',
         'ryg': 'Back', 'back': 'Back', 'lat': 'Back', 'row': 'Back', 'deadlift': 'Back', 'pull': 'Back',
-        'ben': 'Legs', 'leg': 'Legs', 'squat': 'Legs', 'lunges': 'Legs', 'calf': 'Legs', 'læg': 'Legs', 'hip': 'Legs',
+        'ben': 'Legs', 'leg': 'Legs', 'squat': 'Legs', 'lunges': 'Legs', 'calf': 'Legs', 'lÃ¦g': 'Legs', 'hip': 'Legs',
         'skulder': 'Shoulders', 'shoulder': 'Shoulders', 'deltoid': 'Shoulders', 'face pull': 'Shoulders',
         'triceps': 'Arms', 'biceps': 'Arms', 'curl': 'Arms', 'extension': 'Arms', 'pushdown': 'Arms',
         'core': 'Core', 'abs': 'Core', 'mave': 'Core', 'plank': 'Core', 'crunch': 'Core'

@@ -1,5 +1,5 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -18,15 +18,15 @@ try {
     events = data || [];
 } catch (e) {}
 
-const days = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+const days = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'LÃ¸r', 'SÃ¸n'];
 const hours = Array.from({ length: 14 }, (_, i) => i + 8); // 8:00 to 21:00
 ---
 
 <StudyGroupLayout title="Kollektiv Kalender" activePage="calendar">
     <div class="space-y-16">
         <div class="flex items-center justify-between">
-            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Planøkonomi <br/> <span class="text-red-600">Kalender</span></h2>
-            <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all shadow-glow-red">Planlæg Møde +</button>
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">PlanÃ¸konomi <br/> <span class="text-red-600">Kalender</span></h2>
+            <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all shadow-glow-red">PlanlÃ¦g MÃ¸de +</button>
         </div>
 
         {/* Real Digital Calendar Grid */}
@@ -49,7 +49,7 @@ const hours = Array.from({ length: 14 }, (_, i) => i + 8); // 8:00 to 21:00
                                 {/* Sample Meeting */}
                                 {hour === 10 && Math.random() > 0.8 && (
                                     <div class="absolute inset-2 bg-red-600/20 border border-red-600/40 rounded-xl p-3 space-y-1 overflow-hidden">
-                                        <p class="text-[8px] font-black uppercase text-red-600 leading-tight">Seminar-møde</p>
+                                        <p class="text-[8px] font-black uppercase text-red-600 leading-tight">Seminar-mÃ¸de</p>
                                         <p class="text-[7px] text-white/40 leading-tight">CSS lokale 5.0.3</p>
                                     </div>
                                 )}
@@ -76,7 +76,7 @@ const hours = Array.from({ length: 14 }, (_, i) => i + 8); // 8:00 to 21:00
                         </div>
                     </div>
                 )) : (
-                    <p class="text-white/20 italic text-sm px-6">Ingen planlagte møder for masserne i øjeblikket.</p>
+                    <p class="text-white/20 italic text-sm px-6">Ingen planlagte mÃ¸der for masserne i Ã¸jeblikket.</p>
                 )}
             </div>
         </section>

@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
@@ -80,12 +80,12 @@ const skillsData = skillsEntry.data;
               {cvData.experience.map((item: any) => (
                 <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
                   <div class="item-head">
-                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} · {item.organization}</h3>
-                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} Â· {item.organization}</h3>
+                    <span class="text-[13px] text-dim">{item.location} Â· {item.period}</span>
                   </div>
                   <ul class="list-none p-0 m-0 mt-3 space-y-1">
                     {item.description.map((bullet: string) => (
-                      <li class="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-accent text-[14px] opacity-90">{bullet}</li>
+                      <li class="relative pl-3 before:content-['â€¢'] before:absolute before:left-0 before:text-accent text-[14px] opacity-90">{bullet}</li>
                     ))}
                   </ul>
                 </article>
@@ -101,8 +101,8 @@ const skillsData = skillsEntry.data;
               {cvData.education.map((item: any) => (
                 <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
                   <div class="item-head">
-                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} · {item.institution}</h3>
-                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} Â· {item.institution}</h3>
+                    <span class="text-[13px] text-dim">{item.location} Â· {item.period}</span>
                   </div>
                   {item.description && <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>}
                 </article>

@@ -1,5 +1,5 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -22,12 +22,12 @@ const resources = liveResources && liveResources.length > 0 ? liveResources : [
 ];
 ---
 
-<StudyGroupLayout title="Ressource-Hvælvingen" activePage="resources">
+<StudyGroupLayout title="Ressource-HvÃ¦lvingen" activePage="resources">
     <div class="space-y-32">
         <div class="space-y-4">
-            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Hvælvingen & <br/> <span class="text-red-600">Folkets Bibliotek</span></h2>
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">HvÃ¦lvingen & <br/> <span class="text-red-600">Folkets Bibliotek</span></h2>
             <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
-                Central opbevaring for kollektivets viden. Fra de store værker til de små noter – alt er her.
+                Central opbevaring for kollektivets viden. Fra de store vÃ¦rker til de smÃ¥ noter â€“ alt er her.
             </p>
         </div>
 
@@ -36,7 +36,7 @@ const resources = liveResources && liveResources.length > 0 ? liveResources : [
             <i class="fa-solid fa-magnifying-glass absolute left-8 top-1/2 -translate-y-1/2 text-white/20"></i>
             <input 
                 type="text" 
-                placeholder="Gennemsøg folkets bibliotek (PDF, artikler, noter)..." 
+                placeholder="GennemsÃ¸g folkets bibliotek (PDF, artikler, noter)..." 
                 class="w-full bg-white/[0.03] border border-white/10 rounded-[32px] pl-20 pr-8 py-6 text-white placeholder:text-white/20 focus:outline-none focus:border-red-600/50 transition-all"
             />
         </div>
@@ -54,7 +54,7 @@ const resources = liveResources && liveResources.length > 0 ? liveResources : [
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-white text-sm uppercase tracking-tight">{file.name}</h4>
-                                    <p class="text-[9px] text-white/20 font-black uppercase tracking-widest">{file.size} • {file.type}</p>
+                                    <p class="text-[9px] text-white/20 font-black uppercase tracking-widest">{file.size} â€¢ {file.type}</p>
                                 </div>
                             </div>
                             <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[8px] font-black uppercase tracking-widest text-red-600">
@@ -141,10 +141,10 @@ const resources = liveResources && liveResources.length > 0 ? liveResources : [
             </div>
         </section>
 
-        {/* Den Røde Bog (Reading List - Unified) */}
+        {/* Den RÃ¸de Bog (Reading List - Unified) */}
         <section class="space-y-16">
             <div class="flex items-center gap-6">
-                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Den Røde Bog <span class="text-white/40 text-sm ml-4">(Læseliste)</span></h3>
+                <h3 class="text-3xl font-black uppercase tracking-tighter italic text-red-600">Den RÃ¸de Bog <span class="text-white/40 text-sm ml-4">(LÃ¦seliste)</span></h3>
                 <div class="h-px flex-1 bg-white/5"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -164,7 +164,7 @@ const resources = liveResources && liveResources.length > 0 ? liveResources : [
                         <div class="flex flex-wrap gap-2 pt-6 border-t border-white/5">
                             {book.readers.map(reader => (
                                 <span class="px-3 py-1 bg-red-600/10 border border-red-600/20 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-600">
-                                    Læst af {reader}
+                                    LÃ¦st af {reader}
                                 </span>
                             ))}
                         </div>

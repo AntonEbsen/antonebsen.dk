@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 
 interface Props {
   lang: 'da' | 'en';
@@ -10,47 +10,47 @@ const { lang } = Astro.props;
 const t = {
   da: {
     title: "Om Antons AI",
-    subtitle: "En eksperimentel AI-økonom bygget med RAG og Gemini",
+    subtitle: "En eksperimentel AI-Ã¸konom bygget med RAG og Gemini",
     hero: {
       tag: "Projekt Showcase",
-      heading: "Mød Antons AI Assistent",
-      text: "Dette er ikke bare en chatbot. Det er en avanceret AI-agent designet til at analysere økonomiske data, læse dokumenter og forstå min fulde faglige profil. Bygget for at demonstrere potentialet i moderne AI."
+      heading: "MÃ¸d Antons AI Assistent",
+      text: "Dette er ikke bare en chatbot. Det er en avanceret AI-agent designet til at analysere Ã¸konomiske data, lÃ¦se dokumenter og forstÃ¥ min fulde faglige profil. Bygget for at demonstrere potentialet i moderne AI."
     },
     features: {
       rag: {
         icon: "fa-file-pdf",
         title: "Dokument Analyse (RAG)",
-        desc: "AI'en kan læse og forstå uploadede PDF'er (f.eks. forskningsartikler eller jobopslag) og bruge dem som kontekst i samtalen."
+        desc: "AI'en kan lÃ¦se og forstÃ¥ uploadede PDF'er (f.eks. forskningsartikler eller jobopslag) og bruge dem som kontekst i samtalen."
       },
       match: {
         icon: "fa-briefcase",
         title: "Job Matchmaker",
-        desc: "Indsæt et jobopslag, og AI'en agerer recruiter. Den analyserer match, finder huller i kompetencerne og skriver en målrettet pitch."
+        desc: "IndsÃ¦t et jobopslag, og AI'en agerer recruiter. Den analyserer match, finder huller i kompetencerne og skriver en mÃ¥lrettet pitch."
       },
       charts: {
         icon: "fa-chart-pie",
         title: "Interaktive Grafer",
-        desc: "Bed om at se en visualisering, og AI'en genererer live Chart.js grafer over kompetencer, erfaring eller økonomiske data."
+        desc: "Bed om at se en visualisering, og AI'en genererer live Chart.js grafer over kompetencer, erfaring eller Ã¸konomiske data."
       },
       sim: {
         icon: "fa-chart-line",
-        title: "Økonomi Simulator",
+        title: "Ã˜konomi Simulator",
         desc: "Bed AI'en om at simulere scenarier (f.eks. 'Simuler en recession'), og den genererer hypotetiske data og grafer for at visualisere effekten."
       },
       concierge: {
         icon: "fa-bell-concierge",
         title: "Kontekst-Bevidst Concierge",
-        desc: "AI'en ved hvilken side du er på. Hvis du browser mit CV, spørger den om min erfaring. På Portefølje-siden tilbyder den tekniske dyk ned i projekterne."
+        desc: "AI'en ved hvilken side du er pÃ¥. Hvis du browser mit CV, spÃ¸rger den om min erfaring. PÃ¥ PortefÃ¸lje-siden tilbyder den tekniske dyk ned i projekterne."
       },
       memory: {
         icon: "fa-clock-rotate-left",
         title: "Persistent Hukommelse",
-        desc: "Samtalen gemmes lokalt i din browser. Skift side, luk fanen eller kom tilbage senere – AI'en husker hele historikken og konteksten."
+        desc: "Samtalen gemmes lokalt i din browser. Skift side, luk fanen eller kom tilbage senere â€“ AI'en husker hele historikken og konteksten."
       },
       citations: {
         icon: "fa-book-bookmark",
         title: "Smart Kildeangivelse",
-        desc: "Ingen hallucinationer. Når AI'en bruger viden fra mine uploads (tese, noter, artikler), indsætter den en synlig kildehenvisning direkte i teksten."
+        desc: "Ingen hallucinationer. NÃ¥r AI'en bruger viden fra mine uploads (tese, noter, artikler), indsÃ¦tter den en synlig kildehenvisning direkte i teksten."
       },
       vision: {
 
@@ -66,7 +66,7 @@ const t = {
       personas: {
         icon: "fa-masks-theater",
         title: "Adaptive Personaer",
-        desc: "Skift mellem specifikke modes: Recruiter (biz fokus), Tech Lead (dybdegående), eller ELI5 (simpelt sprog)."
+        desc: "Skift mellem specifikke modes: Recruiter (biz fokus), Tech Lead (dybdegÃ¥ende), eller ELI5 (simpelt sprog)."
       }
     },
     tech: {
@@ -78,7 +78,7 @@ const t = {
         { name: "Vercel Edge", desc: "Serverless funktioner der sikrer hurtig responstid." }
       ]
     },
-    cta: "Prøv AI'en Nu"
+    cta: "PrÃ¸v AI'en Nu"
   },
   en: {
     title: "About Anton's AI",
@@ -117,7 +117,7 @@ const t = {
       memory: {
         icon: "fa-clock-rotate-left",
         title: "Persistent Memory",
-        desc: "The conversation is saved locally. Switch pages, close the tab, or return later – the AI remembers the full history and context."
+        desc: "The conversation is saved locally. Switch pages, close the tab, or return later â€“ the AI remembers the full history and context."
       },
       citations: {
         icon: "fa-book-bookmark",

@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
@@ -17,31 +17,31 @@ const isDa = lang === 'da';
 
 const t = {
   da: {
-    title: "Anton Meier Ebsen Jørgensen – Kompetencer",
-    desc: "Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning.",
-    heroTitle: "Værktøjer, metoder og det jeg leverer",
+    title: "Anton Meier Ebsen JÃ¸rgensen â€“ Kompetencer",
+    desc: "Kompetencer: vÃ¦rktÃ¸jer, metoder og arbejdsomrÃ¥der inden for makroÃ¸konomi, Ã¸konometri, data og undervisning.",
+    heroTitle: "VÃ¦rktÃ¸jer, metoder og det jeg leverer",
     heroText: "Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan, <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.",
-    btns: { core: "Kernekompetencer", tools: "Værktøjer", deliv: "Leverancer" },
+    btns: { core: "Kernekompetencer", tools: "VÃ¦rktÃ¸jer", deliv: "Leverancer" },
     quickTitle: "Hurtig oversigt",
-    quickList: ["Strukturerer data → model → output", "Bygger templates og workflows", "Formidler komplekse ting"],
+    quickList: ["Strukturerer data â†’ model â†’ output", "Bygger templates og workflows", "Formidler komplekse ting"],
     coreTitle: "Programmeringssprog & Metoder",
-    toolsTitle: "Værktøjs-matrix",
+    toolsTitle: "VÃ¦rktÃ¸js-matrix",
     delivTitle: "Typiske leverancer",
     delivs: [
       { title: "Templates & workflows", desc: "Excel-templates, standardiserede dashboards." },
       { title: "Analyse & rapportering", desc: "Reproducerbare analyser og figurer klar til rapport." }
     ],
     ctaTitle: "Har du et konkret behov?",
-    ctaText: "Skriv format + mål. Så foreslår jeg en struktur."
+    ctaText: "Skriv format + mÃ¥l. SÃ¥ foreslÃ¥r jeg en struktur."
   },
   en: {
-    title: "Anton Meier Ebsen Jørgensen – Competencies",
+    title: "Anton Meier Ebsen JÃ¸rgensen â€“ Competencies",
     desc: "Competencies: tools, methods, and focus areas in macroeconomics, econometrics, data, and teaching.",
     heroTitle: "Tools, Methods, and Deliverables",
     heroText: "Competencies in a format that's easy to use: <strong>what</strong> I can do, <strong>how</strong> I work, and <strong>what output</strong> you can expect.",
     btns: { core: "Core Competencies", tools: "Tools", deliv: "Deliverables" },
     quickTitle: "Quick Overview",
-    quickList: ["Structures data → model → output", "Builds templates and workflows", "Communicates complex concepts clearly"],
+    quickList: ["Structures data â†’ model â†’ output", "Builds templates and workflows", "Communicates complex concepts clearly"],
     coreTitle: "Programming Languages & Methods",
     toolsTitle: "Tool Matrix",
     delivTitle: "Typical Deliverables",
@@ -149,7 +149,7 @@ const toolSkills = skills?.filter(s => s.category === 'Tools') || [];
     {skills?.length === 0 && (
       <Section>
          <Card variant="glass" class="p-8 text-center text-dim bg-green-500/10 border-green-500/20">
-            <p>Skill Tree is empty. Add your skills in the dashboard to see them here. 🌱</p>
+            <p>Skill Tree is empty. Add your skills in the dashboard to see them here. ðŸŒ±</p>
         </Card>
       </Section>
     )}

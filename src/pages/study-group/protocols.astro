@@ -1,5 +1,5 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -26,7 +26,7 @@ const protocols = liveProtocols && liveProtocols.length > 0 ? liveProtocols.map(
         title: "Slaget om Metodeafsnittet",
         decisions: ["Vi bruger 'Synthetic Control Method' til hovedanalysen.", "Deadline for udkast flyttes til mandag."],
         action_points: [
-            { who: "Stalin", task: "Rense det store datasæt fra DST" },
+            { who: "Stalin", task: "Rense det store datasÃ¦t fra DST" },
             { who: "Mao", task: "Skrive litteraturgennemgang for AI-delen" },
             { who: "Che", task: "Finde kilder til institutionel teori" }
         ],
@@ -40,7 +40,7 @@ const protocols = liveProtocols && liveProtocols.length > 0 ? liveProtocols.map(
         <div class="space-y-4">
             <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase">Protokol- <br/> <span class="text-red-600">Arkivet</span></h2>
             <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
-                De historiske optegnelser fra krigsrådets møder. Her fastholdes de store linjer og hvem der bringer kaffen.
+                De historiske optegnelser fra krigsrÃ¥dets mÃ¸der. Her fastholdes de store linjer og hvem der bringer kaffen.
             </p>
         </div>
 
@@ -125,11 +125,11 @@ const protocols = liveProtocols && liveProtocols.length > 0 ? liveProtocols.map(
                          </div>
                      </div>
                      <div class="space-y-2">
-                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Beslutning (én per linje)</label>
+                         <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Beslutning (Ã©n per linje)</label>
                          <textarea id="p-decisions" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs"></textarea>
                      </div>
                      <div class="flex gap-4">
-                         <button id="save-protocol" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all">Arkivér Protokol</button>
+                         <button id="save-protocol" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all">ArkivÃ©r Protokol</button>
                          <button id="close-p-modal" class="px-8 bg-white/5 hover:bg-white/10 text-white/40 font-black uppercase tracking-widest rounded-2xl transition-all">Annuller</button>
                      </div>
                  </div>

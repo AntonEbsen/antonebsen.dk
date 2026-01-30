@@ -1,5 +1,5 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 export const prerender = false;
@@ -18,18 +18,18 @@ let { data: intel } = await supabase
 const intelList = intel || [];
 ---
 
-<StudyGroupLayout title="Krigsrådet" activePage="war-room">
+<StudyGroupLayout title="KrigsrÃ¥det" activePage="war-room">
     <div class="space-y-16">
         <div class="flex justify-between items-end">
             <div class="space-y-4">
-                <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">Krigs- <br/> <span class="text-red-600">rådet</span></h2>
+                <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">Krigs- <br/> <span class="text-red-600">rÃ¥det</span></h2>
                 <p class="text-white/40 text-lg max-w-lg leading-relaxed italic">
                     Visuel intelligens og strategisk koordination. Her arkiveres plots, ligninger og hemmelige dokumenter.
                 </p>
             </div>
             
             <label class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-glow-red cursor-pointer group">
-                Tilføj Intel +
+                TilfÃ¸j Intel +
                 <input type="file" id="intel-upload" class="hidden" accept="image/*" />
             </label>
         </div>
@@ -64,7 +64,7 @@ const intelList = intel || [];
              <div class="space-y-6">
                  <div class="space-y-2">
                      <label class="text-[10px] font-black uppercase tracking-widest text-white/40">Beskrivelse / Titel</label>
-                     <input type="text" id="intel-title" placeholder="Fx: Stata Plot - Vækstrate 2024" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
+                     <input type="text" id="intel-title" placeholder="Fx: Stata Plot - VÃ¦kstrate 2024" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs" />
                  </div>
                  <div class="flex gap-4">
                      <button id="confirm-upload" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 rounded-2xl transition-all shadow-glow-red">Gem Intel</button>
@@ -108,7 +108,7 @@ const intelList = intel || [];
             if (!selectedFile || !comradeId) return;
 
             confirmBtn.disabled = true;
-            confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Tilføjer...';
+            confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> TilfÃ¸jer...';
 
             const fileName = `${Date.now()}_${selectedFile.name}`;
             const filePath = `intel/${fileName}`;

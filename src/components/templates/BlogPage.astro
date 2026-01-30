@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Button from '@components/ui/Button.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
@@ -18,59 +18,59 @@ const isDa = lang === 'da';
 // UI Strings
 const t = {
   da: {
-    title: "Anton Meier Ebsen Jørgensen – Blog",
-    desc: "Blog med indlæg om faglige emner, træning og rejser.",
-    heroTitle: "Indlæg og noter",
-    heroText: "Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression) og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).",
+    title: "Anton Meier Ebsen JÃ¸rgensen â€“ Blog",
+    desc: "Blog med indlÃ¦g om faglige emner, trÃ¦ning og rejser.",
+    heroTitle: "IndlÃ¦g og noter",
+    heroText: "Tre spor: <strong>Fagligt</strong> (Ã¸konomi, data, modeller), <strong>TrÃ¦ning</strong> (struktur og progression) og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).",
     latestBtn: "Seneste",
     bucketBtn: "Bucket List",
     statusPre: "Viser",
-    statusPost: "indlæg.",
-    statusEmpty: "Ingen indlæg endnu.",
-    featuredTitle: "Faste Indlæg & Ressourcer",
-    latestTitle: "Seneste Indlæg",
+    statusPost: "indlÃ¦g.",
+    statusEmpty: "Ingen indlÃ¦g endnu.",
+    featuredTitle: "Faste IndlÃ¦g & Ressourcer",
+    latestTitle: "Seneste IndlÃ¦g",
     latestSub: "Direkte fra databasen.",
-    readMore: "Læs mere",
-    noPosts: "Ingen indlæg fundet. Tjek din database.",
-    ctaTitle: "Forslag til indlæg?",
-    ctaText: "Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.",
+    readMore: "LÃ¦s mere",
+    noPosts: "Ingen indlÃ¦g fundet. Tjek din database.",
+    ctaTitle: "Forslag til indlÃ¦g?",
+    ctaText: "Hvis du har et emne, du gerne vil have mig til at skrive om, sÃ¥ skriv endelig.",
     featured: [
       {
-        title: "Mit Træningsprogram (6-dages Split)",
-        tag: "Træning",
-        meta: "Komplet program · PPL",
-        desc: "Det fulde overblik over mine øvelser, sæt, tempo og fokusområder. Optimeret til progression.",
+        title: "Mit TrÃ¦ningsprogram (6-dages Split)",
+        tag: "TrÃ¦ning",
+        meta: "Komplet program Â· PPL",
+        desc: "Det fulde overblik over mine Ã¸velser, sÃ¦t, tempo og fokusomrÃ¥der. Optimeret til progression.",
         link: "/traeningsprogram",
         linkText: "Se programmet"
       },
       {
-        title: "Favoritbøger & Noter",
-        tag: "Læring",
-        meta: "Klassikere · Fagligt",
-        desc: "En kurateret liste over de bøger, der har formet min tankegang mest.",
+        title: "FavoritbÃ¸ger & Noter",
+        tag: "LÃ¦ring",
+        meta: "Klassikere Â· Fagligt",
+        desc: "En kurateret liste over de bÃ¸ger, der har formet min tankegang mest.",
         link: "/books",
-        linkText: "Åbn bibliotek"
+        linkText: "Ã…bn bibliotek"
       },
       {
-        title: "Øvelses-Fokus: Incline Press",
-        tag: "Træning",
-        meta: "Teknik · Data · Progression",
-        desc: "Hvorfor den øvre del af brystet er vigtig, og hvordan min styrke har rykket sig det sidste år.",
+        title: "Ã˜velses-Fokus: Incline Press",
+        tag: "TrÃ¦ning",
+        meta: "Teknik Â· Data Â· Progression",
+        desc: "Hvorfor den Ã¸vre del af brystet er vigtig, og hvordan min styrke har rykket sig det sidste Ã¥r.",
         link: "/da/exercises/incline-press", // Explicit DA link
-        linkText: "Læs dybdedykket"
+        linkText: "LÃ¦s dybdedykket"
       },
       {
         title: "Mine Favoritpodcasts",
         tag: "Inspiration",
-        meta: "Makro · Data · Humor",
-        desc: "En oversigt over de bedste kilder til viden og underholdning på farten.",
+        meta: "Makro Â· Data Â· Humor",
+        desc: "En oversigt over de bedste kilder til viden og underholdning pÃ¥ farten.",
         link: "/podcasts",
         linkText: "Se listen"
       }
     ]
   },
   en: {
-    title: "Anton Meier Ebsen Jørgensen – Blog",
+    title: "Anton Meier Ebsen JÃ¸rgensen â€“ Blog",
     desc: "Blog with posts about professional topics, training, and travel.",
     heroTitle: "Posts and Notes",
     heroText: "Three tracks: <strong>Professional</strong> (economics, data, models), <strong>Training</strong> (structure and progression) and <strong>Travel</strong> (hiking, routes, and practical experiences).",
@@ -90,7 +90,7 @@ const t = {
       {
         title: "My Training Program (6-day Split)",
         tag: "Training",
-        meta: "Full Program · PPL",
+        meta: "Full Program Â· PPL",
         desc: "A complete overview of my exercises, sets, tempo, and focus areas. Optimized for progression.",
         link: "/en/training-program",
         linkText: "View Program"
@@ -98,7 +98,7 @@ const t = {
       {
         title: "Favorite Books & Notes",
         tag: "Learning",
-        meta: "Classics · Professional",
+        meta: "Classics Â· Professional",
         desc: "A curated list of the books that have shaped my thinking the most.",
         link: "/en/books",
         linkText: "Open Library"
@@ -106,7 +106,7 @@ const t = {
       {
         title: "Exercise Focus: Incline Press",
         tag: "Training",
-        meta: "Technique · Data · Progression",
+        meta: "Technique Â· Data Â· Progression",
         desc: "Why the upper chest is important, and how my strength has progressed over the past year.",
         link: "/en/exercises/incline-press",
         linkText: "Read Deep Dive"
@@ -114,7 +114,7 @@ const t = {
       {
         title: "My Favorite Podcasts",
         tag: "Inspiration",
-        meta: "Macro · Data · Humor",
+        meta: "Macro Â· Data Â· Humor",
         desc: "An overview of the best sources for knowledge and entertainment on the go.",
         link: "/en/podcasts",
         linkText: "See List"

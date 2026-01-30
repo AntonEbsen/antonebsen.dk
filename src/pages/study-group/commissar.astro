@@ -1,14 +1,14 @@
----
-import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseBaseLayout.astro';
+﻿---
+import StudyGroupLayout from '../../layouts/study-group/StudyGroupBaseLayout.astro';
 
 export const prerender = false;
 ---
 
-<StudyGroupLayout title="Kommissæren" activePage="commissar">
+<StudyGroupLayout title="KommissÃ¦ren" activePage="commissar">
     <div class="max-w-4xl mx-auto h-[calc(100vh-12rem)] flex flex-col">
         {/* Header */}
         <div class="mb-12 space-y-4">
-            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">AI <br/> <span class="text-red-600">Kommissæren</span></h2>
+            <h2 class="text-6xl font-black italic tracking-tighter text-white uppercase leading-none">AI <br/> <span class="text-red-600">KommissÃ¦ren</span></h2>
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/20 rounded-full text-red-600 text-[10px] font-black uppercase tracking-widest">
                     <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
@@ -26,9 +26,9 @@ export const prerender = false;
             <div id="chat-messages" class="flex-1 overflow-y-auto p-12 space-y-8 scroll-smooth">
                 {/* Initial Message */}
                 <div class="flex flex-col items-start space-y-2 max-w-[80%]">
-                    <p class="text-[8px] font-black uppercase tracking-widest text-red-600">Kommissæren</p>
+                    <p class="text-[8px] font-black uppercase tracking-widest text-red-600">KommissÃ¦ren</p>
                     <div class="bg-red-600/10 border border-red-600/20 p-6 rounded-[32px] rounded-tl-none">
-                        <p class="text-sm text-white/90 leading-relaxed font-medium">Hvad er status på produktionen, kammerat? Kollektivet venter ikke på dem, der sløser.</p>
+                        <p class="text-sm text-white/90 leading-relaxed font-medium">Hvad er status pÃ¥ produktionen, kammerat? Kollektivet venter ikke pÃ¥ dem, der slÃ¸ser.</p>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@ export const prerender = false;
             } catch (err) {
                 console.error(err);
                 removeLoadingUI(loadingId);
-                addMessageToUI('commissar', "FEJL I FORBINDELSEN TIL HQ. KONTRAREVOLUTIONÆR AKTIVITET DETEKTERET.");
+                addMessageToUI('commissar', "FEJL I FORBINDELSEN TIL HQ. KONTRAREVOLUTIONÃ†R AKTIVITET DETEKTERET.");
             }
         }
 
@@ -107,7 +107,7 @@ export const prerender = false;
             
             const label = document.createElement('p');
             label.className = `text-[8px] font-black uppercase tracking-widest ${role === 'user' ? 'text-white/20' : 'text-red-600'}`;
-            label.textContent = role === 'user' ? 'Dig' : 'Kommissæren';
+            label.textContent = role === 'user' ? 'Dig' : 'KommissÃ¦ren';
 
             const box = document.createElement('div');
             box.className = `${role === 'user' ? 'bg-white/[0.05] border border-white/10' : 'bg-red-600/10 border border-red-600/20'} p-6 rounded-[32px] ${role === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'}`;
@@ -131,7 +131,7 @@ export const prerender = false;
             wrapper.id = id;
             wrapper.className = "flex flex-col items-start space-y-2";
             wrapper.innerHTML = `
-                <p class="text-[8px] font-black uppercase tracking-widest text-red-600">Kommissæren</p>
+                <p class="text-[8px] font-black uppercase tracking-widest text-red-600">KommissÃ¦ren</p>
                 <div class="bg-red-600/5 border border-white/5 p-4 rounded-full flex gap-2">
                     <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce"></span>
                     <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.15s]"></span>

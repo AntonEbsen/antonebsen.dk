@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -218,9 +218,9 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
             <div class="relative group">
                 <select id="fp-persona-select" class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none uppercase tracking-wide">
                     <option value="default" class="bg-neutral-900 text-white">STANDARD</option>
-                    <option value="recruiter" class="bg-neutral-900 text-white">💼 RECRUITER</option>
-                    <option value="tech" class="bg-neutral-900 text-white">💻 TECH LEAD</option>
-                    <option value="eli5" class="bg-neutral-900 text-white">👶 ELI5</option>
+                    <option value="recruiter" class="bg-neutral-900 text-white">ðŸ’¼ RECRUITER</option>
+                    <option value="tech" class="bg-neutral-900 text-white">ðŸ’» TECH LEAD</option>
+                    <option value="eli5" class="bg-neutral-900 text-white">ðŸ‘¶ ELI5</option>
                 </select>
                 <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
             </div>
@@ -399,21 +399,21 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
         recognition.interimResults = false;
 
         recognition.onstart = () => {
-            console.log("🎤 FP Voice recognition started");
+            console.log("ðŸŽ¤ FP Voice recognition started");
             voiceIndicator?.classList.remove('opacity-0');
             voiceIndicator?.classList.add('animate-pulse', 'border-red-500');
             voiceBtn?.classList.add('text-red-400');
         };
 
         recognition.onend = () => {
-             console.log("🎤 FP Voice recognition ended");
+             console.log("ðŸŽ¤ FP Voice recognition ended");
              voiceIndicator?.classList.add('opacity-0');
              voiceIndicator?.classList.remove('animate-pulse', 'border-red-500');
              voiceBtn?.classList.remove('text-red-400');
         };
 
         recognition.onerror = (event: any) => {
-            console.error("🎤 FP Voice error:", event.error);
+            console.error("ðŸŽ¤ FP Voice error:", event.error);
             voiceIndicator?.classList.add('opacity-0');
             voiceBtn?.classList.remove('text-red-400');
             if (event.error === 'not-allowed') {
@@ -423,13 +423,13 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
 
         recognition.onresult = (event: any) => {
             const transcript = event.results[0][0].transcript;
-            console.log("🎤 FP Transcript:", transcript);
+            console.log("ðŸŽ¤ FP Transcript:", transcript);
             input.value = transcript;
             input.focus();
         };
 
         voiceBtn?.addEventListener('click', () => {
-            console.log("🎤 FP Mic button clicked");
+            console.log("ðŸŽ¤ FP Mic button clicked");
             try {
                 recognition.start();
             } catch (e) {
@@ -503,7 +503,7 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
         if (!res.ok) {
            // Handle error JSON
            let data = await res.json();
-           addMessage("⚠️ " + (data.message || "Error"), 'ai', false, persona);
+           addMessage("âš ï¸ " + (data.message || "Error"), 'ai', false, persona);
            return;
         }
 
@@ -542,7 +542,7 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
       } catch (err: any) {
         removeTyping();
         console.error(err);
-        addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
+        addMessage(`âš ï¸ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
       }
     });
 
@@ -727,9 +727,9 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
       // Map personas to titles
       const titles: {[key: string]: string} = {
             'default': 'AI Analysis',
-            'recruiter': '💼 Recruiter Mode',
-            'tech': '💻 Tech Lead Mode',
-            'eli5': '👶 ELI5 Mode'
+            'recruiter': 'ðŸ’¼ Recruiter Mode',
+            'tech': 'ðŸ’» Tech Lead Mode',
+            'eli5': 'ðŸ‘¶ ELI5 Mode'
       };
       const displayTitle = titles[persona] || titles['default'];
 
@@ -759,7 +759,7 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
         
         const safeText = encodeURIComponent(text);
         actionsDiv.innerHTML = `
-           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
+           <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="LÃ¦s hÃ¸jt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
               <i class="fa-solid fa-volume-high text-xs"></i>
            </button>
         `;
@@ -802,18 +802,18 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping it simple/safe as per ori
             <i class="fa-solid fa-microchip text-lg"></i>
           </div>
           <div class="bg-[rgba(255,255,255,0.05)] border border-accent/20 p-4 rounded-2xl rounded-tl-none flex items-center">
-            <span id="typing-text" class="text-xs font-mono text-accent tracking-wider">⚡ Initializing Quantum Core...</span>
+            <span id="typing-text" class="text-xs font-mono text-accent tracking-wider">âš¡ Initializing Quantum Core...</span>
           </div>
       `;
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
 
       const states = [
-          "⚡ Initializing Quantum Core...",
-          "🌪️ Reading Context & Metadata...",
-          "📚 Searching Knowledge Base...",
-          "🧠 Analyzing Economic Models...",
-          "✨ Generating Response..."
+          "âš¡ Initializing Quantum Core...",
+          "ðŸŒªï¸ Reading Context & Metadata...",
+          "ðŸ“š Searching Knowledge Base...",
+          "ðŸ§  Analyzing Economic Models...",
+          "âœ¨ Generating Response..."
       ];
       
       let stateIdx = 0;

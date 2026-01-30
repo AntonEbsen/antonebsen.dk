@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Button from '@components/ui/Button.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
@@ -18,35 +18,35 @@ const isDa = lang === 'da';
 // UI Strings
 const t = {
   da: {
-    title: "Favoritbøger – Anton Meier Ebsen Jørgensen",
-    desc: "En kurateret liste med mine favoritbøger – klassikere, faglige bøger og bøger jeg vender tilbage til.",
-    eyebrow: "Om mig · Læseliste",
-    heroTitle: "Mine favoritbøger",
-    heroText: "En kurateret liste med bøger jeg har fået mest ud af — enten fordi de har formet min måde at tænke på, eller fordi jeg vender tilbage til dem igen og igen.",
+    title: "FavoritbÃ¸ger â€“ Anton Meier Ebsen JÃ¸rgensen",
+    desc: "En kurateret liste med mine favoritbÃ¸ger â€“ klassikere, faglige bÃ¸ger og bÃ¸ger jeg vender tilbage til.",
+    eyebrow: "Om mig Â· LÃ¦seliste",
+    heroTitle: "Mine favoritbÃ¸ger",
+    heroText: "En kurateret liste med bÃ¸ger jeg har fÃ¥et mest ud af â€” enten fordi de har formet min mÃ¥de at tÃ¦nke pÃ¥, eller fordi jeg vender tilbage til dem igen og igen.",
     categories: ["Klassikere", "Fagligt", "Biografier", "Tro & etik", "Sprog & skrivning"],
     listBtn: "Se listen",
     recommendBtn: "Anbefal en bog",
     usageTitle: "Hvordan jeg bruger listen",
-    usageText1: "Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.",
-    usageText2: "Tip: Tilføj gerne årstal og noter — det gør listen mere personlig.",
+    usageText1: "Jeg opdaterer lÃ¸bende. Nogle er â€œmust-readsâ€, andre er bare bÃ¸ger der ramte et tidspunkt i livet.",
+    usageText2: "Tip: TilfÃ¸j gerne Ã¥rstal og noter â€” det gÃ¸r listen mere personlig.",
     listTitle: "Favoritter (Live DB)",
     listSub: "Hentet direkte fra \"Living Library\" databasen.",
     empty: "Biblioteket er tomt.",
     ctaTitle: "Anbefal mig en bog",
-    ctaText: "Send gerne en mail hvis du har forslag til spændende læsning."
+    ctaText: "Send gerne en mail hvis du har forslag til spÃ¦ndende lÃ¦sning."
   },
   en: {
-    title: "Favorite Books – Anton Meier Ebsen Jørgensen",
-    desc: "A curated list of my favorite books – classics, professional books, and books I return to.",
-    eyebrow: "About Me · Reading List",
+    title: "Favorite Books â€“ Anton Meier Ebsen JÃ¸rgensen",
+    desc: "A curated list of my favorite books â€“ classics, professional books, and books I return to.",
+    eyebrow: "About Me Â· Reading List",
     heroTitle: "My Favorite Books",
-    heroText: "A curated list of books that I have gotten the most out of — either because they shaped my thinking, or because I return to them again and again.",
+    heroText: "A curated list of books that I have gotten the most out of â€” either because they shaped my thinking, or because I return to them again and again.",
     categories: ["Classics", "Professional", "Biographies", "Faith & Ethics", "Language & Writing"],
     listBtn: "See List",
     recommendBtn: "Recommend a Book",
     usageTitle: "How I use this list",
     usageText1: "I update this regularly. Some are 'must-reads', others just hit right at a certain time in life.",
-    usageText2: "Tip: Add years and notes — it makes the list more personalized.",
+    usageText2: "Tip: Add years and notes â€” it makes the list more personalized.",
     listTitle: "Favorites (Live DB)",
     listSub: "Fetched directly from the \"Living Library\" database.",
     empty: "The library is empty.",
@@ -150,7 +150,7 @@ if (error || !books) books = [];
                <p class="text-dim col-span-full text-center py-12">{content.empty}</p>
            ) : (
              books.map((book: any) => {
-                const ratingStars = '★'.repeat(book.rating || 0) + '☆'.repeat(5 - (book.rating || 0));
+                const ratingStars = 'â˜…'.repeat(book.rating || 0) + 'â˜†'.repeat(5 - (book.rating || 0));
                 
                 return (
                  <div class="group relative flex flex-col gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-black/20">

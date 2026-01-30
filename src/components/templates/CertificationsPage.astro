@@ -1,5 +1,5 @@
----
-import Layout from '@layouts/BaseBaseBaseLayout.astro';
+﻿---
+import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
@@ -130,7 +130,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
                   <Pill variant="accent">Python</Pill>
                 </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
                   {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> {content.btnProof}</Button>}
@@ -155,7 +155,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
                   <Pill variant="accent">MATLAB</Pill>
                 </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
                   {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
@@ -180,7 +180,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
                   <Pill variant="accent">SAS</Pill>
                 </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
                   {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
@@ -205,7 +205,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
                   <Pill variant="accent">Formidling</Pill>
                 </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
                   {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
@@ -228,7 +228,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                       <h3 class="font-bold text-base leading-tight">{c.name}</h3>
                       <Pill variant="accent">{c.category}</Pill>
                     </div>
-                    <p class="text-xs text-dim mb-2">{c.issuer} · {c.year}</p>
+                    <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                     <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                     <div class="flex flex-wrap gap-2 mt-auto">
                       {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
