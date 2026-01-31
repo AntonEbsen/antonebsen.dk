@@ -14,6 +14,7 @@ export const ui = {
         'nav.referencer': 'Referencer',
         'nav.faq': 'FAQ',
         'nav.blog': 'Blog',
+        'nav.lab': 'Forsknings-lab',
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
@@ -31,6 +32,7 @@ export const ui = {
         'nav.referencer': 'Testimonials',
         'nav.faq': 'FAQ',
         'nav.blog': 'Blog',
+        'nav.lab': 'Research Lab',
         'nav.contact': 'Contact',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
@@ -89,6 +91,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Case: ECB Taylor Rules', url: '/projects/ecb-taylor-rules' },
                 { label: 'Case: Fremtidens monetære system', url: '/projects/future-monetary-system' },
                 { label: 'Case: Valutakursdynamik', url: '/projects/exchange-rate-dynamics' },
+                { label: 'Forsknings-lab', url: '/research/lab/index.html', external: true },
                 { label: 'API Protokol', url: '/api-docs' },
                 { label: 'Sundhedsprotokol', url: '/health' },
                 { label: 'Om Antons AI', url: '/ai-project' },
@@ -146,6 +149,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Case: ECB Taylor Rules', url: '/en/projects/ecb-taylor-rules' },
                 { label: 'Case: Future of Monetary System', url: '/en/projects/future-monetary-system' },
                 { label: 'Case: Exchange Rate Dynamics', url: '/en/projects/exchange-rate-dynamics' },
+                { label: 'Research Lab', url: '/research/lab/index.html', external: true },
                 { label: 'API Protocol', url: '/en/api-docs' },
                 { label: 'Health Protocol', url: '/en/health' },
                 { label: "About Anton's AI", url: '/en/ai-project' },
