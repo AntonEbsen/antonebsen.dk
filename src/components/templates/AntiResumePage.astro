@@ -1,0 +1,143 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Anti-CV | Anton Meier Ebsen Jørgensen",
+    description: "En liste over mine fejl, afslag og lærdomme – fordi succes er bygget på fundamentet af fiaskoer.",
+    heroTitle: "Anti-CV",
+    heroSubtitle: "Alt det, du ikke ser på LinkedIn.",
+    heroText: "Inspireret af 'Stanford CV of Failures'. Dette er en optegnelse over de afslag, fejlslagne projekter og omveje, der har formet min professionelle profil. Det minder mig om, at resiliens er den vigtigste kompetence.",
+    failureCategories: [
+      {
+        title: "Akademiske 'Near Misses'",
+        items: [
+          { year: "2023", title: "Speciale-pitch afslag", desc: "Første pitch til samarbejdspartner blev afvist pga. for bredt fokus.", lesson: "Skær ind til benet. En skarp vinkel slår en bred ambition." },
+          { year: "2021", title: "Eksamens-skuffelse", desc: "Fik en lavere karakter end forventet i et nøglefag i økonometri.", lesson: "Antag intet. Selv de stærkeste intuitioner skal underbygges af stringente tests." }
+        ]
+      },
+      {
+        title: "Professionelle Afslag",
+        items: [
+          { year: "2022", title: "15+ Rejsebrev/Ansøgninger", desc: "Blev ikke indkaldt til samtale hos flere top-tier konsulenthuse.", lesson: "Match din energi med markedets behov. Standardiserede ansøgninger virker aldrig." },
+          { year: "2020", title: "Første Startup-forsøg", desc: "Byggede en platform uden at validere markedet først. Ingen brugere.", lesson: "Byg ikke i et vakuum. Brugerfeedback er det mest værdifulde data." }
+        ]
+      }
+    ],
+    quote: "Det er ikke antallet af gange du falder, men antallet af gange du rejser dig, der definerer din succes."
+  },
+  en: {
+    title: "Anti-Resume | Anton Meier Ebsen Jørgensen",
+    description: "A list of my failures, rejections, and lessons learned – because success is built on a foundation of failures.",
+    heroTitle: "The Anti-Resume",
+    heroSubtitle: "Everything you don't see on LinkedIn.",
+    heroText: "Inspired by the 'Stanford CV of Failures'. This is a record of the rejections, failed projects, and detours that have shaped my professional profile. It serves as a reminder that resilience is the ultimate skill.",
+    failureCategories: [
+      {
+        title: "Academic 'Near Misses'",
+        items: [
+          { year: "2023", title: "Thesis Pitch Rejection", desc: "First pitch to a partner was rejected due to being too broad.", lesson: "Cut to the chase. A sharp angle beats a broad ambition every time." },
+          { year: "2021", title: "Exam Disappointment", desc: "Received a lower grade than expected in a key econometrics course.", lesson: "Assume nothing. Even the strongest intuition must be backed by rigorous testing." }
+        ]
+      },
+      {
+        title: "Professional Rejections",
+        items: [
+          { year: "2022", title: "15+ Application Rejections", desc: "Zero interviews from several top-tier consulting firms.", lesson: "Match your energy with market needs. Standardized applications never work." },
+          { year: "2020", title: "First Startup Attempt", desc: "Built a platform without validating the market. Zero users.", lesson: "Don't build in a vacuum. User feedback is the most valuable data." }
+        ]
+      }
+    ],
+    quote: "It's not how many times you fall, but how many times you get back up that defines your success."
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-24 animate-on-scroll">
+      <div class="max-w-3xl">
+        <h1 class="text-6xl md:text-8xl font-black mb-4 leading-none tracking-tighter uppercase">
+          {t.heroTitle}<span class="text-accent">_</span>
+        </h1>
+        <p class="text-2xl font-mono text-accent mb-8">{t.heroSubtitle}</p>
+        <p class="text-xl text-dim leading-relaxed border-l-2 border-white/10 pl-6 italic">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- Categories -->
+    <div class="space-y-32">
+       {t.failureCategories.map((category, catIdx) => (
+         <Section class="animate-on-scroll">
+            <SectionHeading class="mb-12">{category.title}</SectionHeading>
+            <div class="grid grid-cols-1 gap-8">
+               {category.items.map((item, itemIdx) => (
+                 <Card variant="bordered" class="p-8 md:p-12 hover:bg-white/[0.01] transition-all relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-8 text-8xl font-black text-white/[0.02] pointer-events-none group-hover:text-accent/[0.05] transition-colors">
+                       {item.year}
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                       <div class="md:w-1/3">
+                          <Pill variant="default" class="mb-4 bg-white/5 border-white/10 text-dim">
+                             {item.year}
+                          </Pill>
+                          <h3 class="text-2xl font-bold text-white">{item.title}</h3>
+                       </div>
+                       
+                       <div class="md:w-2/3 space-y-6">
+                          <div>
+                             <span class="text-[10px] uppercase font-bold text-dim tracking-widest block mb-2">The Event</span>
+                             <p class="text-dim leading-relaxed">{item.desc}</p>
+                          </div>
+                          <div class="p-6 bg-accent/[0.03] border border-accent/10 rounded-2xl">
+                             <span class="text-[10px] uppercase font-bold text-accent tracking-widest block mb-2">Lesson Learned</span>
+                             <p class="text-white font-medium leading-relaxed italic">
+                                "{item.lesson}"
+                             </p>
+                          </div>
+                       </div>
+                    </div>
+                 </Card>
+               ))}
+            </div>
+         </Section>
+       ))}
+    </div>
+
+    <!-- Conclusion Post-it Style -->
+    <Section class="mt-40 animate-on-scroll">
+       <div class="max-w-xl mx-auto">
+          <Card variant="glass" class="p-12 bg-accent/10 border-accent/20 rotate-1 shadow-2xl relative">
+             <div class="absolute -top-4 -left-4 w-12 h-12 bg-accent/20 blur-xl"></div>
+             <i class="fa-solid fa-quote-left text-4xl text-accent mb-8 opacity-40"></i>
+             <p class="text-2xl font-bold text-white leading-tight mb-8">
+                {t.quote}
+             </p>
+             <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                   <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <span class="text-xs font-mono text-accent uppercase tracking-widest">Resilience over Perfection</span>
+             </div>
+          </Card>
+       </div>
+    </Section>
+  </main>
+</Layout>

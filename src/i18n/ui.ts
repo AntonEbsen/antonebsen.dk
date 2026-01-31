@@ -63,7 +63,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Hvad laver jeg nu?', url: '/now' },
                 { label: 'Værdier & Etik', url: '/values' },
                 { label: 'Personlighedsprofil', url: '/personality' },
-                { label: 'SWOT Analyse', url: '/swot' }
+                { label: 'SWOT Analyse', url: '/swot' },
+                { label: 'Anti-CV', url: '/anti-resume' }
             ]
         },
         {
@@ -109,7 +110,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'What I\'m doing now', url: '/en/now' },
                 { label: 'Values & Ethics', url: '/en/values' },
                 { label: 'Personality Profile', url: '/en/personality' },
-                { label: 'Strategic SWOT', url: '/en/swot' }
+                { label: 'Strategic SWOT', url: '/en/swot' },
+                { label: 'Anti-Resume', url: '/en/anti-resume' }
             ]
         },
         {
