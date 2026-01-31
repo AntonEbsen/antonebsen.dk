@@ -9,6 +9,7 @@ import '@styles/styles.css';
 import '@styles/themes.css';
 import '@fontsource-variable/inter';
 import { ClientRouter } from 'astro:transitions';
+import  SpeedInsights  from "@vercel/speed-insights/astro"
 
 interface Props {
   title: string;
@@ -28,6 +29,7 @@ const lang = getLangFromUrl(Astro.url);
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
   <ClientRouter />
+  <SpeedInsights />
   
   <!-- Fonts -->
   <!-- Fonts -->
