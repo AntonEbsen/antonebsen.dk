@@ -27,28 +27,148 @@ const lang = getLangFromUrl(Astro.url);
 <!DOCTYPE html>
 <html lang={lang}>
 <head>
-  <!-- 1. Absolute highest priority: Theme Detection (Inline to prevent FOUC) -->
+  <!-- 1. CRITICAL CSS: Inline everything needed for first paint -->
   <style is:inline>
-    /* Instant core variables to prevent white flash and layout shifts */
-    :root { 
-      --bg: #050505; 
-      --text: #f2f2f0; 
+    /* === CSS VARIABLES === */
+    :root {
+      /* BACKGROUNDS */
+      --bg: #050505;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1a1505 0%, #050505 60%);
+      --depth-bg: radial-gradient(circle at 60% -20%, #1c1810 0%, #050505 50%);
+      
+      /* TEXT */
+      --text: #f2f2f0;
+      --text-dim: #d4d4d8;
+      --muted: rgba(161, 161, 170, 0.4);
+      
+      /* ACCENT: GOLD */
+      --accent: #D4AF37;
+      --accent-light: #F4C430;
+      --accent-soft: rgba(212, 175, 55, 0.15);
+      --accent-glow: 0 0 25px rgba(212, 175, 55, 0.3);
+      
+      /* COMPONENTS */
+      --nav: rgba(5, 5, 5, 0.85);
+      --navHover: rgba(255, 255, 255, 0.06);
+      
+      /* GLASS / BORDERS */
+      --glass: rgba(15, 15, 20, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-hover: rgba(212, 175, 55, 0.5);
+      
+      --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+      --radius: 16px;
+      
+      /* TYPOGRAPHY */
       --font-main: "Inter", system-ui, sans-serif;
+      --h1-size: clamp(48px, 6vw, 76px);
+      --h2-size: clamp(28px, 4vw, 42px);
+      --body-size: 16px;
+      --lh-body: 1.7;
+      --ls-heading: -0.02em;
     }
-    html { background-color: var(--bg); color: var(--text); font-family: var(--font-main); transition: none !important; }
-    body { background-color: inherit !important; margin: 0; }
     
-    /* Specific theme solid background colors for instant paint */
-    html.theme-lent { --bg: #0d0a14; }
-    html.theme-easter { --bg: #0a0f0e; }
-    html.theme-ascension { --bg: #0a0c14; }
-    html.theme-pentecost { --bg: #0f0a0a; }
-    html.theme-corpus { --bg: #0a0a05; }
-    html.theme-advent { --bg: #050810; }
-    html.theme-camino { --bg: #f6fff8; --text: #123026; }
+    /* === RESET & BASE STYLES === */
+    * { box-sizing: border-box; }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    
+    html {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      transition: none !important;
+    }
+    
+    body {
+      font-family: var(--font-main);
+      font-size: var(--body-size);
+      line-height: var(--lh-body);
+      background: var(--depth-bg);
+      background-attachment: fixed;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    h1, h2, h3 {
+      color: var(--text);
+      margin: 0 0 0.5em;
+      font-weight: 800;
+    }
+    
+    /* === THEME STYLES === */
+    .theme-lent {
+      --bg: #0d0a14;
+      --nav: rgba(20, 15, 30, 0.9);
+      --accent: #9333ea;
+      --depth-bg: radial-gradient(circle at 50% -20%, #171026 0%, #0d0a14 100%);
+    }
+    
+    .theme-easter {
+      --bg: #0a0f0e;
+      --nav: rgba(15, 25, 20, 0.9);
+      --accent: #14b8a6;
+      --depth-bg: radial-gradient(circle at 50% -20%, #152520 0%, #0a0f0e 100%);
+    }
+    
+    .theme-ascension {
+      --bg: #0a0c14;
+      --nav: rgba(15, 18, 25, 0.9);
+      --accent: #3b82f6;
+      --depth-bg: radial-gradient(circle at 50% -20%, #141a2b 0%, #0a0c14 100%);
+    }
+    
+    .theme-pentecost {
+      --bg: #0f0a0a;
+      --nav: rgba(25, 15, 15, 0.9);
+      --accent: #ef4444;
+      --depth-bg: radial-gradient(circle at 50% -20%, #2b1515 0%, #0f0a0a 100%);
+    }
+    
+    .theme-corpus {
+      --bg: #0a0a05;
+      --nav: rgba(25, 25, 15, 0.9);
+      --accent: #f59e0b;
+      --depth-bg: radial-gradient(circle at 50% -20%, #2b2b15 0%, #0a0a05 100%);
+    }
+    
+    .theme-advent {
+      --bg: #050810;
+      --nav: rgba(10, 15, 30, 0.9);
+      --accent: #314480;
+      --depth-bg: radial-gradient(circle at 50% -20%, #101a35 0%, #050810 100%);
+    }
+    
+    .theme-camino {
+      --bg: #f6fff8;
+      --nav: #123026;
+      --navHover: #1a4537;
+      --accent: #15803d;
+      --season-bar: linear-gradient(90deg, rgba(21, 128, 61, 0.95), rgba(255, 255, 255, 0.15));
+    }
   </style>
   <script is:inline>
-    function applyTheme() {
+    // Theme detection runs immediately before any content renders
+    (function applyTheme() {
       const doc = document.documentElement;
       const override = localStorage.getItem("themeOverride");
       doc.classList.remove("theme-lent", "theme-easter", "theme-ascension", "theme-pentecost", "theme-corpus", "theme-advent", "theme-camino");
@@ -77,9 +197,15 @@ const lang = getLangFromUrl(Astro.url);
       else if (inRangeFlags(today, adventStart, atNoon(new Date(y, 11, 24)))) theme = "theme-advent";
       else if (inRangeFlags(today, addDays(stJames, -1), addDays(stJames, 1))) theme = "theme-camino";
       if (theme) doc.classList.add(theme);
-    }
-    applyTheme();
-    document.addEventListener('astro:after-swap', applyTheme);
+    })();
+    
+    // Re-apply theme after page transitions
+    document.addEventListener('astro:after-swap', function() {
+      const doc = document.documentElement;
+      const override = localStorage.getItem("themeOverride");
+      doc.classList.remove("theme-lent", "theme-easter", "theme-ascension", "theme-pentecost", "theme-corpus", "theme-advent", "theme-camino");
+      if (override && override !== "auto") { doc.classList.add(override); }
+    });
   </script>
 
   <!-- 2. SEO and other metadata -->
