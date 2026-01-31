@@ -1,0 +1,51 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Global Financial Cycle & spillovers",
+  subtitle: "Analyse af overførselseffekter fra amerikansk pengepolitik via en strukturel VAR-model (2001Q4-2023Q3).",
+  executiveSummary: "Dette speciale analyserer effekterne af pengepolitiske spillovers fra USA til den globale økonomi. Ved hjælp af en rekursiv VAR-model, inspireret af Rey (2013), undersøges transmissionen af chok via global risiko (VIX) og europæiske bankers gearing. Resultaterne bekræfter den fortsatte eksistens af disse spillovers, men påpeger en betydelig reduktion i omfanget under COVID-19-perioden, sandsynligvis grundet forbedret regulering.",
+  researchQuestions: [
+    "Hvordan påvirker et chok til den amerikanske 'federal funds rate' den globale risiko målt ved VIX?",
+    "Hvordan påvirker global risiko den globale finansielle cyklus (gearing, kreditvækst og grænseoverskridende strømme)?",
+    "Hvordan adskiller nutidige spillover-dynamikker sig fra resultaterne i Rey (2013) for perioden 1990-2012?"
+  ],
+  methodology: {
+    model: "Strukturel VAR (Vector Autoregression) med rekursiv identifikation (Cholesky-dekomponering).",
+    strategy: "System med syv variabler inklusiv amerikanske renter, globale risikoindeks og kreditstrømsindikatorer.",
+    data: "Kvartalsvis frekvens dækkende perioden fra 2001Q4 til 2023Q3.",
+    estimation: "Estimering af 'Impulse Response Functions' (IRF'er) på tværs af forskellige delstikprøver for at analysere strukturelle skift."
+  },
+  keyFindings: [
+    "Fortsat eksistens af amerikanske pengepolitiske spillovers, omend med lavere styrke i COVID-19-perioden.",
+    "Amerikansk pengepolitisk lempelse mindsker global risiko, hvilket efterfølgende øger europæiske bankers gearing.",
+    "Et strukturelt brud i risikokanalen under COVID-19: lavere risiko resulterede i lavere global kredit, hvilket tyder på succesfuld makroprudentiel regulering.",
+    "Øget regulering siden den globale finanskrise har dæmpet udbredelsen af overdreven risikovillighed."
+  ],
+  policyRelevance: [
+    "Understreger den vedvarende rolle for Federal Reserve som en 'global centralbank', der påvirker international finansiel stabilitet.",
+    "Antyder at makroprudentielle tiltag implementeret siden 2016 (Saft, 2016) har været effektive til at forhindre, at COVID-19-pandemien eskalerede til en global finanskrise.",
+    "Betoner behovet for fortsat overvågning af bankgearing fra internationale tilsynsmyndigheder på trods af generelle tendenser til 'deleveraging'."
+  ],
+  dataTools: {
+    sources: "FRED (Federal Reserve Economic Data), BIS (Bank for International Settlements) og Refinitiv Eikon.",
+    software: "Python (til IRF-estimering), SAS og GAMS til strukturel modellering."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelorprojekt, Københavns Universitet. JEL: E52, E58, F02, F33, G15.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
+  },
+  ui: {
+    methodology: "Metodologi",
+    findings: "Hovedresultater",
+    relevance: "Politisk Relevans",
+    dataTools: "Data & Værktøjer",
+    download: "Dokumentation",
+    citation: "Foreslået Citering",
+    execSummary: "Executive Summary",
+    researchQuestions: "Forskningsspørgsmål"
+  }
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

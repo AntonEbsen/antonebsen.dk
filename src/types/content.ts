@@ -82,6 +82,7 @@ export interface CaseItem {
     problem?: string;
     desc?: string;
     pill?: string;
+    lang?: 'da' | 'en';
 }
 
 export interface VideoCV {

@@ -1,0 +1,51 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Global Financial Cycle & spillovers",
+  subtitle: "Analysis of U.S. monetary policy spillovers using a structural VAR framework (2001Q4-2023Q3).",
+  executiveSummary: "This thesis analyzes the effects of monetary policy spillovers from the US on the global economy. Using a recursive VAR framework influenced by Rey (2013), the study examines the transmission of shocks via global risk (VIX) and the leverage of European banks. The findings confirm the continued existence of these spillovers but highlight a significant reduction in magnitude during the COVID-19 period, likely attributable to enhanced regulatory environments.",
+  researchQuestions: [
+    "How does a shock to the US effective federal funds rate impact global risk as measured by the VIX?",
+    "How does global risk impact the global financial cycle (leverage, credit growth, and cross-border flows)?",
+    "How do current spillover dynamics differ from the results found in Rey (2013) for the 1990-2012 period?"
+  ],
+  methodology: {
+    model: "Structural VAR (Vector Autoregression) with recursive identification (Cholesky decomposition).",
+    strategy: "Seven-variable system including US policy rates, global risk indices, and credit flow indicators.",
+    data: "Quarterly frequency covering the period from 2001Q4 to 2023Q3.",
+    estimation: "Estimation of Impulse Response Functions (IRFs) across different subsamples to analyze structural shifts."
+  },
+  keyFindings: [
+    "Continued existence of US monetary spillovers, though with lower magnitude in the COVID-19 period.",
+    "US monetary loosening found to decrease global risk, subsequently increasing European bank leverage.",
+    "A structural break in the risk-taking channel during COVID-19: lower risk resulted in lower global domestic credit, suggesting successful macroprudential policy intervention.",
+    "Enhanced regulations since the Global Financial Crisis have mitigated excessive risk-taking propagation."
+  ],
+  policyRelevance: [
+    "Highlights the persistent role of the Federal Reserve as a 'global central bank' influencing international financial stability.",
+    "Suggests that macroprudential policies implemented since 2016 (Saft, 2016) have been effective in preventing the COVID-19 pandemic from escalating into a global financial crisis.",
+    "Emphasizes the need for continued monitoring of bank leverage by international regulators despite general deleveraging trends."
+  ],
+  dataTools: {
+    sources: "FRED (Federal Reserve Economic Data), BIS (Bank for International Settlements), and Refinitiv Eikon.",
+    software: "Python (for IRF estimation), SAS, and GAMS for structural modeling."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelor Thesis, University of Copenhagen. JEL: E52, E58, F02, F33, G15.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
+  },
+  ui: {
+    methodology: "Methodology",
+    findings: "Key Findings",
+    relevance: "Policy Relevance",
+    dataTools: "Data & Tools",
+    download: "Documentation",
+    citation: "Suggested Citation",
+    execSummary: "Executive Summary",
+    researchQuestions: "Research Questions"
+  }
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

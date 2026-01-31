@@ -16,6 +16,7 @@ interface Props {
     tools: string;
     report: string;
     code: string;
+    viewStudy: string;
   };
 }
 
@@ -75,6 +76,7 @@ const { data: c, labels } = Astro.props;
     </div>
 
     <div class="flex flex-wrap gap-3 mt-4">
+    {c.id === 'case-gfc' && <Button href={Astro.props.data.id === 'case-gfc' ? (Astro.props.data.lang === 'en' ? '/en/projects/global-financial-cycle' : '/projects/global-financial-cycle') : '#'} variant="accent">{labels.viewStudy}</Button>}
     <Button href="#" variant="ghost">{labels.report}</Button>
     <Button href="#" variant="ghost">{labels.code}</Button>
     </div>

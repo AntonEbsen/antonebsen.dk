@@ -1,0 +1,194 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+  project: {
+    title: string;
+    subtitle: string;
+    executiveSummary: string;
+    researchQuestions: string[];
+    methodology: {
+        model: string;
+        strategy: string;
+        data: string;
+        estimation: string;
+    };
+    keyFindings: string[];
+    policyRelevance: string[];
+    dataTools: {
+        sources: string;
+        software: string;
+    };
+    citation: {
+        text: string;
+        pdfUrl: string;
+    };
+    ui: {
+        methodology: string;
+        findings: string;
+        relevance: string;
+        dataTools: string;
+        download: string;
+        citation: string;
+        execSummary: string;
+        researchQuestions: string;
+    }
+  }
+}
+
+const { lang, project } = Astro.props;
+---
+
+<Layout title={project.title} description={project.executiveSummary}>
+  <main class="bg-white min-h-screen text-slate-900 pb-20 selection:bg-accent/20">
+    <!-- Header -->
+    <header class="border-b border-slate-100 py-20 px-4">
+      <div class="container mx-auto max-w-4xl text-center">
+        <Pill variant="accent" class="mb-4 uppercase tracking-[0.2em] font-bold text-[10px]">Research Brief</Pill>
+        <h1 class="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6 font-medium">
+          {project.title}
+        </h1>
+        <p class="text-xl text-slate-500 font-serif italic max-w-2xl mx-auto">
+          {project.subtitle}
+        </p>
+      </div>
+    </header>
+
+    <div class="container mx-auto max-w-4xl px-4 py-16">
+      
+      <!-- Executive Summary -->
+      <section class="mb-20">
+        <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-6 flex items-center gap-4">
+           {project.ui.execSummary}
+           <div class="h-[1px] flex-grow bg-slate-100"></div>
+        </h2>
+        <div class="bg-slate-50 border-l-4 border-accent p-8 rounded-r-2xl">
+           <p class="text-slate-700 leading-relaxed text-lg font-serif">
+             {project.executiveSummary}
+           </p>
+        </div>
+      </section>
+
+      <!-- Research Questions -->
+      <section class="mb-20">
+         <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.researchQuestions}</h2>
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {project.researchQuestions.map(q => (
+               <div class="border border-slate-100 p-6 rounded-2xl bg-white shadow-sm flex items-start gap-4">
+                  <div class="w-2 h-2 rounded-full bg-accent mt-2 shrink-0"></div>
+                  <p class="font-medium text-slate-800">{q}</p>
+               </div>
+            ))}
+         </div>
+      </section>
+
+      <!-- Methodology -->
+      <section class="mb-20">
+         <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.methodology}</h2>
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+               <div>
+                  <h4 class="text-sm font-bold text-slate-900 mb-1">Model Framework</h4>
+                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.model}</p>
+               </div>
+               <div>
+                  <h4 class="text-sm font-bold text-slate-900 mb-1">Identification Strategy</h4>
+                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.strategy}</p>
+               </div>
+            </div>
+            <div class="space-y-6">
+               <div>
+                  <h4 class="text-sm font-bold text-slate-900 mb-1">Data & Frequency</h4>
+                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.data}</p>
+               </div>
+               <div>
+                  <h4 class="text-sm font-bold text-slate-900 mb-1">Estimation Approach</h4>
+                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.estimation}</p>
+               </div>
+            </div>
+         </div>
+         
+         <!-- Visual Placeholder Suggestion: Transmission Pathway Diagram -->
+         <div class="mt-12 p-12 border-2 border-dashed border-slate-100 rounded-[32px] flex items-center justify-center text-slate-300 text-sm italic bg-slate-50/50">
+            [ Suggested: Transmission Pathway Diagram: US Fed Funds Rate → VIX → European Bank Leverage → Global Credit ]
+         </div>
+      </section>
+
+      <!-- Key Findings -->
+      <section class="mb-20">
+         <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.findings}</h2>
+         <ul class="space-y-6">
+            {project.keyFindings.map(finding => (
+               <li class="flex items-start gap-6 group">
+                  <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-accent font-bold text-sm shrink-0 border border-slate-100">
+                     <i class="fa-solid fa-check"></i>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed pt-1">{finding}</p>
+               </li>
+            ))}
+         </ul>
+
+         <!-- Visual Placeholder Suggestion: IRF Plot -->
+         <div class="mt-12 p-12 border-2 border-dashed border-slate-100 rounded-[32px] flex items-center justify-center text-slate-300 text-sm italic bg-slate-50/50">
+            [ Suggested: Impulse Response Plot (VIX response to Fed Funds Rate shock, Pre vs Post COVID comparison) ]
+         </div>
+      </section>
+
+      <!-- Policy Relevance -->
+      <section class="mb-20 bg-slate-900 text-white p-12 rounded-[40px] shadow-2xl">
+         <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-8">{project.ui.relevance}</h2>
+         <div class="space-y-6">
+            {project.policyRelevance.map(item => (
+               <p class="text-slate-300 leading-relaxed font-serif text-lg italic border-l-2 border-accent/30 pl-8">
+                  {item}
+               </p>
+            ))}
+         </div>
+      </section>
+
+      <!-- Data & Tools -->
+      <section class="mb-20 border-t border-slate-100 pt-16">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-6">{project.ui.dataTools}</h2>
+               <div class="space-y-4">
+                  <div>
+                     <span class="text-[10px] uppercase font-bold text-slate-300 tracking-wider">Sources</span>
+                     <p class="text-slate-600 text-sm">{project.dataTools.sources}</p>
+                  </div>
+                  <div>
+                     <span class="text-[10px] uppercase font-bold text-slate-300 tracking-wider">Software</span>
+                     <p class="text-slate-600 text-sm">{project.dataTools.software}</p>
+                  </div>
+               </div>
+            </div>
+            <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-900 mb-4">{project.ui.download}</h2>
+               <a href={project.citation.pdfUrl} class="flex items-center gap-4 text-accent font-bold hover:underline mb-6">
+                  <i class="fa-solid fa-file-pdf text-xl"></i>
+                  Download Full Thesis (PDF)
+               </a>
+               <div class="pt-6 border-t border-slate-200">
+                  <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">{project.ui.citation}</span>
+                  <code class="text-[11px] text-slate-500 block bg-white p-4 rounded-xl border border-slate-200 leading-relaxed font-mono">
+                    {project.citation.text}
+                  </code>
+               </div>
+            </div>
+         </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* Academic serif font stacking */
+  .font-serif {
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+</style>
