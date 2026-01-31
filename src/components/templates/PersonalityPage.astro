@@ -1,0 +1,163 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Personlighedsprofil | Anton Meier Ebsen Jørgensen",
+    description: "En dybdegående profil af min personlighedstype (INTJ-A) og hvordan jeg arbejder bedst i professionelle sammenhænge.",
+    heroTitle: "Arkitekten",
+    heroType: "INTJ-A",
+    heroText: "Som en INTJ-type (The Architect) er jeg drevet af logik, strategi og en konstant stræben efter effektivitet og systemisk forbedring.",
+    traits: [
+      { label: "Introvert (I)", value: 85, desc: "Foretækker fokuseret individuelt arbejde, men trives i strategiske diskussioner." },
+      { label: "Intuitiv (N)", value: 70, desc: "Fokuseret på det store billede, mønstre og fremtidige muligheder." },
+      { label: "Tænkende (T)", value: 90, desc: "Beslutninger tages baseret på logik og objektiv analyse fremfor følelser." },
+      { label: "Dømmende (J)", value: 75, desc: "Struktureret tilgang med fokus på deadlines, planer og orden." }
+    ],
+    strengths: [
+      { title: "Strategisk Planlægning", desc: "Evnen til at se komplekse afhængigheder og planlægge flere skridt frem." },
+      { title: "Logisk Problemløsning", desc: "Finder fejl i systemer og designer mere effektive løsninger." },
+      { title: "Uafhængig & Beslutsom", desc: "Tager ejerskab over opgaver og leverer resultater uden konstant supervision." }
+    ],
+    workplace: {
+      title: "Samarbejde & Workflow",
+      text: "For at få det bedste ud af mit potentiale som INTJ i et team, fungerer følgende bedst:",
+      items: [
+        { label: "Direkte Kommunikation", icon: "fa-comments", desc: "Jeg værdsætter ærlighed og klarhed fremfor 'fluff'. Sig det som det er." },
+        { label: "Autonomi", icon: "fa-user-gear", desc: "Jeg præsterer bedst, når jeg får et klart mål og friheden til at finde den bedste vej dertil." },
+        { label: "Evidensbaseret", icon: "fa-chart-line", desc: "Argumenter vinder hos mig, hvis de er understøttet af data og logisk ræsonnement." }
+      ]
+    }
+  },
+  en: {
+    title: "Personality Profile | Anton Meier Ebsen Jørgensen",
+    description: "An in-depth profile of my personality type (INTJ-A) and how I work best in professional environments.",
+    heroTitle: "The Architect",
+    heroType: "INTJ-A",
+    heroText: "As an INTJ (The Architect), I am driven by logic, strategy, and a constant pursuit of efficiency and systemic improvement.",
+    traits: [
+      { label: "Introverted (I)", value: 85, desc: "Prefer focused individual work but thrive in strategic discussions." },
+      { label: "Intuitive (N)", value: 70, desc: "Focused on the big picture, patterns, and future possibilities." },
+      { label: "Thinking (T)", value: 90, desc: "Decisions are based on logic and objective analysis rather than emotions." },
+      { label: "Judging (J)", value: 75, desc: "Structured approach with a focus on deadlines, plans, and order." }
+    ],
+    strengths: [
+      { title: "Strategic Planning", desc: "Ability to see complex dependencies and plan several steps ahead." },
+      { title: "Logical Problem Solving", desc: "Identifying flaws in systems and designing more efficient solutions." },
+      { title: "Independent & Decisive", desc: "Taking ownership of tasks and delivering results without constant supervision." }
+    ],
+    workplace: {
+      title: "Collaboration & Workflow",
+      text: "To get the most out of my potential as an INTJ in a team, the following works best:",
+      items: [
+        { label: "Direct Communication", icon: "fa-comments", desc: "I value honesty and clarity over 'fluff'. Tell it like it is." },
+        { label: "Autonomy", icon: "fa-user-gear", desc: "I perform best when given a clear goal and the freedom to find the best way there." },
+        { label: "Evidence-Based", icon: "fa-chart-line", desc: "Arguments win with me if they are supported by data and logical reasoning." }
+      ]
+    }
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero Section -->
+    <Section class="mb-24 animate-on-scroll">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="flex-1">
+          <div class="inline-block px-4 py-1 bg-accent/20 border border-accent/30 rounded-full text-accent text-xs font-bold uppercase tracking-widest mb-6">
+            Personality Profile
+          </div>
+          <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter">
+            {t.heroTitle}<span class="text-accent">.</span>
+          </h1>
+          <div class="text-3xl font-mono text-white/40 mb-8">{t.heroType}</div>
+          <p class="text-xl text-dim leading-relaxed max-w-xl">
+             {t.heroText}
+          </p>
+        </div>
+        <div class="flex-1 w-full max-w-md">
+           <!-- Traits Visual -->
+           <Card variant="glass" class="p-8 border-accent/20 bg-accent/[0.02]">
+              <div class="space-y-8">
+                {t.traits.map((trait, idx) => (
+                  <div class={`animate-on-scroll delay-${idx * 100}`}>
+                    <div class="flex justify-between items-center mb-2">
+                       <span class="text-xs font-bold uppercase tracking-wider">{trait.label}</span>
+                       <span class="text-xs font-mono text-accent">{trait.value}%</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                       <div class="h-full bg-accent rounded-full transition-all duration-1000 ease-out" style={`width: ${trait.value}%`}></div>
+                    </div>
+                    <p class="text-[10px] text-dim mt-2 opacity-60 italic">{trait.desc}</p>
+                  </div>
+                ))}
+              </div>
+           </Card>
+        </div>
+      </div>
+    </Section>
+
+    <!-- Strengths -->
+    <Section class="mb-32 animate-on-scroll">
+      <SectionHeading class="mb-12">{isDa ? 'Kerne-styrker' : 'Core Strengths'}</SectionHeading>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {t.strengths.map(s => (
+          <Card variant="bordered" class="p-8 hover:bg-white/[0.02] transition-colors border-white/5">
+             <i class="fa-solid fa-bolt text-accent mb-6 text-2xl"></i>
+             <h3 class="text-xl font-bold mb-4">{s.title}</h3>
+             <p class="text-dim text-sm leading-relaxed">{s.desc}</p>
+          </Card>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Workplace -->
+    <Section class="mb-32 animate-on-scroll">
+       <div class="bg-glass-card rounded-[40px] border border-glass-border p-8 md:p-16 relative overflow-hidden">
+          <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-accent/10 blur-[100px] rounded-full"></div>
+          
+          <div class="relative z-10 max-w-4xl mx-auto">
+             <SectionHeading class="mb-6">{t.workplace.title}</SectionHeading>
+             <p class="text-xl text-dim mb-12 border-l-2 border-accent/30 pl-6 italic">
+                "{t.workplace.text}"
+             </p>
+             
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                {t.workplace.items.map(item => (
+                  <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent mb-6">
+                       <i class={`fa-solid ${item.icon} text-2xl`}></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2">{item.label}</h4>
+                    <p class="text-sm text-dim leading-relaxed">
+                       {item.desc}
+                    </p>
+                  </div>
+                ))}
+             </div>
+          </div>
+       </div>
+    </Section>
+
+    <!-- Source Link -->
+    <Section class="text-center animate-on-scroll">
+       <p class="text-xs text-dim opacity-40">
+          {isDa ? 'Inspireret af 16personalities.com profilen.' : 'Inspired by the 16personalities.com profile.'}
+       </p>
+    </Section>
+  </main>
+</Layout>
