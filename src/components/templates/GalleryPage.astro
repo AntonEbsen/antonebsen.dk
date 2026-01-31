@@ -392,6 +392,11 @@ const content: any = entry.data;
       lb.classList.add("is-open");
       lb.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+      lastFocusedLB = document.activeElement;
+      
+      // Focus close button initially
+      const closeBtn = lb.querySelector('.lb-close');
+      if(closeBtn instanceof HTMLElement) closeBtn.focus();
     }
 
     function closeLB(){
@@ -400,6 +405,11 @@ const content: any = entry.data;
       lb.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
       if (lbImg instanceof HTMLImageElement) lbImg.src = "";
+      
+      if (lastFocusedLB instanceof HTMLElement) {
+          lastFocusedLB.focus();
+          lastFocusedLB = null;
+      }
     }
 
     document.querySelectorAll(".g-btn").forEach(btn => {
@@ -413,13 +423,40 @@ const content: any = entry.data;
       });
     });
 
+    // Lightbox State
+    let lastFocusedLB;
+
     if(lb) {
         lb.addEventListener("click", (e) => {
-        if (e.target instanceof Element && e.target.closest("[data-close]")) closeLB();
+            if (e.target instanceof Element && e.target.closest("[data-close]")) closeLB();
         });
 
         document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && lb.classList.contains("is-open")) closeLB();
+            if (!lb.classList.contains("is-open")) return;
+
+            if (e.key === "Escape") closeLB();
+
+            if (e.key === "Tab") {
+                const focusable = lb.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) {
+                    e.preventDefault();
+                    return;
+                }
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus(); // @ts-ignore
+                    }
+                } else {
+                    if (document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus(); // @ts-ignore
+                    }
+                }
+            }
         });
     }
   </script>

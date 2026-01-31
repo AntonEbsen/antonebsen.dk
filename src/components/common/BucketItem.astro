@@ -2,8 +2,10 @@
 import Card from '@components/ui/Card.astro';
 import type { BucketItem } from 'src/lib/api';
 
+import type { BucketListEntry } from 'src/types/content';
+
 interface Props {
-  item: BucketItem;
+  item: BucketListEntry;
 }
 
 const { item } = Astro.props;

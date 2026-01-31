@@ -2,11 +2,11 @@
 import Card from '@components/ui/Card.astro';
 import Pill from '@components/ui/Pill.astro';
 import Button from '@components/ui/Button.astro';
-import type { Case } from 'src/lib/api'; // Use centralized type if possible, or define locally if not exported
+import type { CaseItem } from 'src/types/content';
 
 // Basic Interface matching the structure in CasesPage
 interface Props {
-  data: any; // Using any for now to match the "content.cases" dynamic data, or strictly typed if we import Case
+  data: CaseItem;
   labels: {
     problem: string;
     data: string;

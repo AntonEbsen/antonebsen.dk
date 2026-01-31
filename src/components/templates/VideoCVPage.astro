@@ -1,6 +1,7 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
+import type { VideoCV } from 'src/types/content';
 
 interface Props {
   lang: 'da' | 'en';
@@ -13,7 +14,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/video-cv`);
 }
 
-const content = entry.data;
+const content = entry.data as unknown as VideoCV;
 
 // Resolve links based on lang
 const contactLink = lang === 'en' ? '/en/contact' : '/contact';

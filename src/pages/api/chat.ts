@@ -3,27 +3,17 @@ import type { APIRoute } from 'astro';
 import { model } from '../../lib/gemini';
 import { buildSystemContext } from '../../lib/ai/context';
 
-const rateLimit = new Map<string, number>();
-const LIMIT_WINDOW = 60 * 1000; // 1 minute
-const LIMIT_COUNT = 10; // 10 requests per minute
+import { checkRateLimit } from '../../lib/ratelimit';
 
-export const POST: APIRoute = async ({ request }) => {
-    const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
-    const now = Date.now();
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+    // Get IP: clientAddress (SSR) or header (Vercel)
+    const clientIP = request.headers.get('x-forwarded-for') || clientAddress || 'unknown';
 
-    // Rate Limiting Logic
-    const lastRequest = rateLimit.get(clientIP) || 0;
-    if (now - lastRequest > LIMIT_WINDOW) {
-        rateLimit.delete(clientIP); // Reset window
+    // Upstash Rate Limit
+    const limitParams = await checkRateLimit('chat', clientIP);
+    if (!limitParams.success) {
+        return new Response(JSON.stringify({ error: "Too many requests. Please wait a moment." }), { status: 429 });
     }
-
-    const count = rateLimit.get(clientIP + '_count') || 0;
-    if (count >= LIMIT_COUNT) {
-        return new Response(JSON.stringify({ error: "Too many requests. Please wait." }), { status: 429 });
-    }
-
-    rateLimit.set(clientIP, now);
-    rateLimit.set(clientIP + '_count', count + 1);
 
     try {
         const data = await request.json();

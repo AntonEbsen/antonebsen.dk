@@ -236,11 +236,6 @@ const t = {
       if (close) close.addEventListener('click', toggleChat);
 
       // File Upload Logic
-      const fileInput = document.getElementById('chat-file');
-      const fileBtn = document.getElementById('file-btn');
-      const fileDisplay = document.getElementById('file-display');
-      const fileNameSpan = document.getElementById('filename');
-      const removeFileBtn = document.getElementById('remove-file');
       let currentFileContent = null;
 
       fileBtn?.addEventListener('click', () => fileInput?.click());
@@ -286,20 +281,28 @@ const t = {
       });
       
       // Persona Logic
-      const personaSelect = document.getElementById('widget-persona-select');
-      if (personaSelect) {
+      const personaSelectElement = document.getElementById('widget-persona-select');
+      if (personaSelectElement) {
           const savedPersona = localStorage.getItem('anton_ai_persona');
-          if (savedPersona) personaSelect.value = savedPersona;
+          if (savedPersona) personaSelectElement.value = savedPersona;
           
-          personaSelect.addEventListener('change', (e) => {
-              const val = (e.target as HTMLInputElement).value;
-              localStorage.setItem('anton_ai_persona', val);
-              // Option: Announce change in chat? For now, no.
+          // Event Listeners for Persona
+          personaSelectElement?.addEventListener('change', (e) => {
+            const val = e.target.value;
+            const p = t.personas[val] || t.personas['default'];
+            
+            // Update UI
+            if(header) {
+                header.innerHTML = `<i class="${p.icon} mr-2"></i> ${p.name}`;
+                header.className = `p-4 border-b border-glass-border flex justify-between items-center rounded-t-xl bg-gradient-to-r ${p.color}`;
+            }
+            
+            // Add system message about switch
+            addMessage(`System: Switched to ${p.name} mode. ${p.description}`, 'system', true, val);
           });
       }
 
       // Draggable Logic
-      const header = document.getElementById('chat-header');
       let isDragging = false;
       let currentX;
       let currentY;
@@ -319,7 +322,7 @@ const t = {
           document.addEventListener('touchend', dragEnd);
       }
 
-      function dragStart(e: MouseEvent | TouchEvent) {
+      function dragStart(e) {
          if (e.target.closest('button') || e.target.closest('a')) return; // Allow clicking buttons in header
          
          if (e.type === "touchstart") {
@@ -346,8 +349,8 @@ const t = {
                  
                  // Recalculate offsets after switching to fixed
                  // But simply starting translate from 0,0 is easier if we track delta
-                 initialX = (e as MouseEvent).clientX || (e as TouchEvent).touches[0].clientX;
-                 initialY = (e as MouseEvent).clientY || (e as TouchEvent).touches[0].clientY;
+                  initialX = e.clientX || e.touches[0].clientX;
+                  initialY = e.clientY || e.touches[0].clientY;
                  
                  // Store current top/left
                  xOffset = rect.left;
@@ -362,7 +365,7 @@ const t = {
          isDragging = false;
       }
 
-      function drag(e: MouseEvent | TouchEvent) {
+      function drag(e) {
          if (isDragging) {
              e.preventDefault();
              
@@ -459,11 +462,11 @@ const t = {
       // Quick Prompts Logic
       document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const text = (e.currentTarget as HTMLElement).textContent?.trim();
+            const text = e.currentTarget.textContent?.trim();
             if(text && input && form) {
                 input.value = text;
                 form.dispatchEvent(new Event('submit'));
-                (e.currentTarget as HTMLElement).parentElement?.remove();
+                e.currentTarget.parentElement?.remove();
             }
         });
       });
@@ -555,7 +558,7 @@ const t = {
       }
 
       // Helpers
-      function formatText(text: string) {
+      function formatText(text) {
           // Simple link formatting
           return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')
                      .replace(/<<<NAVIGATE:.*?>>>/gi, '')
@@ -565,7 +568,7 @@ const t = {
                      .replace(/\n/g, '<br/>');
       }
 
-      function processSpecialTags(text: string, containerDiv: HTMLElement) {
+      function processSpecialTags(text, containerDiv) {
          if (!containerDiv) return;
 
          // Chart
@@ -674,7 +677,7 @@ const t = {
           }
       }
 
-      function saveMessageToHistory(text: string, role: string, persona: string) {
+      function saveMessageToHistory(text, role, persona) {
           const stored = localStorage.getItem(STORAGE_KEY);
           let history = stored ? JSON.parse(stored) : [];
           history.push({ text, role, persona, timestamp: Date.now() });
@@ -689,7 +692,7 @@ const t = {
          }
       });
 
-      function addMessage(text: string, role: string, skipSave: boolean = false, persona: string = 'default') {
+      function addMessage(text, role, skipSave = false, persona = 'default') {
         const msgs = document.getElementById('chat-messages');
         if (!msgs) return;
         
@@ -768,7 +771,7 @@ const t = {
         return contentElement;
       }
 
-      let typingInterval: any;
+      let typingInterval;
 
       function showTyping() {
         const msgs = document.getElementById('chat-messages');

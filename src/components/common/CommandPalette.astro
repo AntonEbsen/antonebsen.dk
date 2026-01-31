@@ -142,12 +142,22 @@ const quickActions = [
     let searchIndex = [];
     let activeIndex = -1;
 
+    let lastFocused: HTMLElement | null = null;
+    let focusableElements: NodeListOf<HTMLElement>;
+
     // Toggle Palette
     function openPalette() {
       isOpen = true;
+      lastFocused = document.activeElement as HTMLElement;
       palette.classList.add('is-open');
       document.body.style.overflow = 'hidden';
-      setTimeout(() => input.focus(), 10);
+      palette.setAttribute('aria-hidden', 'false');
+      
+      setTimeout(() => {
+         input.focus();
+         updateFocusable();
+      }, 10);
+
       if (searchIndex.length === 0) loadIndex();
     }
 
@@ -155,8 +165,14 @@ const quickActions = [
       isOpen = false;
       palette.classList.remove('is-open');
       document.body.style.overflow = '';
+      palette.setAttribute('aria-hidden', 'true');
       input.value = '';
       resetState();
+      
+      if (lastFocused) {
+        lastFocused.focus();
+        lastFocused = null;
+      }
     }
 
     function resetState() {
@@ -238,6 +254,14 @@ const quickActions = [
       if (tags?.includes('portfolio')) return 'fa-solid fa-code';
       if (tags?.includes('skill')) return 'fa-solid fa-brain';
       return 'fa-solid fa-link';
+    }
+
+    function updateFocusable() {
+       focusableElements = palette.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    }
+
+    function updateFocusable() {
+       focusableElements = palette.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
     }
 
     // Keyboard Navigation

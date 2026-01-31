@@ -1,6 +1,7 @@
 
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { checkRateLimit } from '../../lib/ratelimit';
 
 export const prerender = false;
 
@@ -28,8 +29,8 @@ export const GET: APIRoute = async () => {
     });
 };
 
-// POST: Submit new message (Protected by Honeypot)
-export const POST: APIRoute = async ({ request }) => {
+// POST: Submit new message (Protected by Honeypot and Rate Limit)
+export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (!supabase) {
         return new Response(JSON.stringify({ error: 'Database not connected' }), { status: 500 });
     }
@@ -46,12 +47,19 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ success: true }), { status: 200 });
         }
 
-        // 2. Validation
+        // 2. Rate Limit
+        const clientIP = request.headers.get('x-forwarded-for') || clientAddress || 'unknown';
+        const limitParams = await checkRateLimit('guestbook', clientIP);
+        if (!limitParams.success) {
+            return new Response(JSON.stringify({ error: "Too many messages. Please wait a bit." }), { status: 429 });
+        }
+
+        // 3. Validation
         if (!name || !message || name.length > 50 || message.length > 500) {
             return new Response(JSON.stringify({ error: 'Invalid input' }), { status: 400 });
         }
 
-        // 3. Insert into Supabase
+        // 4. Insert into Supabase
         const { error } = await supabase
             .from('guestbook')
             // @ts-ignore

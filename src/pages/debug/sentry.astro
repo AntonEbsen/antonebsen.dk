@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+
+// 1. Server-Side Error Trigger
+const { trigger } = Astro.url.searchParams;
+if (trigger === 'server') {
+    throw new Error('Test Server Error from /debug/sentry');
+}
+---
+
+<Layout title="Sentry Debug" description="Test page for Sentry integration">
+    <main class="min-h-screen bg-black text-white p-12 flex flex-col items-center justify-center space-y-8">
+        <h1 class="text-4xl font-bold text-gold-500">Sentry Debugger</h1>
+        <p class="text-gray-400 max-w-md text-center">
+            Use these buttons to verify that Sentry is capturing errors correctly.
+            Check your Sentry dashboard after clicking.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Client Side Error -->
+            <button 
+                id="btn-client-error"
+                class="px-6 py-3 bg-red-600 rounded hover:bg-red-700 transition font-bold"
+            >
+                Trigger Client Error
+            </button>
+
+            <!-- Server Side Error -->
+            <a 
+                href="?trigger=server"
+                class="px-6 py-3 bg-orange-600 rounded hover:bg-orange-700 transition font-bold text-center"
+            >
+                Trigger Server Error
+            </a>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    document.getElementById('btn-client-error')?.addEventListener('click', () => {
+        try {
+            // @ts-ignore
+            nonExistentFunction(); // This will throw reference error
+        } catch (e) {
+            console.error("Caught error, rethrowing for Sentry...");
+            throw new Error("Test Client Error from /debug/sentry");
+        }
+    });
+</script>

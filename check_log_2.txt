@@ -1,0 +1,650 @@
+[2m15.08.08[22m [34m[content][39m Syncing content
+[2m15.08.08[22m [34m[content][39m Synced content
+[2m15.08.08[22m [34m[types][39m Generated [2m507ms[22m
+[2m15.08.08[22m [34m[check][39m Getting diagnostics for Astro files in C:\Users\Anton\antonebsen.dk...
+[96msrc/middleware.ts[0m:[93m4[0m:[93m33[0m - [93mwarning[0m[90m ts(6133): [0m'context' is declared but its value is never read.
+
+[7m4[0m export async function onRequest(context: APIContext, next: MiddlewareNext) {
+[7m [0m [93m                                ~~~~~~~[0m
+
+[96msrc/lib/ai/context.ts[0m:[93m22[0m:[93m15[0m - [93mwarning[0m[90m ts(6133): [0m'role' is declared but its value is never read.
+
+[7m22[0m         const role = "Anton"; // Or extract if available
+[7m  [0m [93m              ~~~~[0m
+[96msrc/lib/ai/context.ts[0m:[93m7[0m:[93m42[0m - [93mwarning[0m[90m ts(6196): [0m'QAItem' is declared but never used.
+
+[7m7[0m import type { TimelineItem, ProjectItem, QAItem, QARoot } from '../../types/content';
+[7m [0m [93m                                         ~~~~~~[0m
+[96msrc/lib/ai/context.ts[0m:[93m5[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'blogData' is declared but its value is never read.
+
+[7m5[0m import blogData from '../../data/blog.json';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/api/training.ts[0m:[93m6[0m:[93m35[0m - [91merror[0m[90m ts(18047): [0m'supabase' is possibly 'null'.
+
+[7m6[0m     const { data, error } = await supabase
+[7m [0m [91m                                  ~~~~~~~~[0m
+
+[96msrc/components/Navbar.astro[0m:[93m3[0m:[93m26[0m - [93mwarning[0m[90m ts(6133): [0m'useTranslations' is declared but its value is never read.
+
+[7m3[0m import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
+[7m [0m [93m                         ~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/SEO.astro[0m:[93m51[0m:[93m9[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m51[0m <script type="application/ld+json" set:html={JSON.stringify({
+[7m  [0m [93m        ~~~~[0m
+
+[96msrc/components/common/CaseCard.astro[0m:[93m5[0m:[93m15[0m - [91merror[0m[90m ts(2305): [0mModule '"src/types/content"' has no exported member 'CaseItem'.
+
+[7m5[0m import type { CaseItem } from 'src/types/content';
+[7m [0m [91m              ~~~~~~~~[0m
+
+[96msrc/components/common/CertificationCard.astro[0m:[93m4[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'Button' is declared but its value is never read.
+
+[7m4[0m import Button from '@components/ui/Button.astro';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/common/ChatWidget.astro[0m:[93m297[0m:[93m13[0m - [91merror[0m[90m ts(2451): [0mCannot redeclare block-scoped variable 'header'.
+
+[7m297[0m       const header = document.getElementById('chat-header');
+[7m   [0m [91m            ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m284[0m:[93m13[0m - [91merror[0m[90m ts(2451): [0mCannot redeclare block-scoped variable 'personaSelect'.
+
+[7m284[0m       const personaSelect = document.getElementById('widget-persona-select');
+[7m   [0m [91m            ~~~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m167[0m:[93m13[0m - [91merror[0m[90m ts(2451): [0mCannot redeclare block-scoped variable 'header'.
+
+[7m167[0m       const header = document.getElementById('chat-header');
+[7m   [0m [91m            ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m166[0m:[93m13[0m - [91merror[0m[90m ts(2451): [0mCannot redeclare block-scoped variable 'personaSelect'.
+
+[7m166[0m       const personaSelect = document.getElementById('persona-select');
+[7m   [0m [91m            ~~~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m168[0m:[93m13[0m - [93mwarning[0m[90m ts(6133): [0m'messages' is declared but its value is never read.
+
+[7m168[0m       const messages = document.getElementById('chat-messages');
+[7m   [0m [93m            ~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m165[0m:[93m13[0m - [93mwarning[0m[90m ts(6133): [0m'contentElement' is declared but its value is never read.
+
+[7m165[0m       const contentElement = document.getElementById('chat-content');
+[7m   [0m [93m            ~~~~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m766[0m:[93m27[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m766[0m       let typingInterval: any;
+[7m   [0m [91m                          ~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m687[0m:[93m91[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m687[0m       function addMessage(text: string, role: string, skipSave: boolean = false, persona: string = 'default') {
+[7m   [0m [91m                                                                                          ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m687[0m:[93m65[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m687[0m       function addMessage(text: string, role: string, skipSave: boolean = false, persona: string = 'default') {
+[7m   [0m [91m                                                                ~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m687[0m:[93m47[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m687[0m       function addMessage(text: string, role: string, skipSave: boolean = false, persona: string = 'default') {
+[7m   [0m [91m                                              ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m687[0m:[93m33[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m687[0m       function addMessage(text: string, role: string, skipSave: boolean = false, persona: string = 'default') {
+[7m   [0m [91m                                ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m672[0m:[93m74[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m672[0m       function saveMessageToHistory(text: string, role: string, persona: string) {
+[7m   [0m [91m                                                                         ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m672[0m:[93m57[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m672[0m       function saveMessageToHistory(text: string, role: string, persona: string) {
+[7m   [0m [91m                                                        ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m672[0m:[93m43[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m672[0m       function saveMessageToHistory(text: string, role: string, persona: string) {
+[7m   [0m [91m                                          ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m563[0m:[93m63[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m563[0m       function processSpecialTags(text: string, containerDiv: HTMLElement) {
+[7m   [0m [91m                                                              ~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m563[0m:[93m41[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m563[0m       function processSpecialTags(text: string, containerDiv: HTMLElement) {
+[7m   [0m [91m                                        ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m553[0m:[93m33[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m553[0m       function formatText(text: string) {
+[7m   [0m [91m                                ~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m461[0m:[93m37[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m461[0m                 (e.currentTarget as HTMLElement).parentElement?.remove();
+[7m   [0m [91m                                    ~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m457[0m:[93m46[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m457[0m             const text = (e.currentTarget as HTMLElement).textContent?.trim();
+[7m   [0m [91m                                             ~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m360[0m:[93m24[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m360[0m       function drag(e: MouseEvent | TouchEvent) {
+[7m   [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m345[0m:[93m64[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m345[0m                  initialY = (e as MouseEvent).clientY || (e as TouchEvent).touches[0].clientY;
+[7m   [0m [91m                                                               ~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m345[0m:[93m35[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m345[0m                  initialY = (e as MouseEvent).clientY || (e as TouchEvent).touches[0].clientY;
+[7m   [0m [91m                                  ~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m344[0m:[93m64[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m344[0m                  initialX = (e as MouseEvent).clientX || (e as TouchEvent).touches[0].clientX;
+[7m   [0m [91m                                                               ~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m344[0m:[93m35[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m344[0m                  initialX = (e as MouseEvent).clientX || (e as TouchEvent).touches[0].clientX;
+[7m   [0m [91m                                  ~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m317[0m:[93m29[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m317[0m       function dragStart(e: MouseEvent | TouchEvent) {
+[7m   [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m290[0m:[93m40[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m290[0m               const val = (e.target as HTMLInputElement).value;
+[7m   [0m [91m                                       ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/common/ChatWidget.astro[0m:[93m244[0m:[93m37[0m - [91merror[0m[90m ts(8016): [0mType assertion expressions can only be used in TypeScript files.
+
+[7m244[0m           const file = (e.target as HTMLInputElement).files?.[0];
+[7m   [0m [91m                                    ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/common/CommandPalette.astro[0m:[93m281[0m:[93m36[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m281[0m       items.forEach((item: any, i: number) => {
+[7m   [0m [91m                                   ~~~~~~[0m
+[96msrc/components/common/CommandPalette.astro[0m:[93m281[0m:[93m28[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m281[0m       items.forEach((item: any, i: number) => {
+[7m   [0m [91m                           ~~~[0m
+[96msrc/components/common/CommandPalette.astro[0m:[93m244[0m:[93m31[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m244[0m     function handleKeydown(e: KeyboardEvent) {
+[7m   [0m [91m                              ~~~~~~~~~~~~~[0m
+[96msrc/components/common/CommandPalette.astro[0m:[93m236[0m:[93m28[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m236[0m     function getIcon(tags: string[]) {
+[7m   [0m [91m                           ~~~~~~~~[0m
+[96msrc/components/common/CommandPalette.astro[0m:[93m204[0m:[93m37[0m - [91merror[0m[90m ts(8010): [0mType annotations can only be used in TypeScript files.
+
+[7m204[0m     function renderResults(results: any[]) {
+[7m   [0m [91m                                    ~~~~~[0m
+
+[96msrc/components/common/TimelineItem.astro[0m:[93m2[0m:[93m15[0m - [91merror[0m[90m ts(2305): [0mModule '"src/lib/api"' has no exported member 'TimelineItem'.
+
+[7m2[0m import type { TimelineItem } from 'src/lib/api';
+[7m [0m [91m              ~~~~~~~~~~~~[0m
+
+[96msrc/components/resources/BookCard.astro[0m:[93m4[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'Button' is declared but its value is never read.
+
+[7m4[0m import Button from '../ui/Button.astro';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/BlogPage.astro[0m:[93m130[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'supabase' is declared but its value is never read.
+
+[7m130[0m import { supabase } from '@lib/supabase';
+[7m   [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/BooksPage.astro[0m:[93m9[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'supabase' is declared but its value is never read.
+
+[7m9[0m import { supabase } from '@lib/supabase';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/BucketListPage.astro[0m:[93m36[0m:[93m3[0m - [91merror[0m[90m ts(2322): [0mType 'unknown' is not assignable to type 'string | undefined'.
+
+[7m36[0m   description={content.desc}
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+[96msrc/components/templates/BucketListPage.astro[0m:[93m16[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'isDa' is declared but its value is never read.
+
+[7m16[0m const isDa = lang === 'da';
+[7m  [0m [93m      ~~~~[0m
+[96msrc/components/templates/BucketListPage.astro[0m:[93m7[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'supabase' is declared but its value is never read.
+
+[7m7[0m import { supabase } from '@lib/supabase';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/BucketListPage.astro[0m:[93m4[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'Card' is declared but its value is never read.
+
+[7m4[0m import Card from '@components/ui/Card.astro';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/CVPage.astro[0m:[93m136[0m:[93m14[0m - [91merror[0m[90m ts(18046): [0m'content.volunteer' is of type 'unknown'.
+
+[7m136[0m             {content.volunteer.items.map((item: any) => (
+[7m   [0m [91m             ~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/CVPage.astro[0m:[93m69[0m:[93m73[0m - [91merror[0m[90m ts(18046): [0m'content.profile' is of type 'unknown'.
+
+[7m69[0m                 <p class={`text-[15px] leading-relaxed opacity-90 ${i < content.profile.text.length - 1 ? 'mb-4' : ''}`}>
+[7m  [0m [91m                                                                        ~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/CVPage.astro[0m:[93m68[0m:[93m14[0m - [91merror[0m[90m ts(18046): [0m'content.profile' is of type 'unknown'.
+
+[7m68[0m             {content.profile.text.map((p: string, i: number) => (
+[7m  [0m [91m             ~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/CasesPage.astro[0m:[93m220[0m:[93m39[0m - [91merror[0m[90m ts(7006): [0mParameter 'li' implicitly has an 'any' type.
+
+[7m220[0m               {content.formatList.map(li => <li set:html={li}></li>)}
+[7m   [0m [91m                                      ~~[0m
+[96msrc/components/templates/CasesPage.astro[0m:[93m212[0m:[93m33[0m - [91merror[0m[90m ts(7006): [0mParameter 'b' implicitly has an 'any' type.
+
+[7m212[0m             {content.badges.map(b => <Pill variant="accent">{b}</Pill>)}
+[7m   [0m [91m                                ~[0m
+
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m229[0m:[93m13[0m - [91merror[0m[90m ts(2322): [0mType '"cv"' is not assignable to type '"contact" | "email" | "socials" | undefined'.
+
+[7m229[0m             action="cv"
+[7m   [0m [91m            ~~~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m213[0m:[93m78[0m - [91merror[0m[90m ts(2339): [0mProperty 'description' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m213[0m                     <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+[7m   [0m [91m                                                                             ~~~~~~~~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m212[0m:[93m71[0m - [91merror[0m[90m ts(2339): [0mProperty 'year' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m212[0m                     <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
+[7m   [0m [91m                                                                      ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m209[0m:[93m72[0m - [91merror[0m[90m ts(2339): [0mProperty 'name' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m209[0m                       <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+[7m   [0m [91m                                                                       ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m190[0m:[93m74[0m - [91merror[0m[90m ts(2339): [0mProperty 'description' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m190[0m                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+[7m   [0m [91m                                                                         ~~~~~~~~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m189[0m:[93m67[0m - [91merror[0m[90m ts(2339): [0mProperty 'year' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m189[0m                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
+[7m   [0m [91m                                                                  ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m186[0m:[93m68[0m - [91merror[0m[90m ts(2339): [0mProperty 'name' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m186[0m                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+[7m   [0m [91m                                                                   ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m170[0m:[93m65[0m - [91merror[0m[90m ts(2322): [0mType '{ cert: any; content: any; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'content' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m170[0m           {sasCerts.map((c: any) => <CertificationCard cert={c} content={content} />)}
+[7m   [0m [91m                                                                ~~~~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m152[0m:[93m74[0m - [91merror[0m[90m ts(2339): [0mProperty 'description' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m152[0m                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+[7m   [0m [91m                                                                         ~~~~~~~~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m151[0m:[93m67[0m - [91merror[0m[90m ts(2339): [0mProperty 'year' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m151[0m                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
+[7m   [0m [91m                                                                  ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m148[0m:[93m68[0m - [91merror[0m[90m ts(2339): [0mProperty 'name' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m148[0m                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+[7m   [0m [91m                                                                   ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m127[0m:[93m74[0m - [91merror[0m[90m ts(2339): [0mProperty 'description' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m127[0m                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
+[7m   [0m [91m                                                                         ~~~~~~~~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m126[0m:[93m67[0m - [91merror[0m[90m ts(2339): [0mProperty 'year' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m126[0m                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
+[7m   [0m [91m                                                                  ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m123[0m:[93m68[0m - [91merror[0m[90m ts(2339): [0mProperty 'name' does not exist on type '{ date: string; title: string; category: string; id: number; created_at: string; issuer: string; visible: boolean; url?: string | null | undefined; }'.
+
+[7m123[0m                   <h3 class="font-bold text-base leading-tight">{c.name}</h3>
+[7m   [0m [91m                                                                   ~~~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m90[0m:[93m38[0m - [91merror[0m[90m ts(7006): [0mParameter 'th' implicitly has an 'any' type.
+
+[7m90[0m             {content.hero.themes.map(th => <Pill variant="accent">{th}</Pill>)}
+[7m  [0m [91m                                     ~~[0m
+[96msrc/components/templates/CertificationsPage.astro[0m:[93m10[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'supabase' is declared but its value is never read.
+
+[7m10[0m import { supabase } from '@lib/supabase';
+[7m  [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/ChangelogPage.astro[0m:[93m34[0m:[93m5[0m - [93mwarning[0m[90m ts(6133): [0m'error' is declared but its value is never read.
+
+[7m34[0m let error = null;
+[7m  [0m [93m    ~~~~~[0m
+
+[96msrc/components/templates/ChatPage.astro[0m:[93m18[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'backLink' is declared but its value is never read.
+
+[7m18[0m const backLink = lang === 'en' ? '/' : '/'; // Home is / for both mostly, or /en/ for english?
+[7m  [0m [93m      ~~~~~~~~[0m
+
+[96msrc/components/templates/ContactPage.astro[0m:[93m64[0m:[93m25[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; size: string; icon: string; class: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m64[0m                 <Button size="lg" icon="paper-plane" class="w-full justify-center">{content.form?.submit}</Button>
+[7m  [0m [91m                        ~~~~[0m
+
+[96msrc/components/templates/CoursesPage.astro[0m:[93m134[0m:[93m39[0m - [91merror[0m[90m ts(7006): [0mParameter 'l' implicitly has an 'any' type.
+
+[7m134[0m                     {course.links.map(l => (
+[7m   [0m [91m                                      ~[0m
+[96msrc/components/templates/CoursesPage.astro[0m:[93m30[0m:[93m22[0m - [91merror[0m[90m ts(18048): [0m'cv.courses' is possibly 'undefined'.
+
+[7m30[0m const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
+[7m  [0m [91m                     ~~~~~~~~~~[0m
+[96msrc/components/templates/CoursesPage.astro[0m:[93m29[0m:[93m20[0m - [91merror[0m[90m ts(18048): [0m'cv.courses' is possibly 'undefined'.
+
+[7m29[0m const uniCourses = cv.courses.filter(c => c.institution.includes("Copenhagen") || c.institution.includes("Københavns Universitet") || c.institution === "UCPH" || c.institution === "KU");
+[7m  [0m [91m                   ~~~~~~~~~~[0m
+
+[96msrc/components/templates/EducationPage.astro[0m:[93m208[0m:[93m12[0m - [91merror[0m[90m ts(7005): [0mVariable 'projects' implicitly has an 'any[]' type.
+
+[7m208[0m           {projects.map(proj => (
+[7m   [0m [91m           ~~~~~~~~[0m
+[96msrc/components/templates/EducationPage.astro[0m:[93m121[0m:[93m37[0m - [91merror[0m[90m ts(7006): [0mParameter 'p' implicitly has an 'any' type.
+
+[7m121[0m             {content.hero.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+[7m   [0m [91m                                    ~[0m
+[96msrc/components/templates/EducationPage.astro[0m:[93m41[0m:[93m5[0m - [91merror[0m[90m ts(7034): [0mVariable 'projects' implicitly has type 'any[]' in some locations where its type cannot be determined.
+
+[7m41[0m let projects = [];
+[7m  [0m [91m    ~~~~~~~~[0m
+[96msrc/components/templates/EducationPage.astro[0m:[93m8[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'ContactCard' is declared but its value is never read.
+
+[7m8[0m import ContactCard from '@components/common/ContactCard.astro';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/ExerciseDetailPage.astro[0m:[93m20[0m:[93m9[0m - [91merror[0m[90m ts(2339): [0mProperty 'lang' does not exist on type '{ slug: any; }'.
+
+[7m20[0m const { lang } = Astro.params; // Note: This might need adjustment for dynamic routes structure
+[7m  [0m [91m        ~~~~[0m
+[96msrc/components/templates/ExerciseDetailPage.astro[0m:[93m13[0m:[93m27[0m - [91merror[0m[90m ts(2339): [0mProperty 'slug' does not exist on type '{ id: string; body?: string | undefined; collection: "exercises"; data: { title: string; muscles: string[]; benefits: string[]; setup: string[]; execution: string[]; focusPoints: { title: string; icon: string; text: string; }[]; tempo: [...]; tempoNote?: string | undefined; }; rendered?: RenderedContent | undefined;...'.
+
+[7m13[0m     params: { slug: entry.slug },
+[7m  [0m [91m                          ~~~~[0m
+[96msrc/components/templates/ExerciseDetailPage.astro[0m:[93m20[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'lang' is declared but its value is never read.
+
+[7m20[0m const { lang } = Astro.params; // Note: This might need adjustment for dynamic routes structure
+[7m  [0m [93m      ~~~~~~~~[0m
+
+[96msrc/components/templates/ExercisesPage.astro[0m:[93m53[0m:[93m104[0m - [91merror[0m[90m ts(2322): [0mType '{ children: string; href: string; variant: "ghost"; size: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m53[0m             <Button href={isDa ? `/exercises/${ex.slug}` : `/en/exercises/${ex.slug}`} variant="ghost" size="sm">
+[7m  [0m [91m                                                                                                       ~~~~[0m
+[96msrc/components/templates/ExercisesPage.astro[0m:[93m5[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'SectionHeading' is declared but its value is never read.
+
+[7m5[0m import SectionHeading from '@components/ui/SectionHeading.astro';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/ExperiencePage.astro[0m:[93m137[0m:[93m36[0m - [91merror[0m[90m ts(7006): [0mParameter 'item' implicitly has an 'any' type.
+
+[7m137[0m           {content.work.steps.map((item) => (
+[7m   [0m [91m                                   ~~~~[0m
+[96msrc/components/templates/ExperiencePage.astro[0m:[93m102[0m:[93m39[0m - [91merror[0m[90m ts(7006): [0mParameter 'li' implicitly has an 'any' type.
+
+[7m102[0m               {content.short.list.map(li => <li>{li}</li>)}
+[7m   [0m [91m                                      ~~[0m
+[96msrc/components/templates/ExperiencePage.astro[0m:[93m88[0m:[93m37[0m - [91merror[0m[90m ts(7006): [0mParameter 'p' implicitly has an 'any' type.
+
+[7m88[0m             {content.hero.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+[7m  [0m [91m                                    ~[0m
+
+[96msrc/components/templates/GalleryPage.astro[0m:[93m318[0m:[93m29[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; centered: true; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'centered' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m318[0m             <SectionHeading centered>{content.ui.moreTitle}</SectionHeading>
+[7m   [0m [91m                            ~~~~~~~~[0m
+[96msrc/components/templates/GalleryPage.astro[0m:[93m383[0m:[93m21[0m - [91merror[0m[90m ts(7006): [0mParameter 'data' implicitly has an 'any' type.
+
+[7m383[0m     function openLB(data){
+[7m   [0m [91m                    ~~~~[0m
+
+[96msrc/components/templates/GuestbookPage.astro[0m:[93m219[0m:[93m27[0m - [93mwarning[0m[90m ts(6133): [0m'date' is declared but its value is never read.
+
+[7m219[0m                     const date = new Date(msg.created_at).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+[7m   [0m [93m                          ~~~~[0m
+[96msrc/components/templates/GuestbookPage.astro[0m:[93m210[0m:[93m15[0m - [93mwarning[0m[90m ts(6133): [0m'channel' is declared but its value is never read.
+
+[7m210[0m         const channel = supabase
+[7m   [0m [93m              ~~~~~~~[0m
+
+[96msrc/components/templates/IndexPage.astro[0m:[93m83[0m:[93m56[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; href: string; variant: "ghost"; size: string; class: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m83[0m           <Button href={guestbookLink} variant="ghost" size="lg" class="text-gold-400 border-gold-500/30 hover:bg-gold-500/10">{content.hero.btnGuest}</Button>
+[7m  [0m [91m                                                       ~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m82[0m:[93m49[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; href: string; variant: "ghost"; size: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m82[0m           <Button href={cvLink} variant="ghost" size="lg">{content.hero.btnCV}</Button>
+[7m  [0m [91m                                                ~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m81[0m:[93m35[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any; href: string; size: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m81[0m           <Button href={portLink} size="lg">{content.hero.btnPort}</Button>
+[7m  [0m [91m                                  ~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m60[0m:[93m17[0m - [91merror[0m[90m ts(7005): [0mVariable 'skillsRows' implicitly has an 'any[]' type.
+
+[7m60[0m   professional: skillsRows?.filter(s => s.category === 'professional') || []
+[7m  [0m [91m                ~~~~~~~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m59[0m:[93m16[0m - [91merror[0m[90m ts(7005): [0mVariable 'skillsRows' implicitly has an 'any[]' type.
+
+[7m59[0m   programming: skillsRows?.filter(s => s.category === 'programming') || [],
+[7m  [0m [91m               ~~~~~~~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m46[0m:[93m15[0m - [91merror[0m[90m ts(7005): [0mVariable 'skillsRows' implicitly has an 'any[]' type.
+
+[7m46[0m if (error || !skillsRows || skillsRows.length === 0) {
+[7m  [0m [91m              ~~~~~~~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m32[0m:[93m5[0m - [91merror[0m[90m ts(7034): [0mVariable 'skillsRows' implicitly has type 'any[]' in some locations where its type cannot be determined.
+
+[7m32[0m let skillsRows = [];
+[7m  [0m [91m    ~~~~~~~~~~[0m
+[96msrc/components/templates/IndexPage.astro[0m:[93m12[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'supabase' is declared but its value is never read.
+
+[7m12[0m import { supabase } from '@lib/supabase';
+[7m  [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/OrganizationsPage.astro[0m:[93m77[0m:[93m12[0m - [91merror[0m[90m ts(18048): [0m'cv.organizations' is possibly 'undefined'.
+
+[7m77[0m           {cv.organizations.map((org: any) => (
+[7m  [0m [91m           ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/OrganizationsPage.astro[0m:[93m67[0m:[93m14[0m - [91merror[0m[90m ts(18048): [0m't.hero' is possibly 'undefined'.
+
+[7m67[0m             {t.hero.text}
+[7m  [0m [91m             ~~~~~~[0m
+[96msrc/components/templates/OrganizationsPage.astro[0m:[93m65[0m:[93m62[0m - [91merror[0m[90m ts(18048): [0m't.hero' is possibly 'undefined'.
+
+[7m65[0m           <h1 class="text-4xl font-bold leading-tight mb-4">{t.hero.title}</h1>
+[7m  [0m [91m                                                             ~~~~~~[0m
+[96msrc/components/templates/OrganizationsPage.astro[0m:[93m28[0m:[93m3[0m - [91merror[0m[90m ts(2322): [0mType 'unknown' is not assignable to type 'string | undefined'.
+
+[7m28[0m   description={t.metaDescription}
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+
+[96msrc/components/templates/PodcastsPage.astro[0m:[93m6[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'supabase' is declared but its value is never read.
+
+[7m6[0m import { supabase } from '@lib/supabase';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/PortfolioPage.astro[0m:[93m121[0m:[93m33[0m - [91merror[0m[90m ts(2322): [0mType '{ text: any; url: any; icon: string; }[]' is not assignable to type '{ label: string; url: string; disabled?: boolean | undefined; }[]'.
+  Object literal may only specify known properties, and 'text' does not exist in type '{ label: string; url: string; disabled?: boolean | undefined; }'.
+
+[7m121[0m               links={p.url ? [{ text: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
+[7m   [0m [91m                                ~~~~[0m
+[96msrc/components/templates/PortfolioPage.astro[0m:[93m119[0m:[93m15[0m - [91merror[0m[90m ts(2322): [0mType 'never[]' is not assignable to type 'string'.
+
+[7m119[0m               tools={[]}
+[7m   [0m [91m              ~~~~~[0m
+[96msrc/components/templates/PortfolioPage.astro[0m:[93m114[0m:[93m12[0m - [91merror[0m[90m ts(7005): [0mVariable 'projects' implicitly has an 'any[]' type.
+
+[7m114[0m           {projects?.map((p: any) => (
+[7m   [0m [91m           ~~~~~~~~[0m
+[96msrc/components/templates/PortfolioPage.astro[0m:[93m30[0m:[93m5[0m - [91merror[0m[90m ts(7034): [0mVariable 'projects' implicitly has type 'any[]' in some locations where its type cannot be determined.
+
+[7m30[0m let projects = [];
+[7m  [0m [91m    ~~~~~~~~[0m
+
+[96msrc/components/templates/ResourcesPage.astro[0m:[93m37[0m:[93m3[0m - [91merror[0m[90m ts(2322): [0mType 'unknown' is not assignable to type 'string | undefined'.
+
+[7m37[0m   description={content.desc}
+[7m  [0m [91m  ~~~~~~~~~~~[0m
+
+[96msrc/components/templates/TimelinePage.astro[0m:[93m3[0m:[93m20[0m - [93mwarning[0m[90m ts(6133): [0m'getCollection' is declared but its value is never read.
+
+[7m3[0m import { getEntry, getCollection } from 'astro:content';
+[7m [0m [93m                   ~~~~~~~~~~~~~[0m
+
+[96msrc/components/templates/TrainingProgramPage.astro[0m:[93m192[0m:[93m39[0m - [91merror[0m[90m ts(7006): [0mParameter 'ex' implicitly has an 'any' type.
+
+[7m192[0m                         {dayData.map((ex) => (
+[7m   [0m [91m                                      ~~[0m
+[96msrc/components/templates/TrainingProgramPage.astro[0m:[93m169[0m:[93m25[0m - [91merror[0m[90m ts(7053): [0mElement implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ push1: { exercise: string; sets: number; tempo: string; type: string; muscle: string; rpe: string; rest: string; notes: string; }[]; pull1: { exercise: string; sets: number; tempo: string; type: string; muscle: string; rpe: string; rest: string; notes: string; }[]; legs1: { ...; }[]; push2: { ...; }[]; pull2: { .....'.
+  No index signature with a parameter of type 'string' was found on type '{ push1: { exercise: string; sets: number; tempo: string; type: string; muscle: string; rpe: string; rest: string; notes: string; }[]; pull1: { exercise: string; sets: number; tempo: string; type: string; muscle: string; rpe: string; rest: string; notes: string; }[]; legs1: { ...; }[]; push2: { ...; }[]; pull2: { .....'.
+
+[7m169[0m         const dayData = program[dayKey];
+[7m   [0m [91m                        ~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/TrainingProgramPage.astro[0m:[93m77[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'statsLink' is declared but its value is never read.
+
+[7m77[0m const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
+[7m  [0m [93m      ~~~~~~~~~[0m
+
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m111[0m:[93m137[0m - [91merror[0m[90m ts(18046): [0m'content.links' is of type 'unknown'.
+
+[7m111[0m           <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> {content.links.items.github}</a>
+[7m   [0m [91m                                                                                                                                        ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m110[0m:[93m149[0m - [91merror[0m[90m ts(18046): [0m'content.links' is of type 'unknown'.
+
+[7m110[0m           <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> {content.links.items.linkedin}</a>
+[7m   [0m [91m                                                                                                                                                    ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m109[0m:[93m129[0m - [91merror[0m[90m ts(18046): [0m'content.links' is of type 'unknown'.
+
+[7m109[0m           <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf"></i> {content.links.items.pdf}</a>
+[7m   [0m [91m                                                                                                                                ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m108[0m:[93m77[0m - [91merror[0m[90m ts(18046): [0m'content.links' is of type 'unknown'.
+
+[7m108[0m           <a class="btn" href={cvLink}><i class="fa-solid fa-id-card"></i> {content.links.items.cv}</a>
+[7m   [0m [91m                                                                            ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m105[0m:[93m27[0m - [91merror[0m[90m ts(18046): [0m'content.links' is of type 'unknown'.
+
+[7m105[0m         <p class="muted">{content.links.text}</p>
+[7m   [0m [91m                          ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m104[0m:[93m36[0m - [91merror[0m[90m ts(18046): [0m'content.links' is of type 'unknown'.
+
+[7m104[0m         <h2 class="section-title">{content.links.title}</h2>
+[7m   [0m [91m                                   ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m97[0m:[93m18[0m - [91merror[0m[90m ts(18046): [0m'content.chapters' is of type 'unknown'.
+
+[7m97[0m                 {content.chapters.note}
+[7m  [0m [91m                 ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m92[0m:[93m18[0m - [91merror[0m[90m ts(18046): [0m'content.chapters' is of type 'unknown'.
+
+[7m92[0m                 {content.chapters.items.map((item: string) => (
+[7m  [0m [91m                 ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m90[0m:[93m42[0m - [91merror[0m[90m ts(18046): [0m'content.chapters' is of type 'unknown'.
+
+[7m90[0m             <h3 style="margin:0 0 8px;">{content.chapters.title}</h3>
+[7m  [0m [91m                                         ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m83[0m:[93m18[0m - [91merror[0m[90m ts(18046): [0m'content.summary' is of type 'unknown'.
+
+[7m83[0m                 {content.summary.items.map((item: string) => (
+[7m  [0m [91m                 ~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m81[0m:[93m42[0m - [91merror[0m[90m ts(18046): [0m'content.summary' is of type 'unknown'.
+
+[7m81[0m             <h3 style="margin:0 0 8px;">{content.summary.title}</h3>
+[7m  [0m [91m                                         ~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m75[0m:[93m42[0m - [91merror[0m[90m ts(18046): [0m'content.video' is of type 'unknown'.
+
+[7m75[0m             <a href={content.video.src}>{content.video.downloadLink}</a>.
+[7m  [0m [91m                                         ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m75[0m:[93m22[0m - [91merror[0m[90m ts(18046): [0m'content.video' is of type 'unknown'.
+
+[7m75[0m             <a href={content.video.src}>{content.video.downloadLink}</a>.
+[7m  [0m [91m                     ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m74[0m:[93m14[0m - [91merror[0m[90m ts(18046): [0m'content.video' is of type 'unknown'.
+
+[7m74[0m             {content.video.downloadText}
+[7m  [0m [91m             ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m73[0m:[93m26[0m - [91merror[0m[90m ts(18046): [0m'content.video' is of type 'unknown'.
+
+[7m73[0m             <source src={content.video.src} type="video/mp4">
+[7m  [0m [91m                         ~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m57[0m:[93m14[0m - [91merror[0m[90m ts(18046): [0m'content.sidebar' is of type 'unknown'.
+
+[7m57[0m             {content.sidebar.points.map((pt: string) => (
+[7m  [0m [91m             ~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m55[0m:[93m38[0m - [91merror[0m[90m ts(18046): [0m'content.sidebar' is of type 'unknown'.
+
+[7m55[0m           <h2 class="section-title">{content.sidebar.title}</h2>
+[7m  [0m [91m                                     ~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m49[0m:[93m12[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m49[0m           {content.hero.tip}
+[7m  [0m [91m           ~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m45[0m:[93m89[0m - [91merror[0m[90m ts(18046): [0m'content.hero.cta' is of type 'unknown'.
+
+[7m45[0m           <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.hero.cta.contact}</a>
+[7m  [0m [91m                                                                                        ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m45[0m:[93m89[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m45[0m           <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.hero.cta.contact}</a>
+[7m  [0m [91m                                                                                        ~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m43[0m:[93m51[0m - [91merror[0m[90m ts(18046): [0m'content.hero.cta' is of type 'unknown'.
+
+[7m43[0m             <i class="fa-solid fa-file-pdf"></i> {content.hero.cta.pdf}
+[7m  [0m [91m                                                  ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m43[0m:[93m51[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m43[0m             <i class="fa-solid fa-file-pdf"></i> {content.hero.cta.pdf}
+[7m  [0m [91m                                                  ~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m41[0m:[93m74[0m - [91merror[0m[90m ts(18046): [0m'content.hero.cta' is of type 'unknown'.
+
+[7m41[0m           <a class="btn" href="#video"><i class="fa-solid fa-play"></i> {content.hero.cta.video}</a>
+[7m  [0m [91m                                                                         ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m41[0m:[93m74[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m41[0m           <a class="btn" href="#video"><i class="fa-solid fa-play"></i> {content.hero.cta.video}</a>
+[7m  [0m [91m                                                                         ~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m37[0m:[93m12[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m37[0m           {content.hero.lead}
+[7m  [0m [91m           ~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m35[0m:[93m14[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m35[0m         <h1>{content.hero.title}</h1>
+[7m  [0m [91m             ~~~~~~~~~~~~[0m
+[96msrc/components/templates/VideoCVPage.astro[0m:[93m34[0m:[93m29[0m - [91merror[0m[90m ts(18048): [0m'content.hero' is possibly 'undefined'.
+
+[7m34[0m         <p class="eyebrow">{content.hero.eyebrow}</p>
+[7m  [0m [91m                            ~~~~~~~~~~~~[0m
+
+[96msrc/components/ui/FeatureCard.astro[0m:[93m43[0m:[93m26[0m - [91merror[0m[90m ts(2322): [0mType '{ children: string; href: string; size: string; icon: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m43[0m       <Button href={url} size="lg" icon="arrow-right">Read Analysis</Button>
+[7m  [0m [91m                         ~~~~[0m
+
+[96msrc/layouts/BaseLayout.astro[0m:[93m41[0m:[93m11[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m41[0m   <script src="/assets/js/themes.js" defer></script>
+[7m  [0m [93m          ~~~[0m
+[96msrc/layouts/BaseLayout.astro[0m:[93m40[0m:[93m11[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m40[0m   <script src="/assets/js/search.js" defer></script>
+[7m  [0m [93m          ~~~[0m
+
+[96msrc/pages/dashboard.astro[0m:[93m24[0m:[93m21[0m - [91merror[0m[90m ts(2322): [0mType '{ title: string; subtitle: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & Props'.
+
+[7m24[0m     <SectionHeading title="Quantum Analytics" subtitle="System Status & Telemetry" />
+[7m  [0m [91m                    ~~~~~[0m
+
+Result (167 files): 
+- 116 errors
+- 0 warnings
+- 29 hints
+

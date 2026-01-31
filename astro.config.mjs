@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
+import sentry from '@sentry/astro';
 import vercel from '@astrojs/vercel';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -18,6 +19,7 @@ export default defineConfig({
   site: 'https://antonebsen.dk',
 
   integrations: [
+    sentry(),
     react(),
     sitemap(),
     tailwind({

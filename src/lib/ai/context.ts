@@ -4,30 +4,34 @@ import portfolioData from '../../data/portfolio.json';
 import timelineData from '../../data/timeline.json';
 import blogData from '../../data/blog.json';
 import qaData from '../../data/qa.json';
+import type { TimelineItem, ProjectItem, QAItem, QARoot } from '../../types/content';
 
 export function buildSystemContext(lang: 'da' | 'en' = 'en'): string {
     const isDa = lang === 'da';
 
-    // Choose the right language for bio/intro
-    const bio = isDa ? aboutData.bio.da : aboutData.bio.en;
-    const philosophy = isDa ? aboutData.philosophy.da : aboutData.philosophy.en;
+    // About Data Mapping
+    // The JSON structure is different from what was previously assumed.
+    // We map 'hero.lead' to bio and 'focus' to philosophy/interests.
+    const bio = aboutData.hero.lead;
+    const philosophy = aboutData.focus.map(f => `${f.title}: ${f.description}`).join('; ');
 
     // Format Timeline (Experience)
-    const timeline = timelineData.map(t => {
-        const title = isDa ? t.title_da : t.title;
-        const desc = isDa ? t.description_da : t.description;
-        return `- [${t.year}] ${title} @ ${t.company || 'Self'}: ${desc}`;
+    const timeline = (timelineData as TimelineItem[]).map(t => {
+        const title = isDa ? t.title_da : t.title_en;
+        const desc = isDa ? t.desc_da : t.desc_en;
+        const role = "Anton"; // Or extract if available
+        return `- [${t.year}] ${title}: ${desc}`;
     }).join('\n');
 
     // Format Projects
-    const projects = portfolioData.map(p => {
-        const title = isDa ? p.title_da : p.title;
-        const desc = isDa ? p.description_da : p.description;
-        return `- ${title} (${p.category}): ${desc}. Tech: ${p.tech?.join(', ')}`;
+    // Portfolio JSON is single-language (English/Danish mix) or agnostic
+    const projects = (portfolioData as ProjectItem[]).map(p => {
+        return `- ${p.title} (${p.tagString}): ${p.description}. Tools: ${p.tools}`;
     }).join('\n');
 
     // Format QA (Common Questions)
-    const qa = qaData.map(q => {
+    const qaList = (qaData as QARoot).pinned;
+    const qa = qaList.map(q => {
         const question = isDa ? q.q_da : q.q_en;
         const answer = isDa ? q.a_da : q.a_en;
         return `Q: ${question}\nA: ${answer}`;
@@ -41,26 +45,29 @@ export function buildSystemContext(lang: 'da' | 'en' = 'en'): string {
     - Professional but friendly.
     - Confident but humble.
     - Concise. Do not ramble.
-    - If you don't know something, say "I don't have that information, but you can contact Anton at anton.ebsen@gmail.com".
-    - Answer in the language the user asks (${lang === 'da' ? 'Danish' : 'English'}).
+    - If you don’t know something, say "I don’t know" or suggest checking the CV page.
+    - Respond in ${isDa ? 'Danish' : 'English'}.
 
-    CONTEXT DATA:
-    
-    [BIO]
-    ${bio}
-    
-    [PHILOSOPHY]
-    ${philosophy}
+    CORE INFO:
+    - Name: Anton Meier Ebsen Jørgensen
+    - Role: Student (cand.oecon), Teaching Assistant (Excel/VBA), Data Enthusiast.
+    - Location: ${aboutData.quickfacts.find(q => q.icon.includes('location'))?.text || 'København'}
+    - Bio: ${bio}
+    - Key Interests/Philosophy: ${philosophy}
 
-    [EXPERIENCE]
+    EXPERIENCE (Timeline):
     ${timeline}
 
-    [PROJECTS]
+    PROJECTS & CASE STUDIES:
     ${projects}
 
-    [FAQ]
+    COMMON Q&A:
     ${qa}
 
-    Start now.
+    INSTRUCTIONS:
+    - Use the above data to answer the user's question.
+    - If asked about "Who is Anton?", summarize the Bio and key roles.
+    - If asked about specific tools, reference the Projects section.
+    - Keep answers under 3-4 sentences unless asked for detail.
     `;
 }
