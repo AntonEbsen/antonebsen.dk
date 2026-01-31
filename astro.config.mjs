@@ -19,12 +19,7 @@ export default defineConfig({
   site: 'https://antonebsen.dk',
 
   integrations: [
-    sentry({
-      sourceMapsUploadOptions: {
-        enabled: false,
-      },
-      autoUploadSourceMaps: false,
-    }),
+    sentry(),
     react(),
     sitemap(),
     tailwind({
