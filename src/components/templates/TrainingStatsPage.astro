@@ -312,7 +312,7 @@ const homeLink = isDa ? '/' : '/en';
                 <div class="flex flex-col lg:flex-row items-center justify-around gap-12">
                     <!-- Front View -->
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] uppercase font-bold text-white/20 mb-4">{content.anatomy.front}</span>
+                        <span class="text-[10px] uppercase font-bold text-white/60 mb-4">{content.anatomy.front}</span>
                         <div class="w-64 h-96 relative" id="body-front">
                             <svg viewBox="0 0 200 400" class="w-full h-full">
                                 <!-- Base Body Outline -->
@@ -330,7 +330,7 @@ const homeLink = isDa ? '/' : '/en';
                     </div>
                     <!-- Back View -->
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] uppercase font-bold text-white/20 mb-4">{content.anatomy.back}</span>
+                        <span class="text-[10px] uppercase font-bold text-white/60 mb-4">{content.anatomy.back}</span>
                         <div class="w-64 h-96 relative" id="body-back">
                             <svg viewBox="0 0 200 400" class="w-full h-full">
                                 <path d="M100,20 C80,20 70,35 70,50 C70,65 80,80 100,80 C120,80 130,65 130,50 C130,35 120,20 100,20" fill="#ffffff05" stroke="#ffffff10" />
@@ -344,7 +344,7 @@ const homeLink = isDa ? '/' : '/en';
                         </div>
                     </div>
                 </div>
-                <p class="text-[10px] text-white/20 mt-8 italic text-center uppercase tracking-widest font-bold">{content.anatomy.legend}</p>
+                <p class="text-[10px] text-white/60 mt-8 italic text-center uppercase tracking-widest font-bold">{content.anatomy.legend}</p>
             </div>
         </div>
 
@@ -358,13 +358,16 @@ const homeLink = isDa ? '/' : '/en';
 </Layout>
 
 <script>
-  import Chart from 'chart.js/auto';
+  // import Chart from 'chart.js/auto'; // Lazy loaded below
 
   async function initStats() {
     try {
       const container = document.getElementById('stats-container');
       const i18n = JSON.parse(container?.getAttribute('data-i18n') || '{}');
       const labels = JSON.parse(container?.getAttribute('data-labels') || '{}');
+      
+      // Lazy load Chart.js
+      const { default: Chart } = await import('chart.js/auto');
 
       const res = await fetch('/api/training');
       const logs = await res.json();
@@ -577,11 +580,11 @@ const homeLink = isDa ? '/' : '/en';
                 <div class="flex justify-between items-end mb-2">
                     <div>
                         <span class="text-sm font-bold text-white uppercase tracking-wider">${group}</span>
-                        <span class="text-[10px] text-white/30 ml-2">${labels.goal}: ${target.min}-${target.max} ${labels.sets}</span>
+                        <span class="text-[10px] text-white/60 ml-2">${labels.goal}: ${target.min}-${target.max} ${labels.sets}</span>
                     </div>
                     <div class="text-right">
                         <span class="text-lg font-black italic text-white">${data.weeklySets}</span>
-                        <span class="text-[10px] text-white/30 uppercase font-bold ml-1">${labels.sets}</span>
+                        <span class="text-[10px] text-white/60 uppercase font-bold ml-1">${labels.sets}</span>
                     </div>
                 </div>
                 <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">

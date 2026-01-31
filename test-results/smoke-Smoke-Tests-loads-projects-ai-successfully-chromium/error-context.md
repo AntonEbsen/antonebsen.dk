@@ -134,4 +134,19 @@
     - text:            
     - button "" [ref=e92] [cursor=pointer]:
       - generic [ref=e93]: 
+  - generic [ref=e96]:
+    - button "Menu" [ref=e97]:
+      - img [ref=e99]
+      - generic: Menu
+    - button "Inspect" [ref=e103]:
+      - img [ref=e105]
+      - generic: Inspect
+    - button "Audit" [ref=e107]:
+      - generic [ref=e108]:
+        - img [ref=e109]
+        - img [ref=e112]
+      - generic: Audit
+    - button "Settings" [ref=e115]:
+      - img [ref=e117]
+      - generic: Settings
 ```

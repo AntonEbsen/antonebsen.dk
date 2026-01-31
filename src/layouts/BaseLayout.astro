@@ -8,6 +8,7 @@ import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
 import '@styles/themes.css';
 import '@fontsource-variable/inter';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -26,6 +27,7 @@ const lang = getLangFromUrl(Astro.url);
 <head>
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
+  <ClientRouter />
   
   <!-- Fonts -->
   <!-- Fonts -->

@@ -1,46 +1,53 @@
 import { supabase } from './supabase';
+import { z } from 'zod';
 
-// --- Types ---
-export interface Book {
-    id: number;
-    created_at: string;
-    title: string;
-    author: string;
-    rating: number; // 0-5
-    status: string; // 'Read', 'To Read', etc.
-    notes?: string;
-}
+// --- Schemas & Types ---
 
-export interface Certification {
-    id: number;
-    created_at: string;
-    title: string;
-    issuer: string;
-    date: string;
-    url?: string;
-    category: string;
-    visible: boolean;
-}
+export const BookSchema = z.object({
+    id: z.number(),
+    created_at: z.string(),
+    title: z.string(),
+    author: z.string(),
+    rating: z.number(),
+    status: z.string(),
+    notes: z.string().optional().nullable(),
+});
+export type Book = z.infer<typeof BookSchema>;
 
-export interface Podcast {
-    id: number;
-    created_at: string;
-    title: string;
-    host: string;
-    rating: number;
-    notes?: string;
-    url?: string;
-    category?: string;
-}
+export const CertificationSchema = z.object({
+    id: z.number(),
+    created_at: z.string(),
+    title: z.string(),
+    issuer: z.string(),
+    date: z.string(),
+    url: z.string().optional().nullable(),
+    category: z.string(),
+    visible: z.boolean(),
+});
+export type Certification = z.infer<typeof CertificationSchema>;
 
-export interface BucketItem {
-    id: number;
-    created_at: string;
-    title: string;
-    status: 'todo' | 'doing' | 'done';
-    category?: string;
-    description?: string;
-}
+export const PodcastSchema = z.object({
+    id: z.number(),
+    created_at: z.string(),
+    title: z.string(),
+    host: z.string(),
+    rating: z.number(),
+    notes: z.string().optional().nullable(),
+    url: z.string().optional().nullable(),
+    category: z.string().optional().nullable(),
+});
+export type Podcast = z.infer<typeof PodcastSchema>;
+
+export const BucketItemSchema = z.object({
+    id: z.number(),
+    created_at: z.string(),
+    title: z.string(),
+    status: z.enum(['todo', 'doing', 'done']),
+    category: z.string().optional().nullable(),
+    description: z.string().optional().nullable(),
+});
+export type BucketItem = z.infer<typeof BucketItemSchema>;
+
 
 // --- Fetch Functions ---
 
@@ -51,8 +58,22 @@ export async function getBooks(): Promise<Book[]> {
             .from('books')
             .select('*')
             .order('rating', { ascending: false });
-        if (error) console.error("Error fetching books:", error);
-        return (data || []) as Book[];
+
+        if (error) {
+            console.error("Error fetching books:", error);
+            return [];
+        }
+
+        const validItems: Book[] = [];
+        data?.forEach((item) => {
+            const result = BookSchema.safeParse(item);
+            if (result.success) {
+                validItems.push(result.data);
+            } else {
+                console.warn(`Skipping invalid Book (ID: ${(item as any).id}):`, result.error.flatten());
+            }
+        });
+        return validItems;
     } catch (e) {
         console.error("Exception fetching books:", e);
         return [];
@@ -67,8 +88,22 @@ export async function getCertifications(): Promise<Certification[]> {
             .select('*')
             .eq('visible', true)
             .order('id', { ascending: false });
-        if (error) console.error("Error fetching certifications:", error);
-        return (data || []) as Certification[];
+
+        if (error) {
+            console.error("Error fetching certifications:", error);
+            return [];
+        }
+
+        const validItems: Certification[] = [];
+        data?.forEach((item) => {
+            const result = CertificationSchema.safeParse(item);
+            if (result.success) {
+                validItems.push(result.data);
+            } else {
+                console.warn(`Skipping invalid Certification (ID: ${(item as any).id}):`, result.error.flatten());
+            }
+        });
+        return validItems;
     } catch (e) {
         console.error("Exception fetching certifications:", e);
         return [];
@@ -79,12 +114,25 @@ export async function getPodcasts(): Promise<Podcast[]> {
     if (!supabase) return [];
     try {
         const { data, error } = await supabase
-            .from('podcasts') // Assuming table name is 'podcasts'
+            .from('podcasts')
             .select('*')
             .order('rating', { ascending: false });
-        // Note: Check table name in actual usage? Previous code used 'podcasts'
-        if (error) console.error("Error fetching podcasts:", error);
-        return (data || []) as Podcast[];
+
+        if (error) {
+            console.error("Error fetching podcasts:", error);
+            return [];
+        }
+
+        const validItems: Podcast[] = [];
+        data?.forEach((item) => {
+            const result = PodcastSchema.safeParse(item);
+            if (result.success) {
+                validItems.push(result.data);
+            } else {
+                console.warn(`Skipping invalid Podcast (ID: ${(item as any).id}):`, result.error.flatten());
+            }
+        });
+        return validItems;
     } catch (e) {
         console.error("Exception fetching podcasts:", e);
         return [];
@@ -98,8 +146,22 @@ export async function getBucketList(): Promise<BucketItem[]> {
             .from('bucket_list')
             .select('*')
             .order('created_at', { ascending: true });
-        if (error) console.error("Error fetching bucket list:", error);
-        return (data || []) as BucketItem[];
+
+        if (error) {
+            console.error("Error fetching bucket list:", error);
+            return [];
+        }
+
+        const validItems: BucketItem[] = [];
+        data?.forEach((item) => {
+            const result = BucketItemSchema.safeParse(item);
+            if (result.success) {
+                validItems.push(result.data);
+            } else {
+                console.warn(`Skipping invalid BucketItem (ID: ${(item as any).id}):`, result.error.flatten());
+            }
+        });
+        return validItems;
     } catch (e) {
         console.error("Exception fetching bucket list:", e);
         return [];
