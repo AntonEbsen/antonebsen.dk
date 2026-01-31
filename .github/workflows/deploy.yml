@@ -47,7 +47,7 @@ jobs:
       - name: Build JupyterLite
         run: |
           cd notebooks
-          jupyter lite build
+          jupyter lite build --base-url /research/
           mkdir -p ../public/research
           cp -r _output/* ../public/research/
           
