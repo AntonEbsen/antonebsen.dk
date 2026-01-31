@@ -59,7 +59,9 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Organisationer', url: '/organizations' },
                 { label: 'Referencer', url: '/referencer' },
                 { label: 'Milepæle', url: '/timeline' },
-                { label: 'Video-CV', url: '/video-cv' }
+                { label: 'Video-CV', url: '/video-cv' },
+                { label: 'Hvad laver jeg nu?', url: '/now' },
+                { label: 'Værdier & Etik', url: '/values' }
             ]
         },
         {
@@ -74,6 +76,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Galleri', url: '/gallery' },
                 { label: 'Mit Setup (/uses)', url: '/uses' },
                 { label: 'Økonomisk Filosofi', url: '/finance' },
+                { label: 'API Protokol', url: '/api-docs' },
                 { label: 'Om Antons AI', url: '/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -99,7 +102,9 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Organizations', url: '/en/organizations' },
                 { label: 'Testimonials', url: '/en/referencer' },
                 { label: 'Milestones', url: '/en/timeline' },
-                { label: 'Video CV', url: '/en/video-cv' }
+                { label: 'Video CV', url: '/en/video-cv' },
+                { label: 'What I\'m doing now', url: '/en/now' },
+                { label: 'Values & Ethics', url: '/en/values' }
             ]
         },
         {
@@ -114,6 +119,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Gallery', url: '/en/gallery' },
                 { label: 'My Setup (/uses)', url: '/en/uses' },
                 { label: 'Finance Philosophy', url: '/en/finance' },
+                { label: 'API Protocol', url: '/en/api-docs' },
                 { label: "About Anton's AI", url: '/en/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]

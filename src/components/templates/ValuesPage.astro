@@ -1,0 +1,111 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Værdier & Etik | Anton Meier Ebsen Jørgensen",
+    description: "Min personlige filosofi omkring anvendelse af AI, dataetik og økonomisk retfærdighed.",
+    heroTitle: "Værdier & Moralsk Kompas",
+    heroText: "I en verden drevet af algoritmer og data, mener jeg det er vigtigt at have et klart standpunkt omkring, hvordan vi bruger teknologi og økonomiske modeller.",
+    manifesto: [
+      {
+        title: "Data med værdighed",
+        text: "Data er ikke bare tal; det er digitale aftryk af menneskers liv. Jeg arbejder efter princippet om 'privacy by design' og gennemsigtighed i databehandling."
+      },
+      {
+        title: "Menneskecentreret AI",
+        text: "AI bør være en assistent, ikke en erstatning. Jeg stræber efter at bygge værktøjer, der forstærker menneskelig kreativitet fremfor at ensrette den."
+      },
+      {
+        title: "Intellektuel ydmyghed",
+        text: "Som økonom ved jeg, at modeller er simplificeringer af en kompleks virkelighed. Jeg tilgår altid mine konklusioner med en sund skepsis og villighed til at blive klogere."
+      },
+      {
+        title: "Åbenhed & Deling",
+        text: "Viden bliver mere værd, når den deles. Jeg støtter open-source og deler gerne de metoder og templates, jeg udvikler."
+      }
+    ]
+  },
+  en: {
+    title: "Values & Ethics | Anton Meier Ebsen Jørgensen",
+    description: "My personal philosophy regarding the use of AI, data ethics, and economic justice.",
+    heroTitle: "Values & Moral Compass",
+    heroText: "In a world driven by algorithms and data, I believe it is crucial to have a clear stance on how we use technology and economic models.",
+    manifesto: [
+      {
+        title: "Data with Dignity",
+        text: "Data isn't just numbers; it's digital footprints of human lives. I work by the principle of 'privacy by design' and transparency in data processing."
+      },
+      {
+        title: "Human-Centered AI",
+        text: "AI should be an assistant, not a replacement. I strive to build tools that amplify human creativity rather than homogenize it."
+      },
+      {
+        title: "Intellectual Humility",
+        text: "As an economist, I know that models are simplifications of a complex reality. I always approach my conclusions with healthy skepticism and a willingness to learn."
+      },
+      {
+        title: "Openness & Sharing",
+        text: "Knowledge increases in value when shared. I support open-source and enjoy sharing the methods and templates I develop."
+      }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-24 animate-on-scroll">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter">
+          {t.heroTitle}
+        </h1>
+        <p class="text-xl md:text-2xl text-dim leading-relaxed max-w-2xl mx-auto px-4 italic opacity-80">
+          "{t.heroText}"
+        </p>
+      </div>
+    </Section>
+
+    <!-- Manifesto Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
+      {t.manifesto.map((m, idx) => (
+        <Section class={`animate-on-scroll delay-${(idx + 1) * 100}`}>
+          <div class="relative pl-12">
+            <div class="absolute left-0 top-0 text-3xl font-black text-accent opacity-20 italic">
+               0{idx + 1}
+            </div>
+            <h2 class="text-2xl font-bold mb-4 text-white group-hover:text-accent transition-colors">
+              {m.title}
+            </h2>
+            <p class="text-dim leading-relaxed text-lg border-l-2 border-accent/10 pl-6">
+              {m.text}
+            </p>
+          </div>
+        </Section>
+      ))}
+    </div>
+
+    <!-- Final Statement -->
+    <Section class="mt-40 animate-on-scroll">
+       <div class="max-w-2xl mx-auto p-12 rounded-full border border-accent/10 bg-accent/[0.01] text-center">
+          <p class="text-xs uppercase tracking-[0.4em] text-accent font-bold mb-4">Motto</p>
+          <h3 class="text-3xl font-black italic">
+             {isDa ? 'Integritet gennem evidens.' : 'Integrity through evidence.'}
+          </h3>
+       </div>
+    </Section>
+  </main>
+</Layout>

@@ -1,0 +1,138 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Hvad jeg laver nu | Anton Meier Ebsen Jørgensen",
+    description: "En side inspireret af 'Now' konceptet. Her er hvad jeg fokuserer på i øjeblikket.",
+    heroTitle: "Lige nu",
+    heroText: "Inspireret af Derek Sivers' 'Now' koncept. Dette er en status på, hvad der optager min tid i øjeblikket.",
+    sections: [
+      {
+        title: "Studie & Akademisk",
+        items: [
+          { title: "Kandidat i Økonomi", status: "Aktiv", desc: "Dykker ned i avancerede økonometriske modeller og makroøkonomi." },
+          { title: "Specialeforberedelse", status: "Planlægning", desc: "Afdækker potentielle emner inden for finansiel stabilitet." }
+        ]
+      },
+      {
+        title: "Projekter & Kode",
+        items: [
+          { title: "antonebsen.dk", status: "Bygger", desc: "Udvidet mit personlige operativsystem med flere interaktive sider og bedre i18n." },
+          { title: "AI Integration", status: "Eksperiment", desc: "Tester nye måder at bruge RAG (Retrieval Augmented Generation) på personlige dokumenter." }
+        ]
+      },
+      {
+        title: "Læsning & Læring",
+        items: [
+          { title: "Deep Work af Cal Newport", status: "Læser", desc: "Genlæser denne klassiker for at optimere mine studievaner." },
+          { title: "Advanced TypeScript", status: "Lærer", desc: "Forbedrer mine færdigheder inden for type-sikker webudvikling." }
+        ]
+      }
+    ],
+    lastUpdated: "Sidst opdateret: Januar 2026"
+  },
+  en: {
+    title: "What I'm doing now | Anton Meier Ebsen Jørgensen",
+    description: "A page inspired by the 'Now' concept. Here's what I'm focusing on at the moment.",
+    heroTitle: "Now",
+    heroText: "Inspired by Derek Sivers' 'Now' concept. This is a snapshot of what's occupying my time right now.",
+    sections: [
+      {
+        title: "Study & Academic",
+        items: [
+          { title: "Master's in Economics", status: "Active", desc: "Diving into advanced econometric models and macroeconomics." },
+          { title: "Thesis Prep", status: "Planning", desc: "Exploring potential topics within financial stability." }
+        ]
+      },
+      {
+        title: "Projects & Code",
+        items: [
+          { title: "antonebsen.dk", status: "Building", desc: "Expanding my personal OS with more interactive pages and better i18n." },
+          { title: "AI Integration", status: "Experiment", desc: "Testing new ways to apply RAG (Retrieval Augmented Generation) to personal documents." }
+        ]
+      },
+      {
+        title: "Reading & Learning",
+        items: [
+          { title: "Deep Work by Cal Newport", status: "Reading", desc: "Re-reading this classic to optimize my study habits." },
+          { title: "Advanced TypeScript", status: "Learning", desc: "Improving my skills in type-safe web development." }
+        ]
+      }
+    ],
+    lastUpdated: "Last updated: January 2026"
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-16 animate-on-scroll">
+      <div class="max-w-3xl">
+        <h1 class="text-6xl font-black mb-6 tracking-tighter text-white">
+          {t.heroTitle}<span class="text-accent">.</span>
+        </h1>
+        <p class="text-xl text-dim leading-relaxed mb-4">
+          {t.heroText}
+        </p>
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-white/40 uppercase tracking-widest font-mono">
+           <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+           {t.lastUpdated}
+        </div>
+      </div>
+    </Section>
+
+    <!-- Content Blocks -->
+    <div class="space-y-24">
+      {t.sections.map((section, sIdx) => (
+        <Section class={`animate-on-scroll delay-${(sIdx + 1) * 100}`}>
+          <SectionHeading class="mb-10 text-accent/80">{section.title}</SectionHeading>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {section.items.map(item => (
+              <div class="relative group">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-accent/20 to-transparent rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <Card variant="glass" class="relative p-8 h-full">
+                  <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">{item.title}</h3>
+                    <Pill variant={item.status === 'Active' || item.status === 'Aktiv' || item.status === 'Building' || item.status === 'Bygger' ? 'accent' : 'default'}>
+                      {item.status}
+                    </Pill>
+                  </div>
+                  <p class="text-dim leading-relaxed">
+                    {item.desc}
+                  </p>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </Section>
+      ))}
+    </div>
+
+    <!-- Footer Quote/CTA -->
+    <Section class="mt-32 text-center animate-on-scroll">
+       <div class="max-w-xl mx-auto border-t border-white/5 pt-12">
+          <p class="text-sm text-dim italic mb-6">
+            {isDa ? '"Fokus er nøglen til at mestre komplekse emner."' : '"Focus is the key to mastering complex topics."'}
+          </p>
+          <a href="/contact" class="text-accent font-bold hover:underline decoration-accent/30 underline-offset-8 transition-all">
+            {isDa ? 'Lad os netværke →' : 'Let\'s connect →'}
+          </a>
+       </div>
+    </Section>
+  </main>
+</Layout>

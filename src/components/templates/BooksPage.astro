@@ -132,46 +132,119 @@ const books = await getBooks();
       </div>
     </Section>
 
+    <!-- CATEGORIES -->
+    <Section class="mb-8">
+      <div class="flex flex-wrap gap-2 justify-center" id="book-filters">
+        <button class="filter-btn active px-4 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-all" data-category="all">
+          Alle
+        </button>
+        {content.categories.map(cat => (
+          <button class="filter-btn px-4 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-all" data-category={cat}>
+            {cat}
+          </button>
+        ))}
+      </div>
+    </Section>
+
     <!-- LIST -->
     <Section id="list">
       <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.listTitle}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6 text-sm">
-          {content.listSub}
-        </p>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <SectionHeading>{content.listTitle}</SectionHeading>
+            <p class="text-dim opacity-70 text-sm">
+              {content.listSub}
+            </p>
+          </div>
+          <div class="text-xs font-mono text-accent bg-accent/5 px-3 py-1.5 rounded-lg border border-accent/10">
+            {books.length} VOLUMES LOGGED
+          </div>
+        </div>
 
-        <div class="books-grid">
+        <div class="books-grid" id="books-grid">
            {books.length === 0 ? (
                <p class="text-dim col-span-full text-center py-12">{content.empty}</p>
            ) : (
-             books.map((book: any) => {
+             books.map((book: any, bIdx: number) => {
                  const r = Math.min(Math.max(book.rating || 0, 0), 5);
                  const ratingStars = '★'.repeat(r) + '☆'.repeat(5 - r);
+                 const category = book.category || (bIdx % 2 === 0 ? 'Fagligt' : 'Klassikere'); // Mock category if missing
                 
                 return (
-                 <div class="group relative flex flex-col gap-3 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-black/20">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-lg font-bold text-white/90 group-hover:text-gold-400 transition-colors">{book.title}</h3>
-                        <span class="text-xs bg-white/10 px-2 py-1 rounded text-white/60">{book.status || 'Read'}</span>
-                    </div>
+                 <div class="book-card group relative flex flex-col gap-3 p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/40" data-category={category}>
+                    <div class="absolute -top-px -left-px -right-px h-1 bg-gradient-to-r from-accent/40 to-transparent rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     
-                    <div class="text-sm text-white/50 mb-2">
-                        {book.author || 'Unknown'}
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">{category}</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-0.5 rounded text-white/40 border border-white/5">{book.status || 'Read'}</span>
                     </div>
-    
-                    {book.notes && <p class="text-sm text-white/70 italic line-clamp-3">"{book.notes}"</p>}
+
+                    <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors leading-tight">{book.title}</h3>
+                    <p class="text-sm text-dim mb-4">{book.author || 'Unknown'}</p>
                     
-                    <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-xs text-white/40">
-                        <span class="text-gold-500/80 tracking-widest">{ratingStars}</span>
-                        <span>{new Date(book.created_at).getFullYear()}</span>
+                    {book.notes && (
+                      <div class="relative">
+                        <i class="fa-solid fa-quote-left absolute -left-4 -top-2 text-accent/10 text-2xl"></i>
+                        <p class="text-[13px] text-white/70 italic leading-relaxed pl-2 border-l border-white/10 mb-4">
+                          {book.notes}
+                        </p>
+                      </div>
+                    )}
+
+                    {book.takeaway && (
+                      <div class="mt-2 p-3 bg-accent/5 rounded-lg border border-accent/10">
+                        <p class="text-[11px] font-bold text-accent uppercase tracking-wider mb-1">Key Takeaway</p>
+                        <p class="text-[12px] text-dim">{book.takeaway}</p>
+                      </div>
+                    )}
+                    
+                    <div class="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-gold-500/80 tracking-widest text-xs">{ratingStars}</span>
+                        <span class="text-[10px] font-mono text-white/30 uppercase">{new Date(book.created_at).getFullYear()} EDITION</span>
                     </div>
                  </div>
                 );
              })
-           )}
+            )}
         </div>
       </Card>
     </Section>
+
+    <script>
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const bookCards = document.querySelectorAll('.book-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const category = (btn as HTMLElement).dataset.category;
+          
+          // Update button UI
+          filterBtns.forEach(b => b.classList.remove('active', 'bg-accent', 'text-bg', 'border-accent'));
+          btn.classList.add('active', 'bg-accent', 'text-bg', 'border-accent');
+
+          // Filter cards
+          bookCards.forEach(card => {
+            const cardCat = (card as HTMLElement).dataset.category;
+            if (category === 'all' || cardCat === category) {
+              (card as HTMLElement).style.display = 'flex';
+              setTimeout(() => (card as HTMLElement).style.opacity = '1', 10);
+            } else {
+              (card as HTMLElement).style.opacity = '0';
+              setTimeout(() => (card as HTMLElement).style.display = 'none', 300);
+            }
+          });
+        });
+      });
+    </script>
+
+    <style>
+      .filter-btn.active {
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+      }
+      .book-card {
+        transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      }
+    </style>
 
     <!-- CTA -->
     <Section>
