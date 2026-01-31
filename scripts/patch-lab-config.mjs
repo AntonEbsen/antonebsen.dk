@@ -11,8 +11,9 @@ console.log("Patching JupyterLite configuration...");
 if (fs.existsSync(mainConfigPath)) {
     const mainConfig = JSON.parse(fs.readFileSync(mainConfigPath, 'utf8'));
     mainConfig['jupyter-config-data'].baseUrl = '/research/';
+    mainConfig['jupyter-config-data'].fullStaticUrl = '/research/build';
     fs.writeFileSync(mainConfigPath, JSON.stringify(mainConfig, null, 2));
-    console.log(`Updated baseUrl in ${mainConfigPath}`);
+    console.log(`Updated baseUrl and fullStaticUrl in ${mainConfigPath}`);
 } else {
     console.error(`Error: ${mainConfigPath} not found.`);
     process.exit(1);
@@ -21,10 +22,11 @@ if (fs.existsSync(mainConfigPath)) {
 // Patch Lab Config
 if (fs.existsSync(labConfigPath)) {
     const labConfig = JSON.parse(fs.readFileSync(labConfigPath, 'utf8'));
-    labConfig['jupyter-config-data'].themesUrl = '../build/themes';
+    labConfig['jupyter-config-data'].themesUrl = '/research/build/themes';
+    labConfig['jupyter-config-data'].settingsUrl = '/research/build/schemas';
     labConfig['jupyter-config-data'].appUrl = '/research/lab';
     fs.writeFileSync(labConfigPath, JSON.stringify(labConfig, null, 2));
-    console.log(`Updated themesUrl and appUrl in ${labConfigPath}`);
+    console.log(`Updated all URLs to absolute paths in ${labConfigPath}`);
 } else {
     console.error(`Error: ${labConfigPath} not found.`);
     process.exit(1);
