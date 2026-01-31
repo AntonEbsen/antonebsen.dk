@@ -18,10 +18,10 @@ const isDa = lang === 'da';
 const t = {
   da: {
     title: "Anton Meier Ebsen Jørgensen – Projekt-cases",
-    desc: "Tre udvalgte projekt-cases: data, metode, resultater og værktøjer.",
-    heroTitle: "Tre udvalgte cases",
-    heroText: "Her er tre cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.",
-    badges: ["Makro & pengepolitik", "Tidsrækker", "CGE/RBC", "Reproducerbar analyse"],
+    desc: "Fire udvalgte projekt-cases: data, metode, resultater og værktøjer.",
+    heroTitle: "Fire udvalgte cases",
+    heroText: "Her er fire cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.",
+    badges: ["Makro & pengepolitik", "Tidsrækker", "Anvendt dataanalyse", "Reproducerbar analyse"],
     btns: { portfolio: "Se portefølje", cv: "Se CV", contact: "Kontakt" },
     formatTitle: "Format",
     formatList: ["<strong>Problem</strong> â†’ hvad skulle løses?", "<strong>Data</strong> â†’ hvad byggede analysen på?", "<strong>Metode</strong> â†’ hvordan blev det løst?", "<strong>Resultat</strong> â†’ hvad kom der ud?"],
@@ -77,15 +77,28 @@ const t = {
             role: ["”¢ Selvstændig problemformulering", "”¢ Dataindsamling og trendanalyse", "”¢ Teoretisk rammeværk for CBDC"],
             tools: ["Excel", "Word", "Litteratursøgning"],
             lang: "da"
+        },
+        {
+            id: "case-erd",
+            title: "Case 4: Valutakursdynamik – Inflation & Relative Kurser",
+            pill: "Anvendt Dataanalyse",
+            desc: "Eksplorativ analyse af sammenhængen mellem dansk inflation og hovedvalutaer (EUR, USD, CNY).",
+            problem: "Hvordan har danske priser og valutakurser bevæget sig i forhold til hinanden over de sidste 20 år?",
+            data: ["”¢ DST API-data (Prisindeks & Valutakurser)", "”¢ Årlige observationer (2000-2023)"],
+            method: ["”¢ Datasammensmeltning og rensning i Python", "”¢ Periode-indeksering (2010=100)", "”¢ Komparativ visuel analyse"],
+            result: ["”¢ Dokumentation af fastkurs-stabilitet", "”¢ Visualisering af global valutavolatilitet"],
+            role: ["”¢ Pipeline til dataindsamling", "”¢ Rengøring og merging af DST-data", "”¢ Design af visuelle sammenligninger"],
+            tools: ["Python", "Pandas", "Matplotlib"],
+            lang: "da"
         }
     ]
   },
   en: {
     title: "Anton Meier Ebsen Jørgensen – Project Cases",
-    desc: "Three selected project cases: data, methodology, results, and tools.",
-    heroTitle: "Three Selected Cases",
-    heroText: "Here are three cases that show how I work: from problem formulation and data to methodology, robustness, and communication.",
-    badges: ["Macro & Monetary Policy", "Time Series", "CGE/RBC", "Reproducible Analysis"],
+    desc: "Four selected project cases: data, methodology, results, and tools.",
+    heroTitle: "Four Selected Cases",
+    heroText: "Here are four cases that show how I work: from problem formulation and data to methodology, robustness, and communication.",
+    badges: ["Macro & Monetary Policy", "Time Series", "Applied Data Analysis", "Reproducible Analysis"],
     btns: { portfolio: "View Portfolio", cv: "View CV", contact: "Contact" },
     formatTitle: "Format",
     formatList: ["<strong>Problem</strong> â†’ what needed solving?", "<strong>Data</strong> â†’ what was the analysis based on?", "<strong>Methodology</strong> â†’ how was it solved?", "<strong>Result</strong> â†’ what came out?"],
@@ -140,6 +153,19 @@ const t = {
             result: ["”¢ Identification of the need for a public monetary anchor", "”¢ Analysis of sovereignty as a core driver for CBDC"],
             role: ["”¢ Independent research design", "”¢ Data collection and trend analysis", "”¢ Theoretical CBDC framework"],
             tools: ["Excel", "Word", "Literature Review"],
+            lang: "en"
+        },
+        {
+            id: "case-erd",
+            title: "Case 4: Exchange Rate Dynamics – Inflation & Relative Rates",
+            pill: "Applied Data Analysis",
+            desc: "Exploratory analysis of the relationship between Danish inflation and major currencies (EUR, USD, CNY).",
+            problem: "How have Danish prices and exchange rates moved relative to each other over the last 20 years?",
+            data: ["”¢ DST API data (CPI & Exchange Rates)", "”¢ Annual observations (2000-2023)"],
+            method: ["”¢ Data merging and cleaning in Python", "”¢ Period indexing (2010=100)", "”¢ Comparative visual analysis"],
+            result: ["”¢ Documentation of peg stability", "”¢ Visualization of global currency volatility"],
+            role: ["”¢ Data acquisition pipeline", "”¢ Cleaning and merging of macro series", "”¢ Design of visual comparisons"],
+            tools: ["Python", "Pandas", "Matplotlib"],
             lang: "en"
         }
     ]

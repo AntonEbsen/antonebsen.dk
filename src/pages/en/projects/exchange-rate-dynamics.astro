@@ -1,0 +1,83 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Exchange Rate Dynamics",
+  subtitle: "The Relationship Between Danish Inflation and Relative Exchange Rates (Applied Data Analysis).",
+  contextNote: "This project is a descriptive and exploratory analysis of currency co-movements. It focuses on data construction and visualization rather than causal inference, serving as an early exercise in applied macro-data handling.",
+  executiveSummary: "This project investigates the long-run relationship between Danish inflation and nominal exchange rates for the EUR, USD, and CNY. By merging annual consumer price indices with exchange rate series from Statistics Denmark, the analysis explores how different currency regimes and global economic shifts reflect in relative price levels. The focus is on robust data cleaning, period-specific indexing, and comparative visualization across major trading partners.",
+  researchQuestions: [
+    "How have the nominal exchange rates of EUR, USD, and CNY evolved relative to the Danish Krone over the last two decades?",
+    "Is there a visible co-movement between domestic inflation and changes in the relative values of these major currencies?",
+    "How do the dynamics differ between the pegged EUR regime and more volatile currencies like the USD and CNY?"
+  ],
+  methodology: {
+    model: "Descriptive comparative analysis and period-indexed trend tracking.",
+    strategy: "Data merging from multiple Statistics Denmark (DST) tables (inflation vs. exchange rates).",
+    data: "Annual frequency data covering major currencies and Danish CPI.",
+    estimation: "Baseline indexing and relative change calculations (year-over-year)."
+  },
+  visualAnalysis: {
+    title: "Empirical Visualization",
+    charts: [
+        {
+            title: "Nominal Exchange Rate Trends",
+            description: "Suggested: A multi-line plot showing the EUR, USD, and CNY against the DKK. Key focus on the stability of the EUR peg vs. the fluctuations of global reserve currencies.",
+            interactive: true
+        },
+        {
+            title: "Indexed Relative Dynamics",
+            description: "Suggested: Indexed comparison where 2010=100, allowing for a clearer view of cumulative percentage shifts in exchange rates and inflation over time.",
+            interactive: true
+        },
+        {
+            title: "Inflation vs. Exchange Rate Scatter",
+            description: "Suggested: Correlation plots exploring the relationship between annual CPI changes and exchange rate volatility."
+        }
+    ]
+  },
+  keyFindings: [
+    "Pegged Stability: The DKK/EUR rate exhibits minimal variance, reflecting the success of the fixed exchange rate policy.",
+    "Global Volatility: Significant swings in USD and CNY rates correlate loosely with global commodity price shifts rather than local inflation shocks.",
+    "Decomposed Trends: Long-run trends suggests that while inflation is stable, exchange rate volatility is primarily driven by external macroeconomic factors.",
+    "Data Coherence: The project demonstrates that merged indices from DST provide a consistent framework for multi-currency comparison."
+  ],
+  continuityNote: {
+    title: "From Data to Policy",
+    text: "This exploratory work laid the technical foundation for my later focus on monetary economics. The ability to handle messy macro-data and visualize complex series was a direct precursor to my more advanced econometric work on the ECB and Global Financial Cycles."
+  },
+  policyRelevance: [
+    "Highlights the importance of exchange rate stability for a small open economy like Denmark.",
+    "Provides a descriptive baseline for understanding how imported inflation might be transmitted through currency channels.",
+    "Demonstrates the practical utility of public data APIs (DST) for policy-relevant monitoring."
+  ],
+  limitations: [
+    "No causal interpretation: The analysis identifies correlations but does not claim one variable drives the other.",
+    "Frequency constraints: Annual data may smooth over important short-term volatility or policy shocks.",
+    "Descriptive Scope: Focuses on 'what' happened rather than 'why' through structural modeling."
+  ],
+  dataTools: {
+    sources: "Statistics Denmark (DST) via API/Bulk download.",
+    software: "Python (Pandas for data cleaning, Matplotlib/Seaborn for visualization)."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2023). Exchange Rate Dynamics: Inflation and Relative Rates in Denmark. Applied Data Analysis Project. Ref: ADA-2023-DK.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
+  },
+  ui: {
+    methodology: "Data & Methodology",
+    findings: "Key Observations",
+    relevance: "Why this matters",
+    dataTools: "Data & Tools",
+    download: "Documentation",
+    citation: "Suggested Reference",
+    execSummary: "Executive Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    continuityTitle: "Conceptual Continuity",
+    visualAnalysis: "Visual Analysis"
+  }
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

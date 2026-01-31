@@ -76,13 +76,13 @@ const { data: c, labels } = Astro.props;
     </div>
 
     <div class="flex flex-wrap gap-3 mt-4">
-    {(c.id === 'case-gfc' || c.id === 'case-ecb' || c.id === 'case-sop') && (
+    {(c.id === 'case-gfc' || c.id === 'case-ecb' || c.id === 'case-sop' || c.id === 'case-erd') && (
       <Button 
-        href={c.id === 'case-gfc' 
-          ? (c.lang === 'en' ? '/en/projects/global-financial-cycle' : '/projects/global-financial-cycle')
-          : c.id === 'case-ecb'
-          ? (c.lang === 'en' ? '/en/projects/ecb-taylor-rules' : '/projects/ecb-taylor-rules')
-          : (c.lang === 'en' ? '/en/projects/future-monetary-system' : '/projects/future-monetary-system')
+        href={
+          c.id === 'case-gfc' ? (c.lang === 'en' ? '/en/projects/global-financial-cycle' : '/projects/global-financial-cycle') :
+          c.id === 'case-ecb' ? (c.lang === 'en' ? '/en/projects/ecb-taylor-rules' : '/projects/ecb-taylor-rules') :
+          c.id === 'case-sop' ? (c.lang === 'en' ? '/en/projects/future-monetary-system' : '/projects/future-monetary-system') :
+          c.id === 'case-erd' ? (c.lang === 'en' ? '/en/projects/exchange-rate-dynamics' : '/projects/exchange-rate-dynamics') : '#'
         } 
         variant="accent"
       >

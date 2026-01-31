@@ -1,0 +1,83 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Valutakursdynamik",
+  subtitle: "Forholdet mellem dansk inflation og relative valutakurser (Anvendt dataanalyse).",
+  contextNote: "Dette projekt er en deskriptiv og eksplorativ analyse af valutasammenhæng. Det fokuserer på datakonstruktion og visualisering frem for kausal slutning og fungerer som en tidlig øvelse i håndtering af anvendte makrodata.",
+  executiveSummary: "Dette projekt undersøger det langsigtede forhold mellem dansk inflation og nominelle valutakurser for EUR, USD og CNY. Ved at sammenføje årlige forbrugerprisindeks med valutakurser fra Danmarks Statistik undersøger analysen, hvordan forskellige valutaregimer og globale økonomiske skift afspejles i relative prisniveauer. Fokus er på robust datarensning, periode-specifik indeksering og komparativ visualisering på tværs af store handelspartnere.",
+  researchQuestions: [
+    "Hvordan har de nominelle valutakurser for EUR, USD og CNY udviklet sig i forhold til den danske krone over de sidste to årtier?",
+    "Er der en synlig samvariation mellem indenlandsk inflation og ændringer i de relative værdier af disse store valutaer?",
+    "Hvordan adskiller dynamikken sig mellem det fastlåste EUR-regime og mere volatile valutaer som USD og CNY?"
+  ],
+  methodology: {
+    model: "Deskriptiv komparativ analyse og trendsporing via periodeindeksering.",
+    strategy: "Datasammensmeltning fra flere DST-tabeller (inflation vs. valutakurser).",
+    data: "Årlige data for de vigtigste valutaer og det danske forbrugerprisindeks (CPI).",
+    estimation: "Baseline-indeksering og beregning af relative ændringer (år-til-år)."
+  },
+  visualAnalysis: {
+    title: "Empirisk Visualisering",
+    charts: [
+        {
+            title: "Nominelle valutakurstendenser",
+            description: "Forslag: Et graf med flere linjer, der viser EUR, USD og CNY over for DKK. Fokus på stabiliteten af EUR-fastkurspolitikken i forhold til fluktuationerne i globale reservevalutaer.",
+            interactive: true
+        },
+        {
+            title: "Indekseret relativ dynamik",
+            description: "Forslag: Indekseret sammenligning, hvor 2010=100, hvilket giver et tydeligere overblik over kumulative procentvise skift i valutakurser og inflation over tid.",
+            interactive: true
+        },
+        {
+            title: "Inflation vs. valutakurs-scatter",
+            description: "Forslag: Korrelationsplot, der undersøger forholdet mellem årlige CPI-ændringer og valutakursvolatilitet."
+        }
+    ]
+  },
+  keyFindings: [
+    "Fastkursstabilitet: DKK/EUR-kursen udviser minimal varians, hvilket afspejler succesen med fastkurspolitikken.",
+    "Global volatilitet: Betydelige udsving i USD- og CNY-kurserne korrelerer løst med globale råvareprisbevægelser snarere end lokale inflationschok.",
+    "Dekomponerede tendenser: Langsigtede tendenser tyder på, at mens inflationen er stabil, drives valutakursvolatiliteten primært af eksterne makroøkonomiske faktorer.",
+    "Datakohærens: Projektet demonstrerer, at sammenflettede indeks fra DST giver en konsistent ramme for sammenligning af flere valutaer."
+  ],
+  continuityNote: {
+    title: "Fra data til politik",
+    text: "Dette eksplorative arbejde lagde det tekniske fundament for mit senere fokus på monetær økonomi. Evnen til at håndtere ustrukturerede makrodata og visualisere komplekse serier var en direkte forløber for mit mere avancerede økonometriske arbejde om ECB og globale finansielle cyklusser."
+  },
+  policyRelevance: [
+    "Understreger vigtigheden af valutakursstabilitet for en lille åben økonomi som Danmark.",
+    "Giver en deskriptiv baseline for at forstå, hvordan importeret inflation kan overføres gennem valutakanaler.",
+    "Demonstrerer den praktiske nytteværdi af offentlige data-API'er (DST) til politikrelevant overvågning."
+  ],
+  limitations: [
+    "Ingen kausal fortolkning: Analysen identificerer korrelationer, men påstår ikke, at én variabel driver den anden.",
+    "Frekvensbegrænsninger: Årlige data kan udglatte vigtig kortsigtet volatilitet eller politiske chok.",
+    "Deskriptivt omfang: Fokuserer på, 'hvad' der skete, snarere end 'hvorfor' gennem strukturel modellering."
+  ],
+  dataTools: {
+    sources: "Danmarks Statistik (DST) via API/Bulk-download.",
+    software: "Python (Pandas til datarensning, Matplotlib/Seaborn til visualisering)."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2023). Valutakursdynamik: Inflation og relative kurser i Danmark. Anvendt dataanalyseprojekt. Ref: ADA-2023-DK.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
+  },
+  ui: {
+    methodology: "Data & Metodologi",
+    findings: "Vigtigste observationer",
+    relevance: "Hvorfor det betyder noget",
+    dataTools: "Data & Værktøjer",
+    download: "Dokumentation",
+    citation: "Foreslået reference",
+    execSummary: "Executive Summary",
+    researchQuestions: "Forskningsspørgsmål",
+    limitations: "Begrænsninger",
+    continuityTitle: "Konceptuel kontinuitet",
+    visualAnalysis: "Visuel analyse"
+  }
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

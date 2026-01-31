@@ -39,6 +39,14 @@ interface Props {
         title: string;
         text: string;
     };
+    visualAnalysis?: {
+        title: string;
+        charts: {
+            title: string;
+            description: string;
+            interactive?: boolean;
+        }[];
+    };
     ui: {
         methodology: string;
         findings: string;
@@ -51,6 +59,7 @@ interface Props {
         limitations?: string;
         secondaryAnalysis?: string;
         continuityTitle?: string;
+        visualAnalysis?: string;
     }
   }
 }
@@ -174,6 +183,31 @@ const { lang, project } = Astro.props;
               {project.secondaryAnalysis.items.map(item => (
                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
                     <p class="text-slate-700 text-sm leading-relaxed">{item}</p>
+                 </div>
+              ))}
+           </div>
+        </section>
+      )}
+
+      <!-- Visual Analysis (Optional) -->
+      {project.visualAnalysis && (
+        <section class="mb-20">
+           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.visualAnalysis || project.visualAnalysis.title}</h2>
+           <div class="grid grid-cols-1 gap-12">
+              {project.visualAnalysis.charts.map(chart => (
+                 <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                       <h3 class="text-lg font-bold text-slate-800">{chart.title}</h3>
+                       {chart.interactive && (
+                          <span class="text-[10px] uppercase font-bold text-accent bg-accent/5 px-2 py-1 rounded-full border border-accent/10">
+                             <i class="fa-solid fa-mouse-pointer mr-1"></i> Interactive
+                          </span>
+                       )}
+                    </div>
+                    <div class="aspect-video bg-slate-50 border-2 border-dashed border-slate-200 rounded-[32px] flex flex-col items-center justify-center text-slate-300 gap-2 p-8 text-center">
+                       <i class="fa-solid fa-chart-line text-3xl mb-2"></i>
+                       <p class="text-sm italic font-serif max-w-md">{chart.description}</p>
+                    </div>
                  </div>
               ))}
            </div>
