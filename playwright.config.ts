@@ -6,21 +6,19 @@ export default defineConfig({
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,
     workers: process.env.CI ? 1 : undefined,
-    reporter: 'html',
+    reporter: 'list',
     use: {
         baseURL: 'http://localhost:4321',
         trace: 'on-first-retry',
     },
-
     projects: [
         {
             name: 'chromium',
             use: { ...devices['Desktop Chrome'] },
         },
     ],
-
     webServer: {
-        command: 'npx http-server dist -p 4321', // Use existing build output
+        command: 'npm run dev',
         url: 'http://localhost:4321',
         reuseExistingServer: !process.env.CI,
         timeout: 120 * 1000,

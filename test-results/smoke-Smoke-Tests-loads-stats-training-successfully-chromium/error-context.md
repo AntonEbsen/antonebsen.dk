@@ -1,0 +1,137 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - navigation "Primær navigation" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - link "Hjem" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - link "CV " [ref=e7] [cursor=pointer]:
+          - /url: /cv
+          - text: CV
+          - generic [ref=e8]: 
+        - link "Portefølje " [ref=e10] [cursor=pointer]:
+          - /url: /portfolio
+          - text: Portefølje
+          - generic [ref=e11]: 
+        - link "Samarbejde" [ref=e12] [cursor=pointer]:
+          - /url: /services
+        - link "Q&A" [ref=e13] [cursor=pointer]:
+          - /url: /qa
+        - link "Blog" [ref=e14] [cursor=pointer]:
+          - /url: /blog
+        - link "Kontakt" [ref=e15] [cursor=pointer]:
+          - /url: /contact
+      - search [ref=e16]:
+        - generic [ref=e17]: Søg på siden
+        - searchbox "Søg på siden" [ref=e18]
+      - button "Skift sprog" [ref=e21] [cursor=pointer]:
+        - text: Sprog
+        - generic [ref=e22]: ▾
+  - main [ref=e23]:
+    - generic [ref=e24]:
+      - heading "404" [level=1] [ref=e25]
+      - paragraph [ref=e26]: Siden blev ikke fundet.
+      - link "Gå til forsiden" [ref=e27] [cursor=pointer]:
+        - /url: /
+  - contentinfo [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - region "Om siden" [ref=e31]:
+          - heading "Anton Meier Ebsen Jørgensen" [level=2] [ref=e32]
+          - paragraph [ref=e33]: Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis.
+          - generic [ref=e34]:
+            - link "CV" [ref=e35] [cursor=pointer]:
+              - /url: /cv
+              - generic [ref=e36]: 
+              - text: CV
+            - link "Download PDF" [ref=e37] [cursor=pointer]:
+              - /url: /assets/Anton-CV.pdf
+              - generic [ref=e38]: 
+              - text: Download PDF
+        - navigation "Footer navigation" [ref=e39]:
+          - heading "Links" [level=3] [ref=e40]
+          - list [ref=e41]:
+            - listitem [ref=e42]:
+              - link "Hjem" [ref=e43] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e44]:
+              - link "CV" [ref=e45] [cursor=pointer]:
+                - /url: /cv
+            - listitem [ref=e46]:
+              - link "Portefølje" [ref=e47] [cursor=pointer]:
+                - /url: /portfolio
+            - listitem [ref=e48]:
+              - link "Samarbejde" [ref=e49] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e50]:
+              - link "Q&A" [ref=e51] [cursor=pointer]:
+                - /url: /qa
+            - listitem [ref=e52]:
+              - link "Blog" [ref=e53] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e54]:
+              - link "Kontakt" [ref=e55] [cursor=pointer]:
+                - /url: /contact
+        - navigation "Udvalgte sider" [ref=e56]:
+          - heading "Udvalgt" [level=3] [ref=e57]
+          - list [ref=e58]:
+            - listitem [ref=e59]:
+              - link "Downloads" [ref=e60] [cursor=pointer]:
+                - /url: /resources
+            - listitem [ref=e61]:
+              - link "Galleri" [ref=e62] [cursor=pointer]:
+                - /url: /gallery
+            - listitem [ref=e63]:
+              - link "Milepæle" [ref=e64] [cursor=pointer]:
+                - /url: /timeline
+            - listitem [ref=e65]:
+              - link "Versionshistorik 📜" [ref=e66] [cursor=pointer]:
+                - /url: /changelog
+        - region "Kontakt og profiler" [ref=e67]:
+          - heading "Kontakt" [level=3] [ref=e68]
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - text: Email
+              - link "anton.ebsen@gmail.com" [ref=e71] [cursor=pointer]:
+                - /url: mailto:anton.ebsen@gmail.com
+            - generic [ref=e72]:
+              - text: Telefon
+              - link "+45 25 74 01 31" [ref=e73] [cursor=pointer]:
+                - /url: tel:+4525740131
+            - generic [ref=e74]:
+              - text: Lokation
+              - text: København, DK
+          - generic "Sociale links" [ref=e75]:
+            - link "LinkedIn" [ref=e76] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/antonebsen/
+              - generic [ref=e77]: 
+            - link "GitHub" [ref=e78] [cursor=pointer]:
+              - /url: https://github.com/AntonEbsen
+              - generic [ref=e79]: 
+      - generic [ref=e80]:
+        - navigation "Juridiske sider" [ref=e81]:
+          - link "Privacy" [ref=e82] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e83]: ·
+          - link "Terms" [ref=e84] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e85]: ·
+          - link "π" [ref=e86] [cursor=pointer]:
+            - /url: /dashboard
+        - paragraph [ref=e87]:
+          - text: © 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+          - generic [ref=e88]:
+            - text: "Kildekode:"
+            - link "GitHub" [ref=e89] [cursor=pointer]:
+              - /url: https://github.com/AntonEbsen/antonebsen.dk
+            - text: .
+          - link "" [ref=e90] [cursor=pointer]:
+            - /url: https://www.oratorium.dk/
+            - generic [ref=e91]: 
+  - generic:
+    - text:            
+    - button "" [ref=e92] [cursor=pointer]:
+      - generic [ref=e93]: 
+```

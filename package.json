@@ -8,6 +8,7 @@
     "build": "node scripts/validate-env.mjs && node scripts/process-docs.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test": "playwright test",
     "prepare": "husky"
   },
   "dependencies": {

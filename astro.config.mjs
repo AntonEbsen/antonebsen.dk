@@ -10,7 +10,8 @@ export default defineConfig({
   trailingSlash: 'never',
 
   image: {
-    service: passthroughImageService()
+    // Default is sharp, which we want.
+    // service: passthroughImageService() 
   },
 
   site: 'https://antonebsen.dk',

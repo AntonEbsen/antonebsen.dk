@@ -1,0 +1,318 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - navigation "Primær navigation" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - link "Hjem" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - link "CV " [ref=e7] [cursor=pointer]:
+          - /url: /cv
+          - text: CV
+          - generic [ref=e8]: 
+        - link "Portefølje " [ref=e10] [cursor=pointer]:
+          - /url: /portfolio
+          - text: Portefølje
+          - generic [ref=e11]: 
+        - link "Samarbejde" [ref=e12] [cursor=pointer]:
+          - /url: /services
+        - link "Q&A" [ref=e13] [cursor=pointer]:
+          - /url: /qa
+        - link "Blog" [ref=e14] [cursor=pointer]:
+          - /url: /blog
+        - link "Kontakt" [ref=e15] [cursor=pointer]:
+          - /url: /contact
+      - search [ref=e16]:
+        - generic [ref=e17]: Søg på siden
+        - searchbox "Søg på siden" [ref=e18]
+      - button "Skift sprog" [ref=e21] [cursor=pointer]:
+        - text: Sprog
+        - generic [ref=e22]: ▾
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - paragraph [ref=e27]: Projekt-cases
+        - heading "Tre udvalgte cases" [level=1] [ref=e28]
+        - paragraph [ref=e29]: "Her er tre cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling."
+        - generic [ref=e30]:
+          - link "Se portefølje" [ref=e31] [cursor=pointer]:
+            - /url: /portfolio
+          - link "Se CV" [ref=e32] [cursor=pointer]:
+            - /url: /cv
+          - link "Kontakt" [ref=e33] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e34]:
+          - generic [ref=e35]: Makro & pengepolitik
+          - generic [ref=e36]: Tidsrækker
+          - generic [ref=e37]: CGE/RBC
+          - generic [ref=e38]: Reproducerbar analyse
+      - generic [ref=e40]:
+        - heading "Format" [level=2] [ref=e41]
+        - list [ref=e42]:
+          - listitem [ref=e43]:
+            - strong [ref=e44]: Problem
+            - text: â†’ hvad skulle løses?
+          - listitem [ref=e45]:
+            - strong [ref=e46]: Data
+            - text: â†’ hvad byggede analysen på?
+          - listitem [ref=e47]:
+            - strong [ref=e48]: Metode
+            - text: â†’ hvordan blev det løst?
+          - listitem [ref=e49]:
+            - strong [ref=e50]: Resultat
+            - text: â†’ hvad kom der ud?
+    - region "Projekt-cases" [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - 'heading "Case 1: Global Financial Cycle & spillovers fra US pengepolitik" [level=2] [ref=e54]'
+          - generic [ref=e55]: Empirisk makro
+        - paragraph [ref=e56]: (Bachelorprojekt) Undersøgelse af hvordan amerikansk pengepolitik påvirker globale finansielle forhold og makroøkonomiske outcomes.
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - heading "Problem" [level=3] [ref=e59]
+            - paragraph [ref=e60]: Hvilke spillover-effekter kan observeres fra US pengepolitik til global økonomi, og hvordan varierer de på tværs af perioder?
+          - generic [ref=e61]:
+            - heading "Data" [level=3] [ref=e62]
+            - list [ref=e63]:
+              - listitem [ref=e64]: ”¢ Makro/finansielle tidsserier (fx renter, kreditspreads, volatilitet, output-indikatorer)
+              - listitem [ref=e65]: ”¢ Land-/region-panel (hvis relevant)
+          - generic [ref=e66]:
+            - heading "Metode" [level=3] [ref=e67]
+            - list [ref=e68]:
+              - listitem [ref=e69]: ”¢ Strukturel tidsrækkemodel / SVAR-inspiration (tilpas efter dit faktiske setup)
+              - listitem [ref=e70]: "”¢ Robusthed: alternative specifikationer og subperioder"
+              - listitem [ref=e71]: "”¢ Visualisering: IRF/effektplot, tabeller med nøgleestimater"
+          - generic [ref=e72]:
+            - heading "Resultat" [level=3] [ref=e73]
+            - list [ref=e74]:
+              - listitem [ref=e75]: "”¢ Hovedfund: (indsæt 1–2 linjer, når du vil)"
+              - listitem [ref=e76]: "”¢ Praktisk leverance: rapport + figurer + kode/appendiks"
+          - generic [ref=e77]:
+            - heading "Min rolle" [level=3] [ref=e78]
+            - list [ref=e79]:
+              - listitem [ref=e80]: ”¢ Design af empirisk strategi
+              - listitem [ref=e81]: ”¢ Databehandling + estimation
+              - listitem [ref=e82]: ”¢ Formidling af resultater og begrænsninger
+          - generic [ref=e83]:
+            - heading "Tools" [level=3] [ref=e84]
+            - generic [ref=e85]:
+              - generic [ref=e86]: Python
+              - generic [ref=e87]: SAS/Stata
+              - generic [ref=e88]: LaTeX
+        - generic [ref=e89]:
+          - link "Rapport (kommer)" [ref=e90] [cursor=pointer]:
+            - /url: "#"
+          - link "Kode (hvis public)" [ref=e91] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - 'heading "Case 2: CGE-model – COâ‚‚-afgift, sektor-effekter og provenu-recycling" [level=2] [ref=e94]'
+          - generic [ref=e95]: Modelarbejde
+        - paragraph [ref=e96]: (Kursusprojekt/eksamenscase) Kalibrering af en simpel åben økonomi med flere sektorer og policy-shocks.
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - heading "Problem" [level=3] [ref=e99]
+            - paragraph [ref=e100]: Hvordan påvirker en COâ‚‚-afgift produktion, priser og velfærd på tværs af sektorer – og hvad betyder valget af provenu-tilbageførsel?
+          - generic [ref=e101]:
+            - heading "Data" [level=3] [ref=e102]
+            - list [ref=e103]:
+              - listitem [ref=e104]: ”¢ Social Accounting Matrix / nationalregnskabs-baseret kalibrering
+              - listitem [ref=e105]: ”¢ Sektorspecifikke inputandele, forbrug, eksport/import
+          - generic [ref=e106]:
+            - heading "Metode" [level=3] [ref=e107]
+            - list [ref=e108]:
+              - listitem [ref=e109]: ”¢ Kalibrér baseline der reproducerer SAM
+              - listitem [ref=e110]: "”¢ Shock-scenarier: skat + alternative lukninger"
+              - listitem [ref=e111]: "”¢ Checks: budgetrestriktioner, nul-profit, (Walras-lov hvor relevant)"
+          - generic [ref=e112]:
+            - heading "Resultat" [level=3] [ref=e113]
+            - list [ref=e114]:
+              - listitem [ref=e115]: "”¢ Output: procentændringer i priser/output/forbrug"
+              - listitem [ref=e116]: "”¢ Fortolkning: vindere/tabere og mekanismer (kort)"
+          - generic [ref=e117]:
+            - heading "Min rolle" [level=3] [ref=e118]
+            - list [ref=e119]:
+              - listitem [ref=e120]: ”¢ Implementering i GAMS
+              - listitem [ref=e121]: ”¢ Kalibrering + dokumentation
+              - listitem [ref=e122]: ”¢ Scenario-opsætning og tabeller/figurer
+          - generic [ref=e123]:
+            - heading "Tools" [level=3] [ref=e124]
+            - generic [ref=e125]:
+              - generic [ref=e126]: GAMS
+              - generic [ref=e127]: Excel
+              - generic [ref=e128]: LaTeX
+        - generic [ref=e129]:
+          - link "Rapport (kommer)" [ref=e130] [cursor=pointer]:
+            - /url: "#"
+          - link "Kode (hvis public)" [ref=e131] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - 'heading "Case 3: Tidsrækker – forecasting og sæsonmønstre" [level=2] [ref=e134]'
+          - generic [ref=e135]: Tidsrækker
+        - paragraph [ref=e136]: (SAS-kursus/eksamenscase) Modelvalg, diagnosticering og forecast med fokus på robusthed og kommunikation.
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - heading "Problem" [level=3] [ref=e139]
+            - paragraph [ref=e140]: "Hvordan laver man et forecast, der er stabilt og forklarligt ”” og ikke bare “en model der passer”\x9d?"
+          - generic [ref=e141]:
+            - heading "Data" [level=3] [ref=e142]
+            - list [ref=e143]:
+              - listitem [ref=e144]: ”¢ Tidsserie med sæson og trend (fx månedlige/ugentlige observationer)
+              - listitem [ref=e145]: ”¢ Evt. outliers/strukturelle brud
+          - generic [ref=e146]:
+            - heading "Metode" [level=3] [ref=e147]
+            - list [ref=e148]:
+              - listitem [ref=e149]: ”¢ Decomposition / UCM / ETS-tilgang (tilpas)
+              - listitem [ref=e150]: "”¢ Modeldiagnostik: residualer, stabilitet, holdout"
+              - listitem [ref=e151]: "”¢ Alternativer: simple benchmarks vs. mere kompleks model"
+          - generic [ref=e152]:
+            - heading "Resultat" [level=3] [ref=e153]
+            - list [ref=e154]:
+              - listitem [ref=e155]: ”¢ Forecast + usikkerhedsbånd
+              - listitem [ref=e156]: "”¢ Konklusion: hvorfor netop denne model er valgt"
+          - generic [ref=e157]:
+            - heading "Min rolle" [level=3] [ref=e158]
+            - list [ref=e159]:
+              - listitem [ref=e160]: ”¢ Data-prep og modelvalg
+              - listitem [ref=e161]: ”¢ Evaluation + dokumentation
+              - listitem [ref=e162]: ”¢ Visualisering og write-up
+          - generic [ref=e163]:
+            - heading "Tools" [level=3] [ref=e164]
+            - generic [ref=e165]:
+              - generic [ref=e166]: SAS
+              - generic [ref=e167]: Python
+              - generic [ref=e168]: Excel
+        - generic [ref=e169]:
+          - link "Rapport (kommer)" [ref=e170] [cursor=pointer]:
+            - /url: "#"
+          - link "Kode (hvis public)" [ref=e171] [cursor=pointer]:
+            - /url: "#"
+    - generic [ref=e173]:
+      - heading "Vil du se noget mere konkret?" [level=2] [ref=e174]
+      - paragraph [ref=e175]: "Nogle projekter kan ikke deles fuldt ud pga. kursus/fortrolighed, men jeg kan ofte dele “sanitized”\x9d eksempler eller gennemgå metoder/struktur."
+      - generic [ref=e176]:
+        - link " Kontakt" [ref=e177] [cursor=pointer]:
+          - /url: /contact
+          - generic [ref=e178]: 
+          - text: Kontakt
+        - link " Samarbejde" [ref=e179] [cursor=pointer]:
+          - /url: /services
+          - generic [ref=e180]: 
+          - text: Samarbejde
+  - contentinfo [ref=e181]:
+    - generic [ref=e182]:
+      - generic [ref=e183]:
+        - region "Om siden" [ref=e184]:
+          - heading "Anton Meier Ebsen Jørgensen" [level=2] [ref=e185]
+          - paragraph [ref=e186]: Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis.
+          - generic [ref=e187]:
+            - link "CV" [ref=e188] [cursor=pointer]:
+              - /url: /cv
+              - generic [ref=e189]: 
+              - text: CV
+            - link "Download PDF" [ref=e190] [cursor=pointer]:
+              - /url: /assets/Anton-CV.pdf
+              - generic [ref=e191]: 
+              - text: Download PDF
+        - navigation "Footer navigation" [ref=e192]:
+          - heading "Links" [level=3] [ref=e193]
+          - list [ref=e194]:
+            - listitem [ref=e195]:
+              - link "Hjem" [ref=e196] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e197]:
+              - link "CV" [ref=e198] [cursor=pointer]:
+                - /url: /cv
+            - listitem [ref=e199]:
+              - link "Portefølje" [ref=e200] [cursor=pointer]:
+                - /url: /portfolio
+            - listitem [ref=e201]:
+              - link "Samarbejde" [ref=e202] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e203]:
+              - link "Q&A" [ref=e204] [cursor=pointer]:
+                - /url: /qa
+            - listitem [ref=e205]:
+              - link "Blog" [ref=e206] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e207]:
+              - link "Kontakt" [ref=e208] [cursor=pointer]:
+                - /url: /contact
+        - navigation "Udvalgte sider" [ref=e209]:
+          - heading "Udvalgt" [level=3] [ref=e210]
+          - list [ref=e211]:
+            - listitem [ref=e212]:
+              - link "Downloads" [ref=e213] [cursor=pointer]:
+                - /url: /resources
+            - listitem [ref=e214]:
+              - link "Galleri" [ref=e215] [cursor=pointer]:
+                - /url: /gallery
+            - listitem [ref=e216]:
+              - link "Milepæle" [ref=e217] [cursor=pointer]:
+                - /url: /timeline
+            - listitem [ref=e218]:
+              - link "Versionshistorik 📜" [ref=e219] [cursor=pointer]:
+                - /url: /changelog
+        - region "Kontakt og profiler" [ref=e220]:
+          - heading "Kontakt" [level=3] [ref=e221]
+          - generic [ref=e222]:
+            - generic [ref=e223]:
+              - text: Email
+              - link "anton.ebsen@gmail.com" [ref=e224] [cursor=pointer]:
+                - /url: mailto:anton.ebsen@gmail.com
+            - generic [ref=e225]:
+              - text: Telefon
+              - link "+45 25 74 01 31" [ref=e226] [cursor=pointer]:
+                - /url: tel:+4525740131
+            - generic [ref=e227]:
+              - text: Lokation
+              - text: København, DK
+          - generic "Sociale links" [ref=e228]:
+            - link "LinkedIn" [ref=e229] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/antonebsen/
+              - generic [ref=e230]: 
+            - link "GitHub" [ref=e231] [cursor=pointer]:
+              - /url: https://github.com/AntonEbsen
+              - generic [ref=e232]: 
+      - generic [ref=e233]:
+        - navigation "Juridiske sider" [ref=e234]:
+          - link "Privacy" [ref=e235] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e236]: ·
+          - link "Terms" [ref=e237] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e238]: ·
+          - link "π" [ref=e239] [cursor=pointer]:
+            - /url: /dashboard
+        - paragraph [ref=e240]:
+          - text: © 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+          - generic [ref=e241]:
+            - text: "Kildekode:"
+            - link "GitHub" [ref=e242] [cursor=pointer]:
+              - /url: https://github.com/AntonEbsen/antonebsen.dk
+            - text: .
+          - link "" [ref=e243] [cursor=pointer]:
+            - /url: https://www.oratorium.dk/
+            - generic [ref=e244]: 
+  - generic:
+    - text:            
+    - button "" [ref=e245] [cursor=pointer]:
+      - generic [ref=e246]: 
+  - generic [ref=e249]:
+    - button "Menu" [ref=e250]:
+      - img [ref=e252]
+      - generic: Menu
+    - button "Inspect" [ref=e256]:
+      - img [ref=e258]
+      - generic: Inspect
+    - button "Audit" [ref=e260]:
+      - generic [ref=e261]:
+        - img [ref=e262]
+        - img [ref=e265]
+      - generic: Audit
+    - button "Settings" [ref=e268]:
+      - img [ref=e270]
+      - generic: Settings
+```

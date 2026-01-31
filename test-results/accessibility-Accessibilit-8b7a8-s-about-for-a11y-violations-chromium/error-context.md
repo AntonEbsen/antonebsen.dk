@@ -1,0 +1,294 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - navigation "Primær navigation" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - link "Hjem" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - link "CV " [ref=e7] [cursor=pointer]:
+          - /url: /cv
+          - text: CV
+          - generic [ref=e8]: 
+        - link "Portefølje " [ref=e10] [cursor=pointer]:
+          - /url: /portfolio
+          - text: Portefølje
+          - generic [ref=e11]: 
+        - link "Samarbejde" [ref=e12] [cursor=pointer]:
+          - /url: /services
+        - link "Q&A" [ref=e13] [cursor=pointer]:
+          - /url: /qa
+        - link "Blog" [ref=e14] [cursor=pointer]:
+          - /url: /blog
+        - link "Kontakt" [ref=e15] [cursor=pointer]:
+          - /url: /contact
+      - search [ref=e16]:
+        - generic [ref=e17]: Søg på siden
+        - searchbox "Søg på siden" [ref=e18]
+      - button "Skift sprog" [ref=e21] [cursor=pointer]:
+        - text: Sprog
+        - generic [ref=e22]: ▾
+  - main [ref=e23]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - paragraph [ref=e27]: Profil / Om mig
+          - heading "Makro, økonometri og modeller — med fokus på at gøre det brugbart" [level=1] [ref=e28]
+          - paragraph [ref=e29]:
+            - text: Jeg arbejder i krydsfeltet mellem
+            - strong [ref=e30]: økonomi
+            - text: ","
+            - strong [ref=e31]: data
+            - text: og
+            - strong [ref=e32]: formidling
+            - text: ". Jeg kan godt lide “klassisk håndværk”: klare antagelser, ordentlig dokumentation og resultater, der kan forklares uden at man skal have læst 300 sider først."
+          - generic "Keywords" [ref=e33]:
+            - generic [ref=e34]: Makro & pengepolitik
+            - generic [ref=e35]: Økonometri & tidsrækker
+            - generic [ref=e36]: Økonomiske modeller
+            - generic [ref=e37]: Python / SAS / GAMS
+            - generic [ref=e38]: Excel/VBA undervisning
+          - generic [ref=e39]:
+            - link " Arbejdsstil" [ref=e40] [cursor=pointer]:
+              - /url: "#arbejdsstil"
+              - generic [ref=e41]: 
+              - text: Arbejdsstil
+            - link " Fokusområder" [ref=e42] [cursor=pointer]:
+              - /url: "#fokus"
+              - generic [ref=e43]: 
+              - text: Fokusområder
+            - link " Kontakt" [ref=e44] [cursor=pointer]:
+              - /url: "#kontakt"
+              - generic [ref=e45]: 
+              - text: Kontakt
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - heading "Hurtige facts" [level=2] [ref=e48]
+            - generic [ref=e49]:
+              - generic [ref=e50]:
+                - generic [ref=e51]: 
+                - generic [ref=e52]: København
+              - generic [ref=e53]:
+                - generic [ref=e54]: 
+                - generic [ref=e55]: "Interesse: centralbanker, transmissionsmekanismer, heterogenitet"
+              - generic [ref=e56]:
+                - generic [ref=e57]: 
+                - generic [ref=e58]: "Værktøjer: Python, SAS, GAMS + Excel/VBA"
+              - generic [ref=e59]:
+                - generic [ref=e60]: 
+                - generic [ref=e61]: "Formidling: underviser (Excel/VBA) og bygger cases"
+          - generic [ref=e62]:
+            - heading "På siden" [level=2] [ref=e63]
+            - navigation "Submenu" [ref=e64]:
+              - link "Fokusområder" [ref=e65] [cursor=pointer]:
+                - /url: "#fokus"
+              - link "Hvordan jeg arbejder" [ref=e66] [cursor=pointer]:
+                - /url: "#arbejdsstil"
+              - link "Undervisning & formidling" [ref=e67] [cursor=pointer]:
+                - /url: "#formidling"
+              - link "Uden for studiet" [ref=e68] [cursor=pointer]:
+                - /url: "#udenfor"
+              - link "Kontakt" [ref=e69] [cursor=pointer]:
+                - /url: "#kontakt"
+      - generic [ref=e70]:
+        - generic:
+          - generic: 
+        - heading "Viljen til at modbevise" [level=2] [ref=e71]
+        - paragraph [ref=e72]: Min vej til at blive økonom har ikke været snorlige. Jeg har lært at vende skepsis til mod og modgang til målrettethed. Læs min personlige fortælling om rejsen fra epilepsi og specialklasse til cand.polit.
+        - link " Læs min historie" [ref=e74] [cursor=pointer]:
+          - /url: /modgang-og-maalrettethed
+          - generic [ref=e75]: 
+          - text: Læs min historie
+      - generic [ref=e76]:
+        - heading "Fokusområder" [level=2] [ref=e77]
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - heading "Makroøkonomi & pengepolitik" [level=3] [ref=e80]
+            - paragraph [ref=e81]: "Jeg er især optaget af, hvordan pengepolitik “landes” i praksis: gennem finansielle markeder, forventninger, kreditkanaler og forskelle på tværs af lande/sektorer."
+          - generic [ref=e82]:
+            - heading "Økonometri & tidsrækker" [level=3] [ref=e83]
+            - paragraph [ref=e84]: Forecasting, identifikation og robusthed. Jeg kan godt lide metoder der både er teknisk solide og kan forklares til en normal person uden at de går i søvn.
+          - generic [ref=e85]:
+            - heading "Modeller & “structure”" [level=3] [ref=e86]
+            - paragraph [ref=e87]: "CGE/RBC/DSGE-tænkning: tydelige antagelser, konsistens, checks og baseline/zero-shock disciplin."
+          - generic [ref=e88]:
+            - heading "Data & tooling" [level=3] [ref=e89]
+            - paragraph [ref=e90]: "Jeg bygger små pipelines og templates: fra data cleaning til output, så det kan genbruges og ikke kun virker én gang."
+      - generic [ref=e91]:
+        - heading "Hvordan jeg arbejder" [level=2] [ref=e92]
+        - paragraph [ref=e93]: "Min standard-arbejdsgang (lidt kedelig — men det er præcis derfor den virker):"
+        - list [ref=e94]:
+          - listitem [ref=e95]: "”¢ 1) Afklar mål: hvad skal beslutningstager/læser kunne gøre bagefter?"
+          - listitem [ref=e96]: "”¢ 2) Dokumentér data: kilder, definitioner, enheder, missing/outliers, transformationer."
+          - listitem [ref=e97]: "”¢ 3) Vælg metode: simpelt først, derefter “mere fancy” hvis det giver noget reelt."
+          - listitem [ref=e98]: "”¢ 4) Checks: sanity checks, robusthed, alternative specifikationer, edge cases."
+          - listitem [ref=e99]: "”¢ 5) Formidling: konklusioner, begrænsninger og “hvad betyder det i praksis?”"
+        - generic [ref=e100]:
+          - link " Se portefølje" [ref=e101] [cursor=pointer]:
+            - /url: /portfolio
+            - generic [ref=e102]: 
+            - text: Se portefølje
+          - link " Se ressourcer" [ref=e103] [cursor=pointer]:
+            - /url: /resources
+            - generic [ref=e104]: 
+            - text: Se ressourcer
+      - generic [ref=e105]:
+        - heading "Undervisning & formidling" [level=2] [ref=e106]
+        - paragraph [ref=e107]: "Jeg har erfaring med at undervise i Excel/VBA og kan lide at gøre ting konkrete: cases, øvelser, “hvorfor” bag funktioner og små genveje der gør en stor forskel."
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - heading "Min undervisningsstil" [level=3] [ref=e110]
+            - list [ref=e111]:
+              - listitem [ref=e112]: Struktur først (mål → løsning → kvalitetstjek)
+              - listitem [ref=e113]: "Hands-on: hellere én god case end 30 slides"
+              - listitem [ref=e114]: Templates der kan genbruges
+          - generic [ref=e115]:
+            - heading "Hvad jeg typisk hjælper med" [level=3] [ref=e116]
+            - list [ref=e117]:
+              - listitem [ref=e118]: Excel-modeller, dashboards og logik
+              - listitem [ref=e119]: Data cleaning og reproducérbare workflows
+              - listitem [ref=e120]: Små scripts og automatisering
+      - generic [ref=e121]:
+        - heading "Uden for studiet" [level=2] [ref=e122]
+        - paragraph [ref=e123]: Jeg holder af rutiner og progression — både i træning og i projekter. Det lyder måske lidt “kontor-nørdet”, men det er ærligt talt ret tilfredsstillende at se kurver gå den rigtige vej.
+        - generic [ref=e124]:
+          - link " Træningsindlæg" [ref=e125] [cursor=pointer]:
+            - /url: /blog#cat-traening
+            - generic [ref=e126]: 
+            - text: Træningsindlæg
+          - link " Rejser" [ref=e127] [cursor=pointer]:
+            - /url: /blog#cat-rejser
+            - generic [ref=e128]: 
+            - text: Rejser
+      - generic [ref=e129]:
+        - heading "Kontakt" [level=2] [ref=e130]
+        - paragraph [ref=e131]: Hvis du vil sparre om et projekt, en case eller et samarbejde, så skriv endelig.
+        - generic [ref=e132]:
+          - link " Send mail" [ref=e133] [cursor=pointer]:
+            - /url: mailto:anton.ebsen@gmail.com
+            - generic [ref=e134]: 
+            - text: Send mail
+          - link " Kontakt-side" [ref=e135] [cursor=pointer]:
+            - /url: /contact
+            - generic [ref=e136]: 
+            - text: Kontakt-side
+          - link " Tilbage til CV" [ref=e137] [cursor=pointer]:
+            - /url: /cv
+            - generic [ref=e138]: 
+            - text: Tilbage til CV
+  - contentinfo [ref=e139]:
+    - generic [ref=e140]:
+      - generic [ref=e141]:
+        - region "Om siden" [ref=e142]:
+          - heading "Anton Meier Ebsen Jørgensen" [level=2] [ref=e143]
+          - paragraph [ref=e144]: Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis.
+          - generic [ref=e145]:
+            - link "CV" [ref=e146] [cursor=pointer]:
+              - /url: /cv
+              - generic [ref=e147]: 
+              - text: CV
+            - link "Download PDF" [ref=e148] [cursor=pointer]:
+              - /url: /assets/Anton-CV.pdf
+              - generic [ref=e149]: 
+              - text: Download PDF
+        - navigation "Footer navigation" [ref=e150]:
+          - heading "Links" [level=3] [ref=e151]
+          - list [ref=e152]:
+            - listitem [ref=e153]:
+              - link "Hjem" [ref=e154] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e155]:
+              - link "CV" [ref=e156] [cursor=pointer]:
+                - /url: /cv
+            - listitem [ref=e157]:
+              - link "Portefølje" [ref=e158] [cursor=pointer]:
+                - /url: /portfolio
+            - listitem [ref=e159]:
+              - link "Samarbejde" [ref=e160] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e161]:
+              - link "Q&A" [ref=e162] [cursor=pointer]:
+                - /url: /qa
+            - listitem [ref=e163]:
+              - link "Blog" [ref=e164] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e165]:
+              - link "Kontakt" [ref=e166] [cursor=pointer]:
+                - /url: /contact
+        - navigation "Udvalgte sider" [ref=e167]:
+          - heading "Udvalgt" [level=3] [ref=e168]
+          - list [ref=e169]:
+            - listitem [ref=e170]:
+              - link "Downloads" [ref=e171] [cursor=pointer]:
+                - /url: /resources
+            - listitem [ref=e172]:
+              - link "Galleri" [ref=e173] [cursor=pointer]:
+                - /url: /gallery
+            - listitem [ref=e174]:
+              - link "Milepæle" [ref=e175] [cursor=pointer]:
+                - /url: /timeline
+            - listitem [ref=e176]:
+              - link "Versionshistorik 📜" [ref=e177] [cursor=pointer]:
+                - /url: /changelog
+        - region "Kontakt og profiler" [ref=e178]:
+          - heading "Kontakt" [level=3] [ref=e179]
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - text: Email
+              - link "anton.ebsen@gmail.com" [ref=e182] [cursor=pointer]:
+                - /url: mailto:anton.ebsen@gmail.com
+            - generic [ref=e183]:
+              - text: Telefon
+              - link "+45 25 74 01 31" [ref=e184] [cursor=pointer]:
+                - /url: tel:+4525740131
+            - generic [ref=e185]:
+              - text: Lokation
+              - text: København, DK
+          - generic "Sociale links" [ref=e186]:
+            - link "LinkedIn" [ref=e187] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/antonebsen/
+              - generic [ref=e188]: 
+            - link "GitHub" [ref=e189] [cursor=pointer]:
+              - /url: https://github.com/AntonEbsen
+              - generic [ref=e190]: 
+      - generic [ref=e191]:
+        - navigation "Juridiske sider" [ref=e192]:
+          - link "Privacy" [ref=e193] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e194]: ·
+          - link "Terms" [ref=e195] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e196]: ·
+          - link "π" [ref=e197] [cursor=pointer]:
+            - /url: /dashboard
+        - paragraph [ref=e198]:
+          - text: © 2026 Anton Meier Ebsen Jørgensen. Alle rettigheder forbeholdes.
+          - generic [ref=e199]:
+            - text: "Kildekode:"
+            - link "GitHub" [ref=e200] [cursor=pointer]:
+              - /url: https://github.com/AntonEbsen/antonebsen.dk
+            - text: .
+          - link "" [ref=e201] [cursor=pointer]:
+            - /url: https://www.oratorium.dk/
+            - generic [ref=e202]: 
+  - generic:
+    - text:            
+    - button "" [ref=e203] [cursor=pointer]:
+      - generic [ref=e204]: 
+  - generic [ref=e207]:
+    - button "Menu" [ref=e208]:
+      - img [ref=e210]
+      - generic: Menu
+    - button "Inspect" [ref=e214]:
+      - img [ref=e216]
+      - generic: Inspect
+    - button "Audit" [ref=e218]:
+      - generic [ref=e219]:
+        - img [ref=e220]
+        - img [ref=e223]
+      - generic: Audit
+    - button "Settings" [ref=e226]:
+      - img [ref=e228]
+      - generic: Settings
+```
