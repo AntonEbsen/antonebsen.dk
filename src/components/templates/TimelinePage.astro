@@ -1,6 +1,7 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
 import { getEntry, getCollection } from 'astro:content';
+import TimelineItem from '@components/common/TimelineItem.astro';
 
 interface Props {
   lang: 'da' | 'en';
@@ -280,27 +281,7 @@ const contactLink = isDa ? '/contact' : '/en/contact';
 
       <ol class="tl" aria-label="Timeline">
         {timelineData.map((item: any) => (
-            <li class="tl-item" data-cat={item.category || 'all'}>
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div class="tl-card">
-                <div class="tl-head">
-                  <h3 class="tl-title">{item.title}</h3>
-                  <span class="tl-date">{item.year}</span>
-                </div>
-                {item.meta && <p class="tl-meta">{item.meta}</p>}
-                <p class="muted">
-                  {item.description}
-                </p>
-                <div class="tl-links">
-                  {item.link && (
-                      <a class="btn ghost" href={item.link}>{item.linkText || 'View'}</a>
-                  )}
-                  {item.links && item.links.map((l: any) => (
-                      <a class="btn ghost" href={l.url}>{l.text}</a>
-                  ))}
-                </div>
-              </div>
-            </li>
+            <TimelineItem item={item} />
         ))}
       </ol>
     </section>

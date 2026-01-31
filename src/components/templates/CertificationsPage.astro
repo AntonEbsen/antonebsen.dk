@@ -6,6 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import CertificationCard from '@components/common/CertificationCard.astro';
 import { supabase } from '@lib/supabase';
 
 import { getEntry } from 'astro:content';
@@ -21,29 +22,15 @@ if (!entry) throw new Error(`Missing certifications content for ${lang}`);
 const content: any = entry.data;
 
 // Data Fetching
-let certifications: any[] = [];
-let error = null;
-
-if (supabase) {
-  const res = await supabase
-    .from('certifications')
-    .select('*')
-    .eq('visible', true)
-    .order('id', { ascending: false });
-  certifications = res.data || [];
-  error = res.error;
-}
-
-if (error) certifications = [];
+import { getCertifications } from '@lib/api';
+const certifications = await getCertifications();
 
 // Filtering
-// We assume DB categories are consistent (e.g. 'Python', 'MATLAB', 'SAS', 'Formidling'/'Writing').
-// If DB has 'Formidling' and 'Writing' as separate, we unify them here.
-const pythonCerts = certifications?.filter((c: any) => c.category === 'Python') || [];
-const matlabCerts = certifications?.filter((c: any) => c.category === 'MATLAB') || [];
-const sasCerts = certifications?.filter((c: any) => c.category === 'SAS') || [];
-const writingCerts = certifications?.filter((c: any) => c.category === 'Formidling' || c.category === 'Writing') || [];
-const otherCerts = certifications?.filter((c: any) => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category)) || [];
+const pythonCerts = certifications.filter(c => c.category === 'Python');
+const matlabCerts = certifications.filter(c => c.category === 'MATLAB');
+const sasCerts = certifications.filter(c => c.category === 'SAS');
+const writingCerts = certifications.filter(c => c.category === 'Formidling' || c.category === 'Writing');
+const otherCerts = certifications.filter(c => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category));
 
 ---
 
@@ -180,19 +167,7 @@ const otherCerts = certifications?.filter((c: any) => !['Python', 'MATLAB', 'SAS
         <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.sas.text}</p>
 
         <div class="certs-grid">
-           {sasCerts.map(c => (
-             <Card variant="glass" class="p-4 flex flex-col h-full">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
-                  <Pill variant="accent">SAS</Pill>
-                </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
-                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
-                <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
-                </div>
-              </Card>
-          ))}
+          {sasCerts.map((c: any) => <CertificationCard cert={c} content={content} />)}
           {sasCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.sas.empty}</p>}
         </div>
       </Card>

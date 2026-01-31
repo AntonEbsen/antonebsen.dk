@@ -1,0 +1,42 @@
+---
+import Card from '@components/ui/Card.astro';
+import type { BucketItem } from 'src/lib/api';
+
+interface Props {
+  item: BucketItem;
+}
+
+const { item } = Astro.props;
+---
+
+{item.status === 'doing' && (
+    <Card variant="glass" class="p-6 border-l-4 border-l-blue-500 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
+            <i class="fa-solid fa-person-running text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2 text-white">{item.title}</h3>
+            <p class="text-dim text-sm mb-4">{item.description}</p>
+            {item.image_url && <img src={item.image_url} class="w-full h-32 object-cover rounded opacity-80" alt={item.title} />}
+    </Card>
+)}
+
+{item.status === 'done' && (
+    <Card variant="default" class="p-6 border border-gold-500/30 bg-gold-900/10 relative overflow-hidden group hover:shadow-[0_0_20px_rgba(255,215,0,0.2)] transition-all">
+            <div class="absolute top-2 right-3 text-gold-500">
+            <i class="fa-solid fa-check-circle"></i>
+            </div>
+            <h3 class="text-lg font-bold mb-2 text-gold-100 line-through decoration-gold-500/50">{item.title}</h3>
+            <p class="text-dim text-xs mb-3">{item.description}</p>
+            {item.image_url && <img src={item.image_url} class="w-full h-32 object-cover rounded sepia-[.5] group-hover:sepia-0 transition-all border border-gold-500/20" alt={item.title} />}
+            <p class="text-[10px] text-gold-500/60 mt-2 uppercase tracking-widest text-right">
+            {item.completed_at ? new Date(item.completed_at).getFullYear() : ''}
+            </p>
+    </Card>
+)}
+
+{item.status === 'todo' && (
+    <div class="p-4 rounded border border-white/5 bg-white/5 hover:border-white/20 transition-colors">
+        <h4 class="font-bold text-gray-400 text-sm mb-1">{item.title}</h4>
+        <p class="text-xs text-dim">{item.description}</p>
+    </div>
+)}

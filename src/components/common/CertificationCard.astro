@@ -1,0 +1,30 @@
+---
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+import Button from '@components/ui/Button.astro';
+import type { Certification } from 'src/lib/api';
+
+interface Props {
+  cert: Certification; // Use strict type from api.ts
+}
+
+const { cert } = Astro.props;
+---
+
+<Card variant="glass" class="p-6 border border-glass-border hover:border-accent/40 transition-colors">
+    <div class="flex justify-between items-start mb-3">
+    <span class="text-xs font-mono text-dim opacity-70">{cert.date}</span>
+    {cert.url && (
+        <a href={cert.url} target="_blank" rel="noopener noreferrer" class="text-accent hover:text-white transition-colors">
+        <i class="fa-solid fa-external-link-alt text-xs"></i>
+        </a>
+    )}
+    </div>
+
+    <h3 class="text-xl font-bold mb-1 group-hover:text-accent transition-colors">{cert.title}</h3>
+    <p class="text-sm text-dim mb-4">{cert.issuer}</p>
+
+    <div class="mt-auto pt-4 border-t border-glass-border">
+    <Pill variant="default" class="text-xs">{cert.category}</Pill>
+    </div>
+</Card>

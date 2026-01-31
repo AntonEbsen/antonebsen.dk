@@ -3,6 +3,7 @@ import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
+import BucketItem from '@components/common/BucketItem.astro';
 import { supabase } from '@lib/supabase';
 
 import { getEntry } from 'astro:content';
@@ -22,23 +23,12 @@ if (!entry) {
 const content = entry.data;
 
 // Data Fetching
-let items: any[] = [];
-let error = null;
+import { getBucketList } from '@lib/api';
+const items = await getBucketList();
 
-if (supabase) {
-    const res = await supabase
-        .from('bucket_list')
-        .select('*')
-        .order('created_at', { ascending: true });
-    items = res.data || [];
-    error = res.error;
-}
-
-if (error) items = [];
-
-const todo = items?.filter((i: any) => i.status === 'todo') || [];
-const doing = items?.filter((i: any) => i.status === 'doing') || [];
-const done = items?.filter((i: any) => i.status === 'done') || [];
+const todo = items.filter(i => i.status === 'todo');
+const doing = items.filter(i => i.status === 'doing');
+const done = items.filter(i => i.status === 'done');
 ---
 
 <Layout 
@@ -61,16 +51,7 @@ const done = items?.filter((i: any) => i.status === 'done') || [];
             <div class="mb-12">
                 <SectionHeading>{content.doingTitle}</SectionHeading>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    {doing.map(item => (
-                        <Card variant="glass" class="p-6 border-l-4 border-l-blue-500 relative overflow-hidden group">
-                             <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                                <i class="fa-solid fa-person-running text-4xl"></i>
-                             </div>
-                             <h3 class="text-xl font-bold mb-2 text-white">{item.title}</h3>
-                             <p class="text-dim text-sm mb-4">{item.description}</p>
-                             {item.image_url && <img src={item.image_url} class="w-full h-32 object-cover rounded opacity-80" alt={item.title} />}
-                        </Card>
-                    ))}
+                    {doing.map((item: any) => <BucketItem item={item} />)}
                 </div>
             </div>
         )}
@@ -80,19 +61,7 @@ const done = items?.filter((i: any) => i.status === 'done') || [];
             <div class="mb-12">
                 <SectionHeading>{content.doneTitle}</SectionHeading>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    {done.map(item => (
-                        <Card variant="default" class="p-6 border border-gold-500/30 bg-gold-900/10 relative overflow-hidden group hover:shadow-[0_0_20px_rgba(255,215,0,0.2)] transition-all">
-                             <div class="absolute top-2 right-3 text-gold-500">
-                                <i class="fa-solid fa-check-circle"></i>
-                             </div>
-                             <h3 class="text-lg font-bold mb-2 text-gold-100 line-through decoration-gold-500/50">{item.title}</h3>
-                             <p class="text-dim text-xs mb-3">{item.description}</p>
-                             {item.image_url && <img src={item.image_url} class="w-full h-32 object-cover rounded sepia-[.5] group-hover:sepia-0 transition-all border border-gold-500/20" alt={item.title} />}
-                             <p class="text-[10px] text-gold-500/60 mt-2 uppercase tracking-widest text-right">
-                                {new Date(item.completed_at).getFullYear()}
-                             </p>
-                        </Card>
-                    ))}
+                    {done.map((item: any) => <BucketItem item={item} />)}
                 </div>
             </div>
         )}
@@ -101,12 +70,7 @@ const done = items?.filter((i: any) => i.status === 'done') || [];
         <div class="mb-12">
             <SectionHeading>{content.todoTitle}</SectionHeading>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-                {todo.map(item => (
-                   <div class="p-4 rounded border border-white/5 bg-white/5 hover:border-white/20 transition-colors">
-                        <h4 class="font-bold text-gray-400 text-sm mb-1">{item.title}</h4>
-                        <p class="text-xs text-dim">{item.description}</p>
-                   </div>
-                ))}
+                {todo.map((item: any) => <BucketItem item={item} />)}
             </div>
         </div>
 

@@ -1,0 +1,139 @@
+---
+import type { TimelineItem } from 'src/lib/api';
+
+interface Props {
+  item: TimelineItem;
+}
+
+const { item } = Astro.props;
+---
+
+<li class="tl-item element-animate" data-cat={item.category || 'all'}>
+    <div class="tl-dot" aria-hidden="true"></div>
+    <div class="tl-card">
+    <div class="tl-head">
+        <h3 class="tl-title">{item.title}</h3>
+        <span class="tl-date">{item.year}</span>
+    </div>
+    {item.meta && <p class="tl-meta">{item.meta}</p>}
+    <p class="muted">
+        {item.description}
+    </p>
+    <div class="tl-links">
+        {item.link && (
+            <a class="btn ghost" href={item.link}>{item.linkText || 'View'}</a>
+        )}
+        {item.links && item.links.map((l: any) => (
+            <a class="btn ghost" href={l.url}>{l.text}</a>
+        ))}
+    </div>
+    </div>
+</li>
+
+<style>
+    .tl-item {
+      position: relative;
+      margin-bottom: 4rem;
+      padding-left: 2rem;
+    }
+    
+    .tl-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .tl-dot {
+      position: absolute;
+      left: -2.65rem;
+      top: 0.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: #1a1a1a;
+      border: 2px solid var(--accent);
+      z-index: 10;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .tl-head {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    @media (min-width: 640px) {
+      .tl-head { 
+        flex-direction: row; 
+        justify-content: space-between; 
+        align-items: baseline; 
+      }
+    }
+    
+    .tl-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    
+    .tl-date {
+      font-family: monospace;
+      color: var(--accent);
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .tl-meta {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .muted {
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.6;
+      font-size: 1rem;
+      max-width: 65ch;
+      margin-bottom: 0;
+    }
+    
+    .tl-links {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+</style>
