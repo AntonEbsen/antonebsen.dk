@@ -27,88 +27,71 @@ const lang = getLangFromUrl(Astro.url);
 <!DOCTYPE html>
 <html lang={lang}>
 <head>
+  <!-- 1. Absolute highest priority: Theme Detection (Inline to prevent FOUC) -->
+  <style is:inline>
+    /* Instant core variables to prevent white flash and layout shifts */
+    :root { 
+      --bg: #050505; 
+      --text: #f2f2f0; 
+      --font-main: "Inter", system-ui, sans-serif;
+    }
+    html { background-color: var(--bg); color: var(--text); font-family: var(--font-main); transition: none !important; }
+    body { background-color: inherit !important; margin: 0; }
+    
+    /* Specific theme solid background colors for instant paint */
+    html.theme-lent { --bg: #0d0a14; }
+    html.theme-easter { --bg: #0a0f0e; }
+    html.theme-ascension { --bg: #0a0c14; }
+    html.theme-pentecost { --bg: #0f0a0a; }
+    html.theme-corpus { --bg: #0a0a05; }
+    html.theme-advent { --bg: #050810; }
+    html.theme-camino { --bg: #f6fff8; --text: #123026; }
+  </style>
+  <script is:inline>
+    function applyTheme() {
+      const doc = document.documentElement;
+      const override = localStorage.getItem("themeOverride");
+      doc.classList.remove("theme-lent", "theme-easter", "theme-ascension", "theme-pentecost", "theme-corpus", "theme-advent", "theme-camino");
+      if (override && override !== "auto") { doc.classList.add(override); return; }
+
+      function atNoon(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0, 0); }
+      function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+      const today = atNoon(new Date()); const y = today.getFullYear();
+      const easter = ((year) => {
+        const a = year % 19, b = Math.floor(year / 100), c = year % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+        const month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+        return atNoon(new Date(year, month - 1, day));
+      })(y);
+
+      const ashWednesday = addDays(easter, -46), holySaturday = addDays(easter, -1), ascension = addDays(easter, 39), pentecost = addDays(easter, 49), corpusChristi = addDays(easter, 60), stJames = atNoon(new Date(y, 6, 25)), adventStart = (() => { for (let day = 27; day <= 33; day++) { const d = atNoon(new Date(y, 10, day)); if (d.getDay() === 0) return d; } return atNoon(new Date(y, 10, 27)); })();
+
+      const inRangeFlags = (d, start, end) => { const x = d.getTime(); return x >= start.getTime() && x <= end.getTime(); };
+      const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+      let theme = null;
+      if (inRangeFlags(today, ashWednesday, holySaturday)) theme = "theme-lent";
+      else if (inRangeFlags(today, easter, addDays(ascension, -1))) theme = "theme-easter";
+      else if (inRangeFlags(today, ascension, addDays(pentecost, -1))) theme = "theme-ascension";
+      else if (inRangeFlags(today, pentecost, addDays(pentecost, 1))) theme = "theme-pentecost";
+      else if (sameDay(today, corpusChristi) || sameDay(today, addDays(corpusChristi, 3))) theme = "theme-corpus";
+      else if (inRangeFlags(today, adventStart, atNoon(new Date(y, 11, 24)))) theme = "theme-advent";
+      else if (inRangeFlags(today, addDays(stJames, -1), addDays(stJames, 1))) theme = "theme-camino";
+      if (theme) doc.classList.add(theme);
+    }
+    applyTheme();
+    document.addEventListener('astro:after-swap', applyTheme);
+  </script>
+
+  <!-- 2. SEO and other metadata -->
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
   <ClientRouter />
   <SpeedInsights />
   <Analytics client:load />
   
-  <!-- Fonts -->
+  <!-- 3. Fonts and non-critical scripts -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
-  
-  <!-- Theme Detection (Inline to prevent FOUC) -->
-  <style is:inline>
-    :root { background-color: #050505; color: #f2f2f0; }
-    .theme-lent { background-color: #0d0a14; }
-    .theme-easter { background-color: #0a0f0e; }
-    .theme-ascension { background-color: #0a0c14; }
-    .theme-pentecost { background-color: #0f0a0a; }
-    .theme-corpus { background-color: #0a0a05; }
-    .theme-advent { background-color: #050810; }
-    .theme-camino { background-color: #f6fff8; }
-  </style>
-  <script is:inline>
-    function applyTheme() {
-      const doc = document.documentElement;
-      const override = localStorage.getItem("themeOverride");
-      
-      // Clean up existing theme classes
-      doc.classList.remove("theme-lent", "theme-easter", "theme-ascension", "theme-pentecost", "theme-corpus", "theme-advent", "theme-camino");
-
-      if (override && override !== "auto") {
-        doc.classList.add(override);
-        return;
-      }
-
-      function atNoon(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0, 0); }
-      function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
-      function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
-      function inRange(d, start, end) { const x = d.getTime(); return x >= start.getTime() && x <= end.getTime(); }
-      function easterSunday(year) {
-        const a = year % 19, b = Math.floor(year / 100), c = year % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
-        const month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
-        return atNoon(new Date(year, month - 1, day));
-      }
-      function firstSundayOfAdvent(year) {
-        for (let day = 27; day <= 33; day++) {
-          const d = atNoon(new Date(year, 10, day));
-          if (d.getDay() === 0) return d;
-        }
-        return atNoon(new Date(year, 10, 27));
-      }
-
-      const today = atNoon(new Date());
-      const y = today.getFullYear();
-      const easter = easterSunday(y);
-      const ashWednesday = addDays(easter, -46);
-      const holySaturday = addDays(easter, -1);
-      const ascension = addDays(easter, 39);
-      const pentecost = addDays(easter, 49);
-      const corpusChristi = addDays(easter, 60);
-      const adventStart = firstSundayOfAdvent(y);
-      const stJames = atNoon(new Date(y, 6, 25));
-
-      let theme = null;
-      if (inRange(today, ashWednesday, holySaturday)) theme = "theme-lent";
-      else if (inRange(today, easter, addDays(ascension, -1))) theme = "theme-easter";
-      else if (inRange(today, ascension, addDays(pentecost, -1))) theme = "theme-ascension";
-      else if (inRange(today, pentecost, addDays(pentecost, 1))) theme = "theme-pentecost";
-      else if (sameDay(today, corpusChristi) || sameDay(today, addDays(corpusChristi, 3))) theme = "theme-corpus";
-      else if (inRange(today, adventStart, atNoon(new Date(y, 11, 24)))) theme = "theme-advent";
-      else if (inRange(today, addDays(stJames, -1), addDays(stJames, 1))) theme = "theme-camino";
-
-      if (theme) doc.classList.add(theme);
-    }
-    
-    // Run immediately
-    applyTheme();
-    
-    // Re-run after View Transitions swap
-    document.addEventListener('astro:after-swap', applyTheme);
-  </script>
-
-  <!-- Scripts -->
   <script src="/assets/js/search.js" defer></script>
 
   <slot name="head" />
