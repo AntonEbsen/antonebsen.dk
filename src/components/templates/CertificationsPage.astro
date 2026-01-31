@@ -18,11 +18,11 @@ const { lang } = Astro.props;
 
 const entry = await getEntry('certifications', lang);
 if (!entry) throw new Error(`Missing certifications content for ${lang}`);
-const content = entry.data;
+const content: any = entry.data;
 
 // Data Fetching
 // Supabase client imported from @lib/supabase
-let certifications = [];
+let certifications: any[] = [];
 let error = null;
 
 if (supabase) {
@@ -40,11 +40,11 @@ if (error) certifications = [];
 // Filtering
 // We assume DB categories are consistent (e.g. 'Python', 'MATLAB', 'SAS', 'Formidling'/'Writing').
 // If DB has 'Formidling' and 'Writing' as separate, we unify them here.
-const pythonCerts = certifications?.filter(c => c.category === 'Python') || [];
-const matlabCerts = certifications?.filter(c => c.category === 'MATLAB') || [];
-const sasCerts = certifications?.filter(c => c.category === 'SAS') || [];
-const writingCerts = certifications?.filter(c => c.category === 'Formidling' || c.category === 'Writing') || [];
-const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category)) || [];
+const pythonCerts = certifications?.filter((c: any) => c.category === 'Python') || [];
+const matlabCerts = certifications?.filter((c: any) => c.category === 'MATLAB') || [];
+const sasCerts = certifications?.filter((c: any) => c.category === 'SAS') || [];
+const writingCerts = certifications?.filter((c: any) => c.category === 'Formidling' || c.category === 'Writing') || [];
+const otherCerts = certifications?.filter((c: any) => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category)) || [];
 
 ---
 
@@ -140,7 +140,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> {content.btnProof}</Button>}
+                  {c.url && <Button href={c.url} target="_blank" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> {content.btnProof}</Button>}
                 </div>
               </Card>
           ))}
@@ -165,7 +165,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                  {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
                 </div>
               </Card>
           ))}
@@ -190,7 +190,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                  {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
                 </div>
               </Card>
           ))}
@@ -215,7 +215,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                 <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                 <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                  {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
                 </div>
               </Card>
           ))}
@@ -238,7 +238,7 @@ const otherCerts = certifications?.filter(c => !['Python', 'MATLAB', 'SAS', 'For
                     <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
                     <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
                     <div class="flex flex-wrap gap-2 mt-auto">
-                      {c.url && <Button href={c.url} target="_blank" size="sm" variant="ghost">{content.btnProof}</Button>}
+                      {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
                     </div>
                   </Card>
               ))}

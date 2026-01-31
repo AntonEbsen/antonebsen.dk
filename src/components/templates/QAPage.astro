@@ -15,7 +15,7 @@ const isDa = lang === 'da';
 // 1. UI Strings
 const entry = await getEntry('pages', `${lang}/qa`);
 if (!entry) throw new Error(`Missing pages entry for ${lang}/qa`);
-const content = entry.data;
+const content: any = entry.data;
 
 // 2. Static Questions
 const staticEntry = await getEntry('qa', lang);

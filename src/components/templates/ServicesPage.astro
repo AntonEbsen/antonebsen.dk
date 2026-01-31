@@ -19,7 +19,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/services`);
 }
 
-const content = entry.data;
+const content: any = entry.data;
 
 const contactLink = lang === 'en' ? '/en/contact' : '/contact';
 const cvLink = lang === 'en' ? '/en/cv' : '/cv';

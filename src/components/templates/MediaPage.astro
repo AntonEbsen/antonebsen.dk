@@ -44,7 +44,7 @@ const content = isDa ? t.da : t.en;
 const contactLink = isDa ? '/contact' : '/en/contact';
 
 // Supabase client from @lib/supabase
-let media = [];
+let media: any[] = [];
 let error = null;
 
 if (supabase) {

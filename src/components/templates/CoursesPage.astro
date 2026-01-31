@@ -18,7 +18,7 @@ const isDa = lang === 'da';
 // 1. UI Content
 const pageEntry = await getEntry('pages', `${lang}/courses`);
 if (!pageEntry) throw new Error(`Missing pages entry for ${lang}/courses`);
-const content = pageEntry.data; 
+const content: any = pageEntry.data; 
 
 // 2. CV Data
 const cvEntry = await getEntry('cv', lang);
@@ -93,34 +93,35 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
 
     <Section id="university">
        <Card variant="default" class="p-6">
-         <SectionHeading>{content.grid.university.title}</SectionHeading>
+         <SectionHeading>{content.grid?.university?.title}</SectionHeading>
          <div class="courses-grid">
-           {uniCourses.map(course => (
+           {uniCourses.map((course: any) => (
               <Card variant="glass" class="p-4 flex flex-col h-full">
                 <div class="flex justify-between items-start mb-2 gap-2">
                   <h3 class="font-bold text-base leading-tight">{course.title}</h3>
                   <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
                 </div>
+                <p class="text-xs text-dim mb-2">{course.institution}</p>
                 <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
                 {course.links && course.links.length > 0 && (
                   <div class="flex flex-wrap gap-2 mt-auto">
-                    {course.links.map(l => (
-                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} â†’</a>
+                    {course.links.map((l: any) => (
+                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} -></a>
                     ))}
                   </div>
                 )}
               </Card>
            ))}
-           {uniCourses.length === 0 && <p class="text-dim text-sm italic">{content.grid.university.empty}</p>}
+           {uniCourses.length === 0 && <p class="text-dim text-sm italic">{content.grid?.university?.empty}</p>}
          </div>
        </Card>
     </Section>
 
     <Section id="programming">
        <Card variant="bordered" class="p-6">
-         <SectionHeading>{content.grid.programming.title}</SectionHeading>
+         <SectionHeading>{content.grid?.programming?.title}</SectionHeading>
          <div class="courses-grid">
-           {otherCourses.map(course => (
+           {otherCourses.map((course: any) => (
               <Card variant="glass" class="p-4 flex flex-col h-full">
                 <div class="flex justify-between items-start mb-2 gap-2">
                   <h3 class="font-bold text-base leading-tight">{course.title}</h3>

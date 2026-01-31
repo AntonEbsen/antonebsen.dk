@@ -23,7 +23,7 @@ const content = entry.data;
 
 // Data Fetching
 // Supabase client is imported from @lib/supabase
-let items = [];
+let items: any[] = [];
 let error = null;
 
 if (supabase) {
@@ -37,9 +37,9 @@ if (supabase) {
 
 if (error) items = [];
 
-const todo = items?.filter(i => i.status === 'todo') || [];
-const doing = items?.filter(i => i.status === 'doing') || [];
-const done = items?.filter(i => i.status === 'done') || [];
+const todo = items?.filter((i: any) => i.status === 'todo') || [];
+const doing = items?.filter((i: any) => i.status === 'doing') || [];
+const done = items?.filter((i: any) => i.status === 'done') || [];
 ---
 
 <Layout 

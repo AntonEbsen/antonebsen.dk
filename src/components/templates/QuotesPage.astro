@@ -15,7 +15,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/quotes`);
 }
 
-const content = entry.data;
+const content: any = entry.data;
 const contactLink = isDa ? '/contact' : '/en/contact';
 const blogLink = isDa ? '/blog' : '/en/blog';
 ---

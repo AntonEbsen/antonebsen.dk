@@ -14,7 +14,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/about`);
 }
 
-const data = entry.data;
+const data: any = entry.data;
 ---
 
 <Layout 
@@ -247,7 +247,7 @@ const data = entry.data;
         </div>
         <h2 class="section-title">{data.sections.story.title}</h2>
         <p class="muted" style="max-width: 600px; margin-bottom: 2rem;">
-            {data.sections.story.text}
+            {data.sections?.story?.text}
         </p>
         <div class="cta">
           <a class="btn" href={data.sections.story.cta.url}>

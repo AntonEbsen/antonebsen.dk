@@ -30,7 +30,7 @@ const t = {
 const content = isDa ? t.da : t.en;
 
 // Supabase client imported from @lib/supabase
-let logs = [];
+let logs: any[] = [];
 let error = null;
 
 if (supabase) {
@@ -38,11 +38,14 @@ if (supabase) {
         .from('changelog')
         .select('*')
         .order('created_at', { ascending: false });
-    logs = res.data || [];
-    error = res.error;
+    
+    if (res.error) {
+        error = res.error;
+        logs = [];
+    } else {
+        logs = res.data || [];
+    }
 }
-
-if (error) logs = [];
 
 function getTypeColor(type: string) {
     switch (type) {

@@ -3,7 +3,6 @@ import LanguageSwitcher from './common/LanguageSwitcher.astro';
 import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 const navItems = useNav(lang);
 const pathname = new URL(Astro.request.url).pathname;
 ---

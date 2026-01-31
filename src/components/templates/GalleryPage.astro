@@ -17,7 +17,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/gallery`);
 }
 
-const content = entry.data;
+const content: any = entry.data;
 ---
 
 <Layout 

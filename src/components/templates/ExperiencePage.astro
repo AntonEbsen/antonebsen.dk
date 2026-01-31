@@ -19,7 +19,7 @@ const isDa = lang === 'da';
 // 1. UI Content
 const pageEntry = await getEntry('pages', `${lang}/experience`);
 if (!pageEntry) throw new Error(`Missing pages entry for ${lang}/experience`);
-const content = pageEntry.data;
+const content: any = pageEntry.data;
 
 // 2. CV Data
 const cvEntry = await getEntry('cv', lang);

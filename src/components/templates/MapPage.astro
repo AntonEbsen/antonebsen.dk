@@ -13,7 +13,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/map`);
 }
 
-const content = entry.data;
+const content: any = entry.data;
 ---
 
 <Layout 

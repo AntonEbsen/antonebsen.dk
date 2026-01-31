@@ -1,11 +1,11 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
-import Button from '@components/ui/Button.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import Pill from '@components/ui/Pill.astro';
+import Button from '@components/ui/Button.astro';
 import { supabase } from '@lib/supabase';
 
 interface Props {
@@ -59,7 +59,7 @@ const content = isDa ? t.da : t.en;
 
 // Data Fetching (SSR) - Replaces client-side API fetch
 // Supabase client is imported from @lib/supabase
-let books = [];
+let books: any[] = [];
 let error = null;
 
 if (supabase) {

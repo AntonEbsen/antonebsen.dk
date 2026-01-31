@@ -23,7 +23,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/portfolio`);
 }
 
-const content = entry.data;
+const content: any = entry.data;
 
 // Supabase Data Fetching
 // Client imported from @lib/supabase

@@ -19,7 +19,7 @@ const isDa = lang === 'da';
 // 1. UI Content
 const pageEntry = await getEntry('pages', `${lang}/education`);
 if (!pageEntry) throw new Error(`Missing pages entry for ${lang}/education`);
-const content = pageEntry.data; 
+const content: any = pageEntry.data; 
 
 // 2. CV Data
 const cvEntry = await getEntry('cv', lang);
@@ -248,17 +248,17 @@ const cvLink = isDa ? '/cv' : '/en/cv';
     <!-- CTA -->
     <Section>
       <Card variant="default" class="p-6">
-        <SectionHeading>{content.cta.title}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6">{content.cta.text}</p>
-        <div class="flex flex-wrap gap-3">
-          <Button href={certificationLink}>{content.cta.btn}</Button>
-          <Button href={isDa ? '/contact' : '/en/contact'} variant="ghost">{content.cta.contactBtn}</Button>
-        </div>
+        <div class="mt-8 pt-8 border-t border-white/5 reveal reveal-slide-up" data-delay="300">
+           <p class="text-dim opacity-70 mb-6">{content.cta?.text}</p>
+           <div class="flex flex-wrap gap-4">
+           {isDa && (
+           <Button href={certificationLink}>{content.cta?.btn}</Button>
+           )}
+           <Button href={isDa ? '/contact' : '/en/contact'} variant="ghost">{content.cta?.contactBtn}</Button>
+           </div>
+         </div>
       </Card>
     </Section>
 
   </main>
-</Layout>
-
-
 

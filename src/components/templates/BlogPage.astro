@@ -5,8 +5,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
-import BlogCard from '@components/blog/BlogCard.astro';
-import BlogCard from '@components/blog/BlogCard.astro';
+
 
 interface Props {
   lang: 'da' | 'en';
@@ -127,8 +126,9 @@ const content = isDa ? t.da : t.en;
 
 // Data Fetching (SSR)
 // Data Fetching (SSR)
+import BlogCard from '@components/blog/BlogCard.astro';
 import { supabase } from '@lib/supabase';
-let posts = [];
+let posts: any[] = [];
 let error = null;
 
 // if (supabase) {
@@ -241,7 +241,7 @@ if (error || !posts) posts = [];
               tag={p.category || "Blog"}
               meta={new Date(p.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}
               description={p.excerpt || ""}
-              links={[{ text: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
+              links={[{ label: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
             />
         ))}
         {posts.length === 0 && (

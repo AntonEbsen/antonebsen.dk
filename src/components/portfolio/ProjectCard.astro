@@ -1,7 +1,7 @@
 ---
 import Card from '../ui/Card.astro';
 import Pill from '../ui/Pill.astro';
-import Button from '../ui/Button.astro';
+
 
 interface Props {
   title: string;
@@ -17,7 +17,7 @@ interface Props {
   }[];
 }
 
-const { title, tags, tagString, description, tools, output, links } = Astro.props;
+const { title, tagString, description, tools, output, links } = Astro.props;
 ---
 
 <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]">

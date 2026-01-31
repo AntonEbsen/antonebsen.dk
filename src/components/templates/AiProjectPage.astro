@@ -233,7 +233,7 @@ const chatLink = lang === 'da' ? '/chat' : '/en/chat';
 
       <!-- Features Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
-        {Object.values(content.features).map((feature: any, i) => (
+        {Object.values(content.features).map((feature: any) => (
           <div class="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-accent/30 transition-colors group">
             <div class="w-12 h-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
               <i class={`fa-solid ${feature.icon}`}></i>

@@ -14,9 +14,7 @@ const entry = await getEntry('pages', `${lang}/timeline`);
 if (!entry) {
   throw new Error(`Could not find content for ${lang}/timeline`);
 }
-const content = entry.data;
-
-// 2. Fetch Timeline Data (Items)
+const content: any = entry.data;
 const timelineEntry = await getEntry('timeline', lang);
 if (!timelineEntry) {
    throw new Error(`Could not find timeline data for ${lang}`);

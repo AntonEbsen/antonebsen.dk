@@ -13,7 +13,7 @@ if (!entry) {
   throw new Error(`Could not find content for ${lang}/chat`);
 }
 
-const content = entry.data;
+const content: any = entry.data;
 
 const backLink = lang === 'en' ? '/' : '/'; // Home is / for both mostly, or /en/ for english? 
 // Actually home is usually / index.astro which might detect lang? 

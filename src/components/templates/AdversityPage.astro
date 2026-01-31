@@ -13,7 +13,7 @@ const entry = await getEntry('adversity', lang);
 if (!entry) {
     throw new Error(`Could not find adversity content for ${lang}`);
 }
-const content = entry.data;
+const content: any = entry.data;
 
 const cvLink = isDa ? '/cv' : '/en/cv';
 const portLink = isDa ? '/portfolio' : '/en/portfolio';
@@ -209,14 +209,14 @@ const portLink = isDa ? '/portfolio' : '/en/portfolio';
       </p>
     </header>
 
-    {content.chapters.map(c => (
+    {content.chapters.map((c: any) => (
         <section class="chapter">
            <span class="chapter-number">{c.id}</span>
            <h2>{c.title}</h2>
            <div class="content">
-              {c.content.map(p => <p set:html={p} />)}
+              {c.content.map((p: any) => <p set:html={p} />)}
               
-              {c.quotes && c.quotes.map(q => (
+              {c.quotes && c.quotes.map((q: any) => (
                   <div class="quote-box" style={q.style !== 'default' ? q.style : ''}>
                     <span set:html={q.text} />
                     {q.author && <><br/><small style="font-style: normal; opacity: 0.6; font-size: 0.9rem;">{q.author}</small></>}

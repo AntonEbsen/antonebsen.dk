@@ -41,14 +41,14 @@
     function applyFromStorage() {
         const collapsed = localStorage.getItem("tocCollapsed") === "1";
         // Toggle the class on wrapper
-        wrap.classList.toggle("is-toc-collapsed", collapsed);
+        wrap?.classList.toggle("is-toc-collapsed", collapsed);
         // Toggle aria-expanded
-        btn.setAttribute("aria-expanded", String(!collapsed));
+        btn?.setAttribute("aria-expanded", String(!collapsed));
     }
 
     btn.addEventListener("click", function () {
-        const nowCollapsed = wrap.classList.toggle("is-toc-collapsed");
-        btn.setAttribute("aria-expanded", String(!nowCollapsed));
+        const nowCollapsed = wrap?.classList.toggle("is-toc-collapsed");
+        btn?.setAttribute("aria-expanded", String(!nowCollapsed));
         localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
     });
 

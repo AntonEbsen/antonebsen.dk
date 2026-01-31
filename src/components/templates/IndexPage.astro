@@ -27,7 +27,7 @@ const contactLink = isDa ? '/contact' : '/en/contact';
 
 const entry = await getEntry('pages', `${lang}/home`);
 if (!entry) throw new Error(`Missing content for ${lang}/home`);
-const content = entry.data;
+const content: any = entry.data;
 
 let skillsRows = [];
 let error = null;

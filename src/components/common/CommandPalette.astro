@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import { getLangFromUrl } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = {
@@ -123,12 +123,13 @@ const quickActions = [
   }
 </style>
 
-<script>
+<script is:inline>
+// @ts-nocheck
   (() => {
     const palette = document.getElementById('command-palette');
     const container = palette?.querySelector('.relative.w-full');
     const backdrop = palette?.querySelector('.palette-backdrop');
-    const input = document.getElementById('palette-input') as HTMLInputElement;
+    const input = document.getElementById('palette-input');
     const resultsList = document.getElementById('palette-results-list');
     const defaultState = document.getElementById('palette-default-state');
     const aiResult = document.getElementById('palette-ai-result');
@@ -200,7 +201,7 @@ const quickActions = [
       renderResults(filtered);
     }
 
-    function renderResults(results) {
+    function renderResults(results: any[]) {
       if (!resultsList || !defaultState) return;
 
       defaultState.classList.add('hidden');
@@ -232,7 +233,7 @@ const quickActions = [
       activeIndex = 0;
     }
 
-    function getIcon(tags) {
+    function getIcon(tags: string[]) {
       if (tags?.includes('blog')) return 'fa-solid fa-newspaper';
       if (tags?.includes('portfolio')) return 'fa-solid fa-code';
       if (tags?.includes('skill')) return 'fa-solid fa-brain';
@@ -240,7 +241,7 @@ const quickActions = [
     }
 
     // Keyboard Navigation
-    function handleKeydown(e) {
+    function handleKeydown(e: KeyboardEvent) {
       if (!isOpen) {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
           e.preventDefault();
@@ -270,14 +271,14 @@ const quickActions = [
         if (isAiMode) {
           askAi();
         } else {
-          const activeItem = items[activeIndex] as HTMLAnchorElement;
+          const activeItem = items[activeIndex];
           if (activeItem) activeItem.click();
         }
       }
     }
 
     function updateActiveItem(items) {
-      items.forEach((item, i) => {
+      items.forEach((item: any, i: number) => {
         if (i === activeIndex) {
           item.classList.add('is-active');
           item.scrollIntoView({ block: 'nearest' });

@@ -28,7 +28,7 @@ const content = pageEntry.data;
 // 2. CV Data
 const cvEntry = await getEntry('cv', lang);
 if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
-const cvData = cvEntry.data; 
+const cvData: any = cvEntry.data; 
 
 // 3. Skills Data
 const skillsEntry = await getEntry('skills', lang);
@@ -77,7 +77,7 @@ const skillsData = skillsEntry.data;
           <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>{content.ui.headings.experience}</SectionHeading>
             <div class="space-y-0 experience-list">
-              {cvData.experience.map((item: any) => (
+              {cvData.experience?.map((item: any) => (
                 <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} Â· {item.organization}</h3>
@@ -98,7 +98,7 @@ const skillsData = skillsEntry.data;
           <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>{content.ui.headings.education}</SectionHeading>
             <div class="space-y-0 education-list">
-              {cvData.education.map((item: any) => (
+              {cvData.education?.map((item: any) => (
                 <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} Â· {item.institution}</h3>
@@ -115,7 +115,7 @@ const skillsData = skillsEntry.data;
           <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>{content.ui.headings.projects}</SectionHeading>
             <div class="space-y-0 project-list">
-              {cvData.projects.map((project: any) => (
+              {cvData.projects?.map((project: any) => (
                 <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(project.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">{project.title}</h3>
