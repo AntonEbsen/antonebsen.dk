@@ -52,6 +52,12 @@ const content = {
     meta: {
       compatibility: { title: "Team Match", text: "Arbejder bedst med målorienterede eksekvere og kreative visionære." },
       learning: { title: "Læringsstil", text: "First Principles – jeg skal forstå fundamentet før jeg bygger ovenpå." }
+    },
+    tt38: {
+      title: "TT38 Talentprofil",
+      status: "Test afventer",
+      desc: "TT38 er en dybdegående analyse af 38 fundamentale talenter. Jeg planlægger at tage testen for at få et præcist billede af mine top-drivere og naturlige arbejdsstile.",
+      placeholder: "Resultater indlæses snart..."
     }
   },
   en: {
@@ -93,6 +99,12 @@ const content = {
     meta: {
       compatibility: { title: "Team Match", text: "Works best with goal-oriented executors and creative visionaries." },
       learning: { title: "Learning Style", text: "First Principles – I need to understand the foundation before building." }
+    },
+    tt38: {
+      title: "TT38 Talent Profile",
+      status: "Test Pending",
+      desc: "TT38 is an in-depth analysis of 38 fundamental talents. I am planning on taking this test soon to provide a precise mapping of my top drivers and natural work styles.",
+      placeholder: "Results loading soon..."
     }
   }
 };
@@ -133,8 +145,7 @@ const t = isDa ? content.da : content.en;
                    <i class="fa-solid fa-brain"></i>
                 </div>
                 <div>
-                   <p class="text-[10px] uppercase font-bold text-accent">{t.meta.compatibility.title}</p>
-                   <p class="text-xs text-dim text-accent">{t.meta.learning.title}</p>
+                   <p class="text-[10px] uppercase font-bold text-accent">{t.meta.learning.title}</p>
                    <p class="text-xs text-dim">{t.meta.learning.text}</p>
                 </div>
              </div>
@@ -160,6 +171,41 @@ const t = isDa ? content.da : content.en;
            </Card>
         </div>
       </div>
+    </Section>
+
+    <!-- TT38 Placeholder Section -->
+    <Section class="mb-32 animate-on-scroll">
+       <Card variant="bordered" class="p-12 border-accent/20 bg-accent/[0.01] relative overflow-hidden">
+          <div class="absolute top-0 right-0 p-8 text-accent/5 pointer-events-none">
+             <i class="fa-solid fa-microscope text-[160px] transform rotate-12"></i>
+          </div>
+          
+          <div class="max-w-2xl">
+             <div class="flex items-center gap-3 mb-6">
+                <SectionHeading class="mb-0">{t.tt38.title}</SectionHeading>
+                <Pill variant="default" class="bg-accent/10 border-accent/20 text-accent animate-pulse">
+                   {t.tt38.status}
+                </Pill>
+             </div>
+             
+             <p class="text-xl text-white/80 leading-relaxed mb-12">
+                {t.tt38.desc}
+             </p>
+             
+             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+                {[1,2,3,4].map(() => (
+                  <div class="h-32 rounded-xl bg-white/5 border border-dashed border-white/20 flex flex-col items-center justify-center gap-3">
+                     <div class="w-8 h-8 rounded-full bg-white/10 animate-pulse"></div>
+                     <div class="w-16 h-2 bg-white/5 rounded-full"></div>
+                  </div>
+                ))}
+             </div>
+             
+             <p class="mt-8 text-xs font-mono text-accent/50 uppercase tracking-widest">
+                {t.tt38.placeholder}
+             </p>
+          </div>
+       </Card>
     </Section>
 
     <!-- Strengths -->
