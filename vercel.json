@@ -1,23 +1,6 @@
 {
     "headers": [
         {
-            "source": "/research/(.*)",
-            "headers": [
-                {
-                    "key": "Cross-Origin-Opener-Policy",
-                    "value": "same-origin"
-                },
-                {
-                    "key": "Cross-Origin-Embedder-Policy",
-                    "value": "require-corp"
-                },
-                {
-                    "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https://*.supabase.co https://avatars.githubusercontent.com blob:; font-src 'self' data: https://cdnjs.cloudflare.com; connect-src 'self' https://*.supabase.co https://vercel.live https://*.vercel-scripts.com blob:; frame-src 'self' https://vercel.live blob:; worker-src 'self' blob:;"
-                }
-            ]
-        },
-        {
             "source": "/(.*)",
             "headers": [
                 {
