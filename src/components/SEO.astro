@@ -47,3 +47,17 @@ const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialImageURL} />
 
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org/",
+  "@type": "Person",
+  "name": "Anton Meier Ebsen Jørgensen",
+  "url": "https://antonebsen.dk",
+  "image": socialImageURL,
+  "jobTitle": "Student of Economics (cand.polit)",
+  "sameAs": [
+    "https://www.linkedin.com/in/antonebsen/",
+    "https://github.com/AntonEbsen"
+  ]
+})} />
+

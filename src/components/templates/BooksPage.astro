@@ -58,20 +58,8 @@ const t = {
 const content = isDa ? t.da : t.en;
 
 // Data Fetching
-// Supabase client from @lib/supabase
-let books: any[] = [];
-let error = null;
-
-if (supabase) {
-  const res = await supabase
-    .from('books')
-    .select('*')
-    .order('created_at', { ascending: false });
-  books = res.data || [];
-  error = res.error;
-}
-
-if (error || !books) books = [];
+import { getBooks } from '../../lib/api';
+const books = await getBooks();
 ---
 
 <Layout 
