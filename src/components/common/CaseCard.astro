@@ -89,6 +89,11 @@ const { data: c, labels } = Astro.props;
         {labels.viewStudy}
       </Button>
     )}
+    {c.labUrl && (
+      <Button href={c.labUrl} variant="ghost" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-flask-vial mr-2"></i> {labels.openLab}
+      </Button>
+    )}
     <Button href="#" variant="ghost">{labels.report}</Button>
     <Button href="#" variant="ghost">{labels.code}</Button>
     </div>
