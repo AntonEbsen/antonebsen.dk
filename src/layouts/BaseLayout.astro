@@ -292,7 +292,7 @@ const lang = getLangFromUrl(Astro.url);
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
   <script>
-    // Scroll Animation Observer
+    // Scroll Animation Observer - only animate content below the fold
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -310,7 +310,20 @@ const lang = getLangFromUrl(Astro.url);
 
     document.addEventListener('astro:page-load', () => {
       const elements = document.querySelectorAll('.animate-on-scroll');
-      elements.forEach(el => observer.observe(el));
+      elements.forEach(el => {
+        // Only hide elements that are below the viewport initially
+        const rect = el.getBoundingClientRect();
+        const isAboveFold = rect.top < window.innerHeight;
+        
+        if (isAboveFold) {
+          // Already visible, mark as in-view immediately
+          el.classList.add('in-view');
+        } else {
+          // Below the fold, prepare for animation
+          el.classList.add('animate-ready');
+          observer.observe(el);
+        }
+      });
     });
   </script>
 </body>

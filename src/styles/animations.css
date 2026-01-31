@@ -29,10 +29,18 @@
 
 
 /* Scroll Animation Utilities */
+/* Only animate content below the fold - above-the-fold content appears immediately */
 .animate-on-scroll {
+    opacity: 1;
+    /* Default to visible */
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Add the hidden state via JS only for content below viewport */
+.animate-on-scroll.animate-ready {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     will-change: opacity, transform;
 }
 
