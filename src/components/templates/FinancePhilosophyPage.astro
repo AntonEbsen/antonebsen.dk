@@ -1,0 +1,136 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Investeringsfilosofi | Anton Meier Ebsen Jørgensen",
+    description: "Min tilgang til økonomi, finanser og langsigtet formuepleje set gennem linsen af en økononistuderende.",
+    heroTitle: "Langsigtet Formue & Økonomisk Fundament",
+    heroText: "Min tilgang til personlig finans er baseret på fundamentale økonomiske principper: diversificering, tålmodighed og en forståelse for risiko versus afkast.",
+    principles: [
+      {
+        title: "Diversificering er den eneste gratis frokost",
+        desc: "Som Harry Markowitz sagde. Jeg spreder mine investeringer på tværs af sektorer og geografier for at minimere usystematisk risiko."
+      },
+      {
+        title: "Fundamental Analyse",
+        desc: "Som cand.polit studerende kigger jeg på makroøkonomiske trends og virksomheders fundamentale værdi fremfor kortsigtede kursudsving."
+      },
+      {
+        title: "Tidspræference & Compound Interest",
+        desc: "Rentes rente er verdens ottende vidunder. Jeg investerer med en horisont på 10-30 år."
+      }
+    ],
+    assets: [
+      { name: "Globale Aktier", status: "Kerne", desc: "Passivt forvaltede indeksfonde med lave omkostninger." },
+      { name: "Udvalgte Enkeltaktier", status: "Satellit", desc: "Virksomheder med stærke voldgrave og sund økonomi." },
+      { name: "Cash / Likviditet", status: "Sikkerhed", desc: "For at kunne udnytte markedskorrektioner når de opstår." }
+    ]
+  },
+  en: {
+    title: "Investment Philosophy | Anton Meier Ebsen Jørgensen",
+    description: "My approach to economics, finance, and long-term wealth management through the lens of an economics student.",
+    heroTitle: "Long-term Wealth & Economic Foundations",
+    heroText: "My approach to personal finance is built on fundamental economic principles: diversification, patience, and a deep understanding of risk versus return.",
+    principles: [
+      {
+        title: "Diversification is the only free lunch",
+        desc: "As Harry Markowitz famously said. I spread investments across sectors and geographies to minimize unsystematic risk."
+      },
+      {
+        title: "Fundamental Analysis",
+        desc: "As a cand.polit student, I focus on macroeconomic trends and fundamental value rather than short-term price fluctuations."
+      },
+      {
+        title: "Time Preference & Compound Interest",
+        desc: "Compound interest is the eighth wonder of the world. I invest with a horizon of 10-30 years."
+      }
+    ],
+    assets: [
+      { name: "Global Equities", status: "Core", desc: "Low-cost, passively managed index funds." },
+      { name: "Select Single Stocks", status: "Satellite", desc: "Companies with strong moats and healthy financials." },
+      { name: "Cash / Liquidity", status: "Safety", desc: "To capitalize on market corrections when they occur." }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-20 animate-on-scroll">
+      <div class="max-w-4xl">
+        <div class="text-accent font-mono text-sm mb-4 uppercase tracking-tighter">
+           [ Telemetry: Portfolio Philosophy ]
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
+          {t.heroTitle}
+        </h1>
+        <p class="text-xl text-dim leading-relaxed max-w-2xl border-l-2 border-accent/30 pl-8">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- Principles Grid -->
+    <Section class="mb-24 animate-on-scroll delay-100">
+      <SectionHeading class="mb-12">{isDa ? 'Kerne-principper' : 'Core Principles'}</SectionHeading>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {t.principles.map(p => (
+          <Card variant="glass" class="p-8 group hover:translate-y-[-8px] transition-transform duration-500">
+            <h3 class="text-xl font-bold mb-4 group-hover:text-accent transition-colors">{p.title}</h3>
+            <p class="text-dim text-sm leading-relaxed">{p.desc}</p>
+          </Card>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Asset Strategy -->
+    <Section class="mb-24 animate-on-scroll delay-200">
+      <div class="bg-glass-card rounded-3xl border border-glass-border p-12 overflow-hidden relative">
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-accent/10 blur-[100px] rounded-full"></div>
+        <SectionHeading class="mb-12">{isDa ? 'Strategisk Alloering' : 'Strategic Allocation'}</SectionHeading>
+        
+        <div class="space-y-6">
+          {t.assets.map(asset => (
+            <div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+              <div class="mb-4 md:mb-0">
+                <span class="text-xs font-bold uppercase tracking-widest text-accent mb-1 block">{asset.status}</span>
+                <h4 class="text-xl font-bold text-white">{asset.name}</h4>
+              </div>
+              <p class="text-dim text-sm md:max-w-md text-left md:text-right">
+                {asset.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
+
+    <!-- Disclaimer -->
+    <Section class="animate-on-scroll">
+      <Card variant="bordered" class="p-6 border-yellow-500/20 bg-yellow-500/5">
+        <div class="flex items-start gap-4">
+          <i class="fa-solid fa-triangle-exclamation text-yellow-500 mt-1"></i>
+          <div class="text-xs text-dim leading-relaxed">
+            {isDa 
+              ? 'ANSVARSFRASKRIVELSE: Indholdet på denne side er udelukkende til udtryk for personlig filosofi og må ikke betragtes som finansiel rådgivning. Investering involverer risiko for tab. Lav altid din egen research.' 
+              : 'DISCLAIMER: The content on this page expresses personal philosophy only and should not be considered financial advice. Investing involves risk of loss. Always do your own research.'}
+          </div>
+        </div>
+      </Card>
+    </Section>
+  </main>
+</Layout>

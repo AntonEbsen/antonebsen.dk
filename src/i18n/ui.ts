@@ -72,6 +72,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Omtale', url: '/media' },
                 { label: 'Noter', url: '/notes' },
                 { label: 'Galleri', url: '/gallery' },
+                { label: 'Mit Setup (/uses)', url: '/uses' },
+                { label: 'Økonomisk Filosofi', url: '/finance' },
                 { label: 'Om Antons AI', url: '/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -110,6 +112,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Press', url: '/en/media' },
                 { label: 'Notes', url: '/en/notes' },
                 { label: 'Gallery', url: '/en/gallery' },
+                { label: 'My Setup (/uses)', url: '/en/uses' },
+                { label: 'Finance Philosophy', url: '/en/finance' },
                 { label: "About Anton's AI", url: '/en/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]

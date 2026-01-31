@@ -1,0 +1,140 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Uses | Anton Meier Ebsen Jørgensen",
+    description: "En komplet liste over hardware, software og værktøjer jeg bruger til daglig.",
+    eyebrow: "Værktøjskasse",
+    heroTitle: "Hvad jeg bruger",
+    heroText: "En samling af de værktøjer, systemer og hardware, der holder mig produktiv som både økonomistuderende og udvikler.",
+    sections: [
+      {
+        title: "Workstation",
+        items: [
+          { name: "MacBook Pro M2 Max", desc: "Mit primære workflow-våben." },
+          { name: "LG UltraWide 38\"", desc: "Vigtigt til store datasæt og split-screen kodning." },
+          { name: "Keychron Q1 Pro", desc: "Mekanisk tastatur med Gateron Brown switches." },
+          { name: "Logitech MX Master 3S", desc: "Præcision til Excel og UI design." }
+        ]
+      },
+      {
+        title: "Software & Kodning",
+        items: [
+          { name: "VS Code", desc: "Min primære editor. Bruger 'Tokyo Night' temaet." },
+          { name: "iTerm2 + Oh My Zsh", desc: "Terminalen skal se godt ud og virke hurtigt." },
+          { name: "Raycast", desc: "Det ultimative kontrolcenter til macOS." },
+          { name: "TablePlus", desc: "Til håndtering af Supabase og Postgres databaser." }
+        ]
+      },
+      {
+        title: "Økonomi & Analyse",
+        items: [
+          { name: "RStudio", desc: "Uundværligt til økonometri og avancerede data-plots." },
+          { name: "Stata", desc: "Når der skal køres tunge økonometriske modeller." },
+          { name: "Excel", desc: "Den klassiske schweizerkniv til hurtig modellering." },
+          { name: "Zotero", desc: "Reference-håndtering til akademiske artikler." }
+        ]
+      }
+    ]
+  },
+  en: {
+    title: "Uses | Anton Meier Ebsen Jørgensen",
+    description: "A complete list of hardware, software, and tools I use daily.",
+    eyebrow: "Toolbox",
+    heroTitle: "What I Use",
+    heroText: "A curated list of the tools, systems, and hardware that keep me productive as both an economics student and a developer.",
+    sections: [
+      {
+        title: "Workstation",
+        items: [
+          { name: "MacBook Pro M2 Max", desc: "My primary workflow weapon." },
+          { name: "LG UltraWide 38\"", desc: "Essential for large datasets and split-screen coding." },
+          { name: "Keychron Q1 Pro", desc: "Mechanical keyboard with Gateron Brown switches." },
+          { name: "Logitech MX Master 3S", desc: "Precision for Excel and UI design." }
+        ]
+      },
+      {
+        title: "Software & Coding",
+        items: [
+          { name: "VS Code", desc: "Primary editor. Using 'Tokyo Night' theme." },
+          { name: "iTerm2 + Oh My Zsh", desc: "The terminal must look good and be fast." },
+          { name: "Raycast", desc: "The ultimate command center for macOS." },
+          { name: "TablePlus", desc: "For managing Supabase and Postgres databases." }
+        ]
+      },
+      {
+        title: "Economics & Analysis",
+        items: [
+          { name: "RStudio", desc: "Indispensable for econometrics and advanced data plotting." },
+          { name: "Stata", desc: "For heavy econometric modeling." },
+          { name: "Excel", desc: "The classic Swiss Army knife for quick modeling." },
+          { name: "Zotero", desc: "Reference management for academic papers." }
+        ]
+      }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <Section class="mb-20 animate-on-scroll">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
+        <h1 class="text-5xl font-extrabold mb-6 bg-gradient-to-r from-white to-dim bg-clip-text text-transparent">
+          {t.heroTitle}
+        </h1>
+        <p class="text-xl text-dim leading-relaxed">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    {t.sections.map((section, idx) => (
+      <Section class={`mb-24 animate-on-scroll delay-${(idx + 1) * 100}`}>
+        <SectionHeading class="mb-12">{section.title}</SectionHeading>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {section.items.map(item => (
+            <Card variant="glass" class="p-6 hover:border-accent/30 transition-all group">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-lg font-bold text-white mb-2 group-hover:text-accent transition-colors">{item.name}</h3>
+                  <p class="text-dim text-sm">{item.desc}</p>
+                </div>
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                   <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    ))}
+
+    <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10 animate-on-scroll">
+      <h2 class="text-3xl font-bold mb-6">{isDa ? 'Har du spørgsmål?' : 'Have any questions?'}</h2>
+      <p class="text-dim mb-10 max-w-xl mx-auto">
+        {isDa ? 'Hvis du vil vide mere om mit setup, er du velkommen til at række ud.' : 'If you want to know more about my setup, feel free to reach out.'}
+      </p>
+      <div class="flex justify-center gap-4">
+         <Pill variant="default">#minimalism</Pill>
+         <Pill variant="default">#productivity</Pill>
+         <Pill variant="default">#setup</Pill>
+      </div>
+    </Section>
+  </main>
+</Layout>
