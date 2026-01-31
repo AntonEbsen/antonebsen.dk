@@ -36,6 +36,14 @@ jobs:
       - name: Build Astro
         run: npm run build
 
+      - name: Prep JupyterLite Data
+        run: |
+          mkdir -p notebooks/content/data
+          # Check if data exists in public/assets/data and sync if so
+          if [ -d "public/assets/data" ]; then
+            cp -r public/assets/data/* notebooks/content/data/
+          fi
+
       - name: Build JupyterLite
         run: |
           cd notebooks
