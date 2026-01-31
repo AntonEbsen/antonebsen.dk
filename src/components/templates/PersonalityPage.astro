@@ -38,6 +38,20 @@ const content = {
         { label: "Autonomi", icon: "fa-user-gear", desc: "Jeg præsterer bedst, når jeg får et klart mål og friheden til at finde den bedste vej dertil." },
         { label: "Evidensbaseret", icon: "fa-chart-line", desc: "Argumenter vinder hos mig, hvis de er understøttet af data og logisk ræsonnement." }
       ]
+    },
+    energy: {
+      title: "Energi-balancen",
+      energizers: { title: "Hvad giver energi", items: ["Deep Work & Fordybelse", "Strategisk problemløsning", "Optimering af processer"] },
+      drainers: { title: "Hvad dræner energi", items: ["Ustrukturerede møder", "Gentagende manuelt arbejde", "Overfladisk smalltalk"] }
+    },
+    growth: {
+      title: "Vækst & Selvindsigt",
+      text: "Som INTJ er jeg bevidst om mine blinde vinkler og arbejder aktivt på:",
+      items: ["Bløde værdier & empati i ledelse", "Kommunikation af 'hvorfor' før 'hvordan'", "Tålmodighed med iterative processer"]
+    },
+    meta: {
+      compatibility: { title: "Team Match", text: "Arbejder bedst med målorienterede eksekvere og kreative visionære." },
+      learning: { title: "Læringsstil", text: "First Principles – jeg skal forstå fundamentet før jeg bygger ovenpå." }
     }
   },
   en: {
@@ -65,6 +79,20 @@ const content = {
         { label: "Autonomy", icon: "fa-user-gear", desc: "I perform best when given a clear goal and the freedom to find the best way there." },
         { label: "Evidence-Based", icon: "fa-chart-line", desc: "Arguments win with me if they are supported by data and logical reasoning." }
       ]
+    },
+    energy: {
+      title: "The Energy Battery",
+      energizers: { title: "Energizers", items: ["Deep Work & Focus", "Strategic problem solving", "Process optimization"] },
+      drainers: { title: "Drainers", items: ["Unstructured meetings", "Repetitive manual tasks", "Surface-level small talk"] }
+    },
+    growth: {
+      title: "Growth & Self-Awareness",
+      text: "As an INTJ, I am aware of my blind spots and actively work on:",
+      items: ["Soft skills & empathy in leadership", "Communicating the 'Why' before the 'How'", "Patience with iterative processes"]
+    },
+    meta: {
+      compatibility: { title: "Team Match", text: "Works best with goal-oriented executors and creative visionaries." },
+      learning: { title: "Learning Style", text: "First Principles – I need to understand the foundation before building." }
     }
   }
 };
@@ -88,6 +116,29 @@ const t = isDa ? content.da : content.en;
           <p class="text-xl text-dim leading-relaxed max-w-xl">
              {t.heroText}
           </p>
+
+          <!-- META BADGES (Section 4 & 5) -->
+          <div class="mt-12 flex flex-wrap gap-4">
+             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-xs transition-transform hover:scale-105">
+                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                   <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                   <p class="text-[10px] uppercase font-bold text-accent">{t.meta.compatibility.title}</p>
+                   <p class="text-xs text-dim">{t.meta.compatibility.text}</p>
+                </div>
+             </div>
+             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-xs transition-transform hover:scale-105">
+                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                   <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                   <p class="text-[10px] uppercase font-bold text-accent">{t.meta.compatibility.title}</p>
+                   <p class="text-xs text-dim text-accent">{t.meta.learning.title}</p>
+                   <p class="text-xs text-dim">{t.meta.learning.text}</p>
+                </div>
+             </div>
+          </div>
         </div>
         <div class="flex-1 w-full max-w-md">
            <!-- Traits Visual -->
@@ -124,6 +175,63 @@ const t = isDa ? content.da : content.en;
         ))}
       </div>
     </Section>
+
+    <!-- Energy & Growth (Section 1 & 2) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-32">
+       <!-- Energy Battery -->
+       <Section class="animate-on-scroll">
+          <SectionHeading class="mb-8">{t.energy.title}</SectionHeading>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+             <div class="p-6 bg-green-500/5 border border-green-500/10 rounded-2xl">
+                <h4 class="text-green-400 text-xs font-bold uppercase mb-4 flex items-center gap-2">
+                   <i class="fa-solid fa-battery-full"></i> {t.energy.energizers.title}
+                </h4>
+                <ul class="space-y-3">
+                   {t.energy.energizers.items.map(item => (
+                     <li class="text-sm text-dim flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-[10px] text-green-500/50"></i> {item}
+                     </li>
+                   ))}
+                </ul>
+             </div>
+             <div class="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
+                <h4 class="text-red-400 text-xs font-bold uppercase mb-4 flex items-center gap-2">
+                   <i class="fa-solid fa-battery-empty"></i> {t.energy.drainers.title}
+                </h4>
+                <ul class="space-y-3">
+                   {t.energy.drainers.items.map(item => (
+                     <li class="text-sm text-dim flex items-center gap-2">
+                        <i class="fa-solid fa-circle-xmark text-[10px] text-red-500/50"></i> {item}
+                     </li>
+                   ))}
+                </ul>
+             </div>
+          </div>
+       </Section>
+
+       <!-- Growth Areas -->
+       <Section class="animate-on-scroll delay-100">
+          <SectionHeading class="mb-8">{t.growth.title}</SectionHeading>
+          <div class="p-8 bg-accent/5 border border-accent/10 rounded-3xl relative overflow-hidden group">
+             <div class="absolute -right-8 -bottom-8 text-8xl text-accent/5 transform -rotate-12 group-hover:rotate-0 transition-transform duration-700">
+                <i class="fa-solid fa-seedling"></i>
+             </div>
+             <p class="text-dim mb-6 leading-relaxed italic">
+                "{t.growth.text}"
+             </p>
+             <ul class="space-y-4">
+                {t.growth.items.map(item => (
+                  <li class="flex items-start gap-3">
+                     <span class="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-[10px] text-accent mt-0.5 shrink-0">
+                        <i class="fa-solid fa-arrow-right"></i>
+                     </span>
+                     <span class="text-sm text-white/80">{item}</span>
+                  </li>
+                ))}
+             </ul>
+          </div>
+       </Section>
+    </div>
 
     <!-- Workplace -->
     <Section class="mb-32 animate-on-scroll">
