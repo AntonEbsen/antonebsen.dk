@@ -50,14 +50,28 @@ const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org/",
-  "@type": "Person",
-  "name": "Anton Meier Ebsen Jørgensen",
-  "url": "https://antonebsen.dk",
-  "image": socialImageURL,
-  "jobTitle": "Student of Economics (cand.polit)",
-  "sameAs": [
-    "https://www.linkedin.com/in/antonebsen/",
-    "https://github.com/AntonEbsen"
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Anton Meier Ebsen Jørgensen",
+      "url": "https://antonebsen.dk",
+      "image": socialImageURL,
+      "jobTitle": "Student of Economics (cand.polit)",
+      "sameAs": [
+        "https://www.linkedin.com/in/antonebsen/",
+        "https://github.com/AntonEbsen"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "name": "Anton Meier Ebsen Jørgensen",
+      "url": "https://antonebsen.dk",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://antonebsen.dk/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
   ]
 })} />
 
