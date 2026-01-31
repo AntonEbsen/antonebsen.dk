@@ -39,14 +39,35 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 }
             ],
             generationConfig: {
-                maxOutputTokens: 300,
+                maxOutputTokens: 500,
             },
         });
 
-        const result = await chat.sendMessage(message);
-        const reply = result.response.text();
+        const result = await chat.sendMessageStream(message);
 
-        return new Response(JSON.stringify({ reply }), { status: 200 });
+        const stream = new ReadableStream({
+            async start(controller) {
+                const encoder = new TextEncoder();
+                try {
+                    for await (const chunk of result.stream) {
+                        const text = chunk.text();
+                        controller.enqueue(encoder.encode(text));
+                    }
+                } catch (e) {
+                    console.error("Stream Error", e);
+                    controller.error(e);
+                }
+                controller.close();
+            }
+        });
+
+        return new Response(stream, {
+            status: 200,
+            headers: {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Transfer-Encoding': 'chunked'
+            }
+        });
 
     } catch (error) {
         console.error("Gemini Error:", error);

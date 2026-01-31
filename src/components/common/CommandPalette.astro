@@ -123,8 +123,9 @@ const quickActions = [
   }
 </style>
 
-<script is:inline>
-// @ts-nocheck
+<script>
+  import { track } from '@vercel/analytics';
+  // @ts-nocheck
   (() => {
     const palette = document.getElementById('command-palette');
     const container = palette?.querySelector('.relative.w-full');
@@ -148,6 +149,7 @@ const quickActions = [
     // Toggle Palette
     function openPalette() {
       isOpen = true;
+      track('Palette_Open');
       lastFocused = document.activeElement as HTMLElement;
       palette.classList.add('is-open');
       document.body.style.overflow = 'hidden';

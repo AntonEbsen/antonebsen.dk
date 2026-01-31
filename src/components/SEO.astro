@@ -17,6 +17,28 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://antonebs
 const socialImageURL = new URL(image, Astro.url);
 const siteTitle = "Anton Meier Ebsen Jørgensen";
 const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
+
+// Breadcrumbs Logic
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const breadcrumbItems = [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://antonebsen.dk"
+  },
+  ...pathSegments.map((segment, index) => {
+    const url = `https://antonebsen.dk/${pathSegments.slice(0, index + 1).join('/')}`;
+    // Format name: "ai-project" -> "Ai Project"
+    const name = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    return {
+      "@type": "ListItem",
+      "position": index + 2,
+      "name": name,
+      "item": url
+    };
+  })
+];
 ---
 
 <!-- Global Metadata -->
@@ -71,6 +93,10 @@ const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
         "target": "https://antonebsen.dk/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbItems
     }
   ]
 })} />

@@ -17,6 +17,17 @@ const bookCount = await getTableCount('books');
 const podcastCount = await getTableCount('podcasts');
 const certCount = await getTableCount('certifications');
 const caseCount = 3; // Static for now
+
+// Fetch initial guestbook data
+let guestbookEntries = [];
+if (supabase) {
+    const { data } = await supabase
+        .from('guestbook')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+    guestbookEntries = data || [];
+}
 ---
 
 <Layout title="Quantum Analytics | Dashboard">
@@ -97,7 +108,99 @@ const caseCount = 3; // Static for now
            </a>
         </div>
       </Card>
-    </div>
+    <Card variant="gradient" class="p-8 lg:col-span-2">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-comments text-accent"></i> Live Guestbook Feed
+                <span class="text-[10px] bg-red-500/20 text-red-500 border border-red-500/30 px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse ml-2" id="live-indicator">Realtime</span>
+            </h3>
+            <span class="text-xs text-dim" id="connection-status">Connecting...</span>
+        </div>
 
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <tr class="text-dim border-b border-white/10">
+                        <th class="pb-3 pl-2">Time</th>
+                        <th class="pb-3">Name</th>
+                        <th class="pb-3">Message</th>
+                        <th class="pb-3 text-right pr-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="guestbook-table-body" class="divide-y divide-white/5">
+                   {guestbookEntries.length > 0 ? guestbookEntries.map(entry => (
+                       <tr class="text-dim border-b border-white/5 last:border-none hover:bg-white/5 transition-colors">
+                            <td class="py-3 pl-2 font-mono text-xs">{new Date(entry.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                            <td class="py-3 font-medium text-white">{entry.name}</td>
+                            <td class="py-3 text-dim truncate max-w-[200px]">{entry.message}</td>
+                            <td class="py-3 text-right pr-2">
+                               <span class={`text-[10px] px-2 py-0.5 rounded border ${entry.is_approved ? 'bg-green-500/10 border-green-500 text-green-500' : 'bg-yellow-500/10 border-yellow-500 text-yellow-500'}`}>
+                                 {entry.is_approved ? 'LIVE' : 'PENDING'}
+                               </span>
+                            </td>
+                       </tr>
+                   )) : (
+                       <tr class="text-dim italic" id="loading-row"><td colspan="4" class="py-4 text-center">Waiting for realtime data...</td></tr>
+                   )}
+                </tbody>
+            </table>
+        </div>
+    </Card>
+    </div>
   </Section>
+
+  <script define:vars={{ 
+    SUPABASE_URL: import.meta.env.PUBLIC_SUPABASE_URL, 
+    SUPABASE_KEY: import.meta.env.PUBLIC_SUPABASE_ANON_KEY 
+  }}>
+    // Client-side Realtime
+    if (SUPABASE_URL && SUPABASE_KEY) {
+        import('https://esm.sh/@supabase/supabase-js@2').then(({ createClient }) => {
+            const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+            const tableBody = document.getElementById('guestbook-table-body');
+            const statusEl = document.getElementById('connection-status');
+            const indicator = document.getElementById('live-indicator');
+
+            statusEl.innerText = "Connected";
+            
+            supabase
+                .channel('guestbook-feed')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'guestbook' }, (payload) => {
+                    const newRow = payload.new;
+                    const date = new Date(newRow.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = "animate-fade-in bg-accent/5"; // Highlight new row
+                    tr.innerHTML = `
+                        <td class="py-3 pl-2 text-dim font-mono text-xs">${date}</td>
+                        <td class="py-3 font-medium text-white">${newRow.name}</td>
+                        <td class="py-3 text-dim truncate max-w-[200px]">${newRow.message}</td>
+                        <td class="py-3 text-right pr-2">
+                           <span class="text-[10px] px-2 py-0.5 rounded border ${newRow.is_approved ? 'bg-green-500/10 border-green-500 text-green-500' : 'bg-yellow-500/10 border-yellow-500 text-yellow-500'}">
+                             ${newRow.is_approved ? 'LIVE' : 'PENDING'}
+                           </span>
+                        </td>
+                    `;
+                    
+                    // Remove loading row if exists
+                    const loading = document.getElementById('loading-row');
+                    if(loading) loading.remove();
+                    
+                    tableBody.prepend(tr);
+                    
+                    // Flash indicator
+                    indicator.classList.remove('text-red-500', 'border-red-500/30', 'bg-red-500/20');
+                    indicator.classList.add('text-green-500', 'border-green-500/30', 'bg-green-500/20');
+                    setTimeout(() => {
+                         indicator.classList.add('text-red-500', 'border-red-500/30', 'bg-red-500/20');
+                         indicator.classList.remove('text-green-500', 'border-green-500/30', 'bg-green-500/20');
+                    }, 500);
+
+                })
+                .subscribe();
+        });
+    } else {
+        console.warn("Supabase Keys missing for Realtime");
+    }
+  </script>
 </Layout>

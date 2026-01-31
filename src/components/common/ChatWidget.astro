@@ -148,6 +148,9 @@ const t = {
 // @ts-nocheck
 // This file is now ignored by TS largely, but we will fix key items if the ignore fails.
   try {
+      import { supabase } from '../../lib/supabase';
+      import { track } from '@vercel/analytics';
+
       // Elements
       const voiceIndicator = document.getElementById('voice-indicator');
       const widget = document.getElementById('chat-widget');
@@ -491,13 +494,14 @@ const t = {
             }
 
             showTyping();
-            
-            try {
+                      // Send to AI
               const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: fullPayload, lang: currentLang, persona })
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ message: fullPayload, lang: currentLang, persona })
               });
+              
+              track('AI_Request', { length: fullPayload.length, lang: currentLang, persona: persona });
               
               removeTyping();
 
