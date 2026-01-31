@@ -1,0 +1,162 @@
+
+> antonebsen.dk@0.0.1 test
+> playwright test
+
+
+Running 17 tests using 8 workers
+
+Checking: /
+Navigating to /en
+Checking: /en
+  ✓   1 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads / successfully (4.3s)
+  ✓   2 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /en successfully (4.4s)
+Response status for /en: 200
+  ✓   4 [chromium] › tests\link-checker.spec.ts:45:5 › Site Health Check › should verify English version exists (4.8s)
+Checking: /cv
+  ✓   9 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /about successfully (3.3s)
+  ✓  10 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /en/about successfully (3.5s)
+  ✓   5 [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks / for a11y violations (7.7s)
+Accessibility Violations: [
+  {
+    "id": "heading-order",
+    "impact": "moderate",
+    "tags": [
+      "cat.semantics",
+      "best-practice"
+    ],
+    "description": "Ensure the order of headings is semantically correct",
+    "help": "Heading levels should only increase by one",
+    "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/heading-order?application=playwright",
+    "nodes": [
+      {
+        "any": [
+          {
+            "id": "heading-order",
+            "data": null,
+            "relatedNodes": [],
+            "impact": "moderate",
+            "message": "Heading order invalid"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "moderate",
+        "html": "<h3 class=\"text-xl font-bold mb-3\" data-astro-source-file=\"C:/Users/Anton/antonebsen.dk/src/components/templates/IndexPage.astro\" data-astro-source-loc=\"107:44\">Model &amp; Data</h3>",
+        "target": [
+          "h3[data-astro-source-loc=\"107:44\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Heading order invalid"
+      }
+    ]
+  }
+]
+  ✓  12 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /cases successfully (1.8s)
+  ✓  11 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /ai-project successfully (3.8s)
+📸 Taken homepage snapshot for review.
+  ✓   6 [chromium] › tests\link-checker.spec.ts:62:5 › Site Health Check › homepage visual snapshot & accessibility (9.2s)
+  ✓   3 [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /about for a11y violations (10.1s)
+  ✓   7 [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /cases for a11y violations (10.3s)
+  ✓  13 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /training-stats successfully (3.0s)
+Checking: /portfolio
+  ✓  14 [chromium] › tests\smoke.spec.ts:16:9 › Smoke Tests › loads /dashboard successfully (4.6s)
+Checking: /about
+  ✓  17 [chromium] › tests\visual.spec.ts:22:5 › Visual Regression › mobile layout matches snapshot (4.1s)
+Checking: /blog
+Checking: /exercises
+  ✘  16 [chromium] › tests\visual.spec.ts:14:5 › Visual Regression › about page matches snapshot (6.9s)
+Checking: /exercises/1-arm-db-row
+  ✘  15 [chromium] › tests\visual.spec.ts:6:5 › Visual Regression › homepage matches snapshot (7.6s)
+  ✓   8 [chromium] › tests\link-checker.spec.ts:5:5 › Site Health Check › should navigate to homepage and verify no 404s on main links (16.9s)
+
+
+  1) [chromium] › tests\visual.spec.ts:6:5 › Visual Regression › homepage matches snapshot ─────────
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Timeout: 5000ms
+      Failed to take two consecutive stable screenshots.
+
+      Snapshot: homepage.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(homepage.png)" with timeout 5000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - 6041 pixels (ratio 0.01 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - 6041 pixels (ratio 0.01 of all image pixels) are different.[22m
+    [2m  - waiting 250ms before taking screenshot[22m
+    [2m  - Timeout 5000ms exceeded.[22m
+
+
+       6 |     test('homepage matches snapshot', async ({ page }) => {
+       7 |         await page.goto('/');
+    >  8 |         await expect(page).toHaveScreenshot('homepage.png', {
+         |                            ^
+       9 |             mask: [page.locator('#timeline-container'), page.locator('.animate-pulse')],
+      10 |             fullPage: true
+      11 |         });
+        at C:\Users\Anton\antonebsen.dk\tests\visual.spec.ts:8:28
+
+    attachment #1: homepage (image/png) ────────────────────────────────────────────────────────────
+    Expected: tests\visual.spec.ts-snapshots\homepage-chromium-win32.png
+    Received: test-results\visual-Visual-Regression-homepage-matches-snapshot-chromium\homepage-actual.png
+    Previous: test-results\visual-Visual-Regression-homepage-matches-snapshot-chromium\homepage-previous.png
+    Diff:     test-results\visual-Visual-Regression-homepage-matches-snapshot-chromium\homepage-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\visual-Visual-Regression-homepage-matches-snapshot-chromium\error-context.md
+
+  2) [chromium] › tests\visual.spec.ts:14:5 › Visual Regression › about page matches snapshot ──────
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Timeout: 5000ms
+      Timeout 5000ms exceeded.
+
+      Snapshot: about-page.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(about-page.png)" with timeout 5000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - 6007 pixels (ratio 0.01 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - Timeout 5000ms exceeded.[22m
+
+
+      14 |     test('about page matches snapshot', async ({ page }) => {
+      15 |         await page.goto('/about');
+    > 16 |         await expect(page).toHaveScreenshot('about-page.png', {
+         |                            ^
+      17 |             fullPage: true
+      18 |         });
+      19 |     });
+        at C:\Users\Anton\antonebsen.dk\tests\visual.spec.ts:16:28
+
+    attachment #1: about-page (image/png) ──────────────────────────────────────────────────────────
+    Expected: tests\visual.spec.ts-snapshots\about-page-chromium-win32.png
+    Received: test-results\visual-Visual-Regression-about-page-matches-snapshot-chromium\about-page-actual.png
+    Diff:     test-results\visual-Visual-Regression-about-page-matches-snapshot-chromium\about-page-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\visual-Visual-Regression-about-page-matches-snapshot-chromium\error-context.md
+
+  2 failed
+    [chromium] › tests\visual.spec.ts:6:5 › Visual Regression › homepage matches snapshot ──────────
+    [chromium] › tests\visual.spec.ts:14:5 › Visual Regression › about page matches snapshot ───────
+  15 passed (29.9s)
