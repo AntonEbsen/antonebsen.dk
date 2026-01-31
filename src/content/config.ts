@@ -90,7 +90,15 @@ export const collections = {
             sections: z.record(z.any()).optional(),
             roles: z.any().optional(),
             contact: z.any().optional(),
-            ui: z.any().optional()
+            ui: z.any().optional(),
+            items: z.array(z.object({
+                src: z.string(),
+                title: z.string(),
+                text: z.string(),
+                tags: z.array(z.string()).optional(),
+                tagLabel: z.string().optional(),
+                caption: z.string().optional()
+            })).optional()
         }).passthrough()
     }),
     'exercises': defineCollection({

@@ -4,6 +4,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import CaseCard from '@components/common/CaseCard.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 
@@ -227,63 +228,7 @@ const contactLink = isDa ? '/contact' : '/en/contact';
     <Section class="cases-grid" aria-label="Projekt-cases">
 
       {content.cases.map((c: any) => (
-        <Card variant="glass" class="p-8 mb-4 border-2 border-glass-border" id={c.id}>
-            <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-            <h2 class="text-xl font-bold leading-tight">{c.title}</h2>
-            <span class="text-xs font-bold px-3 py-1 rounded-full border border-glass-border bg-glass whitespace-nowrap">{c.pill}</span>
-            </div>
-
-            <p class="text-dim opacity-70 mb-4">
-            {c.desc}
-            </p>
-
-            <div class="case-body">
-            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
-                <h3 class="font-bold mb-2 text-sm">{content.labels.problem}</h3>
-                <p class="text-sm text-dim">{c.problem}</p>
-            </div>
-
-            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
-                <h3 class="font-bold mb-2 text-sm">{content.labels.data}</h3>
-                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
-                {c.data.map((i: any) => <li>{i}</li>)}
-                </ul>
-            </div>
-
-            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
-                <h3 class="font-bold mb-2 text-sm">{content.labels.method}</h3>
-                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
-                {c.method.map((i: any) => <li>{i}</li>)}
-                </ul>
-            </div>
-
-            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
-                <h3 class="font-bold mb-2 text-sm">{content.labels.result}</h3>
-                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
-                {c.result.map((i: any) => <li>{i}</li>)}
-                </ul>
-            </div>
-
-            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
-                <h3 class="font-bold mb-2 text-sm">{content.labels.role}</h3>
-                <ul class="list-none p-0 pl-4 space-y-1 text-sm text-dim">
-                {c.role.map((i: any) => <li>{i}</li>)}
-                </ul>
-            </div>
-
-            <div class="border border-glass-border rounded-xl p-4 bg-[rgba(255,255,255,0.02)]">
-                <h3 class="font-bold mb-2 text-sm">{content.labels.tools}</h3>
-                <div class="flex flex-wrap gap-2">
-                {c.tools.map((tool: any) => <Pill variant="accent">{tool}</Pill>)}
-                </div>
-            </div>
-            </div>
-
-            <div class="flex flex-wrap gap-3 mt-4">
-            <Button href="#" variant="ghost">{content.labels.report}</Button>
-            <Button href="#" variant="ghost">{content.labels.code}</Button>
-            </div>
-        </Card>
+        <CaseCard data={c} labels={content.labels} />
       ))}
 
     </Section>
