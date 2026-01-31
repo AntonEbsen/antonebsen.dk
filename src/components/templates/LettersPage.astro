@@ -1,0 +1,154 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Offentlige Breve | Anton Meier Ebsen Jørgensen",
+    description: "En samling af breve til fortiden, fremtiden og dem, der følger efter. Et menneskeligt arkiv over tanker og lærdomme.",
+    heroTitle: "Offentlige Breve",
+    heroSubtitle: "Tanker, der fortjener at blive læst langsomt.",
+    heroText: "I en tidsalder af flygtige beskeder, vælger jeg at skrive bremsere. Her er tre breve adresseret til forskellige stadier af menneskelivet.",
+    letters: [
+      {
+        id: "younger-self",
+        recipient: "Til mit yngre jeg",
+        date: "Arkiv #01",
+        teaser: "Om tålmodighed, systemer og værdien af at fejle tidligt.",
+        content: `Kære Anton, \n\nDu har travlt. Du vil gerne have, at alt sker nu. Men husk, at de mest robuste systemer bygges over tid. Lad være med at frygte de stille perioder – det er her, fundamentet hærder. \n\nHold fast i din nysgerrighed, men lær at kanalisere den. Du behøver ikke at vide alt i dag, men du skal vide mere end i går. \n\nMed tillid, \nAnton.`
+      },
+      {
+        id: "student",
+        recipient: "Til en studerende",
+        date: "Arkiv #02",
+        teaser: "Om at navigere i akademisk kompleksitet og finde sin egen stemme.",
+        content: `Kære medstuderende, \n\nAkademia kan føles som en uendelig jagt på den korrekte model. Men den vigtigste model, du kan bygge, er din egen tænkning. Læs ikke bare for at bestå; læs for at dekonstruere. \n\nSpørg altid: "Hvorfor er dette den accepterede sandhed?" Svaret findes ofte i de svagheder, modellerne forsøger at skjule. \n\nHilsen, \nAnton.`
+      },
+      {
+        id: "future-reader",
+        recipient: "Til en fremtidig læser",
+        date: "Arkiv #03",
+        teaser: "Et budskab om tid, teknologi og hvad der forbliver menneskeligt.",
+        content: `Kære fremtid, \n\nJeg skriver dette i en brydningstid for kunstig intelligens. Verden føles hurtig. Men uanset hvor hurtigt teknologien bevæger sig, vil behovet for retning, mening og dybde forblive konstant. \n\nGem plads til det analoge. Gem plads til det langsomme. Det er i stilheden, at de klareste tanker opstår. \n\nPas på tiden, \nAnton MBJ.`
+      }
+    ]
+  },
+  en: {
+    title: "Public Letters | Anton Meier Ebsen Jørgensen",
+    description: "A collection of letters to the past, the future, and those who follow. A human archive of thoughts and lessons.",
+    heroTitle: "Public Letters",
+    heroSubtitle: "Thoughts that deserve to be read slowly.",
+    heroText: "In an age of fleeting messages, I choose to write more slowly. Here are three letters addressed to different stages of human life.",
+    letters: [
+      {
+        id: "younger-self",
+        recipient: "To my younger self",
+        date: "Archive #01",
+        teaser: "On patience, systems, and the value of failing early.",
+        content: `Dear Anton, \n\nYou are in a hurry. You want everything to happen now. But remember that the most robust systems are built over time. Do not fear the quiet periods – that is when the foundation hardens. \n\nHold onto your curiosity, but learn to channel it. You don't need to know everything today, but you must know more than you did yesterday. \n\nWith trust, \nAnton.`
+      },
+      {
+        id: "student",
+        recipient: "To a student",
+        date: "Archive #02",
+        teaser: "On navigating academic complexity and finding your own voice.",
+        content: `Dear fellow student, \n\nAcademia can feel like an endless pursuit of the correct model. But the most important model you can build is your own way of thinking. Don't just read to pass; read to deconstruct. \n\nAlways ask: "Why is this the accepted truth?" The answer is often found in the weaknesses that the models try to hide. \n\nBest regards, \nAnton.`
+      },
+      {
+        id: "future-reader",
+        recipient: "To a future reader",
+        date: "Archive #03",
+        teaser: "A message about time, technology, and what remains human.",
+        content: `Dear future, \n\nI am writing this during a turning point for artificial intelligence. The world feels fast. But regardless of how quickly technology moves, the need for direction, meaning, and depth will remain constant. \n\nSave space for the analog. Save space for the slow. It is in the silence that the clearest thoughts emerge. \n\nTake care of time, \nAnton MBJ.`
+      }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-32 animate-on-scroll">
+      <div class="max-w-3xl">
+        <h1 class="text-6xl md:text-8xl font-black mb-4 leading-none tracking-tighter uppercase text-white">
+          {t.heroTitle}<span class="text-accent italic">.</span>
+        </h1>
+        <p class="text-2xl font-serif text-accent italic mb-12">{t.heroSubtitle}</p>
+        <p class="text-xl text-dim leading-relaxed max-w-2xl">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- Letters List (Stationery Style) -->
+    <div class="max-w-4xl mx-auto space-y-40">
+       {t.letters.map((letter, idx) => (
+         <Section id={letter.id} class="animate-on-scroll">
+            <div class="relative group">
+                <!-- Decorative Archive Number -->
+                <div class="absolute -top-10 -left-10 text-9xl font-black text-white/[0.02] pointer-events-none group-hover:text-accent/[0.05] transition-colors">
+                   {idx + 1}
+                </div>
+                
+                <Card variant="default" class="p-12 md:p-20 bg-white/[0.01] border-white/5 relative overflow-hidden font-serif">
+                   <!-- Subtle Paper Texture Mockup -->
+                   <div class="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+                   
+                   <div class="relative z-10">
+                      <div class="flex flex-col md:flex-row justify-between items-start mb-12 border-b border-white/10 pb-8">
+                         <div>
+                            <span class="text-xs font-mono text-accent uppercase tracking-widest block mb-1">{letter.date}</span>
+                            <h2 class="text-3xl md:text-4xl font-black text-white">{letter.recipient}</h2>
+                         </div>
+                         <div class="text-dim text-sm italic mt-4 md:mt-0 max-w-[200px] text-right">
+                            {letter.teaser}
+                         </div>
+                      </div>
+                      
+                      <div class="prose prose-invert max-w-none">
+                         <p class="text-xl md:text-2xl text-dim leading-relaxed whitespace-pre-line selection:bg-accent/30">
+                            {letter.content}
+                         </p>
+                      </div>
+                      
+                      <div class="mt-20 flex justify-end">
+                         <div class="text-right">
+                            <div class="w-24 h-[1px] bg-accent/40 mb-4 ml-auto"></div>
+                            <span class="font-serif italic text-accent text-xl">Anton Meier Ebsen Jørgensen</span>
+                         </div>
+                      </div>
+                   </div>
+                </Card>
+            </div>
+         </Section>
+       ))}
+    </div>
+
+    <!-- Slower Reading CTA -->
+    <Section class="mt-40 text-center animate-on-scroll">
+       <div class="h-[1px] w-20 bg-accent/30 mx-auto mb-12"></div>
+       <p class="text-xs font-mono text-dim tracking-[0.5em] uppercase opacity-40">
+          - Finis -
+       </p>
+    </Section>
+  </main>
+</Layout>
+
+<style>
+  /* Custom serif override for a more "literary" feel */
+  .font-serif {
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+</style>
