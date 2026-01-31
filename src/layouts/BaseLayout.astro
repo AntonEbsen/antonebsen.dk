@@ -292,37 +292,14 @@ const lang = getLangFromUrl(Astro.url);
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
   <script>
-    // Scroll Animation Observer - only animate content below the fold
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target); // Only animate once
-        }
-      });
-    }, observerOptions);
-
+    // Disable scroll animations - instant appearance for fast site
     document.addEventListener('astro:page-load', () => {
       const elements = document.querySelectorAll('.animate-on-scroll');
       elements.forEach(el => {
-        // Only hide elements that are below the viewport initially
-        const rect = el.getBoundingClientRect();
-        const isAboveFold = rect.top < window.innerHeight;
-        
-        if (isAboveFold) {
-          // Already visible, mark as in-view immediately
-          el.classList.add('in-view');
-        } else {
-          // Below the fold, prepare for animation
-          el.classList.add('animate-ready');
-          observer.observe(el);
-        }
+        // Make all content visible immediately, no animations
+        el.classList.add('in-view');
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
       });
     });
   </script>
