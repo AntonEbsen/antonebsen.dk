@@ -65,7 +65,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Personlighedsprofil', url: '/personality' },
                 { label: 'SWOT Analyse', url: '/swot' },
                 { label: 'Anti-CV', url: '/anti-resume' },
-                { label: 'Ting jeg ikke gør', url: '/anti-goals' }
+                { label: 'Ting jeg ikke gør', url: '/anti-goals' },
+                { label: 'Årsreview 2025', url: '/2025' }
             ]
         },
         {
@@ -113,7 +114,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Personality Profile', url: '/en/personality' },
                 { label: 'Strategic SWOT', url: '/en/swot' },
                 { label: 'Anti-Resume', url: '/en/anti-resume' },
-                { label: 'Things I Don\'t Do', url: '/en/anti-goals' }
+                { label: 'Things I Don\'t Do', url: '/en/anti-goals' },
+                { label: '2025 Review', url: '/en/2025' }
             ]
         },
         {

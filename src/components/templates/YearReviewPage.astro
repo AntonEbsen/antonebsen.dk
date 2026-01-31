@@ -1,0 +1,185 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  year: string;
+  lang: 'da' | 'en';
+}
+
+const { year, lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: `Årsreview ${year} | Anton Meier Ebsen Jørgensen`,
+    description: `En gennemgang af hvad der ændrede sig, hvad der forsvandt, og hvad der forblev stabilt i ${year}.`,
+    heroTitle: `Årsreview ${year}`,
+    heroSubtitle: "Tidsdybde slår hyppighed.",
+    heroText: "Sociale medier fokuserer på øjeblikket. Jeg fokuserer på året. Denne side sporer de store skift over 365 dage – ikke de daglige fluktuationer.",
+    sections: {
+      changed: {
+        title: "Hvad ændrede sig?",
+        desc: "Nye retninger, projekter og skift i fokus.",
+        items: [
+          { title: "Akademisk Fokus", desc: "Overgangen til Master (cand.polit) og specialisering i økonometriske metoder." },
+          { title: "Digital Platform", desc: "Beslutningen om at bygge denne side som et 'Personal OS' fremfor et simpelt CV." },
+          { title: "Teknologisk Stack", desc: "Skift fra ad-hoc scripts til strukturerede rammeværker (Astro/Supabase)." }
+        ]
+      },
+      disappeared: {
+        title: "Hvad forsvandt?",
+        desc: "Vaner, systemer og mål der ikke længere tjente et formål.",
+        items: [
+          { title: "Reaktiv Kommunikation", desc: "Slut med at tjekke mails og beskeder konstant. Indført faste blokke til korrespondance." },
+          { label: "Ustrukturerede Træningspas", desc: "Fjernet ad-hoc træning til fordel for en stringent PPL-protokol." }
+        ]
+      },
+      stable: {
+        title: "Hvad forblev stabilt?",
+        desc: "Kerneværdierne og de fundamentale piller.",
+        items: [
+          { title: "Nysgerrighed", desc: "Den konstante drift mod at forstå systemers underliggende mekanismer." },
+          { title: "Disciplin", desc: "Vedholdende fokus på sundhed og mental optimering gennem rutiner." },
+          { title: "Kvalitets-bias", desc: "En uændret præference for høj-signal indhold over lav-kvalitets distraktioner." }
+        ]
+      }
+    },
+    philosophy: {
+        title: "Longitudinel Integritet",
+        text: "Hvis man måler sig selv hver dag, ser man støj. Hvis man måler sig selv hvert år, ser man retningen. Denne side er et bevis på den lange bane."
+    }
+  },
+  en: {
+    title: `Year Review ${year} | Anton Meier Ebsen Jørgensen`,
+    description: `A review of what changed, what disappeared, and what remained stable in ${year}.`,
+    heroTitle: `${year} Review`,
+    heroSubtitle: "Time depth beats frequency.",
+    heroText: "Social media focuses on the moment. I focus on the year. This page tracks the major shifts over 365 days – not the daily fluctuations.",
+    sections: {
+      changed: {
+        title: "What Changed?",
+        desc: "New directions, projects, and shifts in focus.",
+        items: [
+          { title: "Academic Focus", desc: "Transition to Master's (cand.polit) and specialization in econometric methods." },
+          { title: "Digital Platform", desc: "The decision to build this site as a 'Personal OS' rather than a simple Resume." },
+          { title: "Technology Stack", desc: "Shift from ad-hoc scripts to structured frameworks (Astro/Supabase)." }
+        ]
+      },
+      disappeared: {
+        title: "What Disappeared?",
+        desc: "Habits, systems, and goals that no longer served a purpose.",
+        items: [
+          { title: "Reactive Communication", desc: "Done with checking emails and messages constantly. Implemented fixed blocks for correspondence." },
+          { label: "Unstructured Workouts", desc: "Removed ad-hoc training in favor of a stringent PPL protocol." }
+        ]
+      },
+      stable: {
+        title: "What Remained Stable?",
+        desc: "Core values and fundamental pillars.",
+        items: [
+          { title: "Curiosity", desc: "The constant drive to understand the underlying mechanisms of systems." },
+          { title: "Discipline", desc: "Sustained focus on health and mental optimization through routines." },
+          { title: "Quality Bias", desc: "An unchanging preference for high-signal content over low-quality distractions." }
+        ]
+      }
+    },
+    philosophy: {
+        title: "Longitudinal Integrity",
+        text: "Measuring yourself every day reveals noise. Measuring yourself every year reveals direction. This page is a testament to the long game."
+    }
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-32 animate-on-scroll">
+      <div class="max-w-4xl">
+        <div class="inline-block px-4 py-1 bg-accent/20 border border-accent/30 rounded-full text-accent text-xs font-bold uppercase tracking-widest mb-6">
+          Annual Longitudinal Review
+        </div>
+        <h1 class="text-7xl md:text-9xl font-black mb-6 tracking-tighter uppercase text-white">
+          {t.heroTitle}<span class="text-accent italic">.</span>
+        </h1>
+        <p class="text-2xl font-mono text-accent mb-8">{t.heroSubtitle}</p>
+        <p class="text-xl text-dim max-w-2xl leading-relaxed border-l-2 border-white/10 pl-8">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- Changing / Disappearing / Stable Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-40">
+       <!-- WHAT CHANGED -->
+       <Section class="animate-on-scroll">
+          <Card variant="glass" class="p-8 h-full border-green-500/10 bg-green-500/[0.02]">
+             <h2 class="text-2xl font-bold text-green-400 mb-2">{t.sections.changed.title}</h2>
+             <p class="text-xs text-dim mb-10">{t.sections.changed.desc}</p>
+             <div class="space-y-8">
+                {t.sections.changed.items.map(item => (
+                  <div class="relative pl-6">
+                     <div class="absolute left-0 top-2 w-2 h-2 rounded-full bg-green-500"></div>
+                     <h3 class="text-lg font-bold text-white mb-2">{item.title}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+             </div>
+          </Card>
+       </Section>
+
+       <!-- WHAT DISAPPEARED -->
+       <Section class="animate-on-scroll delay-100">
+          <Card variant="glass" class="p-8 h-full border-red-500/10 bg-red-500/[0.02]">
+             <h2 class="text-2xl font-bold text-red-400 mb-2">{t.sections.disappeared.title}</h2>
+             <p class="text-xs text-dim mb-10">{t.sections.disappeared.desc}</p>
+             <div class="space-y-8">
+                {t.sections.disappeared.items.map(item => (
+                  <div class="relative pl-6">
+                     <div class="absolute left-0 top-2 w-2 h-2 rounded-full bg-red-500"></div>
+                     <h3 class="text-lg font-bold text-white mb-2">{item.title || item.label}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+             </div>
+          </Card>
+       </Section>
+
+       <!-- WHAT REMAINED STABLE -->
+       <Section class="animate-on-scroll delay-200">
+          <Card variant="glass" class="p-8 h-full border-blue-500/10 bg-blue-500/[0.02]">
+             <h2 class="text-2xl font-bold text-blue-400 mb-2">{t.sections.stable.title}</h2>
+             <p class="text-xs text-dim mb-10">{t.sections.stable.desc}</p>
+             <div class="space-y-8">
+                {t.sections.stable.items.map(item => (
+                  <div class="relative pl-6">
+                     <div class="absolute left-0 top-2 w-2 h-2 rounded-full bg-blue-500"></div>
+                     <h3 class="text-lg font-bold text-white mb-2">{item.title}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+             </div>
+          </Card>
+       </Section>
+    </div>
+
+    <!-- Philosophy Banner -->
+    <Section class="animate-on-scroll">
+       <div class="max-w-4xl mx-auto bg-white/[0.01] border border-white/5 rounded-[40px] p-12 md:p-20 relative overflow-hidden">
+          <div class="absolute -top-24 -right-24 w-64 h-64 bg-accent/5 blur-[100px] rounded-full"></div>
+          <div class="relative z-10 text-center">
+             <h2 class="text-3xl md:text-5xl font-black mb-8 tracking-tighter uppercase italic">{t.philosophy.title}</h2>
+             <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto italic">
+                "{t.philosophy.text}"
+             </p>
+          </div>
+       </div>
+    </Section>
+  </main>
+</Layout>
