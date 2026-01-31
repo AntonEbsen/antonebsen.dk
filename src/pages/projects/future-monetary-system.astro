@@ -1,0 +1,63 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Fremtidens monetære system",
+  subtitle: "Central Bank Digital Currencies, digitale betalinger og monetær suverænitet (2021).",
+  contextNote: "Dette projekt blev skrevet i 2021 som et studieretningsprojekt (SOP) på HHX. Det repræsenterer min tidligste akademiske udforskning af centralbankvirksomhed. Teksten er let revideret for sproglig klarhed, mens det oprindelige analytiske omfang er bevaret.",
+  executiveSummary: "Dette projekt analyserer de økonomiske bevæggrunde bag ECB's undersøgelse af en digital euro, med fokus på digitaliseringen af betalinger, faldende kontantbrug og fremkomsten af private digitale valutaer. Ved at sammenligne kryptovalutaer, stablecoins og CBDC'er undersøger studiet, hvordan private alternativer afslører en efterspørgsel efter stabile digitale penge, og hvorfor bevarelsen af den monetære suverænitet er en primær drivkraft for centralbankintervention i den digitale tidsalder.",
+  researchQuestions: [
+    "Hvad er de grundlæggende forskelle mellem kryptovalutaer, stablecoins og CBDC'er?",
+    "Hvad afslører private digitale valutaer om den offentlige efterspørgsel efter stabile penge?",
+    "Hvorfor udforsker ECB en digital euro, og hvilke konsekvenser har det for den monetære suverænitet?"
+  ],
+  methodology: {
+    model: "Institutionel analyse og konceptuel sammenligning af monetære former.",
+    strategy: "Litteraturgennemgang af ECB-politikpapirer og teoretiske rammeværk for digitale penge.",
+    data: "Deskriptive data om betalingstendenser og kryptovalutaers prisdynamik.",
+    estimation: "Illustrative OLS-trendestimeringer for at fremhæve volatilitet og udbudsdynamik."
+  },
+  keyFindings: [
+    "Kryptovalutaer: Konstateret at være primært drevet af spekulative dynamikker frem for monetær nytteværdi.",
+    "Stablecoins: Identificerer en betydelig markedsefterspørgsel efter prisstabilitet i digitale aktiver, som private udstedere har svært ved at garantere uden suveræn opbakning.",
+    "CBDC: Den digitale euro ses som et nødvendigt værktøj til at bevare det offentlig-private partnerskab om penge og opretholde betalingssystemets modstandskraft.",
+    "Monetær suverænitet: Private digitale valutaer udgør en potentiel trussel mod transmissionen af pengepolitikken, hvis de efterlades uregulerede."
+  ],
+  continuityNote: {
+    title: "Langsigtet akademisk fokus",
+    text: "Selvom de empiriske metoder i dette projekt var fundamentale, har kerntemaerne—pengepolitisk transmission, centralbankens institutionelle design og finansiel stabilitet—forblevet i fokus for min efterfølgende forskning på universitetet. Denne SOP fungerer som det tematiske startpunkt for min interesse i krydsfeltet mellem teknologi og makroøkonomi."
+  },
+  policyRelevance: [
+    "Understreger vigtigheden af at bevare et offentligt anker i betalingssystemet, efterhånden som kontantforbruget falder.",
+    "Argumenterer for en balanceret tilgang, hvor CBDC'er supplerer snarere end erstatter nuværende finansielle formidlere.",
+    "Betoner, at digital suverænitet ikke kun handler om teknologi, men om den tillid og stabilitet, som centralbanken leverer."
+  ],
+  limitations: [
+    "Tidlige empiriske metoder (simpel OLS) anvendt udelukkende til illustrative formål.",
+    "Begrænset adgang til avancerede økonometriske værktøjer på tidspunktet for skrivningen.",
+    "Analysen er deskriptiv og repræsenterer tilstanden i CBDC-debatten i begyndelsen af 2021."
+  ],
+  dataTools: {
+    sources: "ECB-rapporter, BIS-papirer, Bloomberg og CoinMarketCap.",
+    software: "Excel (til OLS-estimering), Word og tidlige TeX-eksperimenter."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2021). Fremtidens monetære system: CBDC og suverænitet. SOP-forskningsprojekt, HHX. Ref: SOP2021-AMJ.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2021_SOP_MonetarySystem.pdf"
+  },
+  ui: {
+    methodology: "Analytisk tilgang",
+    findings: "Vigtigste indsigter",
+    relevance: "Hvorfor det betyder noget",
+    dataTools: "Data & Værktøjer",
+    download: "Dokumentation",
+    citation: "Foreslået reference",
+    execSummary: "Projektmotivation",
+    researchQuestions: "Forskningsspørgsmål",
+    limitations: "Omfang & begrænsninger",
+    continuityTitle: "Konceptuel kontinuitet"
+  }
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

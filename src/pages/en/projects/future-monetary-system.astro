@@ -1,0 +1,63 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "The Future of the Monetary System",
+  subtitle: "Central Bank Digital Currencies, Digital Payments, and Monetary Sovereignty (2021).",
+  contextNote: "This project was written in 2021 as an upper secondary school research assignment (SOP). It represents my initial academic exploration into central banking. The text has been lightly revised for linguistic clarity while preserving the original analytical scope.",
+  executiveSummary: "This project analyzes the economic rationale behind the ECB's exploration of a digital euro, focusing on the digitalization of payments, declining cash usage, and the rise of private digital currencies. By comparing cryptocurrencies, stablecoins, and CBDCs, the study investigates how private alternatives reveal a demand for stable digital money and why preserving monetary sovereignty is a primary driver for central bank intervention in the digital age.",
+  researchQuestions: [
+    "What are the fundamental differences between cryptocurrencies, stablecoins, and CBDCs?",
+    "What do private digital currencies reveal about the public demand for stable money?",
+    "Why is the ECB exploring a digital euro, and what are the implications for monetary sovereignty?"
+  ],
+  methodology: {
+    model: "Institutional analysis and conceptual comparison of monetary forms.",
+    strategy: "Literature review of ECB policy papers and theoretical frameworks for digital money.",
+    data: "Descriptive data on payment trends and cryptocurrency price dynamics.",
+    estimation: "Illustrative OLS trend estimations to highlight volatility and supply dynamics."
+  },
+  keyFindings: [
+    "Cryptocurrencies: Found to be driven primarily by speculative dynamics rather than monetary utility.",
+    "Stablecoins: Identify a significant market demand for price stability in digital assets, which private issuers struggle to guarantee without sovereign backing.",
+    "CBDC: The digital euro is seen as a necessary tool to preserve the public-private partnership in money and maintain payment system resilience.",
+    "Monetary Sovereignty: Private digital currencies pose a potential threat to the transmission of monetary policy if left unregulated."
+  ],
+  continuityNote: {
+    title: "Long-term Academic Focus",
+    text: "While the empirical methods in this project were foundational, the core themes—monetary transmission, central bank institutional design, and financial stability—have remained the focal point of my subsequent university-level research. This SOP serves as the thematic starting point for my interest in the intersection of technology and macroeconomics."
+  },
+  policyRelevance: [
+    "Highlights the importance of maintaining a public anchor in the payment system as cash usage declines.",
+    "Argues for a balanced approach where CBDCs complement rather than replace current financial intermediaries.",
+    "Emphasizes that digital sovereignty is not just about technology, but about the trust and stability provided by the central bank."
+  ],
+  limitations: [
+    "Early-stage empirical methods (simple OLS) used for illustrative purposes only.",
+    "Limited access to advanced økonometric tools at the time of writing.",
+    "Analysis is descriptive and represents the state of the CBDC debate in early 2021."
+  ],
+  dataTools: {
+    sources: "ECB Reports, BIS Papers, Bloomberg, and CoinMarketCap.",
+    software: "Excel (for OLS estimation), Word, and Early TeX experiments."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2021). The Future of the Monetary System: CBDC and Sovereignty. SOP Research Project, HHX. Ref: SOP2021-AMJ.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2021_SOP_MonetarySystem.pdf"
+  },
+  ui: {
+    methodology: "Analytical Approach",
+    findings: "Key Insights",
+    relevance: "Why this matters",
+    dataTools: "Data & Tools",
+    download: "Documentation",
+    citation: "Suggested Reference",
+    execSummary: "Project Motivation",
+    researchQuestions: "Research Questions",
+    limitations: "Scope & Limitations",
+    continuityTitle: "Conceptual Continuity"
+  }
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />
