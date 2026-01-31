@@ -2,6 +2,7 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
+import partytown from '@astrojs/partytown';
 
 import sentry from '@sentry/astro';
 import vercel from '@astrojs/vercel';
@@ -19,9 +20,14 @@ export default defineConfig({
   site: 'https://antonebsen.dk',
 
   integrations: [
-    sentry(),
+    // sentry(),
     react(),
     sitemap(),
+    // partytown({
+    //   config: {
+    //     forward: ["dataLayer.push"],
+    //   },
+    // }),
     tailwind({
       applyBaseStyles: false,
     })

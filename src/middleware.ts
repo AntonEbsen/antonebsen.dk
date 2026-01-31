@@ -1,7 +1,7 @@
 
 import type { APIContext, MiddlewareNext } from "astro";
 
-export async function onRequest(context: APIContext, next: MiddlewareNext) {
+export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const response = await next();
     const headers = response.headers;
 

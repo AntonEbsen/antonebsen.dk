@@ -2,7 +2,7 @@
 import Layout from '../../layouts/BaseLayout.astro';
 
 // 1. Server-Side Error Trigger
-const { trigger } = Astro.url.searchParams;
+const trigger = Astro.url.searchParams.get('trigger');
 if (trigger === 'server') {
     throw new Error('Test Server Error from /debug/sentry');
 }

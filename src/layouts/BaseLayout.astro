@@ -94,6 +94,28 @@ const lang = getLangFromUrl(Astro.url);
 
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
+  <script>
+    // Scroll Animation Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target); // Only animate once
+        }
+      });
+    }, observerOptions);
+
+    document.addEventListener('astro:page-load', () => {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      elements.forEach(el => observer.observe(el));
+    });
+  </script>
 </body>
 </html>
 
