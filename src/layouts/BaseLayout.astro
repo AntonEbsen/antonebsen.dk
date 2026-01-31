@@ -7,7 +7,6 @@ import CommandPalette from '@components/common/CommandPalette.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
 import '@styles/themes.css';
-import { ClientRouter } from 'astro:transitions';
 import SpeedInsights from "@vercel/speed-insights/astro"
 import { Analytics } from "@vercel/analytics/react"
 
@@ -215,7 +214,6 @@ const lang = getLangFromUrl(Astro.url);
   <!-- 2. SEO and other metadata -->
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
-  <ClientRouter />
   <SpeedInsights />
   <Analytics client:load />
   
