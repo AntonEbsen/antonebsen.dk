@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
 import vercel from '@astrojs/vercel';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   output: 'static',
@@ -23,6 +24,37 @@ export default defineConfig({
       applyBaseStyles: false,
     })
   ],
+
+  vite: {
+    plugins: [
+      VitePWA({
+        registerType: 'autoUpdate',
+        manifest: {
+          name: 'Anton Ebsen - Portfolio',
+          short_name: 'Anton Ebsen',
+          description: 'Portfolio of Anton Meier Ebsen Jørgensen',
+          theme_color: '#050505',
+          background_color: '#050505',
+          display: 'standalone',
+          icons: [
+            {
+              src: '/favicon.svg',
+              sizes: '192x192',
+              type: 'image/svg+xml'
+            },
+            {
+              src: '/favicon.svg',
+              sizes: '512x512',
+              type: 'image/svg+xml'
+            }
+          ]
+        },
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
+        }
+      })
+    ]
+  },
 
   adapter: vercel(),
 });

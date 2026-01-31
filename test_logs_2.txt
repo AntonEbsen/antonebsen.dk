@@ -1,0 +1,30 @@
+
+> antonebsen.dk@0.0.1 test
+> playwright test
+
+[2m[WebServer] [22m[2m14.53.33[22m [31m[1m[vite][22m[39m [31m[2m(ssr)[22m[39m [31mError when evaluating SSR module C:\Users\Anton\antonebsen.dk\astro.config.mjs: Parse failure: Expected ',', got 'ident'
+[2m[WebServer] [22mAt file: C:\Users\Anton\antonebsen.dk\astro.config.mjs:26:5[39m
+[2m[WebServer] [22m  File: [36mC:\Users\Anton\antonebsen.dk\astro.config.mjs[39m:26:5
+[2m[WebServer] [22m[33m  24 |        applyBaseStyles: false,
+[2m[WebServer] [22m  25 |      })
+[2m[WebServer] [22m  26 |      tailwind({
+[2m[WebServer] [22m     |      ^
+[2m[WebServer] [22m  27 |        applyBaseStyles: false,
+[2m[WebServer] [22m  28 |      })[39m
+[2m[WebServer] [22m      at getRollupError (file:///C:/Users/Anton/antonebsen.dk/node_modules/rollup/dist/es/shared/parseAst.js:400:41)
+[2m[WebServer] [22m      at convertProgram (file:///C:/Users/Anton/antonebsen.dk/node_modules/rollup/dist/es/shared/parseAst.js:1106:26)
+[2m[WebServer] [22m      at parseAstAsync (file:///C:/Users/Anton/antonebsen.dk/node_modules/rollup/dist/es/shared/parseAst.js:2092:106)
+[2m[WebServer] [22m      at async ssrTransformScript (file:///C:/Users/Anton/antonebsen.dk/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:25598:11)
+[2m[WebServer] [22m      at async loadAndTransform (file:///C:/Users/Anton/antonebsen.dk/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:35790:65)
+[2m[WebServer] [22m[1m[31m[astro][39m[22m Unable to load your Astro config
+[2m[WebServer] [22m
+[2m[WebServer] [22mParse failure: Expected ',', got 'ident'
+[2m[WebServer] [22mAt file: C:\Users\Anton\antonebsen.dk\astro.config.mjs:26:5
+[2m[WebServer] [22m  [1mLocation:[22m
+[2m[WebServer] [22m    [4mC:\Users\Anton\antonebsen.dk\astro.config.mjs:26:5[24m
+[2m[WebServer] [22m  [1mStack trace:[22m
+[2m[WebServer] [22m[2m    at getRollupError (file:///C:/Users/Anton/antonebsen.dk/node_modules/rollup/dist/es/shared/parseAst.js:400:41)
+[2m[WebServer] [22m    at parseAstAsync (file:///C:/Users/Anton/antonebsen.dk/node_modules/rollup/dist/es/shared/parseAst.js:2092:106)
+[2m[WebServer] [22m    at async loadAndTransform (file:///C:/Users/Anton/antonebsen.dk/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:35790:65)[22m
+Error: Process from config.webServer was not able to start. Exit code: 1
+

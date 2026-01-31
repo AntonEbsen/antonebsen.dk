@@ -203,6 +203,42 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
     });
 
     // Init
+    // Realtime Subscription
+    import { supabase } from '../../lib/supabase';
+
+    if (supabase) {
+        const channel = supabase
+            .channel('guestbook-realtime')
+            .on(
+                'postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'guestbook' },
+                (payload) => {
+                    const msg = payload.new;
+                    const feed = document.getElementById('messages-feed');
+                    const locale = feed?.getAttribute('data-locale') || 'en-US';
+                    const date = new Date(msg.created_at).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+                    
+                    const card = document.createElement('div');
+                    card.className = "group relative border-l-2 border-gray-800 pl-6 pb-2 hover:border-gold-500/50 transition-colors animate-fade-in";
+                    card.innerHTML = `
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black border-2 border-gray-800 group-hover:border-gold-500 transition-colors"></div>
+                        <div class="mb-2">
+                            <span class="font-bold text-gold-200 text-lg">${safeHTML(msg.name)}</span>
+                            <span class="text-xs text-green-400 ml-2 font-mono uppercase tracking-widest text-[10px] border border-green-900 bg-green-900/20 px-1 rounded">New</span>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed font-serif italic">"${safeHTML(msg.message)}"</p>
+                    `;
+                    
+                    if (feed) {
+                        feed.insertBefore(card, feed.firstChild);
+                        document.getElementById('empty-state')?.classList.add('hidden');
+                    }
+                }
+            )
+            .subscribe();
+    }
+
+    // Init
     loadGuestbook();
 </script>
 
