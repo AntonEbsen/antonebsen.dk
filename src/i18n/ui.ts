@@ -78,6 +78,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Mit Setup (/uses)', url: '/uses' },
                 { label: 'Økonomisk Filosofi', url: '/finance' },
                 { label: 'API Protokol', url: '/api-docs' },
+                { label: 'Sundhedsprotokol', url: '/health' },
                 { label: 'Om Antons AI', url: '/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -122,6 +123,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'My Setup (/uses)', url: '/en/uses' },
                 { label: 'Finance Philosophy', url: '/en/finance' },
                 { label: 'API Protocol', url: '/en/api-docs' },
+                { label: 'Health Protocol', url: '/en/health' },
                 { label: "About Anton's AI", url: '/en/ai-project' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]

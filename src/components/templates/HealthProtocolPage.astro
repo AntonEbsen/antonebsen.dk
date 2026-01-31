@@ -1,0 +1,181 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Sundhedsprotokol | Anton Meier Ebsen Jørgensen",
+    description: "Min tilgang til optimering af krop og sind. Protokoller for træning, ernæring, søvn og mental sundhed.",
+    heroTitle: "Processen bag præstation",
+    heroText: "Optimering er ikke en destination, men en løbende proces. Her er de protokoller, jeg følger for at maksimere min kognitive og fysiske output.",
+    sections: [
+      {
+        title: "Fysisk Træning",
+        icon: "fa-dumbbell",
+        desc: "Fokuseret på styrke, hypertrofi og metaboliske sundhed.",
+        items: [
+          { label: "Split", value: "Push / Pull / Legs (PPL)" },
+          { label: "Frekvens", value: "5-6 dage ugentligt" },
+          { label: "Mål", value: "Progressiv overbelastning & Tonnage" }
+        ]
+      },
+      {
+        title: "Ernæring & Fasting",
+        icon: "fa-utensils",
+        desc: "Brændstof optimeret til hjernefunktion og muskelvedligeholdelse.",
+        items: [
+          { label: "Protokol", value: "16:8 Intermittent Fasting" },
+          { label: "Fokus", value: "Høj protein, moderat fedt, komplekse kulhydrater" },
+          { label: "Hydrering", value: "4L+ vand dagligt m. elektrolytter" }
+        ]
+      },
+      {
+        title: "Søvn-arkitektur",
+        icon: "fa-moon",
+        desc: "Den vigtigste variabel for kognitiv præstation (cand.polit kræver skarphed).",
+        items: [
+          { label: "Varighed", value: "7.5 - 8 timer uafbrudt" },
+          { label: "Protocol", value: "Ingen skærm 60 min før søvn" },
+          { label: "Supplementer", value: "Magnesium Bisglycinat & Theanine" }
+        ]
+      },
+      {
+        title: "Recovery & Biohacking",
+        icon: "fa-biohazard",
+        desc: "Værktøjer til at fremskynde restitution og reducere systemisk inflammation.",
+        items: [
+          { label: "Kulde", value: "Kolde bade / Vinterbadning" },
+          { label: "Varme", value: "Sauna 2-3 gange ugentligt" },
+          { label: "Mental", value: "Daglig meditation & NSDR" }
+        ]
+      }
+    ]
+  },
+  en: {
+    title: "Health Protocol | Anton Meier Ebsen Jørgensen",
+    description: "My approach to body and mind optimization. Protocols for training, nutrition, sleep, and mental health.",
+    heroTitle: "The Process Behind Performance",
+    heroText: "Optimization is not a destination, but a continuous process. Here are the protocols I follow to maximize my cognitive and physical output.",
+    sections: [
+      {
+        title: "Physical Training",
+        icon: "fa-dumbbell",
+        desc: "Focused on strength, hypertrophy, and metabolic health.",
+        items: [
+          { label: "Split", value: "Push / Pull / Legs (PPL)" },
+          { label: "Frequency", value: "5-6 days per week" },
+          { label: "Goal", value: "Progressive Overload & Tonnage" }
+        ]
+      },
+      {
+        title: "Nutrition & Fasting",
+        icon: "fa-utensils",
+        desc: "Fuel optimized for brain function and muscle maintenance.",
+        items: [
+          { label: "Protocol", value: "16:8 Intermittent Fasting" },
+          { label: "Focus", value: "High Protein, Moderate Fat, Complex Carbs" },
+          { label: "Hydration", value: "4L+ water daily with electrolytes" }
+        ]
+      },
+      {
+        title: "Sleep Architecture",
+        icon: "fa-moon",
+        desc: "The most important variable for cognitive performance (cand.polit requires sharpness).",
+        items: [
+          { label: "Duration", value: "7.5 - 8 hours uninterrupted" },
+          { label: "Protocol", value: "No screens 60 min before sleep" },
+          { label: "Supplements", value: "Magnesium Bisglycinat & Theanine" }
+        ]
+      },
+      {
+        title: "Recovery & Biohacking",
+        icon: "fa-biohazard",
+        desc: "Tools to accelerate recovery and reduce systemic inflammation.",
+        items: [
+          { label: "Cold", value: "Cold Showers / Winter Swimming" },
+          { label: "Heat", value: "Sauna 2-3 times per week" },
+          { label: "Mental", value: "Daily Meditation & NSDR" }
+        ]
+      }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-24 animate-on-scroll">
+      <div class="max-w-4xl">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="h-[1px] w-12 bg-accent/40"></div>
+          <span class="text-xs font-mono text-accent uppercase tracking-[0.4em]">Optimization Protocol v4.2</span>
+        </div>
+        <h1 class="text-6xl md:text-8xl font-black mb-8 leading-none tracking-tighter">
+          {t.heroTitle}<span class="text-accent italic">.</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-dim max-w-2xl leading-relaxed">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- Protocol Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
+       {t.sections.map((section, idx) => (
+         <Section class={`animate-on-scroll delay-${idx * 100}`}>
+            <Card variant="glass" class="p-10 h-full border-white/5 relative group hover:border-accent/20 transition-all duration-500">
+               <div class="absolute top-0 right-0 p-8 text-4xl text-accent/10 group-hover:text-accent/20 transition-colors">
+                  <i class={`fa-solid ${section.icon}`}></i>
+               </div>
+               
+               <h2 class="text-2xl font-bold mb-4 text-white">{section.title}</h2>
+               <p class="text-dim text-sm mb-10 leading-relaxed border-l border-accent/20 pl-4">
+                  {section.desc}
+               </p>
+               
+               <div class="space-y-6">
+                  {section.items.map(item => (
+                    <div class="flex flex-col">
+                       <span class="text-[10px] uppercase font-bold text-accent tracking-widest mb-1">{item.label}</span>
+                       <span class="text-white/90 font-medium">{item.value}</span>
+                    </div>
+                  ))}
+               </div>
+            </Card>
+         </Section>
+       ))}
+    </div>
+
+    <!-- Live Data Teaser (Linked to Training API) -->
+    <Section class="animate-on-scroll">
+       <a href="/training-stats" class="block group">
+          <Card variant="bordered" class="p-10 border-accent/10 bg-accent/[0.02] flex flex-col md:flex-row items-center justify-between gap-8 group-hover:bg-accent/[0.04] transition-all">
+             <div>
+                <h3 class="text-2xl font-bold mb-2 group-hover:text-accent transition-colors">
+                  {isDa ? 'Se mine live trænings-stats' : 'View My Live Training Stats'}
+                </h3>
+                <p class="text-dim">
+                  {isDa ? 'Direkte feed fra min trænings-log via API.' : 'Direct feed from my training log via API.'}
+                </p>
+             </div>
+             <div class="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-arrow-grid-2 text-2xl"></i>
+             </div>
+          </Card>
+       </a>
+    </Section>
+  </main>
+</Layout>
