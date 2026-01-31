@@ -47,7 +47,9 @@ jobs:
       - name: Build JupyterLite
         run: |
           cd notebooks
-          jupyter lite build --config jupyter_lite_config.json
+          jupyter lite build
+          mkdir -p ../public/research
+          cp -r _output/* ../public/research/
           
       - name: Build Astro
         run: npm run build
