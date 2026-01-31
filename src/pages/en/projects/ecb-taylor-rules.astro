@@ -1,0 +1,67 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "One Rule to Rule Them All?",
+  subtitle: "An Analysis of the Cross-Country Asymmetric Effects of the ECB’s Monetary Policy (1999Q2–2024Q1).",
+  executiveSummary: "This project investigates whether a single Taylor-type monetary policy rule can adequately describe the ECB’s interest rate setting and whether such a rule can be optimal for heterogeneous euro area economies. Using two-step GMM estimation on quarterly data from 1999 to 2024, the analysis estimates backward-looking Taylor rules. The findings highlight significant Taylor principle violations and instability across sub-periods. By simulating synthetic national interest rates, the study reveals persistent cross-country asymmetries, especially between core and periphery economies, highlighting the limits of a 'one-size-fits-all' policy.",
+  researchQuestions: [
+    "Does a single Taylor-type rule adequately describe ECB interest rate setting over the long run?",
+    "How stable is the ECB's policy reaction function across pre-crisis, crisis, and post-crisis periods?",
+    "What are the magnitudes of the interest rate gaps when aggregate policy is applied to heterogeneous national economic conditions?"
+  ],
+  methodology: {
+    model: "Backward-looking Taylor rule with interest rate smoothing.",
+    strategy: "Two-step Generalized Method of Moments (GMM) to account for endogeneity and autocorrelation.",
+    data: "Quarterly frequency (1999Q2–2024Q1) for the Euro area aggregate and selected member states.",
+    estimation: "Instrumental variables (IV) approach using lagged macro variables."
+  },
+  keyFindings: [
+    "Taylor principle violations: The long-run coefficient for inflation is often found to be below unity in sub-period analyses.",
+    "Structural Instability: Significant shifts in coefficients between pre-crisis and post-GFC samples.",
+    "Financial Stability: Inclusion of credit growth and financial stress indicators improves model fit.",
+    "Heterogeneity: Aggregated policy often leads to pro-cyclical tendencies in specific member states."
+  ],
+  secondaryAnalysis: {
+    title: "Synthetic Interest Rates",
+    description: "Calculation of Taylor-optimal national rates based on the ECB's aggregate reaction function applied to local inflation and output gaps.",
+    items: [
+        "Core vs. Periphery: Persistent gaps between Northern and Southern European optimal rates.",
+        "MIG (Mean Interest Rate Gap): A quantifiable measurement of policy 'mismatch' for countries like Spain and Ireland.",
+        "France vs. Germany: Even within the core, structural differences lead to non-trivial rate divergences."
+    ]
+  },
+  policyRelevance: [
+    "Critiques the 'one-size-fits-all' framework, suggesting the need for stronger macroprudential tools to handle local imbalances.",
+    "Highlights the difficulty of ECB communication when aggregate stability hides significant national divergence.",
+    "Emphasizes the role of financial stability objectives in the de-facto reaction function of the ECB."
+  ],
+  limitations: [
+    "Effective Lower Bound (ELB) constraints in the later sample period may bias linear GMM estimates.",
+    "Structural breaks (GFC, Sovereign Debt Crisis, COVID-19) make long-run parameter stability unlikely.",
+    "Aggregate bias: Standard Taylor rules ignore the cross-sectional distribution of shocks."
+  ],
+  dataTools: {
+    sources: "Eurostat, OECD Economic Outlook, ECB Statistical Data Warehouse.",
+    software: "Stata (GMM estimation), Python (Visualization & Simulation)."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, University of Copenhagen. JEL: E52, E58, F45.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
+  },
+  ui: {
+    methodology: "Methodology",
+    findings: "Empirical Findings",
+    relevance: "Policy Implications",
+    dataTools: "Data & Tools",
+    download: "Documentation",
+    citation: "Suggested Citation",
+    execSummary: "Executive Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    secondaryAnalysis: "Asymmetry Analysis"
+  }
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

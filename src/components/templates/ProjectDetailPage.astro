@@ -28,6 +28,12 @@ interface Props {
         text: string;
         pdfUrl: string;
     };
+    limitations?: string[];
+    secondaryAnalysis?: {
+        title: string;
+        description: string;
+        items: string[];
+    };
     ui: {
         methodology: string;
         findings: string;
@@ -37,6 +43,8 @@ interface Props {
         citation: string;
         execSummary: string;
         researchQuestions: string;
+        limitations?: string;
+        secondaryAnalysis?: string;
     }
   }
 }
@@ -135,9 +143,24 @@ const { lang, project } = Astro.props;
 
          <!-- Visual Placeholder Suggestion: IRF Plot -->
          <div class="mt-12 p-12 border-2 border-dashed border-slate-100 rounded-[32px] flex items-center justify-center text-slate-300 text-sm italic bg-slate-50/50">
-            [ Suggested: Impulse Response Plot (VIX response to Fed Funds Rate shock, Pre vs Post COVID comparison) ]
+            [ Suggested: Main Empirical Plot / Regression Results ]
          </div>
       </section>
+
+      <!-- Secondary Analysis (Optional) -->
+      {project.secondaryAnalysis && (
+        <section class="mb-20">
+           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.secondaryAnalysis || project.secondaryAnalysis.title}</h2>
+           <p class="text-slate-600 mb-8 leading-relaxed italic">{project.secondaryAnalysis.description}</p>
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {project.secondaryAnalysis.items.map(item => (
+                 <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                    <p class="text-slate-700 text-sm leading-relaxed">{item}</p>
+                 </div>
+              ))}
+           </div>
+        </section>
+      )}
 
       <!-- Policy Relevance -->
       <section class="mb-20 bg-slate-900 text-white p-12 rounded-[40px] shadow-2xl">
@@ -150,6 +173,21 @@ const { lang, project } = Astro.props;
             ))}
          </div>
       </section>
+
+      <!-- Limitations (Optional) -->
+      {project.limitations && (
+        <section class="mb-20">
+           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.limitations || 'Limitations'}</h2>
+           <ul class="space-y-4">
+              {project.limitations.map(limit => (
+                 <li class="text-slate-500 text-sm leading-relaxed flex items-start gap-3">
+                    <span class="text-slate-300">•</span>
+                    {limit}
+                 </li>
+              ))}
+           </ul>
+        </section>
+      )}
 
       <!-- Data & Tools -->
       <section class="mb-20 border-t border-slate-100 pt-16">

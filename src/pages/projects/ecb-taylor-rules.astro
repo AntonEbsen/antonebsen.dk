@@ -1,0 +1,67 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "One Rule to Rule Them All?",
+  subtitle: "En analyse af de asymmetriske effekter af ECB's pengepolitik på tværs af lande (1999Q2–2024Q1).",
+  executiveSummary: "Dette projekt undersøger, om en enkelt Taylor-regel tilstrækkeligt kan beskrive ECB's rentefastsættelse, og om en sådan regel kan være optimal for de heterogene økonomier i euroområdet. Ved brug af to-trins GMM-estimering på kvartalsdata fra 1999 til 2024 estimeres bagudskuende Taylor-regler. Resultaterne fremhæver signifikante overtrædelser af Taylor-princippet og ustabilitet på tværs af delperioder. Ved at simulere syntetiske nationale renter afslører studiet vedvarende asymmetrier, især mellem kerne- og periferiøkonomier, hvilket understreger begrænsningerne ved en 'one-size-fits-all' politik.",
+  researchQuestions: [
+    "Beskriver en enkelt Taylor-regel tilstrækkeligt ECB's rentefastsættelse på lang sigt?",
+    "Hvor stabil er ECB's reaktionsfunktion på tværs af præ-krise, krise og post-krise perioder?",
+    "Hvor store er rentegabet, når den aggregerede politik anvendes på heterogene nationale økonomiske forhold?"
+  ],
+  methodology: {
+    model: "Bagudskuende Taylor-regel med rente-smoothing.",
+    strategy: "To-trins Generalized Method of Moments (GMM) for at håndtere endogenitet og autokorrelation.",
+    data: "Kvartalsvis frekvens (1999Q2–2024Q1) for euroområdet som helhed og udvalgte medlemslande.",
+    estimation: "Instrumental variabel (IV) tilgang med laggede makroøkonomiske variabler."
+  },
+  keyFindings: [
+    "Overtrædelser af Taylor-princippet: Den langsigtede koefficient for inflation findes ofte at være under 1 i delperioder.",
+    "Strukturel ustabilitet: Signifikante skift i koefficienter mellem præ-krise og post-GFC stikprøver.",
+    "Finansiel stabilitet: Inklusion af kreditvækst og finansielle stress-indikatorer forbedrer modellens forklaringskraft.",
+    "Heterogenitet: Aggregeret politik fører ofte til pro-cykliske tendenser i specifikke medlemslande."
+  ],
+  secondaryAnalysis: {
+    title: "Syntetiske Renter",
+    description: "Beregning af Taylor-optimale nationale renter baseret på ECB's aggregerede reaktionsfunktion anvendt på lokale inflations- og output-gab.",
+    items: [
+        "Kerne vs. Periferi: Vedvarende gab mellem de optimale renter i Nord- og Sydeuropa.",
+        "MIG (Mean Interest Rate Gap): En kvantificerbar måling af 'mismatch' i politikken for lande som Spanien og Irland.",
+        "Frankrig vs. Tyskland: Selv inden for kerne-landene fører strukturelle forskelle til ikke-trivielle rentedivergenser."
+    ]
+  },
+  policyRelevance: [
+    "Kritiserer 'one-size-fits-all' rammeværket og foreslår behovet for stærkere makroprudentielle værktøjer til at håndtere lokale ubalancer.",
+    "Fremhæver udfordringen ved ECB's kommunikation, når aggregeret stabilitet skjuler signifikant national divergens.",
+    "Betoner betydningen af finansielle stabilitetsmål i ECB's de-facto reaktionsfunktion."
+  ],
+  limitations: [
+    "Zero Lower Bound (ZLB) begrænsninger i den senere del af stikprøven kan medføre bias i lineære GMM-estimater.",
+    "Strukturelle brud (GFC, gældskrisen, COVID-19) gør langsigtet parameterstabilitet usandsynlig.",
+    "Aggregerings-bias: Standard Taylor-regler ignorerer den tværsnitlige fordeling af chok."
+  ],
+  dataTools: {
+    sources: "Eurostat, OECD Economic Outlook, ECB Statistical Data Warehouse.",
+    software: "Stata (GMM-estimering), Python (Visualisering & Simulering)."
+  },
+  citation: {
+    text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, Københavns Universitet. JEL: E52, E58, F45.",
+    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
+  },
+  ui: {
+    methodology: "Metodologi",
+    findings: "Empiriske Resultater",
+    relevance: "Politiske Implikationer",
+    dataTools: "Data & Værktøjer",
+    download: "Dokumentation",
+    citation: "Foreslået Citering",
+    execSummary: "Executive Summary",
+    researchQuestions: "Forskningsspørgsmål",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Asymmetri-analyse"
+  }
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

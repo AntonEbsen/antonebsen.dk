@@ -53,16 +53,17 @@ const t = {
             lang: "da"
         },
         {
-            id: "case-cge",
-            title: "Case 2: CGE-model – COâ‚‚-afgift, sektor-effekter og provenu-recycling",
-            pill: "Modelarbejde",
-            desc: "(Kursusprojekt/eksamenscase) Kalibrering af en simpel åben økonomi med flere sektorer og policy-shocks.",
-            problem: "Hvordan påvirker en COâ‚‚-afgift produktion, priser og velfærd på tværs af sektorer – og hvad betyder valget af provenu-tilbageførsel?",
-            data: ["”¢ Social Accounting Matrix / nationalregnskabs-baseret kalibrering", "”¢ Sektorspecifikke inputandele, forbrug, eksport/import"],
-            method: ["”¢ Kalibrér baseline der reproducerer SAM", "”¢ Shock-scenarier: skat + alternative lukninger", "”¢ Checks: budgetrestriktioner, nul-profit, (Walras-lov hvor relevant)"],
-            result: ["”¢ Output: procentændringer i priser/output/forbrug", "”¢ Fortolkning: vindere/tabere og mekanismer (kort)"],
-            role: ["”¢ Implementering i GAMS", "”¢ Kalibrering + dokumentation", "”¢ Scenario-opsætning og tabeller/figurer"],
-            tools: ["GAMS", "Excel", "LaTeX"]
+            id: "case-ecb",
+            title: "Case 2: One Rule to Rule Them All? ECB Taylor Rules",
+            pill: "Monetær økonomi",
+            desc: "(Seminarprojekt) Analyse af asymmetriske effekter af ECB's pengepolitik via Taylor-regler og GMM.",
+            problem: "Kan en enkelt Taylor-regel beskrive ECB's adfærd, og er den optimal for alle eurolande?",
+            data: ["”¢ Kvartalsdata (1999Q2–2024Q1)", "”¢ Eurostat, OECD, ECB/BIS"],
+            method: ["”¢ To-trins GMM-estimering", "”¢ Syntetiske nationale renter", "”¢ Sub-periode analyse"],
+            result: ["”¢ Påvisning af Taylor-princip overtrædelser", "”¢ Signifikante tværnationale asymmetrier"],
+            role: ["”¢ Ekonometrisk modellering (GMM)", "”¢ Simulation af optimale renter", "”¢ Analyse af policy-mismatch"],
+            tools: ["Stata", "Python", "LaTeX"],
+            lang: "da"
         },
         {
             id: "case-ts",
@@ -74,7 +75,8 @@ const t = {
             method: ["”¢ Decomposition / UCM / ETS-tilgang (tilpas)", "”¢ Modeldiagnostik: residualer, stabilitet, holdout", "”¢ Alternativer: simple benchmarks vs. mere kompleks model"],
             result: ["”¢ Forecast + usikkerhedsbånd", "”¢ Konklusion: hvorfor netop denne model er valgt"],
             role: ["”¢ Data-prep og modelvalg", "”¢ Evaluation + dokumentation", "”¢ Visualisering og write-up"],
-            tools: ["SAS", "Python", "Excel"]
+            tools: ["SAS", "Python", "Excel"],
+            lang: "da"
         }
     ]
   },
@@ -115,16 +117,17 @@ const t = {
             lang: "en"
         },
         {
-            id: "case-cge",
-            title: "Case 2: CGE Model – CO2 Tax, Sectoral Effects, and Revenue Recycling",
-            pill: "Modeling",
-            desc: "(Course Project/Exam Case) Calibration of a simple open economy with multiple sectors and policy shocks.",
-            problem: "How does a CO2 tax affect production, prices, and welfare across sectors – and what is the impact of revenue recycling?",
-            data: ["”¢ Social Accounting Matrix (SAM) based calibration", "”¢ Sector-specific input shares, consumption, export/import"],
-            method: ["”¢ Calibrate baseline reproducing the SAM", "”¢ Shock scenarios: tax + alternative closures", "”¢ Checks: budget constraints, zero-profit, Walras law"],
-            result: ["”¢ Output: percentage changes in prices/output/consumption", "”¢ Interpretation: winners/losers and mechanisms"],
-            role: ["”¢ Implementation in GAMS", "”¢ Calibration + documentation", "”¢ Scenario setup and final reporting"],
-            tools: ["GAMS", "Excel", "LaTeX"]
+            id: "case-ecb",
+            title: "Case 2: One Rule to Rule Them All? ECB Taylor Rules",
+            pill: "Monetary Economics",
+            desc: "(Seminar Paper) Analysis of asymmetric effects of ECB monetary policy via Taylor rules and GMM.",
+            problem: "Does a single Taylor-type rule adequately describe ECB interest rate setting, and can it be optimal for all Euro area economies?",
+            data: ["”¢ Quarterly data (1999Q2–2024Q1)", "”¢ Eurostat, OECD, ECB/BIS"],
+            method: ["”¢ Two-step GMM estimation", "”¢ Synthetic national interest rates", "”¢ Sub-period stability checks"],
+            result: ["”¢ Evidence of Taylor principle violations", "”¢ Quantifiable cross-country asymmetries (MIG)"],
+            role: ["”¢ Econometric modeling (GMM)", "”¢ Simulation of optimal rates", "”¢ Analysis of policy mismatch"],
+            tools: ["Stata", "Python", "LaTeX"],
+            lang: "en"
         },
         {
             id: "case-ts",
@@ -136,7 +139,8 @@ const t = {
             method: ["”¢ Decomposition / UCM / ETS approach", "”¢ Diagnostics: residuals, stability, holdout evaluation", "”¢ Benchmark vs. complex model comparison"],
             result: ["”¢ Forecast + uncertainty bands", "”¢ Conclusion: Why this specific model was chosen for robust results"],
             role: ["”¢ Data preparation and model selection", "”¢ Evaluation + documentation", "”¢ Visualization and write-up"],
-            tools: ["SAS", "Python", "Excel"]
+            tools: ["SAS", "Python", "Excel"],
+            lang: "en"
         }
     ]
   }
