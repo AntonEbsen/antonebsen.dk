@@ -50,6 +50,8 @@ jobs:
           jupyter lite build --base-url /research/
           mkdir -p ../public/research
           cp -r _output/* ../public/research/
+          cd ..
+          node scripts/patch-lab-config.mjs
           
       - name: Build Astro
         run: npm run build
