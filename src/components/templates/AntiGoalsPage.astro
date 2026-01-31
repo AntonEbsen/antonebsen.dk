@@ -1,0 +1,149 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Ting jeg ikke gør | Anton Meier Ebsen Jørgensen",
+    description: "En definition af mine grænser, anti-mål og de systemer, jeg har valgt at fravælge.",
+    heroTitle: "Ting jeg ikke gør",
+    heroSubtitle: "Strategi gennem subtraktion.",
+    heroText: "I en verden besat af 'mere', er mit vigtigste aktiv min evne til at sige nej. Her er listen over de ting, jeg aktivt fravælger for at bevare mit fokus og min integritet.",
+    signal: {
+      title: "Signalet",
+      value: "Selvkontrol > Ambition",
+      desc: "Ambiotion fortæller dig, hvad du vil opnå. Selvkontrol fortæller dig, hvem du nægter at blive i processen."
+    },
+    sections: [
+      {
+        title: "Anti-mål",
+        desc: "Ting jeg aktivt undgår, selvom de kunne virke 'produktive' eller 'normale'.",
+        items: [
+          { label: "Netværks-møder uden formål", desc: "Jeg deltager ikke i 'kaffeaftaler' uden en klar agenda eller gensidig værdi." },
+          { label: "At være 'uvurderlig'", desc: "Jeg bygger ikke systemer, der kræver min konstante tilstedeværelse. Jeg bygger systemer, der kan køre uden mig." },
+          { label: "Optimering af detaljer før fundamentet", desc: "Jeg nægter at bruge tid på mikro-optimeringer, hvis den underliggende logik er fejlbehæftet." }
+        ]
+      },
+      {
+        title: "Systemer jeg ikke deltager i",
+        desc: "Kulturelle og tekniske systemer, som jeg har valgt at stå udenfor.",
+        items: [
+          { label: "Algoritmisk distraktion", desc: "Jeg bruger ikke sociale medier designet til at maksimere 'engagement' på bekostning af fokus." },
+          { label: "Haste-kulturen", desc: "Jeg reagerer ikke på 'haste-opgaver', der blot er resultatet af dårlig planlægning hos andre." },
+          { label: "Status-spillet", desc: "Jeg investerer ikke min tid i at opbygge overfladisk prestige. Jeg investerer i reel kompetence." }
+        ]
+      }
+    ]
+  },
+  en: {
+    title: "Things I Don't Do | Anton Meier Ebsen Jørgensen",
+    description: "A definition of my boundaries, anti-goals, and the systems I choose to opt out of.",
+    heroTitle: "Things I Don't Do",
+    heroSubtitle: "Strategy through subtraction.",
+    heroText: "In a world obsessed with 'more', my most valuable asset is my ability to say no. Here is the list of things I actively avoid to maintain my focus and integrity.",
+    signal: {
+      title: "The Signal",
+      value: "Self-control > Ambition",
+      desc: "Ambition tells you what you want to achieve. Self-control tells you who you refuse to become in the process."
+    },
+    sections: [
+      {
+        title: "Anti-goals",
+        desc: "Things I actively avoid, even if they might seem 'productive' or 'normal'.",
+        items: [
+          { label: "Networking without purpose", desc: "I don't do 'coffee chats' without a clear agenda or mutual value." },
+          { label: "Being 'indispensable'", desc: "I don't build systems that require my constant presence. I build systems that can run without me." },
+          { label: "Micro-optimizing before the foundation", desc: "I refuse to spend time on micro-optimizations if the underlying logic is flawed." }
+        ]
+      },
+      {
+        title: "Excluded Systems",
+        desc: "Cultural and technical systems I choose to stay outside of.",
+        items: [
+          { label: "Algorithmic Distraction", desc: "I don't use social media designed to maximize 'engagement' at the cost of focus." },
+          { label: "Urgency Culture", desc: "I don't react to 'urgent' tasks that are merely the result of poor planning by others." },
+          { label: "The Status Game", desc: "I don't invest time in building superficial prestige. I invest in actual competence." }
+        ]
+      }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-32 animate-on-scroll">
+      <div class="max-w-3xl">
+        <h1 class="text-6xl md:text-8xl font-black mb-4 leading-none tracking-tighter uppercase text-white">
+          {t.heroTitle}<span class="text-accent">!</span>
+        </h1>
+        <p class="text-2xl font-mono text-accent mb-12">{t.heroSubtitle}</p>
+        <p class="text-xl text-dim leading-relaxed max-w-2xl border-l border-white/10 pl-8">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- Signal Card -->
+    <Section class="mb-32 animate-on-scroll">
+       <div class="bg-white/[0.02] border border-white/5 rounded-[40px] p-12 md:p-20 relative overflow-hidden text-center">
+          <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
+          <span class="text-xs font-mono text-accent uppercase tracking-widest mb-6 block">{t.signal.title}</span>
+          <h2 class="text-4xl md:text-6xl font-black mb-8 tracking-tighter text-white">
+             {t.signal.value}
+          </h2>
+          <p class="text-lg text-dim max-w-2xl mx-auto italic leading-relaxed">
+             "{t.signal.desc}"
+          </p>
+       </div>
+    </Section>
+
+    <!-- Content Blocks -->
+    <div class="space-y-32">
+       {t.sections.map((section, idx) => (
+         <Section class="animate-on-scroll">
+            <div class="flex flex-col md:flex-row gap-16">
+               <div class="md:w-1/3">
+                  <SectionHeading class="mb-4">{section.title}</SectionHeading>
+                  <p class="text-dim text-sm leading-relaxed">{section.desc}</p>
+               </div>
+               
+               <div class="md:w-2/3 space-y-12">
+                  {section.items.map(item => (
+                    <div class="group border-b border-white/5 pb-12 last:border-0">
+                       <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-accent transition-colors">
+                          {item.label}
+                       </h3>
+                       <p class="text-dim leading-relaxed">
+                          {item.desc}
+                       </p>
+                    </div>
+                  ))}
+               </div>
+            </div>
+         </Section>
+       ))}
+    </div>
+
+    <!-- Final Minimalism Quote -->
+    <Section class="mt-40 text-center animate-on-scroll">
+       <div class="h-[1px] w-20 bg-accent/30 mx-auto mb-12"></div>
+       <p class="text-xs font-mono text-dim tracking-[0.5em] uppercase opacity-40">
+          Symmetry through Subtraction
+       </p>
+    </Section>
+  </main>
+</Layout>

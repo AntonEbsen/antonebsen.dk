@@ -64,7 +64,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Værdier & Etik', url: '/values' },
                 { label: 'Personlighedsprofil', url: '/personality' },
                 { label: 'SWOT Analyse', url: '/swot' },
-                { label: 'Anti-CV', url: '/anti-resume' }
+                { label: 'Anti-CV', url: '/anti-resume' },
+                { label: 'Ting jeg ikke gør', url: '/anti-goals' }
             ]
         },
         {
@@ -111,7 +112,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Values & Ethics', url: '/en/values' },
                 { label: 'Personality Profile', url: '/en/personality' },
                 { label: 'Strategic SWOT', url: '/en/swot' },
-                { label: 'Anti-Resume', url: '/en/anti-resume' }
+                { label: 'Anti-Resume', url: '/en/anti-resume' },
+                { label: 'Things I Don\'t Do', url: '/en/anti-goals' }
             ]
         },
         {
