@@ -7,11 +7,11 @@
 /* Default (no theme) uses your existing :root in styles.css */
 
 /* Shared: a subtle "season bar" under navbar */
-body[class*="theme-"] .navbar {
+:where(html, body)[class*="theme-"] .navbar {
   position: relative;
 }
 
-body[class*="theme-"] .navbar::after {
+:where(html, body)[class*="theme-"] .navbar::after {
   content: "";
   position: absolute;
   left: 0;
@@ -23,7 +23,7 @@ body[class*="theme-"] .navbar::after {
 }
 
 /* Shared: slightly softer page background */
-body[class*="theme-"] {
+:where(html, body)[class*="theme-"] {
   background:
     radial-gradient(1200px 600px at 20% -10%, rgba(255, 180, 100, 0.02), transparent 60%),
     radial-gradient(900px 500px at 90% 0%, rgba(100, 150, 255, 0.01), transparent 60%),
@@ -31,14 +31,14 @@ body[class*="theme-"] {
 }
 
 /* Shared: buttons (only if you want it; safe defaults) */
-body[class*="theme-"] .btn:not(.ghost) {
+:where(html, body)[class*="theme-"] .btn:not(.ghost) {
   background: var(--accent, #111827);
 }
 
 /* ---------------------------------
    Lent (Askeonsdag -> Påskeaften)
    --------------------------------- */
-body.theme-lent {
+.theme-lent {
   --bg: #0d0a14;
   --nav: rgba(20, 15, 30, 0.9);
   --accent: #9333ea;
@@ -48,7 +48,7 @@ body.theme-lent {
 /* ---------------------------------
    Easter (Påskedag -> før Kristi Himmelfart)
    --------------------------------- */
-body.theme-easter {
+.theme-easter {
   --bg: #0a0f0e;
   --nav: rgba(15, 25, 20, 0.9);
   --accent: #14b8a6;
@@ -58,7 +58,7 @@ body.theme-easter {
 /* ---------------------------------
    Ascension (Kristi Himmelfart -> før Pinse)
    --------------------------------- */
-body.theme-ascension {
+.theme-ascension {
   --bg: #0a0c14;
   --nav: rgba(15, 18, 25, 0.9);
   --accent: #3b82f6;
@@ -68,7 +68,7 @@ body.theme-ascension {
 /* ---------------------------------
    Pentecost (Pinsedag + 2. pinsedag)
    --------------------------------- */
-body.theme-pentecost {
+.theme-pentecost {
   --bg: #0f0a0a;
   --nav: rgba(25, 15, 15, 0.9);
   --accent: #ef4444;
@@ -78,7 +78,7 @@ body.theme-pentecost {
 /* ---------------------------------
    Corpus Christi (Corpus Christi day + optional Sunday)
    --------------------------------- */
-body.theme-corpus {
+.theme-corpus {
   --bg: #0a0a05;
   --nav: rgba(25, 25, 15, 0.9);
   --accent: #f59e0b;
@@ -88,7 +88,7 @@ body.theme-corpus {
 /* ---------------------------------
    Advent (1. søndag i advent -> 24/12)
    --------------------------------- */
-body.theme-advent {
+.theme-advent {
   --bg: #050810;
   --nav: rgba(10, 15, 30, 0.9);
   --accent: #314480;
@@ -98,7 +98,7 @@ body.theme-advent {
 /* ---------------------------------
    St. James / Camino (25/7 + weekend buffer)
    --------------------------------- */
-body.theme-camino {
+.theme-camino {
   --bg: #f6fff8;
   --nav: #123026;
   --navHover: #1a4537;
