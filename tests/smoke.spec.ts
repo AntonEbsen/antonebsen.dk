@@ -5,9 +5,10 @@ const pages = [
     '/en',
     '/about',
     '/en/about',
-    '/projects/ai',
+    '/ai-project',
     '/cases',
     '/stats/training',
+    '/dashboard', // New page
 ];
 
 test.describe('Smoke Tests', () => {

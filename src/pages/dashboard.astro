@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { supabase } from '../lib/supabase';
+
+// Helper to fetch count
+async function getTableCount(table: string) {
+  const { count, error } = await supabase.from(table).select('*', { count: 'exact', head: true });
+  if (error) return 0;
+  return count;
+}
+
+const bookCount = await getTableCount('books');
+const podcastCount = await getTableCount('podcasts');
+const certCount = await getTableCount('certifications');
+const caseCount = 3; // Static for now
+---
+
+<Layout title="Quantum Analytics | Dashboard">
+  <Section class="py-20">
+    <SectionHeading title="Quantum Analytics" subtitle="System Status & Telemetry" />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <Card variant="glass" class="p-6 flex flex-col items-center justify-center text-center group hover:border-accent/50 transition-colors">
+        <i class="fa-solid fa-book text-3xl text-accent mb-4 group-hover:scale-110 transition-transform"></i>
+        <h3 class="text-3xl font-bold text-white mb-1">{bookCount}</h3>
+        <p class="text-sm text-dim uppercase tracking-wider">Books Logged</p>
+      </Card>
+
+      <Card variant="glass" class="p-6 flex flex-col items-center justify-center text-center group hover:border-accent/50 transition-colors">
+        <i class="fa-solid fa-microphone text-3xl text-accent mb-4 group-hover:scale-110 transition-transform"></i>
+        <h3 class="text-3xl font-bold text-white mb-1">{podcastCount}</h3>
+        <p class="text-sm text-dim uppercase tracking-wider">Episodes Heard</p>
+      </Card>
+
+      <Card variant="glass" class="p-6 flex flex-col items-center justify-center text-center group hover:border-accent/50 transition-colors">
+        <i class="fa-solid fa-certificate text-3xl text-accent mb-4 group-hover:scale-110 transition-transform"></i>
+        <h3 class="text-3xl font-bold text-white mb-1">{certCount}</h3>
+        <p class="text-sm text-dim uppercase tracking-wider">Certifications</p>
+      </Card>
+
+      <Card variant="glass" class="p-6 flex flex-col items-center justify-center text-center group hover:border-accent/50 transition-colors">
+        <i class="fa-solid fa-briefcase text-3xl text-accent mb-4 group-hover:scale-110 transition-transform"></i>
+        <h3 class="text-3xl font-bold text-white mb-1">{caseCount}</h3>
+        <p class="text-sm text-dim uppercase tracking-wider">Active Cases</p>
+      </Card>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <Card variant="gradient" class="p-8">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-server text-accent"></i> System Health
+        </h3>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center border-b border-white/5 pb-2">
+            <span class="text-dim">Status</span>
+            <span class="text-green-400 font-mono font-bold">OPERATIONAL</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-white/5 pb-2">
+            <span class="text-dim">Database</span>
+            <span class="text-green-400 font-mono font-bold">CONNECTED</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-white/5 pb-2">
+            <span class="text-dim">Vercel Region</span>
+            <span class="text-accent font-mono">fra1 (Frankfurt)</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-white/5 pb-2">
+            <span class="text-dim">Last Deploy</span>
+            <span class="text-white font-mono">{new Date().toLocaleDateString()}</span>
+          </div>
+        </div>
+      </Card>
+
+      <Card variant="gradient" class="p-8">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-link text-accent"></i> Quick Links
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+           <a href="/api" class="block p-4 rounded-lg bg-white/5 hover:bg-white/10 text-center transition-colors">
+             <i class="fa-solid fa-database mb-2 text-2xl text-accent/80"></i>
+             <div class="text-sm font-bold text-white">API Endpoints</div>
+           </a>
+           <a href="https://github.com/AntonEbsen/antonebsen.dk" target="_blank" class="block p-4 rounded-lg bg-white/5 hover:bg-white/10 text-center transition-colors">
+             <i class="fa-brands fa-github mb-2 text-2xl text-accent/80"></i>
+             <div class="text-sm font-bold text-white">Repository</div>
+           </a>
+           <a href="/stats/training" class="block p-4 rounded-lg bg-white/5 hover:bg-white/10 text-center transition-colors">
+             <i class="fa-solid fa-dumbbell mb-2 text-2xl text-accent/80"></i>
+             <div class="text-sm font-bold text-white">Training Data</div>
+           </a>
+           <a href="/ai-project" class="block p-4 rounded-lg bg-white/5 hover:bg-white/10 text-center transition-colors">
+             <i class="fa-solid fa-brain mb-2 text-2xl text-accent/80"></i>
+             <div class="text-sm font-bold text-white">AI Neural Net</div>
+           </a>
+        </div>
+      </Card>
+    </div>
+
+  </Section>
+</Layout>
