@@ -5,9 +5,6 @@ import SEO from '@components/SEO.astro';
 import ChatWidget from '@components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
 import { getLangFromUrl } from '@i18n/utils';
-import '@styles/styles.css';
-import '@styles/themes.css';
-import '@fontsource-variable/inter';
 import { ClientRouter } from 'astro:transitions';
 import SpeedInsights from "@vercel/speed-insights/astro"
 import { Analytics } from "@vercel/analytics/react"
@@ -59,13 +56,18 @@ const lang = getLangFromUrl(Astro.url);
       --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
       --radius: 16px;
       
-      /* TYPOGRAPHY */
-      --font-main: "Inter", system-ui, sans-serif;
+      /* TYPOGRAPHY - System font stack for instant render, Inter loads progressively */
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       --h1-size: clamp(48px, 6vw, 76px);
       --h2-size: clamp(28px, 4vw, 42px);
       --body-size: 16px;
       --lh-body: 1.7;
       --ls-heading: -0.02em;
+    }
+    
+    /* Progressive enhancement: Use Inter when it loads */
+    body {
+      font-family: 'Inter', var(--font-main);
     }
     
     /* === RESET & BASE STYLES === */
@@ -215,12 +217,27 @@ const lang = getLangFromUrl(Astro.url);
   <SpeedInsights />
   <Analytics client:load />
   
-  <!-- 3. Fonts and non-critical scripts -->
+  <!-- 3. Font preloading for instant text rendering -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" media="print" onload="this.media='all'">
+  
+  <!-- 4. Non-critical CSS and scripts (deferred) -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
   <script src="/assets/js/search.js" defer></script>
 
   <slot name="head" />
+  
+  <!-- Add grain texture after page loads for smoother first paint -->
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', function() {
+      const grain = document.createElement('div');
+      grain.style.cssText = 'content:"";position:fixed;inset:0;background:url("https://grainy-gradients.vercel.app/noise.svg");opacity:0.03;pointer-events:none;z-index:1000;';
+      document.body.insertBefore(grain, document.body.firstChild);
+    });
+  </script>
 </head>
 <body class={bodyClass}>
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] bg-gold-500 text-black px-4 py-2 font-bold rounded">
