@@ -15,7 +15,7 @@ const pathname = new URL(Astro.request.url).pathname;
           <div class="relative inline-flex items-center group">
             <a href={item.url} class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-dim hover:text-white hover:bg-white/5 ${pathname.startsWith(item.url) ? "!text-accent !bg-accent-soft font-semibold" : ""}`}>
               {item.label} 
-              <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-60"></i>
+              <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-90"></i>
             </a>
             {/* Dropdown */}
             <div class="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 min-w-[220px] bg-[#0a0a0a] border border-glass-border border-t-[2px] border-t-accent rounded-xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[9999] opacity-0 invisible pointer-events-none translate-y-[10px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 hidden md:block before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
@@ -27,7 +27,7 @@ const pathname = new URL(Astro.request.url).pathname;
                    rel={child.external ? "noopener noreferrer" : ""}
                  >
                    {child.label}
-                   {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-50"></i>}
+                   {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-80"></i>}
                  </a>
                ))}
             </div>
@@ -61,7 +61,6 @@ const pathname = new URL(Astro.request.url).pathname;
         autocomplete="off"
         aria-autocomplete="list"
         aria-controls="searchResults"
-        aria-expanded="false"
       />
       <div class="absolute bottom-0 left-[10%] w-[80%] h-[1px] bg-accent scale-x-0 transition-transform duration-300 group-focus-within/search:scale-x-100 group-focus-within/search:animate-[scanBar_2s_infinite]"></div>
       <div id="searchResults" class="absolute top-[calc(100%+10px)] left-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-2xl rounded-[14px] shadow-card border border-glass-border p-2 z-[9999] opacity-0 invisible pointer-events-none -translate-y-[2px] transition-all duration-150 [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto [&.is-open]:translate-y-0" role="listbox" aria-label="Søgeresultater"></div>

@@ -1,0 +1,481 @@
+
+> antonebsen.dk@0.0.1 test
+> playwright test tests/accessibility.spec.ts
+
+
+Running 3 tests using 3 workers
+
+  ✘  1 [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks / for a11y violations (2.6s)
+  ✘  2 [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /about for a11y violations (2.5s)
+  ✘  3 [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /cases for a11y violations (3.0s)
+
+
+  1) [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks / for a11y violations 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 135[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure an element's role supports its ARIA attributes",[39m
+    [31m+     "help": "Elements must only use supported ARIA attributes",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr?application=playwright",[39m
+    [31m+     "id": "aria-allowed-attr",[39m
+    [31m+     "impact": "critical",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Array [[39m
+    [31m+               "aria-expanded=\"false\"",[39m
+    [31m+             ],[39m
+    [31m+             "id": "aria-allowed-attr",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "ARIA attribute is not allowed: aria-expanded=\"false\"",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "any": Array [],[39m
+    [31m+         "failureSummary": "Fix all of the following:[39m
+    [31m+   ARIA attribute is not allowed: aria-expanded=\"false\"",[39m
+    [31m+         "html": "<input id=\"siteSearch\" class=\"w-full px-4 py-2.5 r...\" type=\"search\" placeholder=\"Søg...\" autocomplete=\"off\" aria-autocomplete=\"list\" aria-controls=\"searchResults\" aria-expanded=\"false\">",[39m
+    [31m+         "impact": "critical",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "#siteSearch",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.aria",[39m
+    [31m+       "wcag2a",[39m
+    [31m+       "wcag412",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.4.1.2",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-7.1.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure buttons have discernible text",[39m
+    [31m+     "help": "Buttons must have discernible text",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/button-name?application=playwright",[39m
+    [31m+     "id": "button-name",[39m
+    [31m+     "impact": "critical",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "button-has-visible-text",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have inner text that is visible to screen readers",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "aria-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "aria-label attribute does not exist or is empty",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "aria-labelledby",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "messageKey": "noAttr",[39m
+    [31m+             },[39m
+    [31m+             "id": "non-empty-title",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element has no title attribute",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "implicit-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have an implicit (wrapped) <label>",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "explicit-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have an explicit <label>",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "presentational-role",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element does not have inner text that is visible to screen readers[39m
+    [31m+   aria-label attribute does not exist or is empty[39m
+    [31m+   aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty[39m
+    [31m+   Element has no title attribute[39m
+    [31m+   Element does not have an implicit (wrapped) <label>[39m
+    [31m+   Element does not have an explicit <label>[39m
+    [31m+   Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",[39m
+    [31m+         "html": "<button id=\"chat-toggle\" class=\"pointer-events-auto w-14 h-14 bg-accent text-bg rounded-full shadow-lg shadow-accent/20 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group\">",[39m
+    [31m+         "impact": "critical",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "#chat-toggle",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.name-role-value",[39m
+    [31m+       "wcag2a",[39m
+    [31m+       "wcag412",[39m
+    [31m+       "section508",[39m
+    [31m+       "section508.22.a",[39m
+    [31m+       "TTv5",[39m
+    [31m+       "TT6.a",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.4.1.2",[39m
+    [31m+       "ACT",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-11.9.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      17 |                 .analyze();
+      18 |
+    > 19 |             expect(accessibilityScanResults.violations).toEqual([]);
+         |                                                         ^
+      20 |         });
+      21 |     }
+      22 | });
+        at C:\Users\Anton\antonebsen.dk\tests\accessibility.spec.ts:19:57
+
+    Error Context: test-results\accessibility-Accessibility-Tests-checks-for-a11y-violations-chromium\error-context.md
+
+  2) [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /about for a11y violations 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 135[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure an element's role supports its ARIA attributes",[39m
+    [31m+     "help": "Elements must only use supported ARIA attributes",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr?application=playwright",[39m
+    [31m+     "id": "aria-allowed-attr",[39m
+    [31m+     "impact": "critical",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Array [[39m
+    [31m+               "aria-expanded=\"false\"",[39m
+    [31m+             ],[39m
+    [31m+             "id": "aria-allowed-attr",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "ARIA attribute is not allowed: aria-expanded=\"false\"",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "any": Array [],[39m
+    [31m+         "failureSummary": "Fix all of the following:[39m
+    [31m+   ARIA attribute is not allowed: aria-expanded=\"false\"",[39m
+    [31m+         "html": "<input id=\"siteSearch\" class=\"w-full px-4 py-2.5 r...\" type=\"search\" placeholder=\"Søg...\" autocomplete=\"off\" aria-autocomplete=\"list\" aria-controls=\"searchResults\" aria-expanded=\"false\" data-astro-source-fi...=\"C:/Users/Anton/anton...\" data-astro-source-lo...=\"56:8\">",[39m
+    [31m+         "impact": "critical",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "#siteSearch",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.aria",[39m
+    [31m+       "wcag2a",[39m
+    [31m+       "wcag412",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.4.1.2",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-7.1.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure buttons have discernible text",[39m
+    [31m+     "help": "Buttons must have discernible text",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/button-name?application=playwright",[39m
+    [31m+     "id": "button-name",[39m
+    [31m+     "impact": "critical",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "button-has-visible-text",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have inner text that is visible to screen readers",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "aria-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "aria-label attribute does not exist or is empty",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "aria-labelledby",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "messageKey": "noAttr",[39m
+    [31m+             },[39m
+    [31m+             "id": "non-empty-title",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element has no title attribute",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "implicit-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have an implicit (wrapped) <label>",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "explicit-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have an explicit <label>",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "presentational-role",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element does not have inner text that is visible to screen readers[39m
+    [31m+   aria-label attribute does not exist or is empty[39m
+    [31m+   aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty[39m
+    [31m+   Element has no title attribute[39m
+    [31m+   Element does not have an implicit (wrapped) <label>[39m
+    [31m+   Element does not have an explicit <label>[39m
+    [31m+   Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",[39m
+    [31m+         "html": "<button id=\"chat-toggle\" class=\"pointer-events-auto ...\" data-astro-source-fi...=\"C:/Users/Anton/anton...\" data-astro-source-lo...=\"141:222\">",[39m
+    [31m+         "impact": "critical",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "#chat-toggle",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.name-role-value",[39m
+    [31m+       "wcag2a",[39m
+    [31m+       "wcag412",[39m
+    [31m+       "section508",[39m
+    [31m+       "section508.22.a",[39m
+    [31m+       "TTv5",[39m
+    [31m+       "TT6.a",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.4.1.2",[39m
+    [31m+       "ACT",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-11.9.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      17 |                 .analyze();
+      18 |
+    > 19 |             expect(accessibilityScanResults.violations).toEqual([]);
+         |                                                         ^
+      20 |         });
+      21 |     }
+      22 | });
+        at C:\Users\Anton\antonebsen.dk\tests\accessibility.spec.ts:19:57
+
+    Error Context: test-results\accessibility-Accessibilit-8b7a8-s-about-for-a11y-violations-chromium\error-context.md
+
+  3) [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /cases for a11y violations 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 135[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure an element's role supports its ARIA attributes",[39m
+    [31m+     "help": "Elements must only use supported ARIA attributes",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr?application=playwright",[39m
+    [31m+     "id": "aria-allowed-attr",[39m
+    [31m+     "impact": "critical",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Array [[39m
+    [31m+               "aria-expanded=\"false\"",[39m
+    [31m+             ],[39m
+    [31m+             "id": "aria-allowed-attr",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "ARIA attribute is not allowed: aria-expanded=\"false\"",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "any": Array [],[39m
+    [31m+         "failureSummary": "Fix all of the following:[39m
+    [31m+   ARIA attribute is not allowed: aria-expanded=\"false\"",[39m
+    [31m+         "html": "<input id=\"siteSearch\" class=\"w-full px-4 py-2.5 r...\" type=\"search\" placeholder=\"Søg...\" autocomplete=\"off\" aria-autocomplete=\"list\" aria-controls=\"searchResults\" aria-expanded=\"false\">",[39m
+    [31m+         "impact": "critical",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "#siteSearch",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.aria",[39m
+    [31m+       "wcag2a",[39m
+    [31m+       "wcag412",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.4.1.2",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-7.1.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure buttons have discernible text",[39m
+    [31m+     "help": "Buttons must have discernible text",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/button-name?application=playwright",[39m
+    [31m+     "id": "button-name",[39m
+    [31m+     "impact": "critical",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "button-has-visible-text",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have inner text that is visible to screen readers",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "aria-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "aria-label attribute does not exist or is empty",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "aria-labelledby",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "messageKey": "noAttr",[39m
+    [31m+             },[39m
+    [31m+             "id": "non-empty-title",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element has no title attribute",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "implicit-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have an implicit (wrapped) <label>",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "explicit-label",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element does not have an explicit <label>",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "data": null,[39m
+    [31m+             "id": "presentational-role",[39m
+    [31m+             "impact": "critical",[39m
+    [31m+             "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",[39m
+    [31m+             "relatedNodes": Array [],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element does not have inner text that is visible to screen readers[39m
+    [31m+   aria-label attribute does not exist or is empty[39m
+    [31m+   aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty[39m
+    [31m+   Element has no title attribute[39m
+    [31m+   Element does not have an implicit (wrapped) <label>[39m
+    [31m+   Element does not have an explicit <label>[39m
+    [31m+   Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",[39m
+    [31m+         "html": "<button id=\"chat-toggle\" class=\"pointer-events-auto w-14 h-14 bg-accent text-bg rounded-full shadow-lg shadow-accent/20 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group\">",[39m
+    [31m+         "impact": "critical",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "#chat-toggle",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.name-role-value",[39m
+    [31m+       "wcag2a",[39m
+    [31m+       "wcag412",[39m
+    [31m+       "section508",[39m
+    [31m+       "section508.22.a",[39m
+    [31m+       "TTv5",[39m
+    [31m+       "TT6.a",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.4.1.2",[39m
+    [31m+       "ACT",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-11.9.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      17 |                 .analyze();
+      18 |
+    > 19 |             expect(accessibilityScanResults.violations).toEqual([]);
+         |                                                         ^
+      20 |         });
+      21 |     }
+      22 | });
+        at C:\Users\Anton\antonebsen.dk\tests\accessibility.spec.ts:19:57
+
+    Error Context: test-results\accessibility-Accessibilit-77d98-s-cases-for-a11y-violations-chromium\error-context.md
+
+  3 failed
+    [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks / for a11y violations 
+    [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /about for a11y violations 
+    [chromium] › tests\accessibility.spec.ts:12:9 › Accessibility Tests › checks /cases for a11y violations 
