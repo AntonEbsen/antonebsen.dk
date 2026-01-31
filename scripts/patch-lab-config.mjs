@@ -22,8 +22,9 @@ if (fs.existsSync(mainConfigPath)) {
 if (fs.existsSync(labConfigPath)) {
     const labConfig = JSON.parse(fs.readFileSync(labConfigPath, 'utf8'));
     labConfig['jupyter-config-data'].themesUrl = '../build/themes';
+    labConfig['jupyter-config-data'].appUrl = '/research/lab';
     fs.writeFileSync(labConfigPath, JSON.stringify(labConfig, null, 2));
-    console.log(`Updated themesUrl in ${labConfigPath}`);
+    console.log(`Updated themesUrl and appUrl in ${labConfigPath}`);
 } else {
     console.error(`Error: ${labConfigPath} not found.`);
     process.exit(1);
