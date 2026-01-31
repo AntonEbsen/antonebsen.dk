@@ -1,0 +1,232 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Strategisk SWOT | Anton Meier Ebsen Jørgensen",
+    description: "En strategisk analyse af mine professionelle styrker, svagheder, muligheder og trusler.",
+    heroTitle: "Strategisk SWOT",
+    heroText: "At anvende økonomiske analysemodeller på sig selv er udtryk for professionel selvindsigt. Her er min personlige SWOT-analyse.",
+    swot: {
+      s: {
+        title: "Styrker",
+        tag: "Interne / Positive",
+        color: "text-green-400",
+        bg: "bg-green-500/5",
+        border: "border-green-500/10",
+        items: [
+          { label: "Analytisk Dybde", desc: "Evne til at dekonstruere komplekse økonomiske problemstillinger." },
+          { label: "Teknisk Disciplin", desc: "Høj grad af selvstyring og metodisk tilgang til Deep Work." },
+          { label: "Tværfaglig Brobygning", desc: "Forbinder økonomisk teori med teknisk implementering (Python/VBA)." }
+        ]
+      },
+      w: {
+        title: "Svagheder",
+        tag: "Interne / Negative",
+        color: "text-red-400",
+        bg: "bg-red-500/5",
+        border: "border-red-500/10",
+        items: [
+          { label: "Perfektionisme", desc: "Kan medføre forsinkelser i de sidste 5% af et projekt pga. detaljefokus." },
+          { label: "Autonomi-behov", desc: "Præsterer dårligere i stive hierarkier med høj grad af micromanagement." },
+          { label: "Selektivt Fokus", desc: "Tendens til at prioritere komplekse problemer over trivielle administrative opgaver." }
+        ]
+      },
+      o: {
+        title: "Muligheder",
+        tag: "Eksterne / Positive",
+        color: "text-blue-400",
+        bg: "bg-blue-500/5",
+        border: "border-blue-500/10",
+        items: [
+          { label: "AI & Økonometri", desc: "Integrere LLMs i automatisering af økonomisk databehandling." },
+          { label: "Master Thesis", desc: "Bruge specialet til at opbygge dyb niche-ekspertise inden for polit." },
+          { label: "Digital Platform", desc: "Udbygge denne side til et professionelt node-punkt for vidensdeling." }
+        ]
+      },
+      t: {
+        title: "Trusler",
+        tag: "Eksterne / Negative",
+        color: "text-orange-400",
+        bg: "bg-orange-500/5",
+        border: "border-orange-500/10",
+        items: [
+          { label: "Over-specialisering", desc: "Risiko for at blive for fokuseret på niche-værktøjer fremfor brede løsninger." },
+          { label: "Høj Intensitet", desc: "Risiko for kognitiv træthed ved vedvarende høj-intensitets Deep Work." },
+          { label: "Rapid Tech Change", desc: "Konstant behov for re-skilling i et marked præget af hurtig AI-udvikling." }
+        ]
+      }
+    }
+  },
+  en: {
+    title: "Strategic SWOT | Anton Meier Ebsen Jørgensen",
+    description: "A strategic analysis of my professional strengths, weaknesses, opportunities, and threats.",
+    heroTitle: "Strategic SWOT",
+    heroText: "Applying economic analysis models to oneself is an exercise in professional self-awareness. Here is my personal SWOT analysis.",
+    swot: {
+      s: {
+        title: "Strengths",
+        tag: "Internal / Positive",
+        color: "text-green-400",
+        bg: "bg-green-500/5",
+        border: "border-green-500/10",
+        items: [
+          { label: "Analytical Depth", desc: "Ability to deconstruct complex economic problems into first principles." },
+          { label: "Technical Discipline", desc: "High degree of self-management and methodical approach to Deep Work." },
+          { label: "Interdisciplinary Bridge", desc: "Connecting economic theory with technical implementation (Python/VBA)." }
+        ]
+      },
+      w: {
+        title: "Weaknesses",
+        tag: "Internal / Negative",
+        color: "text-red-400",
+        bg: "bg-red-500/5",
+        border: "border-red-500/10",
+        items: [
+          { label: "Perfectionism", desc: "Can cause delays in the final 5% of a project due to microscopic focus." },
+          { label: "Autonomy Need", desc: "Performs less effectively in rigid hierarchies with high micromanagement." },
+          { label: "Selective Focus", desc: "Tendency to prioritize complex problems over trivial administrative tasks." }
+        ]
+      },
+      o: {
+        title: "Opportunities",
+        tag: "External / Positive",
+        color: "text-blue-400",
+        bg: "bg-blue-500/5",
+        border: "border-blue-500/10",
+        items: [
+          { label: "AI & Econometrics", desc: "Integrating LLMs to automate economic data processing." },
+          { label: "Master's Thesis", desc: "Using the thesis to build deep niche expertise within the cand.polit field." },
+          { label: "Digital Platform", desc: "Expanding this site into a professional node for knowledge sharing." }
+        ]
+      },
+      t: {
+        title: "Threats",
+        tag: "External / Negative",
+        color: "text-orange-400",
+        bg: "bg-orange-500/5",
+        border: "border-orange-500/10",
+        items: [
+          { label: "Over-specialization", desc: "Risk of becoming too focused on niche tools rather than broader solutions." },
+          { label: "High Intensity", desc: "Risk of cognitive fatigue from sustained high-intensity Deep Work phases." },
+          { label: "Rapid Tech Change", desc: "Constant need for re-skilling in a market shaped by rapid AI evolution." }
+        ]
+      }
+    }
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-24 animate-on-scroll">
+      <div class="max-w-4xl">
+        <h1 class="text-6xl md:text-8xl font-black mb-8 leading-none tracking-tighter uppercase">
+          {t.heroTitle}<span class="text-accent">.</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-dim max-w-2xl leading-relaxed border-l-4 border-accent pl-8">
+          {t.heroText}
+        </p>
+      </div>
+    </Section>
+
+    <!-- SWOT Matrix -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden rounded-[40px] border border-white/5 bg-white/[0.01]">
+       <!-- STRENGTHS -->
+       <div class={`p-10 md:p-16 border-b md:border-r border-white/5 ${t.swot.s.bg} animate-on-scroll`}>
+          <div class="flex flex-col h-full">
+             <div class="mb-8">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-dim opacity-50 mb-2 block">{t.swot.s.tag}</span>
+                <h2 class={`text-4xl md:text-5xl font-black uppercase tracking-tighter ${t.swot.s.color}`}>{t.swot.s.title}</h2>
+             </div>
+             <ul class="space-y-8 mt-auto">
+                {t.swot.s.items.map(item => (
+                  <li class="group">
+                     <h3 class="text-lg font-bold mb-1 group-hover:text-green-400 transition-colors">{item.label}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </li>
+                ))}
+             </ul>
+          </div>
+       </div>
+
+       <!-- WEAKNESSES -->
+       <div class={`p-10 md:p-16 border-b border-white/5 ${t.swot.w.bg} animate-on-scroll delay-100`}>
+          <div class="flex flex-col h-full">
+             <div class="mb-8">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-dim opacity-50 mb-2 block">{t.swot.w.tag}</span>
+                <h2 class={`text-4xl md:text-5xl font-black uppercase tracking-tighter ${t.swot.w.color}`}>{t.swot.w.title}</h2>
+             </div>
+             <ul class="space-y-8 mt-auto">
+                {t.swot.w.items.map(item => (
+                  <li class="group">
+                     <h3 class="text-lg font-bold mb-1 group-hover:text-red-400 transition-colors">{item.label}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </li>
+                ))}
+             </ul>
+          </div>
+       </div>
+
+       <!-- OPPORTUNITIES -->
+       <div class={`p-10 md:p-16 border-b md:border-b-0 md:border-r border-white/5 ${t.swot.o.bg} animate-on-scroll delay-200`}>
+          <div class="flex flex-col h-full">
+             <div class="mb-8">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-dim opacity-50 mb-2 block">{t.swot.o.tag}</span>
+                <h2 class={`text-4xl md:text-5xl font-black uppercase tracking-tighter ${t.swot.o.color}`}>{t.swot.o.title}</h2>
+             </div>
+             <ul class="space-y-8 mt-auto">
+                {t.swot.o.items.map(item => (
+                  <li class="group">
+                     <h3 class="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors">{item.label}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </li>
+                ))}
+             </ul>
+          </div>
+       </div>
+
+       <!-- THREATS -->
+       <div class={`p-10 md:p-16 ${t.swot.t.bg} animate-on-scroll delay-300`}>
+          <div class="flex flex-col h-full">
+             <div class="mb-8">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-dim opacity-50 mb-2 block">{t.swot.t.tag}</span>
+                <h2 class={`text-4xl md:text-5xl font-black uppercase tracking-tighter ${t.swot.t.color}`}>{t.swot.t.title}</h2>
+             </div>
+             <ul class="space-y-8 mt-auto">
+                {t.swot.t.items.map(item => (
+                  <li class="group">
+                     <h3 class="text-lg font-bold mb-1 group-hover:text-orange-400 transition-colors">{item.label}</h3>
+                     <p class="text-sm text-dim leading-relaxed">{item.desc}</p>
+                  </li>
+                ))}
+             </ul>
+          </div>
+       </div>
+    </div>
+
+    <!-- Summary / Conclusion -->
+    <Section class="mt-32 max-w-2xl mx-auto text-center animate-on-scroll">
+       <div class="h-[2px] w-20 bg-accent/20 mx-auto mb-8"></div>
+       <p class="text-dim italic leading-relaxed">
+          {isDa 
+            ? "Min strategi er at bruge mine tekniske styrker og Master-specialet til at minimere truslen fra over-specialisering, mens jeg aktivt arbejder på mine interne blinde vinkler."
+            : "My strategy is to leverage my technical strengths and Master's thesis to mitigate the threat of over-specialization, while actively addressing internal blind spots."
+          }
+       </p>
+    </Section>
+  </main>
+</Layout>
