@@ -28,36 +28,26 @@
 
 
 
-/* Scroll Animation Utilities */
-/* Only animate content below the fold - above-the-fold content appears immediately */
+/* Scroll Animation Utilities - DISABLED */
 .animate-on-scroll {
-    opacity: 1;
-    /* Default to visible */
-    transform: translateY(0);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
 }
 
-/* Add the hidden state via JS only for content below viewport */
 .animate-on-scroll.animate-ready {
-    opacity: 0;
-    transform: translateY(20px);
-    will-change: opacity, transform;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .animate-on-scroll.in-view {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1 !important;
+    transform: none !important;
 }
 
-/* Stagger delays */
-.delay-100 {
-    transition-delay: 100ms;
-}
-
-.delay-200 {
-    transition-delay: 200ms;
-}
-
+/* Stagger delays - disabled */
+.delay-100,
+.delay-200,
 .delay-300 {
-    transition-delay: 300ms;
+    transition-delay: 0ms !important;
 }
