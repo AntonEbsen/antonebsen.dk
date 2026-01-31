@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 
 // Helper to fetch count
 async function getTableCount(table: string) {
+  if (!supabase) return 0;
   const { count, error } = await supabase.from(table).select('*', { count: 'exact', head: true });
   if (error) return 0;
   return count;
