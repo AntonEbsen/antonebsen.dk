@@ -48,6 +48,9 @@ jobs:
         run: |
           cd notebooks
           jupyter lite build --config jupyter_lite_config.json
+          
+      - name: Build Astro
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

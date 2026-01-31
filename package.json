@@ -3,9 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host",
     "start": "astro dev",
     "build": "node scripts/validate-env.mjs && node scripts/process-docs.mjs && astro build",
+    "build:lab": "cd notebooks && python -m jupyterlite build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "playwright test",
