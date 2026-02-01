@@ -5,7 +5,6 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Sidebar from '@components/cv/Sidebar.astro';
-import TableOfContents from '@components/cv/TableOfContents.astro';
 import CertificationList from '@components/cv/CertificationList.astro';
 import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 
@@ -52,9 +51,6 @@ const skillsData = skillsEntry.data;
         <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="core">{content.ui.filter.core}</button>
       </div>
     </div>
-
-    <!-- TOC -->
-    <TableOfContents lang={lang} />
 
     <!-- CV grid -->
     <section class="cv-grid" aria-label="CV content">
