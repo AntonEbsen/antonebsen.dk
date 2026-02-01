@@ -22,6 +22,18 @@ export const ratelimits = {
         analytics: true,
         prefix: '@upstash/ratelimit/guestbook',
     }) : null,
+    login: enabled ? new Ratelimit({
+        redis: redis!,
+        limiter: Ratelimit.slidingWindow(5, '900 s'), // 5 attempts per 15 minutes
+        analytics: true,
+        prefix: '@upstash/ratelimit/login',
+    }) : null,
+    write: enabled ? new Ratelimit({
+        redis: redis!,
+        limiter: Ratelimit.slidingWindow(20, '60 s'), // 20 mutations per minute
+        analytics: true,
+        prefix: '@upstash/ratelimit/write',
+    }) : null,
 };
 
 export type RateLimitType = keyof typeof ratelimits;

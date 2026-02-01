@@ -51,9 +51,9 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
         }
     }
 
-    // Protect sensitive GET endpoints (Inbox, Guestbook Admin view) if needed?
-    // Let's protect GET for Inbox (/api/contact) to stop randoms from reading messages
-    if (_context.url.pathname === "/api/contact" && _context.request.method === "GET") {
+    // Protect sensitive GET endpoints
+    const sensitiveGetRoutes = ["/api/contact", "/api/backup"];
+    if (sensitiveGetRoutes.includes(_context.url.pathname) && _context.request.method === "GET") {
         const token = _context.cookies.get("auth_token");
         if (!token || token.value !== "authorized_session") {
             return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });

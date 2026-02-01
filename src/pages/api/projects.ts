@@ -5,8 +5,15 @@ import { supabase } from '../../lib/supabase';
 export const GET: APIRoute = async () => {
     if (!supabase) return new Response("[]");
     const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-    return new Response(JSON.stringify(data || []));
+    return new Response(JSON.stringify(data || []), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=60, s-maxage=3600"
+        }
+    });
 }
+
+import { ProjectSchema } from "../../lib/schemas";
 
 // POST: Add specific project
 export const POST: APIRoute = async ({ request }) => {
@@ -14,7 +21,13 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
         const body = await request.json();
-        const { error } = await supabase.from('projects').insert([body]);
+        const validation = ProjectSchema.safeParse(body);
+
+        if (!validation.success) {
+            return new Response(JSON.stringify({ error: validation.error }), { status: 400 });
+        }
+
+        const { error } = await supabase.from('projects').insert([validation.data]);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }));
     } catch (e) {

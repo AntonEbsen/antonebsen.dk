@@ -5,7 +5,12 @@ import { supabase } from '../../lib/supabase';
 export const GET: APIRoute = async () => {
     if (!supabase) return new Response("[]");
     const { data } = await supabase.from('skills').select('*').order('proficiency', { ascending: false });
-    return new Response(JSON.stringify(data || []));
+    return new Response(JSON.stringify(data || []), {
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=60, s-maxage=3600"
+        }
+    });
 }
 
 // POST: Add new skill

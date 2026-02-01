@@ -2,8 +2,16 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+import { checkRateLimit } from "../../../lib/ratelimit";
+
+export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
     try {
+        const ip = clientAddress || "127.0.0.1";
+        const limit = await checkRateLimit("login", ip);
+        if (!limit.success) {
+            return new Response(JSON.stringify({ error: "Too many attempts. Blocked for 15 mins." }), { status: 429 });
+        }
+
         const body = await request.json();
         const password = String(body.password || "").trim();
 
