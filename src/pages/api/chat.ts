@@ -11,6 +11,7 @@ import { ragContent } from '../../lib/generated-rag';
 export const GET: APIRoute = async () => {
     return new Response(JSON.stringify({
         status: "Chat API is online",
+        model: "gemini-2.0-flash",
         has_gemini_key: !!import.meta.env.GEMINI_API_KEY,
         has_upstash_key: !!import.meta.env.UPSTASH_REDIS_REST_URL,
         rag_size: ragContent?.length || 0
