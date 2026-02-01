@@ -492,9 +492,16 @@ const t = {
         removeTyping();
 
         if (!res.ok) {
-           // Handle error JSON
-           let data = await res.json();
-           addMessage("⚠️ " + (data.message || "Error"), 'ai', false, persona);
+           // Handle error text/json
+           const rawText = await res.text();
+           let errorMsg = "Server Error";
+           try {
+               const json = JSON.parse(rawText);
+               errorMsg = json.message || json.error || errorMsg;
+           } catch(e) {
+               errorMsg += `: ${rawText.substring(0, 50)}...`;
+           }
+           addMessage("⚠️ " + errorMsg, 'ai', false, persona);
            return;
         }
 

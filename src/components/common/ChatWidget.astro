@@ -144,12 +144,20 @@ const t = {
 
 </div>
 
-<script lang="ts">
-// @ts-nocheck
-// This file is now ignored by TS largely, but we will fix key items if the ignore fails.
-  try {
-      import { supabase } from '../../lib/supabase';
-      import { track } from '@vercel/analytics';
+<script>
+  // Move imports to top level (ESM requirement)
+  // We use dynamic imports for analytics to prevent blocking
+  let track = (name, props) => console.log('Track:', name, props); 
+  
+  (async () => {
+    try {
+       const analytics = await import('@vercel/analytics');
+       track = analytics.track;
+    } catch(e) { /* ignore missing analytics */ }
+  })();
+
+  import { supabase } from '../../lib/supabase'; // Assuming this is safe for client
+
 
       // Elements
       const voiceIndicator = document.getElementById('voice-indicator');
@@ -827,9 +835,8 @@ const t = {
       // Init History
       loadHistory();
 
-  } catch (err) {
-      console.error("Chat Widget Script Error:", err);
-  }
+      // Catch block removed as try was removed
+
 </script>
 <script is:inline src="/assets/js/voice-widget.js"></script>
 
