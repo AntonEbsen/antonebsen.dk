@@ -6,18 +6,37 @@ import { buildSystemContext } from '../../lib/ai/context';
 
 import { checkRateLimit } from '../../lib/ratelimit';
 
-export const GET: APIRoute = async () => {
-    return new Response(JSON.stringify({ status: "Chat API is online", method: "GET" }), { status: 200 });
-};
+import { ragContent } from '../../lib/generated-rag';
 
+export const GET: APIRoute = async () => {
+    return new Response(JSON.stringify({
+        status: "Chat API is online",
+        has_gemini_key: !!import.meta.env.GEMINI_API_KEY,
+        has_upstash_key: !!import.meta.env.UPSTASH_REDIS_REST_URL,
+        rag_size: ragContent?.length || 0
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+};
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+    const GEMINI_KEY = import.meta.env.GEMINI_API_KEY;
+    if (!GEMINI_KEY) {
+        console.error("DEBUG: GEMINI_API_KEY is missing");
+        return new Response(JSON.stringify({
+            error: true,
+            message: "⚠️ Configuration Error: Gemini API key is missing on the server. Please check Vercel environment variables."
+        }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    }
+
     // Get IP: clientAddress (SSR) or header (Vercel)
     const clientIP = request.headers.get('x-forwarded-for') || clientAddress || 'unknown';
 
     // Upstash Rate Limit
-    const limitParams = await checkRateLimit('chat', clientIP);
-    if (!limitParams.success) {
-        return new Response(JSON.stringify({ error: "Too many requests. Please wait a moment." }), { status: 429 });
+    try {
+        const limitParams = await checkRateLimit('chat', clientIP);
+        if (!limitParams.success) {
+            return new Response(JSON.stringify({ error: true, message: "Too many requests. Please wait a moment." }), { status: 429 });
+        }
+    } catch (e) {
+        console.warn("Rate limit check failed, proceeding anyway", e);
     }
 
     try {
@@ -30,6 +49,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
         // Build Context
         let systemInstruction = buildSystemContext(lang);
+
+        // Add RAG Content (Knowledge from Thesis/Docs)
+        if (ragContent) {
+            systemInstruction += `\n\n[KNOWLEDGE BASE / RAG CONTENT]:\n${ragContent}`;
+        }
+
         if (persona !== 'default') {
             systemInstruction += `\n\n[ADOPT PERSONA: ${persona.toUpperCase()}]\nAdjust tone and complexity accordingly.`;
         }
@@ -43,7 +68,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 },
                 {
                     role: "model",
-                    parts: [{ text: `Understood. I am ready to represent Anton in ${persona} mode.` }],
+                    parts: [{ text: `Understood. I am ready to represent Anton in ${persona} mode, using the provided knowledge base (RAG).` }],
                 }
             ],
             generationConfig: {
@@ -89,8 +114,17 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             }
         });
 
-    } catch (error) {
-        console.error("Gemini Error:", error);
-        return new Response(JSON.stringify({ error: "Internal AI Error" }), { status: 500 });
+    } catch (error: any) {
+        console.error("Gemini/API Error:", error);
+
+        // Return a more descriptive error if possible
+        const errorMessage = error.message || "Internal AI Error";
+        return new Response(JSON.stringify({
+            error: true,
+            message: `⚠️ AI Error: ${errorMessage}`
+        }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
     }
 };
