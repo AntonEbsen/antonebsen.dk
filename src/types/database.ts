@@ -103,6 +103,60 @@ export interface Database {
                 Update: { id?: number; created_at?: string; text?: string; author?: string; source?: string; tags?: string[] }
                 Relationships: []
             }
+            contact_messages: {
+                Row: { id: number; created_at: string; name: string; email: string; message: string; read: boolean }
+                Insert: { id?: number; created_at?: string; name: string; email: string; message: string; read?: boolean }
+                Update: { id?: number; created_at?: string; name?: string; email?: string; message?: string; read?: boolean }
+                Relationships: []
+            }
+            posts: {
+                Row: { id: number; created_at: string; title: string; slug: string; excerpt?: string; content: string; image_url?: string; published: boolean }
+                Insert: { id?: number; created_at?: string; title: string; slug: string; excerpt?: string; content: string; image_url?: string; published?: boolean }
+                Update: { id?: number; created_at?: string; title?: string; slug?: string; excerpt?: string; content?: string; image_url?: string; published?: boolean }
+                Relationships: []
+            }
+            status: {
+                Row: { id: number; created_at: string; emoji: string; status: string }
+                Insert: { id?: number; created_at?: string; emoji: string; status: string }
+                Update: { id?: number; created_at?: string; emoji?: string; status?: string }
+                Relationships: []
+            }
+            bucketlist: {
+                Row: { id: number; created_at: string; title: string; description?: string; image_url?: string; status: 'todo' | 'doing' | 'done' }
+                Insert: { id?: number; created_at?: string; title: string; description?: string; image_url?: string; status?: 'todo' | 'doing' | 'done' }
+                Update: { id?: number; created_at?: string; title?: string; description?: string; image_url?: string; status?: 'todo' | 'doing' | 'done' }
+                Relationships: []
+            }
+            qa: {
+                Row: { id: number; created_at: string; question: string; answer?: string; status: 'pending' | 'answered' | 'hidden'; asker_name?: string }
+                Insert: { id?: number; created_at?: string; question: string; answer?: string; status?: 'pending' | 'answered' | 'hidden'; asker_name?: string }
+                Update: { id?: number; created_at?: string; question?: string; answer?: string; status?: 'pending' | 'answered' | 'hidden'; asker_name?: string }
+                Relationships: []
+            }
+            cv_experience: {
+                Row: { id: number; created_at: string; title: string; organization: string; type?: string; location?: string; period?: string; description?: string[]; highlights?: any }
+                Insert: { id?: number; created_at?: string; title: string; organization: string; type?: string; location?: string; period?: string; description?: string[]; highlights?: any }
+                Update: { id?: number; created_at?: string; title?: string; organization?: string; type?: string; location?: string; period?: string; description?: string[]; highlights?: any }
+                Relationships: []
+            }
+            cv_education: {
+                Row: { id: number; created_at: string; institution: string; degree: string; period?: string; description?: string; bullets?: string[]; technologies?: string[] }
+                Insert: { id?: number; created_at?: string; institution: string; degree: string; period?: string; description?: string; bullets?: string[]; technologies?: string[] }
+                Update: { id?: number; created_at?: string; institution?: string; degree?: string; period?: string; description?: string; bullets?: string[]; technologies?: string[] }
+                Relationships: []
+            }
+            media: {
+                Row: { id: number; created_at: string; title: string; source: string; date?: string; url?: string }
+                Insert: { id?: number; created_at?: string; title: string; source: string; date?: string; url?: string }
+                Update: { id?: number; created_at?: string; title?: string; source?: string; date?: string; url?: string }
+                Relationships: []
+            }
+            references: {
+                Row: { id: number; created_at: string; name: string; role: string; company?: string; relationship?: string; quote: string; linkedin_url?: string }
+                Insert: { id?: number; created_at?: string; name: string; role: string; company?: string; relationship?: string; quote: string; linkedin_url?: string }
+                Update: { id?: number; created_at?: string; name?: string; role?: string; company?: string; relationship?: string; quote?: string; linkedin_url?: string }
+                Relationships: []
+            }
         }
     }
     Views: {
