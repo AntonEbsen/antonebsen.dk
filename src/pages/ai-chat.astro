@@ -300,11 +300,12 @@ const t = {
     const voiceIndicator = document.getElementById('fp-voice-indicator');
 
     // Handle URL Params (for Static Site)
-    const urlParams = new URLSearchParams(window.location.search);
-    const q = urlParams.get('q');
-    if (q && input) {
-        input.value = q;
-        // Remove param from URL to clean up?? No, keep it.
+    if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get('q');
+        if (q && input) {
+            input.value = q;
+        }
     }
     
     // File Upload Logic
