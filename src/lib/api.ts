@@ -48,6 +48,17 @@ export const BucketItemSchema = z.object({
 });
 export type BucketItem = z.infer<typeof BucketItemSchema>;
 
+export type TimelineItem = {
+    category?: string;
+    title: string;
+    year: string | number;
+    meta?: string;
+    description: string;
+    link?: string;
+    linkText?: string;
+    links?: { url: string; text: string; }[];
+};
+
 
 // --- Fetch Functions ---
 

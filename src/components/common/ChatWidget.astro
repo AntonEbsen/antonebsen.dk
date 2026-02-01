@@ -145,18 +145,10 @@ const t = {
 </div>
 
 <script>
-  // Move imports to top level (ESM requirement)
-  // We use dynamic imports for analytics to prevent blocking
-  let track = (name, props) => console.log('Track:', name, props); 
+  // Simplified script to avoid build issues
+  const track = (name, props) => console.log('Track:', name, props); 
   
-  (async () => {
-    try {
-       const analytics = await import('@vercel/analytics');
-       track = analytics.track;
-    } catch(e) { /* ignore missing analytics */ }
-  })();
-
-  import { supabase } from '../../lib/supabase'; // Assuming this is safe for client
+  import { supabase } from '../../lib/supabase';
 
 
       // Elements
@@ -297,15 +289,25 @@ const t = {
           const savedPersona = localStorage.getItem('anton_ai_persona');
           if (savedPersona) personaSelectElement.value = savedPersona;
           
+          // Personas Configuration
+          const personas = {
+            'default': { name: 'Standard', icon: 'fa-solid fa-robot', color: 'bg-accent/5', description: '' },
+            'recruiter': { name: 'Recruiter', icon: 'fa-solid fa-briefcase', color: 'bg-blue-900/50', description: 'Focused on career.' },
+            'tech': { name: 'Tech Lead', icon: 'fa-solid fa-microchip', color: 'bg-green-900/50', description: 'Technical focus.' },
+            'eli5': { name: 'ELI5', icon: 'fa-solid fa-child-reaching', color: 'bg-yellow-900/50', description: 'Simple terms.' }
+          };
+
           // Event Listeners for Persona
           personaSelectElement?.addEventListener('change', (e) => {
             const val = e.target.value;
-            const p = t.personas[val] || t.personas['default'];
+            const p = personas[val] || personas['default'];
             
             // Update UI
             if(header) {
-                header.innerHTML = `<i class="${p.icon} mr-2"></i> ${p.name}`;
-                header.className = `p-4 border-b border-glass-border flex justify-between items-center rounded-t-xl bg-gradient-to-r ${p.color}`;
+                header.innerHTML = `<div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-accent text-bg flex items-center justify-center"><i class="${p.icon}"></i></div><div><h3 class="font-bold text-sm">${p.name}</h3></div></div>`;
+                // header.className updates... simplified for robustness
+                header.classList.remove('bg-accent/5', 'bg-blue-900/50', 'bg-green-900/50', 'bg-yellow-900/50');
+                header.classList.add(p.color);
             }
             
             // Add system message about switch
