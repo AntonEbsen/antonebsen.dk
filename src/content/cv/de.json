@@ -1,0 +1,228 @@
+{
+    "experience": [
+        {
+            "title": "Studentischer Dozent für Excel und VBA",
+            "organization": "Djøf",
+            "location": "Kopenhagen K",
+            "period": "2023 – heute",
+            "type": "Lehre",
+            "categories": [
+                "teaching",
+                "core"
+            ],
+            "description": [
+                "Unterricht in Excel und VBA (praktische Fallstudien + Workflows)",
+                "Entwicklung und Verbesserung von Kursmaterialien und Übungen",
+                "Hohe Interaktion: Q&A, Feedback und Live-Problemlösung"
+            ],
+            "highlights": [
+                {
+                    "label": "Ergebnis",
+                    "value": "Ausgezeichnete Bewertungen / X+ Studenten"
+                },
+                {
+                    "label": "Werkzeuge",
+                    "value": "Excel · VBA · PowerPoint"
+                }
+            ],
+            "links": [
+                {
+                    "text": "Statistik ansehen",
+                    "href": "/de/kursusstatistik",
+                    "icon": "fa-chart-column"
+                },
+                {
+                    "text": "Zusammenarbeit",
+                    "href": "/de/services",
+                    "icon": "fa-handshake"
+                }
+            ]
+        },
+        {
+            "title": "Büroassistent",
+            "organization": "Handwerkskammer Lübeck",
+            "location": "Lübeck, Deutschland",
+            "period": "Oktober 2019",
+            "type": "Unterstützung",
+            "categories": [
+                "core"
+            ],
+            "description": [
+                "Erstellung von Materialien (Leitfäden/Texte)",
+                "Scannen/Drucken und praktischer Betrieb",
+                "Informationsverarbeitung und Strukturierung"
+            ],
+            "highlights": [
+                {
+                    "label": "Fokus",
+                    "value": "Qualität · Struktur · Lieferung"
+                },
+                {
+                    "label": "Sprache",
+                    "value": "Deutsch (praktisches Niveau)"
+                }
+            ],
+            "links": [
+                {
+                    "text": "Kontakt",
+                    "href": "/de/contact",
+                    "icon": "fa-envelope"
+                }
+            ]
+        }
+    ],
+    "education": [
+        {
+            "institution": "Universität Kopenhagen",
+            "degree": "B.Sc. / M.Sc. in Wirtschaftswissenschaften (cand.polit.)",
+            "period": "2021 – heute",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "description": "Wirtschaftswissenschaften mit Schwerpunkt Makroökonomie, Geldpolitik, Zeitreihenanalyse und Modellierung. Großer Fokus auf praktischer Datenarbeit und Programmierung.",
+            "bullets": [
+                "Makro- & Geldpolitik (EZB/Zentralbanken)",
+                "Ökonometrie & Zeitreihenanalyse (Forecasting, SVAR, etc.)",
+                "Ökonomische Modelle (RBC/CGE)",
+                "Werkzeuge: Python, SAS, GAMS, Excel/VBA"
+            ],
+            "technologies": [
+                "Python",
+                "SAS",
+                "GAMS",
+                "Excel/VBA",
+                "Stata",
+                "MATLAB"
+            ]
+        },
+        {
+            "institution": "Handelsgymnasiet Lolland-Falster",
+            "degree": "HHX (Höheres kaufmännisches Examen)",
+            "period": "2018 – 2021",
+            "description": "Fokus auf internationale Wirtschaft und Betriebswirtschaftslehre.",
+            "bullets": [
+                "Projekte und schriftliche Kommunikation",
+                "Grundlagen der quantitativen Methoden"
+            ]
+        }
+    ],
+    "courses": [
+        {
+            "title": "Advanced Macroeconomics: SVAR",
+            "tag": "Makro",
+            "institution": "Universität Kopenhagen",
+            "description": "Methoden: Identifikation, Impulsantworten, Robustheit. Werkzeuge: (SAS/Stata/Python).",
+            "links": [
+                {
+                    "text": "Notizen",
+                    "href": "#"
+                },
+                {
+                    "text": "Projekt",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "Introduction to Programming & Numerical Analysis",
+            "tag": "Coding",
+            "institution": "Universität Kopenhagen",
+            "description": "Numerik, Modellsimulation und grundlegende Workflows. Werkzeuge: Python/MATLAB.",
+            "links": [
+                {
+                    "text": "Notizen",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "CGE / Applied Economic Modelling",
+            "tag": "Modelle",
+            "institution": "Universität Kopenhagen",
+            "description": "Kalibrierung, SAM, Schocks, Baseline-Checks. Werkzeug: GAMS.",
+            "links": [
+                {
+                    "text": "Fallstudie",
+                    "href": "#"
+                }
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "title": "Bachelorarbeit: Globaler Finanzzyklus & Spillovers",
+            "tag": "Empirisch",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "meta": "Thema: US-Geldpolitik → Weltwirtschaft",
+            "description": "Eine ökonometrische Analyse der Spillovers der US-Geldpolitik.",
+            "links": [
+                {
+                    "text": "PDF",
+                    "href": "#"
+                },
+                {
+                    "text": "Code",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "RBC-Modell: Steady State",
+            "tag": "Modell",
+            "categories": [
+                "tech"
+            ],
+            "meta": "Thema: Numerik & Modell-Setup",
+            "description": "Implementierung und Simulation eines Real-Business-Cycle-Modells.",
+            "links": [
+                {
+                    "text": "Notizen",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "EZB-Projekt: Heterogene Effekte über Länder hinweg",
+            "tag": "Geldpolitik",
+            "meta": "Thema: Taylor-Regeln / synthetische Zinssätze",
+            "description": "Analyse der Divergenz von Zinssatzregeln in der Eurozone.",
+            "links": [
+                {
+                    "text": "Folien",
+                    "href": "#"
+                }
+            ]
+        }
+    ],
+    "certifications": [
+        {
+            "name": "MATLAB Onramp",
+            "url": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=a59d5c1b-8002-4e13-88a7-b7631f99fecd&",
+            "image": "/assets/img/matlab-onramp.PNG",
+            "categories": [
+                "tech"
+            ],
+            "description": "MATLAB-Grundlagen und Workflows."
+        },
+        {
+            "name": "Rechnen mit Vektoren...",
+            "displayName": "Rechnen mit Vektoren und Matrizen",
+            "url": "https://matlabacademy.mathworks.com/progress/share/certificate.html?id=0f239f13-05d3-4633-9f7a-889fa81448f5&",
+            "image": "/assets/img/calculations-with-vectors-and-matrices.PNG",
+            "description": "Lineare Algebra in der Praxis."
+        }
+    ],
+    "organizations": [
+        {
+            "name": "Sozialökonomische Gesellschaft (Socialøkonomisk Samfund)",
+            "role": "Vorsitzender",
+            "period": "2024 – heute",
+            "description": "Plannung und Koordination von Aktivitäten und Veranstaltungen.",
+            "url": "#"
+        }
+    ]
+}

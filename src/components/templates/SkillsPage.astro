@@ -9,7 +9,7 @@ import ContactCard from '@components/common/ContactCard.astro';
 import { supabase } from '@lib/supabase';
 
 interface Props {
-  lang: 'da' | 'en';
+  lang: 'da' | 'en' | 'de';
 }
 
 const { lang } = Astro.props;
@@ -51,10 +51,28 @@ const t = {
     ],
     ctaTitle: "Have a specific need?",
     ctaText: "Let me know the format and goal. I'll suggest a structure."
+  },
+  de: {
+    title: "Anton Meier Ebsen Jørgensen – Kompetenzen",
+    desc: "Kompetenzen: Werkzeuge, Methoden und Fokusbereiche in Makroökonomie, Ökonometrie, Daten und Lehre.",
+    heroTitle: "Werkzeuge, Methoden und Ergebnisse",
+    heroText: "Kompetenzen in einem einfach zu nutzenden Format: <strong>was</strong> ich kann, <strong>wie</strong> ich arbeite und <strong>welches Ergebnis</strong> Sie erwarten können.",
+    btns: { core: "Kernkompetenzen", tools: "Werkzeuge", deliv: "Ergebnisse" },
+    quickTitle: "Kurzübersicht",
+    quickList: ["Strukturiert Daten â†’ Modell â†’ Output", "Erstellt Vorlagen und Workflows", "Kommuniziert komplexe Konzepte klar"],
+    coreTitle: "Programmiersprachen & Methoden",
+    toolsTitle: "Werkzeug-Matrix",
+    delivTitle: "Typische Ergebnisse",
+    delivs: [
+      { title: "Vorlagen & Workflows", desc: "Excel-Vorlagen, standardisierte Dashboards und Automatisierungsskripte." },
+      { title: "Analyse & Berichtwesen", desc: "Reproduzierbare Analysen und Abbildungen für professionelle Berichte." }
+    ],
+    ctaTitle: "Haben Sie einen konkreten Bedarf?",
+    ctaText: "Teilen Sie mir Format und Ziel mit. Ich schlage eine Struktur vor."
   }
 };
 
-const content = isDa ? t.da : t.en;
+const content = lang === 'da' ? t.da : (lang === 'en' ? t.en : t.de);
 
 // Supabase client from @lib/supabase
 let skills: any[] | null = [];

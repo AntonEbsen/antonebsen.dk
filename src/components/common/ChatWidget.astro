@@ -3,7 +3,7 @@ import { getLangFromUrl } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 
-const t = {
+const t_obj = {
   da: {
     title: "Anton's AI",
     online: "Online",
@@ -25,8 +25,21 @@ const t = {
     configError: "Configuration Error: Missing API Key.",
     serverError: "Sorry, I'm having trouble reaching the server.",
     prompts: ["📊 Graph Anton's skills", "💼 Summarize Anton's experience", "🚀 Why should I hire Anton?"]
+  },
+  de: {
+    title: "Antons KI",
+    online: "Online",
+    intro: "Hallo! Ich bin Antons KI-Assistent. Fragen Sie mich nach seiner Erfahrung oder lassen Sie sich seine <strong>Kenntnisse grafisch anzeigen</strong>!",
+    placeholder: "Versuchen Sie: 'Zeige mir eine Grafik deiner Skills'...",
+    disclaimer: "Unterstützt durch KI · Kann Fehler machen",
+    error: "Entschuldigung, es ist ein Fehler aufgetreten.",
+    configError: "Konfigurationsfehler: API-Schlüssel fehlt.",
+    serverError: "Entschuldigung, ich kann keine Verbindung zum Server herstellen.",
+    prompts: ["📊 Zeige Grafiken zu Antons Skills", "💼 Zusammenfassung von Antons Erfahrung", "🚀 Warum sollte ich Anton einstellen?"]
   }
-}[lang];
+};
+
+const t = (t_obj as any)[lang] || t_obj.da;
 ---
 
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>

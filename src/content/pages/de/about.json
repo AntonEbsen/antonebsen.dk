@@ -1,0 +1,200 @@
+{
+    "title": "Anton Meier Ebsen Jørgensen – Profil / Über mich",
+    "description": "Profil / Über mich: Makroökonomie, Ökonometrie, Modelle und Kommunikation. Arbeitsweise, Fokusbereiche und wie ich helfen kann.",
+    "bodyClass": "about-page",
+    "hero": {
+        "eyebrow": "Profil / Über mich",
+        "title": "Makro, Ökonometrie und Modelle — mit Fokus auf praktische Relevanz",
+        "lead": "Ich arbeite an der Schnittstelle von <strong>Wirtschaft</strong>, <strong>Daten</strong> und <strong>Kommunikation</strong>. Ich schätze \"klassisches Handwerk\": klare Annahmen, ordentliche Dokumentation und Ergebnisse, die ohne 300 Seiten Vorwissen erklärt werden können.",
+        "pills": [
+            "Makro & Geldpolitik",
+            "Ökonometrie & Zeitreihen",
+            "Ökonomische Modelle",
+            "Python / SAS / GAMS",
+            "Excel/VBA-Lehre"
+        ],
+        "cta": [
+            {
+                "label": "Arbeitsweise",
+                "url": "#working-style",
+                "icon": "fa-solid fa-compass"
+            },
+            {
+                "label": "Fokusbereiche",
+                "url": "#focus",
+                "icon": "fa-solid fa-bullseye",
+                "variant": "ghost"
+            },
+            {
+                "label": "Kontakt",
+                "url": "#contact",
+                "icon": "fa-solid fa-envelope",
+                "variant": "ghost"
+            }
+        ],
+        "quickFacts": {
+            "title": "Kurze Fakten",
+            "facts": [
+                {
+                    "icon": "fa-solid fa-location-dot",
+                    "text": "Kopenhagen"
+                },
+                {
+                    "icon": "fa-solid fa-chart-line",
+                    "text": "Interessen: Zentralbanken, Transmissionsmechanismen, Heterogenität"
+                },
+                {
+                    "icon": "fa-solid fa-code",
+                    "text": "Werkzeuge: Python, SAS, GAMS + Excel/VBA"
+                },
+                {
+                    "icon": "fa-solid fa-chalkboard-user",
+                    "text": "Kommunikation: Dozent (Excel/VBA) und Fallstudienbau"
+                }
+            ]
+        },
+        "nav": {
+            "title": "Auf dieser Seite",
+            "links": [
+                {
+                    "label": "Fokusbereiche",
+                    "url": "#focus"
+                },
+                {
+                    "label": "Wie ich arbeite",
+                    "url": "#working-style"
+                },
+                {
+                    "label": "Lehre & Kommunikation",
+                    "url": "#teaching"
+                },
+                {
+                    "label": "Außerhalb des Studiums",
+                    "url": "#outside"
+                },
+                {
+                    "label": "Kontakt",
+                    "url": "#contact"
+                }
+            ]
+        }
+    },
+    "sections": {
+        "story": {
+            "title": "Der Wille zum Widerlegen",
+            "text": "Mein Weg zum Ökonomen war nicht geradlinig. Ich habe gelernt, Skepsis in Mut und Widrigkeiten in Entschlossenheit zu verwandeln. Lesen Sie meine persönliche Geschichte über den Weg von Epilepsie und Sonderschule bis zum cand.polit.",
+            "cta": {
+                "label": "Meine Geschichte lesen",
+                "url": "/de/modgang-og-maalrettethed"
+            }
+        },
+        "focus": {
+            "title": "Fokusbereiche",
+            "items": [
+                {
+                    "title": "Makroökonomie & Geldpolitik",
+                    "text": "Ich interessiere mich besonders dafür, wie Geldpolitik in der Praxis \"landet\": über Finanzmärkte, Erwartungen, Kreditkanäle und Unterschiede zwischen Ländern/Sektoren."
+                },
+                {
+                    "title": "Ökonometrie & Zeitreihen",
+                    "text": "Forecasting, Identifikation und Robustheit. Ich mag Methoden, die technisch solide sind und einem normalen Menschen erklärt werden können, ohne dass dieser einschläft."
+                },
+                {
+                    "title": "Modelle & Struktur",
+                    "text": "CGE/RBC/DSGE-Denken: klare Annahmen, Konsistenz, Checks und Baseline/Zero-Shock-Disziplin."
+                },
+                {
+                    "title": "Daten & Werkzeuge",
+                    "text": "Ich baue kleine Pipelines und Vorlagen: von der Datenreinigung bis zum Output, um Reproduzierbarkeit und Wiederverwendbarkeit sicherzustellen."
+                }
+            ]
+        },
+        "workingStyle": {
+            "title": "Wie ich arbeite",
+            "intro": "Mein Standard-Workflow (etwas langweilig — aber genau deshalb funktioniert er):",
+            "steps": [
+                "1) Ziele klären: Was soll der Entscheider/Leser danach tun können?",
+                "2) Daten dokumentieren: Quellen, Definitionen, Einheiten, Ausreißer, Transformationen.",
+                "3) Methode wählen: Erst einfach, dann \"schicker\", wenn es echten Mehrwert bietet.",
+                "4) Checks: Plausibilitätsprüfungen, Robustheit, alternative Spezifikationen.",
+                "5) Kommunikation: Schlussfolgerungen, Einschränkungen und \"Was bedeutet das in der Praxis?\""
+            ],
+            "cta": [
+                {
+                    "label": "Portfolio ansehen",
+                    "url": "/de/portfolio",
+                    "icon": "fa-solid fa-folder-open",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Ressourcen ansehen",
+                    "url": "/de/resources",
+                    "icon": "fa-solid fa-download"
+                }
+            ]
+        },
+        "teaching": {
+            "title": "Lehre & Kommunikation",
+            "intro": "Ich habe Erfahrung in der Lehre von Excel/VBA und halte die Dinge gerne praktisch: Fallstudien, Übungen, das \"Warum\" hinter Funktionen und kleine Abkürzungen, die einen großen Unterschied machen.",
+            "styles": [
+                {
+                    "title": "Mein Lehrstil",
+                    "points": [
+                        "Struktur zuerst (Ziel → Lösung → Qualitätscheck)",
+                        "Hands-on: Lieber eine gute Fallstudie als 30 Folien",
+                        "Wiederverwendbare Vorlagen"
+                    ]
+                },
+                {
+                    "title": "Wobei ich typischerweise helfe",
+                    "points": [
+                        "Excel-Modelle, Dashboards und Logik",
+                        "Datenreinigung und reproduzierbare Workflows",
+                        "Kleine Skripte und Automatisierung"
+                    ]
+                }
+            ]
+        },
+        "outside": {
+            "title": "Außerhalb des Studiums",
+            "text": "Ich genieße Routinen und Fortschritt — sowohl beim Training als auch bei Projekten. Es mag etwas \"büro-nerdig\" klingen, aber es ist ehrlich gesagt ziemlich befriedigend zu sehen, wie sich Kurven in die richtige Richtung bewegen.",
+            "cta": [
+                {
+                    "label": "Trainings-Beiträge",
+                    "url": "/de/blog#cat-training",
+                    "icon": "fa-solid fa-dumbbell",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Reisen",
+                    "url": "/de/blog#cat-travel",
+                    "icon": "fa-solid fa-person-hiking",
+                    "variant": "ghost"
+                }
+            ]
+        },
+        "contact": {
+            "title": "Kontakt",
+            "text": "Wenn Sie über ein Projekt, eine Fallstudie oder eine Zusammenarbeit diskutieren möchten, können Sie sich gerne melden.",
+            "cta": [
+                {
+                    "label": "E-Mail senden",
+                    "url": "mailto:anton.ebsen@gmail.com",
+                    "icon": "fa-solid fa-envelope"
+                },
+                {
+                    "label": "Kontaktseite",
+                    "url": "/de/contact",
+                    "icon": "fa-solid fa-message",
+                    "variant": "ghost"
+                },
+                {
+                    "label": "Zurück zum CV",
+                    "url": "/de/cv",
+                    "icon": "fa-solid fa-file-lines",
+                    "variant": "ghost"
+                }
+            ]
+        }
+    }
+}

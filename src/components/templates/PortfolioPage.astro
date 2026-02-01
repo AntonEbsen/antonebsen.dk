@@ -14,7 +14,7 @@ import { getEntry } from 'astro:content';
 export const prerender = true;
 
 interface Props {
-  lang: 'da' | 'en';
+  lang: 'da' | 'en' | 'de';
 }
 
 const { lang } = Astro.props;
@@ -120,6 +120,7 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
               tools={[]}
               output={p.featured ? content.ui.featured : content.ui.project}
               links={p.url ? [{ text: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
+              lang={lang}
             />
           ))}
         </div>

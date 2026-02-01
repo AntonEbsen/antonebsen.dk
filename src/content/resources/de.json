@@ -1,0 +1,86 @@
+{
+    "title": "Ressourcen-Daten",
+    "items": [
+        {
+            "title": "Kursstatistiken: Evaluationen & Metriken",
+            "pill": "Lehre",
+            "meta": "Webseite · aktualisiert: (datum)",
+            "desc": "Überblick über Kursevaluationen und Statistiken über verschiedene Klassen hinweg. Kurz, konkret und leicht zu überfliegen.",
+            "links": [
+                {
+                    "url": "/de/course-stats",
+                    "text": "Seite ansehen",
+                    "icon": "fa-solid fa-arrow-up-right-from-square"
+                },
+                {
+                    "url": "/assets/downloads/kursusevalueringer-statistik.xlsx",
+                    "text": "Daten herunterladen",
+                    "icon": "fa-solid fa-download",
+                    "ghost": true,
+                    "download": true
+                }
+            ]
+        },
+        {
+            "title": "Excel: Budget- & Modellvorlage",
+            "pill": "Excel",
+            "meta": "Vorlage · aktualisiert: (datum)",
+            "desc": "Eine saubere Vorlage für Struktur: Eingaben, Berechnungen, Ausgaben, Prüfungen und Szenarien.",
+            "links": [
+                {
+                    "url": "/assets/downloads/excel-template.xlsx",
+                    "text": "Herunterladen",
+                    "icon": "fa-solid fa-download",
+                    "download": true
+                },
+                {
+                    "url": "#",
+                    "text": "Beschreibung",
+                    "ghost": true,
+                    "disabled": true
+                }
+            ]
+        },
+        {
+            "title": "VBA: Snippets (Kurze Shortcuts)",
+            "pill": "VBA",
+            "meta": "ZIP/Text · aktualisiert: (datum)",
+            "desc": "Kurze Codeblöcke: Import/Bereinigung, Formatierung, Schleifen, Performance-Tipps.",
+            "links": [
+                {
+                    "url": "/assets/downloads/vba-snippets.zip",
+                    "text": "Herunterladen",
+                    "icon": "fa-solid fa-download",
+                    "download": true
+                },
+                {
+                    "url": "https://github.com/AntonEbsen",
+                    "text": "GitHub",
+                    "icon": "fa-brands fa-github",
+                    "ghost": true,
+                    "external": true
+                }
+            ]
+        },
+        {
+            "title": "Python: Checkliste zur Datenbereinigung",
+            "pill": "Python",
+            "meta": "PDF · aktualisiert: (datum)",
+            "desc": "Eine praktische Checkliste für reproduzierbare Datenaufbereitung (fehlende Werte, Ausreißer, Splitts, Logs).",
+            "links": [
+                {
+                    "url": "/assets/downloads/python-checklist.pdf",
+                    "text": "Herunterladen",
+                    "icon": "fa-solid fa-download",
+                    "download": true
+                },
+                {
+                    "url": "#",
+                    "text": "Beispiel ansehen",
+                    "ghost": true,
+                    "disabled": true
+                }
+            ]
+        }
+    ]
+}

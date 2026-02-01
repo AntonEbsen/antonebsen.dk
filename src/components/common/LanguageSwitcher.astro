@@ -1,7 +1,7 @@
 ---
 import { getLangFromUrl } from '@i18n/utils';
 const lang = getLangFromUrl(Astro.url);
-const label = lang === 'en' ? 'Language' : 'Sprog';
+const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog');
 ---
 <div class="nav-item has-dropdown lang-switch">
   <button type="button" class="nav-link lang-btn" aria-label="Skift sprog" aria-haspopup="true" aria-expanded="false">
@@ -17,9 +17,9 @@ const label = lang === 'en' ? 'Language' : 'Sprog';
       <span class="lang-text">English</span>
     </a>
 
-    <!-- <a href="/de" role="menuitem" class="lang-link">
+    <a href="/de" role="menuitem" class="lang-link">
       <span class="lang-text">Deutsch</span>
-    </a> -->
+    </a>
   </div>
 </div>
 

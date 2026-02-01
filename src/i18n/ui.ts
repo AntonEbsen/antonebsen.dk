@@ -1,6 +1,7 @@
 export const languages = {
     da: 'Dansk',
     en: 'English',
+    de: 'Deutsch',
 };
 
 export const defaultLang = 'da';
@@ -45,6 +46,26 @@ export const ui = {
         'footer.col.links': 'Links',
         'footer.col.selected': 'Selected',
         'footer.col.contact': 'Contact',
+    },
+    de: {
+        'nav.home': 'Startseite',
+        'nav.cv': 'Lebenslauf',
+        'nav.portfolio': 'Portfolio',
+        'nav.services': 'Zusammenarbeit',
+        'nav.referencer': 'Referenzen',
+        'nav.faq': 'FAQ',
+        'nav.blog': 'Blog',
+        'nav.insights': 'Einblicke',
+        'nav.more': 'Mehr',
+        'nav.lab': 'Forschungslabor',
+        'nav.contact': 'Kontakt',
+
+        'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
+        'footer.brand.text': 'Wirtschaftsstudent (cand.polit.) mit Fokus auf Makroökonomie, Ökonometrie und ökonomische Modelle. Ich erstelle Analysen und Vorlagen für die Praxis.',
+
+        'footer.col.links': 'Links',
+        'footer.col.selected': 'Ausgewählt',
+        'footer.col.contact': 'Kontakt',
     },
 } as const;
 
@@ -136,6 +157,51 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Services', url: '/en/services' },
                 { label: 'Q&A', url: '/en/qa' },
                 { label: 'Contact me', url: '/en/contact' }
+            ]
+        },
+    ],
+    de: [
+        { label: 'Start', url: '/de' },
+        {
+            label: 'Lebenslauf',
+            url: '/de/cv',
+            children: [
+                { label: 'Profil', url: '/de/about' },
+                { label: 'Erfahrung', url: '/de/experience' },
+                { label: 'Bildung', url: '/de/education' },
+                { label: 'Kompetenzen', url: '/de/skills' },
+                { label: 'Meilensteine', url: '/de/timeline' },
+                { label: 'Was ich gerade mache', url: '/de/now' }
+            ]
+        },
+        {
+            label: 'Portfolio',
+            url: '/de/portfolio',
+            children: [
+                { label: 'Projekte', url: '/de/portfolio' },
+                { label: 'Fallbeispiele', url: '/de/cases' },
+                { label: 'Downloads', url: '/de/resources' },
+                { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
+            ]
+        },
+        {
+            label: 'Einblicke',
+            url: '/de/blog',
+            children: [
+                { label: 'Blog', url: '/de/blog' },
+                { label: 'Bücher', url: '/de/books' },
+                { label: 'Podcasts', url: '/de/podcasts' },
+                { label: 'Bucket List', url: '/de/bucketlist' },
+                { label: 'Zitate', url: '/de/quotes' }
+            ]
+        },
+        {
+            label: 'Kontakt',
+            url: '/de/contact',
+            children: [
+                { label: 'Dienstleistungen', url: '/de/services' },
+                { label: 'Q&A', url: '/de/qa' },
+                { label: 'Kontaktieren Sie mich', url: '/de/contact' }
             ]
         },
     ]

@@ -7,122 +7,61 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 
 
-interface Props {
-  lang: 'da' | 'en';
-}
-
-const { lang } = Astro.props;
-const isDa = lang === 'da';
-
-// UI Strings
-const t = {
-  da: {
+  de: {
     title: "Anton Meier Ebsen Jørgensen – Blog",
-    desc: "Blog med indlæg om faglige emner, træning og rejser.",
-    heroTitle: "Indlæg og noter",
-    heroText: "Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression) og <strong>Rejser</strong> (vandring, ruter og praktiske erfaringer).",
-    latestBtn: "Seneste",
+    desc: "Blog mit Beiträgen über berufliche Themen, Training und Reisen.",
+    heroTitle: "Beiträge und Notizen",
+    heroText: "Drei Schwerpunkte: <strong>Fachliches</strong> (Ökonomie, Daten, Modelle), <strong>Training</strong> (Struktur und Progression) und <strong>Reisen</strong> (Wandern, Routen und praktische Erfahrungen).",
+    latestBtn: "Aktuelles",
     bucketBtn: "Bucket List",
-    statusPre: "Viser",
-    statusPost: "indlæg.",
-    statusEmpty: "Ingen indlæg endnu.",
-    featuredTitle: "Faste Indlæg & Ressourcer",
-    latestTitle: "Seneste Indlæg",
-    latestSub: "Direkte fra databasen.",
-    readMore: "Læs mere",
-    noPosts: "Ingen indlæg fundet. Tjek din database.",
-    ctaTitle: "Forslag til indlæg?",
-    ctaText: "Hvis du har et emne, du gerne vil have mig til at skrive om, så skriv endelig.",
+    statusPre: "Zeige",
+    statusPost: "Beiträge.",
+    statusEmpty: "Noch keine Beiträge.",
+    featuredTitle: "Hervorgehobene Beiträge & Ressourcen",
+    latestTitle: "Neueste Beiträge",
+    latestSub: "Direkt aus der Datenbank.",
+    readMore: "Weiterlesen",
+    noPosts: "Keine Beiträge gefunden. Überprüfen Sie Ihre Datenbank.",
+    ctaTitle: "Vorschläge für Beiträge?",
+    ctaText: "Wenn Sie ein Thema haben, über das ich schreiben sollte, lassen Sie es mich bitte wissen.",
     featured: [
       {
-        title: "Mit Træningsprogram (6-dages Split)",
-        tag: "Træning",
-        meta: "Komplet program Â· PPL",
-        desc: "Det fulde overblik over mine øvelser, sæt, tempo og fokusområder. Optimeret til progression.",
-        link: "/traeningsprogram",
-        linkText: "Se programmet"
-      },
-      {
-        title: "Favoritbøger & Noter",
-        tag: "Læring",
-        meta: "Klassikere Â· Fagligt",
-        desc: "En kurateret liste over de bøger, der har formet min tankegang mest.",
-        link: "/books",
-        linkText: "Åbn bibliotek"
-      },
-      {
-        title: "Øvelses-Fokus: Incline Press",
-        tag: "Træning",
-        meta: "Teknik Â· Data Â· Progression",
-        desc: "Hvorfor den øvre del af brystet er vigtig, og hvordan min styrke har rykket sig det sidste år.",
-        link: "/da/exercises/incline-press", // Explicit DA link
-        linkText: "Læs dybdedykket"
-      },
-      {
-        title: "Mine Favoritpodcasts",
-        tag: "Inspiration",
-        meta: "Makro Â· Data Â· Humor",
-        desc: "En oversigt over de bedste kilder til viden og underholdning på farten.",
-        link: "/podcasts",
-        linkText: "Se listen"
-      }
-    ]
-  },
-  en: {
-    title: "Anton Meier Ebsen Jørgensen – Blog",
-    desc: "Blog with posts about professional topics, training, and travel.",
-    heroTitle: "Posts and Notes",
-    heroText: "Three tracks: <strong>Professional</strong> (economics, data, models), <strong>Training</strong> (structure and progression) and <strong>Travel</strong> (hiking, routes, and practical experiences).",
-    latestBtn: "Latest",
-    bucketBtn: "Bucket List",
-    statusPre: "Displaying",
-    statusPost: "posts.",
-    statusEmpty: "No posts yet.",
-    featuredTitle: "Featured Posts & Resources",
-    latestTitle: "Latest Posts",
-    latestSub: "Directly from the database.",
-    readMore: "Read more",
-    noPosts: "No posts found. Check your database.",
-    ctaTitle: "Suggestions for posts?",
-    ctaText: "If you have a topic you'd like me to write about, please feel free to reach out.",
-    featured: [
-      {
-        title: "My Training Program (6-day Split)",
+        title: "Mein Trainingsprogramm (6-Tage-Split)",
         tag: "Training",
-        meta: "Full Program Â· PPL",
-        desc: "A complete overview of my exercises, sets, tempo, and focus areas. Optimized for progression.",
-        link: "/en/training-program",
-        linkText: "View Program"
+        meta: "Komplettes Programm · PPL",
+        desc: "Der volle Überblick über meine Übungen, Sätze, Tempo und Fokusbereiche. Auf Progression optimiert.",
+        link: "/de/training-program",
+        linkText: "Programm ansehen"
       },
       {
-        title: "Favorite Books & Notes",
-        tag: "Learning",
-        meta: "Classics Â· Professional",
-        desc: "A curated list of the books that have shaped my thinking the most.",
-        link: "/en/books",
-        linkText: "Open Library"
+        title: "Lieblingsbücher & Notizen",
+        tag: "Lernen",
+        meta: "Klassiker · Fachliches",
+        desc: "Eine kuratierte Liste der Bücher, die mein Denken am meisten geprägt haben.",
+        link: "/de/books",
+        linkText: "Bibliothek öffnen"
       },
       {
-        title: "Exercise Focus: Incline Press",
+        title: "Übungs-Fokus: Incline Press",
         tag: "Training",
-        meta: "Technique Â· Data Â· Progression",
-        desc: "Why the upper chest is important, and how my strength has progressed over the past year.",
-        link: "/en/exercises/incline-press",
-        linkText: "Read Deep Dive"
+        meta: "Technik · Daten · Progression",
+        desc: "Warum die obere Brust wichtig ist und wie sich meine Kraft im letzten Jahr entwickelt hat.",
+        link: "/de/exercises/incline-press",
+        linkText: "Deep Dive lesen"
       },
       {
-        title: "My Favorite Podcasts",
+        title: "Meine Lieblings-Podcasts",
         tag: "Inspiration",
-        meta: "Macro Â· Data Â· Humor",
-        desc: "An overview of the best sources for knowledge and entertainment on the go.",
-        link: "/en/podcasts",
-        linkText: "See List"
+        meta: "Makro · Daten · Humor",
+        desc: "Eine Übersicht der besten Quellen für Wissen und Unterhaltung unterwegs.",
+        link: "/de/podcasts",
+        linkText: "Liste ansehen"
       }
     ]
   }
 };
 
-const content = isDa ? t.da : t.en;
+const content = (t as any)[lang] || t.da;
 
 // Data Fetching (SSR)
 // Data Fetching (SSR)
@@ -131,14 +70,15 @@ import { supabase } from '@lib/supabase';
 let posts: any[] = [];
 let error = null;
 
-// if (supabase) {
-//   const { data, error: dbError } = await supabase
-//     .from('posts')
-//     .select('*')
-//     .eq('published', true);
-//   posts = data;
-//   error = dbError;
-// }
+if (supabase) {
+  const { data, error: dbError } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('published', true)
+    .eq('lang', lang); // Use the lang prop for filtering
+  posts = data || [];
+  error = dbError;
+}
 
 if (error || !posts) posts = [];
 ---

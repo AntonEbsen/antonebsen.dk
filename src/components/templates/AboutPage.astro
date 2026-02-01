@@ -3,24 +3,28 @@ import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 
 interface Props {
-  lang: 'da' | 'en';
+  lang: 'da' | 'en' | 'de';
 }
 
 const { lang } = Astro.props;
-const entry = await getEntry('pages', `${lang}/about`);
-
-// Fallback or Error Handling
-if (!entry) {
-  throw new Error(`Could not find content for ${lang}/about`);
+let data: any = {};
+try {
+    const entry = await getEntry('pages', `${lang}/about`);
+    if (!entry) throw new Error(`About content missing for ${lang}`);
+    data = entry.data;
+} catch (e: any) {
+    console.error(`ERROR in AboutPage data fetch (${lang}):`, e.message);
+    if (lang === 'de') {
+        const fallback = await getEntry('pages', 'en/about');
+        data = fallback?.data || {};
+    }
 }
-
-const data: any = entry.data;
 ---
 
 <Layout 
-  title={data.title}
-  description={data.description}
-  bodyClass={data.bodyClass}
+  title={data?.title || 'About'}
+  description={data?.description}
+  bodyClass={data?.bodyClass}
 >
   <!-- Page specific CSS (Inlined to avoid missing file error) -->
   <style>
@@ -200,9 +204,9 @@ const data: any = entry.data;
       <!-- HERO -->
       <section class="card hero">
         <div>
-          <p class="eyebrow">{data.hero.eyebrow}</p>
-          <h1 set:html={data.hero.title} />
-          <p class="lead" set:html={data.hero.lead} />
+          <p class="eyebrow">{data?.hero?.eyebrow}</p>
+          <h1 set:html={data?.hero?.title} />
+          <p class="lead" set:html={data?.hero?.lead} />
 
           <div class="pill-wrap" aria-label="Keywords">
             {data.hero.pills && data.hero.pills.map((pill: string) => (
@@ -221,16 +225,16 @@ const data: any = entry.data;
 
         <div class="hero-side">
           <div class="mini-card">
-            <h2 class="section-title">{data.hero.quickFacts.title}</h2>
+            <h2 class="section-title">{data?.hero?.quickFacts?.title}</h2>
             <div class="quickfacts">
-                {data.hero.quickFacts?.facts?.map((fact: any) => (
+                {data?.hero?.quickFacts?.facts?.map((fact: any) => (
                     <div class="fact"><i class={fact.icon}></i><span>{fact.text}</span></div>
                 ))}
             </div>
           </div>
 
           <div class="mini-card">
-            <h2 class="section-title">{data.hero.nav.title}</h2>
+            <h2 class="section-title">{data?.hero?.nav?.title}</h2>
             <nav class="subnav" aria-label="Submenu">
                 {data.hero.nav?.links?.map((link: any) => (
                     <a href={link.url}>{link.label}</a>
@@ -245,20 +249,22 @@ const data: any = entry.data;
         <div style="position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.03; pointer-events: none;">
           <i class="fa-solid fa-quote-right"></i>
         </div>
-        <h2 class="section-title">{data.sections.story.title}</h2>
+        <h2 class="section-title">{data.sections?.story?.title || 'Our Story'}</h2>
         <p class="muted" style="max-width: 600px; margin-bottom: 2rem;">
             {data.sections?.story?.text}
         </p>
         <div class="cta">
-          <a class="btn" href={data.sections.story.cta.url}>
-            <i class="fa-solid fa-book-open"></i> {data.sections.story.cta.label}
-          </a>
+          {data.sections?.story?.cta && (
+            <a class="btn" href={data.sections.story.cta.url}>
+              <i class="fa-solid fa-book-open"></i> {data.sections.story.cta.label}
+            </a>
+          )}
         </div>
       </section>
 
       <!-- Focus -->
       <section class="card" id="focus">
-        <h2 class="section-title">{data.sections.focus.title}</h2>
+        <h2 class="section-title">{data.sections?.focus?.title || 'Focus'}</h2>
 
         <div class="grid-2">
             {data.sections?.focus?.items?.map((item: any) => (
@@ -273,10 +279,10 @@ const data: any = entry.data;
       </section>
 
       <!-- Working Style -->
-      <section class="card" id={data.hero.nav.links.find((l:any) => l.url === '#working-style' || l.url === '#arbejdsstil')?.url.replace('#','')}>
-        <h2 class="section-title">{data.sections.workingStyle.title}</h2>
+      <section class="card" id={data.hero?.nav?.links?.find((l:any) => l.url === '#working-style' || l.url === '#arbejdsstil')?.url?.replace('#','') || 'working-style'}>
+        <h2 class="section-title">{data.sections?.workingStyle?.title || 'Working Style'}</h2>
         <p class="muted">
-          {data.sections.workingStyle.intro}
+          {data.sections?.workingStyle?.intro}
         </p>
 
         <ul class="timeline">
@@ -296,9 +302,9 @@ const data: any = entry.data;
 
       <!-- Teaching -->
       <section class="card" id="teaching">
-        <h2 class="section-title">{data.sections.teaching.title}</h2>
+        <h2 class="section-title">{data.sections?.teaching?.title || 'Teaching'}</h2>
         <p class="muted">
-            {data.sections.teaching.intro}
+            {data.sections?.teaching?.intro}
         </p>
 
         <div class="grid-2">
@@ -317,9 +323,9 @@ const data: any = entry.data;
 
       <!-- Outside -->
       <section class="card" id="outside">
-        <h2 class="section-title">{data.sections.outside.title}</h2>
+        <h2 class="section-title">{data.sections?.outside?.title || 'Outside'}</h2>
         <p class="muted">
-            {data.sections.outside.text}
+            {data.sections?.outside?.text}
         </p>
 
         <div class="cta">
@@ -333,9 +339,9 @@ const data: any = entry.data;
 
       <!-- Contact -->
       <section class="card" id="contact">
-        <h2 class="section-title">{data.sections.contact.title}</h2>
+        <h2 class="section-title">{data.sections?.contact?.title || 'Contact'}</h2>
         <p class="muted">
-            {data.sections.contact.text}
+            {data.sections?.contact?.text}
         </p>
         <div class="cta">
             {data.sections?.contact?.cta?.map((btn: any) => (

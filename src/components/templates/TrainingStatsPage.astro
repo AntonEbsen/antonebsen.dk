@@ -5,147 +5,74 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Button from '@components/ui/Button.astro';
 
-interface Props {
-  lang: 'da' | 'en';
-}
-
-const { lang } = Astro.props;
-const isDa = lang === 'da';
-
-const t = {
-  da: {
-    title: "Træningsstatistik – Anton Meier Ebsen Jørgensen",
-    desc: "Dashboard over min træningsprogression, volumen og PRs.",
-    heroTitle: "Træningsstatistik",
-    heroText: "Live-opdateret data direkte fra min træningslog. Fordi det der bliver målt, bliver forbedret.",
+  de: {
+    title: "Trainingsstatistik – Anton Meier Ebsen Jørgensen",
+    desc: "Dashboard meiner Trainingsprogression, Volumen und PRs.",
+    heroTitle: "Trainingsstatistik",
+    heroText: "Live-aktualisierte Daten direkt aus meinem Trainingslog. Denn was gemessen wird, wird verbessert.",
     readiness: {
       title: "Global Readiness Score",
-      calc: "Beregner din form...",
-      desc: "Baseret på din volumen, intensitet og tid siden sidste pas, beregner vi din teoretiske restitution."
+      calc: "Berechne Form...",
+      desc: "Basierend auf Volumen, Intensität und Zeit seit der letzten Einheit berechnen wir die theoretische Regeneration."
     },
     consistency: {
-        title: "Consistency Heatmap (Sidste 6 mdr.)",
-        less: "Mindre",
-        more: "Mere"
+        title: "Consistency Heatmap (Letzte 6 Monate)",
+        less: "Weniger",
+        more: "Mehr"
     },
     milestones: {
-        title: "Tonnage Milestones",
-        text_prefix: "Du har løftet svarende til",
-        text_suffix: "i denne måned.",
-        desc: "Din samlede indsats svarer til vægten af tunge objekter. En sjov måde at forstå dit hårde arbejde på!"
+        title: "Tonnage-Meilensteine",
+        text_prefix: "Du hast diesen Monat das Äquivalent von",
+        text_suffix: "gehoben.",
+        desc: "Deine gesamte Anstrengung entspricht dem Gewicht schwerer Objekte. Eine spielerische Art, deine harte Arbeit zu verstehen!"
     },
     kpi: {
-        vol: "Total Volumen (All Time)",
-        sess: "Sessions (Total)",
-        fav: "Favorit Løft",
+        vol: "Gesamtvolumen (All Time)",
+        sess: "Einheiten (Gesamt)",
+        fav: "Lieblingsübung",
         favVal: "Squat"
     },
     charts: {
-        volTitle: "Volumen pr uge (kg)",
+        volTitle: "Wöchentliches Volumen (kg)",
         volLabel: "Tonnage (kg)",
-        muscTitle: "Muskelfordeling (Sæt)",
-        cardioTitle: "Cardio-historik (km)",
-        cardioLabel: "Distance (km)"
+        muscTitle: "Muskelverteilung (Sätze)",
+        cardioTitle: "Cardio-Historie (km)",
+        cardioLabel: "Distanz (km)"
     },
     weekly: {
-        title: "Ugentlig Volumen-Tracking",
-        desc: "Antal hårde sæt de sidste 7 dage vs. anbefalede mål.",
-        goal: "Mål",
-        sets: "Sæt"
+        title: "Wöchentliches Volumen-Tracking",
+        desc: "Anzahl harter Sätze in den letzten 7 Tagen vs. empfohlene Ziele.",
+        goal: "Ziel",
+        sets: "Sätze"
     },
     anatomy: {
-        title: "Interactive Anatomy Map (Ugentlig Fokus)",
-        front: "Forfra",
-        back: "Bagfra",
-        legend: "Farveintensitet indikerer ugentlig træningsmængde (Sæt)"
+        title: "Interaktive Anatomie-Karte (Wöchentlicher Fokus)",
+        front: "Vorne",
+        back: "Hinten",
+        legend: "Farbintensität zeigt das wöchentliche Trainingsvolumen (Sätze) an"
     },
     cta: {
-        blog: "Læs om min tilgang",
-        home: "Tilbage til forsiden"
+        blog: "Über meinen Ansatz lesen",
+        home: "Zurück zur Startseite"
     },
     js: {
-        fullRecovTitle: "Fuldt restitueret ðŸš€",
-        fullRecovDesc: "Dine batterier er ladet op. Det er tid til at smadre nogle PRs!",
-        readyTitle: "Klar til kamp ðŸ”¥",
-        readyDesc: "Du er næsten fuldt restitueret. Et tungt pas er muligt, men lyt til kroppen.",
-        modTitle: "Moderat Restitution ðŸ”‹",
-        modDesc: "Du er stadig ved at komme dig. Overvej et moderato pas eller fokus på en anden muskelgruppe.",
-        recovTitle: "Recovery Mode ðŸ›Œ",
-        recovDesc: "Din krop har brug for hvile. Fokusér på søvn, mad og let bevægelse i dag.",
-        elephants: "Afrikanske Elefanter",
-        golfs: "VW Golf'er",
-        whales: "Blåhvaler",
-        shuttles: "Rumfærger"
-    }
-  },
-  en: {
-    title: "Training Statistics – Anton Meier Ebsen Jørgensen",
-    desc: "Dashboard of my training progression, volume, and PRs.",
-    heroTitle: "Training Statistics",
-    heroText: "Live updated data directly from my training log. Because what gets measured, gets improved.",
-    readiness: {
-      title: "Global Readiness Score",
-      calc: "Calculating form...",
-      desc: "Based on volume, intensity, and time since last session, we calculate theoretical recovery."
-    },
-    consistency: {
-        title: "Consistency Heatmap (Last 6 months)",
-        less: "Less",
-        more: "More"
-    },
-    milestones: {
-        title: "Tonnage Milestones",
-        text_prefix: "You have lifted equivalent to",
-        text_suffix: "this month.",
-        desc: "Your total effort corresponds to the weight of heavy objects. A fun way to understand your hard work!"
-    },
-    kpi: {
-        vol: "Total Volume (All Time)",
-        sess: "Sessions (Total)",
-        fav: "Favorite Lift",
-        favVal: "Squat"
-    },
-    charts: {
-        volTitle: "Weekly Volume (kg)",
-        volLabel: "Tonnage (kg)",
-        muscTitle: "Muscle Distribution (Sets)",
-        cardioTitle: "Cardio History (km)",
-        cardioLabel: "Distance (km)"
-    },
-    weekly: {
-        title: "Weekly Volume Tracking",
-        desc: "Number of hard sets last 7 days vs. recommended goals.",
-        goal: "Goal",
-        sets: "Sets"
-    },
-    anatomy: {
-        title: "Interactive Anatomy Map (Weekly Focus)",
-        front: "Front",
-        back: "Back",
-        legend: "Color intensity indicates weekly training volume (Sets)"
-    },
-    cta: {
-        blog: "Read about my approach",
-        home: "Back to home"
-    },
-    js: {
-        fullRecovTitle: "Fully Recovered ðŸš€",
-        fullRecovDesc: "Your batteries are charged. It's time to crush some PRs!",
-        readyTitle: "Ready for Battle ðŸ”¥",
-        readyDesc: "You are almost fully recovered. A heavy session is possible, but listen to your body.",
-        modTitle: "Moderate Recovery ðŸ”‹",
-        modDesc: "You are still recovering. Consider a moderate session or focus on a different muscle group.",
-        recovTitle: "Recovery Mode ðŸ›Œ",
-        recovDesc: "Your body needs rest. Focus on sleep, nutrition, and light movement today.",
-        elephants: "African Elephants",
+        fullRecovTitle: "Vollständig regeneriert 🚀",
+        fullRecovDesc: "Deine Batterien sind aufgeladen. Es ist Zeit, neue PRs aufzustellen!",
+        readyTitle: "Bereit für den Kampf 🔥",
+        readyDesc: "Du bist fast vollständig regeneriert. Eine schwere Einheit ist möglich, aber hör auf deinen Körper.",
+        modTitle: "Moderate Regeneration 🔋",
+        modDesc: "Du regenerierst noch. Erwäge eine moderate Einheit oder konzentriere dich auf eine andere Muskelgruppe.",
+        recovTitle: "Regenerationsmodus 🛌",
+        recovDesc: "Dein Körper braucht Ruhe. Konzentriere dich heute auf Schlaf, Ernährung und leichte Bewegung.",
+        elephants: "Afrikanische Elefanten",
         golfs: "VW Golfs",
-        whales: "Blue Whales",
+        whales: "Blauwale",
         shuttles: "Space Shuttles"
     }
   }
 };
 
-const content = isDa ? t.da : t.en;
+const content = (t as any)[lang] || t.da;
 const blogLink = isDa ? '/blog' : '/en/blog';
 const homeLink = isDa ? '/' : '/en';
 

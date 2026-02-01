@@ -15,9 +15,18 @@ interface Props {
     url: string;
     disabled?: boolean;
   }[];
+  lang?: 'da' | 'en' | 'de';
 }
 
-const { title, tagString, description, tools, output, links } = Astro.props;
+const { title, tagString, description, tools, output, links, lang = 'da' } = Astro.props;
+
+const labels = {
+  da: { tools: 'Værktøjer', output: 'Output' },
+  en: { tools: 'Tools', output: 'Output' },
+  de: { tools: 'Werkzeuge', output: 'Ergebnis' }
+};
+
+const t = labels[lang as keyof typeof labels] || labels.da;
 ---
 
 <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)]">
@@ -31,8 +40,8 @@ const { title, tagString, description, tools, output, links } = Astro.props;
   </p>
   
   <div class="flex flex-col gap-1 mb-4 text-[13px] text-dim">
-    {tools && <span><strong class="text-text">Værktøjer:</strong> {tools}</span>}
-    {output && <span><strong class="text-text">Output:</strong> {output}</span>}
+    {tools && <span><strong class="text-text">{t.tools}:</strong> {tools}</span>}
+    {output && <span><strong class="text-text">{t.output}:</strong> {output}</span>}
   </div>
 
   {links && (

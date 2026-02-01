@@ -2,7 +2,8 @@
 import { getLangFromUrl } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
-const t = {
+
+const t_obj = {
   da: {
     placeholder: "Søg eller spørg AI (Cmd+K)...",
     noResults: "Ingen resultater for",
@@ -20,14 +21,25 @@ const t = {
     aiMode: "Ask Quantum AI",
     aiSearching: "AI reflects...",
     keyboardHint: "Arrows to navigate, Enter to select, Esc to close"
+  },
+  de: {
+    placeholder: "Suchen oder KI fragen (Cmd+K)...",
+    noResults: "Keine Ergebnisse für",
+    quickActions: "Schnellzugriff",
+    results: "Ergebnisse",
+    aiMode: "Quantum KI fragen",
+    aiSearching: "KI überlegt...",
+    keyboardHint: "Pfeile zum Navigieren, Enter zum Auswählen, Esc zum Schließen"
   }
-}[lang];
+};
+
+const t = (t_obj as any)[lang] || t_obj.da;
 
 const quickActions = [
-  { label: lang === 'da' ? "Se mit CV" : "View my CV", url: "/cv", icon: "fa-solid fa-file-pdf" },
-  { label: lang === 'da' ? "Projekter" : "Projects", url: "/portfolio", icon: "fa-solid fa-briefcase" },
-  { label: lang === 'da' ? "Kontakt mig" : "Contact me", url: "/contact", icon: "fa-solid fa-envelope" },
-  { label: lang === 'da' ? "Gæstebog" : "Guestbook", url: "/guestbook", icon: "fa-solid fa-pen-nib" }
+  { label: lang === 'da' ? "Se mit CV" : (lang === 'de' ? "Lebenslauf ansehen" : "View my CV"), url: "/cv", icon: "fa-solid fa-file-pdf" },
+  { label: lang === 'da' ? "Projekter" : (lang === 'de' ? "Projekte" : "Projects"), url: "/portfolio", icon: "fa-solid fa-briefcase" },
+  { label: lang === 'da' ? "Kontakt mig" : (lang === 'de' ? "Kontaktieren Sie mich" : "Contact me"), url: "/contact", icon: "fa-solid fa-envelope" },
+  { label: lang === 'da' ? "Gæstebog" : (lang === 'de' ? "Gästebuch" : "Guestbook"), url: "/guestbook", icon: "fa-solid fa-pen-nib" }
 ];
 ---
 
@@ -58,31 +70,31 @@ const quickActions = [
 
     <!-- Scrolling Content -->
     <div id="palette-results" class="flex-1 overflow-y-auto p-2 scrollbar-hide min-h-[100px]">
-       <!-- State: Quick Actions (Default) -->
-       <div id="palette-default-state">
-          <h3 class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white/30 mb-1">{t.quickActions}</h3>
-          <div class="grid grid-cols-2 gap-1 mb-4">
-            {quickActions.map(action => (
-              <a href={action.url} class="palette-item flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 group transition-all">
-                <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-bg transition-all">
-                  <i class={action.icon}></i>
-                </div>
-                <span class="text-sm font-medium text-dim group-hover:text-white transition-colors">{action.label}</span>
-              </a>
-            ))}
-          </div>
-       </div>
+      <!-- State: Quick Actions (Default) -->
+      <div id="palette-default-state">
+         <h3 class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white/30 mb-1">{t.quickActions}</h3>
+         <div class="grid grid-cols-2 gap-1 mb-4">
+           {quickActions.map(action => (
+             <a href={action.url} class="palette-item flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 group transition-all">
+               <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-bg transition-all">
+                 <i class={action.icon}></i>
+               </div>
+               <span class="text-sm font-medium text-dim group-hover:text-white transition-colors">{action.label}</span>
+             </a>
+           ))}
+         </div>
+      </div>
 
-       <!-- State: Results (Injected via JS) -->
-       <div id="palette-results-list" class="hidden flex flex-col gap-0.5"></div>
+      <!-- State: Results (Injected via JS) -->
+      <div id="palette-results-list" class="hidden flex flex-col gap-0.5"></div>
 
-       <!-- State: AI (Injected via JS) -->
-       <div id="palette-ai-result" class="hidden p-4 space-y-4">
-          <div class="flex items-center gap-3 text-accent animate-pulse text-sm font-mono">
-             <i class="fa-solid fa-microchip"></i>
-             <span>{t.aiSearching}</span>
-          </div>
-       </div>
+      <!-- State: AI (Injected via JS) -->
+      <div id="palette-ai-result" class="hidden p-4 space-y-4">
+         <div class="flex items-center gap-3 text-accent animate-pulse text-sm font-mono">
+            <i class="fa-solid fa-microchip"></i>
+            <span>{t.aiSearching}</span>
+         </div>
+      </div>
     </div>
 
     <!-- Footer -->
@@ -262,10 +274,6 @@ const quickActions = [
        focusableElements = palette.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
     }
 
-    function updateFocusable() {
-       focusableElements = palette.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-    }
-
     // Keyboard Navigation
     function handleKeydown(e: KeyboardEvent) {
       if (!isOpen) {
@@ -298,7 +306,7 @@ const quickActions = [
           askAi();
         } else {
           const activeItem = items[activeIndex];
-          if (activeItem) activeItem.click();
+          if (activeItem) (activeItem as HTMLElement).click();
         }
       }
     }
@@ -398,4 +406,3 @@ const quickActions = [
 
   })();
 </script>
-
