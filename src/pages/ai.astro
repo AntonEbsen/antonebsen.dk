@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+export const prerender = false; // Server-side mainly
+
+const query = Astro.url.searchParams.get('q');
+let answer = "";
+let error = "";
+
+if (query) {
+    try {
+        const apiKey = import.meta.env.GEMINI_API_KEY;
+        if (!apiKey) throw new Error("Missing API Key");
+
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        
+        // Dynamic Context could be added here (e.g. fetching projects)
+        const prompt = `
+        You are "Quantum", the elite digital assistant for Anton Ebsen's portfolio.
+        Anton is a Software Engineer and Hybrid Athlete based in Copenhagen.
+        
+        Style: Professional, slight cyberpunk/hacker aesthetic, concise.
+        
+        User Query: "${query}"
+        
+        Answer helpfuly. If it's about Anton's work, mention he builds high-performance web apps.
+        `;
+        
+        const result = await model.generateContent(prompt);
+        answer = result.response.text();
+    } catch (e) {
+        console.error(e);
+        error = "Neural Link Unstable. Please try again later.";
+    }
+}
+---
+
+<Layout title="Quantum AI | Search">
+    <main class="min-h-screen bg-[#050505] pt-32 px-4 flex flex-col items-center">
+        <div class="max-w-2xl w-full">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-purple-500/10 mb-6 border border-purple-500/20 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                    <i class="fa-solid fa-sparkles text-2xl text-purple-400"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Quantum AI</h1>
+                <p class="text-dim">Semantic Analysis & Neural Search</p>
+            </div>
+
+            <!-- Search Input (Form) -->
+            <form action="/ai" class="relative group mb-12">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                <input 
+                    type="text" 
+                    name="q"
+                    value={query}
+                    placeholder="Ask anything..."
+                    autofocus
+                    class="relative w-full bg-[#0a0a0c] text-white px-6 py-4 rounded-xl border border-white/10 focus:border-purple-500/50 outline-none text-lg shadow-xl"
+                />
+                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-purple-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Results -->
+            {query && (
+                <div class="space-y-6 animate-fade-in-up">
+                    {error ? (
+                        <div class="p-6 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-center">
+                            <i class="fa-solid fa-triangle-exclamation mb-2"></i>
+                            <p>{error}</p>
+                        </div>
+                    ) : (
+                        <div class="response-card bg-[#0a0a0c] border border-glass-border p-6 md:p-8 rounded-2xl shadow-2xl relative overflow-hidden">
+                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+                             
+                             <div class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded bg-purple-500/20 flex-shrink-0 flex items-center justify-center mt-1">
+                                    <i class="fa-solid fa-robot text-purple-400 text-sm"></i>
+                                </div>
+                                <div class="prose prose-invert prose-p:text-gray-300 prose-headings:text-white max-w-none">
+                                    <p class="text-xs text-purple-400 font-mono mb-2">GENERATED RESPONSE_</p>
+                                    <div class="markdown-content">{answer}</div>
+                                </div>
+                             </div>
+                        </div>
+                    )}
+                </div>
+            )}
+            
+            {!query && (
+                <div class="text-center text-dim text-sm">
+                    <p>Try asking: "Who is Anton?", "What tech stack does he use?", "Show me books about stoicism"</p>
+                </div>
+            )}
+        </div>
+    </main>
+</Layout>
+
+<style>
+    .markdown-content { white-space: pre-wrap; }
+</style>

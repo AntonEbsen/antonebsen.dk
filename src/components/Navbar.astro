@@ -117,5 +117,99 @@ const pathname = new URL(Astro.request.url).pathname;
         });
     });
   });
+
+  // --- COMMAND MODE / GLOBAL SEARCH ---
+  const searchInput = document.getElementById('siteSearch');
+  const searchResults = document.getElementById('searchResults');
+  let searchIndex = [];
+  let isIndexLoaded = false;
+
+  async function loadSearchIndex() {
+      if (isIndexLoaded) return;
+      try {
+          const res = await fetch('/api/search-index');
+          if (!res.ok) throw new Error("Failed to load index");
+          searchIndex = await res.json();
+          isIndexLoaded = true;
+      } catch (e) {
+          console.error("Search index error:", e);
+      }
+  }
+
+  // CMD+K Shortcut
+  document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput?.focus();
+          loadSearchIndex(); // Predownload on shortcut
+      }
+      // Escape to close
+      if (e.key === 'Escape') {
+          searchInput?.blur();
+          searchResults?.classList.remove('is-open');
+      }
+  });
+
+  if (searchInput && searchResults) {
+      searchInput.addEventListener('focus', loadSearchIndex);
+      
+      searchInput.addEventListener('input', (e) => {
+          const query = (e.target as HTMLInputElement).value.toLowerCase();
+          
+          if (!query || query.length === 0) {
+              searchResults.classList.remove('is-open');
+              return;
+          }
+
+          if (!isIndexLoaded) return; // Wait for load
+
+          // Filter Logic
+          const matches = searchIndex.filter((item: any) => 
+               item.title.toLowerCase().includes(query) || 
+               (item.tags && item.tags.some((t: string) => t.toLowerCase().includes(query)))
+          ).slice(0, 6);
+
+          // Render
+          const html = matches.map((item: any) => `
+              <a href="${item.url}" class="block p-3 hover:bg-white/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-white/5">
+                  <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-dim group-hover:text-accent group-hover:bg-accent/10 transition-colors">
+                      <i class="fa-solid ${item.icon}"></i>
+                  </div>
+                  <div class="flex-1">
+                      <div class="flex items-center justify-between">
+                          <span class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">${item.title}</span>
+                          ${item.type === 'command' ? '<span class="text-[10px] font-mono text-accent bg-accent/10 px-1.5 py-0.5 rounded border border-accent/20">CMD</span>' : ''}
+                      </div>
+                      ${item.description ? `<p class="text-xs text-dim line-clamp-1">${item.description}</p>` : ''}
+                  </div>
+              </a>
+          `).join('');
+
+          // "Ask AI" Footer
+          const aiFooter = `
+              <div class="border-t border-white/10 mt-2 pt-2">
+                   <a href="/ai?q=${encodeURIComponent(query)}" class="block p-3 hover:bg-purple-500/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-purple-500/20">
+                      <div class="w-8 h-8 rounded bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:text-purple-300 transition-colors">
+                          <i class="fa-solid fa-sparkles"></i>
+                      </div>
+                      <div>
+                          <span class="text-sm font-medium text-purple-200 group-hover:text-white transition-colors">Ask AI: "${query}"</span>
+                          <p class="text-xs text-purple-400/60 group-hover:text-purple-300/80">Semantic Search & Analysis</p>
+                      </div>
+                   </a>
+              </div>
+          `;
+
+          searchResults.innerHTML = html + aiFooter;
+          searchResults.classList.add('is-open');
+      });
+
+      // Click outside to close
+      document.addEventListener('click', (e) => {
+          if (!searchInput.contains(e.target as Node) && !searchResults.contains(e.target as Node)) {
+              searchResults.classList.remove('is-open');
+          }
+      });
+  }
 </script>
 
