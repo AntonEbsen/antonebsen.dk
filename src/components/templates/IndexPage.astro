@@ -67,36 +67,39 @@ const skillsData = {
 >
   <main class="container mx-auto px-4 py-12">
     <Section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20 animate-on-scroll">
-      <div class="space-y-6">
-        <div class="inline-block px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold uppercase tracking-wider">
-          {content.hero.tag}
-        </div>
+      <div>
         <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
           Anton Meier <span class="text-accent underline decoration-4 underline-offset-8">Ebsen</span> Jørgensen
         </h1>
         <p class="text-xl text-dim leading-relaxed max-w-lg">
           {content.hero.text}
         </p>
-        <div class="flex flex-wrap gap-4 pt-4">
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
           <Button href={portLink} size="lg">{content.hero.btnPort}</Button>
           <Button href={cvLink} variant="ghost" size="lg">{content.hero.btnCV}</Button>
-          <Button href={guestbookLink} variant="ghost" size="lg" class="text-gold-400 border-gold-500/30 hover:bg-gold-500/10">{content.hero.btnGuest}</Button>
         </div>
+        <a href={guestbookLink} class="inline-block mt-4 text-sm text-accent hover:text-accent-light transition-colors">
+          {content.hero.btnGuest} →
+        </a>
       </div>
       
-      <div class="relative group">
-        <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-        <div class="relative aspect-square overflow-hidden rounded-2xl border border-glass-border shadow-2xl">
+      <a href={isDa ? '/about' : '/en/about'} class="relative group block">
+        <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
+        <div class="relative aspect-square overflow-hidden rounded-2xl border-2 border-accent/30 shadow-2xl group-hover:border-accent/60 transition-all duration-300">
           <Image 
             src={myImageSrc} 
             alt="Anton Meier Ebsen Jørgensen" 
-            class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
+            class="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
             loading="eager"
             width={600}
             height={600}
           />
+          <div class="absolute top-4 right-4 px-3 py-1.5 bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+            {isDa ? 'Tilgængelig' : 'Available'}
+          </div>
         </div>
-      </div>
+      </a>
     </Section>
 
     <Section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 animate-on-scroll delay-100">
