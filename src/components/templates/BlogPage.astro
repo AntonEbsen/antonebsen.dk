@@ -6,7 +6,42 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 
+interface Props {
+  lang: 'da' | 'en' | 'de';
+}
 
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Blog",
+    desc: "Blog med indlæg om faglige emner, træning og rejser.",
+    heroTitle: "Indlæg og noter",
+    heroText: "Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression) og <strong>Rejser</strong> (vandring, ruter og praktik).",
+    latestBtn: "Seneste nyt",
+    bucketBtn: "Bucket List",
+    statusPre: "Viser",
+    statusPost: "indlæg.",
+    statusEmpty: "Ingen indlæg endnu.",
+    featuredTitle: "Udvalgte indlæg & ressourcer",
+    featuredText: "Her er nogle af de ting, jeg har brugt mest tid på at skrive eller bygge.",
+    readingTime: "min læsning"
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Blog",
+    desc: "Blog with posts about professional topics, training, and travel.",
+    heroTitle: "Posts and Notes",
+    heroText: "Three tracks: <strong>Professional</strong> (economics, data, models), <strong>Training</strong> (structure and progression), and <strong>Travel</strong> (hiking, routes, and practice).",
+    latestBtn: "Latest News",
+    bucketBtn: "Bucket List",
+    statusPre: "Showing",
+    statusPost: "posts.",
+    statusEmpty: "No posts yet.",
+    featuredTitle: "Featured Posts & Resources",
+    featuredText: "Here are some of the things I have spent most time writing or building.",
+    readingTime: "min read"
+  },
   de: {
     title: "Anton Meier Ebsen Jørgensen – Blog",
     desc: "Blog mit Beiträgen über berufliche Themen, Training und Reisen.",
@@ -18,6 +53,7 @@ import ContactCard from '@components/common/ContactCard.astro';
     statusPost: "Beiträge.",
     statusEmpty: "Noch keine Beiträge.",
     featuredTitle: "Hervorgehobene Beiträge & Ressourcen",
+    featuredText: "Hier sind einige der Dinge, an denen ich am meisten gearbeitet oder die ich geschrieben habe.",
     latestTitle: "Neueste Beiträge",
     latestSub: "Direkt aus der Datenbank.",
     readMore: "Weiterlesen",

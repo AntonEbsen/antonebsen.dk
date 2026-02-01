@@ -8,6 +8,172 @@ import CaseCard from '@components/common/CaseCard.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 
+interface Props {
+  lang: 'da' | 'en' | 'de';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const t = {
+  da: {
+    title: "Anton Meier Ebsen Jørgensen – Projekt-cases",
+    desc: "Fire udvalgte projekt-cases: data, metode, resultater og værktøjer.",
+    heroTitle: "Fire udvalgte cases",
+    heroText: "Her er fire cases, der viser hvordan jeg arbejder: fra problemformulering og data til metode, robusthed og formidling.",
+    badges: ["Makro & pengepolitik", "Tidsrækker", "Anvendt dataanalyse", "Reproducerbar analyse"],
+    btns: { portfolio: "Se portefølje", cv: "Se CV", contact: "Kontakt" },
+    formatTitle: "Format",
+    formatList: ["<strong>Problem</strong> → hvad skulle løses?", "<strong>Data</strong> → hvad byggede analysen på?", "<strong>Metode</strong> → hvordan blev det løst?", "<strong>Resultat</strong> → hvad kom der ud?"],
+    contactTitle: "Vil du se noget mere konkret?",
+    contactText: "Nogle projekter kan ikke deles fuldt ud pga. kursus/fortrolighed, men jeg kan ofte dele “sanitized” eksempler eller gennemgå metoder/struktur.",
+    labels: {
+        problem: "Problem",
+        data: "Data",
+        method: "Metode",
+        result: "Resultat",
+        role: "Min rolle",
+        tools: "Tools",
+        report: "Rapport (kommer)",
+        code: "Kode (hvis public)",
+        viewStudy: "Se Case Study",
+        openLab: "Åbn i Research Lab"
+    },
+    cases: [
+        {
+            id: "case-gfc",
+            title: "Case 1: Global Financial Cycle & spillovers fra US pengepolitik",
+            pill: "Empirisk makro",
+            desc: "(Bachelorprojekt) Undersøgelse af hvordan amerikansk pengepolitik påvirker globale finansielle forhold og makroøkonomiske outcomes.",
+            problem: "Hvilke spillover-effekter kan observeres fra US pengepolitik til global økonomi, og hvordan varierer de på tværs af perioder?",
+            data: ["• Makro/finansielle tidsserier (fx renter, kreditspreads, volatilitet, output-indikatorer)", "• Land-/region-panel (hvis relevant)"],
+            method: ["• Strukturel tidsrækkemodel / SVAR-inspiration (tilpas efter dit faktiske setup)", "• Robusthed: alternative specifikationer og subperioder", "• Visualisering: IRF/effektplot, tabeller med nøgleestimater"],
+            result: ["• Hovedfund: (indsæt 1–2 linjer, når du vil)", "• Praktisk leverance: rapport + figurer + kode/appendiks"],
+            role: ["• Design af empirisk strategi", "• Databehandling + estimation", "• Formidling af resultater og begrænsninger"],
+            tools: ["Python", "SAS/Stata", "LaTeX"],
+            lang: "da"
+        },
+        {
+            id: "case-ecb",
+            title: "Case 2: One Rule to Rule Them All? ECB Taylor Rules",
+            pill: "Monetær økonomi",
+            desc: "(Seminarprojekt) Analyse af asymmetriske effekter af ECB's pengepolitik via Taylor-regler og GMM.",
+            problem: "Kan en enkelt Taylor-regel beskrive ECB's adfærd, og er den optimal for alle eurolande?",
+            data: ["• Kvartalsdata (1999Q2–2024Q1)", "• Eurostat, OECD, ECB/BIS"],
+            method: ["• To-trins GMM-estimering", "• Syntetiske nationale renter", "• Sub-periode analyse"],
+            result: ["• Påvisning af Taylor-princip overtrædelser", "• Signifikante tværnationale asymmetrier"],
+            role: ["• Ekonometrisk modellering (GMM)", "• Simulation af optimale renter", "• Analyse af policy-mismatch"],
+            tools: ["Stata", "Python", "LaTeX"],
+            lang: "da"
+        },
+        {
+            id: "case-sop",
+            title: "Case 3: Fremtidens monetære system – CBDC & suverænitet",
+            pill: "Pengepolitik (SOP)",
+            desc: "(Gymnasieprojekt / SOP) Tidlig akademisk undersøgelse af digitale centralbankpenge og monetær suverænitet i en digital tidsalder.",
+            problem: "Hvorfor udforsker centralbanker digitale valutaer, og hvad betyder private alternativer for den monetære suverænitet?",
+            data: ["• Kvalitativ institutionel analyse", "• Deskriptive tidsrækker og prishistorik"],
+            method: ["• Komparativ analyse af pengeformer", "• Illustrative OLS-estimeringer af udbudsdynamik"],
+            result: ["• Identifikation af behovet for et offentligt anker", "• Analyse af monetær suverænitet som kerneaspekt"],
+            role: ["• Selvstændig problemformulering", "• Dataindsamling og trendanalyse", "• Teoretisk rammeværk for CBDC"],
+            tools: ["Excel", "Word", "Litteratursøgning"],
+            lang: "da"
+        },
+        {
+            id: "case-erd",
+            title: "Case 4: Valutakursdynamik – Inflation & Relative Kurser",
+            pill: "Anvendt Dataanalyse",
+            desc: "Eksplorativ analyse af sammenhængen mellem dansk inflation og hovedvalutaer (EUR, USD, CNY).",
+            problem: "Hvordan har danske priser og valutakurser bevæget sig i forhold til hinanden over de sidste 20 år?",
+            data: ["• DST API-data (Prisindeks & Valutakurser)", "• Årlige observationer (2000-2023)"],
+            method: ["• Datasammensmeltning og rensning i Python", "• Periode-indeksering (2010=100)", "• Komparativ visuel analyse"],
+            result: ["• Dokumentation af fastkurs-stabilitet", "• Visualisering af global valutavolatilitet"],
+            role: ["• Pipeline til dataindsamling", "• Rengøring og merging af DST-data", "• Design af visuelle sammenligninger"],
+            tools: ["Python", "Pandas", "Matplotlib"],
+            labUrl: "https://lab.antonebsen.dk/lab/index.html?path=interactive_demo.ipynb",
+            lang: "da"
+        }
+    ]
+  },
+  en: {
+    title: "Anton Meier Ebsen Jørgensen – Project Project Cases",
+    desc: "Four selected project cases: data, methodology, results, and tools.",
+    heroTitle: "Four Selected Cases",
+    heroText: "Here are four cases that show how I work: from problem formulation and data to methodology, robustness, and communication.",
+    badges: ["Macro & Monetary Policy", "Time Series", "Applied Data Analysis", "Reproducible Analysis"],
+    btns: { portfolio: "View Portfolio", cv: "View CV", contact: "Contact" },
+    formatTitle: "Format",
+    formatList: ["<strong>Problem</strong> → what needed solving?", "<strong>Data</strong> → what was the analysis based on?", "<strong>Methodology</strong> → how was it solved?", "<strong>Result</strong> → what came out?"],
+    contactTitle: "Want to see more details?",
+    contactText: "Some projects cannot be shared fully due to confidentiality, but I can often share sanitized examples or walk through the methodology.",
+    labels: {
+        problem: "Problem",
+        data: "Data",
+        method: "Methodology",
+        result: "Result",
+        role: "My Role",
+        tools: "Tools",
+        report: "Report (upcoming)",
+        code: "Code (if public)",
+        viewStudy: "View Case Study",
+        openLab: "Open in Research Lab"
+    },
+    cases: [
+        {
+            id: "case-gfc",
+            title: "Case 1: Global Financial Cycle & Spillovers from US Monetary Policy",
+            pill: "Empirical Macro",
+            desc: "(Bachelor's Project) Investigation of how US monetary policy affects global financial conditions and macroeconomic outcomes.",
+            problem: "Which spillover effects can be observed from US monetary policy to the global economy, and how do they vary across periods?",
+            data: ["• Macro/financial time series (e.g., interest rates, credit spreads, volatility, output indicators)", "• Country/region panel where applicable"],
+            method: ["• Structural time series models / SVAR inspiration", "• Robustness: alternative specifications and subperiods", "• Visualization: IRF plots, tables with key estimates"],
+            result: ["• Main findings: (insert 1-2 lines when applicable)", "• Practical delivery: report + figures + code appendix"],
+            role: ["• Design of empirical strategy", "• Data processing + estimation", "• Communication of results and limitations"],
+            tools: ["Python", "SAS/Stata", "LaTeX"],
+            lang: "en"
+        },
+        {
+            id: "case-ecb",
+            title: "Case 2: One Rule to Rule Them All? ECB Taylor Rules",
+            pill: "Monetary Economics",
+            desc: "(Seminar Paper) Analysis of asymmetric effects of ECB monetary policy via Taylor rules and GMM.",
+            problem: "Does a single Taylor-type rule adequately describe ECB interest rate setting, and can it be optimal for all Euro area economies?",
+            data: ["• Quarterly data (1999Q2–2024Q1)", "• Eurostat, OECD, ECB/BIS"],
+            method: ["• Two-step GMM estimation", "• Synthetic national interest rates", "• Sub-period stability checks"],
+            result: ["• Evidence of Taylor principle violations", "• Quantifiable cross-country asymmetries (MIG)"],
+            role: ["• Econometric modeling (GMM)", "• Simulation of optimal rates", "• Analysis of policy mismatch"],
+            tools: ["Stata", "Python", "LaTeX"],
+            lang: "en"
+        },
+        {
+            id: "case-sop",
+            title: "Case 3: Future of the Monetary System – CBDC & Sovereignty",
+            pill: "Monetary Policy (SOP)",
+            desc: "(Upper Secondary Project) Early academic investigation into central bank digital currencies and monetary sovereignty in a digital age.",
+            problem: "Why are central banks exploring digital currencies, and what do private alternatives mean for monetary sovereignty?",
+            data: ["• Qualitative institutional analysis", "• Descriptive time series and price history"],
+            method: ["• Comparative analysis of money forms", "• Illustrative OLS estimated supply trends"],
+            result: ["• Identification of the need for a public monetary anchor", "• Analysis of sovereignty as a core driver for CBDC"],
+            role: ["• Independent research design", "• Data collection and trend analysis", "• Theoretical CBDC framework"],
+            tools: ["Excel", "Word", "Literature Review"],
+            lang: "en"
+        },
+        {
+            id: "case-erd",
+            title: "Case 4: Exchange Rate Dynamics – Inflation & Relative Rates",
+            pill: "Applied Data Analysis",
+            desc: "Exploratory analysis of the relationship between Danish inflation and major currencies (EUR, USD, CNY).",
+            problem: "How have Danish prices and exchange rates moved relative to each other over the last 20 years?",
+            data: ["• DST API data (CPI & Exchange Rates)", "• Annual observations (2000-2023)"],
+            method: ["• Data merging and cleaning in Python", "• Period indexing (2010=100)", "• Comparative visual analysis"],
+            result: ["• Documentation of peg stability", "• Visualization of global currency volatility"],
+            role: ["• Data acquisition pipeline", "• Cleaning and merging of macro series", "• Design of visual comparisons"],
+            tools: ["Python", "Pandas", "Matplotlib"],
+            labUrl: "https://lab.antonebsen.dk/lab/index.html?path=interactive_demo.ipynb",
+            lang: "en"
+        }
+    ]
+  },
   de: {
     title: "Anton Meier Ebsen Jørgensen – Projekt-Cases",
     desc: "Vier ausgewählte Projekt-Cases: Daten, Methodik, Ergebnisse und Tools.",

@@ -8,6 +8,51 @@ import Pill from '@components/ui/Pill.astro';
 import Button from '@components/ui/Button.astro';
 import { supabase } from '@lib/supabase';
 
+interface Props {
+  lang: 'da' | 'en' | 'de';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+// UI Strings
+const t = {
+  da: {
+    title: "Favoritbøger – Anton Meier Ebsen Jørgensen",
+    desc: "En kurateret liste med mine favoritbøger – klassikere, faglige bøger og bøger jeg vender tilbage til.",
+    eyebrow: "Om mig · Læseliste",
+    heroTitle: "Mine favoritbøger",
+    heroText: "En kurateret liste med bøger jeg har fået mest ud af – enten fordi de har formet min måde at tænke på, eller fordi jeg vender tilbage til dem igen og igen.",
+    categories: ["Klassikere", "Fagligt", "Biografier", "Tro & etik", "Sprog & skrivning"],
+    listBtn: "Se listen",
+    recommendBtn: "Anbefal en bog",
+    usageTitle: "Hvordan jeg bruger listen",
+    usageText1: "Jeg opdaterer løbende. Nogle er “must-reads”, andre er bare bøger der ramte et tidspunkt i livet.",
+    usageText2: "Tip: Tilføj gerne årstal og noter – det gør listen mere personlig.",
+    listTitle: "Favoritter (Live DB)",
+    listSub: "Hentet direkte fra \"Living Library\" databasen.",
+    empty: "Biblioteket er tomt.",
+    ctaTitle: "Anbefal mig en bog",
+    ctaText: "Send gerne en mail hvis du har forslag til spændende læsning."
+  },
+  en: {
+    title: "Favorite Books – Anton Meier Ebsen Jørgensen",
+    desc: "A curated list of my favorite books – classics, professional books, and books I return to.",
+    eyebrow: "About Me · Reading List",
+    heroTitle: "My Favorite Books",
+    heroText: "A curated list of books that I have gotten the most out of – either because they shaped my thinking, or because I return to them again and again.",
+    categories: ["Classics", "Professional", "Biographies", "Faith & Ethics", "Language & Writing"],
+    listBtn: "See List",
+    recommendBtn: "Recommend a Book",
+    usageTitle: "How I use this list",
+    usageText1: "I update this regularly. Some are 'must-reads', others just hit right at a certain time in life.",
+    usageText2: "Tip: Add years and notes – it makes the list more personalized.",
+    listTitle: "Favorites (Live DB)",
+    listSub: "Fetched directly from the \"Living Library\" database.",
+    empty: "The library is empty.",
+    ctaTitle: "Recommend a Book",
+    ctaText: "Feel free to send an email if you have suggestions for interesting reading."
+  },
   de: {
     title: "Lieblingsbücher – Anton Meier Ebsen Jørgensen",
     desc: "Eine kuratierte Liste meiner Lieblingsbücher – Klassiker, Fachbücher und Bücher, zu denen ich immer wieder zurückkehre.",
