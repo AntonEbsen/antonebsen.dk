@@ -5,29 +5,44 @@ import { checkRateLimit } from '../../lib/ratelimit';
 
 export const prerender = false;
 
-// GET: Fetch all approved messages
-export const GET: APIRoute = async () => {
-    if (!supabase) {
-        return new Response(JSON.stringify({ error: 'Database not connected' }), { status: 500 });
+// GET: Fetch messages (admin can fetch all)
+export const GET: APIRoute = async ({ url }) => {
+    if (!supabase) return new Response(JSON.stringify({ error: 'Database not connected' }), { status: 500 });
+
+    const isAdmin = url.searchParams.get('all') === 'true';
+    let query = supabase.from('guestbook').select('*').order('created_at', { ascending: false });
+
+    // If not admin request, only show approved
+    if (!isAdmin) {
+        query = query.eq('is_approved', true);
     }
 
-    const { data, error } = await supabase
-        .from('guestbook')
-        .select('*')
-        .eq('is_approved', true)
-        .order('created_at', { ascending: false });
-
-    if (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-    }
+    const { data, error } = await query;
+    if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500 });
 
     return new Response(JSON.stringify(data), {
         status: 200,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
     });
 };
+
+// PUT: Admin actions (Approve / Delete)
+export const PUT: APIRoute = async ({ request }) => {
+    if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
+    try {
+        const { id, action } = await request.json();
+
+        if (action === 'approve') {
+            await supabase.from('guestbook').update({ is_approved: true }).eq('id', id);
+        } else if (action === 'delete') {
+            await supabase.from('guestbook').delete().eq('id', id);
+        }
+
+        return new Response(JSON.stringify({ success: true }));
+    } catch (e) {
+        return new Response(JSON.stringify({ error: e }), { status: 500 });
+    }
+}
 
 // POST: Submit new message (Protected by Honeypot and Rate Limit)
 export const POST: APIRoute = async ({ request, clientAddress }) => {
