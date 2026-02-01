@@ -17,14 +17,17 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     try {
         const data = await request.json();
-        const { message, lang = 'en' } = data;
+        const { message, lang = 'en', persona = 'default', image } = data;
 
-        if (!message) {
-            return new Response(JSON.stringify({ error: "Message is required" }), { status: 400 });
+        if (!message && !image) {
+            return new Response(JSON.stringify({ error: "Message or Image is required" }), { status: 400 });
         }
 
         // Build Context
-        const systemInstruction = buildSystemContext(lang);
+        let systemInstruction = buildSystemContext(lang);
+        if (persona !== 'default') {
+            systemInstruction += `\n\n[ADOPT PERSONA: ${persona.toUpperCase()}]\nAdjust tone and complexity accordingly.`;
+        }
 
         // Start Chat Session
         const chat = model.startChat({
@@ -35,15 +38,27 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 },
                 {
                     role: "model",
-                    parts: [{ text: "Understood. I am ready to represent Anton." }],
+                    parts: [{ text: `Understood. I am ready to represent Anton in ${persona} mode.` }],
                 }
             ],
             generationConfig: {
-                maxOutputTokens: 500,
+                maxOutputTokens: 1000,
             },
         });
 
-        const result = await chat.sendMessageStream(message);
+        // Prepare message parts (Text + Image)
+        const parts: any[] = [];
+        if (message) parts.push({ text: message });
+        if (image) {
+            parts.push({
+                inlineData: {
+                    data: image.data,
+                    mimeType: image.mimeType
+                }
+            });
+        }
+
+        const result = await chat.sendMessageStream(parts);
 
         const stream = new ReadableStream({
             async start(controller) {

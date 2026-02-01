@@ -188,7 +188,7 @@ const pathname = new URL(Astro.request.url).pathname;
           // "Ask AI" Footer
           const aiFooter = `
               <div class="border-t border-white/10 mt-2 pt-2">
-                   <a href="/ai?q=${encodeURIComponent(query)}" class="block p-3 hover:bg-purple-500/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-purple-500/20">
+                   <a href="/ai-chat?q=${encodeURIComponent(query)}" class="block p-3 hover:bg-purple-500/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-purple-500/20">
                       <div class="w-8 h-8 rounded bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:text-purple-300 transition-colors">
                           <i class="fa-solid fa-sparkles"></i>
                       </div>
