@@ -33,14 +33,10 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const protectedMethods = ["POST", "PUT", "DELETE"];
     const isApiRequest = _context.url.pathname.startsWith("/api/");
     const isAuthRoute = _context.url.pathname.startsWith("/api/auth/");
-    const isPublicGuestbook = _context.url.pathname === "/api/guestbook" && _context.request.method === "POST";
+    const isPublicGuestbook = (_context.url.pathname === "/api/guestbook" || _context.url.pathname === "/api/guestbook/") && _context.request.method === "POST";
+    const isPublicChat = (_context.url.pathname === "/api/chat" || _context.url.pathname === "/api/chat/") && _context.request.method === "POST";
 
-    // We only protect API mutation requests. GET requests are generally public (for now).
-    // EXCEPT: /api/contact (Inbox) - GET should probably be protected too? 
-    // For now, adhering to strict functional requirement: Protect mutations.
-    // Dashboard page protection is handled in the page itself (SSR).
-
-    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicGuestbook) {
+    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicGuestbook && !isPublicChat) {
         const token = _context.cookies.get("auth_token");
         if (!token || token.value !== "authorized_session") {
             // Block request

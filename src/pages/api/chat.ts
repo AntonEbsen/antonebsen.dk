@@ -1,9 +1,14 @@
+export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { model } from '../../lib/gemini';
 import { buildSystemContext } from '../../lib/ai/context';
 
 import { checkRateLimit } from '../../lib/ratelimit';
+
+export const GET: APIRoute = async () => {
+    return new Response(JSON.stringify({ status: "Chat API is online", method: "GET" }), { status: 200 });
+};
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
     // Get IP: clientAddress (SSR) or header (Vercel)
