@@ -7,6 +7,7 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import Sidebar from '@components/cv/Sidebar.astro';
 import TableOfContents from '@components/cv/TableOfContents.astro';
 import CertificationList from '@components/cv/CertificationList.astro';
+import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 
 import { getEntry } from 'astro:content';
 
@@ -152,6 +153,50 @@ const skillsData = skillsEntry.data;
             <CertificationList certifications={cvData.certifications as any} />
 
           </Card>
+        </Section>
+
+        <Section id="discovery">
+          <DiscoveryGrid 
+            title={lang === 'da' ? 'Videre udforskning' : 'Further Discovery'}
+            items={[
+              { 
+                  label: lang === 'da' ? 'Anti-CV' : 'Anti-Resume', 
+                  url: lang === 'da' ? '/anti-resume' : '/en/anti-resume', 
+                  icon: 'fa-user-slash', 
+                  description: lang === 'da' ? 'Ting jeg ikke gør' : "Things I don't do"
+              },
+              { 
+                  label: lang === 'da' ? 'Værdier & Etik' : 'Values & Ethics', 
+                  url: lang === 'da' ? '/values' : '/en/values', 
+                  icon: 'fa-heart', 
+                  description: lang === 'da' ? 'Mit moralske kompas' : "My moral compass"
+              },
+              { 
+                  label: lang === 'da' ? 'SWOT Analyse' : 'SWOT Analysis', 
+                  url: lang === 'da' ? '/swot' : '/en/swot', 
+                  icon: 'fa-chart-pie', 
+                  description: lang === 'da' ? 'Styrker og svagheder' : "Strengths and weaknesses"
+              },
+              { 
+                  label: lang === 'da' ? 'Personlighed' : 'Personality', 
+                  url: lang === 'da' ? '/personality' : '/en/personality', 
+                  icon: 'fa-id-card', 
+                  description: lang === 'da' ? 'Personlighedsprofil' : "Personality profile"
+              },
+              { 
+                  label: lang === 'da' ? 'Modgang' : 'Adversity', 
+                  url: lang === 'da' ? '/modgang-og-maalrettethed' : '/en/modgang-og-maalrettethed', 
+                  icon: 'fa-mountain', 
+                  description: lang === 'da' ? 'Resiliens og målrettethed' : "Resilience and goals"
+              },
+              { 
+                  label: lang === 'da' ? 'Video-CV' : 'Video CV', 
+                  url: lang === 'da' ? '/video-cv' : '/en/video-cv', 
+                  icon: 'fa-video', 
+                  description: lang === 'da' ? 'Et ansigt på papiret' : "A face on the paper"
+              }
+            ]}
+          />
         </Section>
 
         <Section id="contact">

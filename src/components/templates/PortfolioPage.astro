@@ -7,6 +7,7 @@ import Button from '@components/ui/Button.astro';
 import ProjectCard from '@components/portfolio/ProjectCard.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
 
@@ -122,6 +123,51 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
             />
           ))}
         </div>
+      </Section>
+  
+      <!-- DEEP DIVES -->
+      <Section id="discovery">
+        <DiscoveryGrid 
+          title={lang === 'da' ? 'Protokoller & Arkiv' : 'Protocols & Archive'}
+          items={[
+            { 
+                label: lang === 'da' ? 'Projekt-cases' : 'Case Studies', 
+                url: lang === 'da' ? '/cases' : '/en/cases', 
+                icon: 'fa-folder-open', 
+                description: lang === 'da' ? 'Dybdegående gennemgang' : "In-depth reviews"
+            },
+            { 
+                label: lang === 'da' ? 'Downloads' : 'Resources', 
+                url: lang === 'da' ? '/resources' : '/en/resources', 
+                icon: 'fa-download', 
+                description: lang === 'da' ? 'Templates og værktøjer' : "Templates and tools"
+            },
+            { 
+                label: lang === 'da' ? 'API Protokol' : 'API Protocol', 
+                url: lang === 'da' ? '/api-docs' : '/en/api-docs', 
+                icon: 'fa-code', 
+                description: lang === 'da' ? 'Teknisk dokumentation' : "Technical documentation"
+            },
+            { 
+                label: lang === 'da' ? 'Mit Setup' : 'My Setup', 
+                url: lang === 'da' ? '/uses' : '/en/uses', 
+                icon: 'fa-laptop-code', 
+                description: lang === 'da' ? 'Soft- og hardware' : "Software and hardware"
+            },
+            { 
+                label: lang === 'da' ? 'Sundhed' : 'Health', 
+                url: lang === 'da' ? '/health' : '/en/health', 
+                icon: 'fa-heart-pulse', 
+                description: lang === 'da' ? 'Min sundhedsprotokol' : "My health protocol"
+            },
+            { 
+                label: lang === 'da' ? 'Omtale' : 'Media', 
+                url: lang === 'da' ? '/media' : '/en/media', 
+                icon: 'fa-newspaper', 
+                description: lang === 'da' ? 'Presse og omtale' : "Press and mentions"
+            }
+          ]}
+        />
       </Section>
   
       <!-- Footer card -->
