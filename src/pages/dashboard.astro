@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
 const isLoggedIn = Astro.cookies.has("auth_token");
 ---
 
@@ -417,6 +420,7 @@ const isLoggedIn = Astro.cookies.has("auth_token");
         try {
             const res = await fetch('/api/auth/login', {
                 method: 'POST',
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ password })
             });
 

@@ -1,12 +1,16 @@
 import type { APIRoute } from "astro";
 
+export const prerender = false;
+
 export const POST: APIRoute = async ({ request, cookies }) => {
     try {
         const body = await request.json();
-        const password = body.password;
+        const password = String(body.password || "").trim();
 
         // Use environment variable or default fallback
         const ADMIN_PASSWORD = import.meta.env.ADMIN_PASSWORD || "quantum";
+
+        console.log(`[AUTH CHECK] Input: "${password}" | Expected: "${ADMIN_PASSWORD}"`);
 
         if (password === ADMIN_PASSWORD) {
             // Set secure, HTTP-only cookie
