@@ -67,6 +67,12 @@ const skillsData = skillsEntry.data;
                     {p}
                 </p>
             ))}
+            <div class="mt-6 pt-6 border-t border-glass-border">
+                <Button href={lang === 'da' ? '/about' : '/en/about'} variant="ghost" size="sm">
+                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                  {content.ui.viewAll}
+                </Button>
+            </div>
           </Card>
         </Section>
 
@@ -88,6 +94,12 @@ const skillsData = skillsEntry.data;
                 </article>
               ))}
             </div>
+            <div class="mt-6 pt-6 border-t border-glass-border">
+                <Button href={lang === 'da' ? '/experience' : '/en/experience'} variant="ghost" size="sm">
+                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                  {content.ui.viewAll}
+                </Button>
+            </div>
           </Card>
         </Section>
 
@@ -104,6 +116,12 @@ const skillsData = skillsEntry.data;
                   {item.description && <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>}
                 </article>
               ))}
+            </div>
+            <div class="mt-6 pt-6 border-t border-glass-border">
+                <Button href={lang === 'da' ? '/education' : '/en/education'} variant="ghost" size="sm">
+                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                  {content.ui.viewAll}
+                </Button>
             </div>
           </Card>
         </Section>
@@ -123,6 +141,12 @@ const skillsData = skillsEntry.data;
                   </p>
                 </article>
               ))}
+            </div>
+            <div class="mt-6 pt-6 border-t border-glass-border">
+                <Button href={lang === 'da' ? '/portfolio' : '/en/portfolio'} variant="ghost" size="sm">
+                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                  {content.ui.viewAll}
+                </Button>
             </div>
           </Card>
         </Section>
@@ -147,7 +171,35 @@ const skillsData = skillsEntry.data;
             <SectionHeading>{content.ui.headings.certifications}</SectionHeading>
             
             <CertificationList certifications={cvData.certifications as any} />
+            <div class="mt-6 pt-6 border-t border-glass-border">
+                <Button href={lang === 'da' ? '/certifications' : '/en/certifications'} variant="ghost" size="sm">
+                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                  {content.ui.viewAll}
+                </Button>
+            </div>
+          </Card>
+        </Section>
 
+        <Section id="organizations">
+          <Card variant="glass" class="p-6 reveal reveal-fade">
+            <SectionHeading>{content.ui.headings.organizations}</SectionHeading>
+            <div class="space-y-0 organizations-list">
+              {cvData.organizations?.map((org: any) => (
+                <article class="item border-none pt-0 pb-4">
+                  <div class="item-head">
+                    <h3 class="text-[18px] font-bold m-0 mb-1">{org.role} · {org.name}</h3>
+                    <span class="text-[13px] text-dim">{org.period}</span>
+                  </div>
+                  <p class="text-[14px] text-dim mt-2 opacity-80">{org.description}</p>
+                </article>
+              ))}
+            </div>
+            <div class="mt-4 pt-6 border-t border-glass-border">
+                <Button href={lang === 'da' ? '/organizations' : '/en/organizations'} variant="ghost" size="sm">
+                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                  {content.ui.viewAll}
+                </Button>
+            </div>
           </Card>
         </Section>
 
