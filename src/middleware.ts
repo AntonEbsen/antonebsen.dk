@@ -27,5 +27,38 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
     headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
 
+    // ... (CSP headers above) ...
+
+    // Security: Protect API Routes from unauthorized mutations (POST, PUT, DELETE)
+    const protectedMethods = ["POST", "PUT", "DELETE"];
+    const isApiRequest = _context.url.pathname.startsWith("/api/");
+    const isAuthRoute = _context.url.pathname.startsWith("/api/auth/");
+    const isPublicGuestbook = _context.url.pathname === "/api/guestbook" && _context.request.method === "POST";
+
+    // We only protect API mutation requests. GET requests are generally public (for now).
+    // EXCEPT: /api/contact (Inbox) - GET should probably be protected too? 
+    // For now, adhering to strict functional requirement: Protect mutations.
+    // Dashboard page protection is handled in the page itself (SSR).
+
+    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicGuestbook) {
+        const token = _context.cookies.get("auth_token");
+        if (!token || token.value !== "authorized_session") {
+            // Block request
+            return new Response(JSON.stringify({ error: "Unauthorized" }), {
+                status: 401,
+                headers: { "Content-Type": "application/json" }
+            });
+        }
+    }
+
+    // Protect sensitive GET endpoints (Inbox, Guestbook Admin view) if needed?
+    // Let's protect GET for Inbox (/api/contact) to stop randoms from reading messages
+    if (_context.url.pathname === "/api/contact" && _context.request.method === "GET") {
+        const token = _context.cookies.get("auth_token");
+        if (!token || token.value !== "authorized_session") {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        }
+    }
+
     return response;
 }
