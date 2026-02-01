@@ -9,5 +9,5 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY || "mock-key");
 
-// Use Gemini 2.0 Flash as requested
-export const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+// Use Gemini 1.5 Flash for stability and speed
+export const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
