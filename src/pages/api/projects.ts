@@ -14,9 +14,10 @@ export const GET: APIRoute = async () => {
 }
 
 import { ProjectSchema } from "../../lib/schemas";
+import { logAudit } from "../../lib/audit";
 
 // POST: Add specific project
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
 
     try {
@@ -29,6 +30,9 @@ export const POST: APIRoute = async ({ request }) => {
 
         const { error } = await supabase.from('projects').insert([validation.data]);
         if (error) throw error;
+
+        logAudit("CREATE", "PROJECT", validation.data, clientAddress || "unknown");
+
         return new Response(JSON.stringify({ success: true }));
     } catch (e) {
         return new Response(JSON.stringify({ error: e }), { status: 500 });

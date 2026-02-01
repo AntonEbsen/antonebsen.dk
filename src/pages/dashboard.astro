@@ -40,7 +40,7 @@ const isLoggedIn = Astro.cookies.has("auth_token");
                 <div class="text-right flex flex-col items-end gap-1">
                     <div>
                         <div id="status-dot" class="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse mr-2"></div>
-                        <span class="text-sm text-yellow-400">ONLINE</span>
+                        <span id="status-text" class="text-sm text-yellow-400">ONLINE</span>
                     </div>
                     <div class="flex gap-2">
                         <a href="/api/backup" class="text-xs text-blue-400 hover:text-blue-300 font-bold uppercase tracking-wider border border-blue-500/30 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors flex items-center">
@@ -726,5 +726,37 @@ const isLoggedIn = Astro.cookies.has("auth_token");
         await fetch('/api/auth/logout', { method: 'POST' });
         window.location.reload();
     });
+
+    // SYSTEM HEALTH MONITOR
+    async function checkHealth() {
+        const dot = document.getElementById('status-dot');
+        const text = document.getElementById('status-text');
+        
+        try {
+            const res = await fetch('/api/health');
+            if (res.ok) {
+                dot?.classList.remove('bg-red-500');
+                dot?.classList.add('bg-green-500', 'animate-pulse');
+                if (text) {
+                    text.innerText = "ONLINE";
+                    text.classList.remove('text-red-500');
+                    text.classList.add('text-yellow-400');
+                }
+            } else {
+                throw new Error("Down");
+            }
+        } catch (e) {
+             dot?.classList.remove('bg-green-500', 'animate-pulse');
+             dot?.classList.add('bg-red-500');
+             if (text) {
+                 text.innerText = "OFFLINE";
+                 text.classList.remove('text-yellow-400');
+                 text.classList.add('text-red-500');
+             }
+        }
+    }
+    // Check every 30s
+    setInterval(checkHealth, 30000);
+    checkHealth(); // Initial check
 
 </script>
