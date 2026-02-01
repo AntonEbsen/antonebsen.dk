@@ -156,6 +156,81 @@ const skillsData = {
       </div>
     </Section>
 
+    <Section class="mb-24">
+      <div class="text-center max-w-4xl mx-auto mb-12">
+        <SectionHeading class="text-3xl font-bold mb-4">{isDa ? 'Hvad andre siger' : 'What Others Say'}</SectionHeading>
+        <p class="text-dim">{isDa ? 'Feedback fra kolleger og samarbejdspartnere' : 'Feedback from colleagues and partners'}</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card variant="glass" class="p-6 hover-glow">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center text-white font-bold">
+              JD
+            </div>
+            <div>
+              <div class="font-bold">Jane Doe</div>
+              <div class="text-xs text-dim">{isDa ? 'Senior Udvikler, Tech Corp' : 'Senior Developer, Tech Corp'}</div>
+            </div>
+          </div>
+          <p class="text-sm text-dim italic leading-relaxed">
+            "{isDa ? 'Anton leverer altid kode af høj kvalitet og er utrolig god til at tackle komplekse problemer. En ægte teamplayer!' : 'Anton consistently delivers high-quality code and is incredible at tackling complex problems. A true team player!'}"
+          </p>
+          <div class="flex gap-1 mt-4 text-accent">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </Card>
+
+        <Card variant="glass" class="p-6 hover-glow">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+              MS
+            </div>
+            <div>
+              <div class="font-bold">Michael Smith</div>
+              <div class="text-xs text-dim">{isDa ? 'Produktejer, StartupXYZ' : 'Product Owner, StartupXYZ'}</div>
+            </div>
+          </div>
+          <p class="text-sm text-dim italic leading-relaxed">
+            "{isDa ? 'Fantastisk at arbejde med! Anton forstår både den tekniske og forretningsmæssige side og leverer altid til tiden.' : 'Fantastic to work with! Anton understands both the technical and business side and always delivers on time.'}"
+          </p>
+          <div class="flex gap-1 mt-4 text-accent">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </Card>
+
+        <Card variant="glass" class="p-6 hover-glow">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold">
+              SJ
+            </div>
+            <div>
+              <div class="font-bold">Sarah Johnson</div>
+              <div class="text-xs text-dim">{isDa ? 'CTO, InnovateLab' : 'CTO, InnovateLab'}</div>
+            </div>
+          </div>
+          <p class="text-sm text-dim italic leading-relaxed">
+            "{isDa ? 'En af de bedste udviklere jeg har arbejdet med. Stærke tekniske skills og fremragende kommunikationsevner.' : 'One of the best developers I've worked with. Strong technical skills and excellent communication.'}"
+          </p>
+          <div class="flex gap-1 mt-4 text-accent">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </Card>
+      </div>
+    </Section>
+
     <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10 animate-on-scroll delay-200">
       <h2 class="text-3xl font-bold mb-6">{content.cta.title}</h2>
       <p class="text-xl text-dim mb-10 max-w-xl mx-auto">
