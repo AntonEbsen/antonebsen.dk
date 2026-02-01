@@ -1,7 +1,41 @@
 ---
+interface Props {
+  lang?: 'da' | 'en';
+}
+
+const { lang = 'da' } = Astro.props;
+
+const labels = {
+  da: {
+    profile: "Profil",
+    experience: "Erhvervserfaring",
+    education: "Uddannelse",
+    projects: "Projekter",
+    skills: "Kompetencer",
+    languages: "Sprog",
+    volunteer: "Frivilligt",
+    certifications: "Certificeringer",
+    discovery: "Udforskning",
+    contact: "Kontakt"
+  },
+  en: {
+    profile: "Profile",
+    experience: "Experience",
+    education: "Education",
+    projects: "Projects",
+    skills: "Skills",
+    languages: "Languages",
+    volunteer: "Volunteer",
+    certifications: "Certifications",
+    discovery: "Discovery",
+    contact: "Contact"
+  }
+};
+
+const t = labels[lang];
 ---
 
-<aside class="toc" id="toc" aria-label="Indholdsfortegnelse">
+<aside class="toc" id="toc" aria-label={lang === 'da' ? "Indholdsfortegnelse" : "Table of Contents"}>
   <div class="toc-header">
     <button
       id="tocToggle"
@@ -9,23 +43,24 @@
       type="button"
       aria-expanded="true"
       aria-controls="tocNav"
-      aria-label="Vis/skjul indholdsfortegnelse"
-      title="Vis/skjul indholdsfortegnelse"
+      aria-label={lang === 'da' ? "Vis/skjul indholdsfortegnelse" : "Show/hide table of contents"}
+      title={lang === 'da' ? "Vis/skjul indholdsfortegnelse" : "Show/hide table of contents"}
     >
       <span class="hamburger" aria-hidden="true"></span>
     </button>
   </div>
 
   <nav id="tocNav" class="toc-nav">
-    <a href="#profile">Profil</a>
-    <a href="#experience">Erhvervserfaring</a>
-    <a href="#education">Uddannelse</a>
-    <a href="#projects">Projekter</a>
-    <a href="#skills">Kompetencer</a>
-    <a href="#languages">Sprog</a>
-    <a href="#volunteer">Frivilligt</a>
-    <a href="#certifications">Certificeringer</a>
-    <a href="#contact">Kontakt</a>
+    <a href="#profile">{t.profile}</a>
+    <a href="#experience">{t.experience}</a>
+    <a href="#education">{t.education}</a>
+    <a href="#projects">{t.projects}</a>
+    <a href="#skills">{t.skills}</a>
+    <a href="#languages">{t.languages}</a>
+    <a href="#volunteer">{t.volunteer}</a>
+    <a href="#certifications">{t.certifications}</a>
+    <a href="#discovery">{t.discovery}</a>
+    <a href="#contact">{t.contact}</a>
   </nav>
 </aside>
 

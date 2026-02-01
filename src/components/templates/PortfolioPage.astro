@@ -115,7 +115,7 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
           {projects?.map((p: any) => (
             <ProjectCard
               title={p.title}
-              tagString={p.tags ? p.tags.join(' Â· ') : ''}
+              tagString={p.tags ? p.tags.join(' · ') : ''}
               description={p.description}
               tools={[]}
               output={p.featured ? content.ui.featured : content.ui.project}
