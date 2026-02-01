@@ -1,0 +1,50 @@
+---
+import { supabase } from '../../lib/supabase';
+import { getEntry } from 'astro:content';
+import TechStack from '../../components/ui/TechStack.astro';
+import Pill from '../../components/ui/Pill.astro';
+
+export const partial = true;
+
+const lang = 'da'; // Default to 'da' since partials don't easy inherit params yet, or pass via query?
+// Ideally pass ?lang=en
+
+// Helpers to process skills
+let skillsRows = [];
+let error = null;
+
+try {
+  if (supabase) {
+    const { data, error: dbError } = await supabase.from('skills').select('*');
+    if (dbError) throw dbError;
+    skillsRows = data;
+  }
+} catch (e) {
+  console.error("Supabase fetch failed", e);
+  error = e;
+}
+
+// Fallback to static if no DB
+if (error || !skillsRows || skillsRows.length === 0) {
+    const skillsEntry = await getEntry('skills', lang);
+    if (skillsEntry && skillsEntry.data) {
+        const fd = skillsEntry.data;
+        const prog = (fd.programming || []).map(s => ({ ...s, category: 'programming' }));
+        const prof = (fd.professional || []).map(s => ({ ...s, category: 'professional' }));
+        skillsRows = [...prog, ...prof];
+    }
+}
+
+const skillsData = {
+  programming: skillsRows?.filter(s => s.category === 'programming') || [],
+  professional: skillsRows?.filter(s => s.category === 'professional') || []
+};
+---
+<div id="skills-container-inner" class="fade-in">
+    <TechStack skills={skillsData.programming} />
+    <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
+        {skillsData.professional.map(skill => (
+        <Pill variant="default" class="text-sm">{skill.name}</Pill>
+        ))}
+    </div>
+</div>

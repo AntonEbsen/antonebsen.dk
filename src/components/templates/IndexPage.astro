@@ -147,14 +147,42 @@ const skillsData = {
     <Section class="mb-24 animate-on-scroll delay-300">
       <div class="text-center max-w-4xl mx-auto mb-16">
         <SectionHeading class="text-3xl font-bold mb-8">{content.skills.title}</SectionHeading>
-        <TechStack skills={skillsData.programming} />
-        <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
-          {skillsData.professional.map(skill => (
-            <Pill variant="default" class="text-sm">{skill.name}</Pill>
-          ))}
+        
+        <!-- Live Skills Container -->
+        <div id="skills-live-container">
+          <!-- Static Fallback Content -->
+          <TechStack skills={skillsData.programming} />
+          <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
+            {skillsData.professional.map(skill => (
+              <Pill variant="default" class="text-sm">{skill.name}</Pill>
+            ))}
+          </div>
         </div>
+
       </div>
     </Section>
+
+    <!-- Script to hydrate live skills if available -->
+    <script>
+      // Fetch fresh skills data from Supabase via partial
+      document.addEventListener('astro:page-load', async () => {
+        try {
+          const container = document.getElementById('skills-live-container');
+          if (!container) return;
+
+          const res = await fetch('/partials/skills');
+          if (res.ok) {
+            const html = await res.text();
+            // Only replace if meaningful content returned
+            if (html.includes('skills-container-inner')) {
+                container.innerHTML = html;
+            }
+          }
+        } catch (e) {
+          console.warn('Live skills fetch failed, using static fallback');
+        }
+      });
+    </script>
 
     <Section class="mb-24">
       <div class="text-center max-w-4xl mx-auto mb-12">
