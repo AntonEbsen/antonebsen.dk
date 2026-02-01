@@ -23,7 +23,16 @@ export const GET: APIRoute = async () => {
                 "Content-Type": "application/json"
             }
         });
-    } catch (e) {
-        return new Response(JSON.stringify([]), { status: 500 });
-    }
-}
+        // POST: Add new travel location
+        export const POST: APIRoute = async ({ request }) => {
+            if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
+
+            try {
+                const body = await request.json();
+                const { error } = await supabase.from('travel').insert([body]);
+                if (error) throw error;
+                return new Response(JSON.stringify({ success: true }));
+            } catch (e) {
+                return new Response(JSON.stringify({ error: e }), { status: 500 });
+            }
+        }
