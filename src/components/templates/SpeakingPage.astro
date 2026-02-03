@@ -1,0 +1,79 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="speaking-page">
+  <style>
+    .speaking-wrap {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px 48px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 48px;
+    }
+    .p-date {
+        font-family: monospace;
+        color: var(--accent);
+        background: rgba(212, 175, 55, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+    }
+    .p-card {
+        border-left: 2px solid rgba(255,255,255,0.05);
+    }
+    .p-card:hover {
+        border-left-color: var(--accent);
+    }
+    @media (max-width: 768px) {
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="speaking-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    <div class="space-y-8">
+        {content.presentations.map((p: any) => (
+            <Section>
+                <Card variant="glass" class="p-8 p-card transition-all">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <span class="p-date mb-2 inline-block">{p.date}</span>
+                            <h3 class="text-2xl font-bold">{p.title}</h3>
+                            <p class="text-accent text-sm font-medium">{p.event}</p>
+                        </div>
+                        <div class="flex-shrink-0">
+                             <a href={p.link} class="text-sm font-bold text-white uppercase tracking-wider hover:text-accent transition-colors flex items-center gap-2">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                {p.linkText}
+                             </a>
+                        </div>
+                    </div>
+                    <p class="text-dim leading-relaxed max-w-3xl">
+                        {p.summary}
+                    </p>
+                </Card>
+            </Section>
+        ))}
+    </div>
+  </main>
+</Layout>

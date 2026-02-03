@@ -1,0 +1,11 @@
+---
+import SpeakingPage from '@components/templates/SpeakingPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'da/speaking');
+if (!entry) throw new Error('Could not find content for da/speaking');
+---
+
+<SpeakingPage lang="da" content={entry.data} />

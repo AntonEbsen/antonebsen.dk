@@ -1,0 +1,35 @@
+{
+    "title": "Model Library | Anton Ebsen",
+    "description": "A technical catalog of the economic frameworks and models I master – from SVAR to DSGE.",
+    "hero": {
+        "eyebrow": "Technical Frameworks",
+        "title": "Model Library",
+        "text": "Understanding the theory behind the buttons is what separates a good economist from a data entry clerk. Here is a review of the models I work with."
+    },
+    "models": [
+        {
+            "id": "svar",
+            "title": "SVAR (Structural Vector Autoregression)",
+            "desc": "Used to identify structural shocks in macroeconomic time series.",
+            "tech": "Used in bachelor's project to isolate US monetary policy shocks via 'Sign Restrictions'.",
+            "formula": "B_0 y_t = c + B_1 y_{t-1} + ... + B_p y_{t-p} + \\epsilon_t",
+            "icon": "fa-solid fa-chart-line"
+        },
+        {
+            "id": "dsge",
+            "title": "DSGE (Dynamic Stochastic General Equilibrium)",
+            "desc": "Micro-founded macro models used to simulate economic policies.",
+            "tech": "Experience with Dynare and calibration of neoclassical growth models.",
+            "formula": "E_t \\sum_{j=0}^{\\infty} \\beta^j U(c_{t+j}, l_{t+j})",
+            "icon": "fa-solid fa-diagram-project"
+        },
+        {
+            "id": "cge",
+            "title": "CGE (Computable General Equilibrium)",
+            "desc": "Static and dynamic modeling of entire economies, often used for trade and tax policy.",
+            "tech": "Programming in GAMS to solve complex market equilibria.",
+            "formula": "Y = A \\cdot [\\alpha K^\\rho + (1-\\alpha) L^\\rho]^{1/\\rho}",
+            "icon": "fa-solid fa-network-wired"
+        }
+    ]
+}

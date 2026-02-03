@@ -1,0 +1,90 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="models-page">
+  <style>
+    .models-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 48px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 32px;
+        background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.1) 0%, transparent 50%), var(--glass) !important;
+    }
+    .model-card {
+        position: relative;
+        overflow: hidden;
+    }
+    .model-formula {
+        background: rgba(0,0,0,0.2);
+        padding: 16px;
+        border-radius: 8px;
+        font-family: "Latin Modern Math", serif;
+        font-size: 1.1rem;
+        margin: 16px 0;
+        border-right: 3px solid var(--accent);
+        color: var(--white);
+        overflow-x: auto;
+    }
+    .model-icon {
+        font-size: 2rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+    }
+    .model-tech {
+        font-size: 0.85rem;
+        color: var(--accent);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    @media (max-width: 768px) {
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="models-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {content.models.map((model: any) => (
+            <Section>
+                <Card variant="glass" class="p-8 h-full flex flex-col model-card transition-all hover:border-accent/30">
+                    <div class="model-icon">
+                        <i class={model.icon}></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">{model.title}</h3>
+                    <p class="text-dim mb-4 flex-grow">{model.desc}</p>
+                    
+                    <div class="model-formula">
+                        <code>{model.formula}</code>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-white/5">
+                        <p class="model-tech">{model.tech}</p>
+                    </div>
+                </Card>
+            </Section>
+        ))}
+    </div>
+  </main>
+</Layout>

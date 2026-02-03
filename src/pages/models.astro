@@ -1,0 +1,11 @@
+---
+import ModelsPage from '@components/templates/ModelsPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'da/models');
+if (!entry) throw new Error('Could not find content for da/models');
+---
+
+<ModelsPage lang="da" content={entry.data} />
