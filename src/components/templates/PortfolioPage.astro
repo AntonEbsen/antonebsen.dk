@@ -227,16 +227,22 @@ const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? '
           title={lang === 'da' ? 'Ressourcer' : lang === 'de' ? 'Ressourcen' : 'Resources'}
           items={[
             { 
-                label: lang === 'da' ? 'Downloads' : lang === 'de' ? 'Downloads' : 'Resources', 
-                url: lang === 'da' ? '/resources' : lang === 'de' ? '/de/resources' : '/en/resources', 
-                icon: 'fa-download', 
-                description: lang === 'da' ? 'Templates og værktøjer' : lang === 'de' ? 'Vorlagen und Tools' : "Templates and tools"
+                label: lang === 'da' ? 'Python Lab' : 'Python Lab', 
+                url: 'https://lab.antonebsen.dk', 
+                icon: 'fa-code', 
+                description: lang === 'da' ? 'Interaktivt Jupyter-miljø' : lang === 'de' ? 'Interaktive Jupyter-Umgebung' : "Interactive Jupyter environment"
             },
             { 
                 label: lang === 'da' ? 'GitHub' : 'GitHub', 
                 url: 'https://github.com/AntonEbsen', 
                 icon: 'fa-brands fa-github', 
                 description: lang === 'da' ? 'Se min kildekode' : lang === 'de' ? 'Meinen Quellcode ansehen' : "View my source code"
+            },
+            { 
+                label: lang === 'da' ? 'Downloads' : lang === 'de' ? 'Downloads' : 'Resources', 
+                url: lang === 'da' ? '/resources' : lang === 'de' ? '/de/resources' : '/en/resources', 
+                icon: 'fa-download', 
+                description: lang === 'da' ? 'Templates og værktøjer' : lang === 'de' ? 'Vorlagen und Tools' : "Templates and tools"
             },
             { 
                 label: lang === 'da' ? 'Milepæle' : lang === 'de' ? 'Meilensteine' : 'Milestones', 
