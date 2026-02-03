@@ -348,10 +348,25 @@
 .lang-flag-sm {
     width: 42px;
     height: 28px;
-    border-radius: 8px;
+    border-radius: 6px;
     object-fit: cover;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     flex: 0 0 auto;
+    display: block;
+}
+
+.lang-flag-wrapper {
+    width: 42px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.lang-emoji {
+    font-size: 1.8rem;
+    line-height: 1;
 }
 
 .lang-text {

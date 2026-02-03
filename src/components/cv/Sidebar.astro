@@ -1,9 +1,6 @@
 ---
 // Image imports removed to bypass Sharp on Windows
 const myImageSrc = "/assets/img/billede-af-mig.jpg";
-const dkFlagSrc = "/assets/img/dansk-flag.png";
-const ukFlagSrc = "/assets/img/britisk-flag.png";
-const deFlagSrc = "/assets/img/tysk-flag.png";
 
 interface Props {
   data: any; // Skills data
@@ -12,10 +9,17 @@ interface Props {
 
 const { data, ui } = Astro.props;
 
-const flagMap: Record<string, string> = {
-  '/assets/img/dansk-flag.png': dkFlagSrc,
-  '/assets/img/britisk-flag.png': ukFlagSrc,
-  '/assets/img/tysk-flag.png': deFlagSrc
+// Fallback emoji map just in case images fail
+const emojiMap: Record<string, string> = {
+    'Dansk': '🇩🇰',
+    'Danish': '🇩🇰',
+    'Dänisch': '🇩🇰',
+    'Engelsk': '🇬🇧',
+    'English': '🇬🇧',
+    'Englisch': '🇬🇧',
+    'Tysk': '🇩🇪',
+    'German': '🇩🇪',
+    'Deutsch': '🇩🇪'
 };
 ---
 
@@ -107,7 +111,19 @@ const flagMap: Record<string, string> = {
     <div class="lang-grid" aria-label="Sprog">
       {data.languages.map((lang: any) => (
         <div class="lang-box">
-          {flagMap[lang.flag] && <img src={flagMap[lang.flag]} alt={lang.name} class="lang-flag-sm" />}
+          <div class="lang-flag-wrapper">
+            {lang.flag && (
+              <img 
+                src={lang.flag} 
+                alt={lang.name} 
+                class="lang-flag-sm" 
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" 
+              />
+            )}
+            <span class="lang-emoji" style={lang.flag ? "display:none" : "display:block"}>
+              {emojiMap[lang.name] || '🌐'}
+            </span>
+          </div>
           <div class="lang-text">
             <div class="lang-name">{lang.name}</div>
             <div class="lang-level">{lang.level}</div>
