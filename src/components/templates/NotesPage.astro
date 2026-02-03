@@ -2,122 +2,281 @@
 import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
-import SectionHeading from '@components/ui/SectionHeading.astro';
-import ContactCard from '@components/common/ContactCard.astro';
+import { getLangFromUrl } from '@i18n/utils';
 
 interface Props {
-  lang: 'da' | 'en';
+  lang: 'da' | 'en' | 'de';
 }
 
 const { lang } = Astro.props;
-const isDa = lang === 'da';
+const prefix = lang === 'da' ? '' : `/${lang}`;
 
 const content = {
   da: {
-    title: "Anton Meier Ebsen Jørgensen – Publikationer & Noter",
-    metaDescription: "Publikationer, working notes og korte one-pagers om økonomi, data og modeller.",
-    eyebrow: "Publikationer / Noter",
-    heroTitle: "Korte writeups og materiale",
-    heroText: "Her samler jeg ting, der er mere “arkiv og reference” end blog: one-pagers, slides og arbejdsnoter.",
-    sectionNotes: "Noter",
-    notes: [
+    title: "Anton Meier Ebsen Jørgensen – Personlige Noter",
+    metaDescription: "Personlige noter, interesser og refleksioner - den menneskelige side bag CV'et.",
+    eyebrow: "Personlige Noter",
+    heroTitle: "Bag CV'et",
+    heroText: "Her finder du ting der ikke hører hjemme på et professionelt CV, men som alligevel siger noget om hvem jeg er.",
+    backLink: "← Tilbage til forsiden",
+    categories: [
       {
-        title: "Template: Data â†’ Leverance",
-        desc: "En enkel struktur jeg bruger til analyseprojekter.",
-        link: "#",
-        linkText: "Læs note â†’"
+        title: "Læsning & Lytning",
+        items: [
+          { icon: "fa-book", title: "Bøger", desc: "Min læseliste", url: "/books" },
+          { icon: "fa-podcast", title: "Podcasts", desc: "Hvad jeg lytter til", url: "/podcasts" },
+          { icon: "fa-quote-left", title: "Citater", desc: "Ord der inspirerer", url: "/quotes" }
+        ]
+      },
+      {
+        title: "Mål & Drømme",
+        items: [
+          { icon: "fa-list-check", title: "Bucket List", desc: "Ting jeg vil opleve", url: "/bucketlist" },
+          { icon: "fa-bullseye", title: "Anti-mål", desc: "Hvad jeg undgår", url: "/anti-goals" }
+        ]
+      },
+      {
+        title: "Fitness & Træning",
+        items: [
+          { icon: "fa-chart-line", title: "Træningsstatistik", desc: "Data fra træningen", url: "/training-stats" },
+          { icon: "fa-dumbbell", title: "Træningsprogram", desc: "Mit program", url: "/traeningsprogram" },
+          { icon: "fa-person-running", title: "Øvelser", desc: "Øvelsesbibliotek", url: "/exercises" },
+          { icon: "fa-heart-pulse", title: "Sundhed", desc: "Sundhedsprotokoller", url: "/health" }
+        ]
+      },
+      {
+        title: "Selvrefleksion",
+        items: [
+          { icon: "fa-chess", title: "SWOT Analyse", desc: "Styrker og svagheder", url: "/swot" },
+          { icon: "fa-brain", title: "Personlighed", desc: "Personlighedstests", url: "/personality" },
+          { icon: "fa-scale-balanced", title: "Værdier", desc: "Mit moralske kompas", url: "/values" },
+          { icon: "fa-ban", title: "Anti-CV", desc: "Hvad jeg ikke gør", url: "/anti-resume" },
+          { icon: "fa-mountain", title: "Modgang", desc: "Resiliens og læring", url: "/modgang-og-maalrettethed" }
+        ]
+      },
+      {
+        title: "Personligt",
+        items: [
+          { icon: "fa-images", title: "Galleri", desc: "Billeder", url: "/gallery" },
+          { icon: "fa-pen-fancy", title: "Gæstebog", desc: "Skriv en hilsen", url: "/guestbook" },
+          { icon: "fa-coins", title: "Økonomi", desc: "Personlig finans", url: "/finance" },
+          { icon: "fa-calendar", title: "Årsreview", desc: "Årlige tilbageblik", url: "/2025" }
+        ]
       }
     ]
   },
   en: {
-    title: "Anton Meier Ebsen Jørgensen – Publications & Notes",
-    metaDescription: "Publications, working notes, and short one-pagers on economics, data, and models.",
-    eyebrow: "Publications / Notes",
-    heroTitle: "Short writeups & materials",
-    heroText: "Here I collect things that are more \"archive and reference\" than blog posts: one-pagers, slides, and working notes.",
-    sectionNotes: "Notes",
-    notes: [
-        {
-          title: "Template: Data â†’ Delivery",
-          desc: "A simple structure I use for analysis projects.",
-          link: "#",
-          linkText: "Read note â†’"
-        }
+    title: "Anton Meier Ebsen Jørgensen – Personal Notes",
+    metaDescription: "Personal notes, interests and reflections - the human side behind the CV.",
+    eyebrow: "Personal Notes",
+    heroTitle: "Beyond the CV",
+    heroText: "Here you'll find things that don't belong on a professional CV, but still say something about who I am.",
+    backLink: "← Back to homepage",
+    categories: [
+      {
+        title: "Reading & Listening",
+        items: [
+          { icon: "fa-book", title: "Books", desc: "My reading list", url: "/en/books" },
+          { icon: "fa-podcast", title: "Podcasts", desc: "What I listen to", url: "/en/podcasts" },
+          { icon: "fa-quote-left", title: "Quotes", desc: "Words that inspire", url: "/en/quotes" }
+        ]
+      },
+      {
+        title: "Goals & Dreams",
+        items: [
+          { icon: "fa-list-check", title: "Bucket List", desc: "Things I want to experience", url: "/en/bucketlist" },
+          { icon: "fa-bullseye", title: "Anti-Goals", desc: "What I avoid", url: "/en/anti-goals" }
+        ]
+      },
+      {
+        title: "Fitness & Training",
+        items: [
+          { icon: "fa-chart-line", title: "Training Stats", desc: "Workout data", url: "/en/training-stats" },
+          { icon: "fa-dumbbell", title: "Training Program", desc: "My program", url: "/en/traeningsprogram" },
+          { icon: "fa-person-running", title: "Exercises", desc: "Exercise library", url: "/en/exercises" },
+          { icon: "fa-heart-pulse", title: "Health", desc: "Health protocols", url: "/en/health" }
+        ]
+      },
+      {
+        title: "Self-Reflection",
+        items: [
+          { icon: "fa-chess", title: "SWOT Analysis", desc: "Strengths and weaknesses", url: "/en/swot" },
+          { icon: "fa-brain", title: "Personality", desc: "Personality tests", url: "/en/personality" },
+          { icon: "fa-scale-balanced", title: "Values", desc: "My moral compass", url: "/en/values" },
+          { icon: "fa-ban", title: "Anti-Resume", desc: "What I don't do", url: "/en/anti-resume" },
+          { icon: "fa-mountain", title: "Adversity", desc: "Resilience and learning", url: "/en/modgang-og-maalrettethed" }
+        ]
+      },
+      {
+        title: "Personal",
+        items: [
+          { icon: "fa-images", title: "Gallery", desc: "Photos", url: "/en/gallery" },
+          { icon: "fa-pen-fancy", title: "Guestbook", desc: "Leave a note", url: "/en/guestbook" },
+          { icon: "fa-coins", title: "Finance", desc: "Personal finance", url: "/en/finance" },
+          { icon: "fa-calendar", title: "Year Review", desc: "Annual reflections", url: "/en/2025" }
+        ]
+      }
+    ]
+  },
+  de: {
+    title: "Anton Meier Ebsen Jørgensen – Persönliche Notizen",
+    metaDescription: "Persönliche Notizen, Interessen und Reflexionen - die menschliche Seite hinter dem Lebenslauf.",
+    eyebrow: "Persönliche Notizen",
+    heroTitle: "Hinter dem Lebenslauf",
+    heroText: "Hier finden Sie Dinge, die nicht in einen professionellen Lebenslauf gehören, aber trotzdem etwas über mich aussagen.",
+    backLink: "← Zurück zur Startseite",
+    categories: [
+      {
+        title: "Lesen & Hören",
+        items: [
+          { icon: "fa-book", title: "Bücher", desc: "Meine Leseliste", url: "/de/books" },
+          { icon: "fa-podcast", title: "Podcasts", desc: "Was ich höre", url: "/de/podcasts" },
+          { icon: "fa-quote-left", title: "Zitate", desc: "Inspirierende Worte", url: "/de/quotes" }
+        ]
+      },
+      {
+        title: "Ziele & Träume",
+        items: [
+          { icon: "fa-list-check", title: "Bucket List", desc: "Was ich erleben möchte", url: "/de/bucketlist" },
+          { icon: "fa-bullseye", title: "Anti-Ziele", desc: "Was ich vermeide", url: "/de/anti-goals" }
+        ]
+      },
+      {
+        title: "Fitness & Training",
+        items: [
+          { icon: "fa-chart-line", title: "Trainingsstatistik", desc: "Trainingsdaten", url: "/de/training-stats" },
+          { icon: "fa-dumbbell", title: "Trainingsprogramm", desc: "Mein Programm", url: "/de/traeningsprogram" },
+          { icon: "fa-person-running", title: "Übungen", desc: "Übungsbibliothek", url: "/de/exercises" },
+          { icon: "fa-heart-pulse", title: "Gesundheit", desc: "Gesundheitsprotokolle", url: "/de/health" }
+        ]
+      },
+      {
+        title: "Selbstreflexion",
+        items: [
+          { icon: "fa-chess", title: "SWOT Analyse", desc: "Stärken und Schwächen", url: "/de/swot" },
+          { icon: "fa-brain", title: "Persönlichkeit", desc: "Persönlichkeitstests", url: "/de/personality" },
+          { icon: "fa-scale-balanced", title: "Werte", desc: "Mein moralischer Kompass", url: "/de/values" },
+          { icon: "fa-ban", title: "Anti-Lebenslauf", desc: "Was ich nicht tue", url: "/de/anti-resume" },
+          { icon: "fa-mountain", title: "Widrigkeiten", desc: "Resilienz und Lernen", url: "/de/modgang-og-maalrettethed" }
+        ]
+      },
+      {
+        title: "Persönlich",
+        items: [
+          { icon: "fa-images", title: "Galerie", desc: "Fotos", url: "/de/gallery" },
+          { icon: "fa-pen-fancy", title: "Gästebuch", desc: "Hinterlassen Sie eine Nachricht", url: "/de/guestbook" },
+          { icon: "fa-coins", title: "Finanzen", desc: "Persönliche Finanzen", url: "/de/finance" },
+          { icon: "fa-calendar", title: "Jahresrückblick", desc: "Jährliche Reflexionen", url: "/de/2025" }
+        ]
+      }
     ]
   }
 };
 
-const t = isDa ? content.da : content.en;
+const t = content[lang] || content.da;
+const homeUrl = lang === 'da' ? '/' : `/${lang}`;
 ---
 
 <Layout 
   title={t.title}
   description={t.metaDescription}
-  bodyClass="notes-page"
+  bodyClass="notes-portal-page"
 >
   <style>
-    .notes-wrap {
+    .portal-wrap {
       max-width: 1200px;
       margin: 24px auto;
-      padding: 0 16px 32px;
+      padding: 0 16px 48px;
     }
     
-    .hero-grid {
+    .category-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
-    }
-
-    .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
       margin-top: 12px;
     }
 
-    @media (max-width: 980px) {
-      .hero-grid, .notes-grid { 
-        grid-template-columns: 1fr; 
-      }
+    .item-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .item-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .item-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.1);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .item-card:hover .item-icon {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .item-content h4 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .item-content p {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: var(--text-dim);
     }
   </style>
 
-  <main class="notes-wrap">
+  <main class="portal-wrap">
+    <a href={homeUrl} class="text-accent text-sm no-underline hover:underline mb-6 inline-block">
+      {t.backLink}
+    </a>
 
-    <Section class="mb-12">
-      <div class="hero-grid">
-        <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{t.heroTitle}</h1>
-          <p class="text-lg text-dim">
-            {t.heroText}
-          </p>
-        </Card>
-      </div>
-    </Section>
-
-    <Section id="noter" class="mb-20">
-      <Card variant="bordered" class="p-6">
-        <SectionHeading>{t.sectionNotes}</SectionHeading>
-        <div class="notes-grid">
-          {t.notes.map(note => (
-            <Card variant="glass" class="p-6">
-                <h3 class="font-bold mb-2">{note.title}</h3>
-                <p class="text-sm text-dim mb-4">{note.desc}</p>
-                <a href={note.link} class="text-accent font-bold">{note.linkText}</a>
-            </Card>
-          ))}
-        </div>
+    <Section class="mb-8">
+      <Card variant="glass" class="p-8">
+        <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
+        <h1 class="text-4xl font-bold leading-tight mb-4">{t.heroTitle}</h1>
+        <p class="text-lg text-dim max-w-2xl">
+          {t.heroText}
+        </p>
       </Card>
     </Section>
 
-    <Section>
-        <ContactCard />
-    </Section>
+    {t.categories.map(category => (
+      <Section class="mb-8">
+        <h2 class="text-lg font-bold text-white mb-4">{category.title}</h2>
+        <div class="category-grid">
+          {category.items.map(item => (
+            <a href={item.url} class="item-card">
+              <div class="item-icon">
+                <i class={`fa-solid ${item.icon}`}></i>
+              </div>
+              <div class="item-content">
+                <h4>{item.title}</h4>
+                <p>{item.desc}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </Section>
+    ))}
 
   </main>
 </Layout>
-
-
-

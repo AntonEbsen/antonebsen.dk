@@ -94,17 +94,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        {
-            label: 'Indsigter',
-            url: '/blog',
-            children: [
-                { label: 'Blog', url: '/blog' },
-                { label: 'Bøger', url: '/books' },
-                { label: 'Podcasts', url: '/podcasts' },
-                { label: 'Bucket List', url: '/bucketlist' },
-                { label: 'Citater', url: '/quotes' }
-            ]
-        },
+        { label: 'Blog', url: '/blog' },
         {
             label: 'Kontakt',
             url: '/contact',
@@ -139,17 +129,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        {
-            label: 'Insights',
-            url: '/en/blog',
-            children: [
-                { label: 'Blog', url: '/en/blog' },
-                { label: 'Library (Books)', url: '/en/books' },
-                { label: 'Podcasts', url: '/en/podcasts' },
-                { label: 'Bucket List', url: '/en/bucketlist' },
-                { label: 'Quotes', url: '/en/quotes' }
-            ]
-        },
+        { label: 'Blog', url: '/en/blog' },
         {
             label: 'Contact',
             url: '/en/contact',
@@ -184,17 +164,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        {
-            label: 'Einblicke',
-            url: '/de/blog',
-            children: [
-                { label: 'Blog', url: '/de/blog' },
-                { label: 'Bücher', url: '/de/books' },
-                { label: 'Podcasts', url: '/de/podcasts' },
-                { label: 'Bucket List', url: '/de/bucketlist' },
-                { label: 'Zitate', url: '/de/quotes' }
-            ]
-        },
+        { label: 'Blog', url: '/de/blog' },
         {
             label: 'Kontakt',
             url: '/de/contact',
