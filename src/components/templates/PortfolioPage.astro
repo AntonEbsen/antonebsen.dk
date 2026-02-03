@@ -227,6 +227,18 @@ const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? '
           title={lang === 'da' ? 'Ressourcer' : lang === 'de' ? 'Ressourcen' : 'Resources'}
           items={[
             { 
+                label: lang === 'da' ? 'Model Library' : 'Model Library', 
+                url: lang === 'da' ? '/models' : lang === 'de' ? '/en/models' : '/en/models', 
+                icon: 'fa-diagram-project', 
+                description: lang === 'da' ? 'Tekniske rammeværktøjer' : lang === 'de' ? 'Technische Frameworks' : "Technical frameworks"
+            },
+            { 
+                label: lang === 'da' ? 'Speaking' : 'Speaking', 
+                url: lang === 'da' ? '/speaking' : lang === 'de' ? '/en/speaking' : '/en/speaking', 
+                icon: 'fa-chalkboard-user', 
+                description: lang === 'da' ? 'Oplæg og formidling' : lang === 'de' ? 'Vorträge und Präsentationen' : "Talks and presentations"
+            },
+            { 
                 label: lang === 'da' ? 'Python Lab' : 'Python Lab', 
                 url: 'https://lab.antonebsen.dk', 
                 icon: 'fa-code', 

@@ -89,6 +89,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/portfolio',
             children: [
                 { label: 'Projekter', url: '/portfolio' },
+                { label: 'Model Library', url: '/models' },
+                { label: 'Speaking', url: '/speaking' },
                 { label: 'Economic Toolkit', url: '/toolkit' },
                 { label: 'Bibliography', url: '/bibliography' },
                 { label: 'Data Resource Map', url: '/data-map' },
@@ -126,6 +128,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/en/portfolio',
             children: [
                 { label: 'Projects', url: '/en/portfolio' },
+                { label: 'Model Library', url: '/en/models' },
+                { label: 'Speaking', url: '/en/speaking' },
                 { label: 'Economic Toolkit', url: '/en/toolkit' },
                 { label: 'Bibliography', url: '/en/bibliography' },
                 { label: 'Data Resource Map', url: '/en/data-map' },
@@ -163,6 +167,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/de/portfolio',
             children: [
                 { label: 'Projekte', url: '/de/portfolio' },
+                { label: 'Model Library', url: '/en/models' },
+                { label: 'Speaking', url: '/en/speaking' },
                 { label: 'Economic Toolkit', url: '/de/toolkit' },
                 { label: 'Bibliografie', url: '/de/bibliography' },
                 { label: 'Data Resource Map', url: '/de/data-map' },
