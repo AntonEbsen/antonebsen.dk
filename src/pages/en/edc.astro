@@ -1,0 +1,11 @@
+---
+import EDCPage from '@components/templates/EDCPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'en/edc');
+if (!entry) throw new Error('Could not find content for en/edc');
+---
+
+<EDCPage lang="en" content={entry.data} />

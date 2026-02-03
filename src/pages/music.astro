@@ -1,0 +1,11 @@
+---
+import MusicPage from '@components/templates/MusicPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'da/music');
+if (!entry) throw new Error('Could not find content for da/music');
+---
+
+<MusicPage lang="da" content={entry.data} />

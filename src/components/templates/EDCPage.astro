@@ -1,0 +1,71 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="edc-page">
+  <style>
+    .edc-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 32px;
+    }
+    .edc-section {
+        margin-bottom: 48px;
+    }
+    .edc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .tool-icon {
+        font-size: 2rem;
+        color: var(--accent);
+        margin-bottom: 16px;
+        opacity: 0.8;
+    }
+    @media (max-width: 768px) {
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="edc-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    {content.sections.map((section: any) => (
+      <Section class="edc-section">
+        <SectionHeading>{section.title}</SectionHeading>
+        <div class="edc-grid">
+          {section.items.map((item: any) => (
+            <Card variant="glass" class="p-6 transition-all duration-300 hover:border-accent/40">
+              <div class="tool-icon">
+                <i class={item.icon}></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">{item.title}</h3>
+              <p class="text-dim text-sm leading-relaxed">{item.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    ))}
+  </main>
+</Layout>
