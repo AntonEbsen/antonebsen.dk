@@ -1,0 +1,84 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="unoptimized-page">
+  <style>
+    .unoptimized-wrap {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px 48px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 32px;
+        background: linear-gradient(135deg, rgba(234, 179, 8, 0.05) 0%, transparent 100%), var(--glass) !important;
+        border-color: rgba(234, 179, 8, 0.2);
+    }
+    .unoptimized-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .unoptimized-icon {
+        font-size: 2.2rem;
+        color: #eab308; /* Warm yellow/gold for a warmer feel */
+        margin-bottom: 16px;
+        opacity: 0.8;
+    }
+    .philosophy-banner {
+        background: rgba(234, 179, 8, 0.03) !important;
+        border: 1px dashed rgba(234, 179, 8, 0.2);
+        padding: 32px;
+        text-align: center;
+    }
+    @media (max-width: 768px) {
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="unoptimized-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-[#eab308] opacity-80 mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    {content.sections.map((section: any) => (
+      <Section class="mb-12">
+        <SectionHeading>{section.title}</SectionHeading>
+        <div class="unoptimized-grid">
+          {section.items.map((item: any) => (
+            <Card variant="glass" class="p-8 transition-all duration-300 hover:border-[#eab308]/30 group">
+              <div class="unoptimized-icon group-hover:rotate-6 transition-transform">
+                <i class={item.icon}></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">{item.title}</h3>
+              <p class="text-dim text-sm leading-relaxed">{item.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    ))}
+
+    <Section>
+        <Card variant="glass" class="philosophy-banner">
+            <h2 class="text-2xl font-bold mb-4 text-[#eab308]">{content.philosophy.title}</h2>
+            <p class="text-dim italic leading-relaxed max-w-xl mx-auto">{content.philosophy.text}</p>
+        </Card>
+    </Section>
+  </main>
+</Layout>

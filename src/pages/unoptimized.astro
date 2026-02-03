@@ -1,0 +1,11 @@
+---
+import UnOptimizedPage from '@components/templates/UnOptimizedPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'da/unoptimized');
+if (!entry) throw new Error('Could not find content for da/unoptimized');
+---
+
+<UnOptimizedPage lang="da" content={entry.data} />
