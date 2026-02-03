@@ -1,0 +1,46 @@
+{
+    "title": "Min Tænketank | Anton Ebsen",
+    "description": "Hvordan jeg organiserer min viden, de værktøjer jeg bruger, og min filosofi bag læring.",
+    "hero": {
+        "eyebrow": "Knowledge System",
+        "title": "Min Tænketank",
+        "text": "At håndtere kompleks information kræver et system. Her er de værktøjer og metoder, jeg bruger til at forbinde prikkerne."
+    },
+    "sections": [
+        {
+            "title": "Det Digitale Økosystem",
+            "items": [
+                {
+                    "title": "Obsidian",
+                    "desc": "Mit 'andet hjerne'. Her bor mine atomiske noter og forbindelser mellem økonomiske teorier og kode-snippets.",
+                    "icon": "fa-solid fa-brain"
+                },
+                {
+                    "title": "Readwise / Reader",
+                    "desc": "Indgangen til alt digitalt læsestof. Højdepunkter fra artikler og bøger synkroniseres automatisk til Obsidian.",
+                    "icon": "fa-solid fa-book-open-reader"
+                },
+                {
+                    "title": "Notion",
+                    "desc": "Brugt til projektstyring og overordnede mål. Her planlægger jeg min tid og holder styr på mine leverancer.",
+                    "icon": "fa-solid fa-layer-group"
+                }
+            ]
+        },
+        {
+            "title": "Metode & Filosofi",
+            "items": [
+                {
+                    "title": "Zettelkasten",
+                    "desc": "Jeg tror på at viden skal være som et netværk, ikke mapper. Hver note skal være lille og forbindes til andre.",
+                    "icon": "fa-solid fa-diagram-project"
+                },
+                {
+                    "title": "Progressiv opsummering",
+                    "desc": "Jeg gennemgår mine noter i lag, så de vigtigste pointer altid træder tydeligt frem over tid.",
+                    "icon": "fa-solid fa-stairs"
+                }
+            ]
+        }
+    ]
+}

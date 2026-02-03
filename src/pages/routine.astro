@@ -1,0 +1,11 @@
+---
+import RoutinePage from '@components/templates/RoutinePage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'da/routine');
+if (!entry) throw new Error('Could not find content for da/routine');
+---
+
+<RoutinePage lang="da" content={entry.data} />

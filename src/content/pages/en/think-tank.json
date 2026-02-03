@@ -1,0 +1,46 @@
+{
+    "title": "Think Tank | Anton Ebsen",
+    "description": "How I organize my knowledge, the tools I use, and my philosophy behind learning.",
+    "hero": {
+        "eyebrow": "Knowledge System",
+        "title": "Think Tank",
+        "text": "Handling complex information requires a system. Here are the tools and methods I use to connect the dots."
+    },
+    "sections": [
+        {
+            "title": "Digital Ecosystem",
+            "items": [
+                {
+                    "title": "Obsidian",
+                    "desc": "My 'second brain'. This is where my atomic notes and connections between economic theories and code snippets live.",
+                    "icon": "fa-solid fa-brain"
+                },
+                {
+                    "title": "Readwise / Reader",
+                    "desc": "The entry point for all digital reading. Highlights from articles and books are automatically synced to Obsidian.",
+                    "icon": "fa-solid fa-book-open-reader"
+                },
+                {
+                    "title": "Notion",
+                    "desc": "Used for project management and high-level goals. This is where I plan my time and track my deliveries.",
+                    "icon": "fa-solid fa-layer-group"
+                }
+            ]
+        },
+        {
+            "title": "Method & Philosophy",
+            "items": [
+                {
+                    "title": "Zettelkasten",
+                    "desc": "I believe knowledge should be like a network, not folders. Every note should be small and connected to others.",
+                    "icon": "fa-solid fa-diagram-project"
+                },
+                {
+                    "title": "Progressive Summarization",
+                    "desc": "I review my notes in layers, so the most important points always stand out over time.",
+                    "icon": "fa-solid fa-stairs"
+                }
+            ]
+        }
+    ]
+}

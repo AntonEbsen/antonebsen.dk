@@ -1,0 +1,99 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="routine-page">
+  <style>
+    .routine-wrap {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px 48px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 48px;
+    }
+    .timeline {
+        position: relative;
+        padding-left: 2rem;
+    }
+    .timeline::before {
+        content: "";
+        position: absolute;
+        left: 0.5rem;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, var(--accent) 0%, rgba(212, 175, 55, 0.1) 100%);
+    }
+    .timeline-item {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+    .timeline-dot {
+        position: absolute;
+        left: -1.95rem;
+        top: 0.4rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 2px solid var(--accent);
+        box-shadow: 0 0 10px var(--accent);
+    }
+    .time-badge {
+        font-family: monospace;
+        background: rgba(212, 175, 55, 0.1);
+        color: var(--accent);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: inline-block;
+    }
+    .routine-icon {
+        margin-right: 10px;
+        opacity: 0.8;
+    }
+    @media (max-width: 768px) {
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="routine-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    <div class="timeline">
+        {content.schedule.map((task: any) => (
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="time-badge">{task.time}</div>
+                <Card variant="glass" class="p-6 ml-4">
+                    <h3 class="text-xl font-bold mb-2 flex items-center">
+                        <i class={`${task.icon} routine-icon`}></i>
+                        {task.title}
+                    </h3>
+                    <p class="text-dim text-sm leading-relaxed">{task.desc}</p>
+                </Card>
+            </div>
+        ))}
+    </div>
+  </main>
+</Layout>

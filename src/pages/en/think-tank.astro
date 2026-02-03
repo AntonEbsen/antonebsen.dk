@@ -1,0 +1,11 @@
+---
+import ThinkTankPage from '@components/templates/ThinkTankPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'en/think-tank');
+if (!entry) throw new Error('Could not find content for en/think-tank');
+---
+
+<ThinkTankPage lang="en" content={entry.data} />

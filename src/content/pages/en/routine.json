@@ -1,0 +1,47 @@
+{
+    "title": "Daily Routine | Anton Ebsen",
+    "description": "A visual timeline of my daily life – from morning research to evening training.",
+    "hero": {
+        "eyebrow": "Daily Timeline",
+        "title": "Daily Routine",
+        "text": "Discipline is freedom. Here's how I structure my day to get the most out of both my mind and my body."
+    },
+    "schedule": [
+        {
+            "time": "06:30",
+            "title": "Waking Up & Light",
+            "desc": "Directly outside to get sunlight in the eyes. A big cup of coffee and a quick review of the day's most important tasks.",
+            "icon": "fa-solid fa-sun"
+        },
+        {
+            "time": "07:30 - 11:30",
+            "title": "Deep Work Block #1",
+            "desc": "The hardest task first. Econometric modeling, coding, or heavy research.",
+            "icon": "fa-solid fa-brain"
+        },
+        {
+            "time": "12:00",
+            "title": "Lunch & Walk",
+            "desc": "Break from the screen. Often a walk while listening to a podcast about macroeconomics or tech.",
+            "icon": "fa-solid fa-person-walking"
+        },
+        {
+            "time": "13:00 - 16:00",
+            "title": "Deep Work Block #2 / Meetings",
+            "desc": "Second phase of work. Documentation, feedback, or project collaboration.",
+            "icon": "fa-solid fa-laptop-code"
+        },
+        {
+            "time": "16:30 - 18:30",
+            "title": "Machine Time (Gym)",
+            "desc": "Switching focus entirely to the physical. Heavy lifts and momentum.",
+            "icon": "fa-solid fa-dumbbell"
+        },
+        {
+            "time": "20:00 - 22:00",
+            "title": "Reading & Reflection",
+            "desc": "Wrapping up the day with analog reading. No screens before bedtime.",
+            "icon": "fa-solid fa-book-open"
+        }
+    ]
+}
