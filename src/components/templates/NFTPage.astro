@@ -1,0 +1,112 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="nft-page">
+  <style>
+    .nft-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 48px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 32px;
+        background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15) 0%, transparent 50%), var(--glass) !important;
+    }
+    .intro-section {
+        margin-bottom: 48px;
+    }
+    .nft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+    .nft-icon {
+        font-size: 2.2rem;
+        color: var(--accent);
+        margin-bottom: 16px;
+        filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+    }
+    .wishlist-card {
+        border-left: 4px solid var(--accent);
+    }
+    .wishlist-list {
+        list-style: none;
+        padding: 0;
+        margin: 16px 0 0;
+    }
+    .wishlist-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        color: var(--text-dim);
+    }
+    .wishlist-list li::before {
+        content: "→";
+        color: var(--accent);
+        font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="nft-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    <Section class="intro-section">
+        <Card variant="glass" class="p-8">
+            <h2 class="text-2xl font-bold mb-4">{content.intro.title}</h2>
+            <p class="text-dim leading-relaxed">{content.intro.text}</p>
+        </Card>
+    </Section>
+
+    {content.sections.map((section: any) => (
+      <Section class="mb-12">
+        <SectionHeading>{section.title}</SectionHeading>
+        <div class="nft-grid">
+          {section.items.map((item: any) => (
+            <Card variant="glass" class="p-6 transition-all duration-300 hover:border-accent/40 group">
+              <div class="nft-icon group-hover:scale-110 transition-transform">
+                <i class={item.icon}></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">{item.title}</h3>
+              <p class="text-dim text-sm leading-relaxed">{item.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    ))}
+
+    <Section>
+        <Card variant="glass" class="p-8 wishlist-card">
+            <h2 class="text-2xl font-bold mb-2">{content.wishlist.title}</h2>
+            <p class="text-dim text-sm italic mb-6 opacity-80">{content.wishlist.text}</p>
+            <ul class="wishlist-list">
+                {content.wishlist.items.map((item: string) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+        </Card>
+    </Section>
+  </main>
+</Layout>

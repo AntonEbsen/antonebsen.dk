@@ -1,0 +1,11 @@
+---
+import NFTPage from '@components/templates/NFTPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'en/nfts');
+if (!entry) throw new Error('Could not find content for en/nfts');
+---
+
+<NFTPage lang="en" content={entry.data} />
