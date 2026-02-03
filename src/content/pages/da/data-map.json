@@ -1,0 +1,39 @@
+{
+    "title": "Data Resource Map | Anton Ebsen",
+    "description": "En guide til de vigtigste økonomiske datakilder og hvordan man tilgår dem via API.",
+    "hero": {
+        "eyebrow": "Data Intelligence",
+        "title": "Data Resource Map",
+        "text": "Et kurateret overblik over de datakilder, jeg bruger til makroøkonomisk analyse, samt tekniske tips til effektiv dataindsamling."
+    },
+    "sources": [
+        {
+            "name": "Danmarks Statistik (DST)",
+            "desc": "Guldgrubem af danske makrodata. Jeg bruger deres API flittigt til automatiske træk af prisindeks og nationalregnskab.",
+            "tip": "Brug 'Statistikbanken' API v1 til tidsrækker — det er mest stabilt til Python integration.",
+            "url": "https://www.dst.dk"
+        },
+        {
+            "name": "FRED (Federal Reserve Economic Data)",
+            "desc": "Essentielt for amerikansk og global økonomisk data. Stort set alt fra renter til arbejdsmarkedsstatistikker.",
+            "tip": "Python-biblioteket 'fredapi' er genialt og sparer dig for at skrive rå requests.",
+            "url": "https://fred.stlouisfed.org"
+        },
+        {
+            "name": "ECB Statistical Data Warehouse (SDW)",
+            "desc": "Den primære kilde til euro-områdets monetære og finansielle statistik.",
+            "tip": "Deres SDMX-format kan være komplekst; brug Pandas' SDMX-reader til at parse data korrekt.",
+            "url": "https://sdw.ecb.europa.eu"
+        },
+        {
+            "name": "OECD Data",
+            "desc": "Fantastisk til internationale sammenligninger af velfærd, uddannelse og økonomiske nøgletal.",
+            "url": "https://data.oecd.org"
+        },
+        {
+            "name": "BIS (Bank for International Settlements)",
+            "desc": "Den bedste kilde til bank-statistikker, effektive valutakurser og global likviditet.",
+            "url": "https://www.bis.org/statistics"
+        }
+    ]
+}

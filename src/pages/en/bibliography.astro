@@ -1,0 +1,11 @@
+---
+import BibliographyPage from '@components/templates/BibliographyPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'en/bibliography');
+if (!entry) throw new Error('Could not find content for en/bibliography');
+---
+
+<BibliographyPage lang="en" content={entry.data} />

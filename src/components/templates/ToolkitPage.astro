@@ -1,0 +1,81 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="toolkit-page">
+  <style>
+    .toolkit-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 32px;
+    }
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .tool-section {
+        margin-bottom: 48px;
+    }
+    .tool-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .tool-icon {
+        font-size: 1.5rem;
+        color: var(--accent);
+        margin-bottom: 12px;
+    }
+    @media (max-width: 768px) {
+      .toolkit-grid { grid-template-columns: 1fr; }
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="toolkit-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    {content.sections.map((section: any) => (
+      <Section class="tool-section">
+        <SectionHeading>{section.title}</SectionHeading>
+        <div class="tool-items">
+          {section.items.map((item: any) => (
+            <Card variant="glass" class="p-6">
+              <div class="tool-icon">
+                <i class={item.icon}></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">{item.title}</h3>
+              <p class="text-dim text-sm leading-relaxed">{item.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    ))}
+
+    <Section>
+      <ContactCard />
+    </Section>
+  </main>
+</Layout>

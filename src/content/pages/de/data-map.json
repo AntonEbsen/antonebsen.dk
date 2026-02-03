@@ -1,0 +1,39 @@
+{
+    "title": "Data Resource Map | Anton Ebsen",
+    "description": "Ein Leitfaden zu den wichtigsten wirtschaftlichen Datenquellen und deren Zugriff über APIs.",
+    "hero": {
+        "eyebrow": "Data Intelligence",
+        "title": "Data Resource Map",
+        "text": "Ein kuratierter Überblick über die Datenquellen, die ich für makroökonomische Analysen nutze, sowie technische Tipps für eine effiziente Datenerhebung."
+    },
+    "sources": [
+        {
+            "name": "Statistics Denmark (DST)",
+            "desc": "Die Goldgrube für dänische Makrodaten. Ich nutze deren API häufig für den automatisierten Abruf von Preisindizes und Volkswirtschaftlichen Gesamtrechnungen.",
+            "tip": "Nutzen Sie die 'Statistikbanken' API v1 für Zeitreihen — sie ist am stabilsten für die Python-Integration.",
+            "url": "https://www.dst.dk"
+        },
+        {
+            "name": "FRED (Federal Reserve Economic Data)",
+            "desc": "Unerlässlich für US- und globale Wirtschaftsdaten. Deckt fast alles ab, von Zinssätzen til Arbeitsmarktstatistiken.",
+            "tip": "Die Python-Bibliothek 'fredapi' ist exzellent und erspart das Schreiben von Roh-Requests.",
+            "url": "https://fred.stlouisfed.org"
+        },
+        {
+            "name": "ECB Statistical Data Warehouse (SDW)",
+            "desc": "Die primäre Quelle für monetäre und finanzielle Statistiken des Euroraums.",
+            "tip": "Das SDMX-Format kann komplex sein; nutzen Sie den Pandas SDMX-Reader, um Daten korrekt zu parsen.",
+            "url": "https://sdw.ecb.europa.eu"
+        },
+        {
+            "name": "OECD Data",
+            "desc": "Fantastisch für internationale Vergleiche von Wohlergehen, Bildung und Wirtschaftsindikatoren.",
+            "url": "https://data.oecd.org"
+        },
+        {
+            "name": "BIS (Bank für Internationalen Zahlungsausgleich)",
+            "desc": "Die beste Quelle für Bankenstatistiken, effektive Wechselkurse und globale Liquidität.",
+            "url": "https://www.bis.org/statistics"
+        }
+    ]
+}

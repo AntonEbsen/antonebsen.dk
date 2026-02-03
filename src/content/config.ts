@@ -87,7 +87,7 @@ export const collections = {
                     alt: z.string()
                 }).optional()
             }).passthrough().optional(),
-            sections: z.record(z.any()).optional(),
+            sections: z.union([z.record(z.any()), z.array(z.any())]).optional(),
             roles: z.any().optional(),
             contact: z.any().optional(),
             ui: z.any().optional(),

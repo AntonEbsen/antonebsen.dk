@@ -1,0 +1,39 @@
+{
+    "title": "Data Resource Map | Anton Ebsen",
+    "description": "A guide to the most important economic data sources and how to access them via API.",
+    "hero": {
+        "eyebrow": "Data Intelligence",
+        "title": "Data Resource Map",
+        "text": "A curated overview of the data sources I use for macroeconomic analysis, along with technical tips for efficient data collection."
+    },
+    "sources": [
+        {
+            "name": "Statistics Denmark (DST)",
+            "desc": "The gold mine of Danish macro data. I frequently use their API for automated retrieval of price indices and national accounts.",
+            "tip": "Use the 'Statistikbanken' API v1 for time series — it's the most stable for Python integration.",
+            "url": "https://www.dst.dk"
+        },
+        {
+            "name": "FRED (Federal Reserve Economic Data)",
+            "desc": "Essential for US and global economic data. Covers almost everything from interest rates to labor market statistics.",
+            "tip": "The 'fredapi' Python library is excellent and saves you from writing raw requests.",
+            "url": "https://fred.stlouisfed.org"
+        },
+        {
+            "name": "ECB Statistical Data Warehouse (SDW)",
+            "desc": "The primary source for monetary and financial statistics of the Euro area.",
+            "tip": "Their SDMX format can be complex; use the Pandas SDMX reader to parse data correctly.",
+            "url": "https://sdw.ecb.europa.eu"
+        },
+        {
+            "name": "OECD Data",
+            "desc": "Fantastic for international comparisons of well-being, education, and economic indicators.",
+            "url": "https://data.oecd.org"
+        },
+        {
+            "name": "BIS (Bank for International Settlements)",
+            "desc": "The best source for banking statistics, effective exchange rates, and global liquidity.",
+            "url": "https://www.bis.org/statistics"
+        }
+    ]
+}

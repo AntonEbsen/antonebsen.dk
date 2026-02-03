@@ -89,6 +89,9 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/portfolio',
             children: [
                 { label: 'Projekter', url: '/portfolio' },
+                { label: 'Economic Toolkit', url: '/toolkit' },
+                { label: 'Bibliography', url: '/bibliography' },
+                { label: 'Data Resource Map', url: '/data-map' },
                 { label: 'Downloads', url: '/resources' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -123,6 +126,9 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/en/portfolio',
             children: [
                 { label: 'Projects', url: '/en/portfolio' },
+                { label: 'Economic Toolkit', url: '/en/toolkit' },
+                { label: 'Bibliography', url: '/en/bibliography' },
+                { label: 'Data Resource Map', url: '/en/data-map' },
                 { label: 'Downloads', url: '/en/resources' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -157,6 +163,9 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/de/portfolio',
             children: [
                 { label: 'Projekte', url: '/de/portfolio' },
+                { label: 'Economic Toolkit', url: '/de/toolkit' },
+                { label: 'Bibliografie', url: '/de/bibliography' },
+                { label: 'Data Resource Map', url: '/de/data-map' },
                 { label: 'Downloads', url: '/de/resources' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]

@@ -1,0 +1,11 @@
+---
+import DataMapPage from '@components/templates/DataMapPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'da/data-map');
+if (!entry) throw new Error('Could not find content for da/data-map');
+---
+
+<DataMapPage lang="da" content={entry.data} />

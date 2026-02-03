@@ -1,0 +1,51 @@
+{
+    "title": "Economic Toolkit | Anton Ebsen",
+    "description": "Min tekniske stak og værktøjer til økonomisk analyse og reproducerbar forskning.",
+    "hero": {
+        "eyebrow": "Teknisk Stack",
+        "title": "Economic Toolkit",
+        "text": "Her er en dybdegående gennemgang af de værktøjer og biblioteker, jeg bruger til økonometrisk modellering, data engineering og reproducerbar videnskab."
+    },
+    "sections": [
+        {
+            "title": "Programmering & Økonometri",
+            "items": [
+                {
+                    "title": "Python (Core Stack)",
+                    "desc": "Min primære maskinstue. Jeg bruger Pandas til data-wrangling, NumPy til numeriske beregninger og Matplotlib/Seaborn/Plotly til visualisering.",
+                    "icon": "fa-brands fa-python"
+                },
+                {
+                    "title": "Økonometriske biblioteker",
+                    "desc": "Erfaring med Statsmodels (regression, tidsrækker), Linearmodels (paneldata) og Scikit-learn til prædiktiv modellering.",
+                    "icon": "fa-solid fa-microchip"
+                },
+                {
+                    "title": "Andre værktøjer",
+                    "desc": "Solid erfaring med SQL til database-udtræk, samt kendskab til R (Tidyverse) og SAS/Stata fra akademiske projekter.",
+                    "icon": "fa-solid fa-database"
+                }
+            ]
+        },
+        {
+            "title": "Reproducerbar Analyse",
+            "items": [
+                {
+                    "title": "LaTeX & Typografi",
+                    "desc": "Alle mine akademiske rapporter skrives i LaTeX for at sikre præcis formatering af matematiske udtryk og referencer.",
+                    "icon": "fa-solid fa-file-pdf"
+                },
+                {
+                    "title": "Git & Versionsstyring",
+                    "desc": "Brug af Git og GitHub til at sikre fuld sporbarhed i kode og analyser. Erfaring med branching strategier og CI/CD.",
+                    "icon": "fa-brands fa-github"
+                },
+                {
+                    "title": "Notebooks & Dokumentation",
+                    "desc": "Interaktive Jupyter Notebooks til eksplorativ analyse og Quarto/Markdown til dokumentation.",
+                    "icon": "fa-solid fa-book-open"
+                }
+            ]
+        }
+    ]
+}

@@ -94,8 +94,15 @@
           "additionalProperties": true
         },
         "sections": {
-          "type": "object",
-          "additionalProperties": {}
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": {}
+            },
+            {
+              "type": "array"
+            }
+          ]
         },
         "roles": {},
         "contact": {},

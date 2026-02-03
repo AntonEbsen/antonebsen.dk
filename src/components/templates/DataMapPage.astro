@@ -1,0 +1,82 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+  content: any;
+}
+
+const { lang, content } = Astro.props;
+---
+
+<Layout title={content.title} description={content.description} bodyClass="datamap-page">
+  <style>
+    .datamap-wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+    .hero-card {
+        padding: 48px;
+        margin-bottom: 32px;
+    }
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 20px;
+    }
+    .tip-box {
+        margin-top: 16px;
+        padding: 12px;
+        background: rgba(var(--accent-rgb), 0.1);
+        border-left: 3px solid var(--accent);
+        border-radius: 4px;
+        font-size: 0.85rem;
+    }
+    @media (max-width: 768px) {
+      .source-grid { grid-template-columns: 1fr; }
+      .hero-card { padding: 32px 24px; }
+    }
+  </style>
+
+  <main class="datamap-wrap">
+    <Section>
+      <Card variant="glass" class="hero-card">
+        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
+        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
+        <p class="text-lg text-dim max-w-2xl">{content.hero.text}</p>
+      </Card>
+    </Section>
+
+    <Section>
+        <div class="source-grid">
+            {content.sources.map((source: any) => (
+                <Card variant="glass" class="p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-2xl font-bold">{source.name}</h2>
+                            <a href={source.url} target="_blank" rel="noopener" class="text-accent hover:opacity-80">
+                                <i class="fa-solid fa-external-link text-sm"></i>
+                            </a>
+                        </div>
+                        <p class="text-dim text-sm mb-4">{source.desc}</p>
+                    </div>
+                    {source.tip && (
+                        <div class="tip-box">
+                            <span class="font-bold text-accent">Pro-tip:</span> {source.tip}
+                        </div>
+                    )}
+                </Card>
+            ))}
+        </div>
+    </Section>
+
+    <Section>
+      <ContactCard />
+    </Section>
+  </main>
+</Layout>

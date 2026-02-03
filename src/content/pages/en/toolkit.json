@@ -1,0 +1,51 @@
+{
+    "title": "Economic Toolkit | Anton Ebsen",
+    "description": "My technical stack and tools for economic analysis and reproducible research.",
+    "hero": {
+        "eyebrow": "Technical Stack",
+        "title": "Economic Toolkit",
+        "text": "Detailed overview of the tools and libraries I use for econometric modeling, data engineering, and reproducible science."
+    },
+    "sections": [
+        {
+            "title": "Programming & Econometrics",
+            "items": [
+                {
+                    "title": "Python (Core Stack)",
+                    "desc": "My primary environment. I use Pandas for data wrangling, NumPy for numerical computation, and Matplotlib/Seaborn/Plotly for visualization.",
+                    "icon": "fa-brands fa-python"
+                },
+                {
+                    "title": "Econometric Libraries",
+                    "desc": "Experience with Statsmodels (regression, time series), Linearmodels (panel data), and Scikit-learn for predictive modeling.",
+                    "icon": "fa-solid fa-microchip"
+                },
+                {
+                    "title": "Other Tools",
+                    "desc": "Solid experience with SQL for database extraction, as well as knowledge of R (Tidyverse) and SAS/Stata from academic projects.",
+                    "icon": "fa-solid fa-database"
+                }
+            ]
+        },
+        {
+            "title": "Reproducible Analysis",
+            "items": [
+                {
+                    "title": "LaTeX & Typography",
+                    "desc": "All my academic reports are written in LaTeX to ensure precise formatting of mathematical expressions and references.",
+                    "icon": "fa-solid fa-file-pdf"
+                },
+                {
+                    "title": "Git & Version Control",
+                    "desc": "Using Git and GitHub to ensure full traceability in code and analysis. Experience with branching strategies and CI/CD.",
+                    "icon": "fa-brands fa-github"
+                },
+                {
+                    "title": "Notebooks & Documentation",
+                    "desc": "Interactive Jupyter Notebooks for exploratory analysis and Quarto/Markdown for documentation.",
+                    "icon": "fa-solid fa-book-open"
+                }
+            ]
+        }
+    ]
+}

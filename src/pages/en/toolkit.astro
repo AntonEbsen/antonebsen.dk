@@ -1,0 +1,11 @@
+---
+import ToolkitPage from '@components/templates/ToolkitPage.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const entry = await getEntry('pages', 'en/toolkit');
+if (!entry) throw new Error('Could not find content for en/toolkit');
+---
+
+<ToolkitPage lang="en" content={entry.data} />

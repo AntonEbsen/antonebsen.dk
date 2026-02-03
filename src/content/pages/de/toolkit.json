@@ -1,0 +1,51 @@
+{
+    "title": "Economic Toolkit | Anton Ebsen",
+    "description": "Mein technischer Stack und Werkzeuge für wirtschaftliche Analyse und reproduzierbare Forschung.",
+    "hero": {
+        "eyebrow": "Technischer Stack",
+        "title": "Economic Toolkit",
+        "text": "Detaillierter Überblick über die Werkzeuge und Bibliotheken, die ich für ökonometrische Modellierung, Data Engineering und reproduzierbare Wissenschaft nutze."
+    },
+    "sections": [
+        {
+            "title": "Programmierung & Ökonometrie",
+            "items": [
+                {
+                    "title": "Python (Core Stack)",
+                    "desc": "Meine primäre Umgebung. Ich nutze Pandas für Data-Wrangling, NumPy für numerische Berechnungen und Matplotlib/Seaborn/Plotly für Visualisierungen.",
+                    "icon": "fa-brands fa-python"
+                },
+                {
+                    "title": "Ökonometrische Bibliotheken",
+                    "desc": "Erfahrung mit Statsmodels (Regression, Zeitreihen), Linearmodels (Paneldaten) und Scikit-learn für prädiktive Modellierung.",
+                    "icon": "fa-solid fa-microchip"
+                },
+                {
+                    "title": "Andere Werkzeuge",
+                    "desc": "Solide Erfahrung mit SQL für Datenbank-Abfragen, sowie Kenntnisse in R (Tidyverse) und SAS/Stata aus akademischen Projekten.",
+                    "icon": "fa-solid fa-database"
+                }
+            ]
+        },
+        {
+            "title": "Reproduzierbare Analyse",
+            "items": [
+                {
+                    "title": "LaTeX & Typografie",
+                    "desc": "Alle meine akademischen Berichte werden in LaTeX verfasst, um eine präzise Formatierung mathematischer Ausdrücke und Referenzen zu gewährleisten.",
+                    "icon": "fa-solid fa-file-pdf"
+                },
+                {
+                    "title": "Git & Versionsverwaltung",
+                    "desc": "Nutzung von Git und GitHub zur Sicherstellung der vollen Nachvollziehbarkeit von Code und Analysen. Erfahrung mit Branching-Strategien und CI/CD.",
+                    "icon": "fa-brands fa-github"
+                },
+                {
+                    "title": "Notebooks & Dokumentation",
+                    "desc": "Interaktive Jupyter Notebooks für explorative Analysen und Quarto/Markdown für Dokumentationen.",
+                    "icon": "fa-solid fa-book-open"
+                }
+            ]
+        }
+    ]
+}
