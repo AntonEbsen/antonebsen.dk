@@ -89,7 +89,6 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/portfolio',
             children: [
                 { label: 'Projekter', url: '/portfolio' },
-                { label: 'Projekt-cases', url: '/cases' },
                 { label: 'Downloads', url: '/resources' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -124,7 +123,6 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/en/portfolio',
             children: [
                 { label: 'Projects', url: '/en/portfolio' },
-                { label: 'Case Studies', url: '/en/cases' },
                 { label: 'Downloads', url: '/en/resources' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
@@ -159,7 +157,6 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/de/portfolio',
             children: [
                 { label: 'Projekte', url: '/de/portfolio' },
-                { label: 'Fallbeispiele', url: '/de/cases' },
                 { label: 'Downloads', url: '/de/resources' },
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]

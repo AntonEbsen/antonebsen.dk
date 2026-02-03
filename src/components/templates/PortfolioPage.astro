@@ -26,16 +26,92 @@ if (!entry) {
 
 const content: any = entry.data;
 
+// Hardcoded Cases (now called Projects)
+const hardcodedProjects = {
+  da: [
+        {
+            id: "case-gfc",
+            title: "Global Financial Cycle & spillovers fra US pengepolitik",
+            pill: "Empirisk makro",
+            desc: "(Bachelorprojekt) Undersøgelse af hvordan amerikansk pengepolitik påvirker globale finansielle forhold.",
+            url: "/cases", // Keeping link for now or just info
+            tags: ["Empirisk makro", "US Pengepolitik", "SVAR"]
+        },
+        {
+            id: "case-ecb",
+            title: "One Rule to Rule Them All? ECB Taylor Rules",
+            pill: "Monetær økonomi",
+            desc: "(Seminarprojekt) Analyse af asymmetriske effekter af ECB's pengepolitik via Taylor-regler og GMM.",
+            tags: ["Monetær økonomi", "Taylor-regler", "GMM"]
+        },
+        {
+            id: "case-rd",
+            title: "Valutakursdynamik – Inflation & Relative Kurser",
+            pill: "Anvendt Dataanalyse",
+            desc: "Eksplorativ analyse af sammenhængen mellem dansk inflation og hovedvalutaer (EUR, USD, CNY).",
+            tags: ["Dataanalyse", "Inflation", "DST API"]
+        }
+  ],
+  en: [
+        {
+            id: "case-gfc",
+            title: "Global Financial Cycle & Spillovers from US Monetary Policy",
+            pill: "Empirical Macro",
+            desc: "(Bachelor's Project) Investigation of how US monetary policy affects global financial conditions.",
+            tags: ["Empirical Macro", "US Monetary Policy", "SVAR"]
+        },
+        {
+            id: "case-ecb",
+            title: "One Rule to Rule Them All? ECB Taylor Rules",
+            pill: "Monetary Economics",
+            desc: "(Seminar Paper) Analysis of asymmetric effects of ECB monetary policy via Taylor rules and GMM.",
+            tags: ["Monetary Economics", "Taylor Rules", "GMM"]
+        },
+        {
+            id: "case-erd",
+            title: "Exchange Rate Dynamics – Inflation & Relative Rates",
+            pill: "Applied Data Analysis",
+            desc: "Exploratory analysis of the relationship between Danish inflation and major currencies.",
+            tags: ["Data Analysis", "Inflation", "DST API"]
+        }
+  ],
+  de: [
+        {
+            id: "case-gfc",
+            title: "Globaler Finanzzyklus & Spillovers der US-Geldpolitik",
+            pill: "Empirische Makroökonomik",
+            desc: "(Bachelorarbeit) Untersuchung, wie die US-Geldpolitik globale Finanzbedingungen beeinflusst.",
+            tags: ["Empirische Makro", "US-Geldpolitik", "SVAR"]
+        },
+        {
+            id: "case-ecb",
+            title: "EZB-Taylor-Regeln: One Rule to Rule Them All?",
+            pill: "Monetäre Außenwirtschaft",
+            desc: "(Seminararbeit) Analyse asymmetrischer Effekte der EZB-Geldpolitik über Taylor-Regeln.",
+            tags: ["Geldpolitik", "Taylor-Regeln", "GMM"]
+        },
+        {
+            id: "case-erd",
+            title: "Wechselkursdynamik – Inflation & relative Kurse",
+            pill: "Angewandte Datenanalyse",
+            desc: "Explorative Analyse des Zusammenhangs zwischen dänischer Inflation und Hauptwährungen.",
+            tags: ["Datenanalyse", "Inflation", "DST API"]
+        }
+  ]
+};
+
+const featuredProjects = hardcodedProjects[lang] || hardcodedProjects.da;
+
 // Supabase Data Fetching
-// Client imported from @lib/supabase
-let projects = [];
+let supabaseProjects = [];
 if (supabase) {
   const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-  if (!error && data) projects = data;
+  if (!error && data) supabaseProjects = data;
 }
 
-// Helper to determine link URL (English vs Danish)
-const cvLink = lang === 'en' ? '/en/cv' : '/cv';
+const cvLink = lang === 'en' ? '/en/cv' : lang === 'de' ? '/de/cv' : '/cv';
+const projectsLabel = lang === 'da' ? 'Udvalgte Projekter' : lang === 'de' ? 'Ausgewählte Projekte' : 'Featured Projects';
+const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? 'Andere Projekte' : 'Other Projects';
 ---
 
 <Layout 
@@ -62,7 +138,7 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
-      margin-bottom: 14px;
+      margin-bottom: 32px;
     }
 
     @media (max-width: 980px) {
@@ -109,16 +185,35 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
         </div>
       </Section>
   
-      <!-- PROJECT GRID -->
+      <!-- FEATURED PROJECTS (Hardcoded cases) -->
       <Section>
+        <SectionHeading>{projectsLabel}</SectionHeading>
         <div class="projects-grid">
-          {projects?.map((p: any) => (
+          {featuredProjects.map((p) => (
+            <ProjectCard
+              title={p.title}
+              tagString={p.tags.join(' · ')}
+              description={p.desc}
+              tools={[]}
+              output={content.ui.featured}
+              links={p.url ? [{ text: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
+              lang={lang}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <!-- OTHER PROJECTS (Supabase) -->
+      <Section>
+        <SectionHeading>{otherProjectsLabel}</SectionHeading>
+        <div class="projects-grid">
+          {supabaseProjects?.map((p: any) => (
             <ProjectCard
               title={p.title}
               tagString={p.tags ? p.tags.join(' · ') : ''}
               description={p.description}
               tools={[]}
-              output={p.featured ? content.ui.featured : content.ui.project}
+              output={content.ui.project}
               links={p.url ? [{ text: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
               lang={lang}
             />
@@ -126,46 +221,28 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
         </div>
       </Section>
   
-      <!-- DEEP DIVES -->
+      <!-- DISCOVERY (Cleaned) -->
       <Section id="discovery">
         <DiscoveryGrid 
-          title={lang === 'da' ? 'Protokoller & Arkiv' : 'Protocols & Archive'}
+          title={lang === 'da' ? 'Ressourcer' : lang === 'de' ? 'Ressourcen' : 'Resources'}
           items={[
             { 
-                label: lang === 'da' ? 'Projekt-cases' : 'Case Studies', 
-                url: lang === 'da' ? '/cases' : '/en/cases', 
-                icon: 'fa-folder-open', 
-                description: lang === 'da' ? 'Dybdegående gennemgang' : "In-depth reviews"
-            },
-            { 
-                label: lang === 'da' ? 'Downloads' : 'Resources', 
-                url: lang === 'da' ? '/resources' : '/en/resources', 
+                label: lang === 'da' ? 'Downloads' : lang === 'de' ? 'Downloads' : 'Resources', 
+                url: lang === 'da' ? '/resources' : lang === 'de' ? '/de/resources' : '/en/resources', 
                 icon: 'fa-download', 
-                description: lang === 'da' ? 'Templates og værktøjer' : "Templates and tools"
+                description: lang === 'da' ? 'Templates og værktøjer' : lang === 'de' ? 'Vorlagen und Tools' : "Templates and tools"
             },
             { 
-                label: lang === 'da' ? 'API Protokol' : 'API Protocol', 
-                url: lang === 'da' ? '/api-docs' : '/en/api-docs', 
-                icon: 'fa-code', 
-                description: lang === 'da' ? 'Teknisk dokumentation' : "Technical documentation"
+                label: lang === 'da' ? 'GitHub' : 'GitHub', 
+                url: 'https://github.com/AntonEbsen', 
+                icon: 'fa-brands fa-github', 
+                description: lang === 'da' ? 'Se min kildekode' : lang === 'de' ? 'Meinen Quellcode ansehen' : "View my source code"
             },
             { 
-                label: lang === 'da' ? 'Mit Setup' : 'My Setup', 
-                url: lang === 'da' ? '/uses' : '/en/uses', 
-                icon: 'fa-laptop-code', 
-                description: lang === 'da' ? 'Soft- og hardware' : "Software and hardware"
-            },
-            { 
-                label: lang === 'da' ? 'Sundhed' : 'Health', 
-                url: lang === 'da' ? '/health' : '/en/health', 
-                icon: 'fa-heart-pulse', 
-                description: lang === 'da' ? 'Min sundhedsprotokol' : "My health protocol"
-            },
-            { 
-                label: lang === 'da' ? 'Omtale' : 'Media', 
-                url: lang === 'da' ? '/media' : '/en/media', 
-                icon: 'fa-newspaper', 
-                description: lang === 'da' ? 'Presse og omtale' : "Press and mentions"
+                label: lang === 'da' ? 'Milepæle' : lang === 'de' ? 'Meilensteine' : 'Milestones', 
+                url: lang === 'da' ? '/timeline' : lang === 'de' ? '/de/timeline' : '/en/timeline', 
+                icon: 'fa-timeline', 
+                description: lang === 'da' ? 'Min faglige rejse' : lang === 'de' ? 'Meine berufliche Reise' : "My professional journey"
             }
           ]}
         />
