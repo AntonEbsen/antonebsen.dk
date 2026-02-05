@@ -160,6 +160,14 @@
               "description": {
                 "type": "string"
               },
+              "level": {
+                "type": "string",
+                "enum": [
+                  "master",
+                  "bachelor",
+                  "hhx"
+                ]
+              },
               "grade": {
                 "type": "string"
               },

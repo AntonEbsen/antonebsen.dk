@@ -126,6 +126,7 @@
             "tag": "Makro",
             "institution": "KU",
             "description": "Metoder: identifikation, impulssvar, robusthed. Værktøj: (SAS/Stata/Python).",
+            "level": "master",
             "grade": "10",
             "syllabus": [
                 "SVAR Identifikation",
@@ -163,6 +164,7 @@
             "tag": "Coding",
             "institution": "KU",
             "description": "Numerik, model-simulering og basale workflows. Værktøj: Python/MATLAB.",
+            "level": "bachelor",
             "grade": "10",
             "syllabus": [
                 "Optimering",
@@ -194,6 +196,7 @@
             "tag": "Modeller",
             "institution": "KU",
             "description": "Kalibrering, SAM, stød, baseline checks. Værktøj: GAMS.",
+            "level": "master",
             "grade": "10",
             "syllabus": [
                 "CGE Equilibrium",
@@ -212,6 +215,22 @@
                     "icon": "fa-folder-open"
                 }
             ]
+        },
+        {
+            "title": "International Økonomi A",
+            "tag": "Samfund",
+            "institution": "HHX",
+            "level": "hhx",
+            "description": "Fokus på handelsbalance, konkurrenceevne og makroøkonomiske sammenhænge.",
+            "grade": "10"
+        },
+        {
+            "title": "Virksomhedsøkonomi A",
+            "tag": "Business",
+            "institution": "HHX",
+            "level": "hhx",
+            "description": "Regnskabsanalyse, budgettering og investeringsteori.",
+            "grade": "10"
         }
     ],
     "projects": [

@@ -26,9 +26,13 @@ const cvEntry = await getEntry('cv', lang);
 if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
 const cv = cvEntry.data;
 
-// Separate courses into Uni and Other
-const uniCourses = cv.courses.filter(c => c.institution.includes("Copenhagen") || c.institution.includes("Københavns Universitet") || c.institution === "UCPH" || c.institution === "KU");
-const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
+// Separate courses by level
+const masters = cv.courses?.filter(c => c.level === 'master') || [];
+const bachelors = cv.courses?.filter(c => c.level === 'bachelor') || [];
+const hhx = cv.courses?.filter(c => c.level === 'hhx') || [];
+
+// Fallback for uncategorized courses (e.g. un-leveled "other" courses from old data)
+const others = cv.courses?.filter(c => !c.level) || [];
 ---
 
 <Layout 
@@ -76,8 +80,9 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
           </p>
   
           <div class="flex flex-wrap gap-3">
-            <Button href="#university">{content.hero.buttons.uni}</Button>
-            <Button href="#programming" variant="ghost">{content.hero.buttons.prog}</Button>
+            <Button href="#masters">{isDa ? 'Kandidat' : 'Masters'}</Button>
+            <Button href="#bachelor" variant="ghost">{isDa ? 'Bachelor' : 'Bachelor'}</Button>
+            <Button href="#hhx" variant="ghost">HHX</Button>
           </div>
         </Card>
   
@@ -92,28 +97,58 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
       </div>
     </Section>
 
-    <Section id="university">
+    {/* MASTERS SECTION */}
+    <Section id="masters">
        <Card variant="default" class="p-6">
-         <SectionHeading>{content.grid?.university?.title}</SectionHeading>
+         <SectionHeading>{isDa ? 'Kandidat (MSc)' : 'Master\'s Degree'}</SectionHeading>
          <div class="courses-grid">
-           {uniCourses.map((course: any) => (
+           {masters.map((course: any) => (
               <CourseCard {...course} />
            ))}
-           {uniCourses.length === 0 && <p class="text-dim text-sm italic">{content.grid?.university?.empty}</p>}
+           {masters.length === 0 && <p class="text-dim text-sm italic">Coming soon...</p>}
          </div>
        </Card>
     </Section>
 
-    <Section id="programming">
+    {/* BACHELOR SECTION */}
+    <Section id="bachelor">
        <Card variant="bordered" class="p-6">
-         <SectionHeading>{content.grid?.programming?.title}</SectionHeading>
+         <SectionHeading>{isDa ? 'Bachelor (BSc)' : 'Bachelor\'s Degree'}</SectionHeading>
          <div class="courses-grid">
-           {otherCourses.map((course: any) => (
+           {bachelors.map((course: any) => (
               <CourseCard {...course} />
            ))}
+           {bachelors.length === 0 && <p class="text-dim text-sm italic">Coming soon...</p>}
          </div>
        </Card>
     </Section>
+
+    {/* HHX SECTION */}
+    <Section id="hhx">
+       <Card variant="bordered" class="p-6">
+         <SectionHeading>HHX</SectionHeading>
+         <div class="courses-grid">
+           {hhx.map((course: any) => (
+              <CourseCard {...course} />
+           ))}
+           {hhx.length === 0 && <p class="text-dim text-sm italic">Coming soon...</p>}
+         </div>
+       </Card>
+    </Section>
+
+    {/* OTHERS (if any) */}
+    {others.length > 0 && (
+        <Section id="other">
+           <Card variant="bordered" class="p-6">
+             <SectionHeading>{isDa ? 'Andet' : 'Other'}</SectionHeading>
+             <div class="courses-grid">
+               {others.map((course: any) => (
+                  <CourseCard {...course} />
+               ))}
+             </div>
+           </Card>
+        </Section>
+    )}
 
     <Section>
       <ContactCard 

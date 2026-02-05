@@ -183,6 +183,7 @@ export const collections = {
                 tag: z.string(),
                 institution: z.string(),
                 description: z.string(),
+                level: z.enum(['master', 'bachelor', 'hhx']).optional(), // Added for sectioning
                 grade: z.string().optional(), // Added for "10", "12", etc.
                 syllabus: z.array(z.string()).optional(), // For "Deep Dive"
                 verifiedSkills: z.array(z.string()).optional(), // For "Verified Skills"

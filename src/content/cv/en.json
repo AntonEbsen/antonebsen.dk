@@ -126,6 +126,7 @@
             "tag": "Macro",
             "institution": "UCPH",
             "description": "Methods: identification, impulse responses, robustness. Tools: (SAS/Stata/Python).",
+            "level": "master",
             "grade": "10",
             "syllabus": [
                 "SVAR Identification",
@@ -163,6 +164,7 @@
             "tag": "Coding",
             "institution": "UCPH",
             "description": "Numerics, model simulation, and basic workflows. Tools: Python/MATLAB.",
+            "level": "bachelor",
             "grade": "10",
             "syllabus": [
                 "Optimization",
@@ -194,6 +196,7 @@
             "tag": "Models",
             "institution": "UCPH",
             "description": "Calibration, SAM, shocks, baseline checks. Tool: GAMS.",
+            "level": "master",
             "grade": "10",
             "syllabus": [
                 "CGE Equilibrium",
@@ -212,6 +215,22 @@
                     "icon": "fa-folder-open"
                 }
             ]
+        },
+        {
+            "title": "International Economics A",
+            "tag": "Society",
+            "institution": "HHX",
+            "level": "hhx",
+            "description": "Focus on trade balance, competitiveness, and macroeconomic relationships.",
+            "grade": "10"
+        },
+        {
+            "title": "Business Economics A",
+            "tag": "Business",
+            "institution": "HHX",
+            "level": "hhx",
+            "description": "Financial analysis, budgeting, and investment theory.",
+            "grade": "10"
         }
     ],
     "projects": [
