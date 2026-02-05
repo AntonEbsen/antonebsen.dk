@@ -76,6 +76,15 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              "logo": {
+                "type": "string"
+              },
+              "technologies": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [

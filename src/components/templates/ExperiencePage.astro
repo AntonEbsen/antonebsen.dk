@@ -7,6 +7,8 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import Section from '@components/ui/Section.astro';
 import ExperienceCard from '@components/experience/ExperienceCard.astro';
 import ContactCard from '@components/common/ContactCard.astro';
+import ExperienceCounter from '@components/experience/ExperienceCounter.astro';
+import LogoGrid from '@components/common/LogoGrid.astro';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -78,14 +80,22 @@ const contactLink = isDa ? '/contact' : '/en/contact';
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-6">
-          <SectionHeading class="text-dim mb-3">{isDa ? 'Erhvervserfaring' : 'Experience'}</SectionHeading>
-          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.hero.title}</h1>
-          <p class="text-lg leading-relaxed text-dim mb-6">
-            {content.hero.text}
-          </p>
-  
-          <div class="flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
-            {content.hero.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+          <div class="flex flex-col md:flex-row gap-6 justify-between items-start">
+            <div class="flex-1">
+                <SectionHeading class="text-dim mb-3">{isDa ? 'Erhvervserfaring' : 'Experience'}</SectionHeading>
+                <h1 class="text-4xl leading-tight mb-4 font-bold">{content.hero.title}</h1>
+                <p class="text-lg leading-relaxed text-dim mb-6">
+                    {content.hero.text}
+                </p>
+        
+                <div class="flex flex-wrap gap-2 mb-6" aria-label="Nøglekompetencer">
+                    {content.hero.pills.map(p => <Pill variant="accent">{p}</Pill>)}
+                </div>
+            </div>
+            
+            <div class="flex-shrink-0 mx-auto md:mx-0">
+                <ExperienceCounter text={isDa ? "Års Erfaring" : "Years Experience"} />
+            </div>
           </div>
   
           <div class="flex flex-wrap gap-3">
@@ -96,12 +106,14 @@ const contactLink = isDa ? '/contact' : '/en/contact';
         </Card>
   
         <div class="hidden md:block">
-          <Card variant="glass" class="p-4">
+          <Card variant="glass" class="p-4 mb-4">
             <SectionHeading>{content.short.title}</SectionHeading>
             <ul class="list-none p-0 m-0 space-y-2 text-dim text-[14px]">
               {content.short.list.map(li => <li>{li}</li>)}
             </ul>
           </Card>
+          
+          <LogoGrid title={isDa ? "Tidligere Roller" : "Previous Roles"} />
         </div>
       </div>
     </Section>
@@ -121,6 +133,8 @@ const contactLink = isDa ? '/contact' : '/en/contact';
               description={role.description}
               highlights={role.highlights}
               links={role.links}
+              logo={role.logo}
+              technologies={role.technologies}
             />
           ))}
           {experience.length === 0 && <p class="text-dim">{content.roles.empty}</p>}

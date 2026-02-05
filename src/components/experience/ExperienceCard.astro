@@ -22,6 +22,8 @@ interface Props {
   description: string[];
   highlights?: Highlight[];
   links?: Link[];
+  logo?: string;
+  technologies?: string[];
 }
 
 const { 
@@ -32,24 +34,43 @@ const {
   type, 
   description, 
   highlights, 
-  links 
+  links,
+  logo,
+  technologies
 } = Astro.props;
 ---
 
 <Card variant="bordered" class="flex flex-col h-full bg-glass">
   <div class="flex justify-between items-start mb-4 gap-3">
-    <div>
-      <h3 class="text-base font-bold leading-tight m-0">{title} · {organization}</h3>
-      <p class="text-[13px] text-dim mt-1 m-0">{location} · {period}</p>
+    <div class="flex items-start gap-4">
+        {logo && (
+            <div class="w-12 h-12 rounded-lg bg-white/10 p-2 border border-white/5 flex-shrink-0">
+                <img src={logo} alt={organization} class="w-full h-full object-contain grayscale opacity-80" />
+            </div>
+        )}
+        <div>
+            <h3 class="text-base font-bold leading-tight m-0">{title} · {organization}</h3>
+            <p class="text-[13px] text-dim mt-1 m-0">{location} · {period}</p>
+        </div>
     </div>
     {type && <Pill variant="accent">{type}</Pill>}
   </div>
 
-  <ul class="list-none p-0 m-0 pl-4 space-y-2 text-[14.5px] mb-6 flex-grow">
+  <ul class="list-none p-0 m-0 pl-1 space-y-2 text-[14.5px] mb-6 flex-grow">
     {description.map((item) => (
-      <li class="relative before:content-['-'] before:absolute before:-left-4 before:text-accent">{item}</li>
+      <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-accent opacity-90">{item}</li>
     ))}
   </ul>
+
+  {technologies && technologies.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 mb-6">
+          {technologies.map(tech => (
+              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md bg-white/5 border border-white/10 text-dim">
+                {tech}
+              </span>
+          ))}
+      </div>
+  )}
 
   <div class="grid grid-cols-1 gap-3 mb-6">
     {highlights && highlights.map((h) => (

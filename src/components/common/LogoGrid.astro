@@ -1,0 +1,83 @@
+---
+const logos = [
+    { src: '/assets/img/logos/djoef.png', alt: 'Djøf', width: 120 },
+    { src: '/assets/img/logos/hwk-luebeck.png', alt: 'Handwerkskammer Lübeck', width: 140 },
+    // Add more logos here or fetch from props if fully dynamic
+];
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="logo-grid-container hover-glow">
+    {title && <h3 class="grid-title">{title}</h3>}
+    <div class="logo-grid">
+        {logos.map(logo => (
+            <div class="logo-item" title={logo.alt}>
+                <img src={logo.src} alt={logo.alt} width={logo.width} loading="lazy" />
+            </div>
+        ))}
+        <!-- Placeholders/Fillers to make the grid look fuller if few logos -->
+        <div class="logo-item placeholder">
+            <i class="fa-solid fa-building"></i>
+        </div>
+         <div class="logo-item placeholder">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+    </div>
+</div>
+
+<style>
+    .logo-grid-container {
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        backdrop-filter: blur(5px);
+    }
+
+    .grid-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .logo-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .logo-item {
+        filter: grayscale(100%) opacity(0.5);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+    }
+
+    .logo-item img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .logo-item:hover {
+        filter: grayscale(0%) opacity(1);
+        transform: scale(1.05);
+    }
+
+    .logo-item.placeholder {
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.1);
+    }
+</style>

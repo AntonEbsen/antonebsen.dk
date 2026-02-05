@@ -165,7 +165,9 @@ export const collections = {
                     text: z.string(),
                     href: z.string(),
                     icon: z.string().optional()
-                })).optional()
+                })).optional(),
+                logo: z.string().optional(),
+                technologies: z.array(z.string()).optional()
             })).optional(),
             education: z.array(z.object({
                 institution: z.string(),

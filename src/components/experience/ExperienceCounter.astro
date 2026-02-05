@@ -1,0 +1,121 @@
+---
+const startDate = new Date('2019-10-01'); // Start of first professional role
+const now = new Date();
+const years = now.getFullYear() - startDate.getFullYear();
+const isAnniversaryPassed = 
+    now.getMonth() > startDate.getMonth() || 
+    (now.getMonth() === startDate.getMonth() && now.getDate() >= startDate.getDate());
+
+const finalYears = isAnniversaryPassed ? years : years - 1;
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div class="experience-counter-wrap">
+  <div class="counter-box">
+    <span class="number" data-target={finalYears}>0</span>
+    <span class="plus">+</span>
+  </div>
+  <p class="label">{text}</p>
+</div>
+
+<style>
+  .experience-counter-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center; /* Center align for vertical stacking or flex-start for side-by-side */
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .counter-box {
+    display: flex;
+    align-items: baseline;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    background: linear-gradient(135deg, var(--accent) 0%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .plus {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-left: 0.1rem;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .experience-counter-wrap {
+        padding: 0.75rem 1rem;
+    }
+    .number { font-size: 2.5rem; }
+  }
+</style>
+
+<script>
+    // Simple count-up animation
+    const counters = document.querySelectorAll('.number');
+    
+    const animateCounter = (el: Element) => {
+        const target = parseInt(el.getAttribute('data-target') || '0');
+        const duration = 1500; // ms
+        const startTime = performance.now();
+        
+        const update = (currentTime: number) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Ease out quart
+            const ease = 1 - Math.pow(1 - progress, 4);
+            
+            const current = Math.floor(ease * target);
+            el.textContent = current.toString();
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                el.textContent = target.toString();
+            }
+        };
+
+        requestAnimationFrame(update);
+    };
+
+    // Observer to trigger animation when visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => observer.observe(c));
+</script>
