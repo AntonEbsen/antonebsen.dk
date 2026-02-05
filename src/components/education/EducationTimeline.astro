@@ -1,0 +1,130 @@
+---
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+
+interface TimelineEvent {
+  year: string;
+  title: string;
+  institution?: string;
+  description: string;
+  type: 'degree' | 'milestone' | 'job';
+  progress?: number; // 0-100 for degree completion
+}
+
+interface TimelineEvent {
+  year: string;
+  title: string;
+  institution?: string;
+  description: string;
+  type: 'degree' | 'milestone' | 'job';
+  progress?: number; 
+}
+
+interface Props {
+    title?: string;
+    events: TimelineEvent[];
+}
+
+const { title = "Academic Journey", events } = Astro.props;
+---
+
+<div class="education-timeline">
+    <h3 class="timeline-heading">{title}</h3>
+    
+    <div class="timeline-container">
+        <!-- Vertical Line -->
+        <div class="absolute left-6 top-4 bottom-4 w-0.5 bg-white/10"></div>
+
+        {events.map((event, index) => (
+            <div class={`timeline-item ${event.type}`}>
+                <div class="timeline-marker">
+                    {event.type === 'degree' ? (
+                         <div class="w-12 h-12 rounded-full bg-accent text-black flex items-center justify-center font-bold border-4 border-black z-10 relative">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                         </div>
+                    ) : (
+                        <div class="w-8 h-8 rounded-full bg-glass-border text-dim flex items-center justify-center text-xs border-4 border-black z-10 relative ml-2">
+                             <i class={`fa-solid ${event.type === 'job' ? 'fa-briefcase' : 'fa-star'}`}></i>
+                        </div>
+                    )}
+                </div>
+
+                <div class="timeline-content">
+                    {event.type === 'degree' ? (
+                         <Card variant="glass" class="p-5 hover-glow relative overview-hidden">
+                            {event.progress && (
+                                <div class="absolute top-0 left-0 h-1 bg-accent/20 w-full">
+                                    <div class="h-full bg-accent" style={`width: ${event.progress}%`}></div>
+                                </div>
+                            )}
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="text-xs font-mono text-accent mb-1 block">{event.year}</span>
+                                    <h4 class="text-lg font-bold">{event.title}</h4>
+                                    {event.institution && <p class="text-sm text-dim">{event.institution}</p>}
+                                </div>
+                                {event.progress && <Pill variant="default" class="text-xs">{event.progress}%</Pill>}
+                            </div>
+                            <p class="text-sm text-dim opacity-80 leading-relaxed mt-3">
+                                {event.description}
+                            </p>
+                        </Card>
+                    ) : (
+                        <div class="py-2 pl-4">
+                             <div class="flex items-baseline gap-3 mb-1">
+                                <span class="text-xs font-mono text-dim">{event.year}</span>
+                                <h4 class="text-base font-bold text-white/90">{event.title}</h4>
+                             </div>
+                             <p class="text-sm text-dim opacity-70">{event.description}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        ))}
+    </div>
+</div>
+
+<style>
+    .education-timeline {
+        padding: 1rem 0;
+    }
+    
+    .timeline-heading {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 2rem;
+        padding-left: 1rem;
+    }
+
+    .timeline-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .timeline-item {
+        display: flex;
+        gap: 1.5rem;
+        position: relative;
+    }
+
+    .timeline-marker {
+        flex-shrink: 0;
+        width: 3rem; 
+        display: flex;
+        justify-content: center;
+    }
+
+    .timeline-content {
+        flex-grow: 1;
+    }
+
+    /* Milestone styling */
+    .timeline-item.milestone .timeline-content,
+    .timeline-item.job .timeline-content {
+        padding-top: 0.25rem;
+    }
+</style>

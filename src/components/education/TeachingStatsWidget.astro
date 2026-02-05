@@ -1,0 +1,50 @@
+---
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+
+interface Props {
+    title: string;
+    stats: string[];
+    link: string;
+    linkText: string;
+}
+
+const { title, stats, link, linkText } = Astro.props;
+---
+
+<Card variant="glass" class="p-0 overflow-hidden group">
+    <div class="bg-accent/5 p-6 border-b border-white/5">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg">{title}</h3>
+            <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent animate-pulse">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="text-center p-3 bg-white/5 rounded-lg">
+                <div class="text-2xl font-extrabold text-white">4.8</div>
+                <div class="text-[10px] text-dim uppercase tracking-wider">Avg. Score</div>
+            </div>
+            <div class="text-center p-3 bg-white/5 rounded-lg">
+                <div class="text-2xl font-extrabold text-white">500+</div>
+                <div class="text-[10px] text-dim uppercase tracking-wider">Students</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-6">
+        <ul class="space-y-3 mb-6">
+            {stats.map(s => (
+                <li class="flex items-start gap-3 text-sm text-dim">
+                    <i class="fa-solid fa-check text-accent mt-1"></i>
+                    <span set:html={s} />
+                </li>
+            ))}
+        </ul>
+
+        <Button href={link} variant="ghost" class="w-full text-sm">
+            {linkText}
+        </Button>
+    </div>
+</Card>

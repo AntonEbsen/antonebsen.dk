@@ -9,6 +9,11 @@ import ContactCard from '@components/common/ContactCard.astro';
 import { getEntry } from 'astro:content';
 import { supabase } from '@lib/supabase';
 
+// New Components
+import EducationTimeline from '@components/education/EducationTimeline.astro';
+import ThesisSpotlight from '@components/education/ThesisSpotlight.astro';
+import TeachingStatsWidget from '@components/education/TeachingStatsWidget.astro';
+
 interface Props {
   lang: 'da' | 'en' | 'de';
 }
@@ -33,11 +38,6 @@ const ku = experience.find(e => e.institution.includes("Copenhagen") || e.instit
 const hhx = experience.find(e => e.degree.includes("HHX"));
 
 // Data Fetching for Projects (Supabase)
-// We retain Supabase fetching to keep it dynamic, same as original pages.
-// Supabase client imported from @lib/supabase
-
-// We retain Supabase fetching to keep it dynamic, same as original pages.
-// Supabase client imported from @lib/supabase
 let projects = [];
 let projError = null;
 
@@ -56,6 +56,57 @@ if (projError) projects = [];
 const certificationLink = isDa ? '/certifications' : '/en/certifications';
 const cvLink = isDa ? '/cv' : '/en/cv';
 
+// Data Construction for Timeline
+const timelineEvents = [
+    {
+        year: '2021 – Present',
+        title: ku?.degree || 'MSc Economics',
+        institution: ku?.institution || 'University of Copenhagen',
+        description: ku?.description || '',
+        type: 'degree',
+        progress: 85
+    },
+    {
+        year: '2023 – Present',
+        title: isDa ? 'Studenterunderviser' : 'Teaching Assistant',
+        institution: 'Djøf',
+        description: isDa ? 'Undervisning i Excel & VBA.' : 'Teaching Excel & VBA.',
+        type: 'job'
+    },
+    {
+        year: '2021',
+        title: isDa ? 'Bachelor i Økonomi' : 'BSc in Economics',
+        institution: 'University of Copenhagen',
+        description: isDa ? 'Speciale i Global Financial Cycle.' : 'Thesis on Global Financial Cycle.',
+        type: 'degree'
+    },
+    {
+        year: '2018 – 2021',
+        title: hhx?.degree || 'HHX',
+        institution: hhx?.institution || 'Celf',
+        description: hhx?.description || '',
+        type: 'degree'
+    }
+];
+
+// Data for Thesis
+const thesis = {
+    title: "Global Financial Cycle & Spillovers",
+    subtitle: isDa ? "Bachelorprojekt i Økonomi" : "Bachelor's Thesis in Economics",
+    description: isDa 
+        ? "En økonometrisk analyse af hvordan amerikansk pengepolitik påvirker globale finansielle markeder. Brug af SVAR-modeller og højfrekvente data."
+        : "An econometric analysis of US monetary policy spillovers to global financial markets using SVAR models and high-frequency data.",
+    tags: ["Econometrics", "Python", "Monetary Policy", "Time Series"],
+    downloadLink: "#", 
+    codeLink: "https://github.com/AntonEbsen" 
+};
+
+// Teaching Stats
+const teachingStats = [
+    isDa ? "Gennemsnitlig score: <strong>4.8 / 5.0</strong>" : "Average Score: <strong>4.8 / 5.0</strong>",
+    isDa ? "Antal kursister: <strong>500+</strong>" : "Students Taught: <strong>500+</strong>",
+    isDa ? "Fag: Excel, VBA, Power Query" : "Subjects: Excel, VBA, Power Query"
+];
 ---
 
 <Layout 
@@ -77,13 +128,6 @@ const cvLink = isDa ? '/cv' : '/en/cv';
       align-items: start;
     }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 14px;
-      margin-top: 12px;
-    }
-
     .courses-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -91,8 +135,15 @@ const cvLink = isDa ? '/cv' : '/en/cv';
       margin-top: 12px;
     }
 
+    .main-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        gap: 24px;
+        margin-top: 24px;
+    }
+
     @media (max-width: 980px) {
-      .hero-grid, .two-col, .courses-grid { 
+      .hero-grid, .courses-grid, .main-grid { 
         grid-template-columns: 1fr; 
       }
     }
@@ -111,10 +162,9 @@ const cvLink = isDa ? '/cv' : '/en/cv';
           </p>
   
           <div class="flex flex-wrap gap-3 mb-6">
-            <Button href="#ku">{content.hero.buttons.ku}</Button>
-            <Button href="#hhx" variant="ghost">{content.hero.buttons.hhx}</Button>
+            <Button href="#timeline">{isDa ? 'Tidslinje' : 'Timeline'}</Button>
             <Button href="#courses" variant="ghost">{content.hero.buttons.course}</Button>
-            <Button href="#projects" variant="ghost">{content.hero.buttons.proj}</Button>
+            <Button href="#thesis" variant="ghost">{isDa ? 'Speciale' : 'Thesis'}</Button>
           </div>
   
           <div class="flex flex-wrap gap-2">
@@ -123,84 +173,108 @@ const cvLink = isDa ? '/cv' : '/en/cv';
         </Card>
   
         <div class="hidden md:block">
-          <Card variant="glass" class="p-4">
-            <SectionHeading>{content.short.title}</SectionHeading>
-            <p class="text-[13px] text-dim mb-4 opacity-70">
-              {content.short.text}
-            </p>
-            <Button href={`${cvLink}#education`} variant="ghost" class="w-full">{content.short.btn}</Button>
-          </Card>
+           <TeachingStatsWidget 
+                title={isDa ? "Undervisning" : "Teaching Impact"}
+                stats={teachingStats}
+                link={isDa ? '/kursusstatistik' : '/en/course-stats'}
+                linkText={isDa ? "Se fuld rapport" : "View Full Report"}
+           />
         </div>
       </div>
     </Section>
 
-    <!-- KU -->
-    {ku && (
-      <Section id="ku">
-        <Card variant="default" class="p-6">
-          <SectionHeading>{ku.institution} ({ku.degree})</SectionHeading>
+    <div class="main-grid">
+        <div class="flex flex-col gap-8">
+            <!-- TIMELINE -->
+            <Section id="timeline">
+                 <EducationTimeline 
+                    title={isDa ? "Min Akademiske Rejse" : "My Academic Journey"} 
+                    events={timelineEvents}
+                 />
+            </Section>
 
-          <div class="two-col">
-            <Card variant="glass" class="p-4">
-              <h3 class="text-base font-bold mb-2">{content.prog.title}</h3>
-              <p class="text-dim text-[14px] leading-relaxed mb-4">
-                {ku.description}
-              </p>
-              <ul class="list-none p-0 m-0 space-y-2 text-[13px] text-dim">
-                {ku.bullets && ku.bullets.map(item => (
-                  <li class="relative pl-3 before:content-['-'] before:absolute before:left-0 before:text-accent">{item}</li>
-                ))}
-              </ul>
-            </Card>
+            <!-- THESIS SPOTLIGHT -->
+            <Section id="thesis">
+                <ThesisSpotlight 
+                    title={thesis.title}
+                    subtitle={thesis.subtitle}
+                    description={thesis.description}
+                    tags={thesis.tags}
+                    downloadLink={thesis.downloadLink}
+                    codeLink={thesis.codeLink}
+                />
+            </Section>
+        </div>
 
-            <Card variant="glass" class="p-4">
-              <h3 class="text-base font-bold mb-2">{content.tools.title}</h3>
-              <div class="flex flex-wrap gap-2 mb-4">
-                {ku.technologies && ku.technologies.map(tech => (
-                  <Pill variant="default">{tech}</Pill>
-                ))}
-              </div>
-              <p class="text-[13px] text-dim opacity-70">
-                {content.tools.text}
-              </p>
-            </Card>
-          </div>
-        </Card>
-      </Section>
-    )}
+        <div class="flex flex-col gap-6">
+             <!-- Mobile Stats (visible only on small screens if we wanted, but here sticking to grid logic) -->
+             <div class="md:hidden">
+                 <TeachingStatsWidget 
+                    title={isDa ? "Undervisning" : "Teaching Impact"}
+                    stats={teachingStats}
+                    link={isDa ? '/kursusstatistik' : '/en/course-stats'}
+                    linkText={isDa ? "Se fuld rapport" : "View Full Report"}
+                />
+             </div>
 
-    <!-- COURSES -->
-    <Section id="courses">
+             <!-- Short Bio Card (moved here) -->
+             <Card variant="glass" class="p-6 sticky top-6">
+                <SectionHeading>{content.short.title}</SectionHeading>
+                <p class="text-[13px] text-dim mb-4 opacity-70">
+                  {content.short.text}
+                </p>
+                <Button href={`${cvLink}#education`} variant="ghost" class="w-full">{content.short.btn}</Button>
+             </Card>
+        </div>
+    </div>
+
+
+    <!-- COURSES NETWORK -->
+    <Section id="courses" class="mt-12">
       <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.courses.title}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6">
-          {content.courses.tip}
-        </p>
+        <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
+            <div>
+                <SectionHeading>{content.courses.title}</SectionHeading>
+                <p class="text-dim opacity-70 max-w-xl">
+                  {content.courses.tip}
+                </p>
+            </div>
+            
+            <!-- Filter Controls -->
+            <div class="flex flex-wrap gap-2" id="course-filters">
+                <button class="text-xs font-bold px-3 py-1.5 rounded-full bg-accent text-black transition-all filter-btn active" data-filter="all">All</button>
+                <button class="text-xs font-bold px-3 py-1.5 rounded-full bg-white/5 text-dim border border-white/10 hover:bg-white/10 transition-all filter-btn" data-filter="Makro">Macro</button>
+                <button class="text-xs font-bold px-3 py-1.5 rounded-full bg-white/5 text-dim border border-white/10 hover:bg-white/10 transition-all filter-btn" data-filter="Coding">Tech</button>
+                <button class="text-xs font-bold px-3 py-1.5 rounded-full bg-white/5 text-dim border border-white/10 hover:bg-white/10 transition-all filter-btn" data-filter="Modeller">Models</button>
+            </div>
+        </div>
 
-        <div class="courses-grid">
+        <div class="courses-grid" id="courses-grid">
           {cv.courses && cv.courses.map(course => (
-            <Card variant="bordered" class="flex flex-col h-full bg-glass">
-              <div class="flex justify-between items-start mb-3 gap-2">
-                <h3 class="text-[16px] font-bold leading-tight m-0">{course.title}</h3>
-                <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
-              </div>
-              <p class="text-[13px] text-dim mb-3">{course.institution}</p>
-              <p class="text-[14px] text-dim opacity-80 leading-relaxed mb-4 flex-grow">
-                {course.description}
-              </p>
-              <div class="flex flex-wrap gap-2 mt-auto">
-                {course.links && course.links.map(link => (
-                  <a href={link.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{link.text} â†’</a>
-                ))}
-              </div>
-            </Card>
+            <div class="course-item" data-tag={course.tag}>
+                <Card variant="bordered" class="flex flex-col h-full bg-glass">
+                  <div class="flex justify-between items-start mb-3 gap-2">
+                    <h3 class="text-[16px] font-bold leading-tight m-0">{course.title}</h3>
+                    <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
+                  </div>
+                  <p class="text-[13px] text-dim mb-3">{course.institution}</p>
+                  <p class="text-[14px] text-dim opacity-80 leading-relaxed mb-4 flex-grow">
+                    {course.description}
+                  </p>
+                  <div class="flex flex-wrap gap-2 mt-auto">
+                    {course.links && course.links.map(link => (
+                      <a href={link.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{link.text} →</a>
+                    ))}
+                  </div>
+                </Card>
+            </div>
           ))}
         </div>
       </Card>
     </Section>
 
-    <!-- PROJECTS -->
-    <Section id="projects">
+    <!-- PROJECTS (Keeping existing section) -->
+    <Section id="projects" class="mt-12">
       <Card variant="bordered" class="p-6">
         <SectionHeading>{content.projects.title}</SectionHeading>
 
@@ -216,7 +290,7 @@ const cvLink = isDa ? '/cv' : '/en/cv';
               </p>
               <div class="flex flex-wrap gap-2 mt-auto">
                  {proj.url && (
-                  <a href={proj.url} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">View Project â†’</a>
+                  <a href={proj.url} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">View Project →</a>
                  )}
               </div>
             </Card>
@@ -228,25 +302,8 @@ const cvLink = isDa ? '/cv' : '/en/cv';
       </Card>
     </Section>
 
-    <!-- HHX -->
-    {hhx && (
-      <Section id="hhx">
-        <Card variant="glass" class="p-6">
-          <SectionHeading>{hhx.degree} ({hhx.institution})</SectionHeading>
-          <p class="text-dim mb-4 leading-relaxed">
-            {hhx.description}
-          </p>
-          <ul class="list-none p-0 m-0 space-y-2 text-[14px] text-dim">
-            {hhx.bullets && hhx.bullets.map(item => (
-              <li class="relative pl-3 before:content-['-'] before:absolute before:left-0 before:text-accent">{item}</li>
-            ))}
-          </ul>
-        </Card>
-      </Section>
-    )}
-
     <!-- CTA -->
-    <Section>
+    <Section class="mt-12">
       <Card variant="default" class="p-6">
         <div class="mt-8 pt-8 border-t border-white/5 reveal reveal-slide-up" data-delay="300">
            <p class="text-dim opacity-70 mb-6">{content.cta?.text}</p>
@@ -262,3 +319,33 @@ const cvLink = isDa ? '/cv' : '/en/cv';
 
   </main>
 
+  <script>
+      // Filtering Logic
+      const buttons = document.querySelectorAll('.filter-btn');
+      const items = document.querySelectorAll('.course-item');
+
+      buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+              // Toggle active state
+              buttons.forEach(b => {
+                  b.classList.remove('bg-accent', 'text-black');
+                  b.classList.add('bg-white/5', 'text-dim');
+              });
+              btn.classList.remove('bg-white/5', 'text-dim');
+              btn.classList.add('bg-accent', 'text-black');
+
+              const filter = btn.getAttribute('data-filter');
+
+              items.forEach(item => {
+                  const tag = item.getAttribute('data-tag');
+                  if (filter === 'all' || tag === filter) {
+                      item.style.display = 'block';
+                      item.classList.add('animate-fade-in');
+                  } else {
+                      item.style.display = 'none';
+                  }
+              });
+          });
+      });
+  </script>
+</Layout>
