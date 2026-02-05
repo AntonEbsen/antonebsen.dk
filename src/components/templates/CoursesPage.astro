@@ -7,6 +7,7 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { getEntry } from 'astro:content';
+import CourseCard from '@components/courses/CourseCard.astro';
 
 interface Props {
   lang: 'da' | 'en';
@@ -96,21 +97,7 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
          <SectionHeading>{content.grid?.university?.title}</SectionHeading>
          <div class="courses-grid">
            {uniCourses.map((course: any) => (
-              <Card variant="glass" class="p-4 flex flex-col h-full">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="font-bold text-base leading-tight">{course.title}</h3>
-                  <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
-                </div>
-                <p class="text-xs text-dim mb-2">{course.institution}</p>
-                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
-                {course.links && course.links.length > 0 && (
-                  <div class="flex flex-wrap gap-2 mt-auto">
-                    {course.links.map((l: any) => (
-                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} -></a>
-                    ))}
-                  </div>
-                )}
-              </Card>
+              <CourseCard {...course} />
            ))}
            {uniCourses.length === 0 && <p class="text-dim text-sm italic">{content.grid?.university?.empty}</p>}
          </div>
@@ -122,21 +109,7 @@ const otherCourses = cv.courses.filter(c => !uniCourses.includes(c));
          <SectionHeading>{content.grid?.programming?.title}</SectionHeading>
          <div class="courses-grid">
            {otherCourses.map((course: any) => (
-              <Card variant="glass" class="p-4 flex flex-col h-full">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="font-bold text-base leading-tight">{course.title}</h3>
-                  <Pill variant="accent" class="shrink-0">{course.tag}</Pill>
-                </div>
-                <p class="text-xs text-dim mb-2">{course.institution}</p>
-                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{course.description}</p>
-                {course.links && course.links.length > 0 && (
-                  <div class="flex flex-wrap gap-2 mt-auto">
-                    {course.links.map(l => (
-                      <a href={l.href} class="text-xs font-bold text-accent no-underline hover:text-white transition-colors">{l.text} â†’</a>
-                    ))}
-                  </div>
-                )}
-              </Card>
+              <CourseCard {...course} />
            ))}
          </div>
        </Card>

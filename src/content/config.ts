@@ -183,9 +183,18 @@ export const collections = {
                 tag: z.string(),
                 institution: z.string(),
                 description: z.string(),
+                grade: z.string().optional(), // Added for "10", "12", etc.
+                syllabus: z.array(z.string()).optional(), // For "Deep Dive"
+                verifiedSkills: z.array(z.string()).optional(), // For "Verified Skills"
+                relatedProjects: z.array(z.object({
+                    title: z.string(),
+                    href: z.string()
+                })).optional(),
                 links: z.array(z.object({
                     text: z.string(),
-                    href: z.string()
+                    href: z.string(),
+                    icon: z.string().optional(),
+                    type: z.enum(['note', 'code', 'project', 'cert']).optional() // Enriched links
                 })).optional()
             })).optional(),
             projects: z.array(z.object({

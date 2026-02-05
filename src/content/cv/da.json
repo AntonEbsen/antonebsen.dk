@@ -126,14 +126,35 @@
             "tag": "Makro",
             "institution": "KU",
             "description": "Metoder: identifikation, impulssvar, robusthed. Værktøj: (SAS/Stata/Python).",
+            "grade": "10",
+            "syllabus": [
+                "SVAR Identifikation",
+                "Impulssvar",
+                "Information Criteria"
+            ],
+            "verifiedSkills": [
+                "Python",
+                "Økonometri",
+                "SAS"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Global Financial Cycle",
+                    "href": "/education#thesis"
+                }
+            ],
             "links": [
                 {
                     "text": "Noter",
-                    "href": "#"
+                    "href": "#",
+                    "type": "note",
+                    "icon": "fa-book"
                 },
                 {
                     "text": "Projekt",
-                    "href": "#"
+                    "href": "#",
+                    "type": "project",
+                    "icon": "fa-file-lines"
                 }
             ]
         },
@@ -142,10 +163,29 @@
             "tag": "Coding",
             "institution": "KU",
             "description": "Numerik, model-simulering og basale workflows. Værktøj: Python/MATLAB.",
+            "grade": "10",
+            "syllabus": [
+                "Optimering",
+                "Model Simulering",
+                "Pandas & Data Wrangle"
+            ],
+            "verifiedSkills": [
+                "Python",
+                "Numerisk Analyse",
+                "Git"
+            ],
             "links": [
                 {
-                    "text": "Noter",
-                    "href": "#"
+                    "text": "Eksamensnoter",
+                    "href": "#",
+                    "type": "note",
+                    "icon": "fa-file-pdf"
+                },
+                {
+                    "text": "Github Repo",
+                    "href": "https://github.com/AntonEbsen",
+                    "type": "code",
+                    "icon": "fa-github"
                 }
             ]
         },
@@ -154,10 +194,22 @@
             "tag": "Modeller",
             "institution": "KU",
             "description": "Kalibrering, SAM, stød, baseline checks. Værktøj: GAMS.",
+            "grade": "10",
+            "syllabus": [
+                "CGE Equilibrium",
+                "Social Accounting Matrix",
+                "GAMS"
+            ],
+            "verifiedSkills": [
+                "GAMS",
+                "Generel Ligevægt"
+            ],
             "links": [
                 {
-                    "text": "Case",
-                    "href": "#"
+                    "text": "Case Study",
+                    "href": "#",
+                    "type": "project",
+                    "icon": "fa-folder-open"
                 }
             ]
         }

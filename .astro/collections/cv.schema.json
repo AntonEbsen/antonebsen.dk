@@ -160,6 +160,40 @@
               "description": {
                 "type": "string"
               },
+              "grade": {
+                "type": "string"
+              },
+              "syllabus": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "verifiedSkills": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "relatedProjects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "href": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "href"
+                  ],
+                  "additionalProperties": false
+                }
+              },
               "links": {
                 "type": "array",
                 "items": {
@@ -170,6 +204,18 @@
                     },
                     "href": {
                       "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "note",
+                        "code",
+                        "project",
+                        "cert"
+                      ]
                     }
                   },
                   "required": [

@@ -126,14 +126,35 @@
             "tag": "Macro",
             "institution": "UCPH",
             "description": "Methods: identification, impulse responses, robustness. Tools: (SAS/Stata/Python).",
+            "grade": "10",
+            "syllabus": [
+                "SVAR Identification",
+                "Impulse Responses",
+                "Information Criteria"
+            ],
+            "verifiedSkills": [
+                "Python",
+                "Econometrics",
+                "SAS"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Global Financial Cycle",
+                    "href": "/en/education#thesis"
+                }
+            ],
             "links": [
                 {
                     "text": "Notes",
-                    "href": "#"
+                    "href": "#",
+                    "type": "note",
+                    "icon": "fa-book"
                 },
                 {
                     "text": "Project",
-                    "href": "#"
+                    "href": "#",
+                    "type": "project",
+                    "icon": "fa-file-lines"
                 }
             ]
         },
@@ -142,10 +163,29 @@
             "tag": "Coding",
             "institution": "UCPH",
             "description": "Numerics, model simulation, and basic workflows. Tools: Python/MATLAB.",
+            "grade": "10",
+            "syllabus": [
+                "Optimization",
+                "Model Simulation",
+                "Pandas & Data Wrangle"
+            ],
+            "verifiedSkills": [
+                "Python",
+                "Numerical Analysis",
+                "Git"
+            ],
             "links": [
                 {
-                    "text": "Notes",
-                    "href": "#"
+                    "text": "Exam Notes",
+                    "href": "#",
+                    "type": "note",
+                    "icon": "fa-file-pdf"
+                },
+                {
+                    "text": "Github Repo",
+                    "href": "https://github.com/AntonEbsen",
+                    "type": "code",
+                    "icon": "fa-github"
                 }
             ]
         },
@@ -154,10 +194,22 @@
             "tag": "Models",
             "institution": "UCPH",
             "description": "Calibration, SAM, shocks, baseline checks. Tool: GAMS.",
+            "grade": "10",
+            "syllabus": [
+                "CGE Equilibrium",
+                "Social Accounting Matrix",
+                "GAMS"
+            ],
+            "verifiedSkills": [
+                "GAMS",
+                "General Equilibrium"
+            ],
             "links": [
                 {
-                    "text": "Case",
-                    "href": "#"
+                    "text": "Case Study",
+                    "href": "#",
+                    "type": "project",
+                    "icon": "fa-folder-open"
                 }
             ]
         }
