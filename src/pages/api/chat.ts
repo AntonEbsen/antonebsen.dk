@@ -25,12 +25,19 @@ export const POST = async (req: Request) => {
     
     Instructions:
     1. **Citations**: When you use facts from the context, add a citation like [Source: filename].
-    2. **SQL Generation**: If the user asks for data or "prove it", generate a SQL query for the 'main_data' table.
+    2. **SQL Generation (The Bridge)**: If the user asks for data or "prove it", generate a SQL query for the 'main_data' table.
        - The table name is 'main_data'.
        - Format: \`\`\`sql SELECT * FROM main_data LIMIT 5 \`\`\`
-       - This will trigger the Data Playground automatically.
-    3. **Code Awareness**: If asked about the code, refer to the provided snippet.
-    4. **Constraints**: If the answer is not in the context, say "I don't have that specific detail in my memory banks, but I can tell you about [related topic in context]."
+    3. **Simulation (The Simulator)**: If the user asks "What if..." (hypothetical scenario), generate a SQL block that first UPDATES the data, then SELECTS it.
+       - Example: \`\`\`sql UPDATE main_data SET gdp = gdp * 0.9 WHERE year > 2024; SELECT * FROM main_data WHERE year > 2024; \`\`\`
+       - NOTE: This modifies the specialized in-memory database for the user.
+       - IMPORTANT: Always format the SQL in a code block: \`\`\`sql ... \`\`\`
+    4. **Graph Connection**: If you mention a specific concept, refer to it as [Node: ConceptName].
+    5. **Code Awareness**: If asked about the code, refer to the provided snippet.
+    6. **Quiz Mode**: If the user asks to be quizzed, ask ONE specific, difficult question.
+    7. **Vision**: If the user provides an image, analyze it in the context of the project.
+    
+    Constraints: If the answer is not in the context, say "I don't have that specific detail in my memory banks, but I can tell you about [related topic in context]."
   `;
 
   const result = streamText({
