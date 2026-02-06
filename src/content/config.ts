@@ -244,6 +244,7 @@ export const collections = {
                 level: z.string().optional(),
                 category: z.string().optional(), // Phase 3: Interactive Balance
                 snippet: z.string().optional(),  // Phase 3: The Vault
+                labUrl: z.string().optional(),   // Phase 4: The Laboratory
             })),
             focus: z.array(z.object({
                 icon: z.string(),

@@ -73,7 +73,8 @@
             "title": "Mehr über Python lesen",
             "level": "expert",
             "category": "data",
-            "snippet": "import matplotlib.pyplot as plt\nimport seaborn as sns\n\ndef style_plot(ax, title=''):\n    \"\"\"Applies my custom Tufte-inspired style\"\"\"\n    # Remove top and right spines\n    ax.spines['top'].set_visible(False)\n    ax.spines['right'].set_visible(False)\n    \n    # Add grid and title\n    ax.grid(True, linestyle='--', alpha=0.3)\n    ax.set_title(title, loc='left', pad=20, fontsize=14, fontweight='bold')\n    \n    return ax"
+            "snippet": "import matplotlib.pyplot as plt\nimport seaborn as sns\n\ndef style_plot(ax, title=''):\n    \"\"\"Applies my custom Tufte-inspired style\"\"\"\n    # Remove top and right spines\n    ax.spines['top'].set_visible(False)\n    ax.spines['right'].set_visible(False)\n    \n    # Add grid and title\n    ax.grid(True, linestyle='--', alpha=0.3)\n    ax.set_title(title, loc='left', pad=20, fontsize=14, fontweight='bold')\n    \n    return ax",
+            "labUrl": "https://lab.antonebsen.dk/lab/index.html?path=notebooks%2Fintro.ipynb"
         },
         {
             "id": "sas",

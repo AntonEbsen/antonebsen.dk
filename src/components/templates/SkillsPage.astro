@@ -9,6 +9,7 @@ import ContactCard from '@components/common/ContactCard.astro';
 import SkillGroup from '@components/skills/SkillGroup.astro';
 import MethodologyCard from '@components/skills/MethodologyCard.astro';
 import SnippetModal from '@components/skills/SnippetModal.astro';
+import SkillNetwork from '@components/skills/SkillNetwork.astro'; // Phase 4
 import RadarChart from '@components/skills/RadarChart.astro';
 import { getEntry } from 'astro:content';
 
@@ -210,6 +211,9 @@ const chartData = [
                 </div>
                 <RadarChart data={chartData} size={280} />
              </Card>
+
+             {/* Phase 4: The Network */}
+             <SkillNetwork skills={expertTools} />
 
              {/* The Horizon (Learning) */}
              {learningSkills.length > 0 && (

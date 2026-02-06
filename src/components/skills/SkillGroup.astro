@@ -10,6 +10,7 @@ interface Skill {
     level?: string;
     category?: string; // Added for Interactive Balance
     snippet?: string; // Added for The Vault
+    labUrl?: string; // Added for The Laboratory
     verifiedIn?: { title: string; href: string; grade: string }[];
     appliedIn?: { title: string; href: string }[];
     appliedWork?: { title: string; role: string; href: string }[];
@@ -55,6 +56,19 @@ const { title, skills, variant = 'default' } = Astro.props;
                                     <i class="fa-solid fa-code text-accent/70 group-hover/btn:text-accent"></i>
                                     View Code
                                 </button>
+                            )}
+                            {/* Lab Button (The Unicorn) */}
+                            {skill.labUrl && (
+                                <a 
+                                    href={skill.labUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-[10px] uppercase font-bold text-dim bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded mt-1 ml-1 transition-colors flex items-center gap-1 group/btn inline-flex"
+                                    onclick="event.stopPropagation();"
+                                >
+                                    <i class="fa-solid fa-flask text-accent/70 group-hover/btn:text-accent"></i>
+                                    Launch Kernel
+                                </a>
                             )}
                          </div>
                     </div>
