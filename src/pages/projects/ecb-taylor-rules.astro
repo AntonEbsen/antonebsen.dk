@@ -70,7 +70,40 @@ foreach c within "DE" "FR" "IT" "ES" {
       { src: "/assets/images/ecb-convergence.png", caption: "Interest Rate Convergence vs. Divergence (1999-2024)", alt: "Convergence Plot" },
       { src: "/assets/images/ecb-residuals.png", caption: "Taylor Rule Residuals by Country", alt: "Residuals Plot" }
   ],
-  videoUrl: "", // No video for this seminar paper yet
+  videoUrl: "", // No video
+  techStack: [
+      { name: "Stata", icon: "fa-solid fa-table-cells", version: "17" },
+      { name: "Python", icon: "fa-brands fa-python", version: "3.10" },
+      { name: "Excel", icon: "fa-solid fa-file-excel" }
+  ],
+  timeline: [
+      { date: "Sep 2023", title: "Methodology Design", description: "Formulating the GMM approach and selecting instrumental variables." },
+      { date: "Nov 2023", title: "Data Collection", description: "Sourcing Eurostat HICP and OECD Output Gap data for 19 member states." },
+      { date: "Dec 2023", title: "Estimation & Testing", description: "Running country-specific regressions and Andrews-Ploberger tests." },
+      { date: "Jan 2024", title: "Simulation Analysis", description: "Computing counterfactual 'optimal' rates for peripheral economies." }
+  ],
+  dataLinks: [
+      { label: "Do-Files (.do)", url: "https://github.com/AntonEbsen/ecb-taylor", icon: "fa-solid fa-code" },
+      { label: "Replication Pack (.zip)", url: "/assets/data/ecb_replication.zip", icon: "fa-solid fa-file-zipper" }
+  ],
+  interactiveChart: {
+    title: "Taylor Rule Deviations: Core vs. Periphery",
+    description: "Difference between actual ECB policy rate and Taylor-implied optimal rates (Positive values = Policy too tight).",
+    type: "bar",
+    labels: ["2010", "2012", "2014", "2016", "2018", "2020", "2022"],
+    datasets: [
+        {
+            label: "Germany (Core)",
+            data: [-0.5, -1.2, -1.5, -1.0, -0.2, 0.5, 2.0],
+            backgroundColor: "rgba(59, 130, 246, 0.6)" // Blue-500
+        },
+        {
+            label: "Italy (Periphery)",
+            data: [2.5, 3.0, 2.8, 1.5, 0.5, -1.0, -2.5],
+            backgroundColor: "rgba(239, 68, 68, 0.6)" // Red-500
+        }
+    ]
+  },
   citation: {
     text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, Københavns Universitet. JEL: E52, E58, F45.",
     pdfUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
@@ -88,7 +121,11 @@ foreach c within "DE" "FR" "IT" "ES" {
     secondaryAnalysis: "Asymmetri-analyse",
     gallery: "Galleri",
     codeVault: "The Code Vault",
-    videoAbstract: "Video Abstract"
+    videoAbstract: "Video Abstract",
+    techStack: "Teknologistak",
+    timeline: "Projekt-tidslinje",
+    liveData: "Interaktiv Analyse (GMM)",
+    openScience: "Open Science"
   }
 };
 ---

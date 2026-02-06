@@ -63,7 +63,37 @@ shocks, irf = identify_shocks(macro_data)`
       { src: "/assets/images/gfc-irf.png", caption: "Impulse Response Funtions: VIX shock effect on Global Credit", alt: "IRF Plot" },
       { src: "/assets/images/gfc-system.png", caption: "System Architecture: Transmission Channels", alt: "System Diagram" }
   ],
-  videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder - Update with real Loom/YT
+  videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
+  techStack: [
+      { name: "Python", icon: "fa-brands fa-python", version: "3.9" },
+      { name: "Stata", icon: "fa-solid fa-table-cells", version: "17" },
+      { name: "Pandas", icon: "fa-solid fa-database", version: "2.0" },
+      { name: "LaTeX", icon: "fa-solid fa-file-tex" }
+  ],
+  timeline: [
+      { date: "Nov 2023", title: "Project Proposal", description: "Initial literature review (Rey, 2013) and data sourcing from FRED/BIS." },
+      { date: "Feb 2024", title: "Data Cleaning", description: "Merging 20,000+ data points and handling missing values for EU/China series." },
+      { date: "Apr 2024", title: "Model Estimation", description: "Running recursive SVAR models and robustness checks." },
+      { date: "Jun 2024", title: "Defense", description: "Final thesis submission and oral defense (Grade: 12)." }
+  ],
+  dataLinks: [
+      { label: "Cleaned Dataset (.csv)", url: "/assets/data/gfc_cleaned.csv", icon: "fa-solid fa-file-csv" },
+      { label: "Replication Code (.py)", url: "https://github.com/AntonEbsen/gfc-replication", icon: "fa-brands fa-github" }
+  ],
+  interactiveChart: {
+    title: "Impulse Response: VIX Shock to European Credit",
+    description: "Response of European bank leverage to a 1 standard deviation shock in the VIX index (95% confidence intervals).",
+    type: "line",
+    labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    datasets: [
+        {
+            label: "Response",
+            data: [0, -0.05, -0.12, -0.18, -0.15, -0.10, -0.05, -0.02, 0, 0.01, 0.02],
+            borderColor: "rgb(239, 68, 68)", // Red-500
+            backgroundColor: "rgba(239, 68, 68, 0.1)"
+        }
+    ]
+  },
   citation: {
     text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelorprojekt, Københavns Universitet. JEL: E52, E58, F02, F33, G15.",
     pdfUrl: "/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
@@ -79,7 +109,11 @@ shocks, irf = identify_shocks(macro_data)`
     researchQuestions: "Forskningsspørgsmål",
     gallery: "Galleri",
     codeVault: "The Code Vault",
-    videoAbstract: "Video Abstract"
+    videoAbstract: "Video Abstract",
+    techStack: "Teknologistak",
+    timeline: "Projekt-tidslinje",
+    liveData: "Interaktiv Data (IRF)",
+    openScience: "Open Science"
   }
 };
 ---

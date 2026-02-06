@@ -60,6 +60,33 @@ interface Props {
         alt: string;
     }[];
     videoUrl?: string;
+    techStack?: {
+        name: string;
+        icon: string;
+        version?: string;
+    }[];
+    timeline?: {
+        date: string;
+        title: string;
+        description: string;
+    }[];
+    dataLinks?: {
+        label: string;
+        url: string;
+        icon: string;
+    }[];
+    interactiveChart?: {
+        title: string;
+        description: string;
+        type: 'line' | 'bar' | 'scatter';
+        labels: string[];
+        datasets: {
+            label: string;
+            data: number[];
+            borderColor?: string;
+            backgroundColor?: string;
+        }[];
+    };
     ui: {
         methodology: string;
         findings: string;
@@ -77,6 +104,10 @@ interface Props {
         gallery?: string;
         codeVault?: string;
         videoAbstract?: string;
+        techStack?: string;
+        timeline?: string;
+        liveData?: string;
+        openScience?: string;
     }
   }
 }
@@ -347,7 +378,59 @@ const { lang, project } = Astro.props;
         </section>
       )}
 
-      <!-- Data & Tools -->
+
+      <!-- Phase 10: The Live Data -->
+      {project.interactiveChart && (
+          <section class="mb-20">
+              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.liveData || 'Live Data'}</h2>
+              <div class="bg-white border border-slate-100 p-8 rounded-[32px] shadow-sm">
+                  <div class="mb-6">
+                      <h3 class="text-lg font-bold text-slate-800 mb-2">{project.interactiveChart.title}</h3>
+                      <p class="text-sm text-slate-500 italic">{project.interactiveChart.description}</p>
+                  </div>
+                  <div class="relative h-[400px] w-full">
+                      <canvas id="projectChart"></canvas>
+                  </div>
+              </div>
+          </section>
+      )}
+
+      <!-- Phase 10: The Tech Stack -->
+      {project.techStack && (
+          <section class="mb-20">
+              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.techStack || 'Tech Stack'}</h2>
+              <div class="flex flex-wrap gap-4">
+                  {project.techStack.map(tech => (
+                      <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 px-5 py-3 rounded-xl">
+                          <i class={`${tech.icon} text-xl text-slate-700`}></i>
+                          <div class="flex flex-col">
+                              <span class="text-sm font-bold text-slate-900 leading-none">{tech.name}</span>
+                              {tech.version && <span class="text-[10px] text-slate-500 mt-1">v{tech.version}</span>}
+                          </div>
+                      </div>
+                  ))}
+              </div>
+          </section>
+      )}
+
+      <!-- Phase 10: The Timeline -->
+      {project.timeline && (
+          <section class="mb-20">
+              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.timeline || 'Project Timeline'}</h2>
+              <div class="space-y-8 pl-4 border-l-2 border-slate-100">
+                  {project.timeline.map((step, index) => (
+                      <div class="relative pl-8">
+                          <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-accent"></div>
+                          <span class="text-xs font-bold text-accent uppercase tracking-wider mb-1 block">{step.date}</span>
+                          <h4 class="text-base font-bold text-slate-900 mb-1">{step.title}</h4>
+                          <p class="text-sm text-slate-500 leading-relaxed">{step.description}</p>
+                      </div>
+                  ))}
+              </div>
+          </section>
+      )}
+
+      <!-- Data & Tools (Enhanced with Open Science) -->
       <section class="mb-20 border-t border-slate-100 pt-16">
          <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
@@ -365,10 +448,20 @@ const { lang, project } = Astro.props;
             </div>
             <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-900 mb-4">{project.ui.download}</h2>
-               <a href={project.citation.pdfUrl} class="flex items-center gap-4 text-accent font-bold hover:underline mb-6">
-                  <i class="fa-solid fa-file-pdf text-xl"></i>
-                  Download Full Thesis (PDF)
-               </a>
+               <div class="space-y-3 mb-6">
+                   <a href={project.citation.pdfUrl} class="flex items-center gap-3 text-slate-700 font-bold hover:text-accent transition-colors p-3 bg-white rounded-xl border border-slate-200">
+                      <div class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center"><i class="fa-solid fa-file-pdf"></i></div>
+                      <span class="text-sm">Download Thesis (PDF)</span>
+                   </a>
+                   {/* Phase 10: Open Science Links */}
+                   {project.dataLinks?.map(link => (
+                       <a href={link.url} class="flex items-center gap-3 text-slate-700 font-bold hover:text-accent transition-colors p-3 bg-white rounded-xl border border-slate-200">
+                          <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center"><i class={link.icon}></i></div>
+                          <span class="text-sm">{link.label}</span>
+                       </a>
+                   ))}
+               </div>
+               
                <div class="pt-6 border-t border-slate-200">
                   <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">{project.ui.citation}</span>
                   <code class="text-[11px] text-slate-500 block bg-white p-4 rounded-xl border border-slate-200 leading-relaxed font-mono">
@@ -381,6 +474,76 @@ const { lang, project } = Astro.props;
     </div>
   </main>
 </Layout>
+
+<script>
+    import Chart from 'chart.js/auto';
+
+    // @ts-ignore
+    const chartData = window.PROJECT_CHART_DATA;
+
+    if (chartData) {
+        const ctx = document.getElementById('projectChart') as HTMLCanvasElement;
+        if (ctx) {
+            new Chart(ctx, {
+                type: chartData.type,
+                data: {
+                    labels: chartData.labels,
+                    datasets: chartData.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            titleFont: { size: 13, weight: 'bold' },
+                            bodyFont: { size: 12 },
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                color: '#f1f5f9'
+                            },
+                            ticks: {
+                                font: { size: 10 }
+                            },
+                            border: { dash: [4, 4] }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+<!-- Pass data to script -->
+{project.interactiveChart && (
+    <script define:vars={{ chartData: project.interactiveChart }}>
+        window.PROJECT_CHART_DATA = chartData;
+    </script>
+)}
 
 <style>
   /* Academic serif font stacking */

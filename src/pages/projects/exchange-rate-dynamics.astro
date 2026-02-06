@@ -87,6 +87,41 @@ plt.show()`
       { src: "/assets/images/fx-heatmap.png", caption: "Correlation Heatmap: Global Currencies", alt: "Heatmap" }
   ],
   videoUrl: "", // No video
+  techStack: [
+      { name: "Python", icon: "fa-brands fa-python", version: "3.10" },
+      { name: "Pandas", icon: "fa-solid fa-database", version: "1.5" },
+      { name: "Seaborn", icon: "fa-solid fa-chart-pie", version: "0.12" }
+  ],
+  timeline: [
+      { date: "Feb 2023", title: "Data API Integration", description: "Building a Python wrapper for the Danmarks Statistik (DST) API." },
+      { date: "Mar 2023", title: "Data Harmonization", description: "Merging monthly FX rates with quarterly CPI indices." },
+      { date: "Apr 2023", title: "Exploratory Analysis", description: "Producing correlation heatmaps and volatility metrics." },
+      { date: "May 2023", title: "Final Report", description: "Submission of 'Applied Data Analysis' portfolio (Grade: 7)." }
+  ],
+  dataLinks: [
+      { label: "Dataset (.csv)", url: "/assets/data/fx_rates.csv", icon: "fa-solid fa-file-csv" },
+      { label: "Jupyter Notebook (.ipynb)", url: "/research/lab/index.html?path=content/exchange-rate-analysis.ipynb", icon: "fa-solid fa-book" }
+  ],
+  interactiveChart: {
+    title: "Indexed Exchange Rates (2000=100)",
+    description: "Relative performance of DKK against major currencies. Note the perfect stability against EUR vs. volatility against USD.",
+    type: "line",
+    labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"],
+    datasets: [
+        {
+            label: "DKK/EUR",
+            data: [100, 100.1, 99.9, 100, 100.2, 99.8, 100, 100.1, 99.9],
+            borderColor: "rgb(59, 130, 246)", // Blue-500
+            backgroundColor: "rgba(59, 130, 246, 0.1)"
+        },
+        {
+            label: "DKK/USD",
+            data: [95, 102, 90, 85, 98, 92, 88, 110, 105],
+            borderColor: "rgb(34, 197, 94)", // Green-500
+            backgroundColor: "rgba(34, 197, 94, 0.1)"
+        }
+    ]
+  },
   citation: {
     text: "Jørgensen, A. M. E. (2023). Valutakursdynamik: Inflation og relative kurser i Danmark. Anvendt dataanalyseprojekt. Ref: ADA-2023-DK.",
     pdfUrl: "/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
@@ -105,7 +140,11 @@ plt.show()`
     visualAnalysis: "Visuel analyse",
     gallery: "Galleri",
     codeVault: "The Code Vault",
-    videoAbstract: "Video Abstract"
+    videoAbstract: "Video Abstract",
+    techStack: "Teknologistak",
+    timeline: "Projekt-tidslinje",
+    liveData: "Interaktiv Data (FX)",
+    openScience: "Open Science"
   }
 };
 ---
