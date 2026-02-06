@@ -3,7 +3,8 @@ import path from 'path';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const pdf = require('pdf-parse');
+const pdfModule = require('pdf-parse');
+const pdf = typeof pdfModule === 'function' ? pdfModule : pdfModule.default;
 
 const documentsDir = './src/data/documents';
 const outputFile = './src/lib/generated-rag.ts';
