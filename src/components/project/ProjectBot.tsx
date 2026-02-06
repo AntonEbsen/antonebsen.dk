@@ -34,7 +34,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     }, [isOpen]);
 
     // We need append from useChat to support chips properly
-    const { messages, input, handleInputChange, handleSubmit, isLoading, append, setInput } = useChat({
+    const chatHelpers = useChat({
         api: '/api/chat',
         body: {
             context: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet }
@@ -58,7 +58,9 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                 window.dispatchEvent(new CustomEvent('project-bot-graph', { detail: nodeId }));
             }
         }
-    } as any);
+    }) as any;
+
+    const { messages, input, handleInputChange, handleSubmit, isLoading, append, setInput } = chatHelpers;
 
     // Run Mermaid on new messages
     useEffect(() => {
@@ -224,7 +226,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             <button
                                 type="submit"
                                 disabled={false}
-                                className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-50"
                             >
                                 <i className="fa-solid fa-arrow-up text-sm"></i>
                             </button>
