@@ -3,6 +3,7 @@ import process from 'process';
 const requiredEnvVars = [
     'SUPABASE_URL',
     'SUPABASE_ANON_KEY',
+    'GEMINI_API_KEY',
     // Add other critical keys here if needed
 ];
 

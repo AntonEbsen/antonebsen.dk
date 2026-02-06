@@ -6,6 +6,8 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import KnowledgeGraph from '@components/common/KnowledgeGraph.astro';
 import SlideDeck from '@components/common/SlideDeck.astro';
+import ProjectBot from '@components/project/ProjectBot';
+import DataPlayground from '@components/project/DataPlayground';
 
 interface Props {
   lang: 'da' | 'en';
@@ -527,6 +529,35 @@ const { lang, project } = Astro.props;
                 <i class="fa-solid fa-book"></i>
             </button>
         </div>
+      )}
+
+      {/* Phase 12: The Simulation Layer */}
+      <ProjectBot client:only="react" projectTitle={project.title} />
+      
+      {/* Data Playground Section (Only if data link exists) */}
+      {project.dataLinks?.some(l => l.label.includes('csv')) && (
+          <section class="max-w-4xl mx-auto px-4 mb-20 scroll-mt-20" id="data-playground">
+               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8 flex items-center gap-2">
+                   <i class="fa-solid fa-flask text-accent"></i> 
+                   The Simulation Layer
+               </h2>
+               <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                   <div class="space-y-4">
+                       <h3 class="text-2xl font-serif font-bold text-slate-900">Live Data Lab</h3>
+                       <p class="text-sm text-slate-600 leading-relaxed">
+                           Don't just take my word for it. Access the raw project tokens directly in your browser.
+                           This playground uses <strong>DuckDB-WASM</strong> to run SQL queries against the actual dataset used in this paper.
+                       </p>
+                       <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-blue-800">
+                           <strong>try:</strong><br/>
+                           <code class="font-mono mt-1 block">SELECT * FROM main_data LIMIT 5;</code>
+                       </div>
+                   </div>
+                   <div class="md:col-span-2">
+                        <DataPlayground client:only="react" dataUrl={project.dataLinks.find(l => l.label.includes('csv'))?.url || ''} />
+                   </div>
+               </div>
+          </section>
       )}
 
     </div>
