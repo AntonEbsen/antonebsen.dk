@@ -6,12 +6,16 @@ const require = createRequire(import.meta.url);
 let pdf;
 try {
     const pdfModule = require('pdf-parse');
-    console.log('DEBUG: pdf-parse loaded. Type:', typeof pdfModule);
-    if (typeof pdfModule === 'object') {
-        console.log('DEBUG: pdf-parse keys:', Object.keys(pdfModule));
-        pdf = pdfModule.default || pdfModule;
-    } else {
-        pdf = pdfModule;
+    // On Vercel, it seems pdfModule might be the object containing the function or just the function
+    // Debug output showed keys including 'PDFParse'.
+    console.log('DEBUG: pdf-parse loaded. Keys:', Object.keys(pdfModule));
+
+    // Try to find the function: default -> PDFParse property -> module itself
+    pdf = pdfModule.default || (pdfModule.PDFParse ? pdfModule : pdfModule);
+
+    // If it's still not a function, we are in trouble, but let's try to assume it works if called or use the one from keys
+    if (typeof pdf !== 'function' && typeof pdfModule.PDFParse === 'function') {
+        pdf = pdfModule.PDFParse;
     }
 } catch (e) {
     console.error('DEBUG: Failed to require pdf-parse:', e);
