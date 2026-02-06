@@ -1,4 +1,4 @@
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText, generateText } from 'ai';
 
 export const prerender = false;
@@ -15,10 +15,15 @@ export const POST = async ({ request }: { request: Request }) => {
          return new Response(JSON.stringify({ message: "Server Configuration Error: Missing API Key" }), { status: 500 });
       }
 
-      // 2. Determine Mode (Legacy vs New)
+      // 2. Initialize Provider with Explicit Key
+      const google = createGoogleGenerativeAI({
+         apiKey: process.env.GEMINI_API_KEY
+      });
+
+      // 3. Determine Mode (Legacy vs New)
       const isNewWidget = body.messages && Array.isArray(body.messages);
 
-      // 3. Construct Model & Prompts
+      // 4. Construct Model & Prompts
       if (isNewWidget) {
          // === NEW PROJECT BOT ===
          const { messages, context } = body;
