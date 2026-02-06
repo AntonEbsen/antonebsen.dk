@@ -1,7 +1,43 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText, generateText } from 'ai';
 
+// Static RAG Data
+// @ts-ignore
+import cvEn from '../../content/cv/en.json';
+// @ts-ignore
+import skillsEn from '../../content/skills/en.json';
+
 export const prerender = false;
+
+function getBioContext(lang: string) {
+   const cv = cvEn; // Default to EN for now as master source
+   const skills = skillsEn;
+
+   const experiences = cv.experience.map((e: any) => `- ${e.title} at ${e.organization} (${e.period}): ${e.description.join('. ')}`).join('\n');
+   const education = cv.education.map((e: any) => `- ${e.degree} at ${e.institution}`).join('\n');
+   const proSkills = skills.professional.map((s: any) => s.name).join(', ');
+   const codeSkills = skills.programming.map((s: any) => `${s.name} (${s.level})`).join(', ');
+   const projects = cv.projects.map((p: any) => `- ${p.title}: ${p.description}`).join('\n');
+
+   return `
+FACTS ABOUT ANTON (SOURCE OF TRUTH):
+[Education]
+${education}
+
+[Work Experience]
+${experiences}
+
+[Technical Skills]
+- Programming: ${codeSkills}
+- Professional: ${proSkills}
+
+[Projects]
+${projects}
+
+[Languages]
+${skills.languages.map((l: any) => `- ${l.name}: ${l.level}`).join('\n')}
+`;
+}
 
 // Fix: Destructure 'request' from the Astro APIContext
 // Previous error "req.json is not a function" happened because the first arg is the context object, not the Request itself.
@@ -27,8 +63,12 @@ export const POST = async ({ request }: { request: Request }) => {
       if (isNewWidget) {
          // === NEW PROJECT BOT ===
          const { messages, context } = body;
+         const bio = getBioContext('en');
+
          const systemPrompt = `
          You are 'The Reviewer', reviewing the project "${context?.title || 'Unknown'}".
+         ${bio}
+         
          Style: Concise, professional, slightly cynical but constructive.
          Modes: ${context?.simple ? 'ELI5' : 'Normal'}, ${context?.critique ? 'Ruthless' : 'Constructive'}.
          ${context?.codeSnippet ? 'Has Code Context.' : ''}
@@ -47,20 +87,14 @@ export const POST = async ({ request }: { request: Request }) => {
          // === LEGACY QUANTUM AI ===
          const { message, lang = 'da', persona = 'default' } = body;
 
-         const bio = `
-FACTS ABOUT ANTON:
-- Education: MSc in Economics (cand.polit) at Uni Copenhagen (2021-Present).
-- Work: Student Lecturer at Djøf (Excel/VBA).
-- Skills: Python, Excel/VBA, SAS, GAMS, Econometrics, Macroeconomics.
-- Role: Economist & Data Analyst (NOT a Software Engineer manager).
-- Projects: Global Financial Cycle (SVAR), ECB Taylor Rules.
-         `;
+         const bio = getBioContext(lang);
 
-         const baseInstruction = `You are Anton's AI Assistant. Use the facts above.
+         const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.
 CRITICAL RULES:
 1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
-2. Never hallucinate roles not listed in facts (e.g. do not say he is an engineering manager).
-3. Keep it brief and professional.`;
+2. Never hallucinate roles not listed in facts (e.g. Anton is NOT an engineering manager).
+3. If the user asks about something not in the facts, politely say you don't know or relate it to his Economics background.
+4. Keep it brief and professional.`;
 
          const systemPrompts: Record<string, string> = {
             default: `${bio}\n${baseInstruction}`,
