@@ -215,13 +215,8 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             />
                             <button
                                 type="submit"
-                                // disabled={isLoading || !input?.trim()}
-                                onClick={(e) => {
-                                    console.log('Input:', input, 'Is Loading:', isLoading);
-                                    if (isLoading) { e.preventDefault(); alert("Still Loading..."); }
-                                    if (!input?.trim()) { e.preventDefault(); }
-                                }}
-                                className={`absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'}`}
+                                disabled={isLoading || !input?.trim()}
+                                className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                                 <i className="fa-solid fa-arrow-up text-sm"></i>
                             </button>

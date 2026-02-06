@@ -35,7 +35,7 @@ export const POST = async ({ request }: { request: Request }) => {
          `;
 
          const result = streamText({
-            model: google('gemini-1.5-flash'),
+            model: google('gemini-2.0-flash-exp'),
             messages: messages,
             system: systemPrompt,
          });
@@ -57,7 +57,7 @@ export const POST = async ({ request }: { request: Request }) => {
          // Legacy widget: Use simpler generateText (Non-streaming) to guarantee response
          // This avoids all stream protocol mismatch issues.
          const { text } = await generateText({
-            model: google('gemini-1.5-flash'),
+            model: google('gemini-2.0-flash-exp'),
             messages: [{ role: 'user', content: message }],
             system: systemPrompts[persona] || systemPrompts.default
          });
