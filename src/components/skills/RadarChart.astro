@@ -1,6 +1,6 @@
 ---
 interface Props {
-  data: { label: string; value: number }[];
+  data: { label: string; value: number; key?: string }[];
   size?: number;
 }
 
@@ -66,24 +66,13 @@ const methodLevels = [0.25, 0.5, 0.75, 1];
         class="drop-shadow-glow"
     />
 
-interface Props {
-  data: { label: string; value: number; key?: string }[];
-  size?: number;
-}
-
-const { data, size = 300 } = Astro.props;
-
-// ... existing config ...
-
-// ... (render) ...
-
     {/* Points & Labels */}
     {points.map((p, i) => {
         const labelPoint = getPoint(115, i, total); // Push label out a bit
         return (
             <g 
-                class="group cursor-pointer" 
-                onclick={`window.dispatchEvent(new CustomEvent('radar-filter', { detail: '${data[i].key || ''}' }))`}
+                class="group cursor-pointer radar-point" 
+                data-key={data[i].key || ''}
             >
                 <circle cx={p.x} cy={p.y} r="4" fill="#EAB308" class="group-hover:r-6 transition-all" />
                 <circle cx={p.x} cy={p.y} r="12" fill="transparent" /> {/* Hit area */}
@@ -109,3 +98,14 @@ const { data, size = 300 } = Astro.props;
         filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));
     }
 </style>
+
+<script>
+    document.querySelectorAll('.radar-point').forEach(point => {
+        point.addEventListener('click', () => {
+            const key = point.getAttribute('data-key');
+            if (key) {
+                window.dispatchEvent(new CustomEvent('radar-filter', { detail: key }));
+            }
+        });
+    });
+</script>
