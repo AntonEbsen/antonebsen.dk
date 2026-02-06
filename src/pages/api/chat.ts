@@ -6,6 +6,11 @@ import { ragContent } from '@/lib/generated-rag';
 export const prerender = false;
 
 export const POST = async (req: Request) => {
+   // DEBUG: Check Environment
+   if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      return new Response(JSON.stringify({ error: "Configuration Error: Missing API Key" }), { status: 500 });
+   }
+
    try {
       const body = await req.json();
 
