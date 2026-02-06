@@ -6,10 +6,11 @@ interface Props {
 const { skills } = Astro.props;
 ---
 
-<div id="skill-network" class="w-full h-[400px] relative overflow-hidden bg-white/5 rounded-xl border border-white/10">
+<div id="skill-network" class="w-full h-[400px] min-h-[400px] relative overflow-hidden bg-white/5 rounded-xl border border-white/10 flex items-center justify-center">
     <div class="absolute top-4 left-4 z-10">
         <h3 class="font-bold text-xs text-dim uppercase tracking-wider">The Ecosystem</h3>
     </div>
+    <span class="text-dim text-sm animate-pulse">Loading Ecosystem...</span>
 </div>
 
 <script>
@@ -18,20 +19,23 @@ const { skills } = Astro.props;
 
     function initNetwork() {
         const container = document.getElementById('skill-network');
+        
+        console.log(`[SkillNetwork] Checking container... ${container ? 'Found' : 'Not Found'}`);
         if (!container) return;
 
         const width = container.clientWidth;
         const height = container.clientHeight;
         
-        console.log(`[SkillNetwork] Init: ${width}x${height}`);
+        console.log(`[SkillNetwork] Dimensions: ${width}x${height}`);
 
         if (width === 0 || height === 0) {
-            console.log("[SkillNetwork] Waiting for layout...");
+            console.warn("[SkillNetwork] Zero dimensions. Waiting for layout...");
             setTimeout(initNetwork, 100);
             return;
         }
 
-        // Clear previous
+        // Clear loading text and previous svg
+        container.innerHTML = '<div class="absolute top-4 left-4 z-10"><h3 class="font-bold text-xs text-dim uppercase tracking-wider">The Ecosystem</h3></div>';
         d3.select("#skill-network svg").remove();
 
         // Sample Data Construction (Client-side for now to avoid complex serialization)
