@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import { useChat } from 'ai/react';
+import mermaid from 'mermaid';
 
 interface ProjectBotProps {
     projectTitle: string;
@@ -12,10 +13,18 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     const [critiqueMode, setCritiqueMode] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [isListening, setIsListening] = useState(false);
+    // Recruiter Mode State
+    const [jobMode, setJobMode] = useState(false);
+    const [jobDescription, setJobDescription] = useState("");
 
     // Chips for quick start
     const chips = ["Methodology check", "Key findings summary", "Explain like I'm 5"];
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Initialize Mermaid
+    useEffect(() => {
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+    }, []);
 
     const handleChipClick = (msg: string) => {
         if (!isOpen) setIsOpen(true);
@@ -38,7 +47,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
         body: {
             context: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet }
         },
-        onFinish: (message) => {
+        onFinish: (message: any) => {
             // Detect SQL block
             const sqlMatch = message.content.match(/```sql\n([\s\S]*?)\n```/);
             if (sqlMatch) {
@@ -54,6 +63,18 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
             }
         }
     });
+
+    // Run Mermaid on new messages
+    useEffect(() => {
+        if (messages.length > 0) {
+            // Tiny timeout to let DOM render
+            setTimeout(() => {
+                mermaid.run({
+                    nodes: document.querySelectorAll('.mermaid-code')
+                });
+            }, 100);
+        }
+    }, [messages]);
 
     const speak = (text: string) => {
         if ('speechSynthesis' in window) {
@@ -95,7 +116,6 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     };
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        // Placeholder for future attachment implementation
         alert("Vision module initialization... (Requires backend update to handle multipart/form-data)");
     }
 
@@ -118,24 +138,56 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                 {/* Header */}
                 <div className="bg-slate-900 p-4 flex justify-between items-center text-white select-none relative">
                     <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full animate-pulse transition-colors ${critiqueMode ? 'bg-red-500' : 'bg-green-400'}`}></div>
+                        {/* Status Dot */}
+                        <div className={`w-2 h-2 rounded-full animate-pulse transition-colors ${critiqueMode ? 'bg-red-500' : jobMode ? 'bg-purple-400' : 'bg-green-400'}`}></div>
                         <div>
                             <span className="font-bold text-sm block leading-none">The Reviewer</span>
-                            <span className="text-[10px] text-slate-400 font-mono">{critiqueMode ? 'CRITIQUE PROTOCOL' : 'STANDARD PROTOCOL'}</span>
+                            <span className="text-[10px] text-slate-400 font-mono">
+                                {critiqueMode ? 'CRITIQUE PROTOCOL' : jobMode ? 'RECRUITER MODE' : 'STANDARD PROTOCOL'}
+                            </span>
                         </div>
                     </div>
                     <div className="flex items-center gap-1.5">
+                        {/* Job Mode Toggle */}
+                        <button onClick={() => setJobMode(!jobMode)} className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors ${jobMode ? 'bg-purple-500/20 text-purple-400 border border-purple-500' : 'hover:bg-white/10 text-slate-400'}`} title="Recruiter Mode"><i className="fa-solid fa-briefcase"></i></button>
+
                         <button onClick={() => setCritiqueMode(!critiqueMode)} className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors ${critiqueMode ? 'bg-red-500/20 text-red-400 border border-red-500' : 'hover:bg-white/10 text-slate-400'}`} title="Critique Mode"><i className="fa-solid fa-gavel"></i></button>
                         <button onClick={() => setSimpleMode(!simpleMode)} className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors ${simpleMode ? 'bg-green-500/20 text-green-400 border border-green-500' : 'hover:bg-white/10 text-slate-400'}`} title="ELI5 Mode"><i className="fa-solid fa-child-reaching"></i></button>
-                        <button onClick={() => { if (!isOpen) setIsOpen(true); append({ role: 'user', content: "Quiz me on this project. Ask a hard question." }); }} className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors hover:bg-white/10 text-slate-400`} title="Take a Quiz"><i className="fa-solid fa-graduation-cap"></i></button>
                         <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white ml-2"><i className="fa-solid fa-xmark"></i></button>
                     </div>
                     <a href="/ai-reviewer" target="_blank" className="absolute top-4 left-1/2 -translate-x-1/2 text-[10px] text-slate-500 hover:text-white transition-colors flex items-center gap-1 opacity-50 hover:opacity-100"><i className="fa-regular fa-circle-question"></i><span>Docs</span></a>
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
-                    {messages.length === 0 && (
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 relative">
+                    {/* Job Mode Overlay */}
+                    {jobMode && messages.length === 0 && (
+                        <div className="absolute inset-0 bg-slate-50 z-10 p-6 flex flex-col items-center justify-center text-center space-y-4">
+                            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i className="fa-solid fa-briefcase text-2xl text-purple-500"></i>
+                            </div>
+                            <h3 className="font-bold text-slate-700">Recruiter Mode</h3>
+                            <p className="text-sm text-slate-500">Paste the Job Description below. I will analyze the specific fit between this portfolio and the role.</p>
+                            <textarea
+                                className="w-full h-32 p-3 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-purple-500 resize-none font-sans"
+                                placeholder="Paste Job Description here..."
+                                value={jobDescription}
+                                onChange={(e) => setJobDescription(e.target.value)}
+                            ></textarea>
+                            <button
+                                onClick={() => {
+                                    append({ role: 'user', content: `Analyze the fit for this Job Description:\n\n${jobDescription}` });
+                                    setJobMode(false); // Switch back to chat view
+                                }}
+                                disabled={!jobDescription.trim()}
+                                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-xl text-sm font-bold shadow-md transition-colors disabled:opacity-50"
+                            >
+                                Analyze Candidate Fit
+                            </button>
+                        </div>
+                    )}
+
+                    {messages.length === 0 && !jobMode && (
                         <div className="text-center mt-8 space-y-4">
                             <div className="w-16 h-16 bg-slate-200 rounded-full mx-auto flex items-center justify-center text-3xl">🤖</div>
                             <p className="text-sm text-slate-500 px-6">I have read the full paper and code. How can I assist your review?</p>
@@ -154,7 +206,24 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                         <i className={`fa-solid ${isSpeaking ? 'fa-stop' : 'fa-volume-high'}`}></i>
                                     </button>
                                 )}
-                                <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: m.content.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded font-mono text-xs">$1</code>').replace(/\[Source: (.*?)\]/g, '<span class="text-[10px] text-slate-400 block mt-1 border-t border-slate-100 pt-1">📚 Source: $1</span>').replace(/\[Node: (.*?)\]/g, '<span class="text-[10px] text-blue-500 font-bold ml-1 cursor-help" title="Graph Node">#$1</span>').replace(/\n/g, '<br/>') }} />
+                                <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{
+                                    __html: m.content
+                                        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                                        .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
+                                        .replace(/```mermaid\n([\s\S]*?)```/g, '<div class="mermaid-code bg-white p-2 rounded border border-slate-100 my-2 overflow-x-auto">$1</div>') // Mermaid placeholder
+                                        .replace(/\[Source: (.*?)\]/g, '<span class="text-[10px] text-slate-400 block mt-1 border-t border-slate-100 pt-1">📚 Source: $1</span>')
+                                        .replace(/\[Node: (.*?)\]/g, '<span class="text-[10px] text-blue-500 font-bold ml-1 cursor-help" title="Graph Node">#$1</span>')
+                                        .replace(/\n/g, '<br/>')
+                                }} />
+                                {/* The Closer: CTA Button if message contains "hire" or "contact" */}
+                                {m.role !== 'user' && (m.content.toLowerCase().includes('hire') || m.content.toLowerCase().includes('interview')) && (
+                                    <div className="mt-3 pt-3 border-t border-slate-100">
+                                        <a href={`mailto:anton@antonebsen.dk?subject=Interview Request: ${projectTitle}`} className="block w-full text-center bg-slate-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors shadow-sm">
+                                            <i className="fa-solid fa-calendar-check mr-2"></i>
+                                            Book Interview
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}
