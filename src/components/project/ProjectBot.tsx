@@ -206,7 +206,16 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
 
                     {/* Input */}
                     <div className="p-3 bg-black/80 border-t border-white/10 backdrop-blur-md">
-                        <form onSubmit={handleSubmit} className="relative">
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                // Manually trigger handleSubmit from SDK if available, or just append user message
+                                if (input?.trim()) {
+                                    handleSubmit(e);
+                                }
+                            }}
+                            className="relative"
+                        >
                             <input
                                 value={input}
                                 onChange={handleInputChange}
