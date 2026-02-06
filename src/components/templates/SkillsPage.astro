@@ -8,6 +8,7 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import SkillGroup from '@components/skills/SkillGroup.astro';
 import MethodologyCard from '@components/skills/MethodologyCard.astro';
+import SnippetModal from '@components/skills/SnippetModal.astro';
 import RadarChart from '@components/skills/RadarChart.astro';
 import { getEntry } from 'astro:content';
 
@@ -93,16 +94,29 @@ const getApplyingProjects = (skillName: string) => {
         .filter(p => p.technologies && p.technologies.includes(skillName))
         .map(p => ({
             title: p.title,
-            href: isDa ? '/education#projects' : `/${lang}/education#projects` // Link to education page anchor
+            href: isDa ? '/education#projects' : `/${lang}/education#projects` 
+        }));
+};
+
+// Helper: Applying Experience (Professional Proof)
+const getApplyingExperience = (skillName: string) => {
+    if (!cv?.experience) return [];
+    return cv.experience
+        .filter(e => e.technologies && e.technologies.includes(skillName))
+        .map(e => ({
+            title: e.organization, // Show Organization name as the proof
+            role: e.title,
+            href: isDa ? '/experience' : `/${lang}/experience` 
         }));
 };
 
 // 4. Transform Data
-// Add "verifiedIn" & "appliedIn" to programming skills
+// Add "verifiedIn", "appliedIn" (Projects) & "appliedWork" (Experience)
 const enrichedProgramming = skillsData.programming.map(skill => ({
     ...skill,
     verifiedIn: getVerifyingCourses(skill.name),
-    appliedIn: getApplyingProjects(skill.name)
+    appliedIn: getApplyingProjects(skill.name),
+    appliedWork: getApplyingExperience(skill.name)
 }));
 
 const expertTools = enrichedProgramming.filter(s => s.level === 'expert');
@@ -112,10 +126,10 @@ const learningSkills = skillsData.learning || [];
 
 // 5. Radar Chart Data (Start with fixed high-competence profile)
 const chartData = [
-    { label: content.chart.macro, value: 90 },
-    { label: content.chart.metrics, value: 85 },
-    { label: content.chart.teach, value: 80 },
-    { label: content.chart.data, value: 95 },
+    { label: content.chart.macro, value: 90, key: 'macro' },
+    { label: content.chart.metrics, value: 85, key: 'metrics' },
+    { label: content.chart.teach, value: 80, key: 'teach' }, // 'teach' mapping might need adjustment if no skills have it
+    { label: content.chart.data, value: 95, key: 'data' },
 ];
 
 ---
@@ -126,6 +140,7 @@ const chartData = [
   bodyClass="skills-page"
 >
   <style>
+     /* ... existing styles ... */
     .skills-wrap {
       max-width: 1200px;
       margin: 24px auto;
@@ -144,6 +159,22 @@ const chartData = [
        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
        gap: 14px; 
     }
+    
+    /* Filtering Animation */
+    .skill-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 1;
+        transform: scale(1);
+    }
+    .skill-card.filtered-out {
+        opacity: 0.1;
+        filter: grayscale(100%);
+        transform: scale(0.95);
+    }
+    .skill-card.highlight {
+        box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
+        border-color: rgba(234, 179, 8, 0.4);
+    }
 
     @media (max-width: 980px) {
       .hero-grid { grid-template-columns: 1fr; }
@@ -151,11 +182,13 @@ const chartData = [
   </style>
 
   <main class="skills-wrap">
+     {/* ... Hero Section remains same ... */}
 
     <!-- HERO -->
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8 h-full flex flex-col justify-center">
+            {/* ... Content ... */}
           <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Kompetencer' : 'Competencies'}</p>
           <h1 class="text-4xl leading-tight mb-4 font-bold">{content.heroTitle}</h1>
           <p class="text-lg leading-relaxed text-dim mb-6" set:html={content.heroText}></p>
@@ -171,8 +204,9 @@ const chartData = [
         <div class="flex flex-col gap-4">
              {/* The Balance Chart */}
              <Card variant="glass" class="p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[350px]">
-                <div class="absolute top-4 left-4">
+                <div class="absolute top-4 left-4 flex justify-between w-full pr-8 items-center">
                     <h3 class="font-bold text-sm text-dim uppercase tracking-wider">The Balance</h3>
+                    <button id="reset-filter" class="text-[10px] text-accent uppercase font-bold hover:text-white transition-colors opacity-0 pointer-events-none">Reset Filter âœ•</button>
                 </div>
                 <RadarChart data={chartData} size={280} />
              </Card>
@@ -201,20 +235,24 @@ const chartData = [
 
     <!-- TOOLKIT (Daily Drivers) -->
     <Section id="toolkit">
-       <SkillGroup 
-          title={content.toolsTitle}
-          skills={expertTools}
-          variant="default"
-       />
+       <div id="skills-container">
+           <SkillGroup 
+              title={content.toolsTitle}
+              skills={expertTools}
+              variant="default"
+           />
+       </div>
     </Section>
 
     <!-- STACK (Secondary Tools) -->
     <Section id="stack">
-        <SkillGroup 
-           title={content.stackTitle}
-           skills={stackTools}
-           variant="stack"
-        />
+        <div id="stack-container">
+            <SkillGroup 
+               title={content.stackTitle}
+               skills={stackTools}
+               variant="stack"
+            />
+        </div>
      </Section>
 
     <!-- METHODS (Professional) -->
@@ -244,6 +282,50 @@ const chartData = [
     </Section>
 
   </main>
+
+  <SnippetModal />
+
+<script>
+    // Filter Logic
+    window.addEventListener('radar-filter', (e) => {
+        const category = e.detail;
+        const resetBtn = document.getElementById('reset-filter');
+        
+        if (!category) return;
+        
+        // Show reset button
+        if(resetBtn) {
+            resetBtn.style.opacity = '1';
+            resetBtn.style.pointerEvents = 'auto';
+        }
+
+        // Filter Cards
+        const cards = document.querySelectorAll('.skill-card');
+        cards.forEach((card: any) => {
+             const cardCat = card.dataset.category;
+             if (cardCat === category || category === 'all') {
+                 card.classList.remove('filtered-out');
+                 card.classList.add('highlight');
+             } else {
+                 card.classList.add('filtered-out');
+                 card.classList.remove('highlight');
+             }
+        });
+    });
+
+    // Reset Logic
+    document.getElementById('reset-filter')?.addEventListener('click', () => {
+         const cards = document.querySelectorAll('.skill-card');
+         cards.forEach((card: any) => {
+             card.classList.remove('filtered-out', 'highlight');
+         });
+         const resetBtn = document.getElementById('reset-filter');
+         if(resetBtn) {
+            resetBtn.style.opacity = '0';
+            resetBtn.style.pointerEvents = 'none';
+        }
+    });
+</script>
 </Layout>
 
 

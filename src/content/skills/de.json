@@ -55,49 +55,57 @@
             "icon": "fa-solid fa-table",
             "name": "Excel",
             "title": "Mehr über Excel lesen",
-            "level": "expert"
+            "level": "expert",
+            "category": "data"
         },
         {
             "id": "vba",
             "icon": "fa-solid fa-code",
             "name": "Excel VBA",
             "title": "Mehr über Excel VBA lesen",
-            "level": "expert"
+            "level": "expert",
+            "category": "data"
         },
         {
             "id": "python",
             "icon": "fa-brands fa-python",
             "name": "Python",
             "title": "Mehr über Python lesen",
-            "level": "expert"
+            "level": "expert",
+            "category": "data",
+            "snippet": "import matplotlib.pyplot as plt\nimport seaborn as sns\n\ndef style_plot(ax, title=''):\n    \"\"\"Applies my custom Tufte-inspired style\"\"\"\n    # Remove top and right spines\n    ax.spines['top'].set_visible(False)\n    ax.spines['right'].set_visible(False)\n    \n    # Add grid and title\n    ax.grid(True, linestyle='--', alpha=0.3)\n    ax.set_title(title, loc='left', pad=20, fontsize=14, fontweight='bold')\n    \n    return ax"
         },
         {
             "id": "sas",
             "icon": "fa-solid fa-chart-line",
             "name": "SAS",
             "title": "Mehr über SAS lesen",
-            "level": "expert"
+            "level": "expert",
+            "category": "data"
         },
         {
             "id": "stata",
             "icon": "fa-solid fa-square-root-variable",
             "name": "Stata",
             "title": "Mehr über Stata lesen",
-            "level": "stack"
+            "level": "stack",
+            "category": "metrics"
         },
         {
             "id": "matlab",
             "icon": "fa-solid fa-calculator",
             "name": "MATLAB",
             "title": "Mehr über MATLAB lesen",
-            "level": "stack"
+            "level": "stack",
+            "category": "macro"
         },
         {
             "id": "gams",
             "icon": "fa-solid fa-diagram-project",
             "name": "GAMS",
             "title": "Mehr über GAMS lesen",
-            "level": "stack"
+            "level": "stack",
+            "category": "macro"
         }
     ],
     "focus": [

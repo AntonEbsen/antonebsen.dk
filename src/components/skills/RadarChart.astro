@@ -66,18 +66,33 @@ const methodLevels = [0.25, 0.5, 0.75, 1];
         class="drop-shadow-glow"
     />
 
+interface Props {
+  data: { label: string; value: number; key?: string }[];
+  size?: number;
+}
+
+const { data, size = 300 } = Astro.props;
+
+// ... existing config ...
+
+// ... (render) ...
+
     {/* Points & Labels */}
     {points.map((p, i) => {
         const labelPoint = getPoint(115, i, total); // Push label out a bit
         return (
-            <g>
-                <circle cx={p.x} cy={p.y} r="4" fill="#EAB308" />
+            <g 
+                class="group cursor-pointer" 
+                onclick={`window.dispatchEvent(new CustomEvent('radar-filter', { detail: '${data[i].key || ''}' }))`}
+            >
+                <circle cx={p.x} cy={p.y} r="4" fill="#EAB308" class="group-hover:r-6 transition-all" />
+                <circle cx={p.x} cy={p.y} r="12" fill="transparent" /> {/* Hit area */}
                 <text 
                     x={labelPoint.x} 
                     y={labelPoint.y} 
                     text-anchor="middle" 
                     fill="rgba(255,255,255,0.5)" 
-                    class="text-[10px] font-mono uppercase tracking-wider"
+                    class="text-[10px] font-mono uppercase tracking-wider group-hover:fill-white group-hover:font-bold transition-colors select-none"
                     dominant-baseline="middle"
                 >
                     {data[i].label}

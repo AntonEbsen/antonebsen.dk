@@ -156,6 +156,7 @@ export const collections = {
                 period: z.string(),
                 type: z.string(),
                 categories: z.array(z.string()).optional(),
+                technologies: z.array(z.string()).optional(), // Added for Professional Proof
                 description: z.array(z.string()),
                 highlights: z.array(z.object({
                     label: z.string(),
@@ -166,8 +167,7 @@ export const collections = {
                     href: z.string(),
                     icon: z.string().optional()
                 })).optional(),
-                logo: z.string().optional(),
-                technologies: z.array(z.string()).optional()
+                logo: z.string().optional()
             })).optional(),
             education: z.array(z.object({
                 institution: z.string(),
@@ -241,7 +241,9 @@ export const collections = {
                 icon: z.string().optional(),
                 name: z.string(),
                 title: z.string().optional(),
-                level: z.string().optional()
+                level: z.string().optional(),
+                category: z.string().optional(), // Phase 3: Interactive Balance
+                snippet: z.string().optional(),  // Phase 3: The Vault
             })),
             focus: z.array(z.object({
                 icon: z.string(),

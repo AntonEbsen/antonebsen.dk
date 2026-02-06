@@ -8,8 +8,11 @@ interface Skill {
     name: string;
     title?: string;
     level?: string;
+    category?: string; // Added for Interactive Balance
+    snippet?: string; // Added for The Vault
     verifiedIn?: { title: string; href: string; grade: string }[];
     appliedIn?: { title: string; href: string }[];
+    appliedWork?: { title: string; role: string; href: string }[];
 }
 
 interface Props {
@@ -31,18 +34,32 @@ const { title, skills, variant = 'default' } = Astro.props;
         variant === 'default' ? "grid-cols-1 md:grid-cols-2" : "grid-cols-2 md:grid-cols-3"
     ]}>
         {skills.map(skill => (
-            <Card variant="glass" class:list={[
-                "p-4 flex flex-col items-start gap-3 h-full group transition-all hover:bg-white/5",
-                variant === 'default' ? "min-h-[140px]" : "min-h-[80px]"
+            <Card class:list={[
+                "flex flex-col",
+                variant === 'default' ? "p-6" : "p-4"
             ]}>
                 <div class="flex justify-between w-full items-start">
                     <div class="flex items-center gap-3">
-                         {skill.icon && <i class={`${skill.icon} text-2xl text-accent`}></i>}
-                         <h3 class:list={[
-                             "font-bold leading-tight",
-                             variant === 'default' ? "text-lg" : "text-sm"
-                         ]}>{skill.name}</h3>
+                         {skill.icon && <i class={`${skill.icon} text-2xl ${variant === 'default' ? 'text-accent' : 'text-dim'}`}></i>}
+                         <div>
+                            <h3 class:list={[
+                                "font-bold leading-tight",
+                                variant === 'default' ? "text-lg" : "text-sm"
+                            ]}>{skill.name}</h3>
+                            {/* Snippet Button */}
+                            {skill.snippet && (
+                                <button 
+                                    class="text-[10px] uppercase font-bold text-dim bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded mt-1 transition-colors flex items-center gap-1 group/btn"
+                                    onclick={`event.stopPropagation(); window.dispatchEvent(new CustomEvent('open-snippet', { detail: { snippet: ${JSON.stringify(skill.snippet)}, title: '${skill.name}' } }))`}
+                                >
+                                    <i class="fa-solid fa-code text-accent/70 group-hover/btn:text-accent"></i>
+                                    View Code
+                                </button>
+                            )}
+                         </div>
                     </div>
+                    {/* Level Badge */}
+                    {skill.level === 'expert' && <span class="text-[10px] font-bold text-accent border border-accent/20 px-2 py-0.5 rounded-full bg-accent/5">EXPERT</span>}
                 </div>
 
                 {variant === 'default' && (
@@ -68,10 +85,23 @@ const { title, skills, variant = 'default' } = Astro.props;
                         </div>
                     )}
 
+                    {/* Professional Proof (Work Experience) */}
+                    {skill.appliedWork && skill.appliedWork.length > 0 && (
+                        <div>
+                             <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Verified in Work</p>
+                             {skill.appliedWork.slice(0, 1).map(w => (
+                                <a href={w.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
+                                    <i class="fa-solid fa-briefcase text-accent/50 text-[10px]"></i>
+                                    <span class="truncate">{w.title}</span>
+                                </a>
+                            ))}
+                        </div>
+                    )}
+
                     {/* Projects */}
                     {skill.appliedIn && skill.appliedIn.length > 0 && (
                         <div>
-                             <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Applied in</p>
+                             <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Applied in Projects</p>
                              {skill.appliedIn.slice(0, 1).map(p => (
                                 <a href={p.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
                                     <i class="fa-solid fa-rocket text-accent/50 text-[10px]"></i>

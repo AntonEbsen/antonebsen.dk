@@ -30,6 +30,12 @@
                   "type": "string"
                 }
               },
+              "technologies": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "description": {
                 "type": "array",
                 "items": {
@@ -79,12 +85,6 @@
               },
               "logo": {
                 "type": "string"
-              },
-              "technologies": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
               }
             },
             "required": [

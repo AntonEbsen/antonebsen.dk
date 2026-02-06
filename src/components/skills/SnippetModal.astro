@@ -1,0 +1,79 @@
+---
+---
+<div id="snippet-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="modal-backdrop"></div>
+    
+    <!-- Content -->
+    <div class="relative w-full max-w-2xl bg-[#1e1e1e] border border-white/10 rounded-lg shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0" id="modal-content">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+            <div class="flex items-center gap-3">
+                 <i class="fa-solid fa-code text-accent"></i>
+                 <h3 class="font-bold text-sm tracking-wider uppercase" id="modal-title">Code Snippet</h3>
+            </div>
+            <button id="close-modal" class="text-dim hover:text-white transition-colors">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Code Area -->
+        <div class="p-0 overflow-x-auto bg-[#1e1e1e]">
+             <pre class="p-6 text-sm font-mono leading-relaxed text-gray-300" id="modal-code"></pre>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-3 border-t border-white/10 bg-white/5 flex justify-end">
+            <span class="text-[10px] text-dim font-mono uppercase">Read-only view</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('snippet-modal');
+    const content = document.getElementById('modal-content');
+    const title = document.getElementById('modal-title');
+    const codeBlock = document.getElementById('modal-code');
+    const closeBtn = document.getElementById('close-modal');
+    const backdrop = document.getElementById('modal-backdrop');
+
+    function openModal(snippet, skillName) {
+        if(!modal || !content || !codeBlock || !title) return;
+        
+        modal.classList.remove('hidden');
+        // Small delay for animation
+        setTimeout(() => {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 10);
+
+        codeBlock.textContent = snippet;
+        title.textContent = `Snippet: ${skillName}`;
+    }
+
+    function closeModal() {
+        if(!modal || !content) return;
+        
+        content.classList.remove('scale-100', 'opacity-100');
+        content.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 200);
+    }
+
+    // Listen for Close
+    closeBtn?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+
+    // Listen for Open Event
+    window.addEventListener('open-snippet', (e) => {
+        const { snippet, title } = e.detail;
+        openModal(snippet, title);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') closeModal();
+    });
+</script>

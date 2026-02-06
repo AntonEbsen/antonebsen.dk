@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
         const body = await request.json();
-        const { error } = await supabase.from('travel').insert([body]);
+        const { error } = await supabase.from('travel').insert([body] as any);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }));
     } catch (e) {
