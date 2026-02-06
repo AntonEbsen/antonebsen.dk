@@ -134,7 +134,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     }, [messages, isOpen]);
 
     return (
-        <div className="fixed bottom-8 right-8 z-50 font-sans">
+        <div className="fixed bottom-8 right-8 z-[9999] font-sans">
             {/* Chat Window */}
             <div
                 className={`bg-white rounded-2xl shadow-2xl border border-slate-200 w-80 sm:w-96 transition-all duration-300 origin-bottom-right overflow-hidden flex flex-col ${isOpen ? 'opacity-100 scale-100 h-[600px]' : 'opacity-0 scale-90 h-0 pointer-events-none'}`}

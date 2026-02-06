@@ -543,6 +543,8 @@ const { lang, project } = Astro.props;
           projectTitle={project.title} 
           codeSnippet={project.codeSnippet}
       />
+      {/* Debug: Invisible element to verify render location */}
+      <div id="project-bot-marker" style="display: none;"></div>
       
       {/* Data Playground Section (Only if data link exists) */}
       {project.dataLinks?.some(l => l.label.includes('csv')) && (
