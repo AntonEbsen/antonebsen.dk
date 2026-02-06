@@ -83,7 +83,7 @@ shocks, irf = identify_shocks(macro_data)`
   interactiveChart: {
     title: "Impulse Response: VIX Shock to European Credit",
     description: "Response of European bank leverage to a 1 standard deviation shock in the VIX index (95% confidence intervals).",
-    type: "line",
+    type: "line" as const,
     labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     datasets: [
         {
@@ -94,6 +94,32 @@ shocks, irf = identify_shocks(macro_data)`
         }
     ]
   },
+  knowledgeGraph: {
+      nodes: [
+          { id: "Global Financial Cycle (Thesis)", group: 1, radius: 12 },
+          { id: "Rey (2013)", group: 2 },
+          { id: "Miranda-Agrippino (2015)", group: 2 },
+          { id: "Bruno & Shin (2015)", group: 3 },
+          { id: "Obstfeld & Taylor (2004)", group: 4 }
+      ],
+      links: [
+          { source: "Global Financial Cycle (Thesis)", target: "Rey (2013)", value: 5 },
+          { source: "Global Financial Cycle (Thesis)", target: "Miranda-Agrippino (2015)", value: 3 },
+          { source: "Global Financial Cycle (Thesis)", target: "Bruno & Shin (2015)", value: 3 },
+          { source: "Rey (2013)", target: "Miranda-Agrippino (2015)", value: 2 },
+          { source: "Rey (2013)", target: "Obstfeld & Taylor (2004)", value: 1 }
+      ]
+  },
+  slides: [
+      "/assets/slides/gfc-1.png",
+      "/assets/slides/gfc-2.png",
+      "/assets/slides/gfc-3.png"
+  ],
+  glossary: [
+      { term: "SVAR", definition: "Structural Vector Autoregression: A statistical model used to capture the linear interdependencies among multiple time series." },
+      { term: "VIX", definition: "CBOE Volatility Index: A popular measure of the stock market's expectation of volatility based on S&P 500 index options." },
+      { term: "Gearing", definition: "The ratio of a company's debt to its equity, essentially a measure of financial leverage." }
+  ],
   citation: {
     text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelorprojekt, Københavns Universitet. JEL: E52, E58, F02, F33, G15.",
     pdfUrl: "/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"

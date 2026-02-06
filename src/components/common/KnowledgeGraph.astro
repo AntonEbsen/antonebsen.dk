@@ -1,0 +1,180 @@
+---
+interface Node {
+    id: string;
+    group: number;
+    radius?: number;
+}
+
+interface Link {
+    source: string;
+    target: string;
+    value: number;
+}
+
+interface Props {
+    nodes: Node[];
+    links: Link[];
+    height?: number;
+}
+
+const { nodes, links, height = 400 } = Astro.props;
+---
+
+<div class="relative w-full rounded-[32px] overflow-hidden bg-slate-50 border border-slate-100 shadow-inner" style={`height: ${height}px`}>
+    <div id="knowledge-graph-container" class="absolute inset-0"></div>
+    <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-200 text-[10px] text-slate-500 font-mono">
+        <i class="fa-solid fa-circle-nodes mr-1.5 text-accent"></i>
+        Interactive Knowledge Graph
+    </div>
+</div>
+
+<script>
+    import * as d3 from 'd3';
+
+    // Type definitions for D3 simulation
+    interface GraphNode extends d3.SimulationNodeDatum {
+        id: string;
+        group: number;
+        radius?: number;
+    }
+
+    interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
+        source: string | GraphNode;
+        target: string | GraphNode;
+        value: number;
+    }
+
+    class KnowledgeGraph {
+        private container: HTMLElement;
+        private nodes: GraphNode[];
+        private links: GraphLink[];
+        private simulation: d3.Simulation<GraphNode, GraphLink>;
+        private svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+        private width: number;
+        private height: number;
+
+        constructor(container: HTMLElement, nodes: any[], links: any[]) {
+            this.container = container;
+            this.nodes = nodes.map(d => ({ ...d })); // Clone to avoid mutation issues
+            this.links = links.map(d => ({ ...d })); 
+            this.width = container.clientWidth;
+            this.height = container.clientHeight;
+            
+            this.init();
+        }
+
+        private init() {
+            // Clear previous
+            this.container.innerHTML = '';
+
+            // Create SVG
+            this.svg = d3.select(this.container)
+                .append('svg')
+                .attr('width', '100%')
+                .attr('height', '100%')
+                .attr('viewBox', [0, 0, this.width, this.height]);
+
+            // Simulation setup
+            this.simulation = d3.forceSimulation(this.nodes)
+                .force('link', d3.forceLink(this.links).id((d: any) => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(this.width / 2, this.height / 2))
+                .force('collide', d3.forceCollide().radius((d: any) => (d.radius || 5) + 5));
+
+            // Render elements
+            const link = this.svg.append('g')
+                .attr('stroke', '#cbd5e1') // slate-300
+                .attr('stroke-opacity', 0.6)
+                .selectAll('line')
+                .data(this.links)
+                .join('line')
+                .attr('stroke-width', d => Math.sqrt(d.value));
+
+            const node = this.svg.append('g')
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2)
+                .selectAll('circle')
+                .data(this.nodes)
+                .join('circle')
+                .attr('r', d => d.radius || 8)
+                .attr('fill', d => this.getColor(d.group))
+                .call(this.drag(this.simulation));
+
+            // Add labels
+            const label = this.svg.append('g')
+                .selectAll('text')
+                .data(this.nodes)
+                .join('text')
+                .attr('dx', 12)
+                .attr('dy', 4)
+                .text(d => d.id)
+                .attr('font-family', 'sans-serif')
+                .attr('font-size', '10px')
+                .attr('fill', '#475569') // slate-600
+                .attr('font-weight', 'bold');
+
+            // Add node hover tooltips
+            node.append('title').text(d => d.id);
+
+            // Update positions on tick
+            this.simulation.on('tick', () => {
+                link
+                    .attr('x1', d => (d.source as GraphNode).x!)
+                    .attr('y1', d => (d.source as GraphNode).y!)
+                    .attr('x2', d => (d.target as GraphNode).x!)
+                    .attr('y2', d => (d.target as GraphNode).y!);
+
+                node
+                    .attr('cx', d => d.x!)
+                    .attr('cy', d => d.y!);
+                
+                label
+                    .attr('x', d => d.x!)
+                    .attr('y', d => d.y!);
+            });
+        }
+
+        private getColor(group: number): string {
+            const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#64748b']; // Blue, Red, Green, Amber, Slate
+            return colors[group % colors.length];
+        }
+
+        private drag(simulation: d3.Simulation<GraphNode, GraphLink>) {
+            function dragstarted(event: any) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+
+            function dragged(event: any) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+
+            function dragended(event: any) {
+                if (!event.active) simulation.alphaTarget(0);
+                event.subject.fx = null;
+                event.subject.fy = null;
+            }
+
+            return d3.drag<SVGCircleElement, GraphNode, any>()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended);
+        }
+    }
+
+    // Initialize graph when data is available
+    // @ts-ignore
+    const graphData = window.KNOWLEDGE_GRAPH_DATA;
+    if (graphData) {
+        const container = document.getElementById('knowledge-graph-container');
+        if (container) {
+            new KnowledgeGraph(container, graphData.nodes, graphData.links);
+        }
+    }
+</script>
+
+<script define:vars={{ nodes, links }}>
+   window.KNOWLEDGE_GRAPH_DATA = { nodes, links };
+</script>

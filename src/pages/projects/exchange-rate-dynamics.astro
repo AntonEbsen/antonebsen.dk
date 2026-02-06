@@ -105,7 +105,7 @@ plt.show()`
   interactiveChart: {
     title: "Indexed Exchange Rates (2000=100)",
     description: "Relative performance of DKK against major currencies. Note the perfect stability against EUR vs. volatility against USD.",
-    type: "line",
+    type: "line" as const,
     labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"],
     datasets: [
         {
@@ -122,6 +122,32 @@ plt.show()`
         }
     ]
   },
+  knowledgeGraph: {
+      nodes: [
+          { id: "Exchange Rate Dynamics (Project)", group: 1, radius: 12 },
+          { id: "Meese & Rogoff (1983)", group: 2 },
+          { id: "Rogoff (1996)", group: 2 },
+          { id: "Obstfeld & Rogoff (2000)", group: 3 },
+          { id: "Dornbusch (1976)", group: 3 }
+      ],
+      links: [
+          { source: "Exchange Rate Dynamics (Project)", target: "Meese & Rogoff (1983)", value: 5 },
+          { source: "Exchange Rate Dynamics (Project)", target: "Rogoff (1996)", value: 4 },
+          { source: "Exchange Rate Dynamics (Project)", target: "Obstfeld & Rogoff (2000)", value: 3 },
+          { source: "Meese & Rogoff (1983)", target: "Dornbusch (1976)", value: 2 },
+          { source: "Rogoff (1996)", target: "Obstfeld & Rogoff (2000)", value: 2 }
+      ]
+  },
+  slides: [
+      "/assets/slides/fx-1.png",
+      "/assets/slides/fx-2.png",
+      "/assets/slides/fx-3.png"
+  ],
+  glossary: [
+      { term: "PCA", definition: "Principal Component Analysis: A dimensionality reduction method used to identify dominant patterns (e.g., global risk factor) in high-dimensional data." },
+      { term: "Peg", definition: "Currency Peg: A policy where a national currency's value is fixed to another currency (e.g., DKK to EUR)." },
+      { term: "Volatility", definition: "A statistical measure of the dispersion of returns for a given security or market index, representing risk." }
+  ],
   citation: {
     text: "Jørgensen, A. M. E. (2023). Valutakursdynamik: Inflation og relative kurser i Danmark. Anvendt dataanalyseprojekt. Ref: ADA-2023-DK.",
     pdfUrl: "/assets/docs/Jorgensen_2023_ExchangeRates.pdf"

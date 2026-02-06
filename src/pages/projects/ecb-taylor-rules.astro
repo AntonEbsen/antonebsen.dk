@@ -89,7 +89,7 @@ foreach c within "DE" "FR" "IT" "ES" {
   interactiveChart: {
     title: "Taylor Rule Deviations: Core vs. Periphery",
     description: "Difference between actual ECB policy rate and Taylor-implied optimal rates (Positive values = Policy too tight).",
-    type: "bar",
+    type: "bar" as const,
     labels: ["2010", "2012", "2014", "2016", "2018", "2020", "2022"],
     datasets: [
         {
@@ -104,6 +104,32 @@ foreach c within "DE" "FR" "IT" "ES" {
         }
     ]
   },
+  knowledgeGraph: {
+      nodes: [
+          { id: "ECB Taylor Rules (Thesis)", group: 1, radius: 12 },
+          { id: "Taylor (1993)", group: 2 },
+          { id: "Clarida et al. (1998)", group: 2 },
+          { id: "Orphanides (2001)", group: 3 },
+          { id: "Sauer & Sturm (2007)", group: 4 }
+      ],
+      links: [
+          { source: "ECB Taylor Rules (Thesis)", target: "Taylor (1993)", value: 5 },
+          { source: "ECB Taylor Rules (Thesis)", target: "Clarida et al. (1998)", value: 4 },
+          { source: "ECB Taylor Rules (Thesis)", target: "Orphanides (2001)", value: 3 },
+          { source: "Clarida et al. (1998)", target: "Taylor (1993)", value: 2 },
+          { source: "ECB Taylor Rules (Thesis)", target: "Sauer & Sturm (2007)", value: 2 }
+      ]
+  },
+  slides: [
+      "/assets/slides/ecb-1.png",
+      "/assets/slides/ecb-2.png",
+      "/assets/slides/ecb-3.png"
+  ],
+  glossary: [
+      { term: "GMM", definition: "Generalized Method of Moments: An estimation method used in econometrics when the full data distribution is unknown." },
+      { term: "Output Gap", definition: "The difference between actual GDP and potential GDP, used as a measure of economic slack." },
+      { term: "ZLB", definition: "Zero Lower Bound: A macroeconomic situation where nominal interest rates are at or near zero." }
+  ],
   citation: {
     text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, Københavns Universitet. JEL: E52, E58, F45.",
     pdfUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf"

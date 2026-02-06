@@ -1,0 +1,87 @@
+---
+interface Props {
+  slides: string[];
+}
+
+const { slides } = Astro.props;
+---
+
+<div class="relative w-full aspect-video bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl group slider-container">
+  <div class="absolute inset-0 flex transition-transform duration-500 ease-in-out slider-track">
+    {slides.map((slide, index) => (
+      <div class="min-w-full h-full relative flex items-center justify-center bg-black">
+         <img src={slide} alt={`Slide ${index + 1}`} class="max-w-full max-h-full object-contain" loading="lazy" />
+      </div>
+    ))}
+  </div>
+
+  <!-- Controls -->
+  <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 backdrop-blur hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0" id="prev-slide">
+    <i class="fa-solid fa-chevron-left"></i>
+  </button>
+  
+  <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 backdrop-blur hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0" id="next-slide">
+    <i class="fa-solid fa-chevron-right"></i>
+  </button>
+
+  <!-- Counter -->
+  <div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur px-3 py-1 rounded-full text-xs font-mono text-white/80">
+    <span id="current-slide">1</span> / <span id="total-slides">{slides.length}</span>
+  </div>
+</div>
+
+<script>
+  class SlideDeck {
+    private container: HTMLElement;
+    private track: HTMLElement;
+    private prevBtn: HTMLButtonElement;
+    private nextBtn: HTMLButtonElement;
+    private currentLabel: HTMLElement;
+    private totalSlides: number;
+    private currentIndex: number = 0;
+
+    constructor(container: HTMLElement) {
+      this.container = container;
+      this.track = container.querySelector('.slider-track') as HTMLElement;
+      this.prevBtn = container.querySelector('#prev-slide') as HTMLButtonElement;
+      this.nextBtn = container.querySelector('#next-slide') as HTMLButtonElement;
+      this.currentLabel = container.querySelector('#current-slide') as HTMLElement;
+      
+      const totalLabel = container.querySelector('#total-slides');
+      this.totalSlides = parseInt(totalLabel?.textContent || '0');
+
+      this.init();
+    }
+
+    private init() {
+      this.updateUI();
+      
+      this.prevBtn.addEventListener('click', () => this.move(-1));
+      this.nextBtn.addEventListener('click', () => this.move(1));
+    }
+
+    private move(direction: number) {
+      this.currentIndex = Math.max(0, Math.min(this.currentIndex + direction, this.totalSlides - 1));
+      this.updateUI();
+    }
+
+    private updateUI() {
+      // Move track
+      this.track.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+
+      // Update Label
+      this.currentLabel.textContent = (this.currentIndex + 1).toString();
+
+      // Disable buttons
+      this.prevBtn.disabled = this.currentIndex === 0;
+      this.nextBtn.disabled = this.currentIndex === this.totalSlides - 1;
+      
+      // Fix visual opacity state for disabled buttons explicitly if needed, though CSS handles it
+    }
+  }
+
+  // Initialize all sliders on page
+  document.querySelectorAll('.slider-container').forEach(el => {
+    new SlideDeck(el as HTMLElement);
+  });
+</script>
