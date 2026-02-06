@@ -3,27 +3,63 @@
     "items": [
         {
             "year": "2023 – nu",
-            "title": "Studenterunderviser: Excel/VBA – løbende undervisning",
-            "description": "Kort beskrivelse af hvad du gør + evt. et resultat: evalueringer, deltagertal, kursusudvikling osv.",
-            "icon": "chalkboard-user"
+            "title": "Studenterunderviser: Excel/VBA",
+            "description": "Ansvarlig for undervisning af 1. semester studerende i dataanalyse og automatisering. Udviklede nyt eksamensmateriale.",
+            "icon": "chalkboard-user",
+            "category": "undervisning",
+            "meta": "AU BSS",
+            "relatedSkills": [
+                "Excel",
+                "VBA",
+                "Undervisning"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Kursus Materiale",
+                    "href": "/education"
+                }
+            ]
         },
         {
-            "year": "(år)",
-            "title": "Projekt: (indsæt titel) – data/model/rapport",
-            "description": "Hvad var målet, hvad gjorde du, og hvad kom der ud af det (rapport, kode, præsentation)?",
-            "icon": "code"
+            "year": "2022",
+            "title": "Kandidatafhandling: ESG & Returns",
+            "description": "Økonometrisk analyse af ESG-ratings' påvirkning af risikojusterede afkast i Europa.",
+            "icon": "graduation-cap",
+            "category": "fagligt",
+            "meta": "Msc. Finance",
+            "relatedSkills": [
+                "R",
+                "Econometrics",
+                "Finance",
+                "LaTeX"
+            ],
+            "links": [
+                {
+                    "text": "Læs Thesis",
+                    "url": "/education#thesis"
+                }
+            ]
         },
         {
-            "year": "(år)",
-            "title": "Omtale i medier",
-            "description": "Kort: hvor og hvorfor. Link til artiklen (hvis du må, og hvis den stadig ligger online).",
-            "icon": "newspaper"
+            "year": "2021",
+            "title": "Bachelorprojekt: M&A Performance",
+            "description": "Event study af aktiemarkedsreaktioner ved annoncering af fusioner i farmaceutisk industri.",
+            "icon": "chart-line",
+            "category": "fagligt",
+            "meta": "Bsc. Økonomi",
+            "relatedSkills": [
+                "Stata",
+                "Event Study",
+                "Corporate Finance"
+            ]
         },
         {
-            "year": "(dato)",
-            "title": "Træning: (fx nyt PR / ny rutine / ugevolumen)",
-            "description": "Hvis du vil holde det professionelt: fokusér på disciplin, struktur og progression (ikke “influencer vibes”).",
-            "icon": "dumbbell"
+            "year": "2020",
+            "title": "Omtale i Finans.dk",
+            "description": "Interview omkring investeringsstrategier for unge under COVID-19 pandemien.",
+            "icon": "newspaper",
+            "category": "omtale",
+            "meta": "Medie"
         }
     ]
 }

@@ -23,6 +23,59 @@
               },
               "icon": {
                 "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "meta": {
+                "type": "string"
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text",
+                    "url"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "relatedSkills": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "relatedProjects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "href": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "href"
+                  ],
+                  "additionalProperties": false
+                }
               }
             },
             "required": [

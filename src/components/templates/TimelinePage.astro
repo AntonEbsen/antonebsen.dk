@@ -24,6 +24,15 @@ const timelineData = timelineEntry.data.items;
 
 // Localized Contact Link
 const contactLink = isDa ? '/contact' : '/en/contact';
+
+// Extract years for Scrubber (Unique, Sorted Descending)
+// Assuming year format "2023 - ..." or just "2023"
+const years = [...new Set(timelineData.map((item: any) => {
+    const match = item.year.match(/\d{4}/);
+    return match ? match[0] : null;
+}).filter(Boolean))] as string[];
+
+import TimelineScrubber from '@components/common/TimelineScrubber.astro';
 ---
 
 <Layout 
@@ -275,15 +284,30 @@ const contactLink = isDa ? '/contact' : '/en/contact';
       </div>
     </section>
 
-    <!-- TIMELINE -->
-    <section class="card">
-      <h2 class="section-title">{content.sections.list.title}</h2>
+    <!-- TIMELINE SECTION -->
+    <section class="card relative">
+      <div class="flex flex-col lg:flex-row gap-8">
+        
+        <!-- Sticky Year Scrubber (The Time Machine) -->
+        <div class="hidden lg:block w-32 shrink-0">
+            <TimelineScrubber years={years} />
+        </div>
 
-      <ol class="tl" aria-label="Timeline">
-        {timelineData.map((item: any) => (
-            <TimelineItem item={item} />
-        ))}
-      </ol>
+        <div class="flex-1">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="section-title m-0">{content.sections.list.title}</h2>
+                <span class="text-xs text-dim uppercase tracking-widest border border-white/10 px-2 py-1 rounded">
+                    {timelineData.length} Items
+                </span>
+            </div>
+
+            <ol class="tl" aria-label="Timeline">
+                {timelineData.map((item: any) => (
+                    <TimelineItem item={item} />
+                ))}
+            </ol>
+        </div>
+      </div>
     </section>
 
     <!-- CTA -->

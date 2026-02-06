@@ -1,0 +1,164 @@
+---
+interface Props {
+  years: string[];
+}
+
+const { years } = Astro.props;
+---
+
+<nav class="scrubber-nav" aria-label="Year Navigation">
+    <div class="scrubber-track"></div>
+    <ul class="scrubber-list">
+        {years.map(year => (
+            <li>
+                <button class="scrubber-btn" data-year={year} aria-label={`Jump to ${year}`}>
+                    <span class="scrubber-year">{year}</span>
+                    <span class="scrubber-dot"></span>
+                </button>
+            </li>
+        ))}
+    </ul>
+</nav>
+
+<style>
+    .scrubber-nav {
+        position: sticky;
+        top: 2rem;
+        display: none; /* Hidden on mobile by default */
+        margin-right: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+        .scrubber-nav {
+            display: block;
+        }
+    }
+
+    .scrubber-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .scrubber-btn {
+        background: none;
+        border: none;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .scrubber-year {
+        font-family: monospace;
+        font-size: 0.8rem;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.2s ease;
+    }
+
+    .scrubber-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        transition: all 0.2s ease;
+    }
+
+    /* Hover State */
+    .scrubber-btn:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .scrubber-btn:hover .scrubber-year {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    .scrubber-btn:hover .scrubber-dot {
+        transform: scale(1.5);
+        background: var(--accent);
+    }
+
+    /* Active State */
+    .scrubber-btn.is-active {
+        color: var(--accent);
+    }
+
+    .scrubber-btn.is-active .scrubber-year {
+        opacity: 1;
+        transform: translateX(0);
+        font-weight: bold;
+    }
+
+    .scrubber-btn.is-active .scrubber-dot {
+        transform: scale(2);
+        box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* Track line */
+    .scrubber-track {
+        position: absolute;
+        right: 17px; /* Align with dots roughly */
+        top: 10px;
+        bottom: 10px;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: -1;
+    }
+</style>
+
+<script>
+    const btns = document.querySelectorAll('.scrubber-btn');
+    
+    // Scroll to section on click
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+             const year = btn.getAttribute('data-year');
+             // Try to find an item with that year text
+             // This is a bit loose because year strings might be ranges "2023 - nu"
+             // We'll search for items containing the year string
+             if(!year) return;
+             
+             // Find all timeline dates
+             const dates = Array.from(document.querySelectorAll('.tl-date'));
+             const target = dates.find(d => d.textContent?.includes(year));
+             
+             if (target) {
+                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+             }
+        });
+    });
+
+    // Observer for scroll highlighting
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const yearText = entry.target.querySelector('.tl-date')?.textContent;
+                if (!yearText) return;
+                
+                // Extract 4 digit year
+                const match = yearText.match(/\d{4}/);
+                if (match) {
+                     const year = match[0];
+                     btns.forEach(b => {
+                        if (b.getAttribute('data-year') === year) {
+                            b.classList.add('is-active');
+                        } else {
+                            b.classList.remove('is-active');
+                        }
+                     });
+                }
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' }); // Trigget in middle of screen
+
+    document.querySelectorAll('.tl-item').forEach(el => observer.observe(el));
+</script>

@@ -131,7 +131,19 @@ export const collections = {
                 year: z.string(),
                 title: z.string(),
                 description: z.string(),
-                icon: z.string().optional()
+                icon: z.string().optional(),
+                category: z.string().optional(),
+                meta: z.string().optional(),
+                links: z.array(z.object({
+                    text: z.string(),
+                    url: z.string(), // Changed from 'href' to 'url' to match component usage or fix component
+                    icon: z.string().optional()
+                })).optional(),
+                relatedSkills: z.array(z.string()).optional(), // Phase 5: Deep Dive
+                relatedProjects: z.array(z.object({           // Phase 5: Deep Dive
+                    title: z.string(),
+                    href: z.string()
+                })).optional()
             }))
         })
     }),

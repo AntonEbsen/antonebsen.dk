@@ -6,34 +6,80 @@ interface Props {
 }
 
 const { item } = Astro.props;
+
+// Helper to determine if we have deep dive content
+const hasContent = (item.description && item.description.length > 0) || 
+                   (item.relatedSkills && item.relatedSkills.length > 0) ||
+                   (item.relatedProjects && item.relatedProjects.length > 0) ||
+                   (item.links && item.links.length > 0);
 ---
 
 <li class="tl-item element-animate" data-cat={item.category || 'all'}>
-    <div class="tl-dot" aria-hidden="true"></div>
+    <div class="tl-dot" aria-hidden="true">
+        {item.icon && <i class={`fa-solid fa-${item.icon} text-[10px] text-accent flex items-center justify-center h-full w-full`}></i>}
+    </div>
+    
     <div class="tl-card">
-    <div class="tl-head">
-        <h3 class="tl-title">{item.title}</h3>
-        <span class="tl-date">{item.year}</span>
-    </div>
-    {item.meta && <p class="tl-meta">{item.meta}</p>}
-    <p class="muted">
-        {item.description}
-    </p>
-    <div class="tl-links">
-        {item.link && (
-            <a class="btn ghost" href={item.link}>{item.linkText || 'View'}</a>
+        {hasContent ? (
+            <details class="group">
+                <summary class="list-none cursor-pointer">
+                    <div class="tl-head">
+                        <div class="flex items-center gap-3">
+                            <h3 class="tl-title group-hover:text-accent transition-colors">{item.title}</h3>
+                            <i class="fa-solid fa-chevron-down text-dim text-xs group-open:rotate-180 transition-transform"></i>
+                        </div>
+                        <span class="tl-date">{item.year}</span>
+                    </div>
+                    {item.meta && <p class="tl-meta">{item.meta}</p>}
+                </summary>
+                
+                <div class="mt-4 pl-4 border-l border-white/10 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <p class="muted">{item.description}</p>
+                    
+                    {/* Deep Dive: Skills */}
+                    {item.relatedSkills && item.relatedSkills.length > 0 && (
+                        <div class="flex flex-wrap gap-2">
+                            {item.relatedSkills.map((skill: any) => (
+                                <span class="text-[10px] uppercase font-bold text-accent/80 bg-accent/10 px-2 py-0.5 rounded border border-accent/20">
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Deep Dive: Links & Projects */}
+                    <div class="flex flex-wrap gap-3">
+                        {item.relatedProjects && item.relatedProjects.map((p: any) => (
+                            <a href={p.href} class="text-xs flex items-center gap-1 text-white hover:text-accent transition-colors">
+                                <i class="fa-solid fa-folder-open text-dim"></i>
+                                {p.title}
+                            </a>
+                        ))}
+                         {item.links && item.links.map((l: any) => (
+                            <a href={l.url} class="text-xs flex items-center gap-1 text-white hover:text-accent transition-colors">
+                                <i class={`fa-solid fa-${l.icon || 'link'} text-dim`}></i>
+                                {l.text}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </details>
+        ) : (
+            <div>
+                 <div class="tl-head">
+                    <h3 class="tl-title">{item.title}</h3>
+                    <span class="tl-date">{item.year}</span>
+                </div>
+                {item.meta && <p class="tl-meta">{item.meta}</p>}
+            </div>
         )}
-        {item.links && item.links.map((l: any) => (
-            <a class="btn ghost" href={l.url}>{l.text}</a>
-        ))}
-    </div>
     </div>
 </li>
 
 <style>
     .tl-item {
       position: relative;
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
       padding-left: 2rem;
     }
     
@@ -51,14 +97,17 @@ const { item } = Astro.props;
       background: #1a1a1a;
       border: 2px solid var(--accent);
       z-index: 10;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .tl-head {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }
     
     @media (min-width: 640px) {
@@ -70,7 +119,7 @@ const { item } = Astro.props;
     }
     
     .tl-title {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #fff;
       margin: 0;
@@ -79,61 +128,36 @@ const { item } = Astro.props;
     .tl-date {
       font-family: monospace;
       color: var(--accent);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       opacity: 0.9;
     }
     
     .tl-meta {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: 0.70rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       background: rgba(255, 255, 255, 0.05);
-      padding: 0.25rem 0.75rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 4px;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
       color: rgba(255, 255, 255, 0.6);
     }
     
     .muted {
-      color: rgba(255, 255, 255, 0.65);
-      line-height: 1.6;
-      font-size: 1rem;
-      max-width: 65ch;
-      margin-bottom: 0;
-    }
-    
-    .tl-links {
-      margin-top: 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+      font-size: 0.95rem;
+      max-width: 60ch;
+      margin: 0;
     }
 
-    .btn.ghost {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
+    /* Animation util if not global */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    
-    .btn.ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+    .animate-in {
+        animation: fadeIn 0.3s ease-out forwards;
     }
 </style>
