@@ -29,6 +29,7 @@ interface Props {
         pdfUrl: string;
     };
     limitations?: string[];
+    highlights?: { label: string; value: string }[];
     secondaryAnalysis?: {
         title: string;
         description: string;
@@ -48,6 +49,17 @@ interface Props {
         }[];
     };
     launchLabUrl?: string;
+    codeSnippet?: {
+        lang: string;
+        title: string;
+        code: string;
+    };
+    gallery?: {
+        src: string;
+        caption: string;
+        alt: string;
+    }[];
+    videoUrl?: string;
     ui: {
         methodology: string;
         findings: string;
@@ -62,6 +74,9 @@ interface Props {
         secondaryAnalysis?: string;
         continuityTitle?: string;
         visualAnalysis?: string;
+        gallery?: string;
+        codeVault?: string;
+        videoAbstract?: string;
     }
   }
 }
@@ -72,12 +87,33 @@ const { lang, project } = Astro.props;
 <Layout title={project.title} description={project.executiveSummary}>
   <main class="bg-white min-h-screen text-slate-900 pb-20 selection:bg-accent/20">
     <!-- Header -->
-    <header class="border-b border-slate-100 py-20 px-4">
-      <div class="container mx-auto max-w-4xl text-center">
-        <Pill variant="accent" class="mb-4 uppercase tracking-[0.2em] font-bold text-[10px]">Research Brief</Pill>
+    <header class="border-b border-slate-100 py-20 px-4 relative overflow-hidden">
+      <!-- Background Abstract -->
+      <div class="absolute inset-0 bg-slate-50 opacity-50 -z-10"></div>
+      
+      <div class="container mx-auto max-w-4xl text-center relative z-10">
+        <Pill variant="accent" class="mb-6 uppercase tracking-[0.2em] font-bold text-[10px]">Research Brief</Pill>
+        
         <h1 class="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6 font-medium">
           {project.title}
         </h1>
+        <p class="text-xl text-slate-500 font-serif italic max-w-2xl mx-auto mb-10">
+          {project.subtitle}
+        </p>
+
+        {/* Phase 9: The Impact Hero */}
+        {project.highlights && (
+           <div class="flex flex-wrap justify-center gap-4 md:gap-8">
+               {project.highlights.map(h => (
+                   <div class="bg-white border border-slate-200 px-6 py-3 rounded-xl shadow-sm">
+                       <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">{h.label}</p>
+                       <p class="text-lg md:text-xl font-bold text-slate-900">{h.value}</p>
+                   </div>
+               ))}
+           </div>
+        )}
+      </div>
+    </header>
         <p class="text-xl text-slate-500 font-serif italic max-w-2xl mx-auto">
           {project.subtitle}
         </p>
@@ -191,8 +227,65 @@ const { lang, project } = Astro.props;
         </section>
       )}
 
-      <!-- Visual Analysis (Optional) -->
-      {project.visualAnalysis && (
+
+      <!-- Phase 9: The Video Abstract -->
+      {project.videoUrl && (
+          <section class="mb-20">
+              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.videoAbstract || 'Video Abstract'}</h2>
+              <div class="aspect-video bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl">
+                 <iframe 
+                    src={project.videoUrl} 
+                    title="Video Abstract" 
+                    class="w-full h-full" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen
+                 ></iframe>
+              </div>
+          </section>
+      )}
+
+      <!-- Phase 9: The Code Vault -->
+      {project.codeSnippet && (
+          <section class="mb-20">
+              <div class="bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl text-white">
+                  <div class="bg-white/5 p-4 flex items-center justify-between border-b border-white/10">
+                      <div class="flex items-center gap-3">
+                          <div class="flex gap-1.5">
+                              <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                              <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                              <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                          </div>
+                          <span class="text-xs font-mono text-slate-400 ml-2">{project.codeSnippet.title}</span>
+                      </div>
+                      <span class="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider">{project.codeSnippet.lang}</span>
+                  </div>
+                  <div class="p-6 md:p-8 overflow-x-auto bg-[#0d1117]">
+                      <pre class="font-mono text-sm leading-relaxed text-slate-300"><code>{project.codeSnippet.code}</code></pre>
+                  </div>
+              </div>
+          </section>
+      )}
+
+      <!-- Phase 9: The Gallery -->
+      {project.gallery && (
+          <section class="mb-20">
+             <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.gallery || 'Gallery'}</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {project.gallery.map(img => (
+                    <div class="group">
+                        <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm mb-3">
+                            <img src={img.src} alt={img.alt} class="w-full h-auto transform group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <p class="text-xs text-slate-500 italic text-center">{img.caption}</p>
+                    </div>
+                ))}
+             </div>
+          </section>
+      )}
+
+      <!-- Visual Analysis (Legacy/Optional) -->
+      {project.visualAnalysis && !project.gallery && (
         <section class="mb-20">
            <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.visualAnalysis || project.visualAnalysis.title}</h2>
            <div class="grid grid-cols-1 gap-12">

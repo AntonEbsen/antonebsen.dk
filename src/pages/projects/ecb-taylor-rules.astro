@@ -46,9 +46,34 @@ const projectContent = {
     sources: "Eurostat, OECD Economic Outlook, ECB Statistical Data Warehouse.",
     software: "Stata (GMM-estimering), Python (Visualisering & Simulering)."
   },
+  highlights: [
+      { label: "Grade", value: "10" },
+      { label: "Method", value: "GMM" },
+      { label: "Focus", value: "Asymmetry" }
+  ],
+  codeSnippet: {
+      lang: "Stata",
+      title: "GMM Estimation of Taylor Rule",
+      code: `* Two-Step GMM Estimation
+ivregress gmm rate (inflation gap = L.inflation L.gap L.commodity_prices) if country=="EA19", wmatrix(hac bartlett 4)
+
+* Testing for Parameter Stability (Andrews-Ploberger)
+estatsbknown, break(2008q3)
+
+* Counterfactual Simulation Loop
+foreach c within "DE" "FR" "IT" "ES" {
+    gen taylor_rate_\`c' = (1-rho)*alpha + (1-rho)*beta*infl_\`c' + (1-rho)*gamma*gap_\`c'
+    gen rate_gap_\`c' = rate_ea - taylor_rate_\`c'
+}`
+  },
+  gallery: [
+      { src: "/assets/images/ecb-convergence.png", caption: "Interest Rate Convergence vs. Divergence (1999-2024)", alt: "Convergence Plot" },
+      { src: "/assets/images/ecb-residuals.png", caption: "Taylor Rule Residuals by Country", alt: "Residuals Plot" }
+  ],
+  videoUrl: "", // No video for this seminar paper yet
   citation: {
     text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, Københavns Universitet. JEL: E52, E58, F45.",
-    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
+    pdfUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
   },
   ui: {
     methodology: "Metodologi",
@@ -60,7 +85,10 @@ const projectContent = {
     execSummary: "Executive Summary",
     researchQuestions: "Forskningsspørgsmål",
     limitations: "Begrænsninger",
-    secondaryAnalysis: "Asymmetri-analyse"
+    secondaryAnalysis: "Asymmetri-analyse",
+    gallery: "Galleri",
+    codeVault: "The Code Vault",
+    videoAbstract: "Video Abstract"
   }
 };
 ---

@@ -61,10 +61,35 @@ const projectContent = {
     sources: "Danmarks Statistik (DST) via API/Bulk-download.",
     software: "Python (Pandas til datarensning, Matplotlib/Seaborn til visualisering)."
   },
-  launchLabUrl: "/research/lab/index.html?path=content/exchange-rate-analysis.ipynb",
+  highlights: [
+      { label: "Grade", value: "7" },
+      { label: "Method", value: "PCA" },
+      { label: "Tools", value: "Python" }
+  ],
+  codeSnippet: {
+      lang: "Python",
+      title: "Exchange Rate Correlation Matrix",
+      code: `import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Calculate Rolling Correlation (12-month window)
+rolling_corr = df[['DKK_EUR', 'DKK_USD', 'DKK_CNY']].rolling(window=12).corr()
+
+# Heatmap Visualization
+plt.figure(figsize=(10, 8))
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1)
+plt.title("Cross-Currency Correlation Matrix (2000-2023)")
+plt.show()`
+  },
+  gallery: [
+      { src: "/assets/images/fx-volatility.png", caption: "Exchange Rate Volatility: USD/CNY vs DKK/EUR", alt: "Volatility Plot" },
+      { src: "/assets/images/fx-heatmap.png", caption: "Correlation Heatmap: Global Currencies", alt: "Heatmap" }
+  ],
+  videoUrl: "", // No video
   citation: {
     text: "Jørgensen, A. M. E. (2023). Valutakursdynamik: Inflation og relative kurser i Danmark. Anvendt dataanalyseprojekt. Ref: ADA-2023-DK.",
-    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
+    pdfUrl: "/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
   },
   ui: {
     methodology: "Data & Metodologi",
@@ -77,7 +102,10 @@ const projectContent = {
     researchQuestions: "Forskningsspørgsmål",
     limitations: "Begrænsninger",
     continuityTitle: "Konceptuel kontinuitet",
-    visualAnalysis: "Visuel analyse"
+    visualAnalysis: "Visuel analyse",
+    gallery: "Galleri",
+    codeVault: "The Code Vault",
+    videoAbstract: "Video Abstract"
   }
 };
 ---

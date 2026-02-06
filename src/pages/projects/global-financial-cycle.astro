@@ -32,9 +32,41 @@ const projectContent = {
     sources: "FRED (Federal Reserve Economic Data), BIS (Bank for International Settlements) og Refinitiv Eikon.",
     software: "Python (til IRF-estimering), SAS og GAMS til strukturel modellering."
   },
+  highlights: [
+      { label: "Grade", value: "12" },
+      { label: "Data Points", value: "20,000+" },
+      { label: "Horizon", value: "2001-2023" }
+  ],
+  codeSnippet: {
+      lang: "Python",
+      title: "SVAR Identification Logic",
+      code: `import numpy as np
+from statsmodels.tsa.vector_ar.var_model import VAR
+
+# Recursive Identification (Cholesky)
+def identify_shocks(data, lags=2):
+    model = VAR(data)
+    results = model.fit(lags)
+    
+    # Cholesky Decomposition of Covariance Matrix
+    sigma_u = results.sigma_u
+    P = np.linalg.cholesky(sigma_u)
+    
+    # Structural Shocks
+    structural_shocks = np.linalg.solve(P, results.resid.T).T
+    return structural_shocks, results.irf(10)
+
+# Ordering: [FFR, VIX, US_GDP, EU_Credit, Cross_Border_Flows]
+shocks, irf = identify_shocks(macro_data)`
+  },
+  gallery: [
+      { src: "/assets/images/gfc-irf.png", caption: "Impulse Response Funtions: VIX shock effect on Global Credit", alt: "IRF Plot" },
+      { src: "/assets/images/gfc-system.png", caption: "System Architecture: Transmission Channels", alt: "System Diagram" }
+  ],
+  videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder - Update with real Loom/YT
   citation: {
     text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelorprojekt, Københavns Universitet. JEL: E52, E58, F02, F33, G15.",
-    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
+    pdfUrl: "/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
   },
   ui: {
     methodology: "Metodologi",
@@ -44,7 +76,10 @@ const projectContent = {
     download: "Dokumentation",
     citation: "Foreslået Citering",
     execSummary: "Executive Summary",
-    researchQuestions: "Forskningsspørgsmål"
+    researchQuestions: "Forskningsspørgsmål",
+    gallery: "Galleri",
+    codeVault: "The Code Vault",
+    videoAbstract: "Video Abstract"
   }
 };
 ---
