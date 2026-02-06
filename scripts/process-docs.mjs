@@ -11,7 +11,18 @@ try {
     console.log('DEBUG: pdf-parse loaded. Keys:', Object.keys(pdfModule));
 
     // Try to find the function: default -> PDFParse property -> module itself
-    pdf = pdfModule.default || (pdfModule.PDFParse ? pdfModule : pdfModule);
+    // Priority: default -> PDFParse (if function) -> module itself
+    if (typeof pdfModule === 'function') {
+        pdf = pdfModule;
+    } else if (pdfModule.default && typeof pdfModule.default === 'function') {
+        pdf = pdfModule.default;
+    } else if (pdfModule.PDFParse && typeof pdfModule.PDFParse === 'function') {
+        pdf = pdfModule.PDFParse;
+    } else {
+        console.warn("WARNING: Could not find pdf function in pdf-parse module. Keys:", Object.keys(pdfModule));
+        // Fallback: try default or module, whatever works (or crash later)
+        pdf = pdfModule.default || pdfModule;
+    }
 
     // If it's still not a function, we are in trouble, but let's try to assume it works if called or use the one from keys
     if (typeof pdf !== 'function' && typeof pdfModule.PDFParse === 'function') {
