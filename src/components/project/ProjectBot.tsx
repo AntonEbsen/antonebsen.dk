@@ -136,6 +136,11 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             <i className="fa-solid fa-xmark"></i>
                         </button>
                     </div>
+                    {/* Help Link */}
+                    <a href="/ai-reviewer" target="_blank" className="absolute top-4 left-1/2 -translate-x-1/2 text-[10px] text-slate-500 hover:text-white transition-colors flex items-center gap-1 opacity-50 hover:opacity-100">
+                        <i className="fa-regular fa-circle-question"></i>
+                        <span>Docs</span>
+                    </a>
                 </div>
 
                 {/* Messages */}
@@ -166,8 +171,8 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                     {messages.map(m => (
                         <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                             <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed group relative ${m.role === 'user'
-                                    ? 'bg-slate-900 text-white rounded-br-none'
-                                    : `text-slate-700 rounded-bl-none shadow-sm ${critiqueMode && m.role !== 'user' ? 'bg-red-50 border border-red-100' : 'bg-white border border-slate-200'}`
+                                ? 'bg-slate-900 text-white rounded-br-none'
+                                : `text-slate-700 rounded-bl-none shadow-sm ${critiqueMode && m.role !== 'user' ? 'bg-red-50 border border-red-100' : 'bg-white border border-slate-200'}`
                                 }`}>
                                 {/* Audio Button (Only for AI) */}
                                 {m.role !== 'user' && (
