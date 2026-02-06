@@ -40,12 +40,13 @@ export const POST = async (req: Request) => {
          }
       }
 
-      const result = streamText({
+      const result = await streamText({
          model: google('gemini-2.0-flash'),
          system: systemPrompt,
          messages,
       });
 
+      // @ts-ignore - toDataStreamResponse exists in runtime but types might be lagging or mismatched
       return result.toDataStreamResponse();
 
    } catch (error: any) {

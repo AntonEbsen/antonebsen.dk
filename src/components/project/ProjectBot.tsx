@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, type ChangeEvent } from 'react';
-import { useChat } from 'ai/react';
+import { useChat } from '@ai-sdk/react';
 import mermaid from 'mermaid';
 
 interface ProjectBotProps {
