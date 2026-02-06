@@ -16,9 +16,10 @@ interface Props {
   image?: string;
   article?: boolean;
   bodyClass?: string;
+  showChatWidget?: boolean;
 }
 
-const { title, description, image, article, bodyClass = "" } = Astro.props;
+const { title, description, image, article, bodyClass = "", showChatWidget = true } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 ---
 
@@ -251,7 +252,7 @@ const lang = getLangFromUrl(Astro.url);
 
   <Footer />
   
-  <ChatWidget />
+  {showChatWidget && <ChatWidget />}
   <CommandPalette />
 
   <script>
