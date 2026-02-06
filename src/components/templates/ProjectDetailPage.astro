@@ -8,6 +8,7 @@ import KnowledgeGraph from '@components/common/KnowledgeGraph.astro';
 import SlideDeck from '@components/common/SlideDeck.astro';
 import ProjectBot from '@components/project/ProjectBot';
 import DataPlayground from '@components/project/DataPlayground';
+import CodeVault from '@components/project/CodeVault';
 
 interface Props {
   lang: 'da' | 'en';
@@ -299,8 +300,13 @@ const { lang, project } = Astro.props;
                       </div>
                       <span class="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider">{project.codeSnippet.lang}</span>
                   </div>
-                  <div class="p-6 md:p-8 overflow-x-auto bg-[#0d1117]">
-                      <pre class="font-mono text-sm leading-relaxed text-slate-300"><code>{project.codeSnippet.code}</code></pre>
+                  <div class="h-auto">
+                       <CodeVault 
+                           client:only="react" 
+                           title={project.codeSnippet.title} 
+                           lang={project.codeSnippet.lang} 
+                           code={project.codeSnippet.code} 
+                       />
                   </div>
               </div>
           </section>

@@ -167,12 +167,50 @@ const { nodes, links, height = 400 } = Astro.props;
     // Initialize graph when data is available
     // @ts-ignore
     const graphData = window.KNOWLEDGE_GRAPH_DATA;
+    let graphInstance: KnowledgeGraph | null = null; // Store instance
+
     if (graphData) {
         const container = document.getElementById('knowledge-graph-container');
         if (container) {
-            new KnowledgeGraph(container, graphData.nodes, graphData.links);
+            graphInstance = new KnowledgeGraph(container, graphData.nodes, graphData.links);
         }
     }
+
+    // Listen for Bot events to control the graph
+    window.addEventListener('project-bot-graph', (e: Event) => {
+        const customEvent = e as CustomEvent;
+        const nodeId = customEvent.detail;
+        console.log("Graph received node focus:", nodeId);
+        
+        if (graphInstance && nodeId) {
+            // Find node
+            const node = graphInstance['nodes'].find(n => n.id.toLowerCase().includes(nodeId.toLowerCase()));
+            if (node) {
+                // Highlight logic could go here (e.g. set others to opacity 0.1)
+                // For now, let's just re-heat the simulation and pull that node to center or zoom
+                // A simple trick is to dispatch a click event or similar interaction
+                
+                // Let's implement a 'highlight' method on the class if we could, but we can't easily access the class instance methods from here due to type erasure in script tag... 
+                // Wait, we defined the class in scope.
+                
+                // Let's just manipulate d3 directly via the instance properties we exposed? 
+                // We didn't expose them publicly securely. 
+                // Let's use a simpler D3 selection since we have the ID.
+                
+                const svg = d3.select('#knowledge-graph-container svg');
+                
+                // Reset all
+                svg.selectAll('circle').attr('stroke', '#fff').attr('stroke-width', 2).attr('r', (d: any) => d.radius || 8);
+                
+                // Highlight target
+                svg.selectAll('circle').filter((d: any) => d.id === node.id)
+                    .attr('stroke', '#10b981') // accent color
+                    .attr('stroke-width', 4)
+                    .attr('r', 20)
+                    .transition().duration(500).attr('r', 12);
+            }
+        }
+    });
 </script>
 
 <script define:vars={{ nodes, links }}>

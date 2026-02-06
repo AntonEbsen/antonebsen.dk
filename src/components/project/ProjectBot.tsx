@@ -55,23 +55,45 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                 className={`bg-white rounded-2xl shadow-2xl border border-slate-200 w-80 sm:w-96 transition-all duration-300 origin-bottom-right overflow-hidden flex flex-col ${isOpen ? 'opacity-100 scale-100 h-[600px]' : 'opacity-0 scale-90 h-0 pointer-events-none'}`}
             >
                 {/* Header */}
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white">
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white select-none">
                     <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        <div className={`w-2 h-2 rounded-full animate-pulse transition-colors ${critiqueMode ? 'bg-red-500' : 'bg-green-400'}`}></div>
                         <div>
                             <span className="font-bold text-sm block leading-none">The Reviewer</span>
-                            <span className="text-[10px] text-slate-400 font-mono">ALL SYSTEMS ONLINE</span>
+                            <span className="text-[10px] text-slate-400 font-mono">{critiqueMode ? 'CRITIQUE PROTOCOL' : 'STANDARD PROTOCOL'}</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
+                        {/* Critique Toggle */}
+                        <button
+                            onClick={() => setCritiqueMode(!critiqueMode)}
+                            className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors ${critiqueMode ? 'bg-red-500/20 text-red-400 border border-red-500' : 'hover:bg-white/10 text-slate-400'}`}
+                            title="Critique Mode"
+                        >
+                            <i className="fa-solid fa-gavel"></i>
+                        </button>
+
                         {/* Simplify Toggle */}
                         <button
                             onClick={() => setSimpleMode(!simpleMode)}
-                            className={`text-[10px] px-2 py-1 rounded border transition-colors ${simpleMode ? 'bg-green-500 text-white border-green-400' : 'bg-transparent text-slate-400 border-slate-600 hover:text-white'}`}
-                            title="Explain like I'm 5"
+                            className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors ${simpleMode ? 'bg-green-500/20 text-green-400 border border-green-500' : 'hover:bg-white/10 text-slate-400'}`}
+                            title="ELI5 Mode"
                         >
-                            ELI5 {simpleMode ? 'ON' : 'OFF'}
+                            <i className="fa-solid fa-child-reaching"></i>
                         </button>
+
+                        {/* Quiz Mode */}
+                        <button
+                            onClick={() => {
+                                if (!isOpen) setIsOpen(true);
+                                append({ role: 'user', content: "Quiz me on this project. Ask a hard question." });
+                            }}
+                            className={`text-[10px] w-6 h-6 rounded flex items-center justify-center transition-colors hover:bg-white/10 text-slate-400`}
+                            title="Take a Quiz"
+                        >
+                            <i className="fa-solid fa-graduation-cap"></i>
+                        </button>
+
                         <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white ml-2">
                             <i className="fa-solid fa-xmark"></i>
                         </button>
