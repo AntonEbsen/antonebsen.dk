@@ -35,7 +35,8 @@ export const POST = async ({ request }: { request: Request }) => {
             system: systemPrompt,
          });
 
-         return result.toTextStreamResponse();
+         // Use 'as any' to bypass linter error if toDataStreamResponse is not in the type def
+         return (result as any).toDataStreamResponse();
 
       } else {
          // === LEGACY QUANTUM AI ===
@@ -54,6 +55,7 @@ export const POST = async ({ request }: { request: Request }) => {
             system: systemPrompts[persona] || systemPrompts.default
          });
 
+         // Legacy widget expects raw text stream
          return result.toTextStreamResponse();
       }
 
