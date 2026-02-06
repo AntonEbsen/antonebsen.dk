@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { streamText } from 'ai';
+import { streamText, generateText } from 'ai';
 
 export const prerender = false;
 
@@ -49,19 +49,16 @@ export const POST = async ({ request }: { request: Request }) => {
             eli5: "Explain like the user is 5 years old."
          };
 
-         const result = streamText({
+         // Legacy widget: Use simpler generateText (Non-streaming) to guarantee response
+         // This avoids all stream protocol mismatch issues.
+         const { text } = await generateText({
             model: google('gemini-1.5-flash'),
             messages: [{ role: 'user', content: message }],
             system: systemPrompts[persona] || systemPrompts.default
          });
 
-         // Legacy widget expects raw text stream
-         // FORCE RAW: We manually return the textStream to avoid SDK wrappers
-         return new Response(result.textStream, {
-            headers: {
-               'Content-Type': 'text/plain; charset=utf-8',
-               'X-Vercel-AI-Data-Stream': 'v1' // Hint for Vercel/proxies
-            }
+         return new Response(JSON.stringify({ message: text }), {
+            headers: { 'Content-Type': 'application/json' }
          });
       }
 

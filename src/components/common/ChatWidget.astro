@@ -507,7 +507,28 @@ const t = (t_obj as any)[lang] || t_obj.da;
                  return;
               }
 
-              const messageContent = addMessage("", 'ai', true, persona);
+              // Handle Non-Streaming JSON (Legacy Fallback)
+              const contentType = res.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                  const data = await res.json();
+                  const finalMsg = data.message || data.error || "No response";
+                  
+                  if (data.error) {
+                      addMessage("⚠️ " + data.error, 'ai', false, persona);
+                  } else {
+                      const msgEl = addMessage(finalMsg, 'ai', true, persona);
+                      saveMessageToHistory(finalMsg, 'ai', persona);
+                      // Process tags
+                      if(msgEl) {
+                           const wrapper = msgEl.closest('.ai-content-wrapper');
+                           processSpecialTags(finalMsg, wrapper);
+                      }
+                  }
+                  return;
+              }
+
+              // Handle Streaming (If any)
+              constmessageContent = addMessage("", 'ai', true, persona);
               const reader = res.body?.getReader();
               const decoder = new TextDecoder();
               let accumulatedText = "";
