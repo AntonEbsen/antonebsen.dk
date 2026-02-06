@@ -3,9 +3,11 @@ import { streamText } from 'ai';
 
 export const prerender = false;
 
-export const POST = async (req: Request) => {
+// Fix: Destructure 'request' from the Astro APIContext
+// Previous error "req.json is not a function" happened because the first arg is the context object, not the Request itself.
+export const POST = async ({ request }: { request: Request }) => {
    try {
-      const body = await req.json();
+      const body = await request.json();
 
       // 1. Validate Environment
       if (!process.env.GEMINI_API_KEY) {
