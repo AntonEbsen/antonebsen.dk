@@ -149,7 +149,7 @@ const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? '
   </style>
 
   <main class="portfolio-wrap">
-    <!-- HERO -->
+      <!-- HERO -->
       <Section>
         <div class="hero-grid">
           <Card variant="glass" class="p-8">
@@ -185,36 +185,110 @@ const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? '
         </div>
       </Section>
   
-      <!-- FEATURED PROJECTS (Hardcoded cases) -->
+      <!-- FEATURED SPOTLIGHT + TECH MATRIX -->
       <Section>
-        <SectionHeading>{projectsLabel}</SectionHeading>
-        <div class="projects-grid">
-          {featuredProjects.map((p) => (
+        <!-- The Spotlight (First Project) -->
+        {featuredProjects.length > 0 && (
+            <div class="mb-12">
+                 <div class="flex items-center justify-between mb-6">
+                    <SectionHeading>
+                        <i class="fa-solid fa-star text-accent mr-2"></i>
+                        {lang === 'da' ? 'I Fokus' : 'Spotlight'}
+                    </SectionHeading>
+                 </div>
+                 
+                <Card variant="default" class="relative overflow-hidden group border-accent/20">
+                    <div class="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-50"></div>
+                    <div class="relative p-8 md:p-10 flex flex-col md:flex-row gap-8 items-start">
+                         <div class="flex-1">
+                            <Pill variant="accent" class="mb-4">{featuredProjects[0].pill}</Pill>
+                            <h2 class="text-3xl font-bold mb-4">{featuredProjects[0].title}</h2>
+                            <p class="text-lg text-dim leading-relaxed mb-6 max-w-2xl">
+                                {featuredProjects[0].desc}
+                            </p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                {featuredProjects[0].tags.map((tag: string) => (
+                                    <span class="text-xs font-mono text-accent/80 bg-accent/5 px-2 py-1 rounded border border-accent/10">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <div class="flex gap-4">
+                                {featuredProjects[0].url && (
+                                    <Button href={featuredProjects[0].url}>{content.ui.viewProject} <i class="fa-solid fa-arrow-right ml-2"></i></Button>
+                                )}
+                                {/* Featured Lab Button if applicable, hardcoded for demo if needed, or check ID */}
+                                {featuredProjects[0].id === 'case-gfc' && (
+                                     <Button href="https://lab.antonebsen.dk" variant="ghost" class="text-accent border-accent/20 hover:bg-accent/10"><i class="fa-solid fa-flask mr-2"></i> Launch Lab</Button>
+                                )}
+                            </div>
+                         </div>
+                    </div>
+                </Card>
+            </div>
+        )}
+
+        <!-- The Tech Matrix (Sticky Filter) -->
+        <div class="sticky top-4 z-30 mb-8 p-1">
+            <Card variant="glass" class="p-2 backdrop-blur-xl border-white/10 shadow-2xl">
+                <div class="flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+                    <div class="flex items-center gap-1.5 min-w-max px-2">
+                         <i class="fa-solid fa-filter text-dim text-xs"></i>
+                         <span class="text-xs font-bold uppercase tracking-wider text-dim">Matrix</span>
+                    </div>
+                    <div class="h-4 w-px bg-white/10"></div>
+                    <div class="flex gap-2 min-w-max" id="project-filters">
+                        <button class="project-filter-btn active text-xs font-bold px-3 py-1.5 rounded-md bg-accent text-black transition-all" data-filter="all">
+                            All
+                        </button>
+                        {/* Unique tags generator */}
+                        {Array.from(new Set([...featuredProjects, ...supabaseProjects].flatMap((p: any) => p.tags || []))).slice(0, 6).map((tag: any) => (
+                            <button class="project-filter-btn text-xs font-bold px-3 py-1.5 rounded-md bg-white/5 text-dim hover:text-white hover:bg-white/10 transition-all border border-white/5" data-filter={tag}>
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </Card>
+        </div>
+
+        <!-- Project Grid (Minus first if featured? No, let's keep all in list but filterable, or maybe remove first? Let's keep all for comprehensive matrix) -->
+        <div class="projects-grid" id="project-matrix">
+          {featuredProjects.slice(1).map((p) => (
             <ProjectCard
               title={p.title}
               tagString={p.tags.join(' · ')}
+              tags={p.tags}
               description={p.desc}
               tools={[]}
               output={content.ui.featured}
-              links={p.url ? [{ text: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
+              links={p.url ? [{ label: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
               lang={lang}
+              labUrl={p.id === 'case-erd' ? 'https://lab.antonebsen.dk/lab/index.html?path=notebooks%2Fexchange_rate_dynamics.ipynb' : undefined}
             />
           ))}
-        </div>
-      </Section>
-
-      <!-- OTHER PROJECTS (Supabase) -->
-      <Section>
-        <SectionHeading>{otherProjectsLabel}</SectionHeading>
-        <div class="projects-grid">
+          
+          {/* Re-add First project to grid? Maybe not if spotlighted. But for filtering it should exist. Let's add it back but hidden by default? Or just render it. 
+              Let's render it in grid too, but maybe with a "Featured above" marker? 
+              Actually, for a "Matrix", it's better to having everything in the grid.
+              But "Spotlight" implies it's special. 
+              DECISION: Filter grid contains items 1..N. Item 0 is Spotlight. 
+              If user filters, we might lose Item 0 from view if it's not in grid.
+              Let's add Item 0 to grid but hidden via CSS unless filtered? 
+              Simpler: Just render items 1..N in grid. Spotlight is static. 
+          */}
+          
           {supabaseProjects?.map((p: any) => (
             <ProjectCard
               title={p.title}
               tagString={p.tags ? p.tags.join(' · ') : ''}
+              tags={p.tags}
               description={p.description}
               tools={[]}
               output={content.ui.project}
-              links={p.url ? [{ text: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
+              links={p.url ? [{ label: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
               lang={lang}
             />
           ))}
@@ -222,7 +296,7 @@ const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? '
       </Section>
   
       <!-- DISCOVERY (Cleaned) -->
-      <Section id="discovery">
+      <Section id="discovery" class="mt-12">
         <DiscoveryGrid 
           title={lang === 'da' ? 'Ressourcer' : lang === 'de' ? 'Ressourcen' : 'Resources'}
           items={[
@@ -272,6 +346,38 @@ const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? '
       </Section>
   
   </main>
+  <script>
+    // Project Matrix Filtering
+    const filters = document.querySelectorAll('.project-filter-btn');
+    const projects = document.querySelectorAll('.project-card-wrapper');
+
+    filters.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // UI
+            filters.forEach(b => {
+                b.classList.remove('bg-accent', 'text-black');
+                b.classList.add('bg-white/5', 'text-dim');
+            });
+            btn.classList.remove('bg-white/5', 'text-dim');
+            btn.classList.add('bg-accent', 'text-black');
+
+            const filter = btn.getAttribute('data-filter');
+
+            projects.forEach(p => {
+                if (!(p instanceof HTMLElement)) return;
+                const tags = (p.getAttribute('data-tags') || '').split(',');
+                
+                if (filter === 'all' || tags.includes(filter)) {
+                    p.style.display = '';
+                    p.classList.add('animate-in', 'fade-in');
+                } else {
+                    p.style.display = 'none';
+                    p.classList.remove('animate-in', 'fade-in');
+                }
+            });
+        });
+    });
+  </script>
 </Layout>
 
 
