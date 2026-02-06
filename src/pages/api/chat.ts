@@ -56,7 +56,13 @@ export const POST = async ({ request }: { request: Request }) => {
          });
 
          // Legacy widget expects raw text stream
-         return result.toTextStreamResponse();
+         // FORCE RAW: We manually return the textStream to avoid SDK wrappers
+         return new Response(result.textStream, {
+            headers: {
+               'Content-Type': 'text/plain; charset=utf-8',
+               'X-Vercel-AI-Data-Stream': 'v1' // Hint for Vercel/proxies
+            }
+         });
       }
 
    } catch (error: any) {
