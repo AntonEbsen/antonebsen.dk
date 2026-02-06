@@ -80,8 +80,8 @@ export const POST = async ({ request }: { request: Request }) => {
             system: systemPrompt,
          });
 
-         // Use 'as any' to bypass linter error if toDataStreamResponse is not in the type def
-         return (result as any).toDataStreamResponse();
+         // Switch to Text Stream for maximum compatibility with client useChat
+         return result.toTextStreamResponse();
 
       } else {
          // === LEGACY QUANTUM AI ===
