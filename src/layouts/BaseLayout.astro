@@ -4,6 +4,7 @@ import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
 import ChatWidget from '@components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
+import Chameleon from '@components/core/Chameleon.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
 import '@styles/themes.css';
@@ -241,6 +242,7 @@ const lang = getLangFromUrl(Astro.url);
   </script>
 </head>
 <body class={bodyClass}>
+  <Chameleon />
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] bg-gold-500 text-black px-4 py-2 font-bold rounded">
     Skip to Content
   </a>

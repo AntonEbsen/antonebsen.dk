@@ -1,11 +1,12 @@
 import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
+import { supabase } from '@/lib/supabase';
 import { ragContent } from '@/lib/generated-rag';
 
 export const POST = async (req: Request) => {
-  const { messages, context } = await req.json();
+   const { messages, context } = await req.json();
 
-  const systemPrompt = `
+   const systemPrompt = `
     You are "The Reviewer", an expert academic defense bot for Anton Ebsen's portfolio.
     Your goal is to answer questions about the specific project titled "${context.title}".
     
@@ -43,11 +44,27 @@ export const POST = async (req: Request) => {
     Constraints: If the answer is not in the context, say "I don't have that specific detail in my memory banks, but I can tell you about [related topic in context]."
   `;
 
-  const result = streamText({
-    model: google('gemini-2.0-flash'),
-    system: systemPrompt,
-    messages,
-  });
+   // Safe Supabase Logging
+   if (supabase) {
+      try {
+         await supabase.from('chat_logs').insert([
+            {
+               project: context.title,
+               user_message: messages[messages.length - 1].content,
+               bot_mode: context.simple ? 'ELI5' : context.critique ? 'Critique' : 'Standard',
+               timestamp: new Date().toISOString()
+            }
+         ]);
+      } catch (e) {
+         console.error("Supabase Log Error:", e);
+      }
+   }
 
-  return result.toDataStreamResponse();
+   const result = streamText({
+      model: google('gemini-2.0-flash'),
+      system: systemPrompt,
+      messages,
+   });
+
+   return result.toDataStreamResponse();
 };

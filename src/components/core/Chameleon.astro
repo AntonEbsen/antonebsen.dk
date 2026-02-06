@@ -1,0 +1,48 @@
+---
+---
+
+<script>
+    // The Chameleon: Dynamic Content Personalization
+    // Usage: ?company=Lego in URL -> Changes text with class 'chameleon-target'
+    
+    function initChameleon() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const company = urlParams.get('company');
+
+        if (company) {
+            console.log(`🦎 Chameleon Protocol Active: Adapting to ${company}`);
+            
+            // 1. Show Welcome Banner
+            const banner = document.createElement('div');
+            banner.className = 'fixed top-0 left-0 w-full bg-slate-900 border-b border-slate-800 text-center py-2 z-[100] transform transition-transform duration-500 translate-y-0';
+            banner.innerHTML = `
+                <span class="text-xs font-mono text-slate-400 uppercase tracking-widest mr-2">Personalized For</span>
+                <span class="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">${company}</span>
+            `;
+            document.body.prepend(banner);
+
+            // 2. Inject Company Name into placeholders
+            document.querySelectorAll('.company-name-placeholder').forEach(el => {
+                el.textContent = company;
+                el.classList.add('text-blue-400', 'font-bold');
+            });
+
+            // 3. Highlight relevant skills (Simple keyword matching based on company industry)
+            // Advanced: Could fetch "Company Stack" from a DB.
+            if (['lego', 'novo', 'maersk'].some(c => company.toLowerCase().includes(c))) {
+                 document.querySelectorAll('.tech-badge').forEach(el => {
+                     // Generic highlight effect
+                     if (el.textContent.includes('Python') || el.textContent.includes('Data')) {
+                         el.classList.add('ring-2', 'ring-blue-500', 'shadow-[0_0_15px_rgba(59,130,246,0.5)]');
+                     }
+                 });
+            }
+        }
+    }
+
+    // Run on load
+    initChameleon();
+    
+    // Run on view transitions
+    document.addEventListener('astro:page-load', initChameleon);
+</script>

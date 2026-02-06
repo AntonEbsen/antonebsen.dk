@@ -1,0 +1,156 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { supabase } from '@/lib/supabase';
+
+// Server-side: Fetch logs
+// Verify secret key simply via query param for this MVP or just relying on obfuscated URL if needed, 
+// but asking user to uncomment auth logic for real security.
+// For now, we will fetch client-side to allow "Login" via localstorage check as planned.
+
+---
+
+<BaseLayout title="Command Center" description="Restricted Access">
+    <main class="min-h-screen bg-slate-950 text-slate-200 pt-24 pb-24 font-mono">
+        <div class="max-w-6xl mx-auto px-4" id="admin-panel" style="display: none;">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Command Center <span class="text-green-500 animate-pulse">●</span></h1>
+                    <p class="text-slate-500">Live Neural Feed</p>
+                </div>
+                <button id="refresh-btn" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded transition-colors">
+                    REFRESH FEED
+                </button>
+            </div>
+
+            {/* Metrics */}
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
+                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Total Interactions</div>
+                    <div class="text-2xl font-bold text-white" id="total-count">-</div>
+                </div>
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
+                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Active Projects</div>
+                    <div class="text-2xl font-bold text-blue-400" id="active-projects">-</div>
+                </div>
+                 <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
+                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Critique Mode</div>
+                    <div class="text-2xl font-bold text-red-400" id="critique-count">-</div>
+                </div>
+                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
+                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Recruiter Interest</div>
+                    <div class="text-2xl font-bold text-purple-400" id="recruiter-count">-</div>
+                </div>
+            </div>
+
+            {/* Logs Table */}
+            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-950 text-slate-500 uppercase text-xs">
+                            <tr>
+                                <th class="px-6 py-4 font-normal">Time</th>
+                                <th class="px-6 py-4 font-normal">Project</th>
+                                <th class="px-6 py-4 font-normal">Mode</th>
+                                <th class="px-6 py-4 font-normal">User Query</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-300" id="logs-body">
+                            {/* Injected via JS */}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {/* Login Modal */}
+        <div id="login-modal" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center">
+            <div class="text-center space-y-4">
+                <i class="fa-solid fa-user-secret text-4xl text-slate-700"></i>
+                <input type="password" id="admin-pass" placeholder="Enter Access Code" class="bg-slate-900 border border-slate-800 px-4 py-2 rounded text-center focus:outline-none focus:border-green-500 transition-colors" />
+            </div>
+        </div>
+    </main>
+
+    <script>
+        import { createClient } from '@supabase/supabase-js';
+
+        // Initialize Client (using same env vars as public)
+        const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+        const supabaseKey = import.meta.env.PUBLIC_SUPABASE_KEY;
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        const modal = document.getElementById('login-modal');
+        const panel = document.getElementById('admin-panel');
+        const passInput = document.getElementById('admin-pass');
+        const refreshBtn = document.getElementById('refresh-btn');
+
+        // Simple client-side gate (Not for real security, just to hide from public view)
+        // In a real app, use Middleware authentication.
+        const checkAuth = () => {
+             if (localStorage.getItem('admin_auth') === 'granted') {
+                modal.style.display = 'none';
+                panel.style.display = 'block';
+                fetchLogs();
+            }
+        };
+
+        passInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                // Hardcoded simple pass for the user
+                if (passInput.value === '42') {
+                    localStorage.setItem('admin_auth', 'granted');
+                    checkAuth();
+                } else {
+                    alert('Access Denied');
+                }
+            }
+        });
+
+        async function fetchLogs() {
+            const { data, error } = await supabase
+                .from('chat_logs')
+                .select('*')
+                .order('timestamp', { ascending: false })
+                .limit(50);
+
+            if (data) {
+                renderLogs(data);
+                calcMetrics(data);
+            }
+        }
+
+        function calcMetrics(data) {
+            document.getElementById('total-count').innerText = data.length;
+            const uniqueProjects = new Set(data.map(d => d.project)).size;
+            document.getElementById('active-projects').innerText = uniqueProjects;
+            
+            const critiques = data.filter(d => d.bot_mode === 'Critique').length;
+            document.getElementById('critique-count').innerText = critiques;
+
+            const recruiters = data.filter(d => d.user_message.toLowerCase().includes('job') || d.user_message.toLowerCase().includes('hire')).length;
+            document.getElementById('recruiter-count').innerText = recruiters;
+        }
+
+        function renderLogs(logs) {
+            const tbody = document.getElementById('logs-body');
+            tbody.innerHTML = logs.map(log => `
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                    <td class="px-6 py-4 text-slate-500 font-mono text-xs whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>
+                    <td class="px-6 py-4 text-blue-400">${log.project}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded-full text-xs ${
+                            log.bot_mode === 'Critique' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 
+                            log.bot_mode === 'ELI5' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 
+                            'bg-slate-800 text-slate-400'
+                        }">${log.bot_mode}</span>
+                    </td>
+                    <td class="px-6 py-4 max-w-md truncate" title="${log.user_message}">${log.user_message}</td>
+                </tr>
+            `).join('');
+        }
+
+        refreshBtn.addEventListener('click', fetchLogs);
+        checkAuth();
+
+    </script>
+</BaseLayout>
