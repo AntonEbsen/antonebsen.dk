@@ -1,0 +1,21 @@
+---
+import Card from '@components/ui/Card.astro';
+
+interface Props {
+    icon: string;
+    title: string;
+    subtitle: string;
+}
+
+const { icon, title, subtitle } = Astro.props;
+---
+
+<Card variant="glass" class="p-5 flex items-start gap-4 hover:border-accent/30 transition-colors group">
+    <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0 group-hover:bg-accent/20 transition-colors">
+        <i class={`${icon} text-accent text-lg`}></i>
+    </div>
+    <div>
+        <h3 class="font-bold text-base mb-1 group-hover:text-white transition-colors">{title}</h3>
+        <p class="text-sm text-dim leading-relaxed">{subtitle}</p>
+    </div>
+</Card>
