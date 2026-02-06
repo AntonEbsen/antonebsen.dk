@@ -8,6 +8,7 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import SkillGroup from '@components/skills/SkillGroup.astro';
 import MethodologyCard from '@components/skills/MethodologyCard.astro';
+import RadarChart from '@components/skills/RadarChart.astro';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -18,43 +19,48 @@ const { lang } = Astro.props;
 const isDa = lang === 'da';
 
 // 1. Fetch Page Content (Translations)
-// Fallback manual translations if json is missing, but ideally fetch from a page json
 const t = {
   da: {
     title: "Anton Meier Ebsen Jørgensen – Kompetencer",
     desc: "Kompetencer: værktøjer, metoder og arbejdsområder inden for makroøkonomi, økonometri, data og undervisning.",
     heroTitle: "Værktøjer, metoder og det jeg leverer",
     heroText: "Kompetencer i et format der er let at bruge: <strong>hvad</strong> jeg kan, <strong>hvordan</strong> jeg arbejder, og <strong>hvilket output</strong> man kan forvente.",
-    btns: { core: "Værktøjskasse", methods: "Metoder", deliv: "Leverancer" },
+    btns: { core: "Værktøjskasse", methods: "Metoder", contact: "Kontakt" },
     toolsTitle: "Min Værktøjskasse",
     stackTitle: "Teknologisk Stack",
     methodsTitle: "Faglige Metoder",
+    learningTitle: "Hvad jeg lærer lige nu",
     ctaTitle: "Har du et konkret behov?",
-    ctaText: "Skriv format + mål. Så foreslår jeg en struktur."
+    ctaText: "Skriv format + mål. Så foreslår jeg en struktur.",
+    chart: { macro: "Makro", metrics: "Økonometri", data: "Data", teach: "Formidling" }
   },
   en: {
     title: "Anton Meier Ebsen Jørgensen – Competencies",
     desc: "Competencies: tools, methods, and focus areas in macroeconomics, econometrics, data, and teaching.",
     heroTitle: "Tools, Methods, and Deliverables",
     heroText: "Competencies in a format that's easy to use: <strong>what</strong> I can do, <strong>how</strong> I work, and <strong>what output</strong> you can expect.",
-     btns: { core: "Toolkit", methods: "Methods", deliv: "Deliverables" },
+     btns: { core: "Toolkit", methods: "Methods", contact: "Contact" },
     toolsTitle: "My Toolkit",
     stackTitle: "Tech Stack",
     methodsTitle: "Professional Methods",
+    learningTitle: "Currently Learning",
     ctaTitle: "Have a specific need?",
-    ctaText: "Let me know the format and goal. I'll suggest a structure."
+    ctaText: "Let me know the format and goal. I'll suggest a structure.",
+    chart: { macro: "Macro", metrics: "Metrics", data: "Data", teach: "Teaching" }
   },
   de: {
     title: "Anton Meier Ebsen Jørgensen – Kompetenzen",
     desc: "Kompetenzen: Werkzeuge, Methoden und Fokusbereiche.",
     heroTitle: "Werkzeuge, Methoden und Ergebnisse",
     heroText: "Kompetenzen in einem einfach zu nutzenden Format.",
-     btns: { core: "Werkzeugkasten", methods: "Methoden", deliv: "Ergebnisse" },
+     btns: { core: "Werkzeugkasten", methods: "Methoden", contact: "Kontakt" },
     toolsTitle: "Mein Werkzeugkasten",
     stackTitle: "Technologie-Stack",
     methodsTitle: "Fachliche Methoden",
+    learningTitle: "Aktuell am lernen",
     ctaTitle: "Haben Sie einen konkreten Bedarf?",
-    ctaText: "Teilen Sie mir Format und Ziel mit."
+    ctaText: "Teilen Sie mir Format und Ziel mit.",
+    chart: { macro: "Makro", metrics: "Metrik", data: "Daten", teach: "Lehre" }
   }
 };
 
@@ -62,34 +68,55 @@ const content = lang === 'da' ? t.da : (lang === 'en' ? t.en : t.de);
 
 // 2. Fetch Skills Data (Local JSON)
 const skillsEntry = await getEntry('skills', lang); 
-const skillsData = skillsEntry?.data || { professional: [], programming: [] };
+const skillsData = skillsEntry?.data || { professional: [], programming: [], learning: [] };
 
-// 3. Fetch CV Data for "Verified Skills" cross-referencing
+// 3. Fetch CV Data for "Verified Skills" & "Project Synergy"
 const cvEntry = await getEntry('cv', lang);
 const cv = cvEntry?.data;
 
-// Helper to find courses that verify a skill
+// Helper: Verifying Courses
 const getVerifyingCourses = (skillName: string) => {
     if (!cv?.courses) return [];
     return cv.courses
         .filter(c => c.verifiedSkills && c.verifiedSkills.includes(skillName))
         .map(c => ({
             title: c.title,
-            href: isDa ? '/courses' : `/${lang}/courses`, // Deep link logic could be refined
+            href: isDa ? '/courses' : `/${lang}/courses`, 
             grade: c.grade
         }));
 };
 
+// Helper: Applying Projects (Project Synergy)
+const getApplyingProjects = (skillName: string) => {
+    if (!cv?.projects) return [];
+    return cv.projects
+        .filter(p => p.technologies && p.technologies.includes(skillName))
+        .map(p => ({
+            title: p.title,
+            href: isDa ? '/education#projects' : `/${lang}/education#projects` // Link to education page anchor
+        }));
+};
+
 // 4. Transform Data
-// Add "verifiedIn" to programming skills
+// Add "verifiedIn" & "appliedIn" to programming skills
 const enrichedProgramming = skillsData.programming.map(skill => ({
     ...skill,
-    verifiedIn: getVerifyingCourses(skill.name)
+    verifiedIn: getVerifyingCourses(skill.name),
+    appliedIn: getApplyingProjects(skill.name)
 }));
 
 const expertTools = enrichedProgramming.filter(s => s.level === 'expert');
 const stackTools = enrichedProgramming.filter(s => s.level === 'stack');
 const professionalSkills = skillsData.professional;
+const learningSkills = skillsData.learning || [];
+
+// 5. Radar Chart Data (Start with fixed high-competence profile)
+const chartData = [
+    { label: content.chart.macro, value: 90 },
+    { label: content.chart.metrics, value: 85 },
+    { label: content.chart.teach, value: 80 },
+    { label: content.chart.data, value: 95 },
+];
 
 ---
 
@@ -107,9 +134,9 @@ const professionalSkills = skillsData.professional;
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
       gap: 22px;
-      align-items: start;
+      align-items: center;
     }
 
     .grid-methods {
@@ -118,7 +145,7 @@ const professionalSkills = skillsData.professional;
        gap: 14px; 
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 980px) {
       .hero-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -128,7 +155,7 @@ const professionalSkills = skillsData.professional;
     <!-- HERO -->
     <Section>
       <div class="hero-grid">
-        <Card variant="glass" class="p-8">
+        <Card variant="glass" class="p-8 h-full flex flex-col justify-center">
           <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Kompetencer' : 'Competencies'}</p>
           <h1 class="text-4xl leading-tight mb-4 font-bold">{content.heroTitle}</h1>
           <p class="text-lg leading-relaxed text-dim mb-6" set:html={content.heroText}></p>
@@ -136,27 +163,38 @@ const professionalSkills = skillsData.professional;
           <div class="flex flex-wrap gap-3">
             <Button href="#toolkit"><i class="fa-solid fa-toolbox mr-2"></i> {content.btns.core}</Button>
             <Button href="#methods" variant="ghost"><i class="fa-solid fa-layer-group mr-2"></i> {content.btns.methods}</Button>
-            <Button href="#contact" variant="ghost"><i class="fa-solid fa-paper-plane mr-2"></i> Kontakt</Button>
+            <Button href="#contact" variant="ghost"><i class="fa-solid fa-paper-plane mr-2"></i> {content.btns.contact}</Button>
           </div>
         </Card>
   
-        <div class="hidden md:block">
-           <Card variant="glass" class="p-6 h-full flex flex-col justify-center">
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-dim">
-                        <i class="fa-solid fa-check-circle text-accent"></i>
-                        <span>{isDa ? 'Bevist gennem projekter' : 'Proven through projects'}</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-dim">
-                        <i class="fa-solid fa-check-circle text-accent"></i>
-                        <span>{isDa ? 'Karakter-verificeret (10/12)' : 'Grade-verified (10/12)'}</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-dim">
-                         <i class="fa-solid fa-check-circle text-accent"></i>
-                         <span>{isDa ? '100% Transparent' : '100% Transparent'}</span>
-                    </div>
+        <!-- Radar Chart & Learning -->
+        <div class="flex flex-col gap-4">
+             {/* The Balance Chart */}
+             <Card variant="glass" class="p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[350px]">
+                <div class="absolute top-4 left-4">
+                    <h3 class="font-bold text-sm text-dim uppercase tracking-wider">The Balance</h3>
                 </div>
-           </Card>
+                <RadarChart data={chartData} size={280} />
+             </Card>
+
+             {/* The Horizon (Learning) */}
+             {learningSkills.length > 0 && (
+                <Card variant="glass" class="p-4 flex flex-col sm:flex-row items-center gap-4">
+                    <div class="shrink-0 flex items-center gap-2 text-dim text-sm font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-telescope text-accent"></i>
+                        {content.learningTitle}
+                    </div>
+                    <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
+                    <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                        {learningSkills.map(skill => (
+                            <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                                {skill.icon && <i class={`${skill.icon} text-accent text-xs`}></i>}
+                                <span class="text-xs font-bold">{skill.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+             )}
         </div>
       </div>
     </Section>

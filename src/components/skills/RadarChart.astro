@@ -1,0 +1,96 @@
+---
+interface Props {
+  data: { label: string; value: number }[];
+  size?: number;
+}
+
+const { data, size = 300 } = Astro.props;
+
+// Config
+const scale = size / 2;
+const cx = size / 2;
+const cy = size / 2;
+const radius = scale * 0.8; // Leave padding
+
+// Helper to calculate points
+const getPoint = (value: number, index: number, total: number) => {
+  const angle = (Math.PI * 2 * index) / total - Math.PI / 2; // Start at top
+  const r = (value / 100) * radius;
+  return {
+    x: cx + r * Math.cos(angle),
+    y: cy + r * Math.sin(angle),
+  };
+};
+
+const total = data.length;
+const points = data.map((d, i) => getPoint(d.value, i, total));
+const polyPoints = points.map(p => `${p.x},${p.y}`).join(" ");
+
+// Grid levels (25%, 50%, 75%, 100%)
+const methodLevels = [0.25, 0.5, 0.75, 1];
+---
+
+<div class="radar-chart relative flex justify-center items-center">
+  <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    
+    {/* Grid Lines */}
+    {methodLevels.map(level => {
+      const gridPoints = data.map((_, i) => {
+        const p = getPoint(level * 100, i, total);
+        return `${p.x},${p.y}`;
+      }).join(" ");
+      return (
+        <polygon 
+            points={gridPoints} 
+            fill="none" 
+            stroke="rgba(255,255,255,0.1)" 
+            stroke-width="1"
+        />
+      );
+    })}
+
+    {/* Axis Lines */}
+    {points.map((_, i) => {
+        const end = getPoint(100, i, total);
+        return (
+            <line x1={cx} y1={cy} x2={end.x} y2={end.y} stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+        )
+    })}
+
+    {/* Data Polygon */}
+    <polygon 
+        points={polyPoints} 
+        fill="rgba(234, 179, 8, 0.2)" 
+        stroke="#EAB308" 
+        stroke-width="2"
+        class="drop-shadow-glow"
+    />
+
+    {/* Points & Labels */}
+    {points.map((p, i) => {
+        const labelPoint = getPoint(115, i, total); // Push label out a bit
+        return (
+            <g>
+                <circle cx={p.x} cy={p.y} r="4" fill="#EAB308" />
+                <text 
+                    x={labelPoint.x} 
+                    y={labelPoint.y} 
+                    text-anchor="middle" 
+                    fill="rgba(255,255,255,0.5)" 
+                    class="text-[10px] font-mono uppercase tracking-wider"
+                    dominant-baseline="middle"
+                >
+                    {data[i].label}
+                </text>
+            </g>
+        )
+    })}
+
+  </svg>
+</div>
+
+<style>
+    .drop-shadow-glow {
+        filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));
+    }
+</style>

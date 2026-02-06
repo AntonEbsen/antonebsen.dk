@@ -202,6 +202,7 @@ export const collections = {
                 title: z.string(),
                 tag: z.string().optional(),
                 categories: z.array(z.string()).optional(),
+                technologies: z.array(z.string()).optional(), // Added for Project Synergy
                 meta: z.string().optional(),
                 description: z.string(),
                 links: z.array(z.object({

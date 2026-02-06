@@ -260,6 +260,12 @@
                   "type": "string"
                 }
               },
+              "technologies": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "meta": {
                 "type": "string"
               },

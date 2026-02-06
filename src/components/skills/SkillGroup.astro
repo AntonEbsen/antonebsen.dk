@@ -9,6 +9,7 @@ interface Skill {
     title?: string;
     level?: string;
     verifiedIn?: { title: string; href: string; grade: string }[];
+    appliedIn?: { title: string; href: string }[];
 }
 
 interface Props {
@@ -50,21 +51,37 @@ const { title, skills, variant = 'default' } = Astro.props;
                      </p>
                 )}
 
-                {/* Verified Badge Logic */}
-                {skill.verifiedIn && skill.verifiedIn.length > 0 && (
-                    <div class="mt-auto pt-3 border-t border-white/5 w-full">
-                        <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider">Verified in</p>
-                        {skill.verifiedIn.slice(0, 1).map(c => (
-                            <a href={c.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link">
-                                <span class="truncate max-w-[150px]">{c.title}</span>
-                                {c.grade && <Pill variant="accent" class="text-[10px] py-0 px-1.5 h-4">Grade: {c.grade}</Pill>}
-                            </a>
-                        ))}
-                         {skill.verifiedIn.length > 1 && (
-                            <span class="text-[10px] text-dim ml-1">+ {skill.verifiedIn.length - 1} more</span>
-                        )}
-                    </div>
-                )}
+                {/* Verified / Applied Logic */}
+                <div class="mt-auto pt-3 border-t border-white/5 w-full flex flex-col gap-2">
+                    
+                    {/* Courses */}
+                    {skill.verifiedIn && skill.verifiedIn.length > 0 && (
+                        <div>
+                            <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Verified in</p>
+                            {skill.verifiedIn.slice(0, 1).map(c => (
+                                <a href={c.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
+                                    <i class="fa-solid fa-graduation-cap text-accent/50 text-[10px]"></i>
+                                    <span class="truncate">{c.title}</span>
+                                    {c.grade && <Pill variant="accent" class="text-[10px] py-0 px-1.5 h-4">Grade: {c.grade}</Pill>}
+                                </a>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Projects */}
+                    {skill.appliedIn && skill.appliedIn.length > 0 && (
+                        <div>
+                             <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Applied in</p>
+                             {skill.appliedIn.slice(0, 1).map(p => (
+                                <a href={p.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
+                                    <i class="fa-solid fa-rocket text-accent/50 text-[10px]"></i>
+                                    <span class="truncate">{p.title}</span>
+                                </a>
+                            ))}
+                        </div>
+                    )}
+
+                </div>
             </Card>
         ))}
     </div>
