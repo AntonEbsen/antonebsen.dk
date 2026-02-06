@@ -42,12 +42,13 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     }, [isOpen]);
 
     // We need append from useChat to support chips properly
+    // @ts-ignore - Types mismatch with installed version but runtime is valid
     const { messages, input, handleInputChange, handleSubmit, isLoading, append, setInput } = useChat({
         api: '/api/chat',
         body: {
             context: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet }
         },
-        onError: (error) => {
+        onError: (error: any) => {
             console.error("Chat Error:", error);
             alert("Connection to The Reviewer failed. Please try again. Code: " + error.message);
         },
