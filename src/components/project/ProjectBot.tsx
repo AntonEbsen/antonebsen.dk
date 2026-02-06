@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
+import React, { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { useChat } from 'ai/react';
 import mermaid from 'mermaid';
 
@@ -46,6 +46,10 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
         api: '/api/chat',
         body: {
             context: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet }
+        },
+        onError: (error) => {
+            console.error("Chat Error:", error);
+            alert("Connection to The Reviewer failed. Please try again. Code: " + error.message);
         },
         onFinish: (message: any) => {
             // Detect SQL block
@@ -199,27 +203,35 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                         </div>
                     )}
                     {messages.map(m => (
-                        <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed group relative ${m.role === 'user' ? 'bg-slate-900 text-white rounded-br-none' : `text-slate-700 rounded-bl-none shadow-sm ${critiqueMode && m.role !== 'user' ? 'bg-red-50 border border-red-100' : 'bg-white border border-slate-200'}`}`}>
+                        <div key={m.id} className={`flex gap-3 mb-4 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                            {/* Avatar */}
+                            <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs border ${m.role === 'user' ? 'bg-slate-900 border-slate-900 text-white' : 'bg-white border-slate-200 text-purple-600'}`}>
+                                <i className={`fa-solid ${m.role === 'user' ? 'fa-user' : 'fa-robot'}`}></i>
+                            </div>
+
+                            {/* Bubble */}
+                            <div className={`max-w-[80%] rounded-2xl px-5 py-3 text-sm leading-relaxed relative ${m.role === 'user'
+                                ? 'bg-slate-900 text-white rounded-tr-none'
+                                : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none shadow-sm'
+                                }`}>
                                 {m.role !== 'user' && (
-                                    <button onClick={() => speak(m.content)} className="absolute -top-3 -right-2 w-6 h-6 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 text-[10px] shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" title="Listen">
+                                    <button onClick={() => speak(m.content)} className="absolute -top-5 left-0 text-slate-400 hover:text-purple-600 transition-colors text-xs" title="Listen">
                                         <i className={`fa-solid ${isSpeaking ? 'fa-stop' : 'fa-volume-high'}`}></i>
                                     </button>
                                 )}
-                                <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{
+                                <div className="prose prose-sm prose-invert max-w-none" dangerouslySetInnerHTML={{
                                     __html: m.content
                                         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                                        .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
-                                        .replace(/```mermaid\n([\s\S]*?)```/g, '<div class="mermaid-code bg-white p-2 rounded border border-slate-100 my-2 overflow-x-auto">$1</div>') // Mermaid placeholder
-                                        .replace(/\[Source: (.*?)\]/g, '<span class="text-[10px] text-slate-400 block mt-1 border-t border-slate-100 pt-1">📚 Source: $1</span>')
-                                        .replace(/\[Node: (.*?)\]/g, '<span class="text-[10px] text-blue-500 font-bold ml-1 cursor-help" title="Graph Node">#$1</span>')
+                                        .replace(/`([^`]+)`/g, '<code class="bg-black/10 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
+                                        .replace(/```mermaid\n([\s\S]*?)```/g, '<div class="mermaid-code bg-white p-2 rounded border border-slate-100 my-2 overflow-x-auto">$1</div>')
+                                        .replace(/\[Source: (.*?)\]/g, '<span class="text-[10px] opacity-70 block mt-2 pt-2 border-t border-white/20">📚 $1</span>')
+                                        .replace(/\[Node: (.*?)\]/g, '<span class="text-[10px] text-blue-400 font-bold ml-1">#$1</span>')
                                         .replace(/\n/g, '<br/>')
                                 }} />
-                                {/* The Closer: CTA Button if message contains "hire" or "contact" */}
+
                                 {m.role !== 'user' && (m.content.toLowerCase().includes('hire') || m.content.toLowerCase().includes('interview')) && (
                                     <div className="mt-3 pt-3 border-t border-slate-100">
-                                        <a href={`mailto:anton@antonebsen.dk?subject=Interview Request: ${projectTitle}`} className="block w-full text-center bg-slate-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors shadow-sm">
-                                            <i className="fa-solid fa-calendar-check mr-2"></i>
+                                        <a href={`mailto:anton@antonebsen.dk?subject=Interview: ${projectTitle}`} className="block w-full text-center bg-purple-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-purple-700 transition-colors shadow-sm">
                                             Book Interview
                                         </a>
                                     </div>
@@ -227,7 +239,16 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             </div>
                         </div>
                     ))}
-                    {isLoading && <div className="flex justify-start"><div className="bg-white border border-slate-200 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm flex gap-1 items-center"><span className="text-xs text-slate-400 mr-2">Thinking</span><span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce"></span><span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce delay-75"></span><span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce delay-150"></span></div></div>}
+                    {isLoading && (
+                        <div className="flex gap-3">
+                            <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-xs text-purple-600"><i className="fa-solid fa-robot"></i></div>
+                            <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex gap-1 items-center">
+                                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+                                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-75"></span>
+                                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-150"></span>
+                            </div>
+                        </div>
+                    )}
                     <div ref={messagesEndRef} />
                 </div>
 
