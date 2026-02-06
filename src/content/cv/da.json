@@ -235,6 +235,7 @@
     "projects": [
         {
             "title": "Bachelorprojekt: Global Financial Cycle & spillovers",
+            "url": "/projects/global-financial-cycle",
             "tag": "Empiri",
             "categories": [
                 "tech",
@@ -274,26 +275,29 @@
             ]
         },
         {
-            "title": "RBC-model: steady state",
-            "tag": "Model",
+            "title": "Projekt: Valutakursdynamik",
+            "url": "/projects/exchange-rate-dynamics",
+            "tag": "Data Analyse",
             "categories": [
                 "tech"
             ],
             "technologies": [
                 "Python",
-                "Numerisk Analyse"
+                "Pandas",
+                "Visualisering"
             ],
-            "meta": "Tema: numerik & modelsetup",
-            "description": "1–2 linjer: hvad modellen gjorde, og hvad du lærte.",
+            "meta": "Tema: Relative priser & inflation",
+            "description": "En deskriptiv analyse af forholdet mellem dansk inflation og relative valutakurser (EUR, USD, CNY).",
             "links": [
                 {
-                    "text": "Noter",
-                    "href": "#"
+                    "text": "Læs mere",
+                    "href": "/projects/exchange-rate-dynamics"
                 }
             ]
         },
         {
             "title": "ECB-projekt: heterogene effekter på tværs af lande",
+            "url": "/projects/ecb-taylor-rules",
             "tag": "Pengepolitik",
             "meta": "Tema: Taylor rules / syntetiske renter",
             "technologies": [

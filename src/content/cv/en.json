@@ -235,6 +235,7 @@
     "projects": [
         {
             "title": "Bachelor's Thesis: Global Financial Cycle & Spillovers",
+            "url": "/projects/global-financial-cycle",
             "tag": "Empirical",
             "categories": [
                 "tech",
@@ -274,26 +275,29 @@
             ]
         },
         {
-            "title": "RBC Model: Steady State",
-            "tag": "Model",
+            "title": "Project: Exchange Rate Dynamics",
+            "url": "/projects/exchange-rate-dynamics",
+            "tag": "Data Analysis",
             "categories": [
                 "tech"
             ],
             "technologies": [
                 "Python",
-                "Numerical Analysis"
+                "Pandas",
+                "Visualization"
             ],
-            "meta": "Theme: Numerics & Model Setup",
-            "description": "Implementing and simulating a real business cycle model.",
+            "meta": "Theme: Relative Prices & Inflation",
+            "description": "A descriptive analysis of the relationship between Danish inflation and relative exchange rates (EUR, USD, CNY).",
             "links": [
                 {
-                    "text": "Notes",
-                    "href": "#"
+                    "text": "Read More",
+                    "href": "/projects/exchange-rate-dynamics"
                 }
             ]
         },
         {
             "title": "ECB Project: Heterogeneous Effects Across Countries",
+            "url": "/projects/ecb-taylor-rules",
             "tag": "Monetary Policy",
             "meta": "Theme: Taylor rules / synthetic rates",
             "technologies": [

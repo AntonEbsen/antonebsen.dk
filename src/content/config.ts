@@ -212,6 +212,7 @@ export const collections = {
             })).optional(),
             projects: z.array(z.object({
                 title: z.string(),
+                url: z.string().optional(),   // Added for Project Page Linking
                 tag: z.string().optional(),
                 categories: z.array(z.string()).optional(),
                 technologies: z.array(z.string()).optional(), // Added for Project Synergy
