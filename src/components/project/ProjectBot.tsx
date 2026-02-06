@@ -224,7 +224,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             />
                             <button
                                 type="submit"
-                                disabled={isLoading || !input?.trim()}
+                                disabled={isLoading}
                                 className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-[100]"
                             >
                                 <i className="fa-solid fa-arrow-up text-sm"></i>
