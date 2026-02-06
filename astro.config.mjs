@@ -9,7 +9,7 @@ import vercel from '@astrojs/vercel';
 // import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  output: 'static',
+  output: 'server',
   trailingSlash: 'never',
 
   image: {

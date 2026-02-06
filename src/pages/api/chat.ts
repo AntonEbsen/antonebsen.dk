@@ -3,6 +3,8 @@ import { streamText } from 'ai';
 import { supabase } from '@/lib/supabase';
 import { ragContent } from '@/lib/generated-rag';
 
+export const prerender = false;
+
 export const POST = async (req: Request) => {
    try {
       const body = await req.json();
