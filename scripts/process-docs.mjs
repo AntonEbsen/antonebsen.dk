@@ -3,8 +3,19 @@ import path from 'path';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const pdfModule = require('pdf-parse');
-const pdf = typeof pdfModule === 'function' ? pdfModule : pdfModule.default;
+let pdf;
+try {
+    const pdfModule = require('pdf-parse');
+    console.log('DEBUG: pdf-parse loaded. Type:', typeof pdfModule);
+    if (typeof pdfModule === 'object') {
+        console.log('DEBUG: pdf-parse keys:', Object.keys(pdfModule));
+        pdf = pdfModule.default || pdfModule;
+    } else {
+        pdf = pdfModule;
+    }
+} catch (e) {
+    console.error('DEBUG: Failed to require pdf-parse:', e);
+}
 
 const documentsDir = './src/data/documents';
 const outputFile = './src/lib/generated-rag.ts';
