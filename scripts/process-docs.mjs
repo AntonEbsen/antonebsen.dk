@@ -1,6 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
-import pdf from 'pdf-parse';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pdf = require('pdf-parse');
 
 const documentsDir = './src/data/documents';
 const outputFile = './src/lib/generated-rag.ts';
