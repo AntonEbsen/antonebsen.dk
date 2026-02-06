@@ -35,7 +35,7 @@ export const POST = async ({ request }: { request: Request }) => {
             system: systemPrompt,
          });
 
-         return result.toDataStreamResponse();
+         return result.toTextStreamResponse();
 
       } else {
          // === LEGACY QUANTUM AI ===
@@ -54,7 +54,7 @@ export const POST = async ({ request }: { request: Request }) => {
             system: systemPrompts[persona] || systemPrompts.default
          });
 
-         return result.toDataStreamResponse();
+         return result.toTextStreamResponse();
       }
 
    } catch (error: any) {
