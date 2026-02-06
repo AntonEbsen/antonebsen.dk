@@ -67,7 +67,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                 window.dispatchEvent(new CustomEvent('project-bot-graph', { detail: nodeId }));
             }
         }
-    });
+    }) as any;
 
     // Run Mermaid on new messages
     useEffect(() => {
