@@ -99,7 +99,6 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                 title="AI Project Reviewer"
             >
                 {isOpen ? <i className="fa-solid fa-xmark text-xl"></i> : <i className="fa-solid fa-glasses text-xl group-hover:rotate-12 transition-transform"></i>}
-                <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-black"></span>
             </button>
 
             {/* Chat Window */}
@@ -225,8 +224,8 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             />
                             <button
                                 type="submit"
-                                disabled={false}
-                                className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-50"
+                                disabled={isLoading || !input?.trim()}
+                                className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-[100]"
                             >
                                 <i className="fa-solid fa-arrow-up text-sm"></i>
                             </button>
