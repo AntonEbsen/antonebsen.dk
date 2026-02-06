@@ -20,7 +20,7 @@ interface Props {
   lang?: 'da' | 'en' | 'de';
 }
 
-const { title, tagString, description, tools, output, links, lang = 'da' } = Astro.props;
+const { title, tagString, description, tools, output, links, lang = 'da', tags, labUrl } = Astro.props;
 
 const labels = {
   da: { tools: 'Værktøjer', output: 'Output' },
