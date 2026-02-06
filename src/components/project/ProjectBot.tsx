@@ -9,34 +9,72 @@ interface ProjectBotProps {
 export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [simpleMode, setSimpleMode] = useState(false);
+    const [critiqueMode, setCritiqueMode] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
 
     // Chips for quick start
     const chips = ["Methodology check", "Key findings summary", "Explain like I'm 5"];
 
-    const handleChipClick = (chip: string) => {
+    const handleChipClick = (msg: string) => {
         if (!isOpen) setIsOpen(true);
-        // We can't easily programmatically submit with useChat, so we'll just set input
-        // Or better, we define a better way. Vercel AI SDK 'append' is useful here but 'useChat' returns append.
-        // Let's grab append from useChat
+        append({ role: 'user', content: msg });
     };
+
+    const handleExplainCode = (e: CustomEvent) => {
+        if (!isOpen) setIsOpen(true);
+        append({ role: 'user', content: `Explain this code logic: "${e.detail}"` });
+    };
+
+    useEffect(() => {
+        window.addEventListener('project-bot-explain-code', handleExplainCode as EventListener);
+        return () => window.removeEventListener('project-bot-explain-code', handleExplainCode as EventListener);
+    }, [isOpen]);
 
     // We need append from useChat to support chips properly
     const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
         api: '/api/chat',
         body: {
-            context: { title: projectTitle, simple: simpleMode, codeSnippet }
+            context: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet }
         },
         onFinish: (message) => {
-            // Detect SQL block: ```sql ... ```
+            // Detect SQL block
             const sqlMatch = message.content.match(/```sql\n([\s\S]*?)\n```/);
             if (sqlMatch) {
                 const query = sqlMatch[1].trim();
-                console.log("Found SQL:", query);
-                // Dispatch event for DataPlayground
                 window.dispatchEvent(new CustomEvent('project-bot-sql', { detail: query }));
+            }
+
+            // Detect Graph Node: [Node: id]
+            const nodeMatch = message.content.match(/\[Node: (.*?)\]/);
+            if (nodeMatch) {
+                const nodeId = nodeMatch[1].trim();
+                window.dispatchEvent(new CustomEvent('project-bot-graph', { detail: nodeId }));
             }
         }
     });
+
+    const speak = (text: string) => {
+        if ('speechSynthesis' in window) {
+            // Cancel any current speech
+            window.speechSynthesis.cancel();
+
+            if (isSpeaking) {
+                setIsSpeaking(false);
+                return;
+            }
+
+            // Strip markdown chars for cleaner speech
+            const cleanText = text.replace(/[*#`_\[\]]/g, '');
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.rate = 1.1;
+            utterance.pitch = 1;
+
+            utterance.onend = () => setIsSpeaking(false);
+
+            setIsSpeaking(true);
+            window.speechSynthesis.speak(utterance);
+        }
+    };
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -116,7 +154,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                 {chips.map(chip => (
                                     <button
                                         key={chip}
-                                        onClick={() => append({ role: 'user', content: chip })}
+                                        onClick={() => handleChipClick(chip)}
                                         className="text-xs bg-white border border-slate-200 hover:border-accent hover:text-accent px-3 py-1.5 rounded-full transition-colors shadow-sm"
                                     >
                                         {chip}
@@ -127,16 +165,28 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                     )}
                     {messages.map(m => (
                         <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${m.role === 'user'
-                                ? 'bg-slate-900 text-white rounded-br-none'
-                                : 'bg-white border border-slate-200 text-slate-700 rounded-bl-none shadow-sm'
+                            <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed group relative ${m.role === 'user'
+                                    ? 'bg-slate-900 text-white rounded-br-none'
+                                    : `text-slate-700 rounded-bl-none shadow-sm ${critiqueMode && m.role !== 'user' ? 'bg-red-50 border border-red-100' : 'bg-white border border-slate-200'}`
                                 }`}>
+                                {/* Audio Button (Only for AI) */}
+                                {m.role !== 'user' && (
+                                    <button
+                                        onClick={() => speak(m.content)}
+                                        className="absolute -top-3 -right-2 w-6 h-6 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 text-[10px] shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                                        title="Listen"
+                                    >
+                                        <i className={`fa-solid ${isSpeaking ? 'fa-stop' : 'fa-volume-high'}`}></i>
+                                    </button>
+                                )}
+
                                 {/* Render simple markdown (bold/code) */}
                                 <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{
                                     __html: m.content
                                         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
                                         .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
                                         .replace(/\[Source: (.*?)\]/g, '<span class="text-[10px] text-slate-400 block mt-1 border-t border-slate-100 pt-1">📚 Source: $1</span>')
+                                        .replace(/\[Node: (.*?)\]/g, '<span class="text-[10px] text-blue-500 font-bold ml-1 cursor-help" title="Graph Node">#$1</span>')
                                         .replace(/\n/g, '<br/>')
                                 }} />
                             </div>
