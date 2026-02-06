@@ -68,7 +68,7 @@ export const POST = async (req: Request) => {
          if (persona === 'eli5') systemPrompt += " Explain complex topics simply, like you are talking to a 5-year-old.";
 
          const result = await streamText({
-            model: google('gemini-2.0-flash'),
+            model: google('gemini-1.5-flash'), // Downgrade to 1.5-flash for stability
             system: systemPrompt,
             messages: [{ role: 'user', content: message }], // Wrap single message
          });

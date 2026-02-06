@@ -21,9 +21,9 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     const chips = ["Methodology check", "Key findings summary", "Explain like I'm 5"];
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Initialize Mermaid
+    // Initialize Mermaid - Lazy load to prevent hydration crash
     useEffect(() => {
-        mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+        // mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
     }, []);
 
     const handleChipClick = (msg: string) => {
@@ -134,7 +134,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
     }, [messages, isOpen]);
 
     return (
-        <div className="fixed bottom-8 right-8 z-[9999] font-sans">
+        <div className="fixed bottom-8 right-8 z-[2147483647] font-sans" id="project-bot-container">
             {/* Chat Window */}
             <div
                 className={`bg-white rounded-2xl shadow-2xl border border-slate-200 w-80 sm:w-96 transition-all duration-300 origin-bottom-right overflow-hidden flex flex-col ${isOpen ? 'opacity-100 scale-100 h-[600px]' : 'opacity-0 scale-90 h-0 pointer-events-none'}`}
