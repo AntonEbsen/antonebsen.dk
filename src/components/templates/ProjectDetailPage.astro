@@ -543,7 +543,7 @@ const { lang, project } = Astro.props;
   {/* Phase 12: The Simulation Layer - Moved to root level for visibility */}
   <div style="position: fixed; bottom: 10px; left: 10px; width: 40px; height: 40px; background: red; z-index: 10000; pointer-events: none; opacity: 0.5;" title="Debug Marker: Layout Root"></div>
   <ProjectBot 
-      client:load 
+      client:only="react" 
       projectTitle={project.title} 
       codeSnippet={project.codeSnippet}
   />
