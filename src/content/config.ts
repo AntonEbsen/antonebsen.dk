@@ -215,6 +215,12 @@ export const collections = {
                 tag: z.string().optional(),
                 categories: z.array(z.string()).optional(),
                 technologies: z.array(z.string()).optional(), // Added for Project Synergy
+                highlights: z.array(z.object({                // Phase 8: The Impact
+                    label: z.string(),
+                    value: z.string()
+                })).optional(),
+                video: z.string().optional(),                 // Phase 8: The Cinema
+                blueprint: z.string().optional(),             // Phase 8: The Blueprint
                 meta: z.string().optional(),
                 description: z.string(),
                 links: z.array(z.object({

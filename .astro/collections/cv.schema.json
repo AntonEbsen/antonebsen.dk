@@ -266,6 +266,31 @@
                   "type": "string"
                 }
               },
+              "highlights": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "video": {
+                "type": "string"
+              },
+              "blueprint": {
+                "type": "string"
+              },
               "meta": {
                 "type": "string"
               },
