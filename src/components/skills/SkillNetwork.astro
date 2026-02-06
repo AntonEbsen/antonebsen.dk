@@ -15,10 +15,25 @@ const { skills } = Astro.props;
 <script>
     import * as d3 from "d3";
 
-    const container = document.getElementById('skill-network');
-    if (container) {
+    import * as d3 from "d3";
+
+    function initNetwork() {
+        const container = document.getElementById('skill-network');
+        if (!container) return;
+
         const width = container.clientWidth;
         const height = container.clientHeight;
+        
+        console.log(`[SkillNetwork] Init: ${width}x${height}`);
+
+        if (width === 0 || height === 0) {
+            console.log("[SkillNetwork] Waiting for layout...");
+            setTimeout(initNetwork, 100);
+            return;
+        }
+
+        // Clear previous
+        d3.select("#skill-network svg").remove();
 
         // Sample Data Construction (Client-side for now to avoid complex serialization)
         // Ideally this comes from props, but let's build a robust graph from the DOM data or passed JSON
@@ -134,4 +149,13 @@ const { skills } = Astro.props;
                 .on("end", dragended);
         }
     }
+
+    // Initialize
+    initNetwork();
+    
+    // Re-init on resize
+    window.addEventListener('resize', () => {
+        // Debounce could be added here
+        initNetwork();
+    });
 </script>
