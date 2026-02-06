@@ -47,11 +47,26 @@ export const POST = async ({ request }: { request: Request }) => {
          // === LEGACY QUANTUM AI ===
          const { message, lang = 'da', persona = 'default' } = body;
 
+         const bio = `
+FACTS ABOUT ANTON:
+- Education: MSc in Economics (cand.polit) at Uni Copenhagen (2021-Present).
+- Work: Student Lecturer at Djøf (Excel/VBA).
+- Skills: Python, Excel/VBA, SAS, GAMS, Econometrics, Macroeconomics.
+- Role: Economist & Data Analyst (NOT a Software Engineer manager).
+- Projects: Global Financial Cycle (SVAR), ECB Taylor Rules.
+         `;
+
+         const baseInstruction = `You are Anton's AI Assistant. Use the facts above.
+CRITICAL RULES:
+1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
+2. Never hallucinate roles not listed in facts (e.g. do not say he is an engineering manager).
+3. Keep it brief and professional.`;
+
          const systemPrompts: Record<string, string> = {
-            default: "You are Anton's AI Assistant. Professional, humble, yet confident. Answer in the requested language.",
-            recruiter: "You are an Agent for Anton. Sell his skills to the recruiter.",
-            tech: "You are a Senior Engineer. Discuss architecture and code.",
-            eli5: "Explain like the user is 5 years old."
+            default: `${bio}\n${baseInstruction}`,
+            recruiter: `${bio}\n${baseInstruction}\nFocus on his employability: Analytical skills, teaching experience, and technical tools.`,
+            tech: `${bio}\n${baseInstruction}\nFocus on his technical stack: Python, Data Science, and Economic Modeling details.`,
+            eli5: `${bio}\n${baseInstruction}\nExplain simply like I am 5 years old.`
          };
 
          // Legacy widget: Use simpler generateText (Non-streaming) to guarantee response
