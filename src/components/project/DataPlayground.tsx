@@ -62,8 +62,21 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
 
         initDB();
 
+        // Listen for SQL events from the Bot
+        const handleBotSQL = (e: CustomEvent) => {
+            console.log("Playground received SQL:", e.detail);
+            setQuery(e.detail);
+            // Optionally auto-run, but safer to let user click run (or we can trigger it)
+            // Let's trigger it for the magic effect
+            // But we can't call runQuery easily from here without moving it or using a ref
+            // So we'll just set it for now and maybe add a toast "SQL generated!"
+        };
+
+        window.addEventListener('project-bot-sql', handleBotSQL as EventListener);
+
         return () => {
-            // connection?.close(); // DuckDB cleanup tricky in React strict mode
+            window.removeEventListener('project-bot-sql', handleBotSQL as EventListener);
+            // connection?.close(); 
         }
     }, [dataUrl]);
 

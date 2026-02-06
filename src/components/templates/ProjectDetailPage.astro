@@ -532,7 +532,11 @@ const { lang, project } = Astro.props;
       )}
 
       {/* Phase 12: The Simulation Layer */}
-      <ProjectBot client:only="react" projectTitle={project.title} />
+      <ProjectBot 
+          client:only="react" 
+          projectTitle={project.title} 
+          codeSnippet={project.codeSnippet}
+      />
       
       {/* Data Playground Section (Only if data link exists) */}
       {project.dataLinks?.some(l => l.label.includes('csv')) && (
