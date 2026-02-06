@@ -301,6 +301,24 @@ import TimelineScrubber from '@components/common/TimelineScrubber.astro';
                 </span>
             </div>
 
+            <!-- Active Filter Banner using Nano Store or Vanilla JS -->
+            <div id="skill-filter-banner" class="hidden mb-8 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div class="flex items-center justify-between p-3 bg-accent/10 border border-accent/20 rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-accent text-black flex items-center justify-center">
+                            <i class="fa-solid fa-filter text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-accent uppercase font-bold tracking-wider mb-0.5">Filtering by Skill</p>
+                            <p id="filter-skill-name" class="text-white font-bold text-lg leading-none">Excel</p>
+                        </div>
+                    </div>
+                    <button id="clear-skill-filter" class="px-3 py-1.5 rounded-md bg-white/5 hover:bg-white/10 text-xs text-dim hover:text-white transition-colors border border-white/10">
+                        <i class="fa-solid fa-xmark mr-1"></i> Clear
+                    </button>
+                </div>
+            </div>
+
             <ol class="tl" aria-label="Timeline">
                 {timelineData.map((item: any) => (
                     <TimelineItem item={item} />
@@ -326,36 +344,89 @@ import TimelineScrubber from '@components/common/TimelineScrubber.astro';
 
   <script>
     (function(){
-      const btns = document.querySelectorAll(".pill-btn");
+      // Elements
+      const catBtns = document.querySelectorAll(".pill-btn");
       const items = document.querySelectorAll(".tl-item");
+      const banner = document.getElementById("skill-filter-banner");
+      const filterName = document.getElementById("filter-skill-name");
+      const clearBtn = document.getElementById("clear-skill-filter");
       
-      // Map EN categories to DA categories for filtering if needed, 
-      // or just ensure data-cat matches the button data-filter.
-      // In this case, we use the raw category keys (fagligt, undervisning) 
-      // which are localized in the UI labels but keys remain same.
+      let activeSkill = null;
+      let activeCategory = 'all';
 
-      // Mapping for buttons if they use English keys in English mode:
-      // Actually my button rendering uses fixed keys: data-filter="fagligt" even in EN mode?
-      // Check the template above:
-      // <button class="pill-btn" type="button" data-filter="fagligt">{content.filters.professional}</button>
-      // Yes, keys are consistent. So filtering works.
+      // Function to apply both filters
+      function applyFilters() {
+        items.forEach(el => {
+            if (!(el instanceof HTMLElement)) return;
+            
+            const itemCat = el.getAttribute("data-cat") || '';
+            const itemSkills = (el.getAttribute("data-skills") || '').split(',');
+            
+            const matchesCat = activeCategory === 'all' || itemCat === activeCategory;
+            const matchesSkill = !activeSkill || itemSkills.includes(activeSkill);
 
-      btns.forEach(btn => {
-        btn.addEventListener("click", () => {
-          btns.forEach(b => b.classList.remove("is-active"));
-          btn.classList.add("is-active");
-
-          const f = btn.getAttribute("data-filter");
-          items.forEach(it => {
-            const cat = it.getAttribute("data-cat");
-            if (it instanceof HTMLElement) {
-               // Handle 'all' or exact match
-               // Also handle mapping if the JSON categories differ (they seem consistent)
-               it.style.display = (f === "all" || f === cat) ? "" : "none";
+            if (matchesCat && matchesSkill) {
+                el.style.display = "";
+                el.classList.add("animate-in", "fade-in");
+            } else {
+                el.style.display = "none";
+                el.classList.remove("animate-in", "fade-in");
             }
-          });
+        });
+
+        // Update Banner UI
+        if (activeSkill && banner && filterName) {
+            banner.classList.remove('hidden');
+            filterName.textContent = activeSkill;
+        } else if (banner) {
+            banner.classList.add('hidden');
+        }
+      }
+
+      // 1. Category Filtering
+      catBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          catBtns.forEach(b => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          activeCategory = btn.getAttribute("data-filter") || 'all';
+          applyFilters();
         });
       });
+
+      // 2. Skill Filtering (Delegation because buttons might be inside details)
+      document.querySelector('.tl')?.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          const btn = target.closest('.skill-filter-btn');
+          
+          if (btn) {
+              e.preventDefault(); // Prevent detail toggle if nested?
+              e.stopPropagation(); 
+              
+              const skill = btn.getAttribute('data-skill');
+              if (skill) {
+                  activeSkill = skill;
+                  // Reset category to all to show full context of skill? 
+                  // Or keep category? Let's keep category for power user feel, 
+                  // but often users want to see ALL instances of Excel.
+                  // Let's reset category to 'all' for clarity when skill filtering.
+                  activeCategory = 'all';
+                  catBtns.forEach(b => b.classList.remove('is-active'));
+                  document.querySelector('.pill-btn[data-filter="all"]')?.classList.add('is-active');
+                  
+                  applyFilters();
+                  
+                  // Scroll top of list
+                  banner?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+          }
+      });
+
+      // 3. Clear Filter
+      clearBtn?.addEventListener('click', () => {
+          activeSkill = null;
+          applyFilters();
+      });
+
     })();
   </script>
 </Layout>

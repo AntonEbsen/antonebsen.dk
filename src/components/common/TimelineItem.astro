@@ -14,7 +14,7 @@ const hasContent = (item.description && item.description.length > 0) ||
                    (item.links && item.links.length > 0);
 ---
 
-<li class="tl-item element-animate" data-cat={item.category || 'all'}>
+<li class="tl-item element-animate" data-cat={item.category || 'all'} data-skills={item.relatedSkills ? item.relatedSkills.join(',') : ''}>
     <div class="tl-dot" aria-hidden="true">
         {item.icon && <i class={`fa-solid fa-${item.icon} text-[10px] text-accent flex items-center justify-center h-full w-full`}></i>}
     </div>
@@ -40,9 +40,14 @@ const hasContent = (item.description && item.description.length > 0) ||
                     {item.relatedSkills && item.relatedSkills.length > 0 && (
                         <div class="flex flex-wrap gap-2">
                             {item.relatedSkills.map((skill: any) => (
-                                <span class="text-[10px] uppercase font-bold text-accent/80 bg-accent/10 px-2 py-0.5 rounded border border-accent/20">
+                                <button 
+                                    type="button"
+                                    class="skill-filter-btn text-[10px] uppercase font-bold text-accent/80 bg-accent/10 px-2 py-0.5 rounded border border-accent/20 hover:bg-accent hover:text-black transition-colors cursor-pointer"
+                                    data-skill={skill}
+                                    title={`Filter by ${skill}`}
+                                >
                                     {skill}
-                                </span>
+                                </button>
                             ))}
                         </div>
                     )}
