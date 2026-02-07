@@ -207,21 +207,26 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            handleSubmit(e);
+                            if (!input.trim() || isLoading) return;
+
+                            // Manually append user message to ensure reliable triggering
+                            append({ role: 'user', content: input });
+                            setInput(''); // Clear input manually
                         }}
                         className="relative"
                     >
                         <input
                             value={input}
                             onChange={handleInputChange}
+                            disabled={isLoading}
                             placeholder={initialContext?.type === 'project'
                                 ? (lang === 'da' ? "Auditer dette projekt..." : "Audit this project...")
                                 : (lang === 'da' ? "Spørg om hvad som helst..." : "Ask anything...")}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20 disabled:opacity-50"
                         />
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isLoading || !input.trim()}
                             className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-50"
                         >
                             <i className="fa-solid fa-arrow-up text-sm"></i>
