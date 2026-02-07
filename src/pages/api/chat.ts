@@ -61,18 +61,40 @@ export const POST = async ({ request }: { request: Request }) => {
 
       // 4. Construct Model & Prompts
       if (isNewWidget) {
-         // === NEW PROJECT BOT ===
-         const { messages, context } = body;
-         const bio = getBioContext('en');
+         // === UNIFIED GLOBAL ASSISTANT ===
+         const { messages, context, persona = 'default', lang = 'en' } = body;
+         const bio = getBioContext(lang);
 
-         const systemPrompt = `
-         You are 'The Reviewer', reviewing the project "${context?.title || 'Unknown'}".
-         ${bio}
-         
-         Style: Concise, professional, slightly cynical but constructive.
-         Modes: ${context?.simple ? 'ELI5' : 'Normal'}, ${context?.critique ? 'Ruthless' : 'Constructive'}.
-         ${context?.codeSnippet ? 'Has Code Context.' : ''}
-         `;
+         let systemPrompt = "";
+
+         if (context?.type === 'project') {
+            // --- PROJECT REVIEWER MODE ---
+            systemPrompt = `
+             You are 'The Reviewer', reviewing the project "${context.data?.title || 'Unknown'}".
+             ${bio}
+             
+             Style: Concise, professional, slightly cynical but constructive.
+             Modes: ${context.data?.simple ? 'ELI5' : 'Normal'}, ${context.data?.critique ? 'Ruthless' : 'Constructive'}.
+             ${context.data?.codeSnippet ? 'Has Code Context.' : ''}
+             `;
+         } else {
+            // --- GENERAL ASSISTANT MODE ---
+            const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.
+             CRITICAL RULES:
+             1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
+             2. Never hallucinate roles not listed in facts (e.g. Anton is NOT an engineering manager).
+             3. If the user asks about something not in the facts, politely say you don't know or relate it to his Economics background.
+             4. Keep it brief and professional.`;
+
+            const prompts: Record<string, string> = {
+               default: `${bio}\n${baseInstruction}`,
+               recruiter: `${bio}\n${baseInstruction}\nFocus on his employability: Analytical skills, teaching experience, and technical tools.`,
+               tech: `${bio}\n${baseInstruction}\nFocus on his technical stack: Python, Data Science, and Economic Modeling details.`,
+               eli5: `${bio}\n${baseInstruction}\nExplain simply like I am 5 years old.`
+            };
+
+            systemPrompt = prompts[persona] || prompts.default;
+         }
 
          const result = streamText({
             model: google('gemini-2.0-flash'),
@@ -84,27 +106,18 @@ export const POST = async ({ request }: { request: Request }) => {
          return result.toTextStreamResponse();
 
       } else {
-         // === LEGACY QUANTUM AI ===
+         // === LEGACY FALLBACK (Deprecate soon) ===
          const { message, lang = 'da', persona = 'default' } = body;
-
          const bio = getBioContext(lang);
-
-         const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.
-CRITICAL RULES:
-1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
-2. Never hallucinate roles not listed in facts (e.g. Anton is NOT an engineering manager).
-3. If the user asks about something not in the facts, politely say you don't know or relate it to his Economics background.
-4. Keep it brief and professional.`;
-
+         // ... (Keep existing legacy logic for now)
+         const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.`;
          const systemPrompts: Record<string, string> = {
             default: `${bio}\n${baseInstruction}`,
-            recruiter: `${bio}\n${baseInstruction}\nFocus on his employability: Analytical skills, teaching experience, and technical tools.`,
-            tech: `${bio}\n${baseInstruction}\nFocus on his technical stack: Python, Data Science, and Economic Modeling details.`,
-            eli5: `${bio}\n${baseInstruction}\nExplain simply like I am 5 years old.`
+            recruiter: `${bio}\n${baseInstruction}\nFocus on his employability.`,
+            tech: `${bio}\n${baseInstruction}\nFocus on his technical stack.`,
+            eli5: `${bio}\n${baseInstruction}\nExplain simply.`
          };
 
-         // Legacy widget: Use simpler generateText (Non-streaming) to guarantee response
-         // This avoids all stream protocol mismatch issues.
          const { text } = await generateText({
             model: google('gemini-2.0-flash'),
             messages: [{ role: 'user', content: message }],

@@ -6,7 +6,7 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import KnowledgeGraph from '@components/common/KnowledgeGraph.astro';
 import SlideDeck from '@components/common/SlideDeck.astro';
-import ProjectBot from '@components/project/ProjectBot';
+import GlobalAssistant from '@components/common/GlobalAssistant';
 import DataPlayground from '@components/project/DataPlayground';
 import CodeVault from '@components/project/CodeVault';
 
@@ -542,10 +542,15 @@ const { lang, project } = Astro.props;
   
   {/* Phase 12: The Simulation Layer - Moved to root level for visibility */}
   <div style="position: fixed; bottom: 10px; left: 10px; width: 40px; height: 40px; background: red; z-index: 10000; pointer-events: none; opacity: 0.5;" title="Debug Marker: Layout Root"></div>
-  <ProjectBot 
+  <GlobalAssistant 
       client:only="react" 
-      projectTitle={project.title} 
-      codeSnippet={project.codeSnippet}
+      initialContext={{
+        type: 'project',
+        data: {
+            title: project.title,
+            codeSnippet: project.codeSnippet
+        }
+      }}
   />
 
 </Layout>
