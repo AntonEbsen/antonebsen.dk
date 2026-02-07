@@ -204,7 +204,13 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
 
                 {/* Input */}
                 <div className="p-3 bg-black/80 border-t border-white/10 backdrop-blur-md">
-                    <form onSubmit={handleSubmit} className="relative">
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleSubmit(e);
+                        }}
+                        className="relative"
+                    >
                         <input
                             value={input}
                             onChange={handleInputChange}
