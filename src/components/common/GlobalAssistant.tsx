@@ -207,7 +207,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            if (!input.trim() || isLoading) return;
+                            if (!input?.trim() || isLoading) return;
 
                             // Manually append user message to ensure reliable triggering
                             append({ role: 'user', content: input });
@@ -226,7 +226,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                         />
                         <button
                             type="submit"
-                            disabled={isLoading || !input.trim()}
+                            disabled={isLoading || !input?.trim()}
                             className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-50"
                         >
                             <i className="fa-solid fa-arrow-up text-sm"></i>
