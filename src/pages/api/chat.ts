@@ -7,11 +7,17 @@ import cvEn from '../../content/cv/en.json';
 // @ts-ignore
 import skillsEn from '../../content/skills/en.json';
 
+// @ts-ignore
+import cvDa from '../../content/cv/da.json';
+// @ts-ignore
+import skillsDa from '../../content/skills/da.json';
+
 export const prerender = false;
 
 function getBioContext(lang: string) {
-   const cv = cvEn; // Default to EN for now as master source
-   const skills = skillsEn;
+   // Select content based on language
+   const cv = lang === 'da' ? cvDa : cvEn;
+   const skills = lang === 'da' ? skillsDa : skillsEn;
 
    const experiences = cv.experience.map((e: any) => `- ${e.title} at ${e.organization} (${e.period}): ${e.description.join('. ')}`).join('\n');
    const education = cv.education.map((e: any) => `- ${e.degree} at ${e.institution}`).join('\n');

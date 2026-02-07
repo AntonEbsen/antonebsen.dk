@@ -9,21 +9,22 @@ interface GlobalAssistantProps {
         data?: any;
     };
     defaultPersona?: string;
+    lang?: 'da' | 'en';
 }
 
-export default function GlobalAssistant({ initialContext, defaultPersona = 'default' }: GlobalAssistantProps) {
+export default function GlobalAssistant({ initialContext, defaultPersona = 'default', lang = 'en' }: GlobalAssistantProps) {
     // --- State ---
     const [isOpen, setIsOpen] = useState(false);
     const [persona, setPersona] = useState(defaultPersona);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // --- AI SDK ---
-    const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, error } = useChat({
         api: '/api/chat',
         body: {
             context: initialContext,
             persona: persona,
-            lang: 'en' // TODO: Detect language from URL or Prop
+            lang: lang
         },
         onError: (error: any) => {
             console.error("AI Error:", error);
@@ -52,12 +53,35 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
     };
 
     const getPersonaTitle = () => {
-        switch (persona) {
-            case 'recruiter': return 'Recruiter Agent';
-            case 'tech': return 'Tech Lead Agent';
-            case 'eli5': return 'ELI5 Agent';
-            default: return "Anton's Assistant";
+        const titles: Record<string, Record<string, string>> = {
+            default: { en: "Anton's Assistant", da: "Antons Assistent" },
+            recruiter: { en: "Recruiter Agent", da: "Rekrutteringsagent" },
+            tech: { en: "Tech Lead Agent", da: "Tech Lead Agent" },
+            eli5: { en: "ELI5 Agent", da: "Pædagogisk Agent" }
+        };
+        return titles[persona]?.[lang] || titles.default[lang];
+    };
+
+    const getGreeting = () => {
+        if (initialContext?.type === 'project') {
+            return lang === 'da'
+                ? `Gennemgår **${initialContext.data?.title}**... Jeg er klar til at auditere kode og arkitektur.`
+                : `Reviewing **${initialContext.data?.title}**... I'm ready to audit the code and architecture.`;
         }
+        return lang === 'da'
+            ? "Hej! Jeg er Antons AI. Spørg mig om hans erfaring, projekter eller kompetencer!"
+            : "Hi! I'm Anton's AI. Ask me about his experience, projects, or skills!";
+    };
+
+    const getChips = () => {
+        if (initialContext?.type === 'project') {
+            return lang === 'da'
+                ? ["Kritiser dette", "Forklar arkitekturen", "Skaler dette"]
+                : ["Critique this", "Explain architecture", "Scale this"];
+        }
+        return lang === 'da'
+            ? ["Opsummer hans CV", "Hvorfor ansætte Anton?", "Vis kompetencegraf"]
+            : ["Summarize his CV", "Why hire Anton?", "Show skills graph"];
     };
 
     // --- Render ---
@@ -82,7 +106,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                             <i className={`fa-solid ${initialContext?.type === 'project' ? 'fa-user-secret' : 'fa-robot'}`}></i>
                         </div>
                         <div>
-                            <h3 className="font-bold text-white text-sm">{initialContext?.type === 'project' ? 'The Reviewer' : getPersonaTitle()}</h3>
+                            <h3 className="font-bold text-white text-sm">{initialContext?.type === 'project' ? (lang === 'da' ? 'Anmelderen' : 'The Reviewer') : getPersonaTitle()}</h3>
                             <p className="text-[10px] text-green-400 flex items-center gap-1">
                                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Online
                             </p>
@@ -118,11 +142,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                                 <i className="fa-solid fa-robot text-xs text-white"></i>
                             </div>
                             <div className="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-sm text-gray-300 shadow-lg">
-                                <p>
-                                    {initialContext?.type === 'project'
-                                        ? `Reviewing **${initialContext.data?.title}**... I'm ready to audit the code and architecture.`
-                                        : "Hi! I'm Anton's AI. Ask me about his experience, projects, or skills!"}
-                                </p>
+                                <p>{getGreeting()}</p>
                             </div>
                         </div>
                     )}
@@ -157,16 +177,20 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                             </div>
                         </div>
                     )}
+
+                    {error && (
+                        <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-xs text-red-200">
+                            <i className="fa-solid fa-circle-exclamation mr-2"></i>
+                            {error.message || "An error occurred. Please try again."}
+                        </div>
+                    )}
                     <div ref={messagesEndRef} />
                 </div>
 
                 {/* Chips */}
                 {messages.length === 0 && !isLoading && (
                     <div className="px-4 pb-2 flex gap-2 overflow-x-auto scrollbar-hide">
-                        {(initialContext?.type === 'project'
-                            ? ["Critique this", "Explain architecture", "Scale this"]
-                            : ["Summarize his CV", "Why hire Anton?", "Show skills graph"]
-                        ).map(chip => (
+                        {getChips().map(chip => (
                             <button
                                 key={chip}
                                 onClick={() => handleChipClick(chip)}
@@ -184,7 +208,9 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                         <input
                             value={input}
                             onChange={handleInputChange}
-                            placeholder={initialContext?.type === 'project' ? "Audit this project..." : "Ask anything..."}
+                            placeholder={initialContext?.type === 'project'
+                                ? (lang === 'da' ? "Auditer dette projekt..." : "Audit this project...")
+                                : (lang === 'da' ? "Spørg om hvad som helst..." : "Ask anything...")}
                             className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20"
                         />
                         <button

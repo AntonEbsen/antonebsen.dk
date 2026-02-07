@@ -255,7 +255,7 @@ const lang = getLangFromUrl(Astro.url);
   <Footer />
 
   
-  {showChatWidget && <GlobalAssistant client:idle />}
+  {showChatWidget && <GlobalAssistant client:idle lang={lang} />}
   <CommandPalette />
 
   <script>
