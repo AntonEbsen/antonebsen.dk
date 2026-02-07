@@ -2,7 +2,7 @@
 import Navbar from '@components/Navbar.astro';
 import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
-import GlobalAssistant from '@components/common/GlobalAssistant';
+import ChatWidget from '../components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
 import Chameleon from '@components/core/Chameleon.astro';
 import { getLangFromUrl } from '@i18n/utils';
@@ -255,7 +255,7 @@ const lang = getLangFromUrl(Astro.url);
   <Footer />
 
   
-  {showChatWidget && <GlobalAssistant client:idle lang={lang} />}
+  {showChatWidget && <ChatWidget />}
   <CommandPalette />
 
   <script>
