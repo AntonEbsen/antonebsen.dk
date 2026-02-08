@@ -46,180 +46,158 @@ const otherCerts = certifications.filter(c => !['Python', 'MATLAB', 'SAS', 'Form
       padding: 0 16px 32px;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
+    .controls-sticky {
+        position: sticky;
+        top: 80px;
+        z-index: 30;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid rgba(255,215,0,0.1);
+        margin-bottom: 24px;
     }
 
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 14px;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid, .certs-grid { 
-        grid-template-columns: 1fr; 
-      }
+    /* Print Styles */
+    @media print {
+        header, footer, .controls-sticky, .no-print, .hero-section {
+            display: none !important;
+        }
+        .cert-wrap { margin: 0; padding: 0; max-width: 100%; }
+        .certs-grid { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+        body { background: white; color: black; }
+        .card-glass { background: white; border: 1px solid #ccc; box-shadow: none; }
+        a { text-decoration: none; color: black; }
     }
   </style>
 
   <main class="cert-wrap">
 
-    <!-- HERO -->
-    <Section>
-      <div class="hero-grid">
-        <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{content.hero.title}</h1>
-          <p class="text-lg text-dim mb-6">
-            {content.hero.text}
-          </p>
+    <!-- HERO & VIZ -->
+    <Section class="hero-section">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <div class="lg:col-span-1 flex flex-col justify-between">
+            <div>
+                <h1 class="text-4xl font-bold leading-tight mb-4">{content.hero.title}</h1>
+                <p class="text-lg text-dim mb-6">{content.hero.text}</p>
+                
+                {/* BADGES */}
+                <div class="flex flex-wrap gap-2 mb-8">
+                    {badges.map(b => (
+                        <div class={`flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 ${b.color}`}>
+                            <i class={`fa-solid ${b.icon}`}></i>
+                            <span class="text-xs font-bold uppercase tracking-wider">{b.label}</span>
+                        </div>
+                    ))}
+                </div>
 
-          <div class="flex flex-wrap gap-3 mb-6">
-            <Button href="#cat-python">Python</Button>
-            <Button href="#cat-matlab">MATLAB</Button>
-            <Button href="#cat-sas">SAS</Button>
-            <Button href="#cat-writing">Writing</Button>
-          </div>
+                <div class="flex flex-wrap gap-2 mb-6" aria-label="Themes">
+                    {content.hero.themes.map((th: string) => <Pill variant="accent">{th}</Pill>)}
+                </div>
+            </div>
 
-          <div class="flex flex-wrap gap-2" aria-label="Themes">
-            {content.hero.themes.map(th => <Pill variant="accent">{th}</Pill>)}
-          </div>
-        </Card>
+            <div class="p-6 border border-yellow-500/20 bg-yellow-500/5 rounded-xl mt-auto">
+                 <h3 class="font-bold text-yellow-400 mb-2"><i class="fa-solid fa-download mr-2"></i>Recruiter Options</h3>
+                 <p class="text-sm text-dim mb-3">Download a clean transcript.</p>
+                 <button onclick="window.print()" class="text-xs bg-yellow-500 hover:bg-yellow-400 text-black px-3 py-1.5 rounded font-bold transition-colors w-full">
+                    <i class="fa-solid fa-print mr-1"></i> Print / Save as PDF
+                 </button>
+            </div>
+        </div>
+        
+        <!-- VISUALIZATIONS & RECRUITER MODE -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+            
+            {/* View Toggle */}
+            <div class="flex justify-end mb-2">
+                <div class="bg-white/5 border border-white/10 rounded-full p-1 flex gap-1 items-center">
+                    <button id="btn-quantum" class="px-3 py-1 rounded-full text-xs font-bold uppercase transition-all bg-yellow-500 text-black shadow-lg">
+                        <i class="fa-solid fa-atom mr-1"></i> Quantum
+                    </button>
+                    <button id="btn-recruiter" class="px-3 py-1 rounded-full text-xs font-bold uppercase transition-all text-gray-400 hover:text-white hover:bg-white/10">
+                        <i class="fa-solid fa-list mr-1"></i> Recruiter
+                    </button>
+                </div>
+            </div>
 
-        <div class="hidden md:block">
-          <Card variant="glass" class="p-6">
-            <SectionHeading>{content.hero.tipTitle}</SectionHeading>
-            <p class="text-sm text-dim leading-relaxed">
-              {content.hero.tipText}
-            </p>
-          </Card>
+            {/* QUANTUM VIEW */}
+            <div id="view-quantum" class="flex flex-col gap-6 transition-all duration-500">
+                {/* 3D GRAPH */}
+                <div class="h-[400px]">
+                    <CertGraph client:only="react" certifications={certifications} />
+                </div>
+                
+                {/* HEATMAP */}
+                <div class="p-4 bg-white/5 border border-white/10 rounded-xl relative">
+                    <h3 class="absolute top-2 left-3 text-[10px] font-bold uppercase text-dim tracking-wider">Learning Timeline</h3>
+                    <div class="mt-4">
+                        <CertHeatmap client:visible certifications={certifications} />
+                    </div>
+                </div>
+            </div>
+
+            {/* RECRUITER VIEW (Hidden by default) */}
+            <div id="view-recruiter" class="hidden opacity-0 transition-all duration-500 bg-white text-black rounded-xl p-8 shadow-xl">
+                 <h2 class="text-2xl font-bold mb-6 text-black border-b border-black/10 pb-4">Professional Certifications</h2>
+                 <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b-2 border-black">
+                            <th class="py-2 font-bold uppercase tracking-wider w-1/4">Date</th>
+                            <th class="py-2 font-bold uppercase tracking-wider w-1/3">Certification</th>
+                            <th class="py-2 font-bold uppercase tracking-wider w-1/4">Issuer</th>
+                            <th class="py-2 font-bold uppercase tracking-wider">Skills</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {certifications.map(c => (
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="py-3 font-mono text-gray-600">{c.date}</td>
+                                <td class="py-3 font-bold">{c.title}</td>
+                                <td class="py-3 text-gray-700">{c.issuer}</td>
+                                <td class="py-3 text-xs text-gray-500">{c.skills?.join(', ')}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                 </table>
+            </div>
         </div>
       </div>
     </Section>
 
-    {certifications?.length === 0 && (
-        <Section>
-            <Card variant="glass" class="p-8 text-center text-dim bg-purple-500/10 border-purple-500/20">
-                <p>{content.empty} <br/>{content.emptyDash} <a href="/dashboard" class="text-white underline">{content.dashLink}</a>.</p>
-            </Card>
-        </Section>
-    )}
-
-    <!-- PYTHON -->
-    <Section id="cat-python" aria-label="Python">
-      <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.cats.python.title}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.python.text}</p>
-
-        <div class="certs-grid">
-          {pythonCerts.map(c => (
-             <Card variant="glass" class="p-4 flex flex-col h-full">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
-                  <Pill variant="accent">Python</Pill>
-                </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
-                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
-                <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" variant="ghost"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> {content.btnProof}</Button>}
-                </div>
-              </Card>
-          ))}
-          {pythonCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.python.empty}</p>}
+    <!-- CONTROLS -->
+    <div class="controls-sticky flex flex-col md:flex-row gap-4 justify-between items-center transition-all" id="controls">
+        <div class="flex flex-wrap gap-2" id="filter-btns">
+            <button class="filter-btn active px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-yellow-500 text-black shadow-[0_0_10px_rgba(255,215,0,0.3)] hover:scale-105" data-filter="all">All</button>
+            <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="Python">Python</button>
+            <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="MATLAB">MATLAB</button>
+            <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="SAS">SAS</button>
+            <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="Formidling">Writing</button>
+            <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="Other">Other</button>
         </div>
-      </Card>
-    </Section>
 
-    <!-- MATLAB -->
-    <Section id="cat-matlab" aria-label="MATLAB">
-      <Card variant="bordered" class="p-6">
-         <SectionHeading>{content.cats.matlab.title}</SectionHeading>
-         <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.matlab.text}</p>
-
-        <div class="certs-grid">
-           {matlabCerts.map(c => (
-             <Card variant="glass" class="p-4 flex flex-col h-full">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
-                  <Pill variant="accent">MATLAB</Pill>
-                </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
-                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
-                <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
-                </div>
-              </Card>
-          ))}
-          {matlabCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.matlab.empty}</p>}
+        <div class="relative w-full md:w-64">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+            <input type="text" id="search-input" placeholder="Search skills, issuers..." class="w-full bg-black/50 border border-gray-700 rounded-full py-1.5 pl-8 pr-4 text-sm focus:border-yellow-500 focus:outline-none transition-colors" />
         </div>
-      </Card>
-    </Section>
+    </div>
 
-    <!-- SAS -->
-    <Section id="cat-sas" aria-label="SAS">
-      <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.cats.sas.title}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.sas.text}</p>
-
-        <div class="certs-grid">
-          {sasCerts.map((c: any) => <CertificationCard cert={c} content={content} />)}
-          {sasCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.sas.empty}</p>}
-        </div>
-      </Card>
-    </Section>
-
-    <!-- WRITING -->
-    <Section id="cat-writing" aria-label="Writing">
-      <Card variant="bordered" class="p-6">
-        <SectionHeading>{content.cats.writing.title}</SectionHeading>
-        <p class="text-dim opacity-70 mb-6 text-sm">{content.cats.writing.text}</p>
-
-        <div class="certs-grid">
-           {writingCerts.map(c => (
-             <Card variant="glass" class="p-4 flex flex-col h-full">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                  <h3 class="font-bold text-base leading-tight">{c.name}</h3>
-                  <Pill variant="accent">Formidling</Pill>
-                </div>
-                <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
-                <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
-                <div class="flex flex-wrap gap-2 mt-auto">
-                  {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
-                </div>
-              </Card>
-          ))}
-          {writingCerts.length === 0 && <p class="text-dim text-sm italic">{content.cats.writing.empty}</p>}
-        </div>
-      </Card>
-    </Section>
-
-    {otherCerts.length > 0 && (
-        <Section id="cat-other">
-          <Card variant="bordered" class="p-6">
-            <SectionHeading>{content.cats.other}</SectionHeading>
-            <div class="certs-grid">
-              {otherCerts.map(c => (
-                 <Card variant="glass" class="p-4 flex flex-col h-full">
-                    <div class="flex justify-between items-start mb-2 gap-2">
-                      <h3 class="font-bold text-base leading-tight">{c.name}</h3>
-                      <Pill variant="accent">{c.category}</Pill>
-                    </div>
-                    <p class="text-xs text-dim mb-2">{c.issuer} Â· {c.year}</p>
-                    <p class="text-sm text-dim opacity-80 mb-4 flex-grow">{c.description}</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                      {c.url && <Button href={c.url} target="_blank" variant="ghost">{content.btnProof}</Button>}
-                    </div>
-                  </Card>
-              ))}
+    <!-- MAIN GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cert-grid">
+        {certifications.map(c => (
+            <div class="cert-item opacity-100 transition-all duration-300" 
+                 data-category={c.category} 
+                 data-title={c.title.toLowerCase()} 
+                 data-issuer={c.issuer.toLowerCase()}
+                 data-skills={(c.skills || []).join(',').toLowerCase()}
+            >
+                <CertificationCard cert={c} />
             </div>
-          </Card>
-        </Section>
-    )}
+        ))}
+    </div>
+
+    <div id="no-results" class="hidden text-center py-12 text-dim italic">
+        No certifications match your search.
+    </div>
 
     <!-- CTA -->
     <Section>
@@ -230,8 +208,198 @@ const otherCerts = certifications.filter(c => !['Python', 'MATLAB', 'SAS', 'Form
         />
     </Section>
 
+    <!-- VERIFICATION MODAL -->
+    <div id="cert-modal" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="modal-backdrop"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[80vh] bg-gray-900 border border-yellow-500/30 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <!-- Header -->
+            <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-black/50">
+                <h3 id="modal-title" class="text-lg font-bold text-yellow-500 truncate pr-4">Certification</h3>
+                <button id="modal-close" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Body (Iframe) -->
+            <div class="flex-1 bg-white relative group">
+                <iframe id="modal-iframe" src="" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                
+                <!-- Loading / Fallback Overlay -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100/10 pointer-events-none group-hover:bg-transparent transition-colors">
+                     <p class="text-black/50 text-sm font-bold bg-white/80 px-2 py-1 rounded mb-2">Previewing Source...</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 border-t border-gray-800 bg-black/50 flex justify-between items-center">
+                 <p class="text-xs text-gray-500">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> External Content
+                 </p>
+                 <a id="modal-external-link" href="#" target="_blank" class="bg-yellow-600 hover:bg-yellow-500 text-black px-4 py-2 rounded font-bold text-sm transition-colors">
+                    Open Original <i class="fa-solid fa-external-link-alt ml-1"></i>
+                 </a>
+            </div>
+        </div>
+    </div>
+
   </main>
 </Layout>
+
+<script>
+    import Chart from 'chart.js/auto';
+
+    // --- FILTERING LOGIC ---
+    // ... (Existing Filtering Logic) ...
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const items = document.querySelectorAll('.cert-item');
+    const noResults = document.getElementById('no-results');
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    function filterItems() {
+        let visibleCount = 0;
+
+        items.forEach((item: any) => {
+            const category = item.dataset.category;
+            const searchContent = `${item.dataset.title} ${item.dataset.issuer} ${item.dataset.skills}`;
+            
+            const matchCategory = currentFilter === 'all' || category === currentFilter || (currentFilter === 'Writing' && (category === 'Formidling' || category === 'Writing'));
+            const matchSearch = searchContent.includes(currentSearch);
+
+            if (matchCategory && matchSearch) {
+                item.style.display = 'block';
+                setTimeout(() => item.classList.remove('opacity-0', 'scale-95'), 10);
+                visibleCount++;
+            } else {
+                item.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => item.style.display = 'none', 300);
+            }
+        });
+
+        if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => {
+                b.classList.remove('bg-yellow-500', 'text-black', 'active', 'shadow-[0_0_10px_rgba(255,215,0,0.3)]');
+                b.classList.add('bg-gray-800', 'text-gray-400');
+            });
+            btn.classList.remove('bg-gray-800', 'text-gray-400');
+            btn.classList.add('bg-yellow-500', 'text-black', 'active', 'shadow-[0_0_10px_rgba(255,215,0,0.3)]');
+            
+            currentFilter = btn.getAttribute('data-filter') || 'all';
+            filterItems();
+        });
+    });
+
+    searchInput?.addEventListener('input', (e) => {
+        currentSearch = (e.target as HTMLInputElement).value.toLowerCase();
+        filterItems();
+    });
+
+    // --- RECRUITER TOGGLE ---
+    const btnQuantum = document.getElementById('btn-quantum');
+    const btnRecruiter = document.getElementById('btn-recruiter');
+    const viewQuantum = document.getElementById('view-quantum');
+    const viewRecruiter = document.getElementById('view-recruiter');
+    const mainGrid = document.getElementById('cert-grid'); // We might want to hide the grid too in recruiter mode? 
+    // Actually, in recruiter mode, we show the TABLE. The grid below replicates data. 
+    // Let's decide: Recruiter mode replaces the HERO VIZ with the TABLE. 
+    // Does it hide the CARD GRID below? Yes, it should, to be cleaner.
+
+    if(btnQuantum && btnRecruiter && viewQuantum && viewRecruiter && mainGrid) {
+        btnRecruiter.addEventListener('click', () => {
+            // UI State
+            btnRecruiter.classList.add('bg-white', 'text-black', 'shadow-lg');
+            btnRecruiter.classList.remove('text-gray-400', 'hover:text-white');
+            
+            btnQuantum.classList.remove('bg-yellow-500', 'text-black', 'shadow-lg');
+            btnQuantum.classList.add('text-gray-400', 'bg-gray-800');
+
+            // View State
+            viewQuantum.classList.add('hidden', 'opacity-0');
+            viewRecruiter.classList.remove('hidden');
+            setTimeout(() => viewRecruiter.classList.remove('opacity-0'), 10);
+
+            // Hide the main grid and controls in Recruiter Mode?
+            // Yes, strict mode.
+            document.getElementById('controls')?.classList.add('hidden');
+            mainGrid.classList.add('hidden');
+        });
+
+        btnQuantum.addEventListener('click', () => {
+             // UI State
+            btnQuantum.classList.add('bg-yellow-500', 'text-black', 'shadow-lg');
+            btnQuantum.classList.remove('text-gray-400', 'bg-gray-800');
+            
+            btnRecruiter.classList.remove('bg-white', 'text-black', 'shadow-lg');
+            btnRecruiter.classList.add('text-gray-400', 'hover:text-white');
+
+            // View State
+            viewRecruiter.classList.add('hidden', 'opacity-0');
+            viewQuantum.classList.remove('hidden');
+            setTimeout(() => viewQuantum.classList.remove('opacity-0'), 10);
+
+            // Show grid
+            document.getElementById('controls')?.classList.remove('hidden');
+            mainGrid.classList.remove('hidden');
+        });
+    }
+
+    // --- CHART LOGIC REMOVED (Replaced by React Force Graph) ---
+
+
+    // --- MODAL LOGIC (New Impl) ---
+    const modal = document.getElementById('cert-modal');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalClose = document.getElementById('modal-close');
+    const modalIframe = document.getElementById('modal-iframe') as HTMLIFrameElement;
+    const modalTitle = document.getElementById('modal-title');
+    const modalExternalLink = document.getElementById('modal-external-link') as HTMLAnchorElement;
+
+    function openModal(url: string, title: string) {
+        if (!modal || !modalIframe || !modalTitle || !modalExternalLink) return;
+        
+        modalTitle.innerText = title;
+        modalIframe.src = url;
+        modalExternalLink.href = url;
+        
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Stop scrolling
+    }
+
+    function closeModal() {
+        if (!modal || !modalIframe) return;
+        modal.classList.add('hidden');
+        modalIframe.src = ''; // Clear src to stop video/audio
+        document.body.style.overflow = '';
+    }
+
+    // Attach to dynamic elements (using delegate or just existing items)
+    // Since items are static/rendered by Astro, we can select them immediately.
+    // But if we had client-side rendering we'd use delegation. Here querySelectorAll is fine.
+    document.querySelectorAll('.view-cert-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = btn.getAttribute('data-url');
+            const title = btn.getAttribute('data-title');
+            if(url) openModal(url, title || 'Certification');
+        });
+    });
+
+    modalBackdrop?.addEventListener('click', closeModal);
+    modalClose?.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+</script>
 
 
 

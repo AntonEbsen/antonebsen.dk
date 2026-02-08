@@ -97,6 +97,9 @@ const isLoggedIn = Astro.cookies.has("auth_token");
                 <button onclick="document.getElementById('skills-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-yellow-500 text-xs font-bold uppercase tracking-wider text-yellow-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-yellow-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
                     <i class="fa-solid fa-tree mr-2"></i>Skills
                 </button>
+                <button onclick="document.getElementById('certifications-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-yellow-500 text-xs font-bold uppercase tracking-wider text-yellow-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-yellow-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
+                    <i class="fa-solid fa-certificate mr-2"></i>Certs
+                </button>
                 <button onclick="document.getElementById('blog-section').scrollIntoView({behavior: 'smooth'})" class="px-5 py-2 rounded-lg bg-gray-900 border-2 border-yellow-500 text-xs font-bold uppercase tracking-wider text-yellow-300 shadow-[0_0_10px_rgba(255,215,0,0.15)] hover:bg-yellow-500 hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all transform hover:-translate-y-1">
                     <i class="fa-solid fa-newspaper mr-2"></i>Blog
                 </button>
@@ -281,6 +284,58 @@ const isLoggedIn = Astro.cookies.has("auth_token");
                 </div>
             </div>
 
+            <!-- CERTUNICATIONS MANAGER -->
+            <div id="certifications-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
+                <div class="bg-gray-900/80 p-4 border-b border-gray-800">
+                    <h3 class="text-yellow-400 font-bold">Certifications Manager</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <!-- ADD CERT FORM -->
+                     <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Add Certification</h4>
+                        <form id="cert-form" class="space-y-4">
+                            <input type="text" id="c-title" placeholder="Title (e.g. PCAP – Python Associate)" required class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200 focus:border-yellow-500" />
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="c-issuer" placeholder="Issuer (e.g. Python Institute)" required class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <input type="text" id="c-date" placeholder="Date (e.g. 2024)" required class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            </div>
+                            <input type="text" id="c-url" placeholder="Verification URL" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                             <div class="grid grid-cols-2 gap-4">
+                                <select id="c-category" class="bg-black border border-gray-700 p-2 rounded text-gray-200">
+                                    <option value="Python">Python</option>
+                                    <option value="MATLAB">MATLAB</option>
+                                    <option value="SAS">SAS</option>
+                                    <option value="Formidling">Formidling</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="flex items-center gap-2 border border-gray-700 rounded px-2">
+                                     <input type="checkbox" id="c-featured" class="accent-yellow-500 w-4 h-4" />
+                                     <label for="c-featured" class="text-gray-400 text-sm">Featured</label>
+                                </div>
+                            </div>
+                            <input type="text" id="c-skills" placeholder="Skills (comma separated, e.g. NumPy, Pandas)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            <input type="text" id="c-cred-id" placeholder="Credential ID (Optional)" class="w-full bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="c-proj-name" placeholder="Applied in Project Name" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                                <input type="text" id="c-proj-url" placeholder="Project URL" class="bg-black border border-gray-700 p-2 rounded text-gray-200" />
+                            </div>
+                            
+                            <button type="submit" class="bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-bold py-3 px-4 rounded w-full hover:from-yellow-500 hover:to-amber-500 transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-certificate"></i> Add Certification
+                            </button>
+                        </form>
+                     </div>
+
+                     <!-- CEERT LIST -->
+                     <div>
+                        <h4 class="text-gray-400 text-sm mb-4 uppercase">Existing Certifications</h4>
+                        <ul id="cert-list" class="space-y-2 text-sm text-gray-400 max-h-80 overflow-y-auto">
+                            <li>Loading certifications...</li>
+                        </ul>
+                     </div>
+                </div>
+
             <!-- SKILL MANAGER -->
             <div id="skills-section" class="border border-gray-800 bg-gray-900/30 rounded overflow-hidden mb-8 scroll-mt-24">
                 <div class="bg-gray-900/80 p-4 border-b border-gray-800">
@@ -451,6 +506,7 @@ const isLoggedIn = Astro.cookies.has("auth_token");
         loadQuotes();
         loadTravel();
         loadProjects();
+        loadCertifications();
         loadSkills();
         loadGuestbook();
         loadInbox();
@@ -649,6 +705,72 @@ const isLoggedIn = Astro.cookies.has("auth_token");
         
         e.target.reset();
         loadProjects();
+    });
+
+    // CERTIFICATIONS
+    async function loadCertifications() {
+        try {
+            const res = await fetch('/api/certifications');
+            const data = await res.json();
+            const list = document.getElementById('cert-list');
+            
+            list.innerHTML = '';
+            if (data.length === 0) {
+                list.innerHTML = '<li>No certifications found.</li>';
+                return;
+            }
+
+            data.forEach(c => {
+                const li = document.createElement('li');
+                li.className = "bg-black/50 p-3 rounded border border-gray-800 flex justify-between items-center group hover:border-yellow-500/50 transition-colors";
+                li.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                             <span class="font-bold text-gray-200">${c.title}</span>
+                             ${c.featured ? '<span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-1 rounded uppercase tracking-wider border border-yellow-500/30">Feat</span>' : ''}
+                        </div>
+                        <p class="text-xs text-gray-500">${c.issuer} • ${c.category}</p>
+                    </div>
+                    <button class="text-red-500 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity text-xs" onclick="deleteCertification(${c.id})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                list.appendChild(li);
+            });
+        } catch (err) { console.error(err); }
+    }
+
+    window.deleteCertification = async (id) => {
+        if(!confirm('Delete certification?')) return;
+        await fetch(`/api/certifications?id=${id}`, { method: 'DELETE' });
+        loadCertifications();
+    };
+
+    document.getElementById('cert-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('c-title').value;
+        const issuer = document.getElementById('c-issuer').value;
+        const date = document.getElementById('c-date').value;
+        const url = document.getElementById('c-url').value;
+        const category = document.getElementById('c-category').value;
+        const featured = document.getElementById('c-featured').checked;
+        const skillsRaw = document.getElementById('c-skills').value;
+        const credential_id = document.getElementById('c-cred-id').value;
+        const project_name = document.getElementById('c-proj-name').value;
+        const project_url = document.getElementById('c-proj-url').value;
+
+        const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+        await fetch('/api/certifications', {
+            method: 'POST',
+            body: JSON.stringify({ 
+                title, issuer, date, url, category, featured, skills, credential_id,
+                project_name, project_url
+            })
+        });
+        
+        e.target.reset();
+        loadCertifications();
     });
 
     // SKILLS

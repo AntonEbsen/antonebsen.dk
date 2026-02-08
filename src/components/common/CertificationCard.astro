@@ -8,23 +8,104 @@ interface Props {
   cert: Certification; // Use strict type from api.ts
 }
 
+import PyodideSandbox from '@components/cv/PyodideSandbox';
+
 const { cert } = Astro.props;
+
+// --- ENTROPY LOGIC ---
+const certDate = new Date(cert.date);
+const now = new Date();
+const ageInYears = (now.getTime() - certDate.getTime()) / (1000 * 60 * 60 * 24 * 365);
+const isOld = ageInYears > 2 && !cert.featured;
+const entropyClass = isOld ? 'grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500' : '';
+
 ---
 
-<Card variant="glass" class="p-6 border border-glass-border hover:border-accent/40 transition-colors">
-    <div class="flex justify-between items-start mb-3">
-    <span class="text-xs font-mono text-dim opacity-70">{cert.date}</span>
-    {cert.url && (
-        <a href={cert.url} target="_blank" rel="noopener noreferrer" class="text-accent hover:text-white transition-colors">
-        <i class="fa-solid fa-external-link-alt text-xs"></i>
-        </a>
-    )}
+<div class={`cert-card-perspective group/card h-full ${entropyClass}`}>
+  <div class="cert-card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+    
+    <!-- FRONT FACE -->
+    <Card variant="glass" class="cert-front p-6 border border-glass-border hover:border-accent/40 transition-colors h-full backface-hidden flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start mb-3">
+            <span class="text-xs font-mono text-dim opacity-70">{cert.date}</span>
+            <div class="flex gap-2">
+                {cert.project_url && (
+                    <button 
+                        class="flip-btn text-accent hover:text-white transition-colors" 
+                        title="View Code Proof"
+                        onclick="this.closest('.cert-card-inner').style.transform = 'rotateY(180deg)'"
+                    >
+                        <i class="fa-solid fa-code text-xs"></i>
+                    </button>
+                )}
+                {cert.url && (
+                    <a href={cert.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class="view-cert-btn text-accent hover:text-white transition-colors cursor-pointer"
+                    data-url={cert.url}
+                    data-title={cert.title}
+                    >
+                    <i class="fa-solid fa-eye text-xs"></i>
+                    </a>
+                )}
+            </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-1 group-hover/card:text-accent transition-colors">{cert.title}</h3>
+            <p class="text-sm text-dim mb-4">{cert.issuer}</p>
+
+            <div class="flex items-center gap-2">
+                <Pill variant="default" class="text-xs">{cert.category}</Pill>
+                {isOld && <span class="text-[10px] text-cyan-500/70 border border-cyan-500/20 px-1.5 py-0.5 rounded"><i class="fa-regular fa-snowflake mr-1"></i>Legacy</span>}
+            </div>
+
+            {cert.skills && cert.skills.length > 0 && (
+            <div class="mt-3 flex flex-wrap gap-1">
+                {cert.skills.map((s: string) => <span class="text-[10px] text-dim bg-white/5 px-2 py-0.5 rounded" data-skill={s}>{s}</span>)}
+            </div>
+            )}
+        </div>
+
+        <div>
+            {cert.project_name && (
+                <div class="mt-3">
+                    <a href={cert.project_url || '#'} target="_blank" class="inline-flex items-center text-[10px] text-yellow-500/80 hover:text-yellow-400 border border-yellow-500/20 bg-yellow-500/5 px-2 py-1 rounded transition-colors">
+                        <i class="fa-solid fa-flask mr-1.5"></i> Applied in: {cert.project_name}
+                    </a>
+                </div>
+            )}
+            
+            {cert.credential_id && <p class="text-[10px] text-dim/50 mt-2 font-mono">ID: {cert.credential_id}</p>}
+        </div>
+    </Card>
+
+    <!-- BACK FACE -->
+    <div class="cert-back absolute inset-0 h-full w-full bg-black border border-yellow-500/30 rounded-xl p-4 backface-hidden rotate-y-180 flex flex-col">
+        <div class="flex justify-between items-center mb-2 border-b border-gray-800 pb-2">
+            <h3 class="text-xs font-bold uppercase text-yellow-500">Live Code Proof</h3>
+            <button 
+                class="text-gray-400 hover:text-white transition-colors"
+                onclick="this.closest('.cert-card-inner').style.transform = 'rotateY(0deg)'"
+            >
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-hidden relative">
+             <PyodideSandbox 
+                client:visible 
+                initialCode={`# Verifying: ${cert.title}\n\ndef check_skill():\n    skills = ${JSON.stringify(cert.skills || [])}\n    print(f"Verified skills: {', '.join(skills)}")\n    return True\n\ncheck_skill()`} 
+             />
+        </div>
     </div>
 
-    <h3 class="text-xl font-bold mb-1 group-hover:text-accent transition-colors">{cert.title}</h3>
-    <p class="text-sm text-dim mb-4">{cert.issuer}</p>
+  </div>
+</div>
 
-    <div class="mt-auto pt-4 border-t border-glass-border">
-    <Pill variant="default" class="text-xs">{cert.category}</Pill>
-    </div>
-</Card>
+<style>
+  .transform-style-3d { transform-style: preserve-3d; }
+  .backface-hidden { backface-visibility: hidden; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+</style>

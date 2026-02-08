@@ -23,6 +23,12 @@ export const CertificationSchema = z.object({
     url: z.string().optional().nullable(),
     category: z.string(),
     visible: z.boolean(),
+    skills: z.array(z.string()).optional(),
+    credential_id: z.string().optional().nullable(),
+    expiration_date: z.string().optional().nullable(),
+    featured: z.boolean().optional(),
+    project_name: z.string().optional().nullable(),
+    project_url: z.string().optional().nullable(),
 });
 export type Certification = z.infer<typeof CertificationSchema>;
 
