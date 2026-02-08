@@ -30,8 +30,6 @@ const cvEntry = await getEntry('cv', lang);
 const cvProjects = cvEntry?.data.projects || [];
 
 const cvLink = lang === 'en' ? '/en/cv' : lang === 'de' ? '/de/cv' : '/cv';
-const projectsLabel = lang === 'da' ? 'Udvalgte Projekter' : lang === 'de' ? 'Ausgewählte Projekte' : 'Featured Projects';
-const otherProjectsLabel = lang === 'da' ? 'Andre Projekter' : lang === 'de' ? 'Andere Projekte' : 'Other Projects';
 
 // Supabase Data Fetching
 let supabaseProjects = [];
@@ -39,6 +37,36 @@ if (supabase) {
   const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
   if (!error && data) supabaseProjects = data;
 }
+
+// Localization
+const uiStrings = {
+    da: {
+        architecture: "Systemarkitektur",
+        matrix: "Matrix",
+        view: "Se Projekt",
+        launchLab: "Åben Lab",
+        spotlight: "I Fokus",
+        all: "Alle"
+    },
+    en: {
+        architecture: "System Architecture",
+        matrix: "Matrix",
+        view: "View Project",
+        launchLab: "Launch Lab",
+        spotlight: "Spotlight",
+        all: "All"
+    },
+    de: {
+        architecture: "Systemarchitektur",
+        matrix: "Matrix",
+        view: "Projekt Ansehen",
+        launchLab: "Labor Starten",
+        spotlight: "Im Rampenlicht",
+        all: "Alle"
+    }
+};
+
+const t = uiStrings[lang] || uiStrings.en;
 ---
 
 <Layout 
@@ -64,8 +92,9 @@ if (supabase) {
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 24px; /* Increased gap for 3D effect space */
       margin-bottom: 32px;
+      perspective: 1000px; /* Enable 3D perspective */
     }
 
     @media (max-width: 980px) {
@@ -73,38 +102,58 @@ if (supabase) {
         grid-template-columns: 1fr;
       }
     }
+
+    /* 3D Tilt Class */
+    .tilt-card {
+        transition: transform 0.1s ease-out;
+        transform-style: preserve-3d;
+    }
+    
+    .tilt-card-inner {
+        transform: translateZ(20px);
+    }
   </style>
 
   <main class="portfolio-wrap">
       <!-- HERO -->
       <Section>
-        <div class="hero-grid">
-          <Card variant="glass" class="p-8">
-            <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
-            <h1 class="text-4xl leading-[1.15] mb-5 font-bold">{content.hero.title}</h1>
-            <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
-              {content.hero.text}
-            </p>
-    
-            <div class="flex flex-wrap gap-3 mb-6">
-              <Button href={cvLink}>{content.hero.cta.cv}</Button>
-              <Button href="https://github.com/AntonEbsen" target="_blank" rel="noopener" variant="ghost"><i class="fa-brands fa-github mr-2"></i> {content.hero.cta.github}</Button>
-              <Button href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" variant="ghost"><i class="fa-brands fa-linkedin mr-2"></i> {content.hero.cta.linkedin}</Button>
-            </div>
-    
-            <div class="flex flex-wrap gap-2">
-               {content.hero.pills.map((pill: string) => (
-                 <Pill variant="accent">{pill}</Pill>
-               ))}
+        <div class="hero-grid relative">
+           {/* Abstract Background for Hero */}
+           <div class="absolute -top-20 -left-20 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+
+          <Card variant="glass" class="p-8 relative overflow-hidden backdrop-blur-md border-white/20 shadow-xl z-10">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/0 pointer-events-none"></div>
+            
+            <div class="relative z-10">
+                <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                    {content.hero.eyebrow}
+                </p>
+                <h1 class="text-4xl md:text-5xl leading-[1.1] mb-6 font-bold tracking-tight">{content.hero.title}</h1>
+                <p class="text-[17px] leading-relaxed text-dim mb-8 opacity-90 max-w-lg">
+                  {content.hero.text}
+                </p>
+        
+                <div class="flex flex-wrap gap-3 mb-8">
+                  <Button href={cvLink} class="shadow-lg shadow-accent/20 hover:scale-105 transition-transform">{content.hero.cta.cv}</Button>
+                  <Button href="https://github.com/AntonEbsen" target="_blank" rel="noopener" variant="ghost"><i class="fa-brands fa-github mr-2"></i> {content.hero.cta.github}</Button>
+                  <Button href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" variant="ghost"><i class="fa-brands fa-linkedin mr-2"></i> {content.hero.cta.linkedin}</Button>
+                </div>
+        
+                <div class="flex flex-wrap gap-2">
+                   {content.hero.pills.map((pill: string) => (
+                     <Pill variant="accent" class="bg-accent/10 border-accent/20 text-accent hover:bg-accent hover:text-white transition-colors cursor-default">{pill}</Pill>
+                   ))}
+                </div>
             </div>
           </Card>
     
-          <div class="hidden md:block">
-            <Card variant="glass" class="p-6">
+          <div class="hidden md:block z-10">
+            <Card variant="glass" class="p-6 backdrop-blur-md border-white/20 h-full">
               <SectionHeading>{content.sidebar.title}</SectionHeading>
-              <ul class="list-none p-0 m-0 space-y-2 text-sm text-dim opacity-90">
+              <ul class="list-none p-0 m-0 space-y-3 text-sm text-dim opacity-90 mt-4">
                 {content.sidebar.items.map((item: string) => (
-                    <li class="relative pl-4 before:content-['-'] before:absolute before:left-0 before:text-accent">{item}</li>
+                    <li class="relative pl-6 before:content-['→'] before:absolute before:left-0 before:text-accent hover:translate-x-1 transition-transform cursor-default">{item}</li>
                 ))}
               </ul>
             </Card>
@@ -116,76 +165,93 @@ if (supabase) {
       <Section>
         <!-- The Spotlight (First Project) -->
         {cvProjects.length > 0 && (
-            <div class="mb-12">
+            <div class="mb-16 mt-8">
                  <div class="flex items-center justify-between mb-6">
                     <SectionHeading>
                         <i class="fa-solid fa-star text-accent mr-2"></i>
-                        {lang === 'da' ? 'I Fokus' : 'Spotlight'}
+                        {t.spotlight}
                     </SectionHeading>
                  </div>
                  
-                <Card variant="default" class="relative overflow-hidden group border-accent/20">
+                <Card variant="default" class="relative overflow-hidden group border-accent/20 shadow-2xl hover:shadow-accent/10 transition-shadow duration-500">
                     <div class="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-50"></div>
-                    <div class="relative p-8 md:p-10 flex flex-col md:flex-row gap-8 items-start">
+                    
+                    {/* Spotlight Background Image (Optional) */}
+                    <div class="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-[0.03]"></div>
+
+                    <div class="relative p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
                          <div class="flex-1">
-                            <Pill variant="accent" class="mb-4">{cvProjects[0].tag}</Pill>
-                            <h2 class="text-3xl font-bold mb-4">{cvProjects[0].title}</h2>
-                            <p class="text-lg text-dim leading-relaxed mb-6 max-w-2xl">
+                            <Pill variant="accent" class="mb-6 shadow-md shadow-accent/20">{cvProjects[0].tag}</Pill>
+                            <h2 class="text-4xl font-bold mb-6 tracking-tight">{cvProjects[0].title}</h2>
+                            <p class="text-lg text-dim leading-relaxed mb-8 max-w-xl">
                                 {cvProjects[0].description}
                             </p>
                             
                             <div class="flex flex-wrap gap-2 mb-8">
                                 {cvProjects[0].technologies?.map((tag: string) => (
-                                    <span class="text-xs font-mono text-accent/80 bg-accent/5 px-2 py-1 rounded border border-accent/10">
+                                    <span class="text-xs font-mono text-accent/90 bg-accent/5 px-2 py-1 rounded border border-accent/10">
                                         {tag}
                                     </span>
                                 ))}
                             </div>
 
-                            {/* The Blueprint (Spotlight Version) */}
-                            {cvProjects[0].blueprint && (
-                                <div class="mb-8 rounded-lg overflow-hidden border border-white/10 max-w-lg">
-                                    <div class="bg-black/40 p-2 text-[10px] text-dim font-mono border-b border-white/10">
-                                        <i class="fa-solid fa-diagram-project mr-2"></i>System Architecture
-                                    </div>
-                                    <img src={cvProjects[0].blueprint} alt="Architecture" class="w-full opacity-80" />
-                                </div>
-                            )}
-
                             <div class="flex gap-4">
                                 {cvProjects[0].url && (
-                                    <Button href={cvProjects[0].url}>{content.ui.viewProject} <i class="fa-solid fa-arrow-right ml-2"></i></Button>
+                                    <Button href={cvProjects[0].url} class="group-hover:translate-x-1 transition-transform">{content.ui.viewProject} <i class="fa-solid fa-arrow-right ml-2"></i></Button>
                                 )}
                                 {/* Check for labUrl via title match or explicit field if added later. Assuming GFC has specific need */}
                                 {cvProjects[0].title.includes('Global') && (
-                                     <Button href="https://lab.antonebsen.dk" variant="ghost" class="text-accent border-accent/20 hover:bg-accent/10"><i class="fa-solid fa-flask mr-2"></i> Launch Lab</Button>
+                                     <Button href="https://lab.antonebsen.dk" variant="ghost" class="text-accent border-accent/20 hover:bg-accent/10"><i class="fa-solid fa-flask mr-2"></i> {t.launchLab}</Button>
                                 )}
                             </div>
                          </div>
+                         
+                         {/* The Blueprint (Spotlight Version) - Now on the right for better balance */}
+                         {cvProjects[0].blueprint && (
+                            <div class="flex-1 w-full max-w-lg perspective-1000">
+                                <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl transform rotate-y-[-5deg] rotate-x-[5deg] hover:rotate-0 transition-transform duration-700 bg-slate-900">
+                                    <div class="bg-black/60 backdrop-blur p-3 text-[10px] text-dim font-mono border-b border-white/10 flex justify-between items-center">
+                                        <span><i class="fa-solid fa-diagram-project mr-2 text-accent"></i>{t.architecture}</span>
+                                        <div class="flex gap-1.5">
+                                            <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                                            <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+                                        </div>
+                                    </div>
+                                    <img src={cvProjects[0].blueprint} alt="Architecture" class="w-full opacity-90" />
+                                </div>
+                            </div>
+                         )}
                     </div>
                 </Card>
             </div>
         )}
 
         <!-- The Tech Matrix (Sticky Filter) -->
-        <div class="sticky top-4 z-30 mb-8 p-1">
-            <Card variant="glass" class="p-2 backdrop-blur-xl border-white/10 shadow-2xl">
+        <div class="sticky top-4 z-30 mb-12 p-1">
+            <Card variant="glass" class="p-2 backdrop-blur-xl border-white/20 shadow-2xl ring-1 ring-black/5">
                 <div class="flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
-                    <div class="flex items-center gap-1.5 min-w-max px-2">
-                         <i class="fa-solid fa-filter text-dim text-xs"></i>
-                         <span class="text-xs font-bold uppercase tracking-wider text-dim">Matrix</span>
+                    <div class="flex items-center gap-2 min-w-max px-3">
+                         <i class="fa-solid fa-filter text-accent text-xs"></i>
+                         <span class="text-xs font-bold uppercase tracking-wider text-dim">{t.matrix}</span>
                     </div>
                     <div class="h-4 w-px bg-white/10"></div>
                     <div class="flex gap-2 min-w-max" id="project-filters">
-                        <button class="project-filter-btn active text-xs font-bold px-3 py-1.5 rounded-md bg-accent text-black transition-all" data-filter="all">
-                            All
+                        <button class="project-filter-btn active text-xs font-bold px-3 py-1.5 rounded-lg bg-accent text-black shadow-md shadow-accent/20 transition-all hover:scale-105" data-filter="all">
+                            {t.all}
                         </button>
-                        {/* Unique tags generator */}
-                        {Array.from(new Set([...cvProjects, ...supabaseProjects].flatMap((p: any) => p.technologies || p.tags || []))).slice(0, 6).map((tag: any) => (
-                            <button class="project-filter-btn text-xs font-bold px-3 py-1.5 rounded-md bg-white/5 text-dim hover:text-white hover:bg-white/10 transition-all border border-white/5" data-filter={tag}>
-                                {tag}
-                            </button>
-                        ))}
+                        <button class="project-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-dim hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/20" data-filter="Macro">
+                            Macro
+                        </button>
+                        <button class="project-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-dim hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/20" data-filter="Data Science">
+                            Data Science
+                        </button>
+                         <button class="project-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-dim hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/20" data-filter="Web">
+                            Web
+                        </button>
+                        {/* Status Filter for Upcoming */}
+                        <button class="project-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20" data-filter="Kommende">
+                            <i class="fa-solid fa-pulse ring-1 ring-blue-500 rounded-full mr-2"></i>Upcoming
+                        </button>
                     </div>
                 </div>
             </Card>
@@ -194,39 +260,43 @@ if (supabase) {
         <!-- Project Grid -->
         <div class="projects-grid" id="project-matrix">
           {cvProjects.slice(1).map((p) => (
-            <ProjectCard
-              title={p.title}
-              tagString={p.technologies?.join(' · ') ?? ''}
-              tags={p.technologies}
-              description={p.description}
-              tools={p.technologies?.join(', ')}
-              output={content.ui.featured}
-              links={p.url ? [{ label: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : p.links?.map(l => ({ label: l.text, url: l.href, icon: l.icon })) ?? []}
-              lang={lang}
-              highlights={p.highlights}
-              video={p.video}
-              blueprint={p.blueprint}
-              labUrl={p.title.includes('Valuta') || p.title.includes('Exchange') ? 'https://lab.antonebsen.dk/lab/index.html?path=notebooks%2Fexchange_rate_dynamics.ipynb' : undefined}
-            />
+            <div class="tilt-card-wrapper hover:z-20">
+                <ProjectCard
+                  title={p.title}
+                  tagString={p.technologies?.join(' · ') ?? ''}
+                  tags={[...(p.technologies || []), p.tag || '']}
+                  description={p.description}
+                  tools={p.technologies?.join(', ')}
+                  output={content.ui.featured}
+                  links={p.url ? [{ label: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : p.links?.map(l => ({ label: l.text, url: l.href, icon: l.icon })) ?? []}
+                  lang={lang}
+                  highlights={p.highlights}
+                  video={p.video}
+                  blueprint={p.blueprint}
+                  labUrl={p.title.includes('Valuta') || p.title.includes('Exchange') ? 'https://lab.antonebsen.dk/lab/index.html?path=notebooks%2Fexchange_rate_dynamics.ipynb' : undefined}
+                />
+            </div>
           ))}
           
           {supabaseProjects?.map((p: any) => (
-            <ProjectCard
-              title={p.title}
-              tagString={p.tags ? p.tags.join(' · ') : ''}
-              tags={p.tags}
-              description={p.description}
-              tools={[]}
-              output={content.ui.featured}
-              links={p.url ? [{ label: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
-              lang={lang}
-            />
+            <div class="tilt-card-wrapper hover:z-20">
+                <ProjectCard
+                  title={p.title}
+                  tagString={p.tags ? p.tags.join(' · ') : ''}
+                  tags={p.tags}
+                  description={p.description}
+                  tools={[]}
+                  output={content.ui.featured}
+                  links={p.url ? [{ label: content.ui.viewProject, url: p.url, icon: 'arrow-right' }] : []}
+                  lang={lang}
+                />
+            </div>
           ))}
         </div>
       </Section>
   
       <!-- DISCOVERY (Cleaned) -->
-      <Section id="discovery" class="mt-12">
+      <Section id="discovery" class="mt-20">
         <DiscoveryGrid 
           title={lang === 'da' ? 'Ressourcer' : lang === 'de' ? 'Ressourcen' : 'Resources'}
           items={[
@@ -276,39 +346,92 @@ if (supabase) {
       </Section>
   
   </main>
+  
   <script>
-    // Project Matrix Filtering
+    // Project Matrix Filtering & 3D Tilt
     const filters = document.querySelectorAll('.project-filter-btn');
-    const projects = document.querySelectorAll('.project-card-wrapper');
+    const projects = document.querySelectorAll('.tilt-card-wrapper');
 
+    // Filtering Logic
     filters.forEach(btn => {
         btn.addEventListener('click', () => {
-            // UI
+            // Reset active state
             filters.forEach(b => {
-                b.classList.remove('bg-accent', 'text-black');
-                b.classList.add('bg-white/5', 'text-dim');
-            });
-            btn.classList.remove('bg-white/5', 'text-dim');
-            btn.classList.add('bg-accent', 'text-black');
-
-            const filter = btn.getAttribute('data-filter');
-
-            projects.forEach(p => {
-                if (!(p instanceof HTMLElement)) return;
-                const tags = (p.getAttribute('data-tags') || '').split(',');
-                
-                if (filter === 'all' || tags.includes(filter)) {
-                    p.style.display = '';
-                    p.classList.add('animate-in', 'fade-in');
+                b.classList.remove('bg-accent', 'text-black', 'shadow-md', 'scale-105', 'active');
+                if (b.classList.contains('bg-blue-500')) {
+                     // Keep blue style for Upcoming button if inactive
+                     b.classList.remove('bg-blue-500', 'text-white');
+                     b.classList.add('bg-blue-500/10', 'text-blue-400');
                 } else {
-                    p.style.display = 'none';
-                    p.classList.remove('animate-in', 'fade-in');
+                    b.classList.add('bg-white/5', 'text-dim');
+                }
+            });
+
+            // Set active state
+            btn.classList.remove('bg-white/5', 'text-dim', 'bg-blue-500/10', 'text-blue-400');
+            if (btn.getAttribute('data-filter') === 'Kommende') {
+                btn.classList.add('bg-blue-500', 'text-white', 'shadow-md', 'scale-105', 'active');
+            } else {
+                btn.classList.add('bg-accent', 'text-black', 'shadow-md', 'scale-105', 'active');
+            }
+
+            const filter = btn.getAttribute('data-filter') || 'all';
+
+            projects.forEach(wrapper => {
+                if (!(wrapper instanceof HTMLElement)) return;
+                const card = wrapper.querySelector('[data-tags]');
+                const tags = (card?.getAttribute('data-tags') || '').split(',');
+                
+                // Allow partial matching for categories
+                const matches = filter === 'all' || 
+                                tags.includes(filter) || 
+                                (filter === 'Macro' && tags.some(t => t.includes('Macro') || t.includes('Economy'))) ||
+                                (filter === 'Web' && tags.some(t => t.includes('Web') || t.includes('React') || t.includes('Astro'))) ||
+                                (filter === 'Data Science' && tags.some(t => t.includes('Data') || t.includes('Python')));
+
+                if (matches) {
+                    wrapper.style.display = '';
+                    wrapper.classList.add('animate-in', 'fade-in', 'zoom-in-95');
+                } else {
+                    wrapper.style.display = 'none';
+                    wrapper.classList.remove('animate-in', 'fade-in', 'zoom-in-95');
                 }
             });
         });
     });
+
+    // Simple 3D Tilt Effect
+    projects.forEach(wrapper => {
+        if (!(wrapper instanceof HTMLElement)) return;
+        
+        wrapper.addEventListener('mousemove', (e) => {
+            // Target the immediate child div (ProjectCard root)
+            const card = wrapper.firstElementChild as HTMLElement; 
+            if(!card) return;
+            
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg tilt
+            const rotateY = ((x - centerX) / centerX) * 5;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            card.style.transition = 'transform 0.1s ease-out';
+            card.style.zIndex = '10';
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            const card = wrapper.firstElementChild as HTMLElement;
+            if(!card) return;
+            
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            card.style.transition = 'transform 0.5s ease-out';
+            card.style.zIndex = '1';
+        });
+    });
   </script>
 </Layout>
-
-
-

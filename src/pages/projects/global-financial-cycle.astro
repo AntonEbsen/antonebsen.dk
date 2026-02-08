@@ -5,7 +5,9 @@ export const prerender = true;
 const projectContent = {
   title: "Global Financial Cycle & spillovers",
   subtitle: "Analyse af overførselseffekter fra amerikansk pengepolitik via en strukturel VAR-model (2001Q4-2023Q3).",
+  heroImage: "/assets/images/gfc-system.png", // Added for new hero design
   executiveSummary: "Dette speciale analyserer effekterne af pengepolitiske spillovers fra USA til den globale økonomi. Ved hjælp af en rekursiv VAR-model, inspireret af Rey (2013), undersøges transmissionen af chok via global risiko (VIX) og europæiske bankers gearing. Resultaterne bekræfter den fortsatte eksistens af disse spillovers, men påpeger en betydelig reduktion i omfanget under COVID-19-perioden, sandsynligvis grundet forbedret regulering.",
+  popularScienceResult: "Når USA's centralbank sænker renten, falder frygten (risikoen) på de globale markeder. Dette får europæiske banker til at låne flere penge ud. Selvom denne effekt stadig findes, viser min forskning, at den er blevet svagere efter COVID-19, hvilket tyder på, at nye regler har gjort det finansielle system mere robust.",
   researchQuestions: [
     "Hvordan påvirker et chok til den amerikanske 'federal funds rate' den globale risiko målt ved VIX?",
     "Hvordan påvirker global risiko den globale finansielle cyklus (gearing, kreditvækst og grænseoverskridende strømme)?",
@@ -33,9 +35,9 @@ const projectContent = {
     software: "Python (til IRF-estimering), SAS og GAMS til strukturel modellering."
   },
   highlights: [
-      { label: "Grade", value: "12" },
-      { label: "Data Points", value: "20,000+" },
-      { label: "Horizon", value: "2001-2023" }
+      { label: "Karakter", value: "12" },
+      { label: "Datapunkter", value: "20.000+" },
+      { label: "Periode", value: "2001-2023" }
   ],
   codeSnippet: {
       lang: "Python",
@@ -121,7 +123,7 @@ shocks, irf = identify_shocks(macro_data)`
       { term: "Gearing", definition: "The ratio of a company's debt to its equity, essentially a measure of financial leverage." }
   ],
   citation: {
-    text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelorprojekt, Københavns Universitet. JEL: E52, E58, F02, F33, G15.",
+    text: "Jørgensen, Anton Meier Ebsen (2024). Global Financial Cycle & spillovers. Bachelorprojekt, Københavns Universitet. JEL: E52, E58, F02, F33, G15.",
     pdfUrl: "/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
   },
   ui: {
@@ -140,7 +142,13 @@ shocks, irf = identify_shocks(macro_data)`
     timeline: "Projekt-tidslinje",
     liveData: "Interaktiv Data (IRF)",
     openScience: "Open Science"
-  }
+  },
+  bibliography: [
+    "Rey, H. (2013). Dilemma not Trilemma: The Global Financial Cycle and Monetary Policy Independence. Proceedings of the Federal Reserve Bank of Kansas City, 1–285.",
+    "Miranda-Agrippino, S., & Rey, H. (2020). US Monetary Policy and the Global Financial Cycle. Review of Economic Studies, 87(6), 2754–2776.",
+    "Bruno, V., & Shin, H. S. (2015). Capital flows, cross-border banking and global liquidity. Journal of Monetary Economics, 71, 119–132.",
+    "Obstfeld, M., & Taylor, A. M. (2004). Global Capital Markets: Integration, Crisis, and Growth. Cambridge University Press."
+  ]
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent} />

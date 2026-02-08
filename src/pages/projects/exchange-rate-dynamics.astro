@@ -149,8 +149,12 @@ plt.show()`
       { term: "Volatility", definition: "A statistical measure of the dispersion of returns for a given security or market index, representing risk." }
   ],
   citation: {
-    text: "Jørgensen, A. M. E. (2023). Valutakursdynamik: Inflation og relative kurser i Danmark. Anvendt dataanalyseprojekt. Ref: ADA-2023-DK.",
+    text: "Jørgensen, Anton M. E. & Chen, Sheng Ye Michael (2023). Valutakursdynamik: Inflation og relative kurser i Danmark. Anvendt dataanalyseprojekt. Ref: ADA-2023-DK.",
     pdfUrl: "/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
+  },
+  popScience: {
+    title: "Hvorfor priserne lever deres eget liv",
+    text: "Selvom kronen er låst fast til euroen, betyder det ikke, at priserne i Danmark altid følger eurozonen slavisk. Dette projekt viser, at lokale faktorer stadig spiller en overraskende stor rolle for inflationen herhjemme. Det udfordrer antagelsen om, at fastkurspolitikken automatisk importerer al stabilitet (eller ustabilitet) fra naboerne i syd."
   },
   ui: {
     methodology: "Data & Metodologi",
@@ -171,7 +175,22 @@ plt.show()`
     timeline: "Projekt-tidslinje",
     liveData: "Interaktiv Data (FX)",
     openScience: "Open Science"
-  }
+  },
+  collaborators: [
+    { 
+        name: "Sheng Ye Michael Chen", 
+        role: "Studiegruppemedlem", 
+        image: "/assets/collaborators/sheng.jpg",
+        description: "Medforfatter på dette projekt under vores bachelor. Bidrog væsentligt til dataharmonisering og korrelationsanalysen.",
+        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    }
+  ],
+  bibliography: [
+    "Meese, R. A., & Rogoff, K. (1983). Empirical exchange rate models of the seventies: Do they fit out of sample? Journal of International Economics, 14(1-2), 3–24.",
+    "Rogoff, K. (1996). The Purchasing Power Parity Puzzle. Journal of Economic Literature, 34(2), 647–668.",
+    "Obstfeld, M., & Rogoff, K. (2000). The Six Major Puzzles in International Macroeconomics: Is There a Common Cause? NBER Macroeconomics Annual, 15, 339–390.",
+    "Dornbusch, R. (1976). Expectations and Exchange Rate Dynamics. Journal of Political Economy, 84(6), 1161–1176."
+  ]
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent} />

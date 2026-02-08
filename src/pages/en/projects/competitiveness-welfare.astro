@@ -1,0 +1,95 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Competitiveness and Welfare Model",
+  subtitle: "An analysis of the relationship between national competitiveness and the welfare state.",
+  executiveSummary: "This project analyzes the relationship between national competitiveness and the design of the welfare state, focusing on the classic tension between economic efficiency, cost levels, and social protection. The project investigates whether a comprehensive welfare model necessarily weakens a country's competitiveness, or whether specific institutional designs can conversely act as a productivity and stability-promoting element in a globalized economy.",
+  researchQuestions: [
+    "How do different welfare models affect countries' competitiveness?",
+    "Can high taxes and social protection be reconciled with economic growth?",
+    "What trade-offs exist between equality and efficiency in an open economy?",
+    "How can institutional quality strengthen competitiveness?"
+  ],
+  methodology: {
+    model: "Comparative Analysis (Economics & Society)",
+    strategy: "Comparison of welfare regimes and their macroeconomic performance.",
+    data: "Macroeconomic indicators (Productivity, Unit Labor Costs, Gini Coefficient).",
+    estimation: "Qualitative assessment of institutional effects on the labor market."
+  },
+  keyFindings: [
+    "More than Wages: Competitiveness depends not only on labor costs but also on productivity, human capital, and institutional stability.",
+    "Welfare as Investment: A well-developed welfare state can support labor supply, reduce uncertainty, and promote education.",
+    "Trade-offs: There is a balancing act between short-term cost competitiveness and long-term productivity development.",
+    "No Universal Model: Effects depend on country-specific institutions and economic structure."
+  ],
+  secondaryAnalysis: {
+    title: "Forward-Looking Perspective",
+    description: "The project points to the need for complementarity between competitiveness and social protection.",
+    items: [
+      "Structural Competitiveness: Focus on innovation and education rather than a race to the bottom.",
+      "Social Cohesion: Economic resilience requires legitimacy and social stability.",
+      "Relevance Today: The debate is central to understanding the future of the welfare state in a globalized world."
+    ]
+  },
+  policyRelevance: [
+    "Labor Market Reforms: Flexicurity as a model for adaptability.",
+    "Globalization: How small open economies navigate global competition.",
+    "Tax Policy: Financing welfare without stifling growth."
+  ],
+  limitations: [
+    "Level: HHX project with a focus on broad analysis.",
+    "Data: Based on aggregated data and theoretical models.",
+    "Focus: Primarily on the Scandinavian welfare model versus Anglo-Saxon models."
+  ],
+  dataTools: {
+    sources: "Economic Theory, Welfare State Research (Esping-Andersen), Data from OECD/Eurostat.",
+    software: "Word / Excel."
+  },
+  highlights: [
+    { label: "Level", value: "HHX" },
+    { label: "Status", value: "Completed" }
+  ],
+  contextNote: "This project serves as an early analytical contribution to the discussion on how economic robustness and social cohesion can be reconciled.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Economics A", icon: "fa-solid fa-globe" },
+      { name: "Social Science A", icon: "fa-solid fa-users" }
+  ],
+  timeline: [
+      { date: "HHX", title: "Submission", description: "The project was prepared in collaboration with a project group." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Jørgensen, Anton M. E., Berge, Noah Hjorth, Hansen, Marius Bruun & Børresen, Elias Walther. Competitiveness and Welfare Model. HHX Project.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Method & Theory",
+    findings: "Central Points",
+    relevance: "Perspectives",
+    dataTools: "Sources",
+    download: "Download Project",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    secondaryAnalysis: "The Future",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Subjects",
+    timeline: "Timeline",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { name: "Noah Hjorth Berge", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
+    { name: "Marius Bruun Hansen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
+    { name: "Elias Walther Børresen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." }
+  ],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

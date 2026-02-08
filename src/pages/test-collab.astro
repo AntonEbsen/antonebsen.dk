@@ -1,0 +1,14 @@
+---
+import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
+
+const collaborators = [
+     {
+        name: "Test Person",
+        role: "Tester",
+        image: "/assets/collaborators/sheng.jpg",
+        links: { linkedin: "https://example.com" }
+     }
+];
+---
+
+<CollaboratorSpotlight client:visible collaborators={collaborators} label="Test Team" />

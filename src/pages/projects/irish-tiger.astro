@@ -1,0 +1,105 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Det indre markeds påvirkning på den irske tigerøkonomi",
+  subtitle: "En analyse af samspillet mellem markedsintegration, FDI og national politik i Irland.",
+  executiveSummary: "Dette projekt analyserer, hvordan EU’s indre marked har påvirket udviklingen af den såkaldte irske tigerøkonomi ('The Celtic Tiger'). Projektet undersøger, hvordan Irlands vækstmodel i 1990'erne og 00'erne var drevet af institutionel integration i EU og strategisk tiltrækning af udenlandske investeringer — men også hvordan denne model skabte strukturelle sårbarheder, der blev fatale under finanskrisen.",
+  researchQuestions: [
+    "Hvordan fungerede EU's indre marked som vækstmotor for den irske økonomi?",
+    "Hvilken rolle spillede udenlandske direkte investeringer (FDI) for produktivitet og beskæftigelse?",
+    "Hvorfor var den irske vækstmodel så sårbar over for den globale finanskrise?",
+    "Er EU-integration værdineutral for nationale politiske valg?"
+  ],
+  methodology: {
+    model: "Tværfaglig Analyse (Økonomi & Historie)",
+    strategy: "Case-studie af en lille åben økonomi i en globaliseret verden.",
+    data: "Makroøkonomiske indikatorer (BNP, FDI, Arbejdsløshed) og historiske kilder.",
+    estimation: "Kvalitativ vurdering af årsagssammenhænge mellem EU-politik og national vækst."
+  },
+  keyFindings: [
+    "Vækstmotor: Det indre marked reducerede handelsbarrierer og gjorde Irland til en attraktiv 'hub' for amerikanske virksomheder (Tech/Pharma).",
+    "FDI-afhængighed: Høj tilstrømning af kapital gav produktivitetsløft, men skabte en økonomi afhængig af eksterne beslutningstagere.",
+    "Skrøbelighed: Vækstmodellen var koncentreret og afhængig af skatteincitamenter, hvilket forstærkede krisen, da kapitalstrømme vendte.",
+    "Politisk Rum: EU-medlemskab skaber muligheder, men begrænser også nationalstaternes handlerum i krisetider."
+  ],
+  secondaryAnalysis: {
+    title: "Fremadskuende Perspektiv",
+    description: "Projektet rejser spørgsmålet om, hvordan små åbne økonomier kan balancere vækst og stabilitet.",
+    items: [
+      "Strategisk Autonomi: Kan man opretholde høj vækst uden at opbygge uholdbare finansielle risici?",
+      "Robusthed: Behovet for at diversificere økonomien væk fra ensidig afhængighed af specifikke sektorer.",
+      "Relevans: Et tidligt case-studie i de mekanismer (austerity, gæld, konkurrence), der senere definerede Eurokrisen."
+    ]
+  },
+  policyRelevance: [
+    "Skattepolitik: Irlands brug af lav selskabsskat som konkurrenceparameter.",
+    "EU-integration: Fordele og ulemper ved dyb økonomisk integration for små stater.",
+    "Krisehåndtering: Erfaringer fra boom-bust cykler i bolig- og finansmarkederne."
+  ],
+  limitations: [
+    "Niveau: HHX-projekt med fokus på bred analyse frem for økonometrisk kausalitet.",
+    "Data: Baseret på tilgængelige historiske data og sekundær litteratur.",
+    "Fokus: Primært makroøkonomisk og politisk, mindre fokus på virksomhedsspecifikke forhold."
+  ],
+  dataTools: {
+    sources: "Økonomisk teori, EU-rapporter, Historiske analyser.",
+    software: "Word / Excel."
+  },
+  highlights: [
+    { label: "Niveau", value: "HHX" },
+    { label: "Karakter", value: "12" },
+    { label: "Status", value: "Afsluttet" }
+  ],
+  contextNote: "Dette projekt fungerer som et tidligt case study i de mekanismer, der senere blev centrale i mine studier af eurokrisen og økonomisk robusthed.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Økonomi A", icon: "fa-solid fa-globe" }
+  ],
+  timeline: [
+      { date: "HHX", title: "Indlevering", description: "Projektet blev udarbejdet i samarbejde med en projektgruppe." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Jørgensen, Anton M. E., Berge, Noah Hjorth, Hansen, Marius Bruun, Frandsen, Peter & Børresen, Elias Walther. Det indre markeds påvirkning på den irske tigerøkonomi. HHX Projekt.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metode & Teori",
+    findings: "Centrale Pointer",
+    relevance: "Perspektivering",
+    dataTools: "Kilder",
+    download: "Hent projekt",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Problemstilling",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Fremtiden",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Fagområder",
+    timeline: "Tidslinje",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { name: "Noah Hjorth Berge", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
+    { name: "Marius Bruun Hansen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
+    { name: "Peter Frandsen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
+    { name: "Elias Walther Børresen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." }
+  ],
+  bibliography: [
+    "McAleese, Dermot. (2000). The Celtic Tiger: Origins and Prospects. Trinity College Dublin.",
+    "Murphy, Antoin E. (2000). The 'Celtic Tiger' - An Analysis of Ireland's Economic Growth Performance. Peace Palace Library.",
+    "Boyle, Paul. (2013). Policy: A single market for European research. Nature.",
+    "Aussilloux, Vincent. (2017). Making the Best of EU’s Single Market. Cairn International.",
+    "OECD. (2020). GDP per hour worked. OECD Data.",
+    "World Data Bank. (2019). GDP growth (annual %) - Ireland. World Bank Group.",
+    "European Commission. (2020). Shaping the Digital Single Market.",
+    "Central Statistics Online. (2017). Balance of International Payments."
+  ]
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

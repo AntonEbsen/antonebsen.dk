@@ -1,0 +1,105 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "The Single Market's Impact on the Irish Tiger Economy",
+  subtitle: "Analyzing the interplay between market integration, FDI, and national policy in Ireland.",
+  executiveSummary: "This project analyzes how the EU’s Single Market contributed to the development of the so-called Irish Tiger Economy. The project investigates how Ireland’s growth model in the 1990s and 2000s was driven by institutional integration into the EU and strategic attraction of foreign direct investment—but also how this model created structural vulnerabilities that became fatal during the financial crisis.",
+  researchQuestions: [
+    "How did the EU Single Market function as a growth engine for the Irish economy?",
+    "What role did Foreign Direct Investment (FDI) play in productivity and employment?",
+    "Why was the Irish growth model so vulnerable to the global financial crisis?",
+    "Is EU integration value-neutral for national political choices?"
+  ],
+  methodology: {
+    model: "Interdisciplinary Analysis (Economics & History)",
+    strategy: "Case study of a small open economy in a globalized world.",
+    data: "Macroeconomic indicators (GDP, FDI, Unemployment) and historical sources.",
+    estimation: "Qualitative assessment of causal links between EU policy and national growth."
+  },
+  keyFindings: [
+    "Growth Engine: The Single Market reduced trade barriers and made Ireland an attractive 'hub' for US companies (Tech/Pharma).",
+    "FDI Dependency: High capital inflows boosted productivity but created an economy dependent on external decision-makers.",
+    "Fragility: The growth model was concentrated and reliant on tax incentives, exacerbating the crisis when capital flows reversed.",
+    "Political Space: EU membership creates opportunities but also limits the policy space of nation-states during crises."
+  ],
+  secondaryAnalysis: {
+    title: "Forward-Looking Perspective",
+    description: "The project raises the question of how small open economies can balance growth and stability.",
+    items: [
+      "Strategic Autonomy: Can high growth be maintained without building unsustainable financial risks?",
+      "Robustness: The need to diversify the economy away from one-sided dependence on specific sectors.",
+      "Relevance: An early case study in the mechanisms (austerity, debt, competition) that later defined the Euro crisis."
+    ]
+  },
+  policyRelevance: [
+    "Tax Policy: Ireland's use of low corporate tax as a competitive parameter.",
+    "EU Integration: Pros and cons of deep economic integration for small states.",
+    "Crisis Management: Lessons from boom-bust cycles in housing and financial markets."
+  ],
+  limitations: [
+    "Level: HHX project focusing on broad analysis rather than econometric causality.",
+    "Data: Based on available historical data and secondary literature.",
+    "Focus: Primarily macroeconomic and political, less focus on firm-specific conditions."
+  ],
+  dataTools: {
+    sources: "Economic Theory, EU Reports, Historical Analysis.",
+    software: "Word / Excel."
+  },
+  highlights: [
+    { label: "Level", value: "HHX" },
+    { label: "Grade", value: "12" },
+    { label: "Status", value: "Completed" }
+  ],
+  contextNote: "This project serves as an early case study in the mechanisms that later became central to my studies of the Euro crisis and economic robustness.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Economics A", icon: "fa-solid fa-globe" }
+  ],
+  timeline: [
+      { date: "HHX", title: "Submission", description: "The project was prepared in collaboration with a project group." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Jørgensen, Anton M. E., Berge, Noah Hjorth, Hansen, Marius Bruun, Frandsen, Peter & Børresen, Elias Walther. The Single Market's Impact on the Irish Tiger Economy. HHX Project.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Method & Theory",
+    findings: "Central Points",
+    relevance: "Perspectives",
+    dataTools: "Sources",
+    download: "Download Project",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    secondaryAnalysis: "The Future",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Subjects",
+    timeline: "Timeline",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { name: "Noah Hjorth Berge", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
+    { name: "Marius Bruun Hansen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
+    { name: "Peter Frandsen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
+    { name: "Elias Walther Børresen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." }
+  ],
+  bibliography: [
+    "McAleese, Dermot. (2000). The Celtic Tiger: Origins and Prospects. Trinity College Dublin.",
+    "Murphy, Antoin E. (2000). The 'Celtic Tiger' - An Analysis of Ireland's Economic Growth Performance. Peace Palace Library.",
+    "Boyle, Paul. (2013). Policy: A single market for European research. Nature.",
+    "Aussilloux, Vincent. (2017). Making the Best of EU’s Single Market. Cairn International.",
+    "OECD. (2020). GDP per hour worked. OECD Data.",
+    "World Data Bank. (2019). GDP growth (annual %) - Ireland. World Bank Group.",
+    "European Commission. (2020). Shaping the Digital Single Market.",
+    "Central Statistics Online. (2017). Balance of International Payments."
+  ]
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

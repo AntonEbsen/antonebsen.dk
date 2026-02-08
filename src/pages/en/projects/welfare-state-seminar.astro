@@ -1,0 +1,89 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Seminar: Economics of the Welfare State (TBD)",
+  subtitle: "Upcoming seminar project in welfare state economics.",
+  executiveSummary: "This project is under development. It will involve an in-depth analysis of welfare state economics, developed in collaboration with Sheng and Jonas. Further details on the topic, research questions, and findings will be added once the project is defined.",
+  researchQuestions: [
+    "TBD: Research question under development.",
+    "TBD: Focus area within welfare economics?",
+    "TBD: Which data and methods are used?"
+  ],
+  methodology: {
+    model: "Economic Analysis",
+    strategy: "Theoretical and empirical investigation.",
+    data: "TBD.",
+    estimation: "TBD."
+  },
+  keyFindings: [
+    "This project has not yet started.",
+    "Results will be presented here.",
+    "Expected completion: 2026."
+  ],
+  secondaryAnalysis: {
+    title: "Preliminary Status",
+    description: "The project is in the planning phase.",
+    items: [
+      "Topic Selection: Under consideration.",
+      "Group Formation: Established (Sheng, Jonas, Anton).",
+      "Analysis: Not started."
+    ]
+  },
+  policyRelevance: [
+    "Welfare Policy.",
+    "Public Economics."
+  ],
+  limitations: [
+    "Status: Planned project."
+  ],
+  dataTools: {
+    sources: "TBD.",
+    software: "Stata / R / Python (TBD)."
+  },
+  highlights: [
+    { label: "Course", value: "Seminar" },
+    { label: "Status", value: "Upcoming" }
+  ],
+  contextNote: "This is a placeholder for an upcoming seminar project.",
+  videoUrl: "", 
+  techStack: [
+      { name: "Economics", icon: "fa-solid fa-chart-pie" },
+      { name: "Public Policy", icon: "fa-solid fa-scale-balanced" }
+  ],
+  timeline: [
+      { date: "2026", title: "Planned", description: "Project start." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Ebsen, Anton, Sheng & Jonas. Seminar: Economics of the Welfare State (TBD). (Upcoming).",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Method & Theory",
+    findings: "Expected Results",
+    relevance: "Relevance",
+    dataTools: "Sources",
+    download: "Download Project (TBD)",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Preliminary Questions",
+    limitations: "Status",
+    secondaryAnalysis: "Status",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Subjects",
+    timeline: "Timeline",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { name: "Sheng", role: "Project Partner", image: "/assets/collaborators/sheng.jpg", description: "Co-author." },
+    { name: "Jonas", role: "Project Partner", image: "/assets/collaborators/jonas.jpg", description: "Co-author." }
+  ],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

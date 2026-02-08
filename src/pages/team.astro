@@ -1,0 +1,448 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
+import Pill from '@components/ui/Pill.astro';
+import ResearchRadar from '@components/project/ResearchRadar';
+
+// Collaborator Data
+const team = [
+    { 
+        name: "Anton M. E. Jørgensen", 
+        role: "Hovedforfatter & Udvikler", 
+        image: "/assets/img/billede-af-mig.jpg", 
+        description: "Specialiseret i makroøkonomisk modellering, webudvikling og brobygning mellem økonomisk teori og data science.",
+        links: { linkedin: "https://linkedin.com/in/antonebsen", github: "https://github.com/AntonEbsen" },
+        status: { text: "Writing Thesis", color: "red" }
+    },
+    { 
+        name: "Sheng Ye Michael Chen", 
+        role: "Medforfatter & Data Scientist", 
+        image: "/assets/collaborators/sheng.jpg",
+        description: "Ekspertise i højdimensionel datahåndtering, Stata-programmering og rigoristisk økonometrisk implementering (GMM).",
+        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" },
+        status: { text: "Coding Stata", color: "blue" }
+    },
+    { 
+        name: "Jonas Amasa Skov Nielsen", 
+        role: "Medforfatter & Teoretiker", 
+        image: "/assets/collaborators/jonas.jpg",
+        description: "Fokus på pengepolitisk transmission, spilteori og strukturelle brud i tidsseriedata.",
+        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" },
+        status: { text: "Reviewing Theory", color: "green" }
+    }
+];
+
+const stats = [
+    { label: "Fælles Projekter", value: "3", icon: "fa-book-open" },
+    { label: "År i Samarbejde", value: "5", icon: "fa-calendar-check" },
+    { label: "Akademisk Fokus", value: "Makro", icon: "fa-globe" },
+    { label: "Datapunkter", value: "20k+", icon: "fa-database" },
+];
+
+const timeline = [
+    { year: "2020", title: "Dannelse", desc: "Mødtes på Københavns Universitet. Etablerede et samarbejde omkring Mikroøkonomi og Matematisk Analyse." },
+    { year: "2023", title: "Exchange Rate Dynamics", desc: "Første større fælles forskningsprojekt. Analyserede inflation og relative valutakurser i Danmark ved hjælp af højfrekvente data." },
+    { year: "2024", title: "ECB Taylor Rules", desc: "Avanceret seminaropgave. Implementerede GMM-estimering for at teste for asymmetriske politiske reaktioner i Eurozonen." },
+    { year: "2025", title: "Kandidatspeciale", desc: "Kommende magnum opus med fokus på den Globale Finansielle Cyklus og dens transmission til små åbne økonomier." },
+];
+
+const methodology = [
+    { step: "01", title: "Data Engineering", desc: "Automatiserede Python-pipelines sikrer reproducerbarhed. Vi renser aldrig data manuelt.", icon: "fa-server" },
+    { step: "02", title: "Økonometri", desc: "Rigoristisk identifikation i Stata. Fra simple OLS til GMM og strukturelle VAR-modeller.", icon: "fa-chart-line" },
+    { step: "03", title: "Formidling", desc: "LaTeX til akademiske papers, Astro til interaktive web-dashboards. Klarhed er konge.", icon: "fa-pen-nib" }
+];
+
+const thesis_progress = [
+    { label: "Litteraturstudie", prog: "80%" },
+    { label: "Dataindsamling", prog: "60%" },
+    { label: "Modelvalidering", prog: "10%" },
+    { label: "Skrivefase", prog: "5%" }
+];
+
+const citations = [
+    "Gabaix, X. & Maggiori, M. (2015). International Liquidity and Exchange Rate Dynamics. QJE.",
+    "Rey, H. (2015). Dilemma not Trilemma: The Global Financial Cycle and Monetary Policy Independence. NBER.",
+    "Miranda-Agrippino, S. & Rey, H. (2020). U.S. Monetary Policy and the Global Financial Cycle. RES.",
+    "Bruno, V. & Shin, H. S. (2015). Cross-Border Banking and Global Liquidity. RES."
+];
+
+const tools = [
+    { tool: "Stata", packages: ["reghdfe", "ivreg2", "gmm", "estout"], icon: "fa-layer-group", color: "text-blue-400" },
+    { tool: "Python", packages: ["pandas", "numpy", "scipy", "matplotlib"], icon: "fa-brands fa-python", color: "text-yellow-400" },
+    { tool: "LaTeX", packages: ["tikz", "beamer", "biblatex", "pgfplots"], icon: "fa-file-code", color: "text-green-400" },
+    { tool: "DevOps", packages: ["git", "github-actions", "docker", "duckdb"], icon: "fa-terminal", color: "text-slate-400" }
+];
+
+const changelog = [
+    { date: "Feb 2025", title: "Automatisering af FX-data", desc: "Implementeret en fuldautomatisk pipeline til hentning af ECB valutakurser via API." },
+    { date: "Jan 2025", title: "Mastering DuckDB", desc: "Migrering af store datasæt fra CSV til DuckDB/Parquet format for 50x hurtigere I/O." },
+    { date: "Dec 2024", title: "GMM Estimering", desc: "Succesfuld replikation af Gertler & Karadi (2015) instrumenter i Stata." }
+];
+
+const curriculum = [
+    { course: "Advanced Macroeconomics", ects: "7.5", desc: "DSGE modeller, real business cycles & New Keynesian theory." },
+    { course: "Econometrics II", ects: "7.5", desc: "Instrument variables, GMM, Time Series Analysis & asymptotic theory." },
+    { course: "Mechanism Design", ects: "7.5", desc: "Auktionsteori, contract theory & matching markets." },
+    { course: "Corporate Finance", ects: "7.5", desc: "Capital structure, valuation & financial options." }
+];
+---
+
+<Layout title="Forskningsteamet | Anton Ebsen" description="Forskningsteamet bag projekterne." currentPath="/team">
+    <main class="bg-slate-950 min-h-screen text-slate-200 pb-24">
+        
+        {/* Hero */}
+        <div class="relative min-h-[50vh] flex items-center justify-center overflow-hidden border-b border-white/5">
+             <div class="absolute inset-0 bg-slate-950">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-slate-950/50 to-slate-950"></div>
+             </div>
+             
+             <div class="container mx-auto px-4 relative z-10 text-center">
+                 <div class="animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                    <h1 class="text-4xl md:text-6xl font-serif font-medium text-white mb-6 tracking-tight">
+                        Forskningsteamet
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-400 font-serif italic max-w-2xl mx-auto leading-relaxed">
+                        Et samarbejde om at fremme forståelsen af makroøkonomiske dynamikker gennem rigoristisk dataanalyse og økonomisk teori.
+                    </p>
+                 </div>
+             </div>
+        </div>
+
+        {/* Team Stats */}
+        <section class="container mx-auto max-w-5xl px-4 py-16">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {stats.map(stat => (
+                    <div class="bg-white/5 border border-white/10 p-8 rounded-2xl text-center hover:border-blue-500/30 transition-colors group">
+                        <i class={`fa-solid ${stat.icon} text-2xl text-slate-500 mb-4 group-hover:text-blue-400 transition-colors`}></i>
+                        <h3 class="text-3xl font-bold text-white mb-2 font-serif">{stat.value}</h3>
+                        <p class="text-xs uppercase tracking-widest text-slate-500 font-bold">{stat.label}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        {/* The Team */}
+        <section class="container mx-auto max-w-4xl px-4 py-16 border-t border-white/5">
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Holdet</h2>
+             <CollaboratorSpotlight client:visible collaborators={team} label="" />
+        </section>
+
+        {/* Timeline */}
+        <section class="container mx-auto max-w-3xl px-4 py-16 relative">
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Samarbejdshistorik</h2>
+            
+            <div class="absolute left-1/2 top-32 bottom-0 w-px bg-white/10 -translate-x-1/2"></div>
+            
+            <div class="space-y-24">
+                {timeline.map((item, i) => (
+                    <div class={`relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                        
+                        {/* Empty Space for Desktop */}
+                        <div class="hidden md:block md:w-5/12"></div>
+                        
+                        {/* Center Dot */}
+                        <div class="absolute left-4 md:left-1/2 md:-translate-x-1/2 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700 z-10 mt-1.5 md:mt-0"></div>
+                        
+                        {/* Content */}
+                        <div class={`w-full pl-12 md:pl-0 md:w-5/12 ${i % 2 === 0 ? 'md:text-right' : 'md:text-left'} relative`}>
+                            <span class="text-3xl md:text-5xl font-bold text-white/5 absolute -top-6 md:-top-8 left-12 md:left-0 md:right-0 pointer-events-none select-none font-serif">{item.year}</span>
+                            <div class="relative z-10">
+                                <h3 class="text-lg font-bold text-white mb-2">{item.title}</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        {/* 1. Methodology Workflow */}
+        <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Metodologi & Workflow</h2>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                 {/* Connecting Line (Desktop) */}
+                 <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent -z-10"></div>
+                 
+                 {methodology.map(s => (
+                     <div class="bg-slate-900 border border-white/10 p-8 rounded-2xl relative group hover:-translate-y-2 transition-transform duration-300">
+                         <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center border border-white/10 mb-6 group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-colors">
+                             <i class={`fa-solid ${s.icon} text-slate-400 group-hover:text-blue-400`}></i>
+                         </div>
+                         <h3 class="text-xl font-bold text-white mb-2">{s.title}</h3>
+                         <p class="text-slate-400 text-sm leading-relaxed">{s.desc}</p>
+                         <span class="absolute top-4 right-6 text-4xl font-black text-white/5">{s.step}</span>
+                     </div>
+                 ))}
+             </div>
+        </section>
+
+        {/* 2. Thesis Tracker */}
+        <section class="container mx-auto max-w-4xl px-4 py-16">
+            <div class="bg-gradient-to-br from-blue-900/10 to-slate-900 border border-blue-500/20 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px]"></div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                         <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2">
+                            <i class="fa-solid fa-satellite-dish animate-pulse"></i> Speciale-Tracker
+                        </h2>
+                        <h3 class="text-3xl font-serif text-white mt-2">Global Financial Cycles</h3>
+                        <p class="text-slate-400 text-sm mt-1">Forventet aflevering: Sommer 2025</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-4xl font-bold text-white tabular-nums">35%</span>
+                        <span class="block text-xs uppercase tracking-widest text-slate-500">Færdiggjort</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    {thesis_progress.map(t => (
+                        <div>
+                            <div class="flex justify-between text-xs uppercase font-bold text-slate-500 mb-1">
+                                <span>{t.label}</span>
+                                <span>{t.prog}</span>
+                            </div>
+                            <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-500 rounded-full" style={`width: ${t.prog}`}></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* 3. Data Scale & Research Radar */}
+        <section class="bg-white/5 py-24 border-y border-white/5">
+             <div class="container mx-auto max-w-6xl px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    
+                    {/* Left: Big Numbers */}
+                    <div>
+                        <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Datagrundlaget</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-center md:text-left">
+                            <div>
+                                <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">20M+</span>
+                                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Observationer</span>
+                                <p class="text-slate-400 text-xs mt-2">Højfrekvente finansielle data fra Bloomberg.</p>
+                            </div>
+                            <div>
+                                <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">150+</span>
+                                <span class="text-xs font-bold text-purple-400 uppercase tracking-widest">Variabler</span>
+                                <p class="text-slate-400 text-xs mt-2">Makroøkonomiske indikatorer på tværs af 30+ lande.</p>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">40GB</span>
+                                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Rådata</span>
+                                <p class="text-slate-400 text-xs mt-2">Processeret og struktureret i SQL-databaser.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right: Research Radar */}
+                    <div class="bg-slate-900/50 border border-white/5 p-8 rounded-3xl relative overflow-hidden group hover:border-blue-500/30 transition-colors">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[40px] group-hover:bg-blue-500/20 transition-colors"></div>
+                        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-radar text-blue-400"></i> Kompetence-Profil
+                        </h3>
+                        <ResearchRadar client:visible />
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        {/* 4. The Library (Citations) */}
+        <section class="container mx-auto max-w-4xl px-4 py-16">
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Vidensbanken</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {citations.map(cite => (
+                    <div class="bg-slate-900 border border-white/5 p-4 rounded-lg flex items-start gap-3 hover:border-white/20 transition-colors">
+                        <i class="fa-solid fa-quote-left text-slate-600 mt-1"></i>
+                        <p class="text-sm text-slate-300 font-serif italic">{cite}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        {/* 5. Visual Abstracts (Gallery) */}
+        <section class="container mx-auto max-w-6xl px-4 py-16 mb-16">
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Galleri</h2>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                 <div class="aspect-square bg-slate-800 rounded-2xl overflow-hidden relative group">
+                     {/* Placeholder or real images if available */}
+                     <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
+                     <img src="/assets/projects/exchange-rate-dynamics/hero.png" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                 </div>
+                  <div class="aspect-square bg-slate-800 rounded-2xl overflow-hidden relative group md:col-span-2">
+                     <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
+                     <img src="/assets/projects/ecb-taylor-rules/hero.png" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                 </div>
+             </div>
+        </section>
+
+        {/* 6. Stack Deep Dive (Detailed Toolkit) */}
+        <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Værktøjskassen 2.0</h2>
+             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                 {tools.map(t => (
+                     <div class="bg-slate-900/50 border border-white/5 p-6 rounded-xl hover:border-white/10 transition-colors">
+                         <div class="flex items-center gap-3 mb-4">
+                             <i class={`fa-solid ${t.icon} text-xl ${t.color}`}></i>
+                             <h3 class="font-bold text-white">{t.tool}</h3>
+                         </div>
+                         <div class="flex flex-wrap gap-2">
+                             {t.packages.map(p => (
+                                 <span class="px-2 py-1 bg-white/5 rounded text-[10px] uppercase tracking-wide text-slate-400 border border-white/5">{p}</span>
+                             ))}
+                         </div>
+                     </div>
+                 ))}
+             </div>
+        </section>
+
+        {/* 7. Open Science & Network */}
+        <section class="container mx-auto max-w-4xl px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Open Science */}
+            <div class="bg-gradient-to-br from-emerald-900/20 to-slate-900 border border-emerald-500/20 p-8 rounded-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[40px] group-hover:bg-emerald-500/20 transition-colors"></div>
+                <h3 class="text-xl font-bold text-emerald-400 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-lock-open"></i> Open Science Pledge
+                </h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Vi tror på gennemsigtighed. Al data-rensning er scriptet, og vi stræber efter fuld reproducerbarhed gennem offentlige replikations-pakker ved hver større udgivelse.
+                </p>
+                <div class="flex gap-4">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                        <i class="fa-solid fa-check text-emerald-500"></i> Scripted Cleaning
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                        <i class="fa-solid fa-check text-emerald-500"></i> Version Control
+                    </div>
+                </div>
+            </div>
+
+            {/* Network */}
+            <div class="bg-slate-900 border border-white/10 p-8 rounded-2xl">
+                 <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-network-wired text-slate-500"></i> Netværk & Affiliering
+                </h3>
+                
+                <div class="space-y-8">
+                    {/* Institutions */}
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4">
+                             <div class="w-8 h-8 rounded-full bg-red-900/20 border border-red-500/30 flex items-center justify-center shrink-0">
+                                 <i class="fa-solid fa-building-columns text-red-500 text-xs"></i>
+                             </div>
+                             <div>
+                                 <h4 class="font-bold text-slate-200 text-sm">Københavns Universitet</h4>
+                                 <p class="text-xs text-slate-500">Økonomisk Institut (ØI)</p>
+                             </div>
+                        </li>
+
+                    </ul>
+
+                    {/* Supervisors */}
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-4 border-b border-white/10 pb-2">Vejledning</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                     <i class="fa-solid fa-user-tie text-slate-400 text-xs"></i>
+                                </div>
+                                <div>
+                                    <a href="https://www.econ.ku.dk/ansatte/vip/?pure=da/persons/280616" target="_blank" class="font-bold text-slate-200 text-sm hover:text-blue-400 transition-colors">Michael Bergman</a>
+                                    <p class="text-xs text-slate-500">Lektor. Vejleder på ECB Taylor Rules.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                     <i class="fa-solid fa-user-tie text-slate-400 text-xs"></i>
+                                </div>
+                                <div>
+                                    <a href="https://www.econ.ku.dk/ansatte/vip/?pure=da/persons/296313" target="_blank" class="font-bold text-slate-200 text-sm hover:text-blue-400 transition-colors">Andreas Bjerre-Nielsen</a>
+                                    <p class="text-xs text-slate-500">Lektor. Vejleder på AI & Social Data Science.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {/* 8. Research Changelog */}
+        <section class="container mx-auto max-w-3xl px-4 py-16 border-t border-white/5">
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Logbog</h2>
+             <div class="space-y-6">
+                 {changelog.map(l => (
+                     <div class="flex gap-6 items-start group">
+                         <div class="w-24 text-right pt-1 shrink-0">
+                             <span class="text-xs font-bold text-slate-500 group-hover:text-slate-300 transition-colors">{l.date}</span>
+                         </div>
+                         <div class="w-px h-12 bg-white/10 group-hover:bg-blue-500/50 transition-colors"></div>
+                         <div class="pb-6">
+                             <h4 class="text-sm font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">{l.title}</h4>
+                             <p class="text-xs text-slate-400 max-w-md">{l.desc}</p>
+                         </div>
+                     </div>
+                 ))}
+             </div>
+        </section>
+        {/* 9. The Code Snippet */}
+        <section class="container mx-auto max-w-4xl px-4 py-16">
+             <div class="bg-[#0d1117] border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative group">
+                 {/* Header */}
+                 <div class="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
+                     <div class="flex gap-2">
+                         <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                         <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                         <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                     </div>
+                     <span class="text-xs font-mono text-slate-500">pipeline.py</span>
+                 </div>
+                 {/* Code Content */}
+                 <div class="p-6 overflow-x-auto">
+                     <pre class="font-mono text-sm leading-relaxed">
+<span class="text-purple-400">import</span> pandas <span class="text-purple-400">as</span> pd
+<span class="text-purple-400">import</span> statsmodels.api <span class="text-purple-400">as</span> sm
+
+<span class="text-slate-500"># 1. Load and Clean High-Frequency Data</span>
+df = (
+    pd.<span class="text-blue-400">read_parquet</span>(<span class="text-green-400">"data/raw/ecb_ticks.parquet"</span>)
+    .<span class="text-blue-400">query</span>(<span class="text-green-400">"currency == 'USD/EUR'"</span>)
+    .<span class="text-blue-400">resample</span>(<span class="text-green-400">"1min"</span>)
+    .<span class="text-blue-400">agg</span>({'{'}<span class="text-green-400">"price"</span>: <span class="text-green-400">"ohlc"</span>, <span class="text-green-400">"vol"</span>: <span class="text-green-400">"sum"</span>{'}'})
+    .<span class="text-blue-400">dropna</span>()
+)
+
+<span class="text-slate-500"># 2. Local Projection (Jordà, 2005)</span>
+model = sm.<span class="text-yellow-400">OLS</span>(df[<span class="text-green-400">"future_return"</span>], df[[<span class="text-green-400">"shock"</span>, <span class="text-green-400">"controls"</span>]])
+results = model.<span class="text-blue-400">fit</span>(cov_type=<span class="text-green-400">'HAC'</span>, cov_kwds={'{'}<span class="text-green-400">'maxlags'</span>: <span class="text-orange-400">12</span>{'}'})
+<span class="text-purple-400">print</span>(results.<span class="text-blue-400">summary</span>())
+                     </pre>
+                 </div>
+                 {/* Label */}
+                 <div class="absolute top-16 right-6 text-right">
+                     <span class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Koden bag tallene</span>
+                     <span class="text-xs text-slate-600">Reproducerbart & Robust</span>
+                 </div>
+             </div>
+        </section>
+
+        {/* 10. The Curriculum */}
+        <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Faglig Profil (M.Sc. Econ)</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 {curriculum.map(c => (
+                     <div class="bg-slate-900/50 border border-white/5 p-6 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all group">
+                         <div class="flex justify-between items-start mb-4">
+                             <div class="bg-blue-900/20 text-blue-400 text-[10px] font-bold px-2 py-1 rounded border border-blue-500/20">{c.ects} ECTS</div>
+                             <i class="fa-solid fa-graduation-cap text-slate-600 group-hover:text-blue-500 transition-colors"></i>
+                         </div>
+                         <h3 class="font-bold text-white text-sm mb-2">{c.course}</h3>
+                         <p class="text-xs text-slate-400 leading-relaxed">{c.desc}</p>
+                     </div>
+                 ))}
+             </div>
+        </section>
+    </main>
+</Layout>

@@ -1,0 +1,113 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Does GenAI Help Those Who Need It Most?",
+  subtitle: "Et forskningsforslag om de heterogene effekter af generativ AI på gymnasieelevers læring.",
+  executiveSummary: "Generativ AI vinder hastigt frem i undervisningssektoren, men gavner det alle elever lige meget? Dette projekt, udarbejdet som et forskningsforslag i januar 2026, foreslår en undersøgelse af de heterogene effekter af GenAI-brug på tværs af socioøkonomiske skel. Ved at kombinere spørgeskemadata med administrative karakterdata fra danske gymnasier, ønsker vi at belyse, om AI fungerer som en 'udligner' eller om det forstærker eksisterende uligheder.",
+  researchQuestions: [
+    "Hvilke heterogene effekter har brugen af GenAI på elevers akademiske resultater?",
+    "Reducerer eller forstærker introduktionen af GenAI i undervisningen de eksisterende socioøkonomiske uligheder?",
+    "Bruger elever fra forskellige baggrunde GenAI i forskelligt omfang, til forskellige fag og med forskellige formål?"
+  ],
+  methodology: {
+    model: "Causal Forest (Machine Learning Inference)",
+    strategy: "Estimering af betingede gennemsnitlige behandlingseffekter (CATE) for at fange ikke-lineær heterogenitet.",
+    data: "Spørgeskemadata + Administrative karakterdata (Før/Efter GenAI) for ~800 elever.",
+    estimation: "Difference-in-Differences setup inden for en Causal Forest ramme."
+  },
+  keyFindings: [
+    "Forskningsforslag: Dette projekt er et forskningsdesign uden empiriske resultater endnu.",
+    "Hypotese: Vi forventer, at effekten af AI varierer betydeligt afhængigt af elevens baggrund og brugsmønstre.",
+    "Fokus: At skelne mellem 'højkvalitets-brug' (tutor-lignende) og 'lavkvalitets-brug' (genveje) er centralt.",
+    "Etik: Projektet adresserer fairness og de langsigtede konsekvenser af AI i uddannelsessystemet."
+  ],
+  secondaryAnalysis: {
+    title: "Causal Forest Tilgangen",
+    description: "I modsætning til traditionelle regressionsmodeller tillader en Causal Forest os at estimere effekten for *hver enkelt elev* baseret på deres karakteristika.",
+    items: [
+      "Personlige Estimater: Algoritmen finder selv de variable (fx forældres uddannelse), der driver forskelle i effekt.",
+      "Datadrevne Undergrupper: Vi undgår at definere grupper på forhånd og lader data tale.",
+      "Robusthed: Brug af 'Honest Trees' sikrer valid inferens uden overfitting."
+    ]
+  },
+  policyRelevance: [
+    "Evidensbaseret regulering: Skal skoler omfavne eller begrænse GenAI?",
+    "Lighed i uddannelse: Identificering af grupper, der har brug for målrettet støtte til 'AI Literacy'.",
+    "Fremtidens kompetencer: Forståelse af, hvordan tidlig adoption påvirker humankapital."
+  ],
+  limitations: [
+    "Selektion: GenAI-brug er frivilligt, ikke tildelt tilfældigt. Vi stoler på 'selection on observables'.",
+    "Selvrapportering: Risiko for underrapportering af snyd i spørgeskemaer.",
+    "Kort sigt: Vi måler primært effekter på karakterer, ikke langsigtet læring."
+  ],
+  dataTools: {
+    sources: "Primær dataindsamling (Spørgeskema), Administrative systemer (Lectio/Ludus).",
+    software: "LaTeX (Afrapportering)."
+  },
+  highlights: [
+    { label: "Status", value: "Forslag" },
+    { label: "Karakter", value: "10" },
+    { label: "Indleveret", value: "Jan 2026" }
+  ],
+  // Removed interactive elements as requested
+  videoUrl: "", 
+  techStack: [
+      { name: "LaTeX", icon: "fa-solid fa-file-tex" }
+  ],
+  timeline: [
+      { date: "Jan 2026", title: "Indlevering", description: "Forskningsforslaget blev indleveret og bedømt." }
+  ],
+  dataLinks: [
+      { label: "Kursusside", url: "https://kurser.ku.dk/course/a%C3%98kk08446u/", icon: "fa-solid fa-school" }
+  ],
+  // Removed interactiveChart and knowledgeGraph as requested, keeping basic citation
+  citation: {
+    text: "Jørgensen, Anton M. E., Chen, Sheng Ye Michael & Nielsen, Jonas Amasa Skov (2026). Does GenAI Help Those Who Need It Most? Research Proposal, University of Copenhagen.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metodologi",
+    findings: "Hypoteser & Forventninger",
+    relevance: "Relevans",
+    dataTools: "Data & Værktøjer",
+    download: "Dokumenter",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Forskningsspørgsmål",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Dybdegående",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Teknologi",
+    timeline: "Tidslinje",
+    liveData: "Interaktiv Analyse",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { 
+        name: "Sheng Ye Michael Chen", 
+        role: "Medforfatter", 
+        image: "/assets/collaborators/sheng.jpg",
+        description: "Bidrog til survey-design og ML-implementeringsstrategi.",
+        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    },
+    { 
+        name: "Jonas Amasa Skov Nielsen", 
+        role: "Medforfatter", 
+        image: "/assets/collaborators/jonas.jpg",
+        description: "Bidrog til den teoretiske ramme og litteraturreview inden for uddannelsessociologi.",
+        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+    }
+  ],
+  bibliography: [
+    "Thomas, A. (2024). AI-assisted tutoring and student performance. Journal of Educational Psychology (Forthcoming).",
+    "Wager, S., & Athey, S. (2018). Estimation and Inference of Heterogeneous Treatment Effects using Random Forests. Journal of the American Statistical Association.",
+    "Knittel, M., & Stolper, S. (2024). Functional Heterogeneity and Causal Inference.",
+    "van de Mortel, T. F. (2008). Faking it: social desirability response bias in self-report research. Australian Journal of Advanced Nursing."
+  ]
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

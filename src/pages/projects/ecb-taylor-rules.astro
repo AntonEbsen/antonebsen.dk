@@ -131,8 +131,12 @@ foreach c within "DE" "FR" "IT" "ES" {
       { term: "ZLB", definition: "Zero Lower Bound: A macroeconomic situation where nominal interest rates are at or near zero." }
   ],
   citation: {
-    text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, Københavns Universitet. JEL: E52, E58, F45.",
+    text: "Jørgensen, Anton M. E., Chen, Sheng Ye Michael & Nielsen, Jonas Amasa Skov (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, Københavns Universitet. JEL: E52, E58, F45.",
     pdfUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
+  },
+  popScience: {
+    title: "Reagerer ECB ens på op- og nedture?",
+    text: "Man skulle tro, at centralbanken træder lige hårdt på bremsen, når det går for stærkt, som den træder på speederen, når det går for langsomt. Men vores analyse tyder på noget andet: ECB er mere aggressiv i sin kamp mod inflation end i sine forsøg på at sætte gang i økonomien under kriser. Denne 'asymmetri' har store konsekvenser for medlemslandene – og for os i Danmark, der følger med på sidelinjen."
   },
   ui: {
     methodology: "Metodologi",
@@ -152,7 +156,29 @@ foreach c within "DE" "FR" "IT" "ES" {
     timeline: "Projekt-tidslinje",
     liveData: "Interaktiv Analyse (GMM)",
     openScience: "Open Science"
-  }
+  },
+  collaborators: [
+    { 
+        name: "Sheng Ye Michael Chen", 
+        role: "Studiegruppemedlem", 
+        image: "/assets/collaborators/sheng.jpg",
+        description: "Nøgleperson bag GMM-estimeringsstrategien og Stata-implementeringen af de kontrafaktiske simuleringer.",
+        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    },
+    { 
+        name: "Jonas Amasa Skov Nielsen", 
+        role: "Studiegruppemedlem", 
+        image: "/assets/collaborators/jonas.jpg",
+        description: "Bidrog til den teoretiske ramme og analysen af strukturelle brud i Eurozonens pengepolitiske transmission.",
+        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+    }
+  ],
+  bibliography: [
+    "Taylor, J. B. (1993). Discretion versus policy rules in practice. Carnegie-Rochester Conference Series on Public Policy, 39, 195–214.",
+    "Clarida, R., Gali, J., & Gertler, M. (1998). Monetary policy rules in practice: Some international evidence. European Economic Review, 42(6), 1033–1067.",
+    "Orphanides, A. (2001). Monetary Policy Rules Based on Real-Time Data. American Economic Review, 91(4), 964–985.",
+    "Sauer, S., & Sturm, J. E. (2007). Using Taylor rules to understand ECB monetary policy. German Economic Review, 8(3), 375–398."
+  ]
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent} />

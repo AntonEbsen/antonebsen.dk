@@ -1,0 +1,96 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Globaliseringens påvirkning på austerity-politikken",
+  subtitle: "En analyse af austerity som politisk og kommunikativt instrument i en globaliseret verden (2020).",
+  executiveSummary: "Dette projekt analyserer, hvordan økonomisk globalisering og international interdependens har bidraget til, at austerity (finanspolitisk konsolidering) er blevet et centralt politisk redskab i krisetider. Projektet kombinerer økonomisk teori, historisk kildeanalyse og empirisk illustration for at belyse, hvorfor sparepolitik både legitimeres og kritiseres på tværs af historiske perioder og økonomiske skoler.",
+  researchQuestions: [
+    "Hvordan påvirker globalisering det politiske pres for finanspolitisk disciplin?",
+    "Hvorfor legitimeres austerity forskelligt i krigstid kontra moderne gældskriser?",
+    "Hvad er konsekvenserne af 'The Age of Austerity' for fremtidens økonomiske politik?"
+  ],
+  methodology: {
+    model: "Komparativ Analyse (Teori & Historie)",
+    strategy: "Sammenligning af Keynesianske og Neoliberale perspektiver på krisehåndtering.",
+    data: "Historiske cases (Australien 1942 vs. Moderne Gældskriser) og makroøkonomiske nøgletal.",
+    estimation: "Kvalitativ analyse af politisk kommunikation og markedsreaktioner."
+  },
+  keyFindings: [
+    "Disciplinerende Pres: Øget kapitalmobilitet gør stater følsomme over for markedsreaktioner, hvilket skaber incitament til at signalere 'troværdighed' gennem austerity.",
+    "Skiftende Legitimering: I krigstid legitimeres sparepolitik som 'national overlevelse'; i dag som 'markedsdisciplin' og 'finansiel stabilitet'.",
+    "Teoretisk Splittelse: Keynesianere advarer mod negative multiplikatoreffekter, mens nyliberalister fremhæver tillidseffekter og lavere risikopræmier.",
+    "Kontekstafhængighed: Der findes ingen 'one-size-fits-all'. Effekten afhænger af konjunkturer, gældssammensætning og institutioner."
+  ],
+  secondaryAnalysis: {
+    title: "Fremadskuende Perspektiv",
+    description: "Projektet argumenterer for, at 'The Age of Austerity' næppe forsvinder, men vil blive suppleret af et bredere policy-mix.",
+    items: [
+      "Nye Instrumenter: Målrettede kapitalskatter, gældsomstrukturering og brug af inflationskanaler.",
+      "Balancegang: Målet er at kombinere finansiel holdbarhed med social og makroøkonomisk stabilitet.",
+      "Relevans i dag: Debatten rammer direkte ned i diskussioner om EU's finanspolitiske rammer og globaliseringens konsekvenser."
+    ]
+  },
+  policyRelevance: [
+    "EU's Stabilitetspagt: Hvordan balancerer vi disciplin med behovet for investeringer?",
+    "Statsgæld: Forståelsen af gældsbæredygtighed i en verden med frie kapitalbevægelser.",
+    "Politisk Kommunikation: Hvordan økonomiske nødvendigheder oversættes til politiske budskaber."
+  ],
+  limitations: [
+    "Opgavetype: Projektet er en tværfaglig HHX-opgave (SRP-lignende) og ikke et økonometrisk studium.",
+    "Data: Fokus er på teoretisk diskussion og historiske paralleller snarere end kausal inferens.",
+    "Periode: Skrevet i 2020, før COVID-19 inflationsbølgen ændrede det pengepolitiske landskab markant."
+  ],
+  dataTools: {
+    sources: "Økonomisk teori (Keynes, Hayek, Mark Blyth), Historiske kilder.",
+    software: "Word / Excel (Deskriptiv statistik)."
+  },
+  highlights: [
+    { label: "År", value: "2020" },
+    { label: "Niveau", value: "HHX" },
+    { label: "Karakter", value: "12" },
+    { label: "Status", value: "Afsluttet" }
+  ],
+  contextNote: "Lowkey: Dette projekt er 'Makro-Anton'. Skrevet i 2020, før jeg startede på universitetet, men det viser de tidlige spirer til min interesse for spændingsfeltet mellem markedsdisciplin, politik og makroøkonomisk stabilitet.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Økonomi A", icon: "fa-solid fa-globe" },
+      { name: "Historie A", icon: "fa-solid fa-landmark" }
+  ],
+  timeline: [
+      { date: "2020", title: "Indlevering", description: "Projektet blev udarbejdet og forsvaret som del af HHX-uddannelsen." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Jørgensen, Anton M. E. (2020). Globaliseringens påvirkning på austerity-politikken. HHX Projekt, Handelsgymnasiet Lolland-Falster.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metode & Teori",
+    findings: "Centrale Pointer",
+    relevance: "Perspektivering",
+    dataTools: "Kilder",
+    download: "Download projekt",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Problemstilling",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Fremtiden",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Fagområder",
+    timeline: "Tidslinje",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [],
+  bibliography: [
+    "Blyth, M. (2013). Austerity: The History of a Dangerous Idea. Oxford University Press.",
+    "Keynes, J. M. (1936). The General Theory of Employment, Interest and Money.",
+    "Alesina, A., & Ardagna, S. (2010). Large Changes in Fiscal Policy: Taxes versus Spending."
+  ]
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

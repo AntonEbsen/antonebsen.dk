@@ -1,0 +1,12 @@
+---
+import LiteratureStream from '@components/project/LiteratureStream.astro';
+const literatureData = {
+    currentRead: { title: "Monetary Policy in Times of Crisis", author: "Schnabel et al. (2024)", type: "Paper", progress: 65 },
+    stack: [
+        { title: "The Fiscal Theory of the Price Level", author: "Cochrane (2023)", status: "To Read" as const },
+        { title: "Greedflation: Evidence form US Micro Data", author: "Weber (2023)", status: "Processed" as const }
+    ]
+};
+---
+
+<LiteratureStream {...literatureData} />

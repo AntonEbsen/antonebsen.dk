@@ -1,0 +1,11 @@
+---
+import ThesisDashboard from '@components/project/ThesisDashboard.astro';
+const dashboardData = {
+    deadline: "2027-01-04",
+    pageCount: 12,
+    targetPages: 120,
+    coffeeCount: 42
+};
+---
+
+<ThesisDashboard {...dashboardData} />

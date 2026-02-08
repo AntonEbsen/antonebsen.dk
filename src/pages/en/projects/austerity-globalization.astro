@@ -1,0 +1,96 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Globalization's Impact on Austerity Policy",
+  subtitle: "Analyzing austerity as a political and communicative instrument in a globalized world (2020).",
+  executiveSummary: "This project analyzes how economic globalization and international interdependence have contributed to making austerity (fiscal consolidation) a central political tool during crises. Combining economic theory, historical source analysis, and empirical illustration, the project illuminates why austerity policies are both legitimized and criticized across different historical periods and economic schools of thought.",
+  researchQuestions: [
+    "How does globalization influence political pressure for fiscal discipline?",
+    "Why is austerity legitimized differently in wartime versus modern debt crises?",
+    "What are the consequences of 'The Age of Austerity' for future economic policy?"
+  ],
+  methodology: {
+    model: "Comparative Analysis (Theory & History)",
+    strategy: "Contrasting Keynesian and Neoliberal perspectives on crisis management.",
+    data: "Historical cases (Australia 1942 vs. Modern Debt Crises) and macroeconomic indicators.",
+    estimation: "Qualitative analysis of political communication and market reactions."
+  },
+  keyFindings: [
+    "Disciplining Pressure: Increased capital mobility makes states sensitive to market reactions, creating incentives to signal 'credibility' through austerity.",
+    "Shifting Legitimacy: In wartime, austerity is legitimized as 'national survival'; today, as 'market discipline' and 'financial stability'.",
+    "Theoretical Split: Keynesians warn of negative multiplier effects, while Neoliberals emphasize confidence effects and lower risk premia.",
+    "Context Dependency: There is no 'one-size-fits-all'. The effect depends on the business cycle, debt composition, and institutions."
+  ],
+  secondaryAnalysis: {
+    title: "Forward-Looking Perspective",
+    description: "The project argues that 'The Age of Austerity' is unlikely to disappear but will be supplemented by a broader policy mix.",
+    items: [
+      "New Instruments: Targeted capital taxes, debt restructuring, and inflation channels.",
+      "Balancing Act: The goal is to combine fiscal sustainability with social and macroeconomic stability.",
+      "Current Relevance: The debate hits directly into discussions on EU fiscal frameworks and the consequences of globalization."
+    ]
+  },
+  policyRelevance: [
+    "EU Stability Pact: How do we balance discipline with the need for investment?",
+    "Sovereign Debt: Understanding debt sustainability in a world of free capital flows.",
+    "Political Communication: How economic necessities are translated into political messages."
+  ],
+  limitations: [
+    "Scope: This is an interdisciplinary high school project (pre-university) and not an econometric study.",
+    "Data: Focus is on theoretical discussion and historical parallels rather than causal inference.",
+    "Period: Written in 2020, before the COVID-19 inflation wave significantly altered the monetary landscape."
+  ],
+  dataTools: {
+    sources: "Economic Theory (Keynes, Hayek, Mark Blyth), Historical Sources.",
+    software: "Word / Excel (Descriptive Statistics)."
+  },
+  highlights: [
+    { label: "Year", value: "2020" },
+    { label: "Level", value: "HHX" },
+    { label: "Grade", value: "12" },
+    { label: "Status", value: "Completed" }
+  ],
+  contextNote: "Lowkey: This project is 'Macro-Anton'. Written in 2020 before starting university, it shows the early seeds of my interest in the tension between market discipline, politics, and macroeconomic stability.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Economics A", icon: "fa-solid fa-globe" },
+      { name: "History A", icon: "fa-solid fa-landmark" }
+  ],
+  timeline: [
+      { date: "2020", title: "Submission", description: "Project submitted and defended as part of the HHX curriculum." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Jørgensen, Anton M. E. (2020). Globalization's Impact on Austerity Policy. HHX Project, Handelsgymnasiet Lolland-Falster.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Method & Theory",
+    findings: "Central Points",
+    relevance: "Perspectives",
+    dataTools: "Sources",
+    download: "Download Project",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    secondaryAnalysis: "The Future",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Subjects",
+    timeline: "Timeline",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [],
+  bibliography: [
+    "Blyth, M. (2013). Austerity: The History of a Dangerous Idea. Oxford University Press.",
+    "Keynes, J. M. (1936). The General Theory of Employment, Interest and Money.",
+    "Alesina, A., & Ardagna, S. (2010). Large Changes in Fiscal Policy: Taxes versus Spending."
+  ]
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

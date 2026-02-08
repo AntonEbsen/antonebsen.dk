@@ -1,0 +1,86 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Demografisk Analyse (Titel TBD)",
+  subtitle: "Kommende projekt i faget Demografi.",
+  executiveSummary: "Dette projekt er under udarbejdelse. Det vil omhandle en demografisk analyse baseret på data og metoder fra faget Demografi. Nærmere detaljer om emne, problemstilling og resultater vil blive tilføjet, når projektet er defineret.",
+  researchQuestions: [
+    "TBD: Problemstilling under udarbejdelse.",
+    "TBD: Hvilke demografiske tendenser undersøges?",
+    "TBD: Hvilke data anvendes?"
+  ],
+  methodology: {
+    model: "Demografisk Analyse",
+    strategy: "Kvantitativ analyse af befolkningsdata.",
+    data: "Registerdata / Statistikbanken (TBD).",
+    estimation: "Fremskrivninger / Komparativ analyse (TBD)."
+  },
+  keyFindings: [
+    "Dette projekt er endnu ikke påbegyndt.",
+    "Resultater vil blive præsenteret her.",
+    "Forventet afslutning: Forår/Sommer 2026."
+  ],
+  secondaryAnalysis: {
+    title: "Foreløbig Status",
+    description: "Projektet er i den indledende fase.",
+    items: [
+      "Emnevalg: Under overvejelse.",
+      "Dataindsamling: Ikke påbegyndt.",
+      "Analyse: Ikke påbegyndt."
+    ]
+  },
+  policyRelevance: [
+    "Relevans for samfundsplanlægning.",
+    "Forståelse af befolkningsudvikling."
+  ],
+  limitations: [
+    "Status: Planlagt projekt."
+  ],
+  dataTools: {
+    sources: "Danmarks Statistik, FN's Befolkningsdivision (TBD).",
+    software: "R / Python / Excel (TBD)."
+  },
+  highlights: [
+    { label: "Fag", value: "Demografi" },
+    { label: "Status", value: "Kommende" }
+  ],
+  contextNote: "Dette er en pladsholder for et kommende projekt i faget Demografi.",
+  videoUrl: "", 
+  techStack: [
+      { name: "Demografi", icon: "fa-solid fa-people-group" },
+      { name: "Data Science", icon: "fa-solid fa-chart-line" }
+  ],
+  timeline: [
+      { date: "2026", title: "Planlagt", description: "Projektstart." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Ebsen, Anton. Demografisk Analyse (Titel TBD). (Kommende).",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metode & Teori",
+    findings: "Forventede Resultater",
+    relevance: "Relevans",
+    dataTools: "Kilder",
+    download: "Hent projekt (TBD)",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Foreløbige Spørgsmål",
+    limitations: "Status",
+    secondaryAnalysis: "Status",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Fagområder",
+    timeline: "Tidslinje",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

@@ -1,0 +1,180 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import ThesisDashboard from '@components/project/ThesisDashboard.astro';
+export const prerender = true;
+
+const dashboardData = {
+    deadline: "2027-01-04",
+    pageCount: 12,
+    targetPages: 120,
+    coffeeCount: 42
+};
+
+import LiteratureStream from '@components/project/LiteratureStream.astro';
+const literatureData = {
+    currentRead: { title: "Monetary Policy", author: "Schnabel", type: "Paper", progress: 65 },
+    stack: [ { title: "Fiscal Theory", author: "Cochrane", status: "To Read" as const } ]
+};
+
+import AudioAbstract from '@components/project/AudioAbstract.astro';
+
+const projectContent = {
+    title: "Monetary Policy & Economic Relations",
+    subtitle: "Master's Thesis in Economics (Cand.polit)",
+    executiveSummary: "Dette speciale undersøger transmissionsmekanismen for pengepolitik i en post-COVID verden. Ved at anvende højfrekvente finansielle data og lokal-projektion metoder, isolerer vi effekten af pengepolitiske chok på inflationsforventninger.",
+    researchQuestions: [
+        "Hvordan reagerer inflationsforventninger på pengepolitiske chok?",
+        "Er der asymmetri mellem udbuds- og efterspørgselsdrevet inflation?",
+        "Hvilken rolle spiller kommunikation (Forward Guidance)?"
+    ],
+    methodology: {
+        model: "Local Projections (Jorda, 2005)",
+        strategy: "Højfrekvent Identifikation (HFI)",
+        data: "Euro Area Yield Curves & Swaps",
+        estimation: "OLS med Newey-West Standardfejl"
+    },
+    keyFindings: [
+        "Rentehævelser reducerer langsigtede inflationsforventninger.",
+        "Effekten er stærkere når inflationen er efterspørgselsdrevet.",
+        "ECB's kommunikation har signifikant effekt på de korte renter."
+    ],
+    policyRelevance: [
+        "Resultaterne bidrager til forståelsen af 'State-Dependent' pengepolitik.",
+        "Relevant for kalibrering af DSGE modeller.",
+        "Belyser samspillet mellem finanspolitik og pengepolitik."
+    ],
+    dataTools: {
+        sources: "ECB Statistical Data Warehouse, Bloomberg",
+        software: "Python (Pandas, Statsmodels), Stata"
+    },
+    citation: {
+        text: "Jørgensen, Anton Meier Ebsen, Chen, Sheng Ye Michael & Nielsen, Jonas Amasa Skov (Coming 2027). Monetary Policy Transmission in a Fragmented Euro Area.",
+        pdfUrl: "#"
+    },
+    ui: {
+        methodology: "Forventet Metodologi",
+        findings: "Hypoteser & Forventninger",
+        relevance: "Politisk Perspektiv",
+        dataTools: "Værktøjskasse",
+        download: "Dokumentation",
+        citation: "Fremtidig Citering",
+        execSummary: "Projektoversigt (Pre-Analysis Plan)",
+        researchQuestions: "Foreløbige Forskningsspørgsmål",
+        limitations: "Begrænsninger",
+        secondaryAnalysis: "Sekundær Analyse",
+        gallery: "Koncept-Galleri",
+        codeVault: "Kode-Vault (TBD)",
+        videoAbstract: "Video Logbog",
+        techStack: "Teknologistak",
+        timeline: "Projekt-tidslinje",
+        liveData: "Data Monitor",
+        continuityTitle: "Continuity"
+    },
+    timeline: [
+        { date: "Sept 2026", title: "Projektstart", description: "Officiel startdato. Definition af endelig problemformulering." },
+        { date: "Okt 2026", title: "Data-indsamling", description: "Opbygning af datasæt og rensning af variable." },
+        { date: "Nov 2026", title: "Model-estimering", description: "Gennemførelse af de primære økonometriske analyser." },
+        { date: "Jan 2027", title: "Aflevering", description: "Indlevering af det endelige speciale (ca. 120 sider)." }
+    ],
+    techStack: [
+        { name: "Python", icon: "fa-brands fa-python" },
+        { name: "Stata", icon: "fa-solid fa-table-cells" },
+        { name: "LaTeX", icon: "fa-solid fa-file-tex" },
+        { name: "GitHub", icon: "fa-brands fa-github" }
+    ],
+    highlights: [
+        { label: "Mål", value: "120 Sider" },
+        { label: "Type", value: "Empirisk" },
+        { label: "ECTS", value: "30" }
+    ],
+    collaborators: [
+     {
+        name: "Sheng Ye Michael Chen",
+        role: "Medforfatter & Data Scientist",
+        image: "/assets/collaborators/sheng.jpg",
+        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" }
+     },
+     {
+        name: "Jonas Amasa Skov Nielsen",
+        role: "Medforfatter & Teoretiker",
+        image: "/assets/collaborators/jonas.jpg",
+        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" }
+     }
+  ],
+  codeSnippet: {
+        lang: "latex",
+        title: "Project Template (LaTeX)",
+        code: `\\documentclass[11pt, a4paper]{report}
+\\usepackage[utf8]{inputenc}
+\\usepackage{amsmath, amssymb, amsthm}
+\\usepackage{graphicx}
+\\usepackage{natbib}
+\\usepackage{hyperref}
+
+% --- Custom Macros for Local Projections ---
+\\newcommand{\\hfi}[1]{\\hat{\\beta}^{LP}_{#1}}
+
+\\title{Monetary Policy Transmission in a Fragmented Euro Area}
+\\author{Anton Meier Ebsen Jørgensen}
+\\date{\\today}
+
+\\begin{document}
+\\maketitle
+\\tableofcontents
+
+\\chapter{Introduction}
+This thesis investigates the state-dependent effects of monetary policy...
+
+\\chapter{Methodology}
+We employ the Local Projections method (Jordà, 2005)...
+
+\\bibliographystyle{aer}
+\\bibliography{references}
+\\end{document}`
+    },
+    bibliography: [
+        "Jordà, Ò. (2005). Estimation and Inference of Impulse Responses by Local Projections. American Economic Review, 95(1), 161–182.",
+        "Woodford, M. (2003). Interest and Prices: Foundations of a Theory of Monetary Policy. Princeton University Press.",
+        "Schnabel, I. (2020). The ECB’s Monetary Policy Strategy Review. Speech at the ECB and Its Watchers XXI Conference.",
+        "Ramey, V. A. (2016). Macroeconomic Shocks and Their Propagation. Handbook of Macroeconomics, 2, 71–162."
+    ]
+};
+---
+
+<ProjectDetailPage lang="da" project={projectContent}>
+    {/* --- JOURNAL SECTION (The Custom Slot) --- */}
+    <section class="max-w-4xl mx-auto px-4 mb-32 relative">
+        <div class="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent hidden md:block"></div>
+        
+        {/* Entry 1: Project Initialization */}
+        <div class="mb-16 relative pl-0 md:pl-16 group">
+            <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-accent ring-4 ring-slate-900 hidden md:block group-hover:scale-125 transition-transform"></div>
+            
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">4. Januar 2027</span>
+            <h2 class="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">
+                <span class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500"><i class="fa-solid fa-gauge-high"></i></span>
+                Mission Control
+            </h2>
+            <ThesisDashboard {...dashboardData} />
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <AudioAbstract text="This project investigates the transmission mechanism of monetary policy in a post-COVID world. Specifically, we look at how supply-driven inflation shocks respond differently to interest rate hikes compared to demand-driven shocks." />
+                <LiteratureStream {...literatureData} />
+            </div>
+        </div>
+
+        {/* Entry 2: Research Questions */}
+        <div class="mb-16 relative pl-0 md:pl-16 group">
+             <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-slate-700 ring-4 ring-slate-900 hidden md:block group-hover:bg-accent transition-colors"></div>
+             
+             <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">Start-fase</span>
+             <h2 class="text-xl font-serif font-bold text-white mb-4">Problemformulering</h2>
+             <div class="prose prose-invert prose-sm">
+                 <p class="text-slate-300 leading-relaxed font-serif">
+                     Den endelige problemformulering er under udarbejdelse. Fokus er på at identificere kausale effekter af pengepolitikken gennem højfrekvente data.
+                 </p>
+             </div>
+        </div>
+
+    </section>
+</ProjectDetailPage>

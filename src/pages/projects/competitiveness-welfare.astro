@@ -1,0 +1,95 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Konkurrenceevne og velfærdsmodel",
+  subtitle: "En analyse af forholdet mellem national konkurrenceevne og velfærdsstatens udformning.",
+  executiveSummary: "Dette projekt analyserer forholdet mellem national konkurrenceevne og velfærdsstatens udformning, med fokus på den klassiske spænding mellem økonomisk effektivitet, omkostningsniveau og social beskyttelse. Projektet undersøger, hvorvidt en omfattende velfærdsmodel nødvendigvis svækker et lands konkurrenceevne, eller om bestemte institutionelle udformninger tværtimod kan fungere som et produktivitets- og stabilitetsfremmende element i en globaliseret økonomi.",
+  researchQuestions: [
+    "Hvordan påvirker forskellige velfærdsmodeller landes konkurrenceevne?",
+    "Kan høje skatter og social beskyttelse forenes med økonomisk vækst?",
+    "Hvilke trade-offs eksisterer mellem lighed og effektivitet i en åben økonomi?",
+    "Hvordan kan institutionel kvalitet styrke konkurrenceevnen?"
+  ],
+  methodology: {
+    model: "Komparativ Analyse (Økonomi & Samfund)",
+    strategy: "Sammenligning af velfærdsregimer og deres makroøkonomiske performance.",
+    data: "Makroøkonomiske indikatorer (Produktivitet, Lønomkostninger, Gini-koefficient).",
+    estimation: "Kvalitativ vurdering af institutionelle effekter på arbejdsmarkedet."
+  },
+  keyFindings: [
+    "Mere end løn: Konkurrenceevne afhænger ikke kun af lønomkostninger, men også af produktivitet, humankapital og institutionel stabilitet.",
+    "Velfærd som investering: En veludbygget velfærdsstat kan understøtte arbejdsudbud, reducere usikkerhed og fremme uddannelse.",
+    "Trade-offs: Der er en balancegang mellem kortsigtet omkostningskonkurrence og langsigtet produktivitetsudvikling.",
+    "Ingen universel model: Effekterne afhænger af landespecifikke institutioner og økonomisk struktur."
+  ],
+  secondaryAnalysis: {
+    title: "Fremadskuende Perspektiv",
+    description: "Projektet peger på behovet for komplementaritet mellem konkurrenceevne og social beskyttelse.",
+    items: [
+      "Strukturel Konkurrenceevne: Fokus på innovation og uddannelse frem for ræs mod bunden.",
+      "Social Sammenhængskraft: Økonomisk robusthed kræver legitimitet og social stabilitet.",
+      "Relevans i dag: Debatten er central for forståelsen af velfærdsstatens fremtid i en globaliseret verden."
+    ]
+  },
+  policyRelevance: [
+    "Arbejdsmarkedsreformer: Flexicurity som model for omstillingsevne.",
+    "Globalisering: Hvordan små åbne økonomier navigerer i global konkurrence.",
+    "Skattepolitik: Finansiering af velfærd uden at kvæle vækst."
+  ],
+  limitations: [
+    "Niveau: HHX-projekt med fokus på bred analyse.",
+    "Data: Baseret på aggregerede data og teoretiske modeller.",
+    "Fokus: Primært på den skandinaviske velfærdsmodel kontra angelsaksiske modeller."
+  ],
+  dataTools: {
+    sources: "Økonomisk teori, Velfærdsstatsforskning (Esping-Andersen), Data fra OECD/Eurostat.",
+    software: "Word / Excel."
+  },
+  highlights: [
+    { label: "Niveau", value: "HHX" },
+    { label: "Status", value: "Afsluttet" }
+  ],
+  contextNote: "Dette projekt fungerer som et tidligt analytisk bidrag til diskussionen om, hvordan økonomisk robusthed og social sammenhængskraft kan forenes.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Økonomi A", icon: "fa-solid fa-globe" },
+      { name: "Samfundsfag A", icon: "fa-solid fa-users" }
+  ],
+  timeline: [
+      { date: "HHX", title: "Indlevering", description: "Projektet blev udarbejdet i samarbejde med en projektgruppe." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Jørgensen, Anton M. E., Berge, Noah Hjorth, Hansen, Marius Bruun & Børresen, Elias Walther. Konkurrenceevne og velfærdsmodel. HHX Projekt.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metode & Teori",
+    findings: "Centrale Pointer",
+    relevance: "Perspektivering",
+    dataTools: "Kilder",
+    download: "Hent projekt",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Problemstilling",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Fremtiden",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Fagområder",
+    timeline: "Tidslinje",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { name: "Noah Hjorth Berge", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
+    { name: "Marius Bruun Hansen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
+    { name: "Elias Walther Børresen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." }
+  ],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

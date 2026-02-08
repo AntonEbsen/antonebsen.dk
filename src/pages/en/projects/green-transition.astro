@@ -1,0 +1,91 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "The Single Market's Role in the Green Transition",
+  subtitle: "An analysis of EU economic policy and regulation as a driver for sustainable transition.",
+  executiveSummary: "This project analyzes the EU's role in the green transition, focusing on how economic policy, regulation, and institutional cooperation can be used to promote a sustainable transition of European economies. The project examines how climate and environmental policy in the EU is not merely a question of norms and goals, but also a matter of economic incentives, market design, and coordination among member states.",
+  researchQuestions: [
+    "How does the EU function as a framework setter for the green transition?",
+    "Which economic instruments are most effective in promoting sustainability?",
+    "What trade-offs exist between ambitious climate policy and competitiveness?",
+    "Why is European coordination crucial to avoid leakage and competitive distortion?"
+  ],
+  methodology: {
+    model: "Political Economy Analysis",
+    strategy: "Combination of economic theory, EU political analysis, and concrete policy examples.",
+    data: "EU directives, market data for CO2 allowances, green technology investment figures.",
+    estimation: "Assessment of regulation's effect on market behavior and investments."
+  },
+  keyFindings: [
+    "EU as Framework Setter: Common regulation and market-based instruments reduce the risk of national fragmentation.",
+    "Economic Instruments: CO₂ pricing and market regulation are more effective than symbolic policy.",
+    "Trade-offs: Ambitious climate policy creates short-term costs but long-term gains in innovation and autonomy.",
+    "Coordination: Without common solutions, there is a risk of uneven playing fields and capital flight."
+  ],
+  secondaryAnalysis: {
+    title: "Forward-Looking Perspective",
+    description: "The project points to the necessity of coupling climate, industrial, and economic policy.",
+    items: [
+      "Strategic Autonomy: Sustainability as part of Europe's geopolitical strategy.",
+      "Green Deal: Implementation requires massive investments and political will.",
+      "Growth Strategy: Green transition viewed as a source of future competitive advantage, not just a cost."
+    ]
+  },
+  policyRelevance: [
+    "EU Green Deal: Understanding the underlying economic mechanisms.",
+    "Industrial Policy: How states can promote green industries without distorting the market.",
+    "Market Design: The design of future electricity and CO2 markets."
+  ],
+  limitations: [
+    "Level: HHX project focusing on overarching mechanisms.",
+    "Data: Based on available policy documents and theoretical models.",
+    "Complexity: EU decision-making processes are simplified for the sake of analysis."
+  ],
+  dataTools: {
+    sources: "Economic Theory, EU Commission Reports, Climate Policy Research.",
+    software: "Word / Excel."
+  },
+  highlights: [
+    { label: "Level", value: "HHX" },
+    { label: "Status", value: "Completed" }
+  ],
+  contextNote: "This project serves as an early analytical contribution to debates that are now central to EU economic policy.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Economics A", icon: "fa-solid fa-globe" },
+      { name: "Business Economics A", icon: "fa-solid fa-briefcase" }
+  ],
+  timeline: [
+      { date: "HHX", title: "Submission", description: "The project analyzes the tension between growth and sustainability." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Ebsen, Anton. The Single Market's Role in the Green Transition. HHX Project.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Method & Theory",
+    findings: "Central Points",
+    relevance: "Perspectives",
+    dataTools: "Sources",
+    download: "Download Project",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    secondaryAnalysis: "The Future",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Subjects",
+    timeline: "Timeline",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

@@ -91,6 +91,37 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
         }
     };
 
+    const [nlQuery, setNlQuery] = useState('');
+    const [generating, setGenerating] = useState(false);
+
+    const generateSql = async () => {
+        if (!nlQuery.trim()) return;
+        setGenerating(true);
+        setError(null);
+
+        try {
+            const res = await fetch('/api/text-to-sql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text: nlQuery,
+                    schema: 'Table: main_data. Columns: date (DATE), vix (DOUBLE), sp500 (DOUBLE), vix_diff (DOUBLE)' // Hardcoded for demo, ideally dynamic
+                })
+            });
+
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+
+            setQuery(data.sql);
+            setGenerating(false);
+            // Optional: Auto-run?
+            // runQuery(); 
+        } catch (err: any) {
+            setError("AI Error: " + err.message);
+            setGenerating(false);
+        }
+    };
+
     return (
         <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
             <div className="bg-slate-50 border-b border-slate-200 px-4 py-2 flex justify-between items-center">
@@ -101,9 +132,30 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 <span className="text-[10px] text-slate-400">{loading ? 'Loading Engine...' : 'Ready'}</span>
             </div>
 
+            {/* AI Natural Language Input */}
+            <div className="p-4 bg-slate-900 border-b border-slate-700">
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        placeholder="✨ Ask the data... (e.g., 'Show average VIX by year')"
+                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                        value={nlQuery}
+                        onChange={(e) => setNlQuery(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && generateSql()}
+                    />
+                    <button
+                        onClick={generateSql}
+                        disabled={generating || loading}
+                        className="px-3 py-1.5 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg text-xs font-bold hover:bg-blue-600/30 transition-colors disabled:opacity-50"
+                    >
+                        {generating ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-wand-magic-sparkles"></i>}
+                    </button>
+                </div>
+            </div>
+
             <div className="p-0">
                 <textarea
-                    className="w-full h-32 p-4 font-mono text-sm bg-slate-900 text-green-400 focus:outline-none resize-none"
+                    className="w-full h-24 p-4 font-mono text-sm bg-slate-950 text-green-400 focus:outline-none resize-none"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     spellCheck={false}
@@ -116,7 +168,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     disabled={loading}
                     className="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
                 >
-                    <i className="fa-solid fa-play"></i> Run Query
+                    <i className="fa-solid fa-play"></i> Run SQL
                 </button>
             </div>
 

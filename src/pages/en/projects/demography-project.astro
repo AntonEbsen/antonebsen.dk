@@ -1,0 +1,86 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Demographic Analysis (Title TBD)",
+  subtitle: "Upcoming project in the course Demography.",
+  executiveSummary: "This project is under development. It will involve a demographic analysis based on data and methods from the Demography course. Further details on the topic, research questions, and findings will be added once the project is defined.",
+  researchQuestions: [
+    "TBD: Research question under development.",
+    "TBD: Which demographic trends are being investigated?",
+    "TBD: Which data sources are used?"
+  ],
+  methodology: {
+    model: "Demographic Analysis",
+    strategy: "Quantitative analysis of population data.",
+    data: "Register data / Statistics Denmark (TBD).",
+    estimation: "Projections / Comparative Analysis (TBD)."
+  },
+  keyFindings: [
+    "This project has not yet started.",
+    "Results will be presented here.",
+    "Expected completion: Spring/Summer 2026."
+  ],
+  secondaryAnalysis: {
+    title: "Preliminary Status",
+    description: "The project is in the initial phase.",
+    items: [
+      "Topic Selection: Under consideration.",
+      "Data Collection: Not started.",
+      "Analysis: Not started."
+    ]
+  },
+  policyRelevance: [
+    "Relevance for social planning.",
+    "Understanding population development."
+  ],
+  limitations: [
+    "Status: Planned project."
+  ],
+  dataTools: {
+    sources: "Statistics Denmark, UN Population Division (TBD).",
+    software: "R / Python / Excel (TBD)."
+  },
+  highlights: [
+    { label: "Course", value: "Demography" },
+    { label: "Status", value: "Upcoming" }
+  ],
+  contextNote: "This is a placeholder for an upcoming project in the Demography course.",
+  videoUrl: "", 
+  techStack: [
+      { name: "Demography", icon: "fa-solid fa-people-group" },
+      { name: "Data Science", icon: "fa-solid fa-chart-line" }
+  ],
+  timeline: [
+      { date: "2026", title: "Planned", description: "Project start." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Ebsen, Anton. Demographic Analysis (Title TBD). (Upcoming).",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Method & Theory",
+    findings: "Expected Results",
+    relevance: "Relevance",
+    dataTools: "Sources",
+    download: "Download Project (TBD)",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Preliminary Questions",
+    limitations: "Status",
+    secondaryAnalysis: "Status",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Subjects",
+    timeline: "Timeline",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />

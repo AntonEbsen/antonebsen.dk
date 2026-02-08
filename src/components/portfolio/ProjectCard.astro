@@ -34,70 +34,87 @@ const labels = {
 const t = labels[lang as keyof typeof labels] || labels.da;
 ---
 
-<div class="project-card-wrapper h-full" data-tags={tags?.join(',') || ''}>
-  <Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)] group hover:bg-[rgba(17,24,39,0.05)] transition-colors">
-    <div class="flex justify-between items-start mb-2 gap-2">
-      <h2 class="text-[16px] font-bold leading-tight m-0 group-hover:text-accent transition-colors">{title}</h2>
-      {tagString && <Pill variant="accent" class="shrink-0">{tagString}</Pill>}
-    </div>
-  
-    <p class="text-[14px] text-dim flex-grow mb-4 leading-relaxed opacity-90">
-      {description}
-    </p>
+<div class="project-card-wrapper h-full group/card" data-tags={tags?.join(',') || ''}>
+  {/* Check for Upcoming Status */}
+  {tags?.includes('Kommende') || tags?.includes('Upcoming') ? (
+      <div class="h-full relative overflow-hidden rounded-2xl bg-slate-900/40 border border-white/5 backdrop-blur-sm transition-all duration-500 hover:border-blue-500/30 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10">
+          
+          {/* Upcoming Badge & Glow */}
+          <div class="absolute top-0 right-0 p-4 z-20">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-blue-500/10 text-blue-400 border border-blue-500/20 shadow-sm animate-pulse-slow">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                  Upcoming
+              </span>
+          </div>
+          <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none group-hover/card:bg-blue-500/20 transition-colors"></div>
 
-    {/* The Impact: Dashboard Metrics */}
-    {highlights && highlights.length > 0 && (
-       <div class="grid grid-cols-2 gap-2 mb-4">
-           {highlights.map(h => (
-               <div class="bg-white/5 p-2 rounded border border-white/5">
-                   <p class="text-[10px] uppercase text-dim tracking-wider font-bold mb-0.5">{h.label}</p>
-                   <p class="text-sm font-bold text-accent">{h.value}</p>
+          <div class="p-8 flex flex-col h-full relative z-10">
+               <div class="mb-6">
+                   <h2 class="text-2xl font-serif font-bold text-white mb-2 group-hover/card:text-blue-400 transition-colors">{title}</h2>
+                   <div class="h-1 w-12 bg-blue-500/30 rounded-full"></div>
                </div>
-           ))}
-       </div>
-    )}
+               
+               <p class="text-sm text-slate-400 leading-relaxed mb-8 flex-grow font-serif">
+                   {description}
+               </p>
 
-    {/* The Blueprint: Diagrams */}
-    {blueprint && (
-        <div class="mb-4 rounded-lg overflow-hidden border border-white/10 group-hover:border-accent/20 transition-colors">
-            <div class="bg-black/40 p-1.5 flex items-center justify-between">
-                <span class="text-[10px] text-dim font-mono"><i class="fa-solid fa-diagram-project mr-1.5"></i>Architecture</span>
-                <span class="text-[10px] text-accent/50 group-hover:text-accent">• Live</span>
+               <div class="mt-auto border-t border-white/5 pt-6 flex justify-between items-center">
+                   <div class="flex gap-3 text-xs text-slate-500">
+                      {tools && tools.split(',').slice(0,3).map(t => (
+                          <span class="px-2 py-1 bg-white/5 rounded border border-white/5">{t.trim()}</span>
+                      ))}
+                   </div>
+                   {links && links.map(link => (
+                      <a href={link.url} class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all transform hover:scale-110">
+                          <i class={`fa-solid ${link.icon === 'arrow-right' ? 'fa-arrow-right' : 'fa-link'}`}></i>
+                      </a>
+                   ))}
+               </div>
+          </div>
+      </div>
+  ) : (
+      /* Standard Card Design */
+      <div class="h-full relative overflow-hidden rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm transition-all duration-500 hover:border-white/10 hover:bg-white/[0.04] hover:-translate-y-1 hover:shadow-xl">
+        <div class="p-6 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-lg font-bold text-slate-200 group-hover/card:text-accent transition-colors">{title}</h2>
+                {tagString && <span class="text-[10px] font-mono text-slate-500 border border-white/10 px-2 py-1 rounded bg-black/20">{tagString}</span>}
             </div>
-            <img src={blueprint} alt="System Architecture" class="w-full h-auto opacity-80 group-hover:opacity-100 transition-opacity" />
-        </div>
-    )}
-    
-    <div class="flex flex-col gap-1 mb-4 text-[13px] text-dim">
-      {tools && <span><strong class="text-text">{t.tools}:</strong> {tools}</span>}
-      {output && <span><strong class="text-text">{t.output}:</strong> {output}</span>}
-    </div>
-  
-    <div class="mt-auto pt-3 border-t border-[var(--glass-border)] flex flex-wrap gap-3 items-center">
-      {labUrl && (
-        <a 
-          href={labUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-xs font-bold text-accent bg-accent/10 hover:bg-accent hover:text-black px-2 py-1 rounded transition-colors inline-flex items-center gap-1.5 border border-accent/20"
-        >
-          <i class="fa-solid fa-flask"></i> Launch Lab
-        </a>
-      )}
 
-      {links && links.map(link => (
-          <a 
-            href={link.url}
-            class:list={[
-              "text-xs font-bold transition-colors inline-flex items-center",
-              link.disabled ? "opacity-50 cursor-not-allowed text-dim" : "text-dim hover:text-white"
-            ]}
-            aria-disabled={link.disabled}
-          >
-            {link.label} {link.icon === 'arrow-right' && '→'}
-          </a>
-        ))}
-    </div>
-  </Card>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed flex-grow">
+                {description}
+            </p>
+
+            {/* Metrics Grid */}
+            {highlights && highlights.length > 0 && (
+                <div class="grid grid-cols-2 gap-2 mb-6">
+                    {highlights.slice(0, 2).map(h => (
+                        <div class="bg-black/20 p-2 rounded border border-white/5">
+                            <p class="text-[10px] text-slate-500 uppercase font-bold">{h.label}</p>
+                            <p class="text-xs font-bold text-slate-300">{h.value}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            <div class="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+                {/* Lab Button or Standard Links */}
+                {labUrl ? (
+                    <a href={labUrl} target="_blank" class="text-xs font-bold text-accent flex items-center gap-2 hover:underline">
+                        <i class="fa-solid fa-flask"></i> Launch Lab
+                    </a>
+                ) : (
+                     <div class="flex gap-3">
+                        {links && links.map(link => (
+                             <a href={link.url} class="text-xs font-bold text-slate-500 hover:text-white transition-colors flex items-center gap-1">
+                                {link.label} {link.icon === 'arrow-right' && '→'}
+                             </a>
+                        ))}
+                     </div>
+                )}
+            </div>
+        </div>
+      </div>
+  )}
 </div>
 

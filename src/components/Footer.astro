@@ -47,6 +47,7 @@ const year = new Date().getFullYear();
         <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.selected')}</h3>
         <ul class="list-none m-0 p-0">
             <li class="my-2"><a href={notesUrl} class="text-accent no-underline hover:underline font-semibold">{isEn ? "Personal Notes →" : isDe ? "Persönliche Notizen →" : "Personlige noter →"}</a></li>
+            <li class="my-2"><a href={isEn ? "/en/team" : "/team"} class="text-text no-underline hover:underline">{isEn ? "Research Group" : isDe ? "Forschungsgruppe" : "Forskningsteamet"}</a></li>
             <li class="my-2"><a href={isEn ? "/en/resources" : isDe ? "/de/resources" : "/resources"} class="text-text no-underline hover:underline">Downloads</a></li>
             <li class="my-2"><a href={isEn ? "/en/timeline" : isDe ? "/de/timeline" : "/timeline"} class="text-text no-underline hover:underline">{isEn ? "Milestones" : isDe ? "Meilensteine" : "Milepæle"}</a></li>
             <li class="my-2"><a href="/changelog" class="text-text no-underline hover:underline">{isEn ? "Changelog" : isDe ? "Änderungsprotokoll" : "Versionshistorik"} 📜</a></li>

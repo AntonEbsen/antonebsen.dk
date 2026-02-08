@@ -1,0 +1,91 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Det Indre Markeds Rolle i Grøn Omstilling",
+  subtitle: "En analyse af EU's økonomiske politik og regulering som drivkraft for bæredygtig omstilling.",
+  executiveSummary: "Dette projekt analyserer EU’s rolle i den grønne omstilling, med fokus på hvordan økonomisk politik, regulering og institutionelt samarbejde kan anvendes til at fremme en bæredygtig omstilling af europæiske økonomier. Projektet undersøger, hvordan klima- og miljøpolitik i EU ikke blot er et spørgsmål om normer og målsætninger, men også et spørgsmål om økonomiske incitamenter, markedsdesign og koordinering mellem medlemsstater.",
+  researchQuestions: [
+    "Hvordan fungerer EU som rammesætter for den grønne omstilling?",
+    "Hvilke økonomiske instrumenter er mest effektive til at fremme bæredygtighed?",
+    "Hvilke trade-offs eksisterer mellem ambitiøs klimapolitik og konkurrenceevne?",
+    "Hvorfor er europæisk koordinering afgørende for at undgå lækage og konkurrenceforvridning?"
+  ],
+  methodology: {
+    model: "Politisk Økonomisk Analyse",
+    strategy: "Kombination af økonomisk teori, EU-politisk analyse og konkrete policy-eksempler.",
+    data: "EU-direktiver, markedsdata for CO2-kvoter, investeringstal for grøn teknologi.",
+    estimation: "Vurdering af reguleringens effekt på markedsadfærd og investeringer."
+  },
+  keyFindings: [
+    "EU som rammesætter: Fælles regulering og markedsbaserede instrumenter reducerer risikoen for national fragmentering.",
+    "Økonomiske instrumenter: CO₂-prissætning og markedsregulering er mere effektive end symbolpolitik.",
+    "Trade-offs: Ambitiøs klimapolitik skaber kortsigtede omkostninger, men langsigtede gevinster i innovation og autonomi.",
+    "Koordinering: Uden fælles løsninger risikerer man ulige konkurrencevilkår og kapitalflugt."
+  ],
+  secondaryAnalysis: {
+    title: "Fremadskuende Perspektiv",
+    description: "Projektet peger på nødvendigheden af at koble klima-, industri- og økonomisk politik.",
+    items: [
+      "Strategisk Autonomi: Bæredygtighed som en del af Europas geopolitiske strategi.",
+      "Green Deal: Implementeringen kræver massive investeringer og politisk vilje.",
+      "Vækststrategi: Grøn omstilling set som en kilde til fremtidig konkurrencefordel, ikke kun en omkostning."
+    ]
+  },
+  policyRelevance: [
+    "EU's Green Deal: Forståelsen af de underliggende økonomiske mekanismer.",
+    "Industripolitik: Hvordan stater kan fremme grønne industrier uden at forvride markedet.",
+    "Markedsdesign: Udformningen af fremtidens el- og CO2-markeder."
+  ],
+  limitations: [
+    "Niveau: HHX-projekt med fokus på overordnede mekanismer.",
+    "Data: Baseret på tilgængelige policy-dokumenter og teoretiske modeller.",
+    "Kompleksitet: EU's beslutningsprocesser er forenklede for analysens skyld."
+  ],
+  dataTools: {
+    sources: "Økonomisk teori, EU-kommissionens rapporter, Klimapolitisk forskning.",
+    software: "Word / Excel."
+  },
+  highlights: [
+    { label: "Niveau", value: "HHX" },
+    { label: "Status", value: "Afsluttet" }
+  ],
+  contextNote: "Dette projekt fungerer som et tidligt analytisk bidrag til debatter, der i dag er helt centrale i EU’s økonomiske politik.",
+  videoUrl: "", 
+  techStack: [
+      { name: "International Økonomi A", icon: "fa-solid fa-globe" },
+      { name: "Virksomhedsøkonomi A", icon: "fa-solid fa-briefcase" }
+  ],
+  timeline: [
+      { date: "HHX", title: "Indlevering", description: "Projektet analyserer spændingen mellem vækst og bæredygtighed." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Ebsen, Anton. Det Indre Markeds Rolle i Grøn Omstilling. HHX Projekt.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metode & Teori",
+    findings: "Centrale Pointer",
+    relevance: "Perspektivering",
+    dataTools: "Kilder",
+    download: "Hent projekt",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Problemstilling",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Fremtiden",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Fagområder",
+    timeline: "Tidslinje",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

@@ -1,0 +1,67 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div class="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-white/10 rounded-2xl p-6 backdrop-blur-md relative overflow-hidden group">
+    {/* Visualizer Background Mockup */}
+    <div class="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-between px-6 opacity-20 pointer-events-none gap-1">
+        {[...Array(20)].map(() => (
+            <div class="w-1 bg-white rounded-t-full animate-music" style={`height: ${Math.random() * 100}%; animation-delay: -${Math.random()}s`}></div>
+        ))}
+    </div>
+
+    <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+        <button id="play-abstract-btn" class="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-white/10 group-hover:shadow-blue-500/20 shrink-0">
+            <i class="fa-solid fa-play text-xl ml-1"></i>
+        </button>
+
+        <div class="text-center md:text-left">
+            <h3 class="text-sm font-bold text-white mb-1 uppercase tracking-widest">Audio Abstract</h3>
+            <p class="text-xs text-slate-400 mb-0">Listen to the 60-second elevator pitch.</p>
+        </div>
+        
+        {/* Hidden Playback Logic (Simplified as we don't have real TTS backend yet, using browser API) */}
+        <script define:vars={{ text }}>
+            const btn = document.getElementById('play-abstract-btn');
+            let speaking = false;
+
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    if (speaking) {
+                        window.speechSynthesis.cancel();
+                        btn.innerHTML = '<i class="fa-solid fa-play text-xl ml-1"></i>';
+                        speaking = false;
+                    } else {
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        utterance.lang = 'en-US'; // Or 'da-DK' depending on content
+                        utterance.rate = 1.0;
+                        utterance.pitch = 1.0;
+                        
+                        utterance.onend = () => {
+                            speaking = false;
+                            btn.innerHTML = '<i class="fa-solid fa-play text-xl ml-1"></i>';
+                        };
+
+                        window.speechSynthesis.speak(utterance);
+                        btn.innerHTML = '<i class="fa-solid fa-pause text-xl"></i>';
+                        speaking = true;
+                    }
+                });
+            }
+        </script>
+    </div>
+</div>
+
+<style>
+@keyframes music {
+    0%, 100% { height: 10%; }
+    50% { height: 60%; }
+}
+.animate-music {
+    animation: music 1s ease-in-out infinite; 
+}
+</style>

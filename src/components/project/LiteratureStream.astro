@@ -1,0 +1,59 @@
+---
+interface Props {
+  currentRead: {
+    title: string;
+    author: string;
+    type: string; // "Paper", "Book", "Data"
+    progress: number; // 0-100
+  };
+  stack: {
+    title: string;
+    author: string;
+    status: "To Read" | "Processed" | "Reference";
+  }[];
+}
+
+const { currentRead, stack } = Astro.props;
+---
+
+<div class="bg-slate-900/30 border border-white/5 rounded-2xl p-6 backdrop-blur-sm">
+    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6 flex items-center gap-2">
+        <i class="fa-solid fa-layer-group text-slate-400"></i> The Literature Stream
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* CURRENTLY READING */}
+        <div>
+            <span class="text-[10px] font-bold uppercase text-blue-400 mb-2 block tracking-wider">Currently Reading</span>
+            <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5 group hover:border-blue-500/30 transition-colors">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-slate-300">{currentRead.type}</span>
+                    <span class="text-[10px] text-slate-500 font-mono">{currentRead.progress}%</span>
+                </div>
+                <h4 class="text-md font-bold text-white mb-1 leading-tight group-hover:text-blue-400 transition-colors">{currentRead.title}</h4>
+                <p class="text-xs text-slate-400 italic mb-4">{currentRead.author}</p>
+                
+                {/* Progress Bar */}
+                <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div class="h-full bg-blue-500 rounded-full" style={`width: ${currentRead.progress}%`}></div>
+                </div>
+            </div>
+        </div>
+
+        {/* THE STACK */}
+        <div>
+             <span class="text-[10px] font-bold uppercase text-slate-500 mb-3 block tracking-wider">On The Stack</span>
+             <div class="space-y-3">
+                {stack.map(item => (
+                    <div class="flex items-center gap-3 group">
+                        <div class={`w-1.5 h-1.5 rounded-full shrink-0 ${item.status === 'Processed' ? 'bg-green-500' : 'bg-slate-600'}`}></div>
+                        <div class="min-w-0">
+                            <p class="text-sm text-slate-300 truncate group-hover:text-white transition-colors">{item.title}</p>
+                            <p class="text-[10px] text-slate-500 truncate">{item.author}</p>
+                        </div>
+                    </div>
+                ))}
+             </div>
+        </div>
+    </div>
+</div>

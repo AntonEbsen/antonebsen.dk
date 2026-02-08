@@ -9,13 +9,18 @@ import SlideDeck from '@components/common/SlideDeck.astro';
 import ProjectBot from '../project/ProjectBot';
 import DataPlayground from '@components/project/DataPlayground';
 import CodeVault from '@components/project/CodeVault';
+import GalaxyGraph from '@components/common/GalaxyGraph';
+import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
+import { getEntry } from 'astro:content';
 
 interface Props {
   lang: 'da' | 'en';
   project: {
     title: string;
     subtitle: string;
+    heroImage?: string;
     executiveSummary: string;
+    popularScienceResult?: string;
     researchQuestions: string[];
     methodology: {
         model: string;
@@ -33,6 +38,10 @@ interface Props {
         text: string;
         pdfUrl: string;
     };
+    popScience?: {
+        title?: string;
+        text: string;
+    };
     limitations?: string[];
     highlights?: { label: string; value: string }[];
     secondaryAnalysis?: {
@@ -41,10 +50,6 @@ interface Props {
         items: string[];
     };
     contextNote?: string;
-    continuityNote?: {
-        title: string;
-        text: string;
-    };
     visualAnalysis?: {
         title: string;
         charts: {
@@ -53,7 +58,6 @@ interface Props {
             interactive?: boolean;
         }[];
     };
-    launchLabUrl?: string;
     codeSnippet?: {
         lang: string;
         title: string;
@@ -117,467 +121,816 @@ interface Props {
         liveData?: string;
         openScience?: string;
         continuityTitle?: string;
+    };
+    collaborators?: {
+        name: string;
+        role?: string;
+        description?: string;
+        image?: string;
+        links?: {
+            linkedin?: string;
+            github?: string;
+            website?: string;
+        };
+    }[];
+    bibliography?: string[];
+  };
+}
+
+const { lang, project } = Astro.props;
+
+// Dynamic Social Card URL
+const techStackList = project.techStack?.map(t => t.name).join(',') || '';
+const dynamicOgImage = new URL('/api/og.png', Astro.site || 'https://antonebsen.dk');
+dynamicOgImage.searchParams.set('title', project.title);
+dynamicOgImage.searchParams.set('subtitle', project.subtitle);
+dynamicOgImage.searchParams.set('tech', techStackList);
+
+// Prefer the dynamic card for social sharing as it contains more info (title, tech stack) overlayed
+// But fallback to heroImage if specified and we want to preserve that visual. 
+// However, the "Diamond" request specifically asked for "Custom images... that include key metrics".
+// So let's override the passed image with our dynamic one for the `image` prop sent to Layout.
+const socialImage = dynamicOgImage.toString();
+const cvEntry = await getEntry('cv', lang);
+const allProjects = cvEntry?.data.projects || [];
+
+// Calculate Related Projects based on Tech Stack Overlap
+const getRelatedProject = (currentProject: any, allProjects: any[]) => {
+    // Filter out current project
+    const candidates = allProjects.filter((p: any) => p.title !== currentProject.title);
+    
+    if (candidates.length === 0) return null;
+
+    // Calculate score
+    const scoredCandidates = candidates.map((p: any) => {
+        let score = 0;
+        
+        // Overlap in Tech Stack
+        const currentStack = currentProject.techStack?.map((t: any) => t.name) || [];
+        const candidateStack = p.techStack?.map((t: any) => t.name) || [];
+        const intersection = currentStack.filter((t: string) => candidateStack.includes(t));
+        score += intersection.length * 2; // +2 for each shared tech
+
+        // Same Category (heuristic: check if titles contain similar keywords or if they are adjacent in time)
+        // For now, simple tech stack overlap is robust enough
+        
+        return { ...p, score };
+    });
+
+    // Sort by score desc
+    scoredCandidates.sort((a: any, b: any) => b.score - a.score);
+
+    // Return top match if score > 0, else return next project in line (fallback)
+    if (scoredCandidates[0].score > 0) {
+        return { 
+            project: scoredCandidates[0], 
+            reason: `Based on shared tech: ${scoredCandidates[0].techStack?.map((t:any) => t.name).filter((n:string) => currentProject.techStack?.map((ct:any) => ct.name).includes(n)).join(', ') || 'Technology'}`
+        };
     }
+    
+    // Fallback: Next in list
+    const currentIndex = allProjects.findIndex((p: any) => p.title === currentProject.title);
+    const nextIndex = (currentIndex + 1) % allProjects.length;
+    return { 
+        project: allProjects[nextIndex], 
+        reason: 'Next in Portfolio' 
     };
 };
 
-const { lang, project } = Astro.props;
+const relatedProjectData = getRelatedProject(project, allProjects);
+const nextProject = relatedProjectData?.project;
+const recommendationReason = relatedProjectData?.reason;
+
+// Restore simple Previous Project logic for legacy navigation
+const projectIndex = allProjects.findIndex((p: any) => p.title === project.title);
+const prevProject = projectIndex > 0 ? allProjects[projectIndex - 1] : null;
+
+// Localization Strings
+const uiStrings = {
+    da: {
+        researchBrief: "Forskningsoplæg",
+        contents: "Indhold",
+        projectStatus: "Projektstatus",
+        archived: "Arkiveret (2024)",
+        requestAccess: "Anmod om adgang til rådata",
+        intellectualLineage: "Intellektuelt Ophav",
+        lineageDesc: "Dette projekt bygger på nøglelitteratur inden for monetær økonomi. Grafen visualiserer det direkte citationsnetværk, med denne afhandling som central node.",
+        coreTheory: "Kerneteori",
+        recentEvidence: "Nyere Evidens",
+        methodology: "Metodologi",
+        gallery: "Galleri",
+        videoAbstract: "Video Abstract",
+        downloadsData: "Downloads & Data",
+        downloadThesis: "Hent Afhandling (PDF)",
+        fullText: "Fuld Tekst • 2.4 MB",
+        presentationSlides: "Præsentations-slides",
+        simulationLayer: "Simulerings-laget",
+        liveDataLab: "Live Data Laboratorium",
+        liveDataDesc: "Tag ikke bare mit ord for det. Tilgå de rå projekt-tokens direkte i din browser. Denne legeplads bruger DuckDB-WASM til at køre SQL-forespørgsler mod det faktiske datasæt.",
+        tryQuery: "PRØV DENNE FORESPØRGSEL:",
+        keyTerms: "Nøglebegreber",
+        sources: "Kilder",
+        software: "Software",
+        modelFramework: "Modelramme",
+        idStrategy: "Identifikationsstrategi",
+        dataFreq: "Data & Frekvens",
+        estApproach: "Estimeringsmetode",
+        transmissionDiagram: "Transmissionsmekanisme: Modelarkitektur",
+        popScienceTitle: "Resultaterne kort fortalt",
+        popScienceDesc: "En populærvidenskabelig gennemgang af projektets hovedkonklusioner uden teknisk jargon.",
+        nextProject: "Næste Projekt",
+        prevProject: "Forrige Projekt", // Kept for legacy support although we prioritize forward flow
+        citeThis: "Citér dette værk",
+        copy: "Kopiér",
+        copied: "Kopieret!",
+        share: "Del Projekt",
+        recruiterMode: "Recruiter Mode",
+        academicMode: "Akademisk Mode",
+        listen: "Lyt",
+        stop: "Stop",
+        recommended: "Anbefalet Projekt",
+        collaborators: "Samarbejdspartnere",
+        meetTeam: "Mød Forskningsteamet",
+        bibliography: "Litteraturliste"
+    },
+    en: {
+        researchBrief: "Research Brief",
+        contents: "Contents",
+        projectStatus: "Project Status",
+        archived: "Archived (2024)",
+        requestAccess: "Request access to raw data",
+        intellectualLineage: "Intellectual Lineage",
+        lineageDesc: "This project builds upon key literature in monetary economics. The graph visualizes the direct citation network, with the central node representing this thesis.",
+        coreTheory: "Core Theory",
+        recentEvidence: "Recent Evidence",
+        methodology: "Methodology",
+        gallery: "Gallery",
+        videoAbstract: "Video Abstract",
+        downloadsData: "Downloads & Data",
+        downloadThesis: "Download Thesis (PDF)",
+        fullText: "Full Text • 2.4 MB",
+        presentationSlides: "Presentation Slides",
+        simulationLayer: "The Simulation Layer",
+        liveDataLab: "Live Data Lab",
+        liveDataDesc: "Don't just take my word for it. Access the raw project tokens directly in your browser. This playground uses DuckDB-WASM to run SQL queries against the actual dataset used in this paper.",
+        tryQuery: "TRY THIS QUERY:",
+        keyTerms: "Key Terms",
+        sources: "Sources",
+        software: "Software",
+        modelFramework: "Model Framework",
+        idStrategy: "Identification Strategy",
+        dataFreq: "Data & Frequency",
+        estApproach: "Estimation Approach",
+        transmissionDiagram: "Transmission Pathway Diagram: Model Architecture",
+        popScienceTitle: "The Results in Plain English",
+        popScienceDesc: "A popular science breakdown of the main conclusions without technical jargon.",
+        nextProject: "Next Project",
+        prevProject: "Previous Project",
+        citeThis: "Cite this work",
+        copy: "Copy",
+        copied: "Copied!",
+        share: "Share Project",
+        recruiterMode: "Recruiter Mode",
+        academicMode: "Academic Mode",
+        listen: "Listen",
+        stop: "Stop",
+        recommended: "Recommended Project",
+        collaborators: "Collaborators",
+        meetTeam: "Meet the Research Group",
+        bibliography: "Bibliography"
+    }
+};
+
+const t = uiStrings[lang] || uiStrings.en;
 ---
 
-<Layout title={project.title} description={project.executiveSummary} showChatWidget={false}>
-  <main class="bg-white min-h-screen text-slate-900 pb-20 selection:bg-accent/20">
-    <!-- Header -->
-    <header class="border-b border-slate-100 py-20 px-4 relative overflow-hidden">
-      <!-- Background Abstract -->
-      <div class="absolute inset-0 bg-slate-50 opacity-50 -z-10"></div>
-      
-      <div class="container mx-auto max-w-4xl text-center relative z-10">
-        <Pill variant="accent" class="mb-6 uppercase tracking-[0.2em] font-bold text-[10px]">Research Brief</Pill>
+<Layout 
+    title={project.title} 
+    description={project.executiveSummary} 
+    showChatWidget={false}
+    image={socialImage} 
+>
+  <main class="bg-slate-950 min-h-screen text-slate-200 pb-32 selection:bg-accent/20">
+    
+    <!-- IMMERSIVE HERO -->
+    <header class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {project.heroImage && (
+            <div class="absolute inset-0 z-0">
+                <img src={project.heroImage} alt="" class="w-full h-full object-cover opacity-20 filter blur-sm scale-105 animate-slow-zoom" />
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950"></div>
+            </div>
+        )}
         
-        <h1 class="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-6 font-medium">
-          {project.title}
-        </h1>
-        <p class="text-xl text-slate-500 font-serif italic max-w-2xl mx-auto mb-10">
-          {project.subtitle}
-        </p>
+        {!project.heroImage && (
+             <div class="absolute inset-0 bg-slate-950 opacity-50 -z-10">
+                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] animate-pulse-slow"></div>
+                <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px] animate-pulse-slow delay-1000"></div>
+             </div>
+        )}
 
-        {/* Phase 9: The Impact Hero */}
+        <!-- Recruiter Mode Toggle (Top Right) -->
+        <div class="absolute top-24 right-8 z-50 flex items-center gap-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 animate-fade-in">
+             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400" id="mode-label">{t.academicMode}</span>
+             <button id="recruiter-toggle" class="w-12 h-6 bg-slate-700 rounded-full relative transition-colors focus:outline-none" aria-label="Toggle Recruiter Mode">
+                 <div class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 shadow-sm"></div>
+             </button>
+        </div>
+
+      <div class="container mx-auto max-w-5xl px-4 relative z-10 text-center">
+        <div class="animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <Pill variant="accent" class="mb-8 uppercase tracking-[0.2em] font-bold text-[10px] mx-auto shadow-lg shadow-accent/20">{t.researchBrief}</Pill>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.1] mb-8 font-medium tracking-tight">
+            {project.title}
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 font-serif italic max-w-3xl mx-auto mb-12 leading-relaxed">
+            {project.subtitle}
+            </p>
+
+            {/* Collaborators */}
+            {project.collaborators && (
+                <div class="mb-16 flex flex-col items-center gap-6">
+                    <CollaboratorSpotlight client:visible collaborators={project.collaborators} label={t.collaborators} />
+                </div>
+            )}
+            
+            {/* Social Share / Cite Buttons - New */}
+            <div class="flex justify-center gap-4 mb-12">
+                 <button onclick="document.getElementById('citation-modal').showModal()" class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-accent transition-colors">
+                    <i class="fa-solid fa-quote-right mr-2"></i> {t.citeThis}
+                 </button>
+                 <button class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-accent transition-colors">
+                    <i class="fa-solid fa-share-nodes mr-2"></i> {t.share}
+                 </button>
+            </div>
+        </div>
+
+        {/* The Impact Hero - Highlights */}
         {project.highlights && (
-           <div class="flex flex-wrap justify-center gap-4 md:gap-8">
-               {project.highlights.map(h => (
-                   <div class="bg-white border border-slate-200 px-6 py-3 rounded-xl shadow-sm">
-                       <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">{h.label}</p>
-                       <p class="text-lg md:text-xl font-bold text-slate-900">{h.value}</p>
+           <div class="flex flex-wrap justify-center gap-6 md:gap-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+               {project.highlights.map(h => {
+                   // Ad-hoc translation for highlights
+                   let label = h.label;
+                   if (lang === 'da') {
+                       if (label === 'Grade' || label === 'GRADE') label = 'Karakter';
+                       if (label === 'Method' || label === 'METHOD') label = 'Metode';
+                       if (label === 'Focus' || label === 'FOCUS') label = 'Fokus';
+                   }
+                   return (
+                   <div class="bg-white/5 backdrop-blur-sm border border-white/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                       <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">{label}</p>
+                       <p class="text-2xl md:text-3xl font-bold text-white tabular-nums">{h.value}</p>
                    </div>
-               ))}
+                   );
+               })}
            </div>
         )}
-      </div>
-    </header>
-        <p class="text-xl text-slate-500 font-serif italic max-w-2xl mx-auto">
-          {project.subtitle}
-        </p>
-      </div>
-    </header>
-
-    <div class="container mx-auto max-w-4xl px-4 py-16">
-      
-      <!-- Context Note (Optional) -->
-      {project.contextNote && (
-        <section class="mb-12">
-          <div class="bg-amber-50/50 border border-amber-100 p-6 rounded-2xl flex items-start gap-4">
-            <i class="fa-solid fa-circle-info text-amber-400 mt-1"></i>
-            <p class="text-amber-800/80 text-sm leading-relaxed italic font-serif">
-              {project.contextNote}
-            </p>
-          </div>
-        </section>
-      )}
-
-      <!-- Executive Summary -->
-      <section class="mb-20">
-        <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-6 flex items-center gap-4">
-           {project.ui.execSummary}
-           <div class="h-[1px] flex-grow bg-slate-100"></div>
-        </h2>
-        <div class="bg-slate-50 border-l-4 border-accent p-8 rounded-r-2xl">
-           <p class="text-slate-700 leading-relaxed text-lg font-serif">
-             {project.executiveSummary}
-           </p>
+        
+        <div class="mt-16 animate-bounce text-slate-600">
+            <i class="fa-solid fa-arrow-down text-xl"></i>
         </div>
-      </section>
+      </div>
+    </header>
 
-      <!-- Research Questions -->
-      <section class="mb-20">
-         <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.researchQuestions}</h2>
-         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {project.researchQuestions.map(q => (
-               <div class="border border-slate-100 p-6 rounded-2xl bg-white shadow-sm flex items-start gap-4">
-                  <div class="w-2 h-2 rounded-full bg-accent mt-2 shrink-0"></div>
-                  <p class="font-medium text-slate-800">{q}</p>
-               </div>
-            ))}
-         </div>
-      </section>
-
-      <!-- Methodology -->
-      <section class="mb-20">
-         <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.methodology}</h2>
-         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="space-y-6">
-               <div>
-                  <h4 class="text-sm font-bold text-slate-900 mb-1">Model Framework</h4>
-                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.model}</p>
-               </div>
-               <div>
-                  <h4 class="text-sm font-bold text-slate-900 mb-1">Identification Strategy</h4>
-                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.strategy}</p>
-               </div>
-            </div>
-            <div class="space-y-6">
-               <div>
-                  <h4 class="text-sm font-bold text-slate-900 mb-1">Data & Frequency</h4>
-                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.data}</p>
-               </div>
-               <div>
-                  <h4 class="text-sm font-bold text-slate-900 mb-1">Estimation Approach</h4>
-                  <p class="text-slate-600 text-[15px] leading-relaxed">{project.methodology.estimation}</p>
-               </div>
-            </div>
-         </div>
-         
-         <!-- Visual Placeholder Suggestion: Transmission Pathway Diagram -->
-         <div class="mt-12 p-12 border-2 border-dashed border-slate-100 rounded-[32px] flex items-center justify-center text-slate-300 text-sm italic bg-slate-50/50">
-            [ Suggested: Transmission Pathway Diagram: US Fed Funds Rate → VIX → European Bank Leverage → Global Credit ]
-         </div>
-      </section>
-
-      <!-- Key Findings -->
-      <section class="mb-20">
-         <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.findings}</h2>
-         <ul class="space-y-6">
-            {project.keyFindings.map(finding => (
-               <li class="flex items-start gap-6 group">
-                  <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-accent font-bold text-sm shrink-0 border border-slate-100">
-                     <i class="fa-solid fa-check"></i>
+    <div class="container mx-auto max-w-6xl px-4 py-8 flex flex-col lg:flex-row gap-12 relative">
+      
+      <!-- LEFT: Floating TOC -->
+      <aside class="hidden lg:block w-64 shrink-0 relative academic-section transition-opacity duration-500">
+          <div class="sticky top-24 space-y-8">
+              <nav class="toc-nav">
+                  <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4 pl-4 border-l-2 border-transparent">{t.contents}</h3>
+                  <ul class="space-y-1 text-sm border-l-2 border-white/5">
+                      <li><a href="#executive-summary" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.execSummary}</a></li>
+                      <li><a href="#methodology" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.methodology}</a></li>
+                      <li><a href="#key-findings" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.findings}</a></li>
+                      {project.videoUrl && <li><a href="#video-abstract" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.videoAbstract}</a></li>}
+                      {project.gallery && <li><a href="#gallery" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.gallery}</a></li>}
+                      <li><a href="#downloads" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.downloadsData}</a></li>
+                  </ul>
+              </nav>
+              
+              <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-sm">
+                  <p class="text-xs text-slate-400 uppercase font-bold mb-2">{t.projectStatus}</p>
+                  <div class="flex items-center gap-2 mb-4">
+                      <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                      <span class="text-sm font-bold text-slate-200">{t.archived}</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed pt-1">{finding}</p>
-               </li>
-            ))}
-         </ul>
+                  <a href="/contact" class="text-xs text-accent hover:underline">{t.requestAccess} &rarr;</a>
+              </div>
+          </div>
+      </aside>
 
-         <!-- Visual Placeholder Suggestion: IRF Plot -->
-         <div class="mt-12 p-12 border-2 border-dashed border-slate-100 rounded-[32px] flex items-center justify-center text-slate-300 text-sm italic bg-slate-50/50">
-            [ Suggested: Main Empirical Plot / Regression Results ]
-         </div>
-      </section>
+      <!-- CENTER: Main Content -->
+      <article class="flex-grow max-w-3xl">
+          
+        <!-- Context Note -->
+        {project.contextNote && (
+            <section class="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500 academic-section">
+            <div class="bg-amber-900/20 border border-amber-500/20 p-6 rounded-2xl flex items-start gap-4">
+                <i class="fa-solid fa-circle-info text-amber-500 mt-1"></i>
+                <p class="text-amber-200/80 text-sm leading-relaxed italic font-serif">
+                {project.contextNote}
+                </p>
+            </div>
+            </section>
+        )}
 
-      <!-- Secondary Analysis (Optional) -->
-      {project.secondaryAnalysis && (
-        <section class="mb-20">
-           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.secondaryAnalysis || project.secondaryAnalysis.title}</h2>
-           <p class="text-slate-600 mb-8 leading-relaxed italic">{project.secondaryAnalysis.description}</p>
-           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {project.secondaryAnalysis.items.map(item => (
-                 <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
-                    <p class="text-slate-700 text-sm leading-relaxed">{item}</p>
-                 </div>
-              ))}
-           </div>
+        <!-- Executive Summary -->
+        <section id="executive-summary" class="mb-24 scroll-mt-24 group">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-6 flex items-center gap-4 group-hover:text-accent/80 transition-colors">
+            {project.ui.execSummary}
+            <div class="h-[1px] flex-grow bg-white/10 group-hover:bg-accent/20 transition-colors"></div>
+             <!-- Play/Stop Button -->
+             <button id="tts-button" class="w-8 h-8 rounded-full bg-white/10 hover:bg-accent text-white flex items-center justify-center transition-all ml-2" aria-label={t.listen} title={t.listen}>
+                 <i class="fa-solid fa-volume-high text-xs"></i>
+             </button>
+            </h2>
+            <div class="bg-white/5 p-8 md:p-12 rounded-3xl shadow-lg border border-white/5 relative overflow-hidden backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 duration-700 view-animate">
+                <div class="absolute top-0 left-0 w-1 h-full bg-accent"></div>
+                <p id="executive-summary-text" class="text-slate-200 leading-relaxed text-lg md:text-xl font-serif">
+                    {project.executiveSummary}
+                </p>
+            </div>
         </section>
-      )}
 
+        {/* Popular Science Section */}
+        {project.popScience && (
+            <section class="mb-24 academic-section">
+                <div class="bg-gradient-to-br from-emerald-900/20 to-slate-900/50 border border-emerald-500/20 p-8 rounded-3xl relative overflow-hidden">
+                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                     
+                     <h2 class="text-lg font-bold text-emerald-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-flask"></i> {project.popScience.title || t.popScienceTitle}
+                     </h2>
+                     <p class="text-slate-300 leading-relaxed font-sans">
+                        {project.popScience.text}
+                     </p>
+                     
+                     <div class="mt-4 pt-4 border-t border-emerald-500/10">
+                        <span class="text-[10px] uppercase font-bold text-emerald-500/60 tracking-widest">{t.popScienceDesc}</span>
+                     </div>
+                </div>
+            </section>
+        )}
 
-      <!-- Phase 9: The Video Abstract -->
-      {project.videoUrl && (
-          <section class="mb-20">
-              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.videoAbstract || 'Video Abstract'}</h2>
-              <div class="aspect-video bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl">
-                 <iframe 
-                    src={project.videoUrl} 
-                    title="Video Abstract" 
-                    class="w-full h-full" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen
-                 ></iframe>
-              </div>
-          </section>
-      )}
-
-      <!-- Phase 9: The Code Vault -->
-      {project.codeSnippet && (
-          <section class="mb-20">
-              <div class="bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl text-white">
-                  <div class="bg-white/5 p-4 flex items-center justify-between border-b border-white/10">
-                      <div class="flex items-center gap-3">
-                          <div class="flex gap-1.5">
-                              <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
-                              <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
-                              <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
-                          </div>
-                          <span class="text-xs font-mono text-slate-400 ml-2">{project.codeSnippet.title}</span>
-                      </div>
-                      <span class="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider">{project.codeSnippet.lang}</span>
-                  </div>
-                  <div class="h-auto">
-                       <CodeVault 
-                           client:only="react" 
-                           title={project.codeSnippet.title} 
-                           lang={project.codeSnippet.lang} 
-                           code={project.codeSnippet.code} 
-                       />
-                  </div>
-              </div>
-          </section>
-      )}
-
-      <!-- Phase 9: The Gallery -->
-      {project.gallery && (
-          <section class="mb-20">
-             <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.gallery || 'Gallery'}</h2>
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {project.gallery.map(img => (
-                    <div class="group">
-                        <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm mb-3">
-                            <img src={img.src} alt={img.alt} class="w-full h-auto transform group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                        <p class="text-xs text-slate-500 italic text-center">{img.caption}</p>
+        <!-- Research Questions -->
+        <section class="mb-24 academic-section">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.researchQuestions}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {project.researchQuestions.map((q, i) => (
+                    <div class="border border-white/5 p-6 rounded-2xl bg-white/5 shadow-sm flex items-start gap-4 hover:border-accent/20 hover:shadow-md transition-all duration-300 view-animate">
+                        <span class="text-4xl font-serif text-white/5 font-bold -mt-2">0{i+1}</span>
+                        <p class="font-medium text-slate-200 pt-1 leading-relaxed">{q}</p>
                     </div>
                 ))}
-             </div>
-          </section>
-      )}
-
-      <!-- Visual Analysis (Legacy/Optional) -->
-      {project.visualAnalysis && !project.gallery && (
-        <section class="mb-20">
-           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.visualAnalysis || project.visualAnalysis.title}</h2>
-           <div class="grid grid-cols-1 gap-12">
-              {project.visualAnalysis.charts.map(chart => (
-                 <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                       <h3 class="text-lg font-bold text-slate-800">{chart.title}</h3>
-                       {chart.interactive && (
-                          <span class="text-[10px] uppercase font-bold text-accent bg-accent/5 px-2 py-1 rounded-full border border-accent/10">
-                             <i class="fa-solid fa-mouse-pointer mr-1"></i> Interactive
-                          </span>
-                       )}
-                    </div>
-                    <div class="aspect-video bg-slate-50 border-2 border-dashed border-slate-200 rounded-[32px] flex flex-col items-center justify-center text-slate-300 gap-2 p-8 text-center">
-                       <i class="fa-solid fa-chart-line text-3xl mb-2"></i>
-                       <p class="text-sm italic font-serif max-w-md">{chart.description}</p>
-                    </div>
-                 </div>
-              ))}
-           </div>
-        </section>
-      )}
-
-      <!-- Policy Relevance -->
-      <section class="mb-20 bg-slate-900 text-white p-12 rounded-[40px] shadow-2xl">
-         <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-8">{project.ui.relevance}</h2>
-         <div class="space-y-6">
-            {project.policyRelevance.map(item => (
-               <p class="text-slate-300 leading-relaxed font-serif text-lg italic border-l-2 border-accent/30 pl-8">
-                  {item}
-               </p>
-            ))}
-         </div>
-      </section>
-
-      <!-- Continuity Note (Optional) -->
-      {project.continuityNote && (
-        <section class="mb-20">
-           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.continuityTitle || 'Conceptual Continuity'}</h2>
-           <div class="border-t-2 border-slate-100 pt-8">
-              <h3 class="text-xl font-serif text-slate-800 mb-4">{project.continuityNote.title}</h3>
-              <p class="text-slate-600 leading-relaxed">{project.continuityNote.text}</p>
-           </div>
-        </section>
-      )}
-
-      <!-- Limitations (Optional) -->
-      {project.limitations && (
-        <section class="mb-20">
-           <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.limitations || 'Limitations'}</h2>
-           <ul class="space-y-4">
-              {project.limitations.map(limit => (
-                 <li class="text-slate-500 text-sm leading-relaxed flex items-start gap-3">
-                    <span class="text-slate-300">•</span>
-                    {limit}
-                 </li>
-              ))}
-           </ul>
-        </section>
-      )}
-
-
-      <!-- Phase 10: The Live Data -->
-      {project.interactiveChart && (
-          <section class="mb-20">
-              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.liveData || 'Live Data'}</h2>
-              <div class="bg-white border border-slate-100 p-8 rounded-[32px] shadow-sm">
-                  <div class="mb-6">
-                      <h3 class="text-lg font-bold text-slate-800 mb-2">{project.interactiveChart.title}</h3>
-                      <p class="text-sm text-slate-500 italic">{project.interactiveChart.description}</p>
-                  </div>
-                  <div class="relative h-[400px] w-full">
-                      <canvas id="projectChart"></canvas>
-                  </div>
-              </div>
-          </section>
-      )}
-
-      <!-- Phase 10: The Tech Stack -->
-      {project.techStack && (
-          <section class="mb-20">
-              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.techStack || 'Tech Stack'}</h2>
-              <div class="flex flex-wrap gap-4">
-                  {project.techStack.map(tech => (
-                      <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 px-5 py-3 rounded-xl">
-                          <i class={`${tech.icon} text-xl text-slate-700`}></i>
-                          <div class="flex flex-col">
-                              <span class="text-sm font-bold text-slate-900 leading-none">{tech.name}</span>
-                              {tech.version && <span class="text-[10px] text-slate-500 mt-1">v{tech.version}</span>}
-                          </div>
-                      </div>
-                  ))}
-              </div>
-          </section>
-      )}
-
-      <!-- Phase 10: The Timeline -->
-      {project.timeline && (
-          <section class="mb-20">
-              <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.timeline || 'Project Timeline'}</h2>
-              <div class="space-y-8 pl-4 border-l-2 border-slate-100">
-                  {project.timeline.map((step, index) => (
-                      <div class="relative pl-8">
-                          <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-accent"></div>
-                          <span class="text-xs font-bold text-accent uppercase tracking-wider mb-1 block">{step.date}</span>
-                          <h4 class="text-base font-bold text-slate-900 mb-1">{step.title}</h4>
-                          <p class="text-sm text-slate-500 leading-relaxed">{step.description}</p>
-                      </div>
-                  ))}
-              </div>
-          </section>
-      )}
-
-      <!-- Data & Tools (Enhanced with Open Science) -->
-      <section class="mb-20 border-t border-slate-100 pt-16">
-         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-6">{project.ui.dataTools}</h2>
-               <div class="space-y-4">
-                  <div>
-                     <span class="text-[10px] uppercase font-bold text-slate-300 tracking-wider">Sources</span>
-                     <p class="text-slate-600 text-sm">{project.dataTools.sources}</p>
-                  </div>
-                  <div>
-                     <span class="text-[10px] uppercase font-bold text-slate-300 tracking-wider">Software</span>
-                     <p class="text-slate-600 text-sm">{project.dataTools.software}</p>
-                  </div>
-               </div>
             </div>
-            <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
-               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-900 mb-4">{project.ui.download}</h2>
-               <div class="space-y-3 mb-6">
-                   <a href={project.citation.pdfUrl} class="flex items-center gap-3 text-slate-700 font-bold hover:text-accent transition-colors p-3 bg-white rounded-xl border border-slate-200">
-                      <div class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center"><i class="fa-solid fa-file-pdf"></i></div>
-                      <span class="text-sm">Download Thesis (PDF)</span>
-                   </a>
-                   {/* Phase 10: Open Science Links */}
-                   {project.dataLinks?.map(link => (
-                       <a href={link.url} class="flex items-center gap-3 text-slate-700 font-bold hover:text-accent transition-colors p-3 bg-white rounded-xl border border-slate-200">
-                          <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center"><i class={link.icon}></i></div>
-                          <span class="text-sm">{link.label}</span>
-                       </a>
-                   ))}
-               </div>
-               
-               {/* Phase 11: The Defense Deck */}
-               {project.slides && (
-                  <div class="mb-8">
-                     <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">{project.ui.citation?.replace('Citering', 'Slides') || 'Presentation Slides'}</span>
-                     <SlideDeck slides={project.slides} />
-                  </div>
-               )}
+        </section>
 
-               <div class="pt-6 border-t border-slate-200">
-                  <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">{project.ui.citation}</span>
-                  <code class="text-[11px] text-slate-500 block bg-white p-4 rounded-xl border border-slate-200 leading-relaxed font-mono">
-                    {project.citation.text}
-                  </code>
-               </div>
+        <!-- Methodology -->
+        <section id="methodology" class="mb-24 scroll-mt-24 academic-section">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.methodology}</h2>
+            <div class="bg-slate-900 ring-1 ring-white/10 rounded-[40px] p-8 md:p-12 text-slate-300 shadow-2xl relative overflow-hidden view-animate">
+                {/* Decorative background */}
+                <div class="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
+                    <div class="absolute top-10 right-10 w-64 h-64 bg-accent rounded-full blur-[100px]"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 relative z-10">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-2">{t.modelFramework}</h4>
+                            <p class="text-white text-base leading-relaxed font-serif">{project.methodology.model}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-2">{t.idStrategy}</h4>
+                            <p class="text-white text-base leading-relaxed font-serif">{project.methodology.strategy}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-2">{t.dataFreq}</h4>
+                            <p class="text-white text-base leading-relaxed font-serif">{project.methodology.data}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-accent uppercase tracking-wider mb-2">{t.estApproach}</h4>
+                            <p class="text-white text-base leading-relaxed font-serif">{project.methodology.estimation}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </section>
+            
+             <div class="mt-8 p-8 border border-dashed border-white/10 rounded-[32px] flex items-center justify-center text-slate-500 text-xs italic bg-white/5">
+                [ {t.transmissionDiagram} ]
+            </div>
+        </section>
 
-      {/* Phase 11: The Knowledge Graph */}
-      {project.knowledgeGraph && (
-         <section class="mb-20">
-             <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">{project.ui.continuityTitle || 'Knowledge Graph'}</h2>
-             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                 <div class="lg:col-span-2 h-[400px]">
-                     <KnowledgeGraph nodes={project.knowledgeGraph.nodes} links={project.knowledgeGraph.links} height={400} />
-                 </div>
-                 <div class="space-y-4">
-                     <h3 class="text-xl font-bold text-slate-800">Intellectual Lineage</h3>
-                     <p class="text-sm text-slate-600 leading-relaxed">
-                        This project builds upon key literature in monetary economics. The graph visualizes the direct citation network, with the central node representing this thesis.
-                     </p>
-                     <div class="flex gap-2 flex-wrap">
-                        <span class="text-[10px] px-2 py-1 bg-blue-50 text-blue-600 rounded-full font-bold">● Core Theory</span>
-                        <span class="text-[10px] px-2 py-1 bg-red-50 text-red-600 rounded-full font-bold">● Methodology</span>
-                        <span class="text-[10px] px-2 py-1 bg-green-50 text-green-600 rounded-full font-bold">● Recent Evidence</span>
-                     </div>
-                 </div>
-             </div>
-         </section>
-      )}
+        <!-- Key Findings -->
+        <section id="key-findings" class="mb-12 scroll-mt-24">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.findings}</h2>
+            <ul class="space-y-4">
+                {project.keyFindings.map(finding => (
+                    <li class="flex gap-6 group view-animate">
+                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent font-bold text-lg shrink-0 shadow-sm group-hover:scale-110 group-hover:border-accent/30 transition-all duration-300">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-sm flex-grow group-hover:shadow-md transition-all duration-300">
+                            <p class="text-slate-300 leading-relaxed font-serif">{finding}</p>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </section>
 
-      {/* Phase 11: The Interactive Glossary (Floating Helper) */}
-      {project.glossary && (
-        <div class="fixed bottom-8 left-8 z-50 hidden md:block group">
-            <div class="bg-white/90 backdrop-blur border border-slate-200 shadow-xl rounded-2xl p-4 w-64 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                <h4 class="text-xs font-bold uppercase text-slate-400 mb-2 border-b border-slate-100 pb-1">Key Terms</h4>
-                <ul class="space-y-2">
-                    {project.glossary.map(term => (
-                        <li class="text-xs">
-                            <span class="font-bold text-slate-700 block">{term.term}</span>
-                            <span class="text-slate-500">{term.definition}</span>
-                        </li>
+        <!-- Popular Science Section -->
+        {project.popularScienceResult && (
+            <section class="mb-24 view-animate">
+                <div class="bg-gradient-to-br from-accent/10 to-transparent border border-accent/20 p-8 rounded-[32px] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -m-8 w-64 h-64 bg-accent/10 rounded-full blur-[80px]"></div>
+                    <div class="relative z-10">
+                        <h3 class="flex items-center gap-3 text-accent font-bold text-lg mb-4">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            {t.popScienceTitle}
+                        </h3>
+                        <p class="text-slate-400 text-sm mb-6 italic border-l-2 border-accent/30 pl-3">
+                            {t.popScienceDesc}
+                        </p>
+                         <p class="text-slate-100 leading-relaxed font-serif text-lg">
+                            {project.popularScienceResult}
+                        </p>
+                    </div>
+                </div>
+            </section>
+        )}
+
+        <!-- Knowledge Graph OR Citation Galaxy -->
+        {project.knowledgeGraph && (
+            <section class="mb-24 academic-section">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.continuityTitle || 'Knowledge Graph'}</h2>
+                 <div class="bg-black border border-white/10 rounded-3xl p-1 shadow-2xl overflow-hidden view-animate">
+                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                        <div class="lg:col-span-2 h-[500px]">
+                            <GalaxyGraph 
+                                client:only="react"
+                                nodes={project.knowledgeGraph.nodes} 
+                                links={project.knowledgeGraph.links} 
+                                height={500} 
+                            />
+                        </div>
+                        <div class="space-y-6 pr-8 py-8 pl-4 lg:pl-0">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">{t.intellectualLineage}</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed">
+                                    {t.lineageDesc}
+                                </p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 text-xs text-slate-300">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"></span>
+                                    <span class="font-bold">Author & Project</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-slate-300">
+                                    <span class="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]"></span>
+                                    <span>{t.coreTheory}</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-slate-300">
+                                    <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
+                                    <span>{t.recentEvidence}</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-slate-300">
+                                    <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                    <span>Context</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-white/10">
+                                <p class="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Interaction</p>
+                                <p class="text-xs text-slate-400 flex items-center gap-2">
+                                    <i class="fa-solid fa-hand-pointer"></i> Drag to rotate • Scroll to zoom
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        )}
+
+        <!-- Bibliography -->
+        {project.bibliography && (
+            <section class="mb-24 academic-section">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{t.bibliography}</h2>
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-8 shadow-sm view-animate">
+                    <ul class="space-y-4 font-serif text-slate-300">
+                        {project.bibliography.map((ref, i) => (
+                            <li class="pl-8 -indent-8">
+                                {ref}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
+        )}
+
+        <!-- Video Abstract -->
+        {project.videoUrl && (
+            <section id="video-abstract" class="mb-24 scroll-mt-24">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.videoAbstract || 'Video Abstract'}</h2>
+                <div class="aspect-video bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl relative group border border-white/5 view-animate">
+                    <iframe 
+                        src={project.videoUrl} 
+                        title="Video Abstract" 
+                        class="w-full h-full relative z-10" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </section>
+        )}
+
+        <!-- Code Vault -->
+        {project.codeSnippet && (
+            <section class="mb-24">
+                 <div class="transform hover:scale-[1.01] transition-transform duration-500 view-animate">
+                    <CodeVault 
+                        client:only="react" 
+                        title={project.codeSnippet.title} 
+                        lang={project.codeSnippet.lang} 
+                        code={project.codeSnippet.code} 
+                    />
+                 </div>
+            </section>
+        )}
+
+        <!-- Gallery -->
+        {project.gallery && (
+            <section id="gallery" class="mb-24 scroll-mt-24">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.gallery || 'Gallery'}</h2>
+                <div class="grid grid-cols-1 gap-12">
+                    {project.gallery.map(img => (
+                        <div class="group view-animate">
+                            <div class="rounded-3xl overflow-hidden border border-white/10 shadow-lg mb-4 bg-white/5 p-2">
+                                <div class="rounded-2xl overflow-hidden relative">
+                                    <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors duration-500 z-10 pointer-events-none"></div>
+                                    <img src={img.src} alt={img.alt} class="w-full h-auto transform group-hover:scale-105 transition-transform duration-700 ease-out" />
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-center pl-4">
+                                <div class="h-px bg-white/10 w-12"></div>
+                                <p class="text-xs text-slate-500 italic font-serif">{img.caption}</p>
+                            </div>
+                        </div>
                     ))}
-                </ul>
-            </div>
-            <button class="bg-accent text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center text-sm font-bold absolute bottom-0 left-0 hover:scale-110 transition-transform">
-                <i class="fa-solid fa-book"></i>
-            </button>
-        </div>
-      )}
+                </div>
+            </section>
+        )}
 
+        <!-- Interactive Data -->
+        {project.interactiveChart && (
+            <section class="mb-24">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.liveData || 'Live Data'}</h2>
+                <div class="bg-white/5 border border-white/10 p-8 rounded-[32px] shadow-sm view-animate">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-white mb-2">{project.interactiveChart.title}</h3>
+                        <p class="text-sm text-slate-400 italic">{project.interactiveChart.description}</p>
+                    </div>
+                    <div class="relative h-[400px] w-full">
+                        <canvas id="projectChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        )}
+
+        <!-- Tech Stack -->
+        {project.techStack && (
+            <section class="mb-24">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">{project.ui.techStack || 'Tech Stack'}</h2>
+                <div class="flex flex-wrap gap-4">
+                    {project.techStack.map(tech => (
+                        <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3 rounded-xl shadow-sm hover:shadow-md hover:border-accent/30 transition-all cursor-default view-animate">
+                            <i class={`${tech.icon} text-xl text-slate-400`}></i>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-white leading-none">{tech.name}</span>
+                                {tech.version && <span class="text-[10px] text-slate-500 mt-1">v{tech.version}</span>}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        <!-- Downloads & Data -->
+        <section id="downloads" class="mb-24 border-t border-white/10 pt-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-6">{project.ui.dataTools}</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-4 items-start">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-server"></i></div>
+                            <div>
+                                <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">{t.sources}</span>
+                                <p class="text-slate-300 text-sm font-medium mt-1">{project.dataTools.sources}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                             <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-code"></i></div>
+                            <div>
+                                <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">{t.software}</span>
+                                <p class="text-slate-300 text-sm font-medium mt-1">{project.dataTools.software}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 shadow-xl shadow-black/20">
+                    <h2 class="text-xs uppercase tracking-widest font-bold text-white mb-6">{project.ui.download}</h2>
+                    <div class="space-y-3 mb-8">
+                        <a href={project.citation.pdfUrl} class="flex items-center gap-4 text-slate-300 font-bold hover:text-accent hover:border-accent transition-all p-4 bg-white/5 rounded-xl border border-white/10 group">
+                            <div class="w-10 h-10 rounded-lg bg-white/10 shadow-sm text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-pdf"></i></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm">{t.downloadThesis}</span>
+                                <span class="text-[10px] text-slate-500 font-normal">{t.fullText}</span>
+                            </div>
+                        </a>
+                        {project.dataLinks?.map(link => (
+                            <a href={link.url} class="flex items-center gap-4 text-slate-300 font-bold hover:text-accent hover:border-accent transition-all p-4 bg-white/5 rounded-xl border border-white/10 group">
+                                <div class="w-10 h-10 rounded-lg bg-white/10 shadow-sm text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class={link.icon}></i></div>
+                                <span class="text-sm">{link.label}</span>
+                            </a>
+                        ))}
+                    </div>
+                    
+                    {/* Slide Deck */}
+                    {project.slides && (
+                        <div class="mb-8 p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block mb-4">{project.ui.citation?.replace('Citering', 'Slides') || t.presentationSlides}</span>
+                            <SlideDeck slides={project.slides} />
+                        </div>
+                    )}
+
+                    <div class="pt-6 border-t border-white/10">
+                        <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block mb-2">{project.ui.citation}</span>
+                        <div class="relative group/cite">
+                             <code class="text-[11px] text-slate-400 block bg-black/20 p-4 rounded-xl border border-white/10 leading-relaxed font-mono select-all">
+                                {project.citation.text}
+                            </code>
+                            <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded opacity-0 group-hover/cite:opacity-100 transition-opacity" 
+                                    onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText); this.innerText = 'Copied!'; setTimeout(() => this.innerText = 'Copy', 2000);">
+                                {t.copy}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Policy Relevance -->
+        <section class="mb-24 bg-slate-900 ring-1 ring-white/10 text-white p-12 rounded-[40px] shadow-2xl relative overflow-hidden view-animate">
+             <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] pointer-events-none"></div>
+             <div class="relative z-10">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-12 flex items-center gap-4">
+                    {project.ui.relevance}
+                    <div class="h-px bg-white/10 flex-grow"></div>
+                </h2>
+                <div class="space-y-8">
+                    {project.policyRelevance.map(item => (
+                        <div class="flex gap-6">
+                            <i class="fa-solid fa-quote-left text-accent/50 text-2xl mt-1"></i>
+                            <p class="text-slate-300 leading-relaxed font-serif text-lg italic">
+                                {item}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+             </div>
+        </section>
+        
+        <!-- Interactive Glossary -->
+        {project.glossary && (
+            <div class="fixed bottom-8 left-8 z-50 hidden md:block group academic-section">
+                <div class="bg-slate-900/90 backdrop-blur border border-slate-700 shadow-xl rounded-2xl p-4 w-64 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
+                    <h4 class="text-xs font-bold uppercase text-slate-400 mb-2 border-b border-slate-800 pb-1">{t.keyTerms}</h4>
+                    <ul class="space-y-2">
+                        {project.glossary.map(term => (
+                            <li class="text-xs">
+                                <span class="font-bold text-slate-300 block">{term.term}</span>
+                                <span class="text-slate-500">{term.definition}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <button class="bg-accent text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-lg font-bold absolute bottom-0 left-0 hover:scale-110 transition-transform group-hover:rotate-12">
+                    <i class="fa-solid fa-book-open"></i>
+                </button>
+            </div>
+        )}
+
+    <!-- Custom Slot for Extensibility (e.g. Master's Thesis Journal) -->
+    <slot />
+    
+    </article>
+      
     </div>
+    
+    <!-- Data Playground (Full Width) -->
+    {project.dataLinks?.some(l => l.label.includes('csv')) && (
+        <section class="max-w-6xl mx-auto px-4 mb-32 scroll-mt-20" id="data-playground">
+            <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-12 flex items-center gap-3">
+                <span class="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fa-solid fa-flask"></i></span>
+                {t.simulationLayer}
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-6">
+                    <h3 class="text-3xl font-serif font-bold text-white">{t.liveDataLab}</h3>
+                    <p class="text-base text-slate-400 leading-relaxed font-serif">
+                        {t.liveDataDesc}
+                    </p>
+                        <DataPlayground client:only="react" dataUrl={project.dataLinks.find(l => l.label.includes('csv'))?.url || ''} />
+                </div>
+            </div>
+        </section>
+    )}
+
+    <!-- Smart Recommendation Navigation -->
+    <nav class="border-t border-white/10 bg-slate-900/50 backdrop-blur-sm">
+        <div class="container mx-auto max-w-6xl px-4 py-12 flex justify-between items-center">
+             {/* Left side empty for now to focus on forward flow, or use prevProject for legacy */}
+             <div>
+                {prevProject && (
+                    <a href={prevProject.url} class="group text-left opacity-30 hover:opacity-100 transition-opacity hidden md:block">
+                         <span class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1 block group-hover:text-accent transition-colors">&larr; {t.prevProject}</span>
+                         <span class="text-sm font-bold text-white/50 group-hover:text-white transition-colors">{prevProject.title}</span>
+                    </a>
+                )}
+             </div>
+
+            {nextProject && (
+                <a href={nextProject.url} class="group text-right">
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs font-bold uppercase tracking-widest text-accent mb-1 flex items-center gap-2">
+                            {t.recommended} <i class="fa-solid fa-star text-[10px] animate-pulse"></i>
+                        </span>
+                        <span class="text-[10px] text-slate-500 mb-2 font-mono bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                            {recommendationReason || 'Next Project'}
+                        </span>
+                        <span class="text-2xl md:text-4xl font-serif font-bold text-white group-hover:text-accent transition-colors">
+                            {nextProject.title} &rarr;
+                        </span>
+                    </div>
+                </a>
+            )}
+        </div>
+    </nav>
+
   </main>
   
-  {/* Phase 12: The Simulation Layer - Moved to root level for visibility */}
-  <div style="position: fixed; bottom: 10px; left: 10px; width: 40px; height: 40px; background: red; z-index: 10000; pointer-events: none; opacity: 0.5;" title="Debug Marker: Layout Root"></div>
   <ProjectBot 
       client:only="react"
       projectTitle={project.title}
       codeSnippet={project.codeSnippet}
   />
 
-</Layout>
-      
-      {/* Data Playground Section (Only if data link exists) */}
-      {project.dataLinks?.some(l => l.label.includes('csv')) && (
-          <section class="max-w-4xl mx-auto px-4 mb-20 scroll-mt-20" id="data-playground">
-               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8 flex items-center gap-2">
-                   <i class="fa-solid fa-flask text-accent"></i> 
-                   The Simulation Layer
-               </h2>
-               <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                   <div class="space-y-4">
-                       <h3 class="text-2xl font-serif font-bold text-slate-900">Live Data Lab</h3>
-                       <p class="text-sm text-slate-600 leading-relaxed">
-                           Don't just take my word for it. Access the raw project tokens directly in your browser.
-                           This playground uses <strong>DuckDB-WASM</strong> to run SQL queries against the actual dataset used in this paper.
-                       </p>
-                       <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-blue-800">
-                           <strong>try:</strong><br/>
-                           <code class="font-mono mt-1 block">SELECT * FROM main_data LIMIT 5;</code>
-                       </div>
-                   </div>
-                   <div class="md:col-span-2">
-                        <DataPlayground client:only="react" dataUrl={project.dataLinks.find(l => l.label.includes('csv'))?.url || ''} />
-                   </div>
-               </div>
-          </section>
-      )}
+  <!-- Citation Modal -->
+  <dialog id="citation-modal" class="bg-slate-900 border border-white/10 rounded-2xl p-0 backdrop:bg-black/80 w-full max-w-lg shadow-2xl">
+      <div class="p-6">
+          <h3 class="text-lg font-bold text-white mb-4">{t.citeThis}</h3>
+          
+          <div class="mb-4">
+              <label class="text-xs font-bold uppercase text-slate-500 mb-2 block">BibTeX</label>
+              <div class="relative">
+                  <pre class="bg-black/30 p-4 rounded-lg text-xs text-slate-300 overflow-x-auto font-mono custom-scrollbar">
+{`@misc{${project.title.split(' ')[0].toLowerCase()}_${new Date().getFullYear()},
+  author = {${project.citation.text.split('(')[0].trim()}},
+  title = {${project.title}},
+  year = {${new Date().getFullYear()}},
+  url = {https://antonebsen.dk/projects/${project.title.toLowerCase().replace(/\s+/g, '-')}}
+}`}
+                  </pre>
+                  <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded" 
+                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">
+                      {t.copy}
+                  </button>
+              </div>
+          </div>
+          
+           <div class="mb-6">
+              <label class="text-xs font-bold uppercase text-slate-500 mb-2 block">APA (Approx)</label>
+              <div class="relative">
+                  <div class="bg-black/30 p-4 rounded-lg text-sm text-slate-300">
+                      {project.citation.text}
+                  </div>
+                   <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded" 
+                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">
+                      {t.copy}
+                  </button>
+              </div>
+          </div>
 
-    </div>
-  </main>
+          <form method="dialog" class="text-right">
+              <button class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors">Close</button>
+          </form>
+      </div>
+  </dialog>
+
 </Layout>
 
 <script>
@@ -603,6 +956,7 @@ const { lang, project } = Astro.props;
                             position: 'bottom',
                             labels: {
                                 usePointStyle: true,
+                                color: '#94a3b8',
                                 font: {
                                     family: "'Inter', sans-serif",
                                     size: 11
@@ -621,9 +975,10 @@ const { lang, project } = Astro.props;
                     scales: {
                         y: {
                             grid: {
-                                color: '#f1f5f9'
+                                color: 'rgba(255,255,255,0.05)'
                             },
                             ticks: {
+                                color: '#64748b',
                                 font: { size: 10 }
                             },
                             border: { dash: [4, 4] }
@@ -633,6 +988,7 @@ const { lang, project } = Astro.props;
                                 display: false
                             },
                             ticks: {
+                                color: '#64748b',
                                 font: { size: 10 }
                             }
                         }
@@ -641,6 +997,87 @@ const { lang, project } = Astro.props;
             });
         }
     }
+</script>
+
+<script>
+ // Simple Scrollytelling Animation
+ const observer = new IntersectionObserver((entries) => {
+     entries.forEach(entry => {
+         if (entry.isIntersecting) {
+             entry.target.classList.add('animate-in', 'fade-in', 'slide-in-from-bottom-8', 'duration-700');
+             observer.unobserve(entry.target);
+         }
+     });
+ }, { threshold: 0.1 });
+
+ document.querySelectorAll('.view-animate').forEach((el) => {
+     observer.observe(el);
+ });
+
+ // --- RECRUITER MODE TOGGLE ---
+ const modeToggle = document.getElementById('recruiter-toggle');
+ const modeLabel = document.getElementById('mode-label');
+ const toggleIndicator = modeToggle?.querySelector('div');
+ const academicSections = document.querySelectorAll('.academic-section');
+ let isRecruiterMode = false;
+
+ modeToggle?.addEventListener('click', () => {
+     isRecruiterMode = !isRecruiterMode;
+     
+     // Update UI
+     if (isRecruiterMode) {
+         modeToggle.classList.replace('bg-slate-700', 'bg-accent');
+         toggleIndicator!.classList.add('translate-x-6');
+         modeLabel!.innerText = 'Recruiter Mode';
+         modeLabel!.classList.add('text-accent');
+         
+         // Hide Academic Sections
+         academicSections.forEach(el => el.classList.add('hidden'));
+     } else {
+         modeToggle.classList.replace('bg-accent', 'bg-slate-700');
+         toggleIndicator!.classList.remove('translate-x-6');
+         modeLabel!.innerText = 'Akademisk Mode'; // Or swap based on lang
+         modeLabel!.classList.remove('text-accent');
+
+         // Show Academic Sections
+         academicSections.forEach(el => el.classList.remove('hidden'));
+     }
+ });
+
+ // --- AUDIO ABSTRACT (TTS) ---
+ const ttsButton = document.getElementById('tts-button');
+ const ttsText = document.getElementById('executive-summary-text')?.innerText;
+ let isSpeaking = false;
+
+ ttsButton?.addEventListener('click', () => {
+     if (!ttsText) return;
+
+     if (isSpeaking) {
+         window.speechSynthesis.cancel();
+         isSpeaking = false;
+         ttsButton.innerHTML = '<i class="fa-solid fa-volume-high text-xs"></i>';
+         ttsButton.classList.remove('animate-pulse', 'bg-red-500');
+     } else {
+         const utterance = new SpeechSynthesisUtterance(ttsText);
+         utterance.rate = 1.0;
+         utterance.pitch = 1.0;
+         // Try to use a good voice
+         const voices = window.speechSynthesis.getVoices();
+         const preferredVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha'));
+         if (preferredVoice) utterance.voice = preferredVoice;
+
+         utterance.onend = () => {
+             isSpeaking = false;
+             ttsButton.innerHTML = '<i class="fa-solid fa-volume-high text-xs"></i>';
+             ttsButton.classList.remove('animate-pulse', 'bg-red-500');
+         };
+
+         window.speechSynthesis.speak(utterance);
+         isSpeaking = true;
+         ttsButton.innerHTML = '<i class="fa-solid fa-stop text-xs"></i>';
+         ttsButton.classList.add('animate-pulse', 'bg-red-500');
+     }
+ });
 </script>
 
 <!-- Pass data to script -->
@@ -654,5 +1091,29 @@ const { lang, project } = Astro.props;
   /* Academic serif font stacking */
   .font-serif {
     font-family: 'Georgia', 'Times New Roman', serif;
+  }
+  
+  .animate-slow-zoom {
+      animation: slow-zoom 20s infinite alternate;
+  }
+  
+  @keyframes slow-zoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+  }
+
+  .animate-pulse-slow {
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
   }
 </style>

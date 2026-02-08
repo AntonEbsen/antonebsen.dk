@@ -1,0 +1,89 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Seminar: Economics of the Welfare State (TBD)",
+  subtitle: "Kommende seminarprojekt i velfærdsstatsøkonomi.",
+  executiveSummary: "Dette projekt er under udarbejdelse. Det vil omhandle en dybdegående analyse af velfærdsstatens økonomi, udarbejdet i samarbejde med Sheng og Jonas. Nærmere detaljer om emne, problemstilling og resultater vil blive tilføjet, når projektet er defineret.",
+  researchQuestions: [
+    "TBD: Problemstilling under udarbejdelse.",
+    "TBD: Fokusområde inden for velfærdsøkonomi?",
+    "TBD: Hvilke data og metoder anvendes?"
+  ],
+  methodology: {
+    model: "Økonomisk Analyse",
+    strategy: "Teoretisk og empirisk undersøgelse.",
+    data: "TBD.",
+    estimation: "TBD."
+  },
+  keyFindings: [
+    "Dette projekt er endnu ikke påbegyndt.",
+    "Resultater vil blive præsenteret her.",
+    "Forventet afslutning: 2026."
+  ],
+  secondaryAnalysis: {
+    title: "Foreløbig Status",
+    description: "Projektet er i planlægningsfasen.",
+    items: [
+      "Emnevalg: Under overvejelse.",
+      "Gruppedannelse: Etableret (Sheng, Jonas, Anton).",
+      "Analyse: Ikke påbegyndt."
+    ]
+  },
+  policyRelevance: [
+    "Velfærdspolitik.",
+    "Offentlig økonomi."
+  ],
+  limitations: [
+    "Status: Planlagt projekt."
+  ],
+  dataTools: {
+    sources: "TBD.",
+    software: "Stata / R / Python (TBD)."
+  },
+  highlights: [
+    { label: "Fag", value: "Seminar" },
+    { label: "Status", value: "Kommende" }
+  ],
+  contextNote: "Dette er en pladsholder for et kommende seminarprojekt.",
+  videoUrl: "", 
+  techStack: [
+      { name: "Economics", icon: "fa-solid fa-chart-pie" },
+      { name: "Public Policy", icon: "fa-solid fa-scale-balanced" }
+  ],
+  timeline: [
+      { date: "2026", title: "Planlagt", description: "Projektstart." }
+  ],
+  dataLinks: [],
+  citation: {
+    text: "Ebsen, Anton, Sheng & Jonas. Seminar: Economics of the Welfare State (TBD). (Kommende).",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Metode & Teori",
+    findings: "Forventede Resultater",
+    relevance: "Relevans",
+    dataTools: "Kilder",
+    download: "Hent projekt (TBD)",
+    citation: "Reference",
+    execSummary: "Resumé",
+    researchQuestions: "Foreløbige Spørgsmål",
+    limitations: "Status",
+    secondaryAnalysis: "Status",
+    gallery: "Galleri",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Fagområder",
+    timeline: "Tidslinje",
+    liveData: "Data",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { name: "Sheng", role: "Projektpartner", image: "/assets/collaborators/sheng.jpg", description: "Medforfatter." },
+    { name: "Jonas", role: "Projektpartner", image: "/assets/collaborators/jonas.jpg", description: "Medforfatter." }
+  ],
+  bibliography: []
+};
+---
+<ProjectDetailPage lang="da" project={projectContent} />

@@ -1,0 +1,112 @@
+---
+import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+export const prerender = true;
+
+const projectContent = {
+  title: "Does GenAI Help Those Who Need It Most?",
+  subtitle: "Estimating Heterogeneous Treatment Effects of Generative AI on Student Performance in Danish High Schools.",
+  executiveSummary: "As Generative AI becomes ubiquitous in education, a critical question emerges: Does it level the playing field or exacerbate existing inequalities? This project, submitted as a research proposal in January 2026, proposes an investigation into the heterogeneous effects of GenAI usage across socioeconomic backgrounds. By linking detailed survey data with administrative grade records from Danish upper-secondary schools, we aim to uncover whether AI acts as an 'equalizer' or if it deepens existing divides.",
+  researchQuestions: [
+    "What are the heterogeneous effects of GenAI usage on the academic outcomes of students?",
+    "Does the introduction of GenAI in education reduce or deepen existing socioeconomic inequalities?",
+    "Do students from different socioeconomic backgrounds use GenAI at different rates, for different subjects, and for different purposes?"
+  ],
+  methodology: {
+    model: "Causal Forest (Machine Learning Inference)",
+    strategy: "Estimating Conditional Average Treatment Effects (CATE) to capture non-linear heterogeneity.",
+    data: "Primary Survey Data + Administrative Grade Records (Pre/Post GenAI) for ~800 students.",
+    estimation: "Difference-in-Differences setup within a Causal Forest framework to control for high-dimensional covariates."
+  },
+  keyFindings: [
+    "Research Proposal: This project is a research design without empirical results yet.",
+    "Hypothesis: We expect the impact of AI to vary significantly based on student background and usage patterns.",
+    "Focus: Differentiating between 'high-quality' (tutor-like) and 'low-quality' (shortcut) usage is key.",
+    "Ethics: The project addresses fairness and the long-term consequences of AI in the educational system."
+  ],
+  secondaryAnalysis: {
+    title: "The Causal Forest Approach",
+    description: "Unlike traditional regression models, a Causal Forest allows us to estimate the treatment effect for *each individual student* based on their characteristics.",
+    items: [
+      "Personalized Estimates: The algorithm automatically identifies which variables (e.g., parental education) drive differences in impact.",
+      "Data-Driven Subgroups: We avoid pre-defining groups and let the data reveal the heterogeneity.",
+      "Robustness: Using 'Honest Trees' ensures valid inference without overfitting."
+    ]
+  },
+  policyRelevance: [
+    "Evidence-based regulation: Should schools ban, restrict, or embrace GenAI?",
+    "Equity in Education: Identifying groups that need targeted support for 'AI Literacy'.",
+    "Future Skills: Understanding how early adoption affects human capital accumulation."
+  ],
+  limitations: [
+    "Selection: GenAI usage is voluntary, not randomly assigned. We rely on 'selection on observables'.",
+    "Self-Reporting: Risk of underreporting cheating in surveys.",
+    "Short-term: We primarily measure effects on grades, not long-term learning."
+  ],
+  dataTools: {
+    sources: "Primary Data Collection (Survey), Administrative Systems (Lectio/Ludus).",
+    software: "LaTeX (Writing)."
+  },
+  highlights: [
+    { label: "Status", value: "Proposal" },
+    { label: "Grade", value: "10" },
+    { label: "Submitted", value: "Jan 2026" }
+  ],
+  // Removed interactive elements as requested
+  videoUrl: "", 
+  techStack: [
+      { name: "LaTeX", icon: "fa-solid fa-file-tex" }
+  ],
+  timeline: [
+      { date: "Jan 2026", title: "Submission", description: "The research proposal was submitted and graded." }
+  ],
+  dataLinks: [
+      { label: "Course Page", url: "https://kurser.ku.dk/course/a%C3%98kk08446u/", icon: "fa-solid fa-school" }
+  ],
+  citation: {
+    text: "Jørgensen, Anton M. E., Chen, Sheng Ye Michael & Nielsen, Jonas Amasa Skov (2026). Does GenAI Help Those Who Need It Most? Research Proposal, University of Copenhagen.",
+    pdfUrl: "#"
+  },
+  ui: {
+    methodology: "Methodology",
+    findings: "Hypotheses & Expectations",
+    relevance: "Relevance",
+    dataTools: "Data & Tools",
+    download: "Documents",
+    citation: "Reference",
+    execSummary: "Summary",
+    researchQuestions: "Research Questions",
+    limitations: "Limitations",
+    secondaryAnalysis: "Deep Dive",
+    gallery: "Gallery",
+    codeVault: "Code Vault",
+    videoAbstract: "Video Abstract",
+    techStack: "Technology",
+    timeline: "Timeline",
+    liveData: "Interactive Analysis",
+    openScience: "Open Science"
+  },
+  collaborators: [
+    { 
+        name: "Sheng Ye Michael Chen", 
+        role: "Co-author", 
+        image: "/assets/collaborators/sheng.jpg",
+        description: "Contributed to survey design and ML implementation strategy.",
+        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    },
+    { 
+        name: "Jonas Amasa Skov Nielsen", 
+        role: "Co-author", 
+        image: "/assets/collaborators/jonas.jpg",
+        description: "Contributed to the theoretical framework and educational sociology literature review.",
+        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+    }
+  ],
+  bibliography: [
+    "Thomas, A. (2024). AI-assisted tutoring and student performance. Journal of Educational Psychology (Forthcoming).",
+    "Wager, S., & Athey, S. (2018). Estimation and Inference of Heterogeneous Treatment Effects using Random Forests. Journal of the American Statistical Association.",
+    "Knittel, M., & Stolper, S. (2024). Functional Heterogeneity and Causal Inference.",
+    "van de Mortel, T. F. (2008). Faking it: social desirability response bias in self-report research. Australian Journal of Advanced Nursing."
+  ]
+};
+---
+<ProjectDetailPage lang="en" project={projectContent} />
