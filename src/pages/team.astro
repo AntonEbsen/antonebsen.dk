@@ -410,13 +410,13 @@ df = (
     pd.<span class="text-blue-400">read_parquet</span>(<span class="text-green-400">"data/raw/ecb_ticks.parquet"</span>)
     .<span class="text-blue-400">query</span>(<span class="text-green-400">"currency == 'USD/EUR'"</span>)
     .<span class="text-blue-400">resample</span>(<span class="text-green-400">"1min"</span>)
-    .<span class="text-blue-400">agg</span>({'{'}<span class="text-green-400">"price"</span>: <span class="text-green-400">"ohlc"</span>, <span class="text-green-400">"vol"</span>: <span class="text-green-400">"sum"</span>{'}'})
+    .<span class="text-blue-400">agg</span>(&#123;<span class="text-green-400">"price"</span>: <span class="text-green-400">"ohlc"</span>, <span class="text-green-400">"vol"</span>: <span class="text-green-400">"sum"</span>&#125;)
     .<span class="text-blue-400">dropna</span>()
 )
 
 <span class="text-slate-500"># 2. Local Projection (Jordà, 2005)</span>
 model = sm.<span class="text-yellow-400">OLS</span>(df[<span class="text-green-400">"future_return"</span>], df[[<span class="text-green-400">"shock"</span>, <span class="text-green-400">"controls"</span>]])
-results = model.<span class="text-blue-400">fit</span>(cov_type=<span class="text-green-400">'HAC'</span>, cov_kwds={'{'}<span class="text-green-400">'maxlags'</span>: <span class="text-orange-400">12</span>{'}'})
+results = model.<span class="text-blue-400">fit</span>(cov_type=<span class="text-green-400">'HAC'</span>, cov_kwds=&#123;<span class="text-green-400">'maxlags'</span>: <span class="text-orange-400">12</span>&#125;)
 <span class="text-purple-400">print</span>(results.<span class="text-blue-400">summary</span>())
                      </pre>
                  </div>
