@@ -172,6 +172,14 @@ const lang = getLangFromUrl(Astro.url);
       --accent: #15803d;
       --season-bar: linear-gradient(90deg, rgba(21, 128, 61, 0.95), rgba(255, 255, 255, 0.15));
     }
+
+    /* === MATH / KATEX === */
+    .katex-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+    }
   </style>
   <script is:inline>
     // Theme detection runs immediately before any content renders

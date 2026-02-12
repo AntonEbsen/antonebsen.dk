@@ -12,7 +12,7 @@ const data = [
 
 export default function TaylorRuleChart() {
     return (
-        <div className="w-full h-[400px] my-10 bg-[#0a0a0c] border border-white/10 rounded-xl p-4 shadow-2xl relative overflow-hidden group">
+        <div className="w-full h-[300px] md:h-[400px] my-10 bg-[#0a0a0c] border border-white/10 rounded-xl p-4 shadow-2xl relative overflow-hidden group">
 
             {/* Header */}
             <div className="flex justify-between items-start mb-6 px-2">
