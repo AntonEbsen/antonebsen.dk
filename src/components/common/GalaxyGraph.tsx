@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import ForceGraph3D from 'react-force-graph-3d';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import * as d3 from 'd3';
+
+// Lazy load ForceGraph3D because it relies on window/document (client-only)
+const ForceGraph3D = React.lazy(() => import('react-force-graph-3d'));
 
 interface Node {
     id: string;
@@ -25,6 +27,11 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
     const fgRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ w: 800, h: height });
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     // Dynamic Sizing with ResizeObserver
     useEffect(() => {
@@ -45,8 +52,10 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
 
     // Auto-rotation & Force Logic
     useEffect(() => {
+        if (!isMounted || !fgRef.current) return;
+
         // Add radial force to keep nodes centered
-        if (fgRef.current) {
+        if (fgRef.current.d3Force) {
             fgRef.current.d3Force('charge').strength(-120); // Reduce repulsion slightly
             fgRef.current.d3Force('radial', d3.forceRadial(0, 0, 0).strength(0.1)); // Center pull
         }
@@ -62,7 +71,7 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
             }
         }, 50);
         return () => clearInterval(interval);
-    }, []);
+    }, [isMounted]);
 
     const getNodeColor = (node: any) => {
         if (node.group === 1) return '#D4AF37'; // Gold (Thesis/Project)
@@ -78,29 +87,31 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
                 <p className="text-[10px] text-slate-400">Interactive 3D Network</p>
             </div>
 
-            <ForceGraph3D
-                ref={fgRef}
-                width={dimensions.w}
-                height={dimensions.h}
-                graphData={{ nodes, links }}
-                nodeLabel="id"
-                nodeColor={getNodeColor}
-                nodeVal={(node: any) => node.val || node.radius || 5}
-                linkColor={() => 'rgba(255,255,255,0.15)'}
-                backgroundColor="#000000"
-                showNavInfo={false}
-                linkWidth={1}
-                linkOpacity={0.3}
-
-                // Particles
-                linkDirectionalParticles={2}
-                linkDirectionalParticleSpeed={0.005}
-                linkDirectionalParticleWidth={1.5}
-                linkDirectionalParticleColor={() => '#ffffff'}
-
-                // Camera config
-                controlType="orbit"
-            />
+            {isMounted && (
+                <Suspense fallback={<div className="flex items-center justify-center h-full text-gray-500">Loading Galaxy...</div>}>
+                    <ForceGraph3D
+                        ref={fgRef}
+                        width={dimensions.w}
+                        height={dimensions.h}
+                        graphData={{ nodes, links }}
+                        nodeLabel="id"
+                        nodeColor={getNodeColor}
+                        nodeVal={(node: any) => node.val || node.radius || 5}
+                        linkColor={() => 'rgba(255,255,255,0.15)'}
+                        backgroundColor="#000000"
+                        showNavInfo={false}
+                        linkWidth={1}
+                        linkOpacity={0.3}
+                        // Particles
+                        linkDirectionalParticles={2}
+                        linkDirectionalParticleSpeed={0.005}
+                        linkDirectionalParticleWidth={1.5}
+                        linkDirectionalParticleColor={() => '#ffffff'}
+                        // Camera config
+                        controlType="orbit"
+                    />
+                </Suspense>
+            )}
         </div>
     );
 }

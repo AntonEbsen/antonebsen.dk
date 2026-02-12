@@ -24,6 +24,15 @@
             "icon": "fa-solid fa-diagram-project"
         },
         {
+            "id": "taylor-rule",
+            "title": "Taylor-regler",
+            "desc": "En monetær reaktionsfunktion der bestemmer den optimale rente baseret på inflation og output-gap.",
+            "tech": "Interaktiv simulator bygget i React & Chart.js.",
+            "formula": "i_t = r^* + \\pi_t + \\alpha_\\pi(\\pi_t - \\pi^*) + \\alpha_y(y_t)",
+            "icon": "fa-solid fa-gauge-high",
+            "simulatorUrl": "/models/taylor-rule"
+        },
+        {
             "id": "cge",
             "title": "CGE (Computable General Equilibrium)",
             "desc": "Statisk og dynamisk modellering af hele økonomier, ofte brugt til handels- og skattepolitik.",

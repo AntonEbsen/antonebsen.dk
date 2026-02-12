@@ -115,10 +115,12 @@
     ],
     "courses": [
         {
-            "title": "Advanced Macroeconomics: SVAR",
+            "title": "Advanced Macroeconomics - Structural Vector Autoregressive (VAR) Analysis (F)",
             "tag": "Makro",
             "institution": "Universität Kopenhagen",
             "description": "Methoden: Identifikation, Impulsantworten, Robustheit. Werkzeuge: (SAS/Stata/Python).",
+            "level": "master",
+            "grade": "10",
             "links": [
                 {
                     "text": "Notizen",
@@ -131,7 +133,101 @@
             ]
         },
         {
-            "title": "Introduction to Programming & Numerical Analysis",
+            "title": "Das Finanzsystem (F)",
+            "tag": "Finanzen",
+            "institution": "Universität Kopenhagen",
+            "description": "Analyse von Finanzmärkten, Institutionen und ihrer Rolle in der Wirtschaft.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Advanced Macroeconomics - Business Cycles",
+            "tag": "Makro",
+            "institution": "Universität Kopenhagen",
+            "description": "Konjunkturtheorie, DSGE-Modelle und makroökonomische Fluktuationen.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Seminar - Advanced Empirical Macroeconomic Analysis (F)",
+            "tag": "Seminar",
+            "institution": "Universität Kopenhagen",
+            "description": "Fortgeschrittene empirische Analyse makroökonomischer Fragestellungen.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Financial Decision Making (F)",
+            "tag": "Finanzen",
+            "institution": "Universität Kopenhagen",
+            "description": "Entscheidungsfindung unter Unsicherheit, Portfoliotheorie und Asset Pricing.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "AI for Humanity - Machine Decisions, Learning and Societal Consequences",
+            "tag": "KI",
+            "institution": "Universität Kopenhagen",
+            "description": "Gesellschaftliche Folgen und ethische Aspekte der KI-Technologie.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Angewandte ökonomische Modellierung",
+            "tag": "Modelle",
+            "institution": "Universität Kopenhagen",
+            "description": "Kalibrierung, SAM, Schocks, Baseline-Checks. Werkzeug: GAMS.",
+            "level": "master",
+            "grade": "10",
+            "links": [
+                {
+                    "text": "Fallstudie",
+                    "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "Praktische Zeitreihenanalyse",
+            "tag": "Ökonometrie",
+            "institution": "Universität Kopenhagen",
+            "description": "Anwendung von Zeitreihenmethoden auf ökonomische Daten.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Demographie",
+            "tag": "Gesellschaft",
+            "institution": "Universität Kopenhagen",
+            "description": "Bevölkerungsentwicklung, Modellierung von Fertilität, Mortalität und Migration.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Seminar - Economics of the Welfare State",
+            "tag": "Seminar",
+            "institution": "Universität Kopenhagen",
+            "description": "Ökonomische Analyse der Gestaltung und Herausforderungen des Sozialstaates.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Stichprobentheorie",
+            "tag": "Methode",
+            "institution": "Universität Kopenhagen",
+            "description": "Stichprobenverfahren und Analyse von Bevölkerungsproben.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Wirtschaftssoziologie",
+            "tag": "Gesellschaft",
+            "institution": "Universität Kopenhagen",
+            "description": "Soziologische Perspektive auf wirtschaftliches Handeln und Institutionen.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Introduction to Programming and Numerical Analysis",
             "tag": "Coding",
             "institution": "Universität Kopenhagen",
             "description": "Numerik, Modellsimulation und grundlegende Workflows. Werkzeuge: Python/MATLAB.",
@@ -143,16 +239,298 @@
             ]
         },
         {
-            "title": "CGE / Applied Economic Modelling",
-            "tag": "Modelle",
+            "title": "Mathematik A",
+            "tag": "Methode",
             "institution": "Universität Kopenhagen",
-            "description": "Kalibrierung, SAM, Schocks, Baseline-Checks. Werkzeug: GAMS.",
+            "description": "Einführung in die mathematische Analyse, lineare Algebra und Optimierung.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Gesellschaftsbeschreibung A",
+            "tag": "Gesellschaft",
+            "institution": "Universität Kopenhagen",
+            "description": "Einführung in die wirtschaftliche und institutionelle Struktur der dänischen Gesellschaft.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Wirtschaft in der Gesellschaft",
+            "tag": "Gesellschaft",
+            "institution": "Universität Kopenhagen",
+            "description": "Grundlegende wirtschaftliche Zusammenhänge und politische Fragestellungen.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Ökonomische Prinzipien A",
+            "tag": "Prinzipien",
+            "institution": "Universität Kopenhagen",
+            "description": "Grundlegende mikroökonomische Prinzipien und Marktmechanismen.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Mathematik B",
+            "tag": "Methode",
+            "institution": "Universität Kopenhagen",
+            "description": "Fortgeschrittene mathematische Analyse, einschließlich multivariater Analysis.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Gesellschaftsbeschreibung B",
+            "tag": "Gesellschaft",
+            "institution": "Universität Kopenhagen",
+            "description": "Analyse sozioökonomischer Daten und Beschreibung des öffentlichen Sektors.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Betriebswirtschaftslehre",
+            "tag": "Business",
+            "institution": "Universität Kopenhagen",
+            "description": "Wirtschaftliche Entscheidungen in Unternehmen, Rechnungswesen und Finanzierung.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Ökonomische Prinzipien B",
+            "tag": "Prinzipien",
+            "institution": "Universität Kopenhagen",
+            "description": "Grundlegende makroökonomische Prinzipien und Volkswirtschaftliche Gesamtrechnung.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Mikroökonomie I",
+            "tag": "Mikro",
+            "institution": "Universität Kopenhagen",
+            "description": "Konsumenten- und Produzententheorie unter vollkommenem Wettbewerb.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Makroökonomie I",
+            "tag": "Makro",
+            "institution": "Universität Kopenhagen",
+            "description": "Die geschlossene Volkswirtschaft auf kurze und mittlere Sicht.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Wahrscheinlichkeitstheorie und Statistik",
+            "tag": "Methode",
+            "institution": "Universität Kopenhagen",
+            "description": "Grundlegende Wahrscheinlichkeitstheorie und statistische Inferenz.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "The Economic History of Europe",
+            "tag": "Geschichte",
+            "institution": "Universität Kopenhagen",
+            "description": "Wirtschaftsentwicklung Europas vom Mittelalter bis zur Gegenwart.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Mikroökonomie II",
+            "tag": "Mikro",
+            "institution": "Universität Kopenhagen",
+            "description": "Allgemeines Gleichgewicht, Wohlfahrtstheorie und unvollkommener Wettbewerb.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Makroökonomie II",
+            "tag": "Makro",
+            "institution": "Universität Kopenhagen",
+            "description": "Die offene Volkswirtschaft und langfristiges Wirtschaftswachstum.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Ökonometrie I",
+            "tag": "Ökonometrie",
+            "institution": "Universität Kopenhagen",
+            "description": "Lineare Regressionsanalyse und grundlegende ökonometrische Methoden.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Wissenschaftstheorie für Ökonomen",
+            "tag": "Methode",
+            "institution": "Universität Kopenhagen",
+            "description": "Philosophische und methodische Grundlagen der Wirtschaftswissenschaft.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Organisationstheorie",
+            "tag": "Business",
+            "institution": "Universität Kopenhagen",
+            "description": "Theorien über Organisationsstruktur, Verhalten und Management.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Microeconomics III",
+            "tag": "Mikro",
+            "institution": "Universität Kopenhagen",
+            "description": "Spieltheorie und Informationsökonomie.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Macroeconomics III",
+            "tag": "Makro",
+            "institution": "Universität Kopenhagen",
+            "description": "Fortgeschrittene makroökonomische Theorie und Modellbildung.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Ökonometrie II",
+            "tag": "Ökonometrie",
+            "institution": "Universität Kopenhagen",
+            "description": "Fortgeschrittene Regressionsanalyse, Zeitreihen und Mikroökonometrie.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Wirtschaftsgeschichte",
+            "tag": "Geschichte",
+            "institution": "Universität Kopenhagen",
+            "description": "Dänische und internationale Wirtschaftsgeschichte mit Fokus auf Wachstum und Krisen.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Bachelorarbeit",
+            "tag": "Projekt",
+            "institution": "Universität Kopenhagen",
+            "description": "Eigenständige wissenschaftliche Arbeit zu einem ökonomischen Thema.",
+            "level": "bachelor",
+            "grade": "12",
             "links": [
                 {
-                    "text": "Fallstudie",
-                    "href": "#"
+                    "text": "Projekt ansehen",
+                    "href": "/projects/global-financial-cycle"
                 }
             ]
+        },
+        {
+            "title": "Matematik A",
+            "tag": "Methode",
+            "institution": "HHX",
+            "description": "Fortgeschrittene Mathematik einschließlich Differential- und Integralrechnung.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Dänisch A",
+            "tag": "Sprache",
+            "institution": "HHX",
+            "description": "Analyse von Literatur, Sprache und Kommunikation.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Englisch A",
+            "tag": "Sprache",
+            "institution": "HHX",
+            "description": "Fortgeschrittene englische Sprache und Kulturverständnis.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "SOP (Abschlussprojekt)",
+            "tag": "Projekt",
+            "institution": "HHX",
+            "description": "Abschlussprojekt zu einem wirtschaftlichen und gesellschaftlichen Thema.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Geschichte B",
+            "tag": "Gesellschaft",
+            "institution": "HHX",
+            "description": "Geschichtliche Entwicklung mit Fokus auf die Moderne und Ideologien.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Deutsch B",
+            "tag": "Sprache",
+            "institution": "HHX",
+            "description": "Kommunikation und Kulturverständnis in deutschsprachigen Ländern.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Absatz B",
+            "tag": "Business",
+            "institution": "HHX",
+            "description": "Marktanalyse, Strategie und internationales Marketing.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Finanzierung C",
+            "tag": "Business",
+            "institution": "HHX",
+            "description": "Investitionstheorie, Finanzmärkte und Unternehmensanalyse.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Informatik C",
+            "tag": "Methode",
+            "institution": "HHX",
+            "description": "Einführung in IT-Systeme, Datenbanken und grundlegende Programmierung.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Wirtschaftsrecht C",
+            "tag": "Gesellschaft",
+            "institution": "HHX",
+            "description": "Grundlegende Rechtsprinzipien in der Geschäftswelt.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Sozialkunde C",
+            "tag": "Gesellschaft",
+            "institution": "HHX",
+            "description": "Einführung in politische Systeme und Soziologie.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Wirtschaftlicher Grundkurs",
+            "tag": "Prinzipien",
+            "institution": "HHX",
+            "description": "Basisviden om mikro- und makroøkonomiske sammenhænge.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Allgemeines Sprachverständnis",
+            "tag": "Sprache",
+            "institution": "HHX",
+            "description": "Grundlæggende sprogvidenskab og grammatik.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Business Case",
+            "tag": "Projekt",
+            "institution": "HHX",
+            "description": "Case-baseret analyse af en konkret virksomhed.",
+            "level": "hhx",
+            "grade": "12"
         }
     ],
     "projects": [

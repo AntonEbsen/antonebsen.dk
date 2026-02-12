@@ -10,14 +10,20 @@
         "author": {
           "type": "string"
         },
-        "year": {
+        "period": {
           "type": "string"
         },
-        "genre": {
+        "previewImage": {
           "type": "string"
         },
-        "tag": {
+        "notebookPath": {
           "type": "string"
+        },
+        "syllabus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "note": {
           "type": "string"

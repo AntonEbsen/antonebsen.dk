@@ -1,0 +1,90 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { caminoContent } from '../data/camino';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: 'da' | 'en';
+}
+
+const { title, description, lang } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} bodyClass="camino-theme-active">
+  <div class="camino-layout-wrapper">
+    <div class="parchment-overlay"></div>
+    <slot />
+  </div>
+
+  <style is:global>
+    /* Premium Camino Theme Overrides */
+    :root {
+      --camino-gold: #D4AF37;
+      --camino-gold-muted: rgba(212, 175, 55, 0.2);
+    }
+
+    body.camino-theme-active {
+      --bg: #080808;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1a1508 0%, #080808 70%);
+      --accent: var(--camino-gold);
+      --accent-soft: var(--camino-gold-muted);
+      --glass: rgba(10, 10, 12, 0.85);
+      --glass-border: rgba(212, 175, 55, 0.15);
+      --glass-border-hover: rgba(212, 175, 55, 0.5);
+    }
+
+    .camino-layout-wrapper {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .parchment-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+
+    /* Common subpage elements */
+    .camino-section {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-glass {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card-glass:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-5px);
+    }
+
+    .section-header .icon-box {
+      background: var(--accent-soft);
+      color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-soft);
+    }
+
+    /* Responsive Timeline Line (Hidden by default, used in subpages) */
+    .timeline-line {
+      position: absolute;
+      left: 30px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      opacity: 0.3;
+    }
+  </style>
+</BaseLayout>

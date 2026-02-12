@@ -8,12 +8,19 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { getEntry } from 'astro:content';
 import CourseCard from '@components/courses/CourseCard.astro';
+import LabModal from '@components/project/LabModal';
+import ConceptNetwork from '../courses/ConceptNetwork';
+import SynergyMap from '../courses/SynergyMap';
+import SpecializationBadges from '../courses/SpecializationBadges.astro';
+import MasteryModal from '../courses/MasteryModal';
+import AcademicDNA from '@components/courses/AcademicDNA';
+import type { Course } from '@content/config';
 
 interface Props {
   lang: 'da' | 'en';
 }
 
-const { lang } = Astro.props;
+const { lang = 'da' } = Astro.props;
 const isDa = lang === 'da';
 
 // 1. UI Content
@@ -26,12 +33,90 @@ const cvEntry = await getEntry('cv', lang);
 if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
 const cv = cvEntry.data;
 
-// Separate courses by level
-const masters = cv.courses?.filter(c => c.level === 'master') || [];
-const bachelors = cv.courses?.filter(c => c.level === 'bachelor') || [];
-const hhx = cv.courses?.filter(c => c.level === 'hhx') || [];
+// Chronological Sorting Logic
+const periodRank: Record<string, number> = {
+  'F': 0.1, // Spring / Forår
+  'S': 0.1, // Spring
+  'E': 0.2, // Autumn / Efterår
+  'F': 0.2  // Fall
+};
 
-// Fallback for uncategorized courses (e.g. un-leveled "other" courses from old data)
+function getCourseSortWeight(course: any) {
+  // Base weight by level
+  const levelWeight = {
+    'hhx': 1000,
+    'bachelor': 2000,
+    'master': 3000
+  }[course.level as 'hhx' | 'bachelor' | 'master'] || 0;
+
+  if (!course.period) return levelWeight;
+
+  // Extract year and term (e.g., F26 -> year 26, term F)
+  const match = course.period.match(/([FEAS])(\d{2})/);
+  if (match) {
+    const term = match[1];
+    const year = parseInt(match[2]);
+    const termWeight = term === 'F' || term === 'S' ? 1 : 2; // Spring=1, Fall=2
+    return levelWeight + year * 10 + termWeight;
+  }
+
+  // Fallback for special periods like "2024 - nu" or "SOP"
+  if (course.period.includes('20')) {
+      const year = parseInt(course.period.match(/\d{4}/)?.[0] || '0');
+      return levelWeight + (year - 2000) * 10;
+  }
+
+  return levelWeight;
+}
+
+// Sort all courses: HHX (oldest) -> Master (newest)
+const journey = [...(cv.courses || [])].sort((a, b) => getCourseSortWeight(a) - getCourseSortWeight(b));
+
+// Grouped for dashboard but journey for timeline
+const masters = journey.filter(c => c.level === 'master');
+const bachelors = journey.filter(c => c.level === 'bachelor');
+const hhx = journey.filter(c => c.level === 'hhx');
+
+// Dashboard Logic
+const allRelevantCourses = (cv.courses || []).filter(c => c.grade && c.ects && !isNaN(parseFloat(c.ects)));
+
+// 1. GPA Calculation (Weighted by ECTS)
+const totalWeightedGrade = allRelevantCourses.reduce((sum, c) => sum + (parseFloat(c.grade!) * parseFloat(c.ects!)), 0);
+const totalEctsForGpa = allRelevantCourses.reduce((sum, c) => sum + parseFloat(c.ects!), 0);
+const gpa = totalEctsForGpa > 0 ? (totalWeightedGrade / totalEctsForGpa).toFixed(1) : 'N/A';
+
+// 2. ECTS Distribution (Theory vs Quantitative)
+const quantTags = ['Metode', 'Method', 'Økonometri', 'Econometrics', 'Coding', 'Statistik', 'Statistics', 'Modeller'];
+const theoryTags = ['Makro', 'Macro', 'Mikro', 'Micro', 'Finans', 'Finance', 'Principper', 'Principles', 'Samfund', 'Society', 'Politics', 'Erhvervsøkonomi'];
+
+const distribution = allRelevantCourses.reduce((acc, c) => {
+  if (quantTags.includes(c.tag)) {
+    acc.quant += parseFloat(c.ects!);
+  } else if (theoryTags.includes(c.tag)) {
+    acc.theory += parseFloat(c.ects!);
+  } else {
+    acc.other += parseFloat(c.ects!);
+  }
+  return acc;
+}, { quant: 0, theory: 0, other: 0 });
+
+const totalEcts = distribution.quant + distribution.theory + distribution.other;
+const quantPercent = Math.round((distribution.quant / totalEcts) * 100);
+const theoryPercent = Math.round((distribution.theory / totalEcts) * 100);
+
+// 3. Skill Cloud Aggregation
+const allSkills = (cv.courses || [])
+  .flatMap(c => c.verifiedSkills || [])
+  .reduce((acc: Record<string, number>, s) => {
+    acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {});
+const topSkills = Object.entries(allSkills)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 12)
+  .map(([name]) => name);
+
+// Fallback for uncategorized courses
 const others = cv.courses?.filter(c => !c.level) || [];
 ---
 
@@ -45,6 +130,56 @@ const others = cv.courses?.filter(c => !c.level) || [];
       max-width: 1200px;
       margin: 24px auto;
       padding: 0 16px 32px;
+    }
+
+    .timeline-container {
+        position: relative;
+    }
+
+    .timeline-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 11px;
+        width: 2px;
+        background: linear-gradient(to bottom, transparent, rgba(var(--accent-rgb), 0.3) 10%, rgba(var(--accent-rgb), 0.3) 90%, transparent);
+        z-index: 0;
+    }
+
+    .timeline-marker-container {
+        position: relative;
+        z-index: 10;
+        flex-shrink: 0;
+        padding-top: 14px;
+    }
+
+    .timeline-marker {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #000;
+        border: 2px solid rgba(var(--accent-rgb), 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-step.revealed .timeline-marker {
+        border-color: rgba(var(--accent-rgb), 0.8);
+        box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
+    }
+
+    .milestone-marker {
+        border-width: 3px;
+        border-color: var(--accent) !important;
+        background: var(--accent);
+        color: #000;
+    }
+
+    .timeline-step.revealed {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
     }
 
     .hero-grid {
@@ -66,11 +201,93 @@ const others = cv.courses?.filter(c => !c.level) || [];
         grid-template-columns: 1fr; 
       }
     }
+
+    /* Filtering Styles */
+    .filter-btn.active {
+      background: var(--accent);
+      color: black;
+      border-color: var(--accent);
+    }
+
+    .course-card-wrapper {
+      transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .course-card-wrapper.faded {
+      opacity: 0.15;
+      filter: grayscale(1) blur(1px);
+      pointer-events: none;
+      transform: scale(0.98);
+    }
+
+    /* Dashboard Styles */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.5fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    .chart-container {
+      height: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .chart-segment {
+      height: 100%;
+    }
+
+    .skill-tag {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+ 
+    .skill-tag:hover {
+      background: var(--accent);
+      color: black;
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .skill-tag.active {
+      background: var(--accent);
+      color: black;
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.3);
+    }
+
+    @media (max-width: 850px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 
   <main class="courses-wrap">
 
-    <Section>
+    <Section variant="glass">
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
           <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Kurser' : 'Courses'}</p>
@@ -78,8 +295,10 @@ const others = cv.courses?.filter(c => !c.level) || [];
           <p class="text-lg leading-relaxed text-dim mb-6">
             {content.hero.text}
           </p>
+
+          <SpecializationBadges courses={cv.courses || []} lang={lang} />
   
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3 mt-8">
             <Button href="#masters">{isDa ? 'Kandidat' : 'Masters'}</Button>
             <Button href="#bachelor" variant="ghost">{isDa ? 'Bachelor' : 'Bachelor'}</Button>
             <Button href="#hhx" variant="ghost">HHX</Button>
@@ -87,68 +306,142 @@ const others = cv.courses?.filter(c => !c.level) || [];
         </Card>
   
         <div class="hidden md:block">
-          <Card variant="glass" class="p-6">
+          <Card variant="glass" class="p-6 h-full">
             <SectionHeading>{content.help.title}</SectionHeading>
             <p class="text-[13px] text-dim mb-4 opacity-70 leading-relaxed">
               {content.help.text}
             </p>
+            
+            {/* Search & Filter Section */}
+            <div class="mt-6 pt-6 border-t border-white/5">
+              <div class="mb-6">
+                <p class="text-[10px] uppercase font-bold tracking-widest text-accent mb-3">{isDa ? 'Søg i kurser' : 'Search courses'}</p>
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    id="course-search" 
+                    placeholder={isDa ? 'Eks: DSGE, Python...' : 'Ex: DSGE, Python...'}
+                    class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white placeholder:text-dim/50 focus:border-accent/50 focus:outline-none transition-colors"
+                  />
+                  <i class="fa-solid fa-search absolute right-3 top-1/2 -translate-y-1/2 text-dim/30 text-[10px]"></i>
+                </div>
+              </div>
+
+              <p class="text-[10px] uppercase font-bold tracking-widest text-accent mb-3">{isDa ? 'Filtrér efter emne' : 'Filter by topic'}</p>
+              <div class="flex flex-col gap-2" id="filter-container">
+                <button class="filter-btn text-left px-3 py-2 rounded-lg border border-white/10 text-xs font-medium hover:border-accent/50 transition-all active" data-filter="all">
+                  {isDa ? 'Alle kurser' : 'All Courses'}
+                </button>
+                <button class="filter-btn text-left px-3 py-2 rounded-lg border border-white/10 text-xs font-medium hover:border-accent/50 transition-all" data-filter="macro">
+                  {isDa ? 'Makroøkonomi' : 'Macroeconomics'}
+                </button>
+                <button class="filter-btn text-left px-3 py-2 rounded-lg border border-white/10 text-xs font-medium hover:border-accent/50 transition-all" data-filter="finance">
+                  {isDa ? 'Finansiering' : 'Finance'}
+                </button>
+                <button class="filter-btn text-left px-3 py-2 rounded-lg border border-white/10 text-xs font-medium hover:border-accent/50 transition-all" data-filter="methods">
+                  {isDa ? 'Økonometri & Metode' : 'Econometrics & Methods'}
+                </button>
+                <button class="filter-btn text-left px-3 py-2 rounded-lg border border-white/10 text-xs font-medium hover:border-accent/50 transition-all" data-filter="society">
+                  {isDa ? 'Samfund & Historie' : 'Society & History'}
+                </button>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
     </Section>
+  
+    {/* ACADEMIC DASHBOARD */}
+    <Section>
+      <div class="dashboard-grid">
+        {/* GPA CARD */}
+        <Card variant="glass" class="p-6 flex flex-col justify-between">
+          <div>
+            <p class="text-[10px] uppercase font-bold tracking-widest text-accent mb-1">{isDa ? 'Gennemsnit' : 'Average Grade'}</p>
+            <h3 class="text-xs text-dim opacity-70 mb-4">{isDa ? 'Vægtet efter ECTS' : 'Weighted by ECTS'}</h3>
+          </div>
+          <div class="flex items-end gap-3">
+            <span class="text-5xl font-black text-white leading-none">{gpa}</span>
+            <div class="stat-circle text-lg">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+          </div>
+        </Card>
 
-    {/* MASTERS SECTION */}
-    <Section id="masters">
-       <Card variant="default" class="p-6">
-         <SectionHeading>{isDa ? 'Kandidat (MSc)' : 'Master\'s Degree'}</SectionHeading>
-         <div class="courses-grid">
-           {masters.map((course: any) => (
-              <CourseCard {...course} />
-           ))}
-           {masters.length === 0 && <p class="text-dim text-sm italic">Coming soon...</p>}
-         </div>
-       </Card>
+        {/* ACADEMIC DNA CARD */}
+        <Card variant="glass" class="p-6 col-span-1 md:col-span-1">
+          <p class="text-[10px] uppercase font-bold tracking-widest text-accent mb-1">{isDa ? 'Akademisk DNA' : 'Academic DNA'}</p>
+          <h3 class="text-xs text-dim opacity-70 mb-2">{isDa ? 'Kompetence-fingeraftryk' : 'Competency Fingerprint'}</h3>
+          
+          <AcademicDNA client:only="react" courses={cv.courses || []} lang={lang} />
+        </Card>
+
+        {/* SKILL CLOUD CARD */}
+        <Card variant="glass" class="p-6">
+          <p class="text-[10px] uppercase font-bold tracking-widest text-accent mb-4">{isDa ? 'Teknisk Værktøjskasse' : 'Technical Toolkit'}</p>
+          <div class="flex flex-wrap gap-2">
+             {topSkills.map(skill => (
+               <span class="skill-tag" data-skill={skill}>{skill}</span>
+             ))}
+          </div>
+        </Card>
+      </div>
+
+      {/* SYNERGY MAP */}
+      <div class="mt-8">
+        <SynergyMap client:load courses={cv.courses || []} lang={lang} />
+      </div>
     </Section>
 
-    {/* BACHELOR SECTION */}
-    <Section id="bachelor">
-       <Card variant="bordered" class="p-6">
-         <SectionHeading>{isDa ? 'Bachelor (BSc)' : 'Bachelor\'s Degree'}</SectionHeading>
-         <div class="courses-grid">
-           {bachelors.map((course: any) => (
-              <CourseCard {...course} />
-           ))}
-           {bachelors.length === 0 && <p class="text-dim text-sm italic">Coming soon...</p>}
-         </div>
-       </Card>
+    {/* THE RED THREAD */}
+    <Section>
+      <div class="mb-12">
+        <SectionHeading>{isDa ? 'Den Røde Tråd' : 'The Red Thread'}</SectionHeading>
+        <p class="text-dim text-sm mb-8 max-w-2xl">
+          {isDa 
+            ? 'Interaktiv visualisering af hvordan mine fag bygger ovenpå hinanden. Hold musen over et fag for at se den faglige sammenhæng.' 
+            : 'Interactive visualization of how my courses build upon each other. Hover over a course to see the conceptual thread.'}
+        </p>
+        <ConceptNetwork client:load courses={cv.courses || []} lang={lang} />
+      </div>
     </Section>
 
-    {/* HHX SECTION */}
-    <Section id="hhx">
-       <Card variant="bordered" class="p-6">
-         <SectionHeading>HHX</SectionHeading>
-         <div class="courses-grid">
-           {hhx.map((course: any) => (
-              <CourseCard {...course} />
-           ))}
-           {hhx.length === 0 && <p class="text-dim text-sm italic">Coming soon...</p>}
-         </div>
-       </Card>
-    </Section>
+    {/* JOURNEY TIMELINE */}
+    <Section id="journey">
+      <div class="timeline-container relative pt-12">
+        {/* The Vertical Line */}
+        <div class="timeline-line"></div>
+        
+        <div class="journey-flow space-y-12">
+          {journey.map((course: any, index: number) => (
+             <div 
+               class={`timeline-step opacity-0 translate-y-8 transition-all duration-700 ease-out`}
+               data-category={course.tag}
+               data-search-content={course.title.toLowerCase() + ' ' + (course.description?.toLowerCase() || '')}
+               data-index={index}
+               data-skills={(course.verifiedSkills || []).join(',')}
+             >
+              <div class="flex gap-8 group">
+                {/* Timeline Marker */}
+                <div class="timeline-marker-container">
+                    <div class={`timeline-marker ${course.milestone ? 'milestone-marker' : ''}`}>
+                        {course.milestone && <i class="fa-solid fa-star text-[8px]"></i>}
+                    </div>
+                </div>
 
-    {/* OTHERS (if any) */}
-    {others.length > 0 && (
-        <Section id="other">
-           <Card variant="bordered" class="p-6">
-             <SectionHeading>{isDa ? 'Andet' : 'Other'}</SectionHeading>
-             <div class="courses-grid">
-               {others.map((course: any) => (
-                  <CourseCard {...course} />
-               ))}
-             </div>
-           </Card>
-        </Section>
-    )}
+                {/* Card Content */}
+                <div class="flex-grow pb-4 border-b border-white/5">
+                    <div class="mb-2">
+                         <span class="text-[10px] font-mono text-accent opacity-60 uppercase tracking-widest">{course.level || 'Course'} • {course.period}</span>
+                    </div>
+                    <CourseCard {...course} lang={lang} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
 
     <Section>
       <ContactCard 
@@ -160,7 +453,144 @@ const others = cv.courses?.filter(c => !c.level) || [];
     </Section>
 
   </main>
+
+  <LabModal 
+      client:only="react" 
+      notebookPath="" 
+      isOpen={false} 
+      onClose={() => {}}
+      lang={lang}
+  />
 </Layout>
 
+<script>
+  function setupFilters() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('course-search') as HTMLInputElement | null;
+    const cards = document.querySelectorAll('.timeline-step');
 
+    if (!cards.length) return;
 
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // Tag to Category Mapping
+    const tagMap: Record<string, string> = {
+      // Macro
+      'Makro': 'macro', 'Macro': 'macro',
+      // Finance
+      'Finans': 'finance', 'Finance': 'finance', 'Business': 'finance',
+      // Methods
+      'Metode': 'methods', 'Method': 'methods', 'Økonometri': 'methods', 'Econometrics': 'methods', 'Coding': 'methods',
+      // Society & History
+      'Samfund': 'society', 'Society': 'society', 'Historie': 'society', 'History': 'society', 'Sprog': 'society', 'Language': 'society', 'Principper': 'society', 'Principles': 'society', 'Politics': 'society', 'Projekt': 'society', 'Project': 'society', 'Seminar': 'society'
+    };
+
+    function applyFilters() {
+      cards.forEach(card => {
+        const cardTag = card.getAttribute('data-category') || '';
+        const cardSearchContent = card.getAttribute('data-search-content') || '';
+        const category = tagMap[cardTag] || 'other';
+
+        const matchesFilter = currentFilter === 'all' || category === currentFilter;
+        const matchesSearch = !searchQuery || cardSearchContent.includes(searchQuery.toLowerCase());
+
+        if (matchesFilter && matchesSearch) {
+          card.classList.remove('faded');
+        } else {
+          card.classList.add('faded');
+        }
+      });
+    }
+
+    // Filter Buttons
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter') || 'all';
+        currentFilter = filter;
+        
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        applyFilters();
+      });
+    });
+
+    // Search Input
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value;
+        applyFilters();
+      });
+    }
+  }
+
+  // Initialize on load and on view transitions
+    setupFilters();
+    document.addEventListener('astro:after-swap', setupFilters);
+
+    function setupTimelineReveal() {
+        const steps = document.querySelectorAll('.timeline-step');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+        steps.forEach(step => observer.observe(step));
+    }
+
+    setupTimelineReveal();
+    document.addEventListener('astro:after-swap', setupTimelineReveal);
+   // 4. Skill-Linked Navigation Logic
+   const skillTags = document.querySelectorAll('.skill-tag');
+   let activeSkill = null;
+
+   skillTags.forEach(tag => {
+     tag.addEventListener('click', () => {
+       const skill = tag.getAttribute('data-skill');
+       
+       if (activeSkill === skill) {
+         activeSkill = null;
+         skillTags.forEach(t => t.classList.remove('active')); // Deactivate all
+       } else {
+         skillTags.forEach(t => t.classList.remove('active'));
+         activeSkill = skill;
+         tag.classList.add('active');
+       }
+
+       // Dispatch event for ConceptNetwork
+       window.dispatchEvent(new CustomEvent('skillHighlight', { 
+         detail: { skill: activeSkill } 
+       }));
+
+       // Highlight timeline steps
+       const steps = document.querySelectorAll('.timeline-step');
+       steps.forEach(step => {
+         if (!activeSkill) {
+           step.style.opacity = "1";
+           step.style.filter = "none";
+           step.style.transform = "translateY(0)"; // Reset transform
+           return;
+         }
+
+         const stepSkills = step.getAttribute('data-skills')?.split(',') || [];
+         if (stepSkills.includes(activeSkill)) {
+           step.style.opacity = "1";
+           step.style.filter = "none";
+           step.style.transform = "scale(1.02) translateY(0)";
+         } else {
+           step.style.opacity = "0.1";
+           step.style.filter = "grayscale(1) blur(1px)";
+           step.style.transform = "scale(0.98) translateY(0)";
+         }
+       });
+     });
+   });
+ </script>
+
+ <div class="fixed bottom-0 left-0 w-0 h-0 z-[100]">
+   <MasteryModal client:load lang={lang} />
+ </div>

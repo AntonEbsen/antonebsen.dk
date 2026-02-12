@@ -1,0 +1,224 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+import Button from '@components/ui/Button.astro';
+
+interface Publication {
+    title: string;
+    subtitle: string;
+    date: string;
+    type: 'Thesis' | 'Briefing' | 'Working Paper' | 'Article';
+    category: string;
+    vanguardSignal: string;
+    pdfUrl: string;
+    description: string;
+}
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+
+const t = {
+    da: {
+        title: "Policy Arkiv — Anton Meier Ebsen Jørgensen",
+        eyebrow: "Intel Portal",
+        heroTitle: "Policy Briefings & Publikationer",
+        heroText: "En central hub for mine tekniske briefs, seminar-opgaver og akademiske bidrag. Designet til at give beslutningstagere et hurtigt overblik over kompleks makroøkonomisk forskning.",
+        filterAll: "Alle publikationer",
+        typeBriefing: "Briefings",
+        typeThesis: "Akademisk",
+        download: "Download PDF",
+        readMore: "Læs mere &rarr;"
+    },
+    en: {
+        title: "Policy Archive — Anton Meier Ebsen Jørgensen",
+        eyebrow: "Intel Portal",
+        heroTitle: "Policy Briefings & Publications",
+        heroText: "A centralized hub for technical briefs, seminar papers, and academic contributions. Designed to provide decision-makers with a concise overview of complex macroeconomic research.",
+        filterAll: "All Publications",
+        typeBriefing: "Briefings",
+        typeThesis: "Academic",
+        download: "Download PDF",
+        readMore: "Read Details &rarr;"
+    }
+}[lang];
+
+const publications: Publication[] = [
+    {
+        title: lang === 'da' ? "Global Financial Cycle & Spillovers" : "The Global Financial Cycle & Spillovers",
+        subtitle: lang === 'da' ? "Bachelorafhandling v. Københavns Universitet" : "Bachelor Thesis @ University of Copenhagen",
+        date: "2024",
+        type: "Thesis",
+        category: "Monetary Policy",
+        vanguardSignal: lang === 'da' ? "Systemisk risiko & International spillover" : "Systemic Risk & International Spillovers",
+        pdfUrl: "/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf",
+        description: lang === 'da' 
+            ? "En økonometrisk analyse af hvordan amerikansk pengepolitik transmitteres til globale finansielle markeder gennem VIX-kanalen."
+            : "An econometric analysis of how US monetary policy is transmitted to global financial markets via the VIX channel."
+    },
+    {
+        title: lang === 'da' ? "Executive Briefing: GFC Masterclass" : "Executive Briefing: GFC Masterclass",
+        subtitle: "The Vanguard Series № 01",
+        date: "2024",
+        type: "Briefing",
+        category: "Strategy",
+        vanguardSignal: lang === 'da' ? "Strategisk overblik for beslutningstagere" : "Strategic Overview for Decision-Makers",
+        pdfUrl: "/assets/docs/GFC_Masterclass_Summary.pdf",
+        description: lang === 'da'
+            ? "En kondenseret 1-sides briefing der destillerer de vigtigste pointer fra GFC-studiet for senior stakeholders."
+            : "A condensed 1-page briefing distilling key insights from the GFC study for senior stakeholders."
+    },
+    {
+        title: lang === 'da' ? "One Rule to Rule Them All?" : "One Rule to Rule Them All?",
+        subtitle: lang === 'da' ? "Seminaropgave om ECB's Taylor-regler" : "Seminar Paper on ECB Taylor Rules",
+        date: "2024",
+        type: "Thesis",
+        category: "Monetary Policy",
+        vanguardSignal: lang === 'da' ? "Asymmetrisk transmission i Eurozonen" : "Asymmetric Transmission in the Eurozone",
+        pdfUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf",
+        description: lang === 'da'
+            ? "GMM-estimering af ECB's reaktionsfunktion og analyse af de asymmetriske effekter på tværs af medlemslande."
+            : "GMM estimation of the ECB's reaction function and analysis of cross-country asymmetric effects."
+    },
+    {
+        title: lang === 'da' ? "Executive Briefing: Taylor Rules" : "Executive Briefing: Taylor Rules",
+        subtitle: "The Vanguard Series № 02",
+        date: "2024",
+        type: "Briefing",
+        category: "Policy",
+        vanguardSignal: lang === 'da' ? "Policy-relevans & ECB benchmark" : "Policy Relevance & ECB Benchmarking",
+        pdfUrl: "/assets/docs/Taylor_Rules_Summary.pdf",
+        description: lang === 'da'
+            ? "En teknisk briefing der forklarer implikationerne af asymmetrisk pengepolitik for Eurozonens stabilitet."
+            : "A technical briefing explaining the implications of asymmetric monetary policy for Eurozone stability."
+    }
+];
+---
+
+<Layout title={t.title} bodyClass="policy-archive">
+    <main class="min-h-screen bg-depth-bg pt-24 pb-32">
+        <Section>
+            <div class="max-w-4xl mx-auto text-center mb-24">
+                <p class="text-xs font-black uppercase tracking-[0.3em] text-accent mb-6 animate-in fade-in slide-in-from-bottom-2 duration-700">
+                    {t.eyebrow}
+                </p>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+                    {t.heroTitle}
+                </h1>
+                <p class="text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+                    {t.heroText}
+                </p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                <button class="filter-tab px-6 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/5 active-tab" data-filter="all">
+                    {t.filterAll}
+                </button>
+                <button class="filter-tab px-6 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/5" data-filter="Briefing">
+                    {t.typeBriefing}
+                </button>
+                <button class="filter-tab px-6 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/5" data-filter="Thesis">
+                    {t.typeThesis}
+                </button>
+            </div>
+
+            <!-- Publications Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto" id="pub-grid">
+                {publications.map((pub, i) => (
+                    <div class="pub-card group bg-white/[0.03] border border-white/10 rounded-[32px] p-8 flex flex-col transition-all duration-500 hover:bg-white/[0.06] hover:border-accent/40 hover:-translate-y-2 relative overflow-hidden academic-section" data-type={pub.type}>
+                        <div class="absolute top-0 right-0 -m-8 w-48 h-48 bg-accent/5 rounded-full blur-[60px] group-hover:bg-accent/10 transition-colors"></div>
+                        
+                        <div class="flex items-start justify-between mb-8 relative z-10">
+                            <div class="flex flex-col gap-2">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-accent/80 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                                    {pub.type}
+                                </span>
+                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{pub.category}</span>
+                            </div>
+                            <span class="text-xs font-bold text-slate-600 font-mono">{pub.date} EDITION</span>
+                        </div>
+
+                        <div class="mb-auto relative z-10">
+                            <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-accent transition-colors leading-tight">
+                                {pub.title}
+                            </h2>
+                            <p class="text-sm text-slate-400 font-serif italic mb-6">
+                                {pub.subtitle}
+                            </p>
+                            <p class="text-slate-300 text-[15px] leading-relaxed mb-8 line-clamp-3">
+                                {pub.description}
+                            </p>
+                        </div>
+
+                        <div class="mt-8 pt-8 border-t border-white/5 relative z-10">
+                            <div class="bg-accent/5 border border-accent/10 rounded-2xl p-4 mb-8">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-2">Vanguard Signal</p>
+                                <p class="text-xs text-accent/90 font-bold">{pub.vanguardSignal}</p>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <Button href={pub.pdfUrl} class="flex-grow shadow-lg shadow-accent/10" target="_blank">
+                                    <i class="fa-solid fa-file-pdf mr-2"></i> {t.download}
+                                </Button>
+                                <a href={pub.pdfUrl.replace('.pdf', '')} class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">
+                                    {t.readMore}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </Section>
+    </main>
+
+    <style>
+        .active-tab {
+            background: var(--accent);
+            color: #050505;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .pub-card {
+            animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+
+    <script>
+        const tabs = document.querySelectorAll('.filter-tab');
+        const cards = document.querySelectorAll('.pub-card');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const filter = (tab as HTMLElement).dataset.filter;
+
+                // Update tab UI
+                tabs.forEach(t => t.classList.remove('active-tab'));
+                tab.classList.add('active-tab');
+
+                // Filter cards
+                cards.forEach(card => {
+                    const type = (card as HTMLElement).dataset.type;
+                    if (filter === 'all' || type === filter) {
+                        (card as HTMLElement).style.display = 'flex';
+                        (card as HTMLElement).style.animation = 'none';
+                        setTimeout(() => (card as HTMLElement).style.animation = '', 10);
+                    } else {
+                        (card as HTMLElement).style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</Layout>

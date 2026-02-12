@@ -1,0 +1,82 @@
+---
+import PolicyArchivePage from '@components/templates/PolicyArchivePage.astro';
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import ModelForge from '@components/project/ModelForge';
+import { getLangFromUrl } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+    da: {
+        title: "The Model Forge | Taylor-regler",
+        eyebrow: "Interactive Laboratory",
+        back: "Tilbage til biblioteket",
+        infoTitle: "Om Taylor-reglen",
+        infoText: "Taylor-reglen er en monetær politik-regel, der foreslår, hvor meget en centralbank skal ændre den nominelle rente som reaktion på ændringer i inflation og økonomisk aktivitet. Denne simulator lader dig teste alternative historier for Eurozonen."
+    },
+    en: {
+        title: "The Model Forge | Taylor Rules",
+        eyebrow: "Interactive Laboratory",
+        back: "Back to Library",
+        infoTitle: "About the Taylor Rule",
+        infoText: "The Taylor rule is a monetary policy rule that stipulates how much a central bank should change the nominal interest rate in response to changes in inflation and economic activity. This simulator lets you test alternative histories for the Eurozone."
+    }
+}[lang as 'da' | 'en'];
+---
+
+<Layout title={t.title} bodyClass="model-forge-page">
+    <main class="min-h-screen bg-depth-bg pt-24 pb-32">
+        <Section>
+            <div class="max-w-6xl mx-auto px-6">
+                <!-- Header -->
+                <div class="mb-16">
+                    <a href={lang === 'da' ? "/models" : "/en/models"} class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-accent transition-colors flex items-center gap-2 mb-8 group">
+                        <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i> {t.back}
+                    </a>
+                    
+                    <p class="text-xs font-black uppercase tracking-[0.3em] text-accent mb-4">
+                        {t.eyebrow}
+                    </p>
+                    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4">
+                        The Model <span class="text-accent">Forge</span>
+                    </h1>
+                </div>
+
+                <!-- Simulator -->
+                <ModelForge client:load lang={lang as 'da' | 'en'} />
+
+                <!-- Deep Dive Info -->
+                <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <Card variant="glass" class="p-8">
+                        <h3 className="text-xl font-bold text-white mb-4">{t.infoTitle}</h3>
+                        <p className="text-slate-400 leading-relaxed text-[15px]">
+                            {t.infoText}
+                        </p>
+                    </Card>
+                    <div class="flex flex-col justify-center">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Method</p>
+                                <p class="text-sm font-bold text-white">Rule-based Proxy</p>
+                            </div>
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Data</p>
+                                <p class="text-sm font-bold text-white">ECB/Eurostat</p>
+                            </div>
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Software</p>
+                                <p class="text-sm font-bold text-white">React & Chart.js</p>
+                            </div>
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Precision</p>
+                                <p class="text-sm font-bold text-white">Empirical Match</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Section>
+    </main>
+</Layout>

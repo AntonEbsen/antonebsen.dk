@@ -1,0 +1,214 @@
+---
+import CaminoLayout from '../../layouts/CaminoLayout.astro';
+import { caminoContent } from '../../data/camino';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const t = caminoContent[lang];
+---
+
+<CaminoLayout title={`${lang === 'da' ? 'Kultur & Historie' : 'Culture & History'} | ${t.title}`} description={t.desc} lang={lang}>
+  <article class="camino-subpage culture-page">
+    <header class="subpage-hero">
+      <div class="container">
+        <a href={lang === 'da' ? '/camino' : '/en/camino'} class="back-link">
+          <i class="fa-solid fa-arrow-left"></i> {lang === 'da' ? 'Tilbage til Hub' : 'Back to Hub'}
+        </a>
+        <div class="hero-content">
+          <span class="eyebrow">{t.eyebrow}</span>
+          <h1>{lang === 'da' ? 'Kultur & Traditioner' : 'Culture & Traditions'}</h1>
+          <p class="subtitle">{lang === 'da' ? 'Oplev sjælen af Caminoen gennem mad, sprog og musik.' : 'Experience the soul of the Camino through food, language, and music.'}</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="container main-content">
+      <div class="content-grid">
+        <aside class="sidebar">
+          <nav class="sticky-nav">
+            <h3>{t.navTitle}</h3>
+            <ul>
+              <li><a href="#food"><i class="fa-solid fa-utensils"></i> {t.foodTitle}</a></li>
+              <li><a href="#glossary"><i class="fa-solid fa-book-bookmark"></i> {t.glossaryTitle}</a></li>
+              <li><a href="#playlist"><i class="fa-solid fa-music"></i> {t.playlistTitle}</a></li>
+              <li><a href="#badges"><i class="fa-solid fa-trophy"></i> {t.badgesTitle}</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <main class="sections">
+          <!-- Culinary Guide -->
+          <section id="food" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-utensils"></i></div>
+              <div class="title-meta">
+                <h2>{t.foodTitle}</h2>
+                <p>{t.foodSubtitle}</p>
+              </div>
+            </div>
+            <div class="food-regions">
+              {t.foodRegions.map((region: any) => (
+                <div class="region-card">
+                  <div class="region-header">
+                    <span class="region-icon">{region.icon}</span>
+                    <h3>{region.region}</h3>
+                  </div>
+                  <ul class="dish-list">
+                    {region.dishes.map((dish: any) => (
+                      <li>
+                        <strong>{dish.name}</strong>
+                        <p>{dish.desc}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <!-- Glossary -->
+          <section id="glossary" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-book-bookmark"></i></div>
+              <div class="title-meta">
+                <h2>{t.glossaryTitle}</h2>
+                <p>{t.glossarySubtitle}</p>
+              </div>
+            </div>
+            <div class="glossary-grid">
+              {t.glossaryCategories.map((cat: any) => (
+                <div class="glossary-cat">
+                  <h3>{cat.cat}</h3>
+                  <dl>
+                    {cat.items.map((item: any) => (
+                      <div class="glossary-item">
+                        <dt>{item.term}</dt>
+                        <dd>{item.meaning}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <!-- Playlist -->
+          <section id="playlist" class="camino-section card-glass playlist-section">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-music"></i></div>
+              <div class="title-meta">
+                <h2>{t.playlistTitle}</h2>
+                <p>{t.playlistSubtitle}</p>
+              </div>
+            </div>
+            <div class="playlist-container">
+              <div class="track-list">
+                {t.playlistTracks.map((track: any) => (
+                  <div class="track-item">
+                    <div class="track-info">
+                      <span class="track-title">{track.title}</span>
+                      <span class="track-artist">{track.artist}</span>
+                    </div>
+                    <span class={`track-tag ${track.type}`}>{track.type}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="playlist-cta">
+                <a href={t.playlistUrl} target="_blank" rel="noopener" class="spotify-btn">
+                  <i class="fa-brands fa-spotify"></i> {t.playlistCta}
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Badges / Milestones -->
+          <section id="badges" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-trophy"></i></div>
+              <div class="title-meta">
+                <h2>{t.badgesTitle}</h2>
+                <p>{t.badgesSubtitle}</p>
+              </div>
+            </div>
+            <div class="badges-grid">
+              {t.badges.map((badge: any) => (
+                <div class={`badge-card ${badge.unlocked ? 'unlocked' : 'locked'}`}>
+                  <div class="badge-icon">{badge.icon}</div>
+                  <div class="badge-info">
+                    <h3>{badge.title}</h3>
+                    <p>{badge.desc}</p>
+                  </div>
+                  {badge.unlocked && <span class="unlocked-tag"><i class="fa-solid fa-check"></i></span>}
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </article>
+
+  <style>
+    .camino-subpage { color: var(--text); padding-bottom: 5rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .subpage-hero { 
+      background: linear-gradient(to bottom, rgba(8,8,8,0.4), rgba(8,8,8,0.9)), url('/assets/img/hero/camino-culture-bg.jpg'); 
+      background-size: cover; background-position: center; padding: 8rem 0 4rem; border-bottom: 1px solid var(--accent-soft); margin-bottom: 4rem;
+    }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); text-decoration: none; margin-bottom: 2rem; font-weight: 600; }
+    .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; margin: 0.5rem 0; letter-spacing: -0.02em; }
+    .content-grid { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; }
+    @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; } .sidebar { display: none; } }
+    
+    .camino-section { margin-bottom: 4rem; padding: 3rem; border-radius: 32px; }
+
+    /* Culinary Regions */
+    .food-regions { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+    .region-card { background: rgba(255,255,255,0.03); border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); padding: 2rem; }
+    .region-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .region-icon { font-size: 2rem; }
+    .region-header h3 { color: var(--accent); margin: 0; }
+    .dish-list { list-style: none; padding: 0; }
+    .dish-list li { margin-bottom: 1.25rem; }
+    .dish-list strong { display: block; color: #fff; margin-bottom: 0.25rem; }
+    .dish-list p { font-size: 0.9rem; color: var(--text-dim); margin: 0; }
+
+    /* Glossary */
+    .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem; }
+    .glossary-cat h3 { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15rem; margin-bottom: 1.5rem; }
+    .glossary-item { margin-bottom: 1rem; }
+    .glossary-item dt { font-weight: 700; color: #fff; font-size: 1.1rem; }
+    .glossary-item dd { margin: 0.25rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
+
+    /* Playlist */
+    .playlist-container { background: rgba(0,0,0,0.2); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+    .track-list { padding: 1rem; }
+    .track-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .track-item:last-child { border-bottom: none; }
+    .track-info { display: flex; flex-direction: column; }
+    .track-title { font-weight: 700; color: #fff; }
+    .track-artist { font-size: 0.85rem; color: var(--text-dim); }
+    .track-tag { font-size: 0.7rem; text-transform: uppercase; padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--muted); }
+    .track-tag.gregorian { background: var(--accent-soft); color: var(--accent); }
+    .playlist-cta { background: rgba(255,255,255,0.03); padding: 2rem; text-align: center; }
+    .spotify-btn { display: inline-flex; align-items: center; gap: 0.75rem; background: #1DB954; color: #000; padding: 1rem 2rem; border-radius: 50px; font-weight: 800; text-decoration: none; }
+
+    /* Badges */
+    .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .badge-card { background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 24px; display: flex; align-items: center; gap: 1.5rem; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+    .badge-icon { font-size: 2.5rem; filter: grayscale(1); opacity: 0.3; }
+    .badge-card.unlocked .badge-icon { filter: none; opacity: 1; }
+    .badge-card.locked { opacity: 0.6; }
+    .badge-card h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+    .badge-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0; }
+    .unlocked-tag { position: absolute; top: 1rem; right: 1rem; color: var(--accent); font-size: 0.8rem; }
+
+    /* Sidebar */
+    .sticky-nav { position: sticky; top: 100px; padding: 2rem; border-radius: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+    .sticky-nav a { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; color: var(--text-dim); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .sticky-nav a:hover { color: var(--accent); padding-left: 0.5rem; }
+  </style>
+</CaminoLayout>

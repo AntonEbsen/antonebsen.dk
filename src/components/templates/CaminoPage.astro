@@ -1,0 +1,256 @@
+---
+import CaminoLayout from '../../layouts/CaminoLayout.astro';
+import { caminoContent } from '../../data/camino';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const t = caminoContent[lang];
+
+const subpages = [
+  { 
+    id: 'route', 
+    title: lang === 'da' ? 'Rute & Etaper' : 'Route & Stages', 
+    desc: lang === 'da' ? 'Kort, højdeprofil og dag-for-dag plan.' : 'Maps, elevation profile, and day-by-day plan.',
+    icon: 'fa-route',
+    href: lang === 'da' ? '/camino/route' : '/en/camino/route',
+    image: '/assets/img/camino/route-thumb.jpg'
+  },
+  { 
+    id: 'prep', 
+    title: lang === 'da' ? 'Forberedelse' : 'Preparation', 
+    desc: lang === 'da' ? 'Pakkeliste, udstyrsvurdering og træning.' : 'Packing list, gear reviews, and training.',
+    icon: 'fa-person-hiking',
+    href: lang === 'da' ? '/camino/prep' : '/en/camino/prep',
+    image: '/assets/img/camino/prep-thumb.jpg'
+  },
+  { 
+    id: 'culture', 
+    title: lang === 'da' ? 'Kultur & Mad' : 'Culture & Food', 
+    desc: lang === 'da' ? 'Kulinarisk guide, ordliste og traditioner.' : 'Culinary guide, glossary, and traditions.',
+    icon: 'fa-utensils',
+    href: lang === 'da' ? '/camino/culture' : '/en/camino/culture',
+    image: '/assets/img/camino/culture-thumb.jpg'
+  }
+];
+---
+
+<CaminoLayout title={t.title} description={t.desc} lang={lang}>
+  <div class="camino-hub">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-bg"></div>
+      <div class="container">
+        <div class="hero-content reveal">
+          <span class="eyebrow">{t.eyebrow}</span>
+          <h1>{t.h1}</h1>
+          <p class="subtitle">{t.subtitle}</p>
+          
+          <div class="hero-cta-group">
+            <div class="countdown-mini card-glass">
+              <span id="countdown-days">---</span>
+              <span class="label">{t.days}</span>
+            </div>
+            <div class="hero-socials">
+              {t.socials.map((social: any) => (
+                <a href={social.url} title={social.name} class="social-btn" style={`--accent-color: ${social.color}`}>
+                  <i class={`fa-brands ${social.icon}`}></i>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Navigation Grid -->
+    <section class="nav-grid-section">
+      <div class="container">
+        <div class="grid-intro reveal">
+          <h2>{lang === 'da' ? 'Vælg din dør til Caminoen' : 'Choose your door to the Camino'}</h2>
+          <p>{lang === 'da' ? 'Gå på opdagelse i de forskellige aspekter af rejsen mod Santiago de Compostela.' : 'Explore the different aspects of the journey towards Santiago de Compostela.'}</p>
+        </div>
+
+        <div class="hub-grid">
+          {subpages.map((page, index) => (
+            <a href={page.href} class="nav-card card-glass reveal" style={`transition-delay: ${index * 100}ms`}>
+              <div class="card-image" style={`background-image: url(${page.image})`}>
+                <div class="overlay"></div>
+                <div class="icon-floater"><i class={`fa-solid ${page.icon}`}></i></div>
+              </div>
+              <div class="card-content">
+                <h3>{page.title}</h3>
+                <p>{page.desc}</p>
+                <div class="card-footer">
+                  <span>{lang === 'da' ? 'Gå til' : 'Go to'} {page.title.toLowerCase()}</span>
+                  <i class="fa-solid fa-chevron-right"></i>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Section / Countdown -->
+    <section class="featured-countdown section-padding">
+      <div class="container reveal">
+         <div class="countdown-card card-glass">
+            <div class="countdown-header">
+              <h2>{t.countdownLabel}</h2>
+              <p>{t.countdownNote}</p>
+            </div>
+            <div id="camino-countdown" class="countdown-timer">
+              <div class="time-block"><span class="number" id="days">00</span><span class="unit">{t.days}</span></div>
+              <div class="time-block"><span class="number" id="hours">00</span><span class="unit">{t.hours}</span></div>
+              <div class="time-block"><span class="number" id="minutes">00</span><span class="unit">{t.minutes}</span></div>
+              <div class="time-block"><span class="number" id="seconds">00</span><span class="unit">{t.seconds}</span></div>
+            </div>
+         </div>
+      </div>
+    </section>
+
+    <!-- Map Preview Section -->
+    <section class="map-preview-section section-padding">
+      <div class="container">
+        <div class="map-header reveal">
+          <h2>{t.mapTitle}</h2>
+          <p>{t.mapDesc}</p>
+        </div>
+        <div class="map-preview-wrapper card-glass reveal">
+           <div id="hub-mini-map" class="hub-mini-map"></div>
+           <div class="map-overlay">
+              <a href={lang === 'da' ? '/camino/route' : '/en/camino/route'} class="btn-primary">
+                {lang === 'da' ? 'Se interaktivt kort' : 'View Interactive Map'} <i class="fa-solid fa-location-dot"></i>
+              </a>
+           </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <style>
+    .camino-hub { padding-bottom: 5rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    
+    /* Hero */
+    .hero-section { position: relative; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+    .hero-bg { 
+      position: absolute; inset: 0; 
+      background: linear-gradient(to bottom, rgba(8,8,8,0.3), rgba(8,8,8,0.8)), url('/assets/img/hero/camino-hub-bg.jpg'); 
+      background-size: cover; background-position: center; z-index: -1; scale: 1.1;
+    }
+    .hero-content { max-width: 800px; }
+    .hero-content h1 { font-size: clamp(3rem, 8vw, 6rem); color: #fff; margin: 0.5rem 0 1.5rem; line-height: 0.9; letter-spacing: -0.04em; }
+    .hero-content .subtitle { font-size: 1.4rem; color: var(--text-dim); margin-bottom: 3rem; font-weight: 500; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: 0.3em; font-weight: 800; font-size: 0.9rem; }
+
+    .hero-cta-group { display: flex; align-items: center; gap: 3rem; }
+    .countdown-mini { padding: 1rem 2rem; display: flex; flex-direction: column; align-items: center; border-radius: 20px; }
+    .countdown-mini span#countdown-days { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .countdown-mini .label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-dim); }
+    
+    .hero-socials { display: flex; gap: 1rem; }
+    .social-btn { 
+      width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.05); color: #fff; 
+      display: grid; place-items: center; font-size: 1.25rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .social-btn:hover { background: var(--accent-color); color: #fff; transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.3); border-color: transparent; }
+
+    /* Grid Section */
+    .nav-grid-section { padding: 8rem 0; background: radial-gradient(circle at 50% 100%, #1a1508 0%, transparent 60%); }
+    .grid-intro { text-align: center; margin-bottom: 5rem; }
+    .grid-intro h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .grid-intro p { color: var(--text-dim); font-size: 1.1rem; }
+    
+    .hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    @media (max-width: 968px) { .hub-grid { grid-template-columns: 1fr; } }
+    
+    .nav-card { display: flex; flex-direction: column; border-radius: 32px; overflow: hidden; text-decoration: none; color: inherit; height: 100%; border: 1px solid var(--glass-border); }
+    .card-image { height: 240px; background-size: cover; background-position: center; position: relative; overflow: hidden; }
+    .card-image .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,8,8,0.8), transparent); }
+    .icon-floater { 
+      position: absolute; bottom: 1.5rem; left: 1.5rem; width: 50px; height: 50px; border-radius: 12px; 
+      background: var(--accent); color: #000; display: grid; place-items: center; font-size: 1.25rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .card-content { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-content h3 { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .card-content p { color: var(--text-dim); line-height: 1.6; margin-bottom: 2rem; flex-grow: 1; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .nav-card:hover .card-image { scale: 1.05; }
+    .nav-card:hover .icon-floater { transform: translateY(-3px); box-shadow: 0 0 20px var(--accent-soft); }
+
+    /* Countdown Section */
+    .featured-countdown { padding: 4rem 0; }
+    .countdown-card { padding: 4rem 2rem; border-radius: 40px; text-align: center; background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%); }
+    .countdown-header h2 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .countdown-timer { display: flex; justify-content: center; gap: 3rem; margin-top: 3rem; flex-wrap: wrap; }
+    .time-block { display: flex; flex-direction: column; align-items: center; }
+    .time-block .number { font-size: 4rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .time-block .unit { font-size: 0.8rem; text-transform: uppercase; color: var(--text-dim); margin-top: 0.5rem; letter-spacing: 0.1em; }
+
+    /* Map Preview */
+    .map-preview-section { padding: 8rem 0; }
+    .map-header { text-align: center; margin-bottom: 4rem; }
+    .map-preview-wrapper { height: 400px; border-radius: 40px; position: relative; overflow: hidden; }
+    .hub-mini-map { height: 100%; width: 100%; opacity: 0.6; filter: grayscale(1) invert(1) contrast(1.2); }
+    .map-overlay { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(8,8,8,0.4); backdrop-filter: blur(4px); }
+    
+    .btn-primary { 
+      background: var(--accent); color: #000; padding: 1.25rem 2.5rem; border-radius: 50px; 
+      font-weight: 800; font-size: 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 10px 30px var(--accent-soft); transition: all 0.3s;
+    }
+    .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--accent-soft); }
+
+    .section-padding { padding: 8rem 0; }
+  </style>
+
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script is:inline>
+    // Countdown Logic
+    (function () {
+      const targetDate = new Date("2026-12-31T23:59:59").getTime();
+
+      function updateCounter() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (document.getElementById("days")) {
+          document.getElementById("days").innerText = d.toString().padStart(2, '0');
+          document.getElementById("hours").innerText = h.toString().padStart(2, '0');
+          document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+          document.getElementById("seconds").innerText = s.toString().padStart(2, '0');
+        }
+        
+        if (document.getElementById("countdown-days")) {
+          document.getElementById("countdown-days").innerText = d;
+        }
+      }
+
+      setInterval(updateCounter, 1000);
+      updateCounter();
+
+      // Mini Map on Hub
+      const miniMapEl = document.getElementById('hub-mini-map');
+      if (miniMapEl) {
+        const map = L.map('hub-mini-map', { zoomControl: false, attributionControl: false }).setView([42.5, -4.0], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        map.dragging.disable();
+        map.touchZoom.disable();
+        map.doubleClickZoom.disable();
+        map.scrollWheelZoom.disable();
+      }
+    })();
+  </script>
+</CaminoLayout>

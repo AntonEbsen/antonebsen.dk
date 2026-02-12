@@ -144,11 +144,99 @@ shocks, irf = identify_shocks(macro_data)`
     openScience: "Open Science"
   },
   bibliography: [
-    "Rey, H. (2013). Dilemma not Trilemma: The Global Financial Cycle and Monetary Policy Independence. Proceedings of the Federal Reserve Bank of Kansas City, 1–285.",
-    "Miranda-Agrippino, S., & Rey, H. (2020). US Monetary Policy and the Global Financial Cycle. Review of Economic Studies, 87(6), 2754–2776.",
-    "Bruno, V., & Shin, H. S. (2015). Capital flows, cross-border banking and global liquidity. Journal of Monetary Economics, 71, 119–132.",
     "Obstfeld, M., & Taylor, A. M. (2004). Global Capital Markets: Integration, Crisis, and Growth. Cambridge University Press."
-  ]
+  ],
+  videoSeries: [
+    {
+      part: 1,
+      title: "Hvad er den Globale Finansielle Cyklus?",
+      signal: "Du forstår litteraturen og de institutionelle rammer.",
+      description: "Hvordan Hélène Rey (2013) omdefinerede international finans. Hvorfor USA stadig er center-økonomien, og hvorfor VIX er en policy-relevant indikator for global risiko.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "Rey (2013) Speciale", url: "https://www.kansascityfed.org/documents/3400/2013-Rey.pdf", icon: "fa-solid fa-file-pdf" }
+      ]
+    },
+    {
+      part: 2,
+      title: "Monetary Spillovers: Intuition før matematik",
+      signal: "Du kan forklare komplekse mekanismer uden at gemme dig bag algebra.",
+      description: "Eksploration af risk-taking channel vs. credit channel. Hvorfor EFFR påvirker europæiske banker og problemet med den 'irreconcilable duo'.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "Transmissionskanaler", url: "#methodology", icon: "fa-solid fa-diagram-project" }
+      ]
+    },
+    {
+      part: 3,
+      title: "Hvorfor en strukturel VAR? (Og hvorfor rekursiv?)",
+      signal: "Du er ikke SVAR-maximalist – du udviser metodisk modenhed.",
+      description: "Hvorfor SVAR er nødvendig for at udlede kausale chok. Hvordan Cholesky dekomponering giver struktur, og hvorfor vi må adressere dens kritikpunkter.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "SVAR Logik", url: "#code-vault", icon: "fa-solid fa-code" }
+      ]
+    },
+    {
+      part: 4,
+      title: "Mit Setup: Data, ordering og antagelser",
+      signal: "Du adresserer proaktivt identifikation som det svageste led.",
+      description: "Variabelvalg (EFFR, VIX, EULEV). Logikken bag Cholesky-rækkefølgen og hvordan den påvirker de resulterende IRF estimater.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "FRED Datakilde", url: "https://fred.stlouisfed.org/", icon: "fa-solid fa-database" }
+      ]
+    },
+    {
+      part: 5,
+      title: "Resultater: Findes US spillovers stadig?",
+      signal: "Du kan fortolke resultater – ikke bare plotte dem.",
+      description: "Centrale IRF resultater. Hvordan bankernes Gearing reagerer på amerikanske chok, og hvorfor strukturelle skift efter COVID sandsynligvis dæmper spillovers.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "Interaktivt IRF Chart", url: "#live-data", icon: "fa-solid fa-chart-line" }
+      ]
+    },
+    {
+      part: 6,
+      title: "Bruddet med Rey (2013): Akademisk selvstændighed",
+      signal: "Du er ikke bare en studerende der gentager – du tænker selvstændigt.",
+      description: "Hvad replikerer du, hvad bryder med litteraturen, og hvorfor det giver empirisk mening.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 7,
+      title: "Begrænsninger & Fremtidsperspektiv",
+      signal: "Coachability + refleksion = ansættelses-guld.",
+      description: "Ordering sensitivity, alternative identifikationsstrategier og hvad jeg ville gøre anderledes på et ph.d.-niveau.",
+      youtubeId: "dQw4w9WgXcQ"
+    }
+  ],
+  robustness: [
+    {
+      question: "Hvorfor bruge en Cholesky-dekomponering i stedet for Sign Restrictions?",
+      answer: "Mens sign restrictions giver mulighed for en mere agnostisk identifikation, giver Cholesky-dekomponeringen et klart, rekursivt benchmark, der er direkte sammenligneligt med det seminale Hélène Rey (2013) framework. Dette valg var bevidst for at sikre, at afvigelser i resultaterne kan tilskrives data/sample-forskelle frem for blot identifikationsstrategien.",
+      category: "econometrics"
+    },
+    {
+      question: "Er VIX stadig en gyldig proxy for GFC efter 2020?",
+      answer: "Efter 2020 ser vi en vis 'afkobling' af VIX fra global likviditet grundet ændret markeds-mikrostruktur. Men for en 20-årig sample-analyse forbliver det den mest robuste og institutionelt accepterede metrik til modellering af global risikoappetit – selvom jeg anerkender, at inddragelse af en EBP (Excess Bond Premium) ville være det logiske næste skridt.",
+      category: "data"
+    },
+    {
+      question: "Hvordan tager du højde for 2008-2014 Zero Lower Bound (ZLB)?",
+      answer: "EFFR mister sin signalværdi ved ZLB. Jeg adresserede dette ved at krydsvalidere resultaterne med Shadow Short Rates (Wu-Xia), som viste, at fortegnet på transmissionen forbliver det samme, selvom størrelsen på impulssvarene skifter en smule i ZLB-æraen.",
+      category: "econometrics"
+    }
+  ] as const,
+  policyRadar: [
+    { area: "Intl Makro", score: 95 },
+    { area: "Finansiel Stabilitet", score: 88 },
+    { area: "Markedsrisiko", score: 92 },
+    { area: "Monetær Transmission", score: 85 },
+    { area: "Økonometri", score: 78 }
+  ],
+  briefingUrl: "/assets/docs/GFC_Masterclass_Summary.pdf"
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent} />

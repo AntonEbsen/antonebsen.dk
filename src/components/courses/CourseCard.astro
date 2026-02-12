@@ -9,13 +9,67 @@ interface Props {
   institution: string;
   description: string;
   grade?: string;
+  ects?: string;
+  period?: string;
+  notebookPath?: string;
+  milestone?: boolean;
+  focusShift?: string;
   syllabus?: string[];
+  learningOutcomes?: string[];
+  competencies?: string[];
   verifiedSkills?: string[];
-  relatedProjects?: { title: string; href: string }[];
+  relatedProjects?: { title: string; href: string; previewImage?: string }[];
   links?: { text: string; href: string; type?: string; icon?: string }[];
+  lang?: 'da' | 'en';
 }
+const { 
+    title, tag, institution, description, grade, ects, period, 
+    notebookPath, milestone, focusShift, syllabus, verifiedSkills, 
+    learningOutcomes, competencies, relatedProjects, links, lang = 'en'
+} = Astro.props;
 
-const { title, tag, institution, description, grade, syllabus, verifiedSkills, relatedProjects, links } = Astro.props;
+const isDa = lang === 'da';
+
+const hasMastery = learningOutcomes && learningOutcomes.length > 0;
+
+// Prepare search content string
+const searchContent = [
+    title,
+    description,
+    institution,
+    tag,
+    ects,
+    period,
+    ...(syllabus || []),
+    ...(verifiedSkills || [])
+].filter(Boolean).join(' ').toLowerCase();
+
+// 1. Freshness Logic
+// Reference: Feb 2026.
+// F26/E25 = Burning Hot
+// F25/E24 = Fresh
+// F24/E23 = Stable
+// < 2023 = Deep Rooted
+const getFreshness = (period?: string) => {
+    if (!period) return null;
+    const match = period.match(/\d{2}/); // Just find the year
+    if (!match) return null;
+    
+    const year = parseInt(match[0]);
+
+    if (year >= 26) {
+        return { label: 'Burning Hot', class: 'bg-orange-500 shadow-orange-500/50', icon: 'fa-fire' };
+    }
+    if (year === 25) {
+        return { label: 'Fresh', class: 'bg-emerald-500 shadow-emerald-500/50', icon: 'fa-leaf' };
+    }
+    if (year === 24) {
+        return { label: 'Stable', class: 'bg-blue-500 shadow-blue-500/50', icon: 'fa-anchor' };
+    }
+    return { label: 'Deep Rooted', class: 'bg-slate-500 shadow-slate-500/50', icon: 'fa-tree' };
+};
+
+const freshness = getFreshness(period);
 
 // Helper for resource icon
 const getIcon = (type?: string, defaultIcon?: string) => {
@@ -26,10 +80,21 @@ const getIcon = (type?: string, defaultIcon?: string) => {
 };
 ---
 
-<div class="course-card-wrapper h-full group">
+<div class={`course-card-wrapper h-full group ${milestone ? 'is-milestone' : ''}`} data-category={tag} data-search-content={searchContent}>
+    {focusShift && (
+        <div class="focus-shift-note mb-4 animate-fade-in">
+            <div class="flex items-center gap-2 text-accent text-[10px] uppercase font-black tracking-tighter mb-1">
+                <i class="fa-solid fa-compass animate-pulse"></i>
+                Focus Shift
+            </div>
+            <p class="text-[11px] text-white/90 italic leading-relaxed pl-4 border-l border-accent/30 font-serif">
+                "{focusShift}"
+            </p>
+        </div>
+    )}
     <details class="group/details h-full">
         <summary class="list-none cursor-pointer h-full">
-            <Card variant="glass" class="p-5 h-full flex flex-col hover:border-accent/30 transition-colors relative overflow-hidden">
+            <Card variant={milestone ? 'accent' : 'glass'} class={`p-5 h-full flex flex-col hover:border-accent/30 transition-all duration-300 relative overflow-hidden ${milestone ? 'milestone-glow shadow-2xl shadow-accent/20' : ''}`}>
                 {/* Grade Badge - Absolute Position */}
                 {grade && (
                     <div class="absolute top-0 right-0 bg-white/5 border-l border-b border-white/10 rounded-bl-xl px-3 py-1.5 backdrop-blur-md">
@@ -40,7 +105,28 @@ const getIcon = (type?: string, defaultIcon?: string) => {
 
                 <div class="flex justify-between items-start mb-2 gap-2 pr-16">
                     <div>
-                        <Pill variant="accent" class="mb-2">{tag}</Pill>
+                        <div class="flex items-center gap-2 mb-2">
+                            <Pill variant="accent">{tag}</Pill>
+                            {(ects || period) && (
+                                <span class="text-[10px] font-mono text-dim opacity-70 flex items-center gap-1.5">
+                                    {ects && `[${ects} ECTS]`} {period && `• ${period}`}
+                                    {freshness && (
+                                        <div class="group/fresh relative flex items-center ml-1">
+                                            <div class={`w-2 h-2 rounded-full border border-white/20 ${freshness.class} animate-pulse shadow-lg`}></div>
+                                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/fresh:opacity-100 transition-all pointer-events-none translate-y-1 group-hover/fresh:translate-y-0 z-50">
+                                                <div class="bg-black/95 backdrop-blur-md border border-white/20 px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter text-white whitespace-nowrap flex flex-col gap-0.5 shadow-2xl">
+                                                    <span class="text-white/40 text-[7px] tracking-[0.1em]">{isDa ? 'FRISKHEID' : 'FRESHNESS'}</span>
+                                                    <div class="flex items-center gap-1.5">
+                                                        <i class={`fa-solid ${freshness.icon} text-[8px]`} style={`color: ${freshness.class.split(' ')[0].replace('bg-', '')}`}></i>
+                                                        {freshness.label}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </span>
+                            )}
+                        </div>
                         <h3 class="font-bold text-lg leading-tight text-white mb-1 group-hover/details:text-accent transition-colors">{title}</h3>
                         <p class="text-xs text-dim font-mono">{institution}</p>
                     </div>
@@ -52,20 +138,47 @@ const getIcon = (type?: string, defaultIcon?: string) => {
 
                 {/* Footer / CTA to expand */}
                 <div class="mt-auto pt-4 border-t border-white/5 flex justify-between items-center">
-                    <span class="text-xs font-bold text-dim group-hover/details:text-white transition-colors">
-                        View Details
-                    </span>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-bold text-dim group-hover/details:text-white transition-colors">
+                            {hasMastery ? (
+                                <span class="flex items-center gap-1.5 text-accent">
+                                    <i class="fa-solid fa-sparkles text-[10px]"></i>
+                                    Deep Dive
+                                </span>
+                            ) : 'View Details'}
+                        </span>
+                        {notebookPath && (
+                            <button 
+                                class="open-lab-trigger px-3 py-1 rounded-lg bg-accent/20 border border-accent/30 text-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent hover:text-black transition-all flex items-center gap-1.5 shadow-lg shadow-accent/10"
+                                data-path={notebookPath}
+                                onclick="event.stopPropagation();"
+                            >
+                                <i class="fa-solid fa-flask text-[9px]"></i>
+                                Launch Lab
+                            </button>
+                        )}
+                    </div>
                     <i class="fa-solid fa-chevron-down text-dim text-xs transition-transform group-open/details:rotate-180"></i>
                 </div>
             </Card>
         </summary>
         
+        {hasMastery && 
+            <div 
+                class="hidden mastery-data-provider" 
+                data-course={JSON.stringify({ 
+                    title, tag, institution, description, grade, ects, 
+                    syllabus, verifiedSkills, learningOutcomes, competencies 
+                })}
+            ></div>
+        }
+        
         {/* Expanded Content */}
-        <div class="mt-2 pl-4 pr-2 py-2 border-l-2 border-accent/20 animate-fade-in">
+        <div class="mt-2 pl-4 pr-2 py-2 border-l-2 border-accent/20 animate-fade-in bg-white/[0.02] rounded-r-xl">
             {/* Syllabus */}
             {syllabus && syllabus.length > 0 && (
                 <div class="mb-4">
-                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold">Syllabus</h4>
+                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold opacity-60">Syllabus</h4>
                     <ul class="text-sm text-dim space-y-1">
                         {syllabus.map(item => (
                             <li class="flex items-center gap-2">
@@ -80,11 +193,11 @@ const getIcon = (type?: string, defaultIcon?: string) => {
             {/* Verified Skills */}
             {verifiedSkills && verifiedSkills.length > 0 && (
                  <div class="mb-4">
-                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold">Verified Skills</h4>
+                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold opacity-60">Verified Skills</h4>
                     <div class="flex flex-wrap gap-2">
                         {verifiedSkills.map(skill => (
-                            <div class="px-2 py-1 rounded bg-green-500/10 border border-green-500/20 text-xs text-green-200 flex items-center gap-1.5">
-                                <i class="fa-solid fa-circle-check text-[10px]"></i>
+                            <div class="px-2 py-1 rounded bg-accent/5 border border-accent/10 text-[10px] text-accent/90 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check text-[8px]"></i>
                                 {skill}
                             </div>
                         ))}
@@ -95,12 +208,19 @@ const getIcon = (type?: string, defaultIcon?: string) => {
             {/* Related Projects */}
             {relatedProjects && relatedProjects.length > 0 && (
                  <div class="mb-4">
-                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold">Applied In</h4>
-                    <div class="flex flex-col gap-1">
+                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold opacity-60">Applied In</h4>
+                    <div class="flex flex-col gap-3">
                         {relatedProjects.map(proj => (
-                            <a href={proj.href} class="text-xs text-accent hover:underline flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                                {proj.title}
+                            <a href={proj.href} class="flex items-center gap-3 group/proj p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+                                {proj.previewImage && (
+                                    <div class="w-12 h-12 rounded bg-white/5 border border-white/10 overflow-hidden flex-shrink-0">
+                                        <img src={proj.previewImage} alt={proj.title} class="w-full h-full object-cover opacity-80 group-hover/proj:opacity-100 transition-opacity" />
+                                    </div>
+                                )}
+                                <div>
+                                    <p class="text-xs font-bold text-accent group-hover/proj:underline">{proj.title}</p>
+                                    <p class="text-[10px] text-dim opacity-50 font-mono">View Project Artifacts</p>
+                                </div>
                             </a>
                         ))}
                     </div>
@@ -130,4 +250,67 @@ const getIcon = (type?: string, defaultIcon?: string) => {
     summary::-webkit-details-marker {
         display: none;
     }
+
+    .milestone-glow {
+        border-color: rgba(var(--accent-rgb), 0.4) !important;
+    }
+
+    .is-milestone :global(.card) {
+        transform: scale(1.02);
+    }
+
+    .is-milestone::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: radial-gradient(circle at center, rgba(var(--accent-rgb), 0.05) 0%, transparent 70%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .focus-shift-note {
+        position: relative;
+        z-index: 10;
+    }
 </style>
+
+<script>
+    function setupTriggers() {
+        // Lab triggers
+        document.querySelectorAll('.open-lab-trigger').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const path = btn.getAttribute('data-path');
+                window.dispatchEvent(new CustomEvent('open-lab-modal', { 
+                    detail: { path } 
+                }));
+            });
+        });
+
+        // Mastery triggers (Intercept click on cards with mastery data)
+        document.querySelectorAll('.course-card-wrapper').forEach(wrapper => {
+            const provider = wrapper.querySelector('.mastery-data-provider');
+            if (!provider) return;
+
+            const summary = wrapper.querySelector('summary');
+            summary?.addEventListener('click', (e) => {
+                // If it's a lab click, don't open modal
+                if ((e.target as HTMLElement).closest('.open-lab-trigger')) return;
+
+                e.preventDefault();
+                const courseData = JSON.parse(provider.getAttribute('data-course') || '{}');
+                window.dispatchEvent(new CustomEvent('open-mastery-modal', {
+                    detail: { course: courseData }
+                }));
+            });
+        });
+    }
+
+    // Run on view transition or page load
+    setupTriggers();
+    document.addEventListener('astro:after-swap', setupTriggers);
+</script>

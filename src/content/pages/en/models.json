@@ -24,6 +24,15 @@
             "icon": "fa-solid fa-diagram-project"
         },
         {
+            "id": "taylor-rule",
+            "title": "Taylor Rules",
+            "desc": "A monetary reaction function determining the optimal interest rate based on inflation and output gap.",
+            "tech": "Interactive simulator built with React & Chart.js.",
+            "formula": "i_t = r^* + \\pi_t + \\alpha_\\pi(\\pi_t - \\pi^*) + \\alpha_y(y_t)",
+            "icon": "fa-solid fa-gauge-high",
+            "simulatorUrl": "/en/models/taylor-rule"
+        },
+        {
             "id": "cge",
             "title": "CGE (Computable General Equilibrium)",
             "desc": "Static and dynamic modeling of entire economies, often used for trade and tax policy.",

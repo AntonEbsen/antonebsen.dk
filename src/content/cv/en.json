@@ -121,26 +121,49 @@
     ],
     "courses": [
         {
-            "title": "Advanced Macroeconomics: SVAR",
+            "title": "Advanced Macroeconomics - Structural Vector Autoregressive (VAR) Analysis (F)",
             "tag": "Macro",
             "institution": "UCPH",
             "description": "Methods: identification, impulse responses, robustness. Tools: (SAS/Stata/Python).",
             "level": "master",
             "grade": "10",
+            "ects": "7.5",
+            "period": "S26",
+            "notebookPath": "notebooks/exchange_rate_dynamics.ipynb",
+            "milestone": true,
+            "focusShift": "This marked a major shift towards heavy quantitative methods and advanced econometrics.",
+            "prerequisites": [
+                "Econometrics II",
+                "Macroeconomics III"
+            ],
             "syllabus": [
-                "SVAR Identification",
-                "Impulse Responses",
-                "Information Criteria"
+                "Introduction to MATLAB (Data handling, basics)",
+                "Basic VAR & VEC models (Wold theorem, Granger causality)",
+                "Structural VARs (Impulse responses, variance decompositions, Information Criteria)",
+                "SVAR vs DSGE (Policy evaluation, empirical comparison)"
             ],
             "verifiedSkills": [
                 "Python",
                 "Econometrics",
-                "SAS"
+                "SAS",
+                "MATLAB",
+                "SVAR",
+                "Time Series"
+            ],
+            "learningOutcomes": [
+                "Estimate, interpret and identify structural VAR models",
+                "Evaluate and compare empirical results from DSGE vs SVAR models",
+                "Formulate economic hypotheses used as structural identification restrictions"
+            ],
+            "competencies": [
+                "Independently formulate and analyze structural VARs for new economic problems",
+                "Use and design new programs in MATLAB for quantitative macroeconomics"
             ],
             "relatedProjects": [
                 {
                     "title": "Global Financial Cycle",
-                    "href": "/en/education#thesis"
+                    "href": "/projects/global-financial-cycle",
+                    "previewImage": "/assets/img/blueprint-demo.png"
                 }
             ],
             "links": [
@@ -159,12 +182,205 @@
             ]
         },
         {
-            "title": "Introduction to Programming & Numerical Analysis",
+            "title": "The Financial System (F)",
+            "tag": "Finance",
+            "institution": "UCPH",
+            "description": "Analysis of financial markets, institutions, and their role in the economy.",
+            "level": "master",
+            "grade": "10",
+            "ects": "7.5",
+            "period": "S25",
+            "prerequisites": [
+                "Microeconomics II"
+            ],
+            "verifiedSkills": [
+                "Finance",
+                "Asset Pricing",
+                "Financial Markets"
+            ]
+        },
+        {
+            "title": "Advanced Macroeconomics - Business Cycles",
+            "tag": "Macro",
+            "institution": "UCPH",
+            "description": "Business cycle theory, DSGE models, and macroeconomic fluctuations.",
+            "level": "master",
+            "grade": "10",
+            "ects": "7.5",
+            "period": "S25",
+            "prerequisites": [
+                "Macroeconomics III"
+            ],
+            "verifiedSkills": [
+                "Macroeconomics",
+                "DSGE",
+                "Business Cycles"
+            ]
+        },
+        {
+            "title": "Seminar - Advanced Empirical Macroeconomic Analysis (F)",
+            "tag": "Seminar",
+            "institution": "UCPH",
+            "description": "Advanced empirical analysis of macroeconomic issues.",
+            "level": "master",
+            "grade": "10",
+            "ects": "7.5",
+            "period": "F24"
+        },
+        {
+            "title": "Financial Decision Making (F)",
+            "tag": "Finance",
+            "institution": "UCPH",
+            "description": "Decision-making under uncertainty, portfolio theory, and asset pricing.",
+            "level": "master",
+            "grade": "10",
+            "period": "F24"
+        },
+        {
+            "title": "AI for Humanity - Machine Decisions, Learning and Societal Consequences",
+            "tag": "AI",
+            "institution": "UCPH",
+            "description": "Societal consequences and ethical aspects of AI technology.",
+            "level": "master",
+            "grade": "10",
+            "period": "F24",
+            "verifiedSkills": [
+                "Python",
+                "Machine Learning",
+                "Causal Inference",
+                "Fairness in AI",
+                "Algorithmic Governance"
+            ],
+            "syllabus": [
+                "Foundations of Machine Learning (Neural networks, Transformers, GenAI)",
+                "ML for Policy Evaluation & Econometrics (Double ML, Causal forests, Deep IV)",
+                "Algorithmic Policies & Consequences (Fairness, Bias, Algorithmic Governance)"
+            ],
+            "learningOutcomes": [
+                "Understand foundational and advanced ML models and their societal applications",
+                "Identify and account for fairness aspects in prediction algorithms",
+                "Analyze trade-offs and risks of AI implementation (bias, systemic risks)"
+            ],
+            "competencies": [
+                "Apply advanced ML techniques to solve real-world social and economic problems",
+                "Develop explainable AI workflows for high-stakes environments",
+                "Critically evaluate AI-driven policies in terms of societal impact"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Algorithmic Fairness in Credit Scoring",
+                    "href": "/projects/algorithmic-fairness",
+                    "previewImage": "/assets/img/fairness-demo.png"
+                }
+            ]
+        },
+        {
+            "title": "Applied Economic Modelling",
+            "tag": "Models",
+            "institution": "UCPH",
+            "description": "Calibration, SAM, shocks, baseline checks. Tool: GAMS.",
+            "level": "master",
+            "grade": "10",
+            "period": "F25",
+            "notebookPath": "notebooks/cge_modeling.ipynb",
+            "milestone": true,
+            "prerequisites": [
+                "Introduction to Programming and Numerical Analysis",
+                "Microeconomics II"
+            ],
+            "verifiedSkills": [
+                "GAMS",
+                "General Equilibrium"
+            ],
+            "syllabus": [
+                "General Equilibrium (CGE)",
+                "Social Accounting Matrix (SAM)",
+                "GAMS Programming",
+                "Model Calibration & Shocks",
+                "Baseline & Robustness Checks"
+            ],
+            "learningOutcomes": [
+                "Independently construct an applied general equilibrium model",
+                "Calibrate a SAM for use in economic modeling",
+                "Evaluate the impact of policy shocks in a structural framework"
+            ],
+            "competencies": [
+                "Use GAMS to solve complex economic models",
+                "Analyze macroeconomic consequences using structural models"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Danish Fiscal Policy CGE Model",
+                    "href": "/projects/cge-model",
+                    "previewImage": "/assets/img/cge-demo.png"
+                }
+            ],
+            "links": [
+                {
+                    "text": "Case Study",
+                    "href": "#",
+                    "type": "project",
+                    "icon": "fa-folder-open"
+                }
+            ]
+        },
+        {
+            "title": "Practical Time Series Analysis",
+            "tag": "Econometrics",
+            "institution": "UCPH",
+            "description": "Application of time series methods to economic data.",
+            "level": "master",
+            "grade": "10",
+            "prerequisites": [
+                "Econometrics II"
+            ],
+            "verifiedSkills": [
+                "Econometrics",
+                "Time Series",
+                "Data Analysis"
+            ]
+        },
+        {
+            "title": "Demography",
+            "tag": "Society",
+            "institution": "UCPH",
+            "description": "Population development, modeling fertility, mortality, and migration.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Seminar - Economics of the Welfare State",
+            "tag": "Seminar",
+            "institution": "UCPH",
+            "description": "Economic analysis of the welfare state's design and challenges.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Sampling Theory",
+            "tag": "Method",
+            "institution": "UCPH",
+            "description": "Sampling techniques and analysis of population samples.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Economic Sociology",
+            "tag": "Society",
+            "institution": "UCPH",
+            "description": "Sociological perspective on economic actions and institutions.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Introduction to Programming and Numerical Analysis",
             "tag": "Coding",
             "institution": "UCPH",
             "description": "Numerics, model simulation, and basic workflows. Tools: Python/MATLAB.",
             "level": "bachelor",
             "grade": "10",
+            "notebookPath": "notebooks/numerical_analysis.ipynb",
+            "focusShift": "The starting point of my journey into programming. Learning to fuel economic theory with computational power.",
             "syllabus": [
                 "Optimization",
                 "Model Simulation",
@@ -191,27 +407,254 @@
             ]
         },
         {
-            "title": "CGE / Applied Economic Modelling",
-            "tag": "Models",
+            "title": "Mathematics A",
+            "tag": "Method",
             "institution": "UCPH",
-            "description": "Calibration, SAM, shocks, baseline checks. Tool: GAMS.",
-            "level": "master",
+            "description": "Introduction to mathematical analysis, linear algebra, and optimization.",
+            "level": "bachelor",
             "grade": "10",
-            "syllabus": [
-                "CGE Equilibrium",
-                "Social Accounting Matrix",
-                "GAMS"
+            "ects": "10",
+            "verifiedSkills": [
+                "Mathematics",
+                "Linear Algebra",
+                "Optimization"
+            ]
+        },
+        {
+            "title": "Social Description A",
+            "tag": "Society",
+            "institution": "UCPH",
+            "description": "Introduction to the economic and institutional structure of Danish society.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Economics in Society",
+            "tag": "Society",
+            "institution": "UCPH",
+            "description": "Fundamental economic correlations and political issues.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "5"
+        },
+        {
+            "title": "Principles of Economics A",
+            "tag": "Principles",
+            "institution": "UCPH",
+            "description": "Basic microeconomic principles and market mechanisms.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Mathematics B",
+            "tag": "Method",
+            "institution": "UCPH",
+            "description": "Advanced mathematical analysis, including multivariable calculus.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Mathematics A"
             ],
             "verifiedSkills": [
-                "GAMS",
-                "General Equilibrium"
+                "Mathematics",
+                "Calculus",
+                "Optimization"
+            ]
+        },
+        {
+            "title": "Social Description B",
+            "tag": "Society",
+            "institution": "UCPH",
+            "description": "Analysis of socio-economic data and description of the public sector.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Business Economics",
+            "tag": "Business",
+            "institution": "UCPH",
+            "description": "Economic decisions in firms, accounting, and finance.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Principles of Economics B",
+            "tag": "Principles",
+            "institution": "UCPH",
+            "description": "Basic macroeconomic principles and national accounting.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Microeconomics I",
+            "tag": "Micro",
+            "institution": "UCPH",
+            "description": "Consumer and producer theory under perfect competition.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Principles of Economics A",
+                "Mathematics A"
+            ]
+        },
+        {
+            "title": "Macroeconomics I",
+            "tag": "Macro",
+            "institution": "UCPH",
+            "description": "The closed economy in the short and medium run.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Principles of Economics B",
+                "Mathematics A"
+            ]
+        },
+        {
+            "title": "Probability Theory and Statistics",
+            "tag": "Method",
+            "institution": "UCPH",
+            "description": "Fundamental probability theory and statistical inference.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Mathematics B"
+            ],
+            "verifiedSkills": [
+                "Statistics",
+                "Probability",
+                "Inference"
+            ]
+        },
+        {
+            "title": "The Economic History of Europe",
+            "tag": "History",
+            "institution": "UCPH",
+            "description": "Economic development of Europe from the Middle Ages to the present.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Microeconomics II",
+            "tag": "Micro",
+            "institution": "UCPH",
+            "description": "General equilibrium, welfare theory, and imperfect competition.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Microeconomics I",
+                "Mathematics B"
+            ]
+        },
+        {
+            "title": "Macroeconomics II",
+            "tag": "Macro",
+            "institution": "UCPH",
+            "description": "The open economy and long-run economic growth.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Macroeconomics I",
+                "Mathematics B"
+            ]
+        },
+        {
+            "title": "Econometrics I",
+            "tag": "Econometrics",
+            "institution": "UCPH",
+            "description": "Linear regression analysis and fundamental econometric methods.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Probability Theory and Statistics",
+                "Mathematics B"
+            ],
+            "verifiedSkills": [
+                "Econometrics",
+                "Stata",
+                "Regression"
+            ]
+        },
+        {
+            "title": "Philosophy of Science for Economists",
+            "tag": "Method",
+            "institution": "UCPH",
+            "description": "Philosophical and methodological foundations of economic science.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Organization Theory",
+            "tag": "Business",
+            "institution": "UCPH",
+            "description": "Theories of organizational structure, behavior, and management.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Microeconomics III",
+            "tag": "Micro",
+            "institution": "UCPH",
+            "description": "Game theory and information economics.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Microeconomics II"
+            ]
+        },
+        {
+            "title": "Macroeconomics III",
+            "tag": "Macro",
+            "institution": "UCPH",
+            "description": "Advanced macroeconomic theory and model building.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Macroeconomics II"
+            ]
+        },
+        {
+            "title": "Econometrics II",
+            "tag": "Econometrics",
+            "institution": "UCPH",
+            "description": "Advanced regression analysis, time series, and microeconometrics.",
+            "level": "bachelor",
+            "grade": "10",
+            "prerequisites": [
+                "Econometrics I"
+            ],
+            "verifiedSkills": [
+                "Econometrics",
+                "Stata",
+                "Time Series",
+                "Microeconometrics"
+            ]
+        },
+        {
+            "title": "Economic History",
+            "tag": "History",
+            "institution": "UCPH",
+            "description": "Danish and international economic history with a focus on growth and crises.",
+            "level": "bachelor",
+            "grade": "10"
+        },
+        {
+            "title": "Bachelor's Thesis",
+            "tag": "Project",
+            "institution": "UCPH",
+            "description": "Independent scientific work on an economic topic.",
+            "level": "bachelor",
+            "grade": "12",
+            "ects": "15",
+            "milestone": true,
+            "focusShift": "The culmination of my Bachelor's degree – an in-depth analysis of global financial cycles.",
+            "prerequisites": [
+                "Econometrics II",
+                "Macroeconomics III"
             ],
             "links": [
                 {
-                    "text": "Case Study",
-                    "href": "#",
-                    "type": "project",
-                    "icon": "fa-folder-open"
+                    "text": "View Project",
+                    "href": "/projects/global-financial-cycle"
                 }
             ]
         },
@@ -219,17 +662,131 @@
             "title": "International Economics A",
             "tag": "Society",
             "institution": "HHX",
+            "description": "Analysis of the world economy, trade, and global markets.",
             "level": "hhx",
-            "description": "Focus on trade balance, competitiveness, and macroeconomic relationships.",
-            "grade": "10"
+            "grade": "12",
+            "milestone": true,
+            "focusShift": "It all started here at HHX, where my curiosity for the global economy was first sparked."
         },
         {
             "title": "Business Economics A",
             "tag": "Business",
             "institution": "HHX",
-            "level": "hhx",
             "description": "Financial analysis, budgeting, and investment theory.",
+            "level": "hhx",
             "grade": "10"
+        },
+        {
+            "title": "Mathematics A",
+            "tag": "Method",
+            "institution": "HHX",
+            "description": "Advanced mathematics including differential and integral calculus.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Danish A",
+            "tag": "Language",
+            "institution": "HHX",
+            "description": "Analysis of literature, language, and communication.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "English A",
+            "tag": "Language",
+            "institution": "HHX",
+            "description": "Advanced English language and cultural understanding.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "SOP (Final Project)",
+            "tag": "Project",
+            "institution": "HHX",
+            "description": "Final project on an economic and societal topic.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "History B",
+            "tag": "Society",
+            "institution": "HHX",
+            "description": "Historical development with a focus on modern times and ideologies.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "German B",
+            "tag": "Language",
+            "institution": "HHX",
+            "description": "Communication and cultural understanding in German-speaking countries.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Marketing B",
+            "tag": "Business",
+            "institution": "HHX",
+            "description": "Market analysis, strategy, and international marketing.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Finance C",
+            "tag": "Business",
+            "institution": "HHX",
+            "description": "Investment theory, financial markets, and company analysis.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Informatics C",
+            "tag": "Method",
+            "institution": "HHX",
+            "description": "Introduction to IT systems, databases, and basic programming.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Business Law C",
+            "tag": "Society",
+            "institution": "HHX",
+            "description": "Basic legal principles within the business world.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Social Science C",
+            "tag": "Society",
+            "institution": "HHX",
+            "description": "Introduction to political systems and sociology.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Economic Foundation",
+            "tag": "Principles",
+            "institution": "HHX",
+            "description": "Basic knowledge of micro- and macroeconomic correlations.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "General Language Understanding",
+            "tag": "Language",
+            "institution": "HHX",
+            "description": "Fundamental linguistics and grammar.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Business Case",
+            "tag": "Project",
+            "institution": "HHX",
+            "description": "Case-based analysis of a specific company.",
+            "level": "hhx",
+            "grade": "12"
         }
     ],
     "projects": [

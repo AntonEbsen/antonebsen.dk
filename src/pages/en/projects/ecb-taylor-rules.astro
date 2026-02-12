@@ -48,7 +48,7 @@ const projectContent = {
   },
   citation: {
     text: "Jørgensen, A. M. E. (2024). One Rule to Rule Them All? Asymmetric Effects of ECB Policy. Seminar Paper, University of Copenhagen. JEL: E52, E58, F45.",
-    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
+    pdfUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf"
   },
   ui: {
     methodology: "Methodology",
@@ -61,7 +61,78 @@ const projectContent = {
     researchQuestions: "Research Questions",
     limitations: "Limitations",
     secondaryAnalysis: "Asymmetry Analysis"
-  }
+  },
+  videoSeries: [
+    {
+      part: 1,
+      title: "The Big Question: One Rate to Rule Them All?",
+      signal: "You frame the central conflict immediately—the Euro's fundamental dilemma.",
+      description: "Exploring the core vs. periphery divide. Why Taylor Rules serve as the natural benchmark for policy optimality and what this project aims to uncover regarding ECB neutrality.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 2,
+      title: "The Model: Taylor Rules and Asymmetry",
+      signal: "You demonstrate theoretical maturity by distinguishing between textbook models and ECB reality.",
+      description: "The standard Taylor rule vs. Augmented versions. Why asymmetries are expected in a heterogeneous currency union and the motivation for our model choice.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 3,
+      title: "Econometrics: Why GMM?",
+      signal: "You understand the 'why' behind the methods, not just the 'how'.",
+      description: "Addressing endogeneity and autocorrelation. The intuition behind GMM and why the Hansen J-test is critical for instrument validity.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 4,
+      title: "Results: Asymmetries are Real",
+      signal: "You translate coefficients into economic intuition—the 'Money Slide' moment.",
+      description: "Synthetic interest rates and the MIG (Mean Interest Rate Gap). Identifying who wins and who loses when the ECB sets a single rate.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 5,
+      title: "What Breaks, What Holds: Robustness",
+      signal: "You show intellectual honesty and maturity—the 'hiring gold' of reflection.",
+      description: "Addressing the Effective Lower Bound (ELB) and sub-period instability. Why the core conclusions remain robust despite econometric limitations.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 6,
+      title: "Meta-Reflection: Limits of Taylor Rules",
+      signal: "You signal PhD-/Policy-level thinking by looking beyond the current thesis.",
+      description: "Regime shifts, shadow rates, and forward-looking rules. What I would do differently today with more advanced tools.",
+      youtubeId: "dQw4w9WgXcQ"
+    }
+  ],
+  robustness: [
+    {
+      question: "Why use a backward-looking Taylor rule when the ECB is forward-looking?",
+      answer: "While the ECB emphasizes forward-looking projections, backward-looking rules allow us to evaluate the actual realized response to observable data. It serves as a more transparent benchmark for cross-country asymmetric effects, as real-time national forecasts are often inconsistent or unavailable for the full sample period.",
+      category: "econometrics"
+    },
+    {
+      question: "How do you handle the endogeneity of inflation and output gaps?",
+      answer: "We employ a two-step GMM estimator using lagged values of macroeconomic variables as instruments. This ensures that our coefficients are not biased by the simultaneous feedback between interest rates and the economic state, which is a common pitfall in OLS estimations of policy rules.",
+      category: "econometrics"
+    },
+    {
+      question: "Does the Zero Lower Bound (ZLB) invalidate your linear GMM results?",
+      answer: "The ZLB introduces a nonlinearity that linear models cannot fully capture. However, sub-period analysis (2009-2014 vs. 2015-2022) shows that while the coefficient magnitudes shift, the direction of the asymmetric gaps between core and periphery remains statistically significant and institutionally relevant.",
+      category: "data"
+    }
+  ] as const,
+  policyRadar: [
+    { area: "Monetary Trans.", score: 92 },
+    { area: "EZ Integration", score: 85 },
+    { area: "Econ. Rigor", score: 90 },
+    { area: "Policy Comm.", score: 80 },
+    { area: "Inst. Context", score: 88 }
+  ],
+  briefingUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf",
+  simulatorUrl: "/en/models/taylor-rule",
+  notebookPath: "content/exchange-rate-analysis.ipynb"
 };
 ---
 <ProjectDetailPage lang="en" project={projectContent} />

@@ -40,9 +40,10 @@ const booksCollection = defineCollection({
     schema: z.object({
         title: z.string(),
         author: z.string(),
-        year: z.string().optional(),
-        genre: z.string().optional(),
-        tag: z.string().optional(),
+        period: z.string().optional(),
+        previewImage: z.string().optional(),
+        notebookPath: z.string().optional(),
+        syllabus: z.array(z.string()).optional(),
         note: z.string(),
         links: z.array(z.object({
             label: z.string(),
@@ -197,11 +198,20 @@ export const collections = {
                 description: z.string(),
                 level: z.enum(['master', 'bachelor', 'hhx']).optional(), // Added for sectioning
                 grade: z.string().optional(), // Added for "10", "12", etc.
+                ects: z.string().optional(),
+                period: z.string().optional(),
+                notebookPath: z.string().optional(),
+                milestone: z.boolean().optional(),
+                focusShift: z.string().optional(),
+                prerequisites: z.array(z.string()).optional(),
                 syllabus: z.array(z.string()).optional(), // For "Deep Dive"
+                learningOutcomes: z.array(z.string()).optional(), // New: Educational depth
+                competencies: z.array(z.string()).optional(), // New: Real-world ability
                 verifiedSkills: z.array(z.string()).optional(), // For "Verified Skills"
                 relatedProjects: z.array(z.object({
                     title: z.string(),
-                    href: z.string()
+                    href: z.string(),
+                    previewImage: z.string().optional()
                 })).optional(),
                 links: z.array(z.object({
                     text: z.string(),

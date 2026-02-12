@@ -86,6 +86,8 @@ foreach c within "DE" "FR" "IT" "ES" {
       { label: "Do-Files (.do)", url: "https://github.com/AntonEbsen/ecb-taylor", icon: "fa-solid fa-code" },
       { label: "Replication Pack (.zip)", url: "/assets/data/ecb_replication.zip", icon: "fa-solid fa-file-zipper" }
   ],
+  simulatorUrl: "/models/taylor-rule",
+  notebookPath: "content/exchange-rate-analysis.ipynb",
   interactiveChart: {
     title: "Taylor Rule Deviations: Core vs. Periphery",
     description: "Difference between actual ECB policy rate and Taylor-implied optimal rates (Positive values = Policy too tight).",
@@ -148,15 +150,77 @@ foreach c within "DE" "FR" "IT" "ES" {
     execSummary: "Executive Summary",
     researchQuestions: "Forskningsspørgsmål",
     limitations: "Begrænsninger",
-    secondaryAnalysis: "Asymmetri-analyse",
-    gallery: "Galleri",
-    codeVault: "The Code Vault",
-    videoAbstract: "Video Abstract",
-    techStack: "Teknologistak",
-    timeline: "Projekt-tidslinje",
-    liveData: "Interaktiv Analyse (GMM)",
-    openScience: "Open Science"
+    secondaryAnalysis: "Asymmetri-analyse"
   },
+  videoSeries: [
+    {
+      part: 1,
+      title: "Det store spørgsmål: Kan én rente passe alle?",
+      signal: "Du rammesætter den centrale konflikt med det samme — euroens grundlæggende dilemma.",
+      description: "Eksploration af splittelsen mellem kerne- og periferilandene. Hvorfor Taylor-regler er det naturlige benchmark for politisk optimalitet, og hvad dette projekt forsøger at afdække.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 2,
+      title: "Modellen: Taylor-regler møder virkeligheden",
+      signal: "Du udviser teoretisk modenhed ved at skelne mellem lærebogsmodeller og ECB's virkelighed.",
+      description: "Standard Taylor-regler vs. augmenterede versioner. Hvorfor asymmetrier er forventelige i en heterogen valutaunion, og motivationen bag vores modelvalg.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 3,
+      title: "Økonometri uden alt det overflødige: Hvorfor GMM?",
+      signal: "Du forstår 'hvorfor' bag metoderne, ikke kun 'hvordan'.",
+      description: "Håndtering af endogenitet og autokorrelation. Intuitionen bag GMM (uden matrix-gymnastik) og hvorfor Hansen J-testen er afgørende for instrumenternes validitet.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 4,
+      title: "Resultater: Asymmetrierne er virkelige",
+      signal: "Du oversætter koefficienter til økonomisk intuition — 'Money Slide' videoen.",
+      description: "Syntetiske renter og MIG (Mean Interest Rate Gap). Identifikation af hvem der vinder, og hvem der taber, når ECB sætter én fælles rente.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 5,
+      title: "Hvad brister, og hvad holder: Robusthed",
+      signal: "Du udviser intellektuel ærlighed og modenhed — 'hiring gold' niveau.",
+      description: "Håndtering af Effective Lower Bound (ELB) og ustabilitet i delperioder. Hvorfor hovedkonklusionerne holder på trods af økonometriske begrænsninger.",
+      youtubeId: "dQw4w9WgXcQ"
+    },
+    {
+      part: 6,
+      title: "Meta-refleksion: Begrænsninger ved Taylor-regler",
+      signal: "Du signalerer PhD-/Policy-niveau ved at kigge ud over selve opgaven.",
+      description: "Regimeskift, shadow rates og fremadskuende regler. Hvad jeg ville gøre anderledes i dag med mere avancerede værktøjer.",
+      youtubeId: "dQw4w9WgXcQ"
+    }
+  ],
+  robustness: [
+    {
+      question: "Hvorfor bruge en bagudskuende Taylor-regel, når ECB kigger fremad?",
+      answer: "Selvom ECB lægger vægt på fremadskuende fremskrivninger, giver bagudskuende regler os mulighed for at evaluere den faktiske respons på observerbare data. Det fungerer som et mere transparent benchmark for de asymmetriske effekter på tværs af lande, da nationale forecast-data ofte er inkonsistente.",
+      category: "econometrics"
+    },
+    {
+      question: "Hvordan håndterer du endogenitet i inflation og output-gab?",
+      answer: "Vi benytter en to-trins GMM-estimator med laggede værdier af makroøkonomiske variabler som instrumenter. Dette sikrer, at vores koefficienter ikke er biased af den simultane feedback mellem renten og økonomiens tilstand.",
+      category: "econometrics"
+    },
+    {
+      question: "Ugyldiggør Zero Lower Bound (ZLB) dine lineære GMM-resultater?",
+      answer: "ZLB introducerer en nonlinearitet, som lineære modeller ikke fuldt ud kan fange. Men vores analyse af delperioder viser, at mens koefficienternes størrelse skifter, forbliver retningen af de asymmetriske gab mellem kerne og periferi statistisk signifikant.",
+      category: "data"
+    }
+  ] as const,
+  policyRadar: [
+    { area: "Monetær Trans.", score: 92 },
+    { area: "EZ Integration", score: 85 },
+    { area: "Økonometri", score: 90 },
+    { area: "Policy Komm.", score: 80 },
+    { area: "Inst. Kontekst", score: 88 }
+  ],
+  briefingUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf",
   collaborators: [
     { 
         name: "Sheng Ye Michael Chen", 

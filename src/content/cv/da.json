@@ -121,26 +121,49 @@
     ],
     "courses": [
         {
-            "title": "Advanced Macroeconomics: SVAR",
+            "title": "Advanced Macroeconomics - Structural Vector Autoregressive (VAR) Analysis (F)",
             "tag": "Makro",
             "institution": "KU",
             "description": "Metoder: identifikation, impulssvar, robusthed. Værktøj: (SAS/Stata/Python).",
             "level": "master",
             "grade": "10",
             "syllabus": [
-                "SVAR Identifikation",
-                "Impulssvar",
-                "Information Criteria"
+                "Introduktion til MATLAB (Datahåndtering, basale funktioner)",
+                "Basale VAR & VEC modeller (Wold teorem, Granger kausalitet)",
+                "Strukturelle VARs (Impulssvar, variansdekomponeringer, Information Criteria)",
+                "SVAR vs DSGE (Politikevaluering, empirisk sammenligning)"
             ],
             "verifiedSkills": [
                 "Python",
                 "Økonometri",
-                "SAS"
+                "SAS",
+                "MATLAB",
+                "SVAR",
+                "Tidsrækker"
+            ],
+            "learningOutcomes": [
+                "Estimere, fortolke og identificere strukturelle VAR modeller",
+                "Evaluere og sammenligne empiriske resultater fra DSGE vs SVAR modeller",
+                "Formulere økonomiske hypoteser som strukturelle identifikationsrestriktioner"
+            ],
+            "competencies": [
+                "Selvstændigt formulere og analysere strukturelle VARs for nye økonomiske problemstillinger",
+                "Anvende og designe nye programmer i MATLAB til kvantitativ makroøkonomi"
+            ],
+            "ects": "7.5",
+            "period": "F26",
+            "notebookPath": "notebooks/exchange_rate_dynamics.ipynb",
+            "milestone": true,
+            "focusShift": "Her skiftede mit fokus for alvor mod de tunge kvantitative metoder og avanceret økonometri.",
+            "prerequisites": [
+                "Økonometri II",
+                "Makroøkonomi III"
             ],
             "relatedProjects": [
                 {
                     "title": "Global Financial Cycle",
-                    "href": "/education#thesis"
+                    "href": "/projects/global-financial-cycle",
+                    "previewImage": "/assets/img/blueprint-demo.png"
                 }
             ],
             "links": [
@@ -159,12 +182,195 @@
             ]
         },
         {
-            "title": "Introduction to Programming & Numerical Analysis",
+            "title": "Det finansielle system (F)",
+            "tag": "Finans",
+            "institution": "KU",
+            "description": "Analyse af finansielle markeder, institutioner og deres rolle i økonomien.",
+            "level": "master",
+            "grade": "10",
+            "ects": "7.5",
+            "period": "F25",
+            "prerequisites": [
+                "Mikroøkonomi II"
+            ]
+        },
+        {
+            "title": "Advanced Macroeconomics - Business Cycles",
+            "tag": "Makro",
+            "institution": "KU",
+            "description": "Konjunkturteori, DSGE-modeller og makroøkonomiske fluktuationer.",
+            "level": "master",
+            "grade": "10",
+            "ects": "7.5",
+            "period": "F25",
+            "prerequisites": [
+                "Makroøkonomi III"
+            ]
+        },
+        {
+            "title": "Seminar - Advanced Empirical Macroeconomic Analysis (F)",
+            "tag": "Seminar",
+            "institution": "KU",
+            "description": "Avanceret empirisk analyse af makroøkonomiske problemstillinger.",
+            "level": "master",
+            "grade": "10",
+            "period": "E24"
+        },
+        {
+            "title": "Financial Decision Making (F)",
+            "tag": "Finans",
+            "institution": "KU",
+            "description": "Beslutningstagning under usikkerhed, porteføljeteori og prisfastsættelse.",
+            "level": "master",
+            "grade": "10",
+            "period": "E24"
+        },
+        {
+            "title": "AI for Humanity - Machine Decisions, Learning and Societal Consequences",
+            "tag": "AI",
+            "institution": "KU",
+            "description": "AI-teknologiens samfundsmæssige konsekvenser og etiske aspekter.",
+            "level": "master",
+            "grade": "10",
+            "period": "E24",
+            "verifiedSkills": [
+                "Python",
+                "Machine Learning",
+                "Causal Inference",
+                "Fairness in AI",
+                "Algorithmic Governance"
+            ],
+            "syllabus": [
+                "Grundlæggende Machine Learning (Neurale netværk, Transformers, GenAI)",
+                "ML til Politikevaluering & Økonometri (Double ML, Causal forests, Deep IV)",
+                "Algorithmiske beslutninger & konsekvenser (Fairness, Bias, Algorithmic Governance)"
+            ],
+            "learningOutcomes": [
+                "Forstå grundlæggende og avancerede ML modeller og deres samfundsmæssige anvendelser",
+                "Identificere og tage højde for fairness-aspekter i prædiktionsalgoritmer",
+                "Analysere trade-offs og risici ved AI implementering (bias, systemiske risici)"
+            ],
+            "competencies": [
+                "Anvende avancerede ML teknikker til at løse virkelige sociale og økonomiske problemer",
+                "Udvikle explainable AI workflows til high-stakes miljøer",
+                "Kritisk evaluere AI-drevne politikker i forhold til samfundsmæssig effekt"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Algoritmisk Fairness i Kreditvurdering",
+                    "href": "/projects/algorithmic-fairness",
+                    "previewImage": "/assets/img/fairness-demo.png"
+                }
+            ]
+        },
+        {
+            "title": "Anvendt økonomisk modellering",
+            "tag": "Modeller",
+            "institution": "KU",
+            "description": "Kalibrering, SAM, stød, baseline checks. Værktøj: GAMS.",
+            "level": "master",
+            "grade": "10",
+            "ects": "7.5",
+            "period": "E25",
+            "notebookPath": "notebooks/cge_modeling.ipynb",
+            "milestone": true,
+            "prerequisites": [
+                "Introduction to Programming and Numerical Analysis",
+                "Mikroøkonomi II"
+            ],
+            "verifiedSkills": [
+                "GAMS",
+                "Generel Ligevægt"
+            ],
+            "syllabus": [
+                "Generel Ligevægt (CGE)",
+                "Social Accounting Matrix (SAM)",
+                "GAMS Programmering",
+                "Model Kalibrering & Stød",
+                "Baseline- & Robusthedstjek"
+            ],
+            "learningOutcomes": [
+                "Selvstændigt opbygge en anvendt generel ligevægtsmodel",
+                "Kalibrere en SAM til brug i økonomisk modellering",
+                "Evaluere effekten af økonomiske chok i en strukturel ramme"
+            ],
+            "competencies": [
+                "Anvende GAMS til at løse komplekse økonomiske modeller",
+                "Analysere makroøkonomiske konsekvenser ved hjælp af strukturelle modeller"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Dansk Finanspolitik CGE Model",
+                    "href": "/projects/cge-model",
+                    "previewImage": "/assets/img/cge-demo.png"
+                }
+            ],
+            "links": [
+                {
+                    "text": "Case Study",
+                    "href": "#",
+                    "type": "project",
+                    "icon": "fa-folder-open"
+                }
+            ]
+        },
+        {
+            "title": "Praktisk tidsrækkeanalyse",
+            "tag": "Økonometri",
+            "institution": "KU",
+            "description": "Anvendelse af tidsrækkemetoder på økonomiske data.",
+            "level": "master",
+            "grade": "10",
+            "prerequisites": [
+                "Økonometri II"
+            ]
+        },
+        {
+            "title": "Demography",
+            "tag": "Samfund",
+            "institution": "KU",
+            "description": "Befolkningsudvikling, modellering af fertilitet, mortalitet og migration.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Seminar - Economics of the Welfare State",
+            "tag": "Seminar",
+            "institution": "KU",
+            "description": "Økonomisk analyse af velfærdsstatens indretning og udfordringer.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Stikprøveteori",
+            "tag": "Metode",
+            "institution": "KU",
+            "description": "Udtrækning og analyse af stikprøver fra populationer.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Economic Sociology",
+            "tag": "Samfund",
+            "institution": "KU",
+            "description": "Sociologisk perspektiv på økonomiske handlinger og institutioner.",
+            "level": "master",
+            "grade": "10"
+        },
+        {
+            "title": "Introduction to Programming and Numerical Analysis",
             "tag": "Coding",
             "institution": "KU",
             "description": "Numerik, model-simulering og basale workflows. Værktøj: Python/MATLAB.",
             "level": "bachelor",
             "grade": "10",
+            "ects": "7.5",
+            "notebookPath": "notebooks/numerical_analysis.ipynb",
+            "focusShift": "Startskuddet til min rejse ind i programmeringens verden. Her lærte jeg at kombinere økonomisk teori med computens kraft.",
+            "prerequisites": [
+                "Mikroøkonomi I",
+                "Matematik B"
+            ],
             "syllabus": [
                 "Optimering",
                 "Model Simulering",
@@ -191,27 +397,272 @@
             ]
         },
         {
-            "title": "CGE / Applied Economic Modelling",
-            "tag": "Modeller",
+            "title": "Matematik A",
+            "tag": "Metode",
             "institution": "KU",
-            "description": "Kalibrering, SAM, stød, baseline checks. Værktøj: GAMS.",
-            "level": "master",
+            "description": "Introduktion til matematisk analyse, lineær algebra og optimering.",
+            "level": "bachelor",
             "grade": "10",
-            "syllabus": [
-                "CGE Equilibrium",
-                "Social Accounting Matrix",
-                "GAMS"
+            "ects": "10",
+            "verifiedSkills": [
+                "Matematik",
+                "Lineær Algebra",
+                "Optimering"
+            ]
+        },
+        {
+            "title": "Samfundsbeskrivelse A",
+            "tag": "Samfund",
+            "institution": "KU",
+            "description": "Introduktion til det danske samfunds økonomiske og institutionelle opbygning.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Økonomi i Samfundet",
+            "tag": "Samfund",
+            "institution": "KU",
+            "description": "Grundlæggende økonomiske sammenhænge og politiske problemstillinger.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "5"
+        },
+        {
+            "title": "Økonomiske Principper A",
+            "tag": "Principper",
+            "institution": "KU",
+            "description": "Grundlæggende mikroøkonomiske principper og markedsmekanismer.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Matematik B",
+            "tag": "Metode",
+            "institution": "KU",
+            "description": "Videregående matematisk analyse, herunder flervariabel analyse.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Matematik A"
             ],
             "verifiedSkills": [
-                "GAMS",
-                "Generel Ligevægt"
+                "Matematik",
+                "Flervariabel Analyse"
+            ]
+        },
+        {
+            "title": "Samfundsbeskrivelse B",
+            "tag": "Samfund",
+            "institution": "KU",
+            "description": "Analyse af socioøkonomiske data og beskrivelse af den offentlige sektor.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Erhvervsøkonomi",
+            "tag": "Business",
+            "institution": "KU",
+            "description": "Virksomhedens økonomiske beslutninger, regnskab og finansiering.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Økonomiske Principper B",
+            "tag": "Principper",
+            "institution": "KU",
+            "description": "Grundlæggende makroøkonomiske principper og nationalregnskab.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Mikroøkonomi I",
+            "tag": "Mikro",
+            "institution": "KU",
+            "description": "Forbruger- og producentteori under fuldkommen konkurrence.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Økonomiske Principper A",
+                "Matematik A"
+            ]
+        },
+        {
+            "title": "Makroøkonomi I",
+            "tag": "Makro",
+            "institution": "KU",
+            "description": "Den lukkede økonomi på kort og mellemlangt sigt.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Økonomiske Principper B",
+                "Matematik A"
+            ]
+        },
+        {
+            "title": "Sandsynlighedsteori og Statistik",
+            "tag": "Metode",
+            "institution": "KU",
+            "description": "Grundlæggende sandsynlighedsregning og statistisk inferens.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Matematik B"
+            ],
+            "verifiedSkills": [
+                "Statistik",
+                "Sandsynlighedsregning",
+                "Inferens"
+            ]
+        },
+        {
+            "title": "The Economic History of Europe",
+            "tag": "Historie",
+            "institution": "KU",
+            "description": "Europas økonomiske udvikling fra middelalderen til i dag.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Mikroøkonomi II",
+            "tag": "Mikro",
+            "institution": "KU",
+            "description": "Generel ligevægt, velfærdsteori og imperfekt konkurrence.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Mikroøkonomi I",
+                "Matematik B"
+            ]
+        },
+        {
+            "title": "Makroøkonomi II",
+            "tag": "Makro",
+            "institution": "KU",
+            "description": "Den åbne økonomi og langsigtet økonomisk vækst.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Makroøkonomi I",
+                "Matematik B"
+            ]
+        },
+        {
+            "title": "Økonometri I",
+            "tag": "Økonometri",
+            "institution": "KU",
+            "description": "Lineær regressionsanalyse og grundlæggende økonometriske metoder.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Sandsynlighedsteori og Statistik",
+                "Matematik B"
+            ],
+            "verifiedSkills": [
+                "Økonometri",
+                "Stata",
+                "Regression"
+            ]
+        },
+        {
+            "title": "Videnskabsteori for Økonomer",
+            "tag": "Metode",
+            "institution": "KU",
+            "description": "Filosofiske og metodiske grundlag for økonomisk videnskab.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Organization Theory",
+            "tag": "Business",
+            "institution": "KU",
+            "description": "Teorier om organisationers struktur, adfærd og ledelse.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Microeconomics III",
+            "tag": "Mikro",
+            "institution": "KU",
+            "description": "Spilteori og informationsøkonomi.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Mikroøkonomi II"
+            ]
+        },
+        {
+            "title": "Macroeconomics III",
+            "tag": "Makro",
+            "institution": "KU",
+            "description": "Videregående makroøkonomisk teori og modelbygning.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Makroøkonomi II"
+            ]
+        },
+        {
+            "title": "Econometrics II",
+            "tag": "Økonometri",
+            "institution": "KU",
+            "description": "Fortsat regressionsanalyse, tidsrækker og mikroøkonometri.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5",
+            "prerequisites": [
+                "Økonometri I"
+            ],
+            "verifiedSkills": [
+                "Økonometri",
+                "Stata",
+                "Tidsrækker",
+                "Mikroøkonometri"
+            ]
+        },
+        {
+            "title": "Økonomisk Historie",
+            "tag": "Historie",
+            "institution": "KU",
+            "description": "Dansk og international økonomisk historie med fokus på vækst og kriser.",
+            "level": "bachelor",
+            "grade": "10",
+            "ects": "7.5"
+        },
+        {
+            "title": "Bachelorprojekt",
+            "tag": "Projekt",
+            "institution": "KU",
+            "description": "Selvstændigt videnskabeligt arbejde over et økonomisk emne.",
+            "level": "bachelor",
+            "grade": "12",
+            "ects": "15",
+            "milestone": true,
+            "focusShift": "Kulminationen på min bachelor – en dybdegående analyse af globale finansielle kredsløb.",
+            "prerequisites": [
+                "Økonometri II",
+                "Makroøkonomi III"
             ],
             "links": [
                 {
-                    "text": "Case Study",
-                    "href": "#",
-                    "type": "project",
-                    "icon": "fa-folder-open"
+                    "text": "Se Projekt",
+                    "href": "/projects/global-financial-cycle"
                 }
             ]
         },
@@ -219,17 +670,131 @@
             "title": "International Økonomi A",
             "tag": "Samfund",
             "institution": "HHX",
+            "description": "Analyse af verdensøkonomien, handel og globale markeder.",
             "level": "hhx",
-            "description": "Fokus på handelsbalance, konkurrenceevne og makroøkonomiske sammenhænge.",
-            "grade": "10"
+            "grade": "12",
+            "milestone": true,
+            "focusShift": "Det hele startede her på HHX, hvor min nysgerrighed for verdensøkonomien blev vakt."
         },
         {
             "title": "Virksomhedsøkonomi A",
             "tag": "Business",
             "institution": "HHX",
-            "level": "hhx",
             "description": "Regnskabsanalyse, budgettering og investeringsteori.",
+            "level": "hhx",
             "grade": "10"
+        },
+        {
+            "title": "Matematik A",
+            "tag": "Metode",
+            "institution": "HHX",
+            "description": "Videregående matematik herunder differential- og integralregning.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Dansk A",
+            "tag": "Sprog",
+            "institution": "HHX",
+            "description": "Analyse af litteratur, sprog og kommunikation.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Engelsk A",
+            "tag": "Sprog",
+            "institution": "HHX",
+            "description": "Avanceret engelsk sprog og kulturforståelse.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "SOP (Afsluttende projekt)",
+            "tag": "Projekt",
+            "institution": "HHX",
+            "description": "Studieretningsprojekt over et økonomisk og samfundsmæssigt emne.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Historie B",
+            "tag": "Samfund",
+            "institution": "HHX",
+            "description": "Historisk udvikling med fokus på moderne tid og ideologier.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Tysk Fortsættersprog B",
+            "tag": "Sprog",
+            "institution": "HHX",
+            "description": "Kommunikation og kulturforståelse i tysksprogede lande.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Afsætning B",
+            "tag": "Business",
+            "institution": "HHX",
+            "description": "Markedsanalyse, strategi og international markedsføring.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Finansiering C",
+            "tag": "Business",
+            "institution": "HHX",
+            "description": "Investeringsteori, finansielle markeder og virksomhedsanalyse.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Informatik C",
+            "tag": "Metode",
+            "institution": "HHX",
+            "description": "Introduktion til IT-systemer, databaser og basal programmering.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Erhvervsjura C",
+            "tag": "Samfund",
+            "institution": "HHX",
+            "description": "Grundlæggende retsprincipper inden for erhvervslivet.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Samfundsfag C",
+            "tag": "Samfund",
+            "institution": "HHX",
+            "description": "Introduktion til politiske systemer og sociologi.",
+            "level": "hhx",
+            "grade": "12"
+        },
+        {
+            "title": "Økonomisk Grundforløb",
+            "tag": "Principper",
+            "institution": "HHX",
+            "description": "Basisviden om mikro- og makroøkonomiske sammenhænge.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Almen Sprogforståelse",
+            "tag": "Sprog",
+            "institution": "HHX",
+            "description": "Grundlæggende sprogvidenskab og grammatik.",
+            "level": "hhx",
+            "grade": "10"
+        },
+        {
+            "title": "Erhvervscase",
+            "tag": "Projekt",
+            "institution": "HHX",
+            "description": "Case-baseret analyse af en konkret virksomhed.",
+            "level": "hhx",
+            "grade": "12"
         }
     ],
     "projects": [

@@ -1,0 +1,400 @@
+---
+import CaminoLayout from '../../layouts/CaminoLayout.astro';
+import { caminoContent } from '../../data/camino';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const t = caminoContent[lang];
+---
+
+<CaminoLayout title={`${t.packingTitle} | ${t.title}`} description={t.desc} lang={lang}>
+  <article class="camino-subpage prep-page">
+    <header class="subpage-hero">
+      <div class="container">
+        <a href={lang === 'da' ? '/camino' : '/en/camino'} class="back-link">
+          <i class="fa-solid fa-arrow-left"></i> {lang === 'da' ? 'Tilbage til Hub' : 'Back to Hub'}
+        </a>
+        <div class="hero-content">
+          <span class="eyebrow">{t.eyebrow}</span>
+          <h1>{lang === 'da' ? 'Forberedelse & Udstyr' : 'Preparation & Gear'}</h1>
+          <p class="subtitle">{t.subtitle}</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="container main-content">
+      <div class="content-grid">
+        <aside class="sidebar">
+          <nav class="sticky-nav">
+            <h3>{t.navTitle}</h3>
+            <ul>
+              <li><a href="#packing"><i class="fa-solid fa-suitcase"></i> {t.packingTitle}</a></li>
+              <li><a href="#weight-tool"><i class="fa-solid fa-weight-scale"></i> {lang === 'da' ? 'Vægtsum' : 'Weight Calculator'}</a></li>
+              <li><a href="#gear"><i class="fa-solid fa-backpack"></i> {t.gearTitle}</a></li>
+              <li><a href="#training"><i class="fa-solid fa-chart-line"></i> {t.trainingTitle}</a></li>
+              <li><a href="#injury"><i class="fa-solid fa-kit-medical"></i> {t.injuryTitle}</a></li>
+              <li><a href="#budget"><i class="fa-solid fa-calculator"></i> {t.budgetTitle}</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <main class="sections">
+          <!-- Packing List & Weight Calculator -->
+          <section id="packing" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-suitcase"></i></div>
+              <div class="title-meta">
+                <h2>{t.packingTitle}</h2>
+                <p>{t.packingSubtitle}</p>
+              </div>
+            </div>
+
+            <div id="weight-tool" class="weight-dashboard">
+              <div class="weight-stat main-stat">
+                <span class="label">{lang === 'da' ? 'Samlet vægt' : 'Total Weight'}</span>
+                <span class="value"><span id="total-weight">0.0</span> kg</span>
+              </div>
+              <div class="weight-inputs-mini">
+                <div class="mini-input">
+                  <label>{lang === 'da' ? 'Din vægt (kg)' : 'Your Weight (kg)'}</label>
+                  <input type="number" id="body-weight" value="80" />
+                </div>
+                <div class="mini-stat">
+                  <span class="label">10% {lang === 'da' ? 'Grænse' : 'Limit'}</span>
+                  <span class="value" id="weight-limit">8.0 kg</span>
+                </div>
+              </div>
+              <div class="weight-progress-bar">
+                <div id="weight-fill" class="fill"></div>
+              </div>
+              <p id="weight-advice" class="weight-advice"></p>
+            </div>
+
+            <div class="packing-grid">
+              {t.packingCategories.map((cat: any) => (
+                <div class="packing-cat">
+                  <h3><i class={`fa-solid ${cat.icon}`}></i> {cat.title}</h3>
+                  <ul class="packing-items">
+                    {cat.items.map((item: any) => (
+                      <li>
+                        <label class="item-checkbox">
+                          <input type="checkbox" data-weight={item.weight} class="weight-checkbox" />
+                          <span class="checkmark"></span>
+                          <div class="item-info">
+                            <span class="text">{item.name}</span>
+                            <span class="item-weight">{item.weight}g</span>
+                          </div>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div class="edc-reminder">
+              <a href={t.edcLink}>{t.edcText}</a>
+            </div>
+          </section>
+
+          <!-- Gear Reviews -->
+          <section id="gear" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-backpack"></i></div>
+              <div class="title-meta">
+                <h2>{t.gearTitle}</h2>
+                <p>{t.gearSubtitle}</p>
+              </div>
+            </div>
+            <div class="gear-grid">
+              {t.gearItems.map((gear: any) => (
+                <div class="gear-card">
+                  <div class="gear-header">
+                    <h3>{gear.name}</h3>
+                    <span class="gear-cat">{gear.category}</span>
+                  </div>
+                  <div class="gear-rating">
+                    {[...Array(5)].map((_, i) => (
+                      <i class={`fa-star ${i < gear.rating ? 'fa-solid' : 'fa-regular'}`}></i>
+                    ))}
+                  </div>
+                  <div class="gear-meta">
+                    <span><i class="fa-solid fa-weight-hanging"></i> {gear.weight}</span>
+                    <span><i class="fa-solid fa-tag"></i> {gear.price}</span>
+                  </div>
+                  <div class="gear-procon">
+                    <div class="pros"><i class="fa-solid fa-plus"></i> {gear.pros}</div>
+                    <div class="cons"><i class="fa-solid fa-minus"></i> {gear.cons}</div>
+                  </div>
+                  <a href={gear.link} target="_blank" rel="noopener" class="gear-link">Producent side <i class="fa-solid fa-external-link"></i></a>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <!-- Training -->
+          <section id="training" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+              <div class="title-meta">
+                <h2>{t.trainingTitle}</h2>
+                <p>{t.trainingSubtitle}</p>
+              </div>
+            </div>
+            <div class="training-stats">
+              <div class="progress-container">
+                <div class="progress-info">
+                  <span class="current">{t.trainingKmWalked} {t.trainingLabel}</span>
+                  <span class="goal">{t.trainingGoalLabel}</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="fill" style={`width: ${(t.trainingKmWalked / t.trainingKmGoal) * 100}%`}></div>
+                </div>
+              </div>
+              <a href={t.trainingStatsLink} class="stats-link">{t.trainingStatsText}</a>
+            </div>
+          </section>
+
+          <!-- Injury Prevention -->
+          <section id="injury" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-kit-medical"></i></div>
+              <div class="title-meta">
+                <h2>{t.injuryTitle}</h2>
+                <p>{t.injurySubtitle}</p>
+              </div>
+            </div>
+            <div class="injury-grid">
+              {t.injuries.map((injury: any) => (
+                <div class="injury-card">
+                  <span class="injury-icon">{injury.icon}</span>
+                  <h3>{injury.name}</h3>
+                  <div class="injury-severity">{injury.severity}</div>
+                  <div class="injury-info">
+                    <p><strong>{lang === 'da' ? 'Forebyggelse:' : 'Prevention:'}</strong> {injury.prevention}</p>
+                    <p><strong>{lang === 'da' ? 'Behandling:' : 'Treatment:'}</strong> {injury.treatment}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <!-- Budget -->
+          <section id="budget" class="camino-section card-glass">
+            <div class="section-header">
+              <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
+              <div class="title-meta">
+                <h2>{t.budgetTitle}</h2>
+                <p>{t.budgetSubtitle}</p>
+              </div>
+            </div>
+            
+            <div class="budget-tool" id="budget-app">
+              <div class="budget-inputs">
+                <div class="input-group">
+                  <label>{t.budgetDaysLabel}</label>
+                  <input type="number" id="days-input" value="33" min="1" max="100" />
+                </div>
+                <div class="input-group">
+                  <label>{t.budgetAccomLabel}</label>
+                  <select id="accom-select">
+                    {t.budgetAccomOptions.map((opt: any) => (
+                      <option value={opt.price}>{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label>{t.budgetFoodLabel} (15€ - 50€)</label>
+                  <input type="range" id="food-slider" min="15" max="50" value="30" />
+                  <span id="food-val">30€</span>
+                </div>
+                <div class="input-group">
+                  <label>{t.budgetExtrasLabel}</label>
+                  <input type="number" id="extras-input" value="200" />
+                </div>
+              </div>
+
+              <div class="budget-result">
+                <h3>{t.budgetTotalLabel}</h3>
+                <div class="total-amount">€<span id="total-val">0</span></div>
+                <div class="breakdown">
+                  <div class="break-item"><span>{t.budgetAccomTotal}:</span> <span id="accom-total">0€</span></div>
+                  <div class="break-item"><span>{t.budgetFoodTotal}:</span> <span id="food-total">0€</span></div>
+                  <div class="break-item"><span>{t.budgetExtrasTotal}:</span> <span id="extras-total">0€</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </article>
+
+  <style>
+    .camino-subpage { color: var(--text); padding-bottom: 5rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    
+    .subpage-hero { 
+      background: linear-gradient(to bottom, rgba(8,8,8,0.4), rgba(8,8,8,0.9)), url('/assets/img/hero/camino-prep-bg.jpg'); 
+      background-size: cover; background-position: center; padding: 8rem 0 4rem; border-bottom: 1px solid var(--accent-soft); margin-bottom: 4rem;
+    }
+
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); text-decoration: none; margin-bottom: 2rem; font-weight: 600; }
+    .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; margin: 0.5rem 0; letter-spacing: -0.02em; }
+    
+    .content-grid { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; }
+    @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+    .camino-section { margin-bottom: 4rem; padding: 3rem; border-radius: 32px; }
+
+    /* Weight Dashboard */
+    .weight-dashboard { 
+      background: rgba(212, 175, 55, 0.05); border: 1px solid var(--accent-soft); border-radius: 24px; padding: 2rem; margin-bottom: 3rem;
+      display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: center;
+    }
+    @media (max-width: 768px) { .weight-dashboard { grid-template-columns: 1fr; } }
+    
+    .weight-stat .label { display: block; font-size: 0.9rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1rem; }
+    .weight-stat .value { font-size: 3rem; font-weight: 800; color: var(--accent); }
+    
+    .weight-inputs-mini { display: flex; gap: 2rem; }
+    .mini-input label { display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+    .mini-input input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; padding: 0.5rem; width: 80px; }
+    .mini-stat .value { display: block; font-size: 1.25rem; font-weight: 700; color: #fff; }
+
+    .weight-progress-bar { grid-column: 1 / -1; height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; margin-top: 1rem; }
+    .weight-progress-bar .fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .weight-advice { grid-column: 1 / -1; font-size: 0.9rem; color: var(--text-dim); margin-top: 1rem; font-style: italic; }
+
+    /* Packing List Styles */
+    .packing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem; }
+    .packing-cat h3 { color: var(--accent); margin-bottom: 1.5rem; font-size: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+    .packing-items { list-style: none; padding: 0; }
+    .item-checkbox { display: flex; align-items: flex-start; gap: 1rem; cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; border-radius: 12px; transition: background 0.2s; }
+    .item-checkbox:hover { background: rgba(255,255,255,0.03); }
+    .item-checkbox input { position: absolute; opacity: 0; }
+    .checkmark { width: 22px; height: 22px; border: 2px solid rgba(255,255,255,0.15); border-radius: 7px; flex-shrink: 0; transition: all 0.2s; position: relative; }
+    .item-checkbox input:checked ~ .checkmark { background: var(--accent); border-color: var(--accent); }
+    .item-checkbox input:checked ~ .checkmark::after { content: '✓'; position: absolute; inset: 0; display: grid; place-items: center; color: #000; font-weight: 800; font-size: 14px; }
+    
+    .item-info { display: flex; flex-direction: column; }
+    .item-info .text { font-size: 1rem; color: #f2f2f0; }
+    .item-weight { font-size: 0.8rem; color: var(--text-dim); }
+    .item-checkbox input:checked ~ .item-info .text { color: var(--muted); text-decoration: line-through; }
+
+    /* Sidebar and Common */
+    .sticky-nav { position: sticky; top: 100px; padding: 2rem; border-radius: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+    .sticky-nav h3 { font-size: 0.8rem; text-transform: uppercase; color: var(--accent); letter-spacing: 0.15rem; margin-bottom: 1.5rem; }
+    .sticky-nav ul { list-style: none; padding: 0; }
+    .sticky-nav a { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; color: var(--text-dim); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .sticky-nav a:hover { color: var(--accent); padding-left: 0.5rem; }
+
+    /* Gear Cards */
+    .gear-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+    .gear-card { background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+    .gear-header h3 { font-size: 1.35rem; margin-bottom: 0.25rem; }
+    .gear-cat { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 0.1rem; }
+    .gear-rating { color: var(--accent); margin: 1.25rem 0; font-size: 0.9rem; }
+    .gear-meta { display: flex; gap: 2rem; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; }
+    .gear-meta i { color: var(--accent); }
+    .gear-procon { font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem; }
+    .pros { color: #4ade80; margin-bottom: 0.6rem; display: flex; gap: 0.75rem; }
+    .cons { color: #f87171; display: flex; gap: 0.75rem; }
+    .gear-link { display: flex; align-items: center; justify-content: center; gap: 0.75rem; background: rgba(255,255,255,0.05); color: #fff; padding: 1rem; border-radius: 12px; font-weight: 600; transition: background 0.3s; }
+    .gear-link:hover { background: var(--accent); color: #000; }
+
+    /* Budget */
+    .budget-tool { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; background: rgba(0,0,0,0.3); padding: 3rem; border-radius: 32px; border: 1px solid var(--accent-soft); }
+    @media (max-width: 868px) { .budget-tool { grid-template-columns: 1fr; gap: 2rem; } }
+    .input-group { margin-bottom: 2rem; }
+    .input-group label { display: block; margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-dim); font-weight: 600; }
+    .input-group input[type="number"], .input-group select { 
+      width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; color: #fff; font-size: 1rem;
+    }
+    .total-amount { font-size: 4.5rem; font-weight: 800; color: var(--accent); margin: 1rem 0 2rem; letter-spacing: -0.05em; line-height: 1; }
+    .breakdown { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; }
+    .break-item { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 1.1rem; }
+  </style>
+
+  <script is:inline>
+    // Weight Calculator Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const weightCheckboxes = document.querySelectorAll('.weight-checkbox');
+      const bodyWeightIn = document.getElementById('body-weight');
+      const totalWeightVal = document.getElementById('total-weight');
+      const weightLimitVal = document.getElementById('weight-limit');
+      const weightFill = document.getElementById('weight-fill');
+      const weightAdvice = document.getElementById('weight-advice');
+
+      function updateWeight() {
+        let totalGrams = 0;
+        weightCheckboxes.forEach(cb => {
+          if (cb.checked) {
+            totalGrams += parseInt(cb.dataset.weight || 0);
+          }
+        });
+
+        const totalKg = totalGrams / 1000;
+        const bodyKg = parseFloat(bodyWeightIn.value) || 80;
+        const limitKg = bodyKg * 0.1;
+
+        totalWeightVal.textContent = totalKg.toFixed(1);
+        weightLimitVal.textContent = limitKg.toFixed(1) + ' kg';
+
+        const percentage = Math.min((totalKg / limitKg) * 100, 100);
+        weightFill.style.width = percentage + '%';
+        
+        if (totalKg > limitKg) {
+          weightFill.style.background = '#f87171';
+          weightAdvice.textContent = "⚠️ Din rygsæk er over de anbefalede 10%. Overvej at skære ned på indholdet.";
+          weightAdvice.style.color = '#f87171';
+        } else if (totalKg > limitKg * 0.8) {
+          weightFill.style.background = '#fbbf24';
+          weightAdvice.textContent = "🟠 Du nærmer dig grænsen. Hold øje med vægten.";
+          weightAdvice.style.color = '#fbbf24';
+        } else {
+          weightFill.style.background = '#D4AF37';
+          weightAdvice.textContent = "🟢 Perfekt! Din oppakning er inden for den anbefalede vægtgrænse.";
+          weightAdvice.style.color = '#D4AF37';
+        }
+      }
+
+      weightCheckboxes.forEach(cb => cb.addEventListener('change', updateWeight));
+      bodyWeightIn?.addEventListener('input', updateWeight);
+      updateWeight();
+
+      // Budget Logic
+      const daysIn = document.getElementById('days-input');
+      const accomIn = document.getElementById('accom-select');
+      const foodIn = document.getElementById('food-slider');
+      const foodVal = document.getElementById('food-val');
+      const extrasIn = document.getElementById('extras-input');
+      const budgetTotalVal = document.getElementById('total-val');
+      const accomTotal = document.getElementById('accom-total');
+      const foodTotal = document.getElementById('food-total');
+      const extrasTotal = document.getElementById('extras-total');
+
+      function updateBudget() {
+        const days = parseInt(daysIn.value) || 0;
+        const accomPrice = parseInt(accomIn.value);
+        const foodPrice = parseInt(foodIn.value);
+        const extras = parseInt(extrasIn.value) || 0;
+
+        const aTotal = days * accomPrice;
+        const fTotal = days * foodPrice;
+        const total = aTotal + fTotal + extras;
+
+        if (foodVal) foodVal.textContent = foodPrice + '€';
+        if (accomTotal) accomTotal.textContent = aTotal + '€';
+        if (foodTotal) foodTotal.textContent = fTotal + '€';
+        if (extrasTotal) extrasTotal.textContent = extras + '€';
+        if (budgetTotalVal) budgetTotalVal.textContent = total.toLocaleString();
+      }
+
+      [daysIn, accomIn, foodIn, extrasIn].forEach(el => el?.addEventListener('input', updateBudget));
+      updateBudget();
+    });
+  </script>
+</CaminoLayout>

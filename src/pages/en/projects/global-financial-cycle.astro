@@ -34,7 +34,7 @@ const projectContent = {
   },
   citation: {
     text: "Jørgensen, A. M. E. (2024). Global Financial Cycle & spillovers. Bachelor Thesis, University of Copenhagen. JEL: E52, E58, F02, F33, G15.",
-    pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
+    pdfUrl: "/assets/docs/Jorgensen_2024_GFC_Spillovers.pdf"
   },
   ui: {
     methodology: "Methodology",
@@ -45,7 +45,85 @@ const projectContent = {
     citation: "Suggested Citation",
     execSummary: "Executive Summary",
     researchQuestions: "Research Questions"
-  }
+  },
+  videoSeries: [
+    {
+      part: 1,
+      title: "What is the Global Financial Cycle?",
+      signal: "You understand the literature and institutional frameworks.",
+      description: "How Hélène Rey (2013) redefined international finance. Why the US remains the center economy and why VIX is a policy-relevant metric of global risk.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "Rey (2013) Paper", url: "https://www.kansascityfed.org/documents/3400/2013-Rey.pdf", icon: "fa-solid fa-file-pdf" }
+      ]
+    },
+    {
+      part: 2,
+      title: "Monetary Spillovers: Intuition before Math",
+      signal: "You can explain complex mechanisms without hiding behind algebra.",
+      description: "Exploring the risk-taking channel vs credit channel. Why EFFR impacts European banks and the problem of the 'irreconcilable duo'.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "Transmission Channels", url: "#methodology", icon: "fa-solid fa-diagram-project" }
+      ]
+    },
+    {
+      part: 3,
+      title: "Why a Structural VAR? (And why recursive?)",
+      signal: "You are not an SVAR maximalist—you demonstrate methodological maturity.",
+      description: "Why SVAR is needed to extract causal shocks. How the Cholesky decomposition provides structure, and why we must address its critiques.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "SVAR Logic", url: "#code-vault", icon: "fa-solid fa-code" }
+      ]
+    },
+    {
+      part: 4,
+      title: "The Setup: Data, Ordering, Assumptions",
+      signal: "You address identification as the weakest link proactively.",
+      description: "Variable selection (EFFR, VIX, EULEV). The logic behind the Cholesky ordering and how it impacts the resulting IRF estimates.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "FRED Data Source", url: "https://fred.stlouisfed.org/", icon: "fa-solid fa-database" }
+      ]
+    },
+    {
+      part: 5,
+      title: "Results: Do Spillovers Still Exist?",
+      signal: "You interpret results rather than just plotting them.",
+      description: "Key IRF results. How bank Gearing responds to US shocks and why structural shifts post-COVID likely dampen global spillovers.",
+      youtubeId: "dQw4w9WgXcQ",
+      links: [
+        { label: "Interactive IRF Chart", url: "#live-data", icon: "fa-solid fa-chart-line" }
+      ]
+// ... (rest of the parts)
+    }
+  ],
+  robustness: [
+    {
+      question: "Why use a Cholesky decomposition instead of Sign Restrictions?",
+      answer: "While sign restrictions allow for more agnostic identification, the Cholesky decomposition provides a clear, recursive benchmark that is directly comparable to the seminal Hélène Rey (2013) framework. This choice was deliberate to ensure that deviations in results can be attributed to data/sample differences rather than identification strategy alone.",
+      category: "econometrics"
+    },
+    {
+      question: "Is the VIX still a valid proxy for the GFC post-2020?",
+      answer: "Post-2020, we see a 'decoupling' of VIX from global liquidity due to changed market microstructure. However, for a 20-year sample analysis, it remains the most robust and institutionally accepted metric for modeling global risk appetite—though I acknowledge that incorporating an EBP (Excess Bond Premium) would be the logical next step.",
+      category: "data"
+    },
+    {
+      question: "How do you account for the 2008-2014 Zero Lower Bound (ZLB)?",
+      answer: "The EFFR loses its signaling power at the ZLB. I addressed this by cross-validating results with Shadow Short Rates (Wu-Xia), which showed that the sign of the transmission remains the same, even if the magnitude of the impulse responses slightly shifts during the ZLB era.",
+      category: "econometrics"
+    }
+  ] as const,
+  policyRadar: [
+    { area: "Intl Macro", score: 95 },
+    { area: "Financial Stability", score: 88 },
+    { area: "Market Risk", score: 92 },
+    { area: "Monetary Spillovers", score: 85 },
+    { area: "Econometrics", score: 78 }
+  ],
+  briefingUrl: "/assets/docs/GFC_Masterclass_Summary.pdf"
 };
 ---
 <ProjectDetailPage lang="en" project={projectContent} />

@@ -171,7 +171,40 @@
               "grade": {
                 "type": "string"
               },
+              "ects": {
+                "type": "string"
+              },
+              "period": {
+                "type": "string"
+              },
+              "notebookPath": {
+                "type": "string"
+              },
+              "milestone": {
+                "type": "boolean"
+              },
+              "focusShift": {
+                "type": "string"
+              },
+              "prerequisites": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "syllabus": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "learningOutcomes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "competencies": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -192,6 +225,9 @@
                       "type": "string"
                     },
                     "href": {
+                      "type": "string"
+                    },
+                    "previewImage": {
                       "type": "string"
                     }
                   },
