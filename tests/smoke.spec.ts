@@ -7,7 +7,7 @@ const pages = [
     '/en/about',
     '/ai-project',
     '/cases',
-    '/training-stats',
+
     '/dashboard', // New page
 ];
 

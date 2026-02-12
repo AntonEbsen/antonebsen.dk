@@ -1,0 +1,115 @@
+---
+import Layout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/ui/Section.astro';
+import ViewCounter from '../../components/blog/ViewCounter.tsx';
+import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
+import CitationBox from '../../components/blog/CitationBox.tsx';
+import TaylorRuleChart from '../../components/blog/charts/TaylorRuleChart.tsx';
+import RelatedGraph from '../../components/blog/RelatedGraph.tsx';
+import SmartFootnote from '../../components/blog/SmartFootnote.tsx';
+import { getCollection } from 'astro:content';
+
+export const prerender = false; 
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/404');
+
+const posts = await getCollection('blog');
+const post = posts.find(p => p.slug === slug);
+
+if (!post) return Astro.redirect('/404');
+
+const { title, description, meta, category, content } = post.data;
+
+// Generate reading time (rough estimate: 200 words/min)
+const words = content && Array.isArray(content) ? content.join(' ').split(' ').length : 0;
+const readTime = Math.ceil(words / 200);
+
+// Detect if this specific chart is needed (simple shortcode replacement for now)
+// In a real MDX setup this would be automatic, but for JSON content we check a flag or string.
+const showTaylorChart = slug === 'ai-monetary-policy'; 
+---
+
+<Layout title={title} description={description} article={true}>
+  <ReadingProgress client:load />
+
+  <main class="max-w-3xl mx-auto px-6 py-24 relative">
+    
+    <header class="mb-12 text-center">
+        <div class="flex items-center justify-center gap-3 text-sm text-dim mb-4">
+            <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 uppercase tracking-widest text-[10px] font-bold">
+                {category}
+            </span>
+            <span>•</span>
+            <span>{meta}</span>
+            <span>•</span>
+            <span>{readTime} min read</span>
+            <span>•</span>
+            <ViewCounter client:load slug={slug} />
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{title}</h1>
+        <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto">{description}</p>
+    </header>
+
+    <article class="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-p:text-dim prose-p:leading-loose prose-a:text-accent prose-blockquote:border-accent prose-blockquote:bg-white/5 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg">
+        {/* Render content array as paragraphs if it exists */}
+        {content && Array.isArray(content) ? (
+            content.map((paragraph: string, index: number) => {
+                // Feature 2: Interactive Charts Injection
+                if (showTaylorChart && index === 1) {
+                    return (
+                        <>
+                            <p>{paragraph}</p>
+                            <TaylorRuleChart client:visible />
+                        </>
+                    )
+                }
+                return <p>{paragraph}</p>;
+            })
+        ) : (
+             <div class="p-4 border border-yellow-500/20 bg-yellow-500/5 rounded text-yellow-200">
+                <p>This post does not have content formatted for this view.</p>
+             </div>
+        )}
+
+        {/* Footnotes Section (Static for now, can be dynamic later) */}
+        <div class="mt-12 pt-6 border-t border-white/10 text-sm text-dim opacity-80">
+            <h3 class="text-xs uppercase tracking-widest font-bold mb-4 text-white">Footnotes</h3>
+            <ol class="list-decimal pl-4 space-y-2">
+                <li id="fn-1">
+                    Bernanke, B. (2025). <em>Artificial Intelligence and the Future of Central Banking</em>. Journal of Monetary Economics. <a href="#ref-1" class="text-accent no-underline">↩</a>
+                </li>
+                <li id="fn-2">
+                    Lagarde, C. (2024). <em>Speech at the ECB Forum on Central Banking</em>. Sintra. <a href="#ref-2" class="text-accent no-underline">↩</a>
+                </li>
+            </ol>
+        </div>
+    </article>
+
+    {/* Citation System */}
+    <CitationBox 
+        client:visible 
+        title={title} 
+        author="Anton Meier Ebsen Jørgensen" 
+        url={`https://antonebsen.dk/blog/${slug}`} 
+        date={new Date().toISOString()} // Should ideally be from frontmatter
+    />
+
+    {/* Related Content Graph (The Laboratory) */}
+    <div class="my-12">
+        <h3 class="text-xs uppercase tracking-widest font-bold mb-4 text-white">Related Knowledge</h3>
+        <RelatedGraph client:visible currentSlug={slug} />
+    </div>
+
+    {/* Smart Footnotes (Logic Only) */}
+    <SmartFootnote client:load />
+
+    <div class="mt-8 pt-8 border-t border-white/10 flex justify-between items-center">
+        <a href="/blog" class="text-dim hover:text-white transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i> Back to Blog
+        </a>
+    </div>
+
+  </main>
+</Layout>

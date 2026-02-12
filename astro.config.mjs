@@ -3,6 +3,8 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import partytown from '@astrojs/partytown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 import sentry from '@sentry/astro';
 import vercel from '@astrojs/vercel';
@@ -19,8 +21,13 @@ export default defineConfig({
 
   site: 'https://antonebsen.dk',
 
+  markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex]
+  },
+
   integrations: [
-    // sentry(),
+    sentry(),
     react(),
     sitemap(),
     // partytown({

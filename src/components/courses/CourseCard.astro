@@ -214,7 +214,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
                             <a href={proj.href} class="flex items-center gap-3 group/proj p-1.5 rounded-lg hover:bg-white/5 transition-colors">
                                 {proj.previewImage && (
                                     <div class="w-12 h-12 rounded bg-white/5 border border-white/10 overflow-hidden flex-shrink-0">
-                                        <img src={proj.previewImage} alt={proj.title} class="w-full h-full object-cover opacity-80 group-hover/proj:opacity-100 transition-opacity" />
+                                        <img src={proj.previewImage} alt={proj.title} loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover/proj:opacity-100 transition-opacity" />
                                     </div>
                                 )}
                                 <div>

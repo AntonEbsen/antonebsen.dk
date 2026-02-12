@@ -2,14 +2,21 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
 import { checkRateLimit } from '../../lib/ratelimit';
+import { z } from 'zod';
+
+const GuestbookSchema = z.object({
+    name: z.string().min(1).max(50),
+    message: z.string().min(1).max(500),
+    distraction: z.string().optional() // Honeypot
+});
 
 export const prerender = false;
 
 // GET: Fetch messages (admin can fetch all)
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: 'Database not connected' }), { status: 500 });
 
-    const isAdmin = url.searchParams.get('all') === 'true';
+    const isAdmin = request.headers.get('x-admin-secret') === (process.env.ADMIN_SECRET || process.env.CRON_SECRET);
     let query = supabase.from('guestbook').select('*').order('created_at', { ascending: false });
 
     // If not admin request, only show approved
@@ -30,10 +37,15 @@ export const GET: APIRoute = async ({ url }) => {
 export const PUT: APIRoute = async ({ request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
     try {
+        const adminSecret = request.headers.get('x-admin-secret');
+        if (adminSecret !== (process.env.ADMIN_SECRET || process.env.CRON_SECRET)) {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        }
+
         const { id, action } = await request.json();
 
         if (action === 'approve') {
-            await supabase.from('guestbook').update({ is_approved: true }).eq('id', id);
+            await supabase.from('guestbook').update({ is_approved: true } as any).eq('id', id);
         } else if (action === 'delete') {
             await supabase.from('guestbook').delete().eq('id', id);
         }
@@ -51,8 +63,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     try {
-        const body = await request.json();
-        const { name, message, distraction } = body;
+        const rawBody = await request.json();
+        const parseResult = GuestbookSchema.safeParse(rawBody);
+
+        if (!parseResult.success) {
+            return new Response(JSON.stringify({ error: 'Invalid input', details: parseResult.error.format() }), { status: 400 });
+        }
+
+        const { name, message, distraction } = parseResult.data;
 
         // 1. HONEYPOT TRAP
         // If 'distraction' field has any value, it's a bot.
@@ -69,10 +87,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             return new Response(JSON.stringify({ error: "Too many messages. Please wait a bit." }), { status: 429 });
         }
 
-        // 3. Validation
-        if (!name || !message || name.length > 50 || message.length > 500) {
-            return new Response(JSON.stringify({ error: 'Invalid input' }), { status: 400 });
-        }
+        // 3. Validation (Already done by Zod above, but keeping logic flow clean)
 
         // 4. Insert into Supabase
         const { error } = await supabase

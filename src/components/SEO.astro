@@ -6,17 +6,29 @@ export interface Props {
   article?: boolean;
 }
 
+
 const { 
   title, 
   description = "Anton Meier Ebsen Jørgensen – Økonomistuderende (cand.polit.)", 
-  image = "/assets/img/billede-af-mig.jpg", 
   article = false 
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://antonebsen.dk"); // Fallback site
-const socialImageURL = new URL(image, Astro.url);
 const siteTitle = "Anton Meier Ebsen Jørgensen";
 const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://antonebsen.dk");
+
+// Image Logic: Use provided prop OR fallback to Dynamic OG
+let socialImageURL;
+if (Astro.props.image) {
+  socialImageURL = new URL(Astro.props.image, Astro.url);
+} else {
+  // Generate Dynamic OG
+  const ogTitle = title.replace(` | ${siteTitle}`, ''); // Clean title
+  const ogEndpoint = new URL('/api/og', Astro.url);
+  ogEndpoint.searchParams.set('title', ogTitle);
+  ogEndpoint.searchParams.set('desc', description.slice(0, 80) + (description.length > 80 ? '...' : ''));
+  socialImageURL = ogEndpoint;
+}
 
 // Breadcrumbs Logic
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);

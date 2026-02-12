@@ -1,5 +1,21 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText, generateText } from 'ai';
+import { checkRateLimit } from '../../lib/ratelimit';
+import { z } from 'zod';
+
+const ChatSchema = z.object({
+   messages: z.array(z.object({
+      role: z.enum(['user', 'assistant', 'system']),
+      content: z.string()
+   })).optional(),
+   message: z.string().optional(), // Legacy
+   context: z.object({
+      type: z.enum(['project', 'general']).optional(),
+      data: z.record(z.any()).optional()
+   }).optional(),
+   persona: z.string().optional(),
+   lang: z.enum(['en', 'da', 'de']).optional()
+});
 
 // Static RAG Data
 // @ts-ignore
@@ -49,12 +65,26 @@ ${skills.languages.map((l: any) => `- ${l.name}: ${l.level}`).join('\n')}
 // Previous error "req.json is not a function" happened because the first arg is the context object, not the Request itself.
 export const POST = async ({ request }: { request: Request }) => {
    try {
-      const body = await request.json();
+      const rawBody = await request.json();
+      const parseResult = ChatSchema.safeParse(rawBody);
+
+      if (!parseResult.success) {
+         return new Response(JSON.stringify({ message: "Invalid Input", errors: parseResult.error.format() }), { status: 400 });
+      }
+
+      const body = parseResult.data;
 
       // 1. Validate Environment
       if (!process.env.GEMINI_API_KEY) {
          console.error("CRITICAL: GEMINI_API_KEY is missing");
          return new Response(JSON.stringify({ message: "Server Configuration Error: Missing API Key" }), { status: 500 });
+      }
+
+      // 1b. Rate Limit
+      const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
+      const limitResult = await checkRateLimit('chat', clientIP);
+      if (!limitResult.success) {
+         return new Response(JSON.stringify({ message: "Too many requests. Please wait a bit." }), { status: 429 });
       }
 
       // 2. Initialize Provider with Explicit Key
@@ -104,7 +134,7 @@ export const POST = async ({ request }: { request: Request }) => {
 
          const result = streamText({
             model: google('gemini-2.0-flash'),
-            messages: messages,
+            messages: messages || [], // Ensure array
             system: systemPrompt,
          });
 
@@ -126,8 +156,8 @@ export const POST = async ({ request }: { request: Request }) => {
 
          const { text } = await generateText({
             model: google('gemini-2.0-flash'),
-            messages: [{ role: 'user', content: message }],
-            system: systemPrompts[persona] || systemPrompts.default
+            messages: [{ role: 'user', content: message || '' }], // Ensure string
+            system: systemPrompts[persona || 'default'] || systemPrompts.default
          });
 
          return new Response(JSON.stringify({ message: text }), {

@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
         { title: "Add Project", url: "/dashboard?action=add-project", type: "command", icon: "fa-plus" },
 
         // Content
-        ...(projects.data || []).map(p => ({
+        ...((projects.data as any[]) || []).map(p => ({
             title: p.title,
             description: p.description,
             url: p.url || '#', // External or internal
@@ -35,20 +35,20 @@ export const GET: APIRoute = async () => {
             type: 'project',
             icon: 'fa-code'
         })),
-        ...(posts.data || []).map(p => ({
+        ...((posts.data as any[]) || []).map(p => ({
             title: p.title,
             url: `/blog/${p.slug}`,
             tags: p.tags,
             type: 'blog',
             icon: 'fa-newspaper'
         })),
-        ...(books.data || []).map(b => ({
+        ...((books.data as any[]) || []).map(b => ({
             title: `${b.title} by ${b.author}`,
             url: '/library',
             type: 'book',
             icon: 'fa-book'
         })),
-        ...(quotes.data || []).map(q => ({
+        ...((quotes.data as any[]) || []).map(q => ({
             title: `Quote: "${q.text.substring(0, 30)}..."`,
             url: '/quotes',
             type: 'quote',

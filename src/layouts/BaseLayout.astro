@@ -10,6 +10,8 @@ import '@styles/styles.css';
 import '@styles/themes.css';
 import SpeedInsights from "@vercel/speed-insights/astro"
 import { Analytics } from "@vercel/analytics/react"
+import '@fontsource-variable/inter';
+import 'katex/dist/katex.min.css';
 
 interface Props {
   title: string;
@@ -220,10 +222,7 @@ const lang = getLangFromUrl(Astro.url);
   <Analytics client:load />
   
   <!-- 3. Font preloading for instant text rendering -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" media="print" onload="this.media='all'">
+  <!-- Replaced with @fontsource-variable/inter -->
   
   <!-- 4. Non-critical CSS and scripts (deferred) -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>

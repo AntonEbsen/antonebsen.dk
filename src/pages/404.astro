@@ -1,18 +1,96 @@
 ---
-import Layout from '@layouts/BaseLayout.astro';
-import Section from '@components/ui/Section.astro';
-import Button from '@components/ui/Button.astro';
-
-const title = "404 - Side ikke fundet";
-const desc = "Siden du leder efter findes ikke.";
+import Layout from '../layouts/BaseLayout.astro';
+import BlackHole from '../components/delight/BlackHole.tsx';
 ---
 
-<Layout title={title} description={desc}>
-  <main class="h-screen flex items-center justify-center">
-    <Section class="text-center">
-      <h1 class="text-6xl font-bold text-gold-500 mb-4">404</h1>
-      <p class="text-xl text-dim mb-8">Siden blev ikke fundet.</p>
-      <Button href="/">Gå til forsiden</Button>
-    </Section>
-  </main>
+<Layout title="404 - Event Horizon" description="You have reached the point of no return.">
+    <main class="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505] text-center">
+        
+        <!-- The Singularity Visualization -->
+        <BlackHole client:only="react" />
+
+        <!-- Overlay Content -->
+        <div class="relative z-10 p-8 max-w-2xl animate-fade-in-up">
+            <h1 class="text-[120px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800 mb-0 leading-none select-none glitch-text" data-text="404">
+                404
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-light text-gold-500 mb-8 tracking-widest uppercase">
+                Event Horizon Reached
+            </h2>
+            <p class="text-gray-400 text-lg mb-10 max-w-md mx-auto leading-relaxed">
+                The page you are looking for has been consumed by the singularity. Use the gravity assist below to escape.
+            </p>
+            
+            <a href="/" class="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-full overflow-hidden hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:border-gold-500/50 hover:shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+                <span class="relative z-10 font-bold tracking-wide text-white group-hover:text-gold-400 transition-colors">INITIATE ESCAPE</span>
+                <i class="fa-solid fa-shuttle-space text-white/50 group-hover:text-gold-400 group-hover:translate-x-1 transition-all duration-300"></i>
+                
+                <!-- Glow Effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 translate-x-[-150%] group-hover:animate-shine"></div>
+            </a>
+        </div>
+
+        <!-- Technical Overlay -->
+        <div class="absolute bottom-8 right-8 font-mono text-xs text-dim opacity-30 select-none hidden md:block text-right">
+            <p>ANOMALY_DETECTED: E_404_NOT_FOUND</p>
+            <p>COORDINATES: UNKNOWN</p>
+            <p>GRAVITY: INFINITE</p>
+        </div>
+
+    </main>
 </Layout>
+
+<style>
+    /* Glitch Animation for 404 */
+    .glitch-text {
+        position: relative;
+    }
+    .glitch-text::before,
+    .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #050505;
+    }
+    .glitch-text::before {
+        left: 2px;
+        text-shadow: -1px 0 #ff00c1;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    .glitch-text::after {
+        left: -2px;
+        text-shadow: -1px 0 #00fff9;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+        0% { clip: rect(3px, 9999px, 8px, 0); }
+        5% { clip: rect(65px, 9999px, 19px, 0); }
+        10% { clip: rect(98px, 9999px, 7px, 0); }
+        15% { clip: rect(2px, 9999px, 87px, 0); }
+        20% { clip: rect(54px, 9999px, 15px, 0); }
+        100% { clip: rect(12px, 9999px, 64px, 0); }
+    }
+    @keyframes glitch-anim2 {
+        0% { clip: rect(65px, 9999px, 100px, 0); }
+        5% { clip: rect(2px, 9999px, 49px, 0); }
+        10% { clip: rect(32px, 9999px, 5px, 0); }
+        15% { clip: rect(89px, 9999px, 2px, 0); }
+        20% { clip: rect(12px, 9999px, 64px, 0); }
+        100% { clip: rect(48px, 9999px, 32px, 0); }
+    }
+
+    .animate-shine {
+        animation: shine 1s;
+    }
+    @keyframes shine {
+        100% {
+            transform: translateX(150%) skewX(-12deg);
+        }
+    }
+</style>

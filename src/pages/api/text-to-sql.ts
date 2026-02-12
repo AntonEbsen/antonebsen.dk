@@ -1,11 +1,20 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText } from 'ai';
+import { checkRateLimit } from '../../lib/ratelimit';
 
 export const prerender = false;
 
 export const POST = async ({ request }: { request: Request }) => {
     try {
         const { text, schema } = await request.json();
+
+        // Rate Limit
+        const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
+        // Reuse 'chat' limit (10/min) as it's an expensive AI operation
+        const limitResult = await checkRateLimit('chat', clientIP);
+        if (!limitResult.success) {
+            return new Response(JSON.stringify({ message: "Too many requests. Please wait a bit." }), { status: 429 });
+        }
 
         if (!process.env.GEMINI_API_KEY) {
             return new Response(JSON.stringify({ message: "Server Configuration Error" }), { status: 500 });
