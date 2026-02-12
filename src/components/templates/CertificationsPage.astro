@@ -7,6 +7,8 @@ import Pill from '@components/ui/Pill.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import CertificationCard from '@components/common/CertificationCard.astro';
+import CertGraph from '@components/cv/CertGraph';
+import CertHeatmap from '@components/cv/CertHeatmap';
 import { supabase } from '@lib/supabase';
 
 import { getEntry } from 'astro:content';
@@ -31,6 +33,12 @@ const matlabCerts = certifications.filter(c => c.category === 'MATLAB');
 const sasCerts = certifications.filter(c => c.category === 'SAS');
 const writingCerts = certifications.filter(c => c.category === 'Formidling' || c.category === 'Writing');
 const otherCerts = certifications.filter(c => !['Python', 'MATLAB', 'SAS', 'Formidling', 'Writing'].includes(c.category));
+
+const badges = [
+    { label: `${certifications.length} Certifications`, icon: 'fa-certificate', color: 'text-yellow-400' },
+    { label: 'Pro Verified', icon: 'fa-check-circle', color: 'text-green-400' },
+    { label: 'Global Standard', icon: 'fa-globe', color: 'text-blue-400' }
+];
 
 ---
 
