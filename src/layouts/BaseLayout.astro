@@ -4,6 +4,7 @@ import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
 import ChatWidget from '../components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
+import { AchievementToast } from '../components/game/AchievementToast';
 import Chameleon from '@components/core/Chameleon.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
@@ -265,6 +266,7 @@ const lang = getLangFromUrl(Astro.url);
   
   {showChatWidget && <ChatWidget />}
   <CommandPalette />
+  <AchievementToast client:load />
 
   <script>
     // Premium reveal observer
@@ -311,6 +313,24 @@ const lang = getLangFromUrl(Astro.url);
         el.style.opacity = '1';
         el.style.transform = 'translateY(0)';
       });
+    });
+  </script>
+  <script>
+    import { unlockAchievement } from '../lib/gamification';
+
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let cursor = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === konamiCode[cursor]) {
+        cursor++;
+        if (cursor === konamiCode.length) {
+          unlockAchievement('easter_egg');
+          cursor = 0;
+        }
+      } else {
+        cursor = 0; 
+      }
     });
   </script>
 </body>

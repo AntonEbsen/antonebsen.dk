@@ -167,6 +167,15 @@ You have access to the following UI tools. Trigger them by outputting the specif
 3. SUGGEST ACTIONS:
    To suggest follow-up questions or actions, output:
    <<<SUGGESTIONS: ["See Skills Chart", "Read User Guide", "Email Anton"] >>>
+
+4. UNLOCK ACHIEVEMENT:
+   If the user answers a quiz correctly or demonstrates knowledge, unlock a badge:
+   <<<UNLOCK: "economist" >>>
+   IDs: 'explorer', 'scholar', 'economist', 'recruiter', 'quiz_novice', 'easter_egg'
+
+5. START QUIZ:
+   To start a new quiz about a topic (like Taylor Rules):
+   <<<QUIZ_START: { "topic": "Taylor Rules" } >>>
 `;
 
       if (context?.type === 'project') {

@@ -162,8 +162,10 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
 <script>
   import { AudioVisualizer } from '../../lib/audio-visualizer';
+  import { unlockAchievement } from '../../lib/gamification';
 
   try {
+
       // Elements
       const widget = document.getElementById('chat-widget');
       const chatWindow = document.getElementById('chat-window');
@@ -816,6 +818,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
           return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')
                      .replace(/<<<NAVIGATE:.*?>>>/gi, '')
                      .replace(/<<<SUGGESTIONS:.*?>>>/g, '')
+                     .replace(/<<<UNLOCK:.*?>>>/g, '')
+                     .replace(/<<<QUIZ_START:.*?>>>/g, '')
                      .replace(/<<<CITATION:(.*?)>>>/g, '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[10px] uppercase tracking-wider text-accent mx-1 select-none cursor-help" title="Source: Uploaded Document"><i class="fa-solid fa-file-pdf"></i> $1</span>')
                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                      .replace(/\n/g, '<br/>');
@@ -899,6 +903,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
                       btn.className = "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm";
                       btn.innerText = s;
                       btn.addEventListener('click', () => {
+                          const input = document.getElementById('chat-input'); // Fixed ID
+                          const form = document.getElementById('chat-form');   // Fixed ID
                           if (input && form) {
                               input.value = s;
                               form.dispatchEvent(new Event('submit'));
@@ -915,6 +921,34 @@ const t = (t_obj as any)[lang] || t_obj.da;
               } catch (e) {
                   console.error("Suggestion Parse Error", e);
               }
+         }
+
+         // Gamification: Unlock
+         const unlockMatch = text.match(/<<<UNLOCK:\s*["'](.*?)["']\s*>>>/);
+         if (unlockMatch) {
+             const achievementId = unlockMatch[1];
+             console.log("🏆 AI Unlocking Achievement:", achievementId);
+             unlockAchievement(achievementId);
+         }
+
+         // Gamification: Quiz
+         const quizMatch = text.match(/<<<QUIZ_START:\s*({.*?})\s*>>>/);
+         if (quizMatch) {
+             try {
+                const quizdata = JSON.parse(quizMatch[1]);
+                const quizDiv = document.createElement('div');
+                quizDiv.className = "mt-4 p-4 bg-accent/10 border border-accent/30 rounded-xl animate-pulse";
+                quizDiv.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-graduation-cap text-accent text-xl"></i>
+                        <h4 class="font-bold text-accent">Quiz Mode Activated</h4>
+                    </div>
+                    <p class="text-sm text-dim-100">Topic: ${quizdata.topic}</p>
+                `;
+                containerDiv.appendChild(quizDiv);
+                const msgs = document.getElementById('chat-messages');
+                if(msgs) msgs.scrollTop = msgs.scrollHeight;
+             } catch(e) { console.error("Quiz Parse Error", e); }
          }
       }
 
