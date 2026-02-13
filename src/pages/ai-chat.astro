@@ -392,6 +392,8 @@ const t = {
 
     // Voice Logic (Full Page)
     let isRecording = false;
+    let wasVoiceInput = false;
+    let currentAudio = null;
     let isInitializing = false;
     let mediaRecorder = null;
     let audioChunks = [];
@@ -670,7 +672,6 @@ const t = {
            }); // End submit listener
 
     // --- TTS HELPER ---
-    let currentAudio: HTMLAudioElement | null = null;
     
     async function playTextToSpeech(text: string) {
         console.log("🔊 playTextToSpeech called");

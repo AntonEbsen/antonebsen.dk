@@ -210,6 +210,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
       // UI Logic
       let isOpen = false;
+      let wasVoiceInput = false;
+      let currentAudio = null;
 
       function toggleChat() {
         if (!chatWindow || !toggle) return;
@@ -718,15 +720,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
                     wasVoiceInput = false; // Reset flag
                 }
             }
-                        
-                     if (speechText) playTextToSpeech(speechText);
-                } catch (e) { console.error("Auto-Speak Error:", e); }
-            }
+
           }); // End submit listener
 
          // --- TTS HELPER (Widget) ---
-        let currentAudio = null;
-        let wasVoiceInput = false;
+
 
         async function playTextToSpeech(text) {
             console.log("🔊 playTextToSpeech called");
