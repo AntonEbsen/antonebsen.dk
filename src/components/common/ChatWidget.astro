@@ -590,7 +590,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
             }
 
             showTyping();
-            
+
+            const currentLang = document.documentElement.lang || 'da';
             let accumulatedText = "";
         
         try {

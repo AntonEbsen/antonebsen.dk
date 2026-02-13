@@ -577,7 +577,8 @@ const t = {
       // Loading
       showTyping();
 
-        let accumulatedText = "";
+      const currentLang = document.getElementById('fp-chat-card')?.dataset.lang || 'da';
+      let accumulatedText = "";
 
         try {
           const res = await fetch('/api/chat', {
