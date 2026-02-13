@@ -121,19 +121,24 @@ export const POST = async ({ request }: { request: Request }) => {
          apiKey: process.env.GEMINI_API_KEY
       });
 
-      // 3. Determine Mode (Legacy vs New)
-      const isNewWidget = body.messages && Array.isArray(body.messages) && body.messages.length > 0;
+      // 3. Normalize Input (Support Legacy Widget)
+      let messages = body.messages;
+      if (!messages || !Array.isArray(messages) || messages.length === 0) {
+         if (body.message) {
+            messages = [{ role: 'user', content: body.message }];
+         } else {
+            messages = [];
+         }
+      }
 
-      // 4. Construct Model & Prompts
-      if (isNewWidget) {
-         // === UNIFIED GLOBAL ASSISTANT ===
-         const { messages, context, persona = 'default', lang = 'en', image } = body;
-         const bio = await getBioContext(lang || 'en');
+      // 4. Unified Logic (Always Stream)
+      const { context, persona = 'default', lang = 'en', image } = body;
+      const bio = await getBioContext(lang || 'en');
 
-         let systemPrompt = "";
+      let systemPrompt = "";
 
-         // --- TOOL INSTRUCTIONS ---
-         const toolInstructions = `
+      // --- TOOL INSTRUCTIONS ---
+      const toolInstructions = `
 [UI CAPABILITIES - USE THESE TOOLS]
 You have access to the following UI tools. Trigger them by outputting the specific syntax below.
 1. SHOW A CHART:
@@ -159,84 +164,61 @@ You have access to the following UI tools. Trigger them by outputting the specif
    <<<SUGGESTIONS: ["Question 1", "Question 2"] >>>
 `;
 
-         if (context?.type === 'project') {
-            // --- PROJECT REVIEWER MODE ---
-            systemPrompt = `
-             You are 'The Reviewer', reviewing the project "${context.data?.title || 'Unknown'}".
-             ${bio}
-             
-             Style: Concise, professional, slightly cynical but constructive.
-             Modes: ${context.data?.simple ? 'ELI5' : 'Normal'}, ${context.data?.critique ? 'Ruthless' : 'Constructive'}.
-             ${context.data?.codeSnippet ? 'Has Code Context.' : ''}
-             `;
-         } else {
-            // --- GENERAL ASSISTANT MODE ---
-            const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.
-             CRITICAL RULES:
-             1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
-             2. Never hallucinate roles not listed in facts (e.g. Anton is NOT an engineering manager).
-             3. If the user asks about something not in the facts, politely say you don't know or relate it to his Economics background.
-             4. Keep it brief and professional.
-             ${toolInstructions}`;
-
-            const prompts: Record<string, string> = {
-               default: `${bio}\n${baseInstruction}`,
-               recruiter: `${bio}\n${baseInstruction}\nFocus on his employability: Analytical skills, teaching experience, and technical tools.`,
-               tech: `${bio}\n${baseInstruction}\nFocus on his technical stack: Python, Data Science, and Economic Modeling details.`,
-               eli5: `${bio}\n${baseInstruction}\nExplain simply like I am 5 years old.`
-            };
-
-            systemPrompt = prompts[persona] || prompts.default;
-         }
-
-         // --- VISION SUPPORT ---
-         // If an image is provided, we must construct the "user" message as a multi-modal content array.
-         // We only attach the image to the LAST user message.
-         let finalMessages: any[] = messages || [];
-
-         if (image && finalMessages.length > 0) {
-            const lastMsg = finalMessages[finalMessages.length - 1];
-            if (lastMsg.role === 'user') {
-               // Replace string content with array content for vision
-               lastMsg.content = [
-                  { type: 'text', text: lastMsg.content },
-                  { type: 'image', image: image.data } // @ai-sdk/google expects 'image' with base64
-               ];
-            }
-         }
-
-         const result = streamText({
-            model: google('gemini-2.0-flash'),
-            messages: finalMessages,
-            system: systemPrompt,
-         });
-
-         // Switch to Text Stream for maximum compatibility with client useChat
-         return result.toTextStreamResponse();
-
+      if (context?.type === 'project') {
+         // --- PROJECT REVIEWER MODE ---
+         systemPrompt = `
+          You are 'The Reviewer', reviewing the project "${context.data?.title || 'Unknown'}".
+          ${bio}
+          
+          Style: Concise, professional, slightly cynical but constructive.
+          Modes: ${context.data?.simple ? 'ELI5' : 'Normal'}, ${context.data?.critique ? 'Ruthless' : 'Constructive'}.
+          ${context.data?.codeSnippet ? 'Has Code Context.' : ''}
+          `;
       } else {
-         // === LEGACY FALLBACK (Deprecate soon) ===
-         const { message, lang = 'da', persona = 'default' } = body;
-         const bio = await getBioContext(lang || 'da');
-         // ... (Keep existing legacy logic for now)
-         const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.`;
-         const systemPrompts: Record<string, string> = {
+         // --- GENERAL ASSISTANT MODE ---
+         const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.
+          CRITICAL RULES:
+          1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
+          2. Never hallucinate roles not listed in facts (e.g. Anton is NOT an engineering manager).
+          3. If the user asks about something not in the facts, politely say you don't know or relate it to his Economics background.
+          4. Keep it brief and professional.
+          ${toolInstructions}`;
+
+         const prompts: Record<string, string> = {
             default: `${bio}\n${baseInstruction}`,
-            recruiter: `${bio}\n${baseInstruction}\nFocus on his employability.`,
-            tech: `${bio}\n${baseInstruction}\nFocus on his technical stack.`,
-            eli5: `${bio}\n${baseInstruction}\nExplain simply.`
+            recruiter: `${bio}\n${baseInstruction}\nFocus on his employability: Analytical skills, teaching experience, and technical tools.`,
+            tech: `${bio}\n${baseInstruction}\nFocus on his technical stack: Python, Data Science, and Economic Modeling details.`,
+            eli5: `${bio}\n${baseInstruction}\nExplain simply like I am 5 years old.`
          };
 
-         const { text } = await generateText({
-            model: google('gemini-2.0-flash'),
-            messages: [{ role: 'user', content: message || '' }], // Ensure string
-            system: systemPrompts[persona || 'default'] || systemPrompts.default
-         });
-
-         return new Response(JSON.stringify({ message: text }), {
-            headers: { 'Content-Type': 'application/json' }
-         });
+         systemPrompt = prompts[persona] || prompts.default;
       }
+
+      // --- VISION SUPPORT ---
+      // If an image is provided, we must construct the "user" message as a multi-modal content array.
+      // We only attach the image to the LAST user message.
+      let finalMessages: any[] = messages || [];
+
+      if (image && finalMessages.length > 0) {
+         const lastMsg = finalMessages[finalMessages.length - 1];
+         // Only attach if last message is from user
+         if (lastMsg.role === 'user') {
+            // Replace string content with array content for vision
+            lastMsg.content = [
+               { type: 'text', text: lastMsg.content },
+               { type: 'image', image: image.data } // @ai-sdk/google expects 'image' with base64
+            ];
+         }
+      }
+
+      const result = streamText({
+         model: google('gemini-2.0-flash'),
+         messages: finalMessages,
+         system: systemPrompt,
+      });
+
+      // Switch to Text Stream for maximum compatibility with client useChat
+      return result.toTextStreamResponse();
 
    } catch (error: any) {
       console.error("API Error:", error);

@@ -235,8 +235,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
         }
       }
 
-      if (toggle) toggle.addEventListener('click', toggleChat);
-      if (close) close.addEventListener('click', toggleChat);
+      if (toggle) toggle.onclick = toggleChat; // Use onclick to avoid duplicates if re-run
+      if (close) close.onclick = toggleChat;
 
       // File Upload Logic
       const fileInput = document.getElementById('chat-file');
@@ -532,7 +532,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
               if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
                   msg = "Adgang nægtet. Tjek låsen i adressebaren.";
               } else {
-                  msg = err.message;
+                  msg = err.message || "Mikrofon fejl";
               }
               alert(`Kunne ikke starte mikrofon: ${msg}`);
               input.placeholder = t.placeholder;
