@@ -1,4 +1,5 @@
-import { type CollectionEntry } from 'astro:content';
+// import { type CollectionEntry } from 'astro:content'; // Removed to avoid server-side dependency in client code
+
 
 export interface Achievement {
     id: string;
