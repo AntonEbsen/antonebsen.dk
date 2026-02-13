@@ -128,7 +128,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-white/40"
           autocomplete="off"
         />
-        <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv" />
+        <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
         <button type="button" id="file-btn" class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group" title="Upload Document">
             <i class="fa-solid fa-paperclip text-xs group-hover:scale-110 transition-transform"></i>
         </button>
@@ -268,11 +268,29 @@ const t = (t_obj as any)[lang] || t_obj.da;
                       const content = await page.getTextContent();
                       text += content.items.map(item => item.str).join(' ') + "\n";
                   }
+                  currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
+              
+              } else if (file.type.startsWith('image/')) {
+                  // Image Handling
+                   const reader = new FileReader();
+                   reader.onload = () => {
+                       const base64 = reader.result.split(',')[1];
+                       currentFileContent = {
+                           type: 'image',
+                           data: base64,
+                           mimeType: file.type,
+                           name: file.name
+                       };
+                   };
+                   reader.readAsDataURL(file);
+                   if(fileNameSpan) fileNameSpan.textContent = file.name + " (Image Ready)";
+                   return; 
+
               } else {
                   text = await file.text();
+                  currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
               }
 
-              currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
               if(fileNameSpan) fileNameSpan.textContent = file.name + " (Ready)";
               
           } catch (err) {
@@ -443,6 +461,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
                       input.placeholder = t.placeholder;
                       return;
                   }
+                  
+                  wasVoiceInput = true; // Flag for TTS
 
                   const formData = new FormData();
                   formData.append('audio', audioBlob, 'recording.webm');
@@ -561,7 +581,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
             addMessage(query || (currentFileContent ? `[Attached: ${fileInput?.files?.[0]?.name}]` : "Empty message"), 'user', false, persona);
             
-            const fullPayload = query + (currentFileContent || "");
+            let fullPayload = query + (currentFileContent || "");
             
             if (input) input.value = '';
             
@@ -572,10 +592,27 @@ const t = (t_obj as any)[lang] || t_obj.da;
             showTyping();
             
             try {
+              let payload = { message: query, lang: currentLang, persona };
+              if (currentFileContent && currentFileContent.type === 'image') {
+                  payload.image = { data: currentFileContent.data, mimeType: currentFileContent.mimeType };
+                  // Add visual indicator to message history but NOT to payload message if we want clean separation
+                  // But for now, let's keep it simple
+                  fullPayload += ` [Image: ${currentFileContent.name}]`;
+              } else {
+                   // Append text content if text file
+                   // Note: 'fullPayload' was calculated above as query + (currentFileContent || "")
+                   // We need to be careful not to double add
+              }
+              
               const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: fullPayload, lang: currentLang, persona })
+                body: JSON.stringify({ 
+                    message: fullPayload, 
+                    lang: currentLang, 
+                    persona,
+                    image: (currentFileContent && currentFileContent.type === 'image') ? { data: currentFileContent.data, mimeType: currentFileContent.mimeType } : undefined
+                })
               });
               
               removeTyping();
@@ -652,7 +689,70 @@ const t = (t_obj as any)[lang] || t_obj.da;
               console.error(err);
               addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai');
             }
-          });
+
+            // --- VOICE RESPONSE (Level 3) ---
+            if (wasVoiceInput) {
+                try {
+                     const speechText = accumulatedText
+                        .replace(/<<<.*?>>>/g, '')
+                        .replace(/<[^>]*>/g, '') 
+                        .replace(/\*/g, '')
+                        .trim();
+                        
+                     if (speechText) playTextToSpeech(speechText);
+                } catch (e) { console.error("Auto-Speak Error:", e); }
+            }
+          }); // End submit listener
+
+         // --- TTS HELPER (Widget) ---
+        let currentAudio = null;
+        let wasVoiceInput = false;
+
+        async function playTextToSpeech(text) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            
+            // Visual Feedback
+            const robotIcon = document.querySelector('#chat-window .fa-robot');
+            robotIcon?.classList.add('text-accent', 'animate-pulse');
+
+            try {
+                const res = await fetch('/api/speak', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+
+                if (!res.ok) throw new Error("TTS Failed");
+
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                currentAudio = new Audio(url);
+                
+                currentAudio.onended = () => {
+                   robotIcon?.classList.remove('text-accent', 'animate-pulse');
+                   // Reset flag so next text message doesn't speak unless voice was used again
+                   wasVoiceInput = false; 
+                };
+                
+                currentAudio.play();
+
+            } catch (e) {
+                console.error("TTS Playback Error", e);
+                robotIcon?.classList.remove('text-accent', 'animate-pulse');
+            }
+        }
+        
+        // Reset flag on text submit
+        form?.addEventListener('submit', () => {
+             // If manual submit (not voice), ensure flag is false
+             // Use a short timeout because voice logic might submit form programmatically
+             setTimeout(() => {
+                 if(document.activeElement === input) wasVoiceInput = false;
+             }, 100);
+        });
       }
 
       // Helpers

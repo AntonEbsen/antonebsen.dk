@@ -441,6 +441,8 @@ const t = {
                     input.placeholder = t.placeholder;
                     return;
                 }
+                
+                wasVoiceInput = true; // Flag for TTS
 
                 const formData = new FormData();
                 formData.append('audio', audioBlob, 'recording.webm');
@@ -632,12 +634,82 @@ const t = {
              processSpecialTags(accumulatedText, wrapper); 
         }
 
-      } catch (err) {
-        removeTyping();
-        console.error(err);
-        addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
-      }
-    });
+            } catch (err) {
+              removeTyping();
+              console.error(err);
+              addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
+              return; // Exit on error
+            }
+            
+            // --- VOICE RESPONSE (Level 3) ---
+            // Only speak if user initiated via voice or if "Always Speak" is toggled (feature for later)
+            // For now: Check if the last input was voice-initiated (we can track this via a flag)
+            // OR: Just check if the response is from a voice input.
+            // Simplified: If "isRecording" was true recently... actually we need a state.
+            
+            // Let's implement a simple "Auto-Speak" check or just speak if the response is short enough? 
+            // Better: Speak if the user used the microphone.
+            if (wasVoiceInput) {
+                try {
+                     // Extract text from HTML (remove tags for speech)
+                     const speechText = accumulatedText
+                        .replace(/<<<.*?>>>/g, '') // Remove tool commands
+                        .replace(/<[^>]*>/g, '')   // Remove HTML
+                        .replace(/\*/g, '')        // Remove markdown
+                        .trim();
+                        
+                     if (speechText) {
+                         // Play Audio
+                         playTextToSpeech(speechText);
+                     }
+                } catch (e) {
+                    console.error("Auto-Speak Error:", e);
+                }
+            }
+          }); // End submit listener
+
+    // --- TTS HELPER ---
+    let currentAudio: HTMLAudioElement | null = null;
+    
+    async function playTextToSpeech(text: string) {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+
+        // Visual Feedback (e.g. on the robot icon)
+        const robotIcon = document.querySelector('.fa-robot');
+        robotIcon?.classList.add('text-purple-400', 'animate-pulse');
+
+        try {
+            const res = await fetch('/api/speak', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+
+            if (!res.ok) throw new Error("TTS Failed");
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            currentAudio = new Audio(url);
+            
+            currentAudio.onended = () => {
+                robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+            };
+            
+            currentAudio.play();
+
+        } catch (e) {
+            console.error("TTS Playback Error", e);
+            robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+        }
+    }
+    
+    let wasVoiceInput = false;
+
+    // ... (Inside Voice Logic)
+    // Update startRecording to set flag
 
     function processSpecialTags(text, containerDiv) {
        if (!containerDiv) return;
