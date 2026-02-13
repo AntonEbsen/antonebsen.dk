@@ -694,6 +694,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
             }
 
             // --- VOICE RESPONSE (Level 3) ---
+            console.log("🎤 Voice Check | wasVoiceInput:", wasVoiceInput, "Text Length:", accumulatedText?.length);
+            
             if (wasVoiceInput) {
                 try {
                      const speechText = accumulatedText
@@ -701,6 +703,21 @@ const t = (t_obj as any)[lang] || t_obj.da;
                         .replace(/<[^>]*>/g, '') 
                         .replace(/\*/g, '')
                         .trim();
+                     
+                     console.log("🎤 Speech Text extracted:", speechText.substring(0, 50) + "...");
+
+                     if (speechText) {
+                         // Play Audio
+                         await playTextToSpeech(speechText);
+                     } else {
+                         console.warn("🎤 No speech text found after cleaning.");
+                     }
+                } catch (e) {
+                    console.error("Auto-Speak Error:", e);
+                } finally {
+                    wasVoiceInput = false; // Reset flag
+                }
+            }
                         
                      if (speechText) playTextToSpeech(speechText);
                 } catch (e) { console.error("Auto-Speak Error:", e); }
@@ -712,6 +729,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
         let wasVoiceInput = false;
 
         async function playTextToSpeech(text) {
+            console.log("🔊 playTextToSpeech called");
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio = null;
@@ -719,28 +737,34 @@ const t = (t_obj as any)[lang] || t_obj.da;
             
             // Visual Feedback
             const robotIcon = document.querySelector('#chat-window .fa-robot');
-            robotIcon?.classList.add('text-accent', 'animate-pulse');
+            robotIcon?.classList.add('text-purple-400', 'animate-pulse');
 
             try {
+                console.log("🔊 Fetching TTS from /api/speak...");
                 const res = await fetch('/api/speak', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text })
                 });
 
-                if (!res.ok) throw new Error("TTS Failed");
+                if (!res.ok) {
+                    const err = await res.text();
+                    throw new Error(`TTS Failed (${res.status}): ${err}`);
+                }
 
                 const blob = await res.blob();
                 const url = URL.createObjectURL(blob);
                 currentAudio = new Audio(url);
                 
                 currentAudio.onended = () => {
-                   robotIcon?.classList.remove('text-accent', 'animate-pulse');
+                   console.log("🔊 Playback ended");
+                   robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
                    // Reset flag so next text message doesn't speak unless voice was used again
                    wasVoiceInput = false; 
                 };
                 
-                currentAudio.play();
+                console.log("🔊 Starting playback...");
+                await currentAudio.play();
 
             } catch (e) {
                 console.error("TTS Playback Error", e);
