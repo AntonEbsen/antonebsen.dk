@@ -250,7 +250,7 @@ const quickActions = [
         <a href="${r.url}" class="palette-item flex items-center justify-between p-3 rounded-xl transition-all ${i === 0 ? 'is-active' : ''}" data-index="${i}">
           <div class="flex items-center gap-3">
              <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-accent/60">
-                <i class="${getIcon(r.tags)}"></i>
+                <i class="${r.icon || getIcon(r.tags)}"></i>
              </div>
              <div>
                 <div class="text-sm font-medium">${r.title}</div>
