@@ -5,6 +5,7 @@ import SEO from '@components/SEO.astro';
 import ChatWidget from '../components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
 import { AchievementToast } from '../components/game/AchievementToast';
+import TrophyRoom from '../components/game/TrophyRoom';
 import Chameleon from '@components/core/Chameleon.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
@@ -267,6 +268,7 @@ const lang = getLangFromUrl(Astro.url);
   {showChatWidget && <ChatWidget />}
   <CommandPalette />
   <AchievementToast client:load />
+  <TrophyRoom client:load />
 
   <script>
     // Premium reveal observer
@@ -348,6 +350,55 @@ const lang = getLangFromUrl(Astro.url);
     setTimeout(() => {
         checkPolyglotAchievement();
     }, 1000);
+
+    // --- META ACHIEVEMENTS TRIGGERS ---
+
+    // 1. Pixel Perfect (Resize)
+    let resizeCount = 0;
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if (Math.abs(window.innerWidth - lastWidth) > 50) {
+            resizeCount++;
+            lastWidth = window.innerWidth;
+            if (resizeCount >= 3) {
+                unlockAchievement('pixel_perfect');
+            }
+        }
+    });
+
+    // 2. Speed Demon (Page Navigation Speed)
+    // We use sessionStorage to store timestamps of recent page loads
+    const now = Date.now();
+    let visits = JSON.parse(sessionStorage.getItem('page_visits') || '[]');
+    // Filter out visits older than 30 seconds
+    visits = visits.filter(t => now - t < 30000);
+    visits.push(now);
+    sessionStorage.setItem('page_visits', JSON.stringify(visits));
+    
+    if (visits.length >= 5) {
+        unlockAchievement('speed_demon');
+    }
+
+    // 3. Social Butterfly (Link Clicks)
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && link.href) {
+            const isExternal = link.hostname !== window.location.hostname;
+            const isSocial = /linkedin|github|twitter|instagram|facebook/.test(link.href);
+            
+            if (isExternal && isSocial) {
+                let clickedSocials = JSON.parse(localStorage.getItem('clicked_socials') || '[]');
+                if (!clickedSocials.includes(link.href)) {
+                    clickedSocials.push(link.href);
+                    localStorage.setItem('clicked_socials', JSON.stringify(clickedSocials));
+                }
+                
+                if (clickedSocials.length >= 3) {
+                    unlockAchievement('social_butterfly');
+                }
+            }
+        }
+    });
   </script>
 </body>
 </html>

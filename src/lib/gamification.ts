@@ -108,6 +108,27 @@ export const ACHIEVEMENTS: Achievement[] = [
         description: 'Used the search function 3 times.',
         icon: 'fa-solid fa-magnifying-glass',
         xp: 100
+    },
+    {
+        id: 'social_butterfly',
+        title: 'Social Butterfly',
+        description: 'Clicked on 3 different social links.',
+        icon: 'fa-solid fa-share-nodes',
+        xp: 150
+    },
+    {
+        id: 'speed_demon',
+        title: 'Speed Demon',
+        description: 'Visited 5 pages in under 30 seconds.',
+        icon: 'fa-solid fa-bolt',
+        xp: 300
+    },
+    {
+        id: 'pixel_perfect',
+        title: 'Pixel Perfect',
+        description: 'Resized the window to test responsiveness.',
+        icon: 'fa-solid fa-ruler-combined',
+        xp: 100
     }
 ];
 

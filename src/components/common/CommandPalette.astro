@@ -39,7 +39,7 @@ const quickActions = [
   { label: lang === 'da' ? "Se mit CV" : (lang === 'de' ? "Lebenslauf ansehen" : "View my CV"), url: "/cv", icon: "fa-solid fa-file-pdf" },
   { label: lang === 'da' ? "Projekter" : (lang === 'de' ? "Projekte" : "Projects"), url: "/portfolio", icon: "fa-solid fa-briefcase" },
   { label: lang === 'da' ? "Kontakt mig" : (lang === 'de' ? "Kontaktieren Sie mich" : "Contact me"), url: "/contact", icon: "fa-solid fa-envelope" },
-  { label: lang === 'da' ? "Gæstebog" : (lang === 'de' ? "Gästebuch" : "Guestbook"), url: "/guestbook", icon: "fa-solid fa-pen-nib" }
+  { label: lang === 'da' ? "Trophy Room" : (lang === 'de' ? "Trophäenraum" : "Trophy Room"), url: "#trophy-room", icon: "fa-solid fa-trophy" }
 ];
 ---
 
@@ -309,7 +309,15 @@ const quickActions = [
           askAi();
         } else {
           const activeItem = items[activeIndex];
-          if (activeItem) (activeItem as HTMLElement).click();
+          if (activeItem) {
+             const href = activeItem.getAttribute('href');
+             if (href === '#trophy-room') {
+                 window.dispatchEvent(new CustomEvent('toggle-trophy-room'));
+                 closePalette();
+             } else {
+                 (activeItem as HTMLElement).click();
+             }
+          }
         }
       }
     }
