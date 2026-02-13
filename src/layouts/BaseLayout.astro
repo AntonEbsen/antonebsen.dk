@@ -332,6 +332,10 @@ const lang = getLangFromUrl(Astro.url);
         cursor = 0; 
       }
     });
+
+    // Check Polyglot
+    import { checkPolyglotAchievement } from '../lib/gamification';
+    checkPolyglotAchievement();
   </script>
 </body>
 </html>

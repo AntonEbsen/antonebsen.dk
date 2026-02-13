@@ -19,7 +19,7 @@ const { items } = Astro.props;
 
 <div class="timeline relative border-l border-white/10 ml-3 space-y-8 pb-8">
     {items.map((item, index) => (
-        <div class="relative pl-8 group">
+        <div class="relative pl-8 group timeline-item">
             <!-- Dot -->
             <div class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-dim group-hover:bg-accent transition-colors duration-300 ring-4 ring-[#0a0a0c]"></div>
             
@@ -52,3 +52,24 @@ const { items } = Astro.props;
         </div>
     ))}
 </div>
+
+<script>
+    import { unlockAchievement } from '../../lib/gamification';
+    
+    // Simple logic: If user hovers over 3 different timeline items, unlock.
+    const items = document.querySelectorAll('.timeline-item');
+    let hoveredCount = 0;
+    const hoveredSet = new Set();
+
+    items.forEach((item, index) => {
+        item.addEventListener('mouseenter', () => {
+            if (!hoveredSet.has(index)) {
+                hoveredSet.add(index);
+                hoveredCount++;
+                if (hoveredCount >= 3) {
+                    unlockAchievement('timetraveler');
+                }
+            }
+        });
+    });
+</script>

@@ -34,8 +34,19 @@ export default function InteractiveGlobe() {
             },
         });
 
+        const canvas = canvasRef.current;
+
+        const onInteract = () => {
+            import('../../lib/gamification').then(({ unlockAchievement }) => {
+                unlockAchievement('globetrotter');
+            });
+        };
+
+        canvas.addEventListener('pointerdown', onInteract);
+
         return () => {
             globe.destroy();
+            canvas.removeEventListener('pointerdown', onInteract);
         };
     }, []);
 

@@ -52,6 +52,34 @@ export const ACHIEVEMENTS: Achievement[] = [
         description: 'You found the secret code! (⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA)',
         icon: 'fa-solid fa-gamepad',
         xp: 500
+    },
+    {
+        id: 'globetrotter',
+        title: 'The Globetrotter',
+        description: 'Spun the 3D globe in the Contact section.',
+        icon: 'fa-solid fa-earth-europe',
+        xp: 75
+    },
+    {
+        id: 'timetraveler',
+        title: 'Time Traveler',
+        description: 'Explored the Career Timeline.',
+        icon: 'fa-solid fa-hourglass-half',
+        xp: 75
+    },
+    {
+        id: 'void_walker',
+        title: 'Void Walker',
+        description: 'Stared into the abyss (404 Page).',
+        icon: 'fa-solid fa-ghost',
+        xp: 666
+    },
+    {
+        id: 'polyglot',
+        title: 'The Polyglot',
+        description: 'Viewed the site in all 3 languages.',
+        icon: 'fa-solid fa-language',
+        xp: 200
     }
 ];
 
@@ -127,5 +155,22 @@ export function checkPageVisitAchievement() {
 
     if (visited.length >= 5) {
         unlockAchievement('explorer');
+    }
+}
+
+export function checkPolyglotAchievement() {
+    if (typeof localStorage === 'undefined') return;
+
+    // Store array of visited languages
+    let langs = JSON.parse(localStorage.getItem('visited_langs') || '[]');
+    const currentLang = document.documentElement.lang || 'en';
+
+    if (!langs.includes(currentLang)) {
+        langs.push(currentLang);
+        localStorage.setItem('visited_langs', JSON.stringify(langs));
+    }
+
+    if (langs.includes('da') && langs.includes('en') && langs.includes('de')) {
+        unlockAchievement('polyglot');
     }
 }

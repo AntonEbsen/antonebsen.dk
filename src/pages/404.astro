@@ -92,5 +92,17 @@ import BlackHole from '../components/delight/BlackHole.tsx';
         100% {
             transform: translateX(150%) skewX(-12deg);
         }
+    @keyframes shine {
+        100% {
+            transform: translateX(150%) skewX(-12deg);
+        }
     }
 </style>
+
+<script>
+    import { unlockAchievement } from '../lib/gamification';
+    // Wait a moment to ensure they "stare" into the abyss
+    setTimeout(() => {
+        unlockAchievement('void_walker');
+    }, 2000);
+</script>
