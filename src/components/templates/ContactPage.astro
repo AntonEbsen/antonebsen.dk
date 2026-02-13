@@ -3,6 +3,8 @@ import Layout from '@layouts/BaseLayout.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
+import AvailabilityStatus from '@components/ui/AvailabilityStatus';
+import InteractiveGlobe from '@components/ui/InteractiveGlobe';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -49,29 +51,6 @@ const email = "anton@antonebsen.dk";
             align-items: center;
         }
     }
-
-    /* Abstract Map Dots */
-    .map-dot {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-    }
-    .map-pulse {
-        position: absolute;
-        width: 12px;
-        height: 12px;
-        background: var(--accent);
-        border-radius: 50%;
-        box-shadow: 0 0 20px var(--accent);
-        animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-        0% { transform: scale(0.95); opacity: 1; box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-        70% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-        100% { transform: scale(0.95); opacity: 1; box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-    }
   </style>
 
   <Section class="pt-32 pb-20">
@@ -113,27 +92,9 @@ const email = "anton@antonebsen.dk";
                   </div>
               </div>
 
-              <!-- Abstract Map -->
-              <div class="relative w-full h-48 bg-white/5 rounded-2xl border border-white/10 overflow-hidden group">
-                  <div class="absolute inset-0 opacity-30 select-none pointer-events-none">
-                       <!-- Generated dots via script or static for now -->
-                       <div class="map-dot" style="top: 20%; left: 30%;"></div>
-                       <div class="map-dot" style="top: 50%; left: 60%;"></div>
-                       <div class="map-dot" style="top: 80%; left: 20%;"></div>
-                       <div class="map-dot" style="top: 15%; left: 80%;"></div>
-                       <div class="map-dot" style="top: 70%; left: 85%;"></div>
-                  </div>
-                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center gap-3">
-                      <div class="relative">
-                          <div class="map-pulse"></div>
-                      </div>
-                      <span class="font-bold text-white text-sm bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm border border-white/10">
-                          Copenhagen, DK
-                      </span>
-                  </div>
-                  <div class="absolute bottom-2 right-2 text-[10px] text-dim/50 uppercase tracking-widest">
-                      Remote Friendly
-                  </div>
+              <!-- Interactive Globe -->
+              <div class="relative w-full h-64 bg-white/5 rounded-2xl border border-white/10 overflow-hidden group">
+                  <InteractiveGlobe client:load />
               </div>
           </div>
 
@@ -145,10 +106,7 @@ const email = "anton@antonebsen.dk";
 
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold">Send a Message</h2>
-                    <div class="flex items-center gap-2 text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        OPEN FOR WORK
-                    </div>
+                    <AvailabilityStatus client:load />
                 </div>
 
                 <form id="contact-form" class="space-y-5" 
@@ -175,11 +133,19 @@ const email = "anton@antonebsen.dk";
                         <div class="flex justify-between items-end mb-2">
                             <label class="block text-dim text-xs font-bold uppercase tracking-wider group-focus-within:text-white transition-colors">{content.form?.message}</label>
                             
-                            <!-- AI Auto-Fill Button -->
-                            <button type="button" id="ai-generate-btn" class="text-[10px] flex items-center gap-1 text-accent hover:text-white transition-colors bg-accent/10 hover:bg-accent/20 px-2 py-1 rounded border border-accent/20">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                AI Generate Intro
-                            </button>
+                            <div class="flex gap-2">
+                                <!-- Voice Dictation Button -->
+                                <button type="button" id="voice-dictate-btn" class="text-[10px] flex items-center gap-1 text-dim hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-2 py-1 rounded border border-white/10">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    Dictate
+                                </button>
+                                
+                                <!-- AI Auto-Fill Button -->
+                                <button type="button" id="ai-generate-btn" class="text-[10px] flex items-center gap-1 text-accent hover:text-white transition-colors bg-accent/10 hover:bg-accent/20 px-2 py-1 rounded border border-accent/20">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    AI Intro
+                                </button>
+                            </div>
                         </div>
                         <textarea id="c-message" name="message" required rows="6" 
                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300 resize-none" 
@@ -203,10 +169,9 @@ const email = "anton@antonebsen.dk";
 
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const status = document.getElementById('form-status')!;
-    const nameInput = document.getElementById('c-name') as HTMLInputElement;
-    const emailInput = document.getElementById('c-email') as HTMLInputElement;
     const messageInput = document.getElementById('c-message') as HTMLTextAreaElement;
     const aiBtn = document.getElementById('ai-generate-btn');
+    const voiceBtn = document.getElementById('voice-dictate-btn');
     const emailTrigger = document.getElementById('email-trigger');
     const linkedinLink = document.getElementById('linkedin-link');
 
@@ -214,10 +179,7 @@ const email = "anton@antonebsen.dk";
     emailTrigger?.addEventListener('click', () => {
         const text = "anton@antonebsen.dk";
         navigator.clipboard.writeText(text).then(() => {
-            // Unlock 'recruiter' achievement
             unlockAchievement('recruiter');
-            
-            // Simple feedback (could use the Toast but let's keep it simple)
             const icon = emailTrigger.querySelector('.fa-copy');
             if(icon) {
                 icon.className = 'fa-solid fa-check text-green-500';
@@ -226,21 +188,15 @@ const email = "anton@antonebsen.dk";
         });
     });
 
-    // 2. LINKEDIN UNLOCK
     linkedinLink?.addEventListener('click', () => {
         unlockAchievement('recruiter');
     });
 
-    // 3. AI GENERATE INTRO
+    // 2. AI GENERATE INTRO
     aiBtn?.addEventListener('click', () => {
-        // Unlock 'quiz_novice' or just a tiny feedback?
         aiBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Writing...';
-        
-        // Simulate thinking
         setTimeout(() => {
             const template = "Hi Anton,\n\nI came across your portfolio and was impressed by your work on the AI Chatbot integration. We are looking for someone with your profile for a potential collaboration.\n\nCould we schedule a brief call to discuss?\n\nBest regards,";
-            
-            // Typewriter effect
             let i = 0;
             messageInput.value = "";
             const type = () => {
@@ -251,12 +207,56 @@ const email = "anton@antonebsen.dk";
                 } else {
                     aiBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Generated!';
                     setTimeout(() => { 
-                         aiBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI Generate Intro';
+                         aiBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI Intro';
                     }, 2000);
                 }
             };
             type();
         }, 600);
+    });
+
+    // 3. VOICE DICTATION (Using existing STT API)
+    voiceBtn?.addEventListener('click', async () => {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            alert('Speech recognition is not supported in your browser.');
+            return;
+        }
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = document.documentElement.lang || 'en-US';
+
+        const originalBtnText = voiceBtn.innerHTML;
+        voiceBtn.innerHTML = '<i class="fa-solid fa-circle text-red-500 animate-pulse"></i> Listening...';
+        voiceBtn.classList.add('border-red-500', 'text-white');
+
+        recognition.onresult = (event) => {
+             let interimTranscript = '';
+             let finalTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+            }
+            if (finalTranscript) {
+                 const currentVal = messageInput.value;
+                 messageInput.value = currentVal ? currentVal + ' ' + finalTranscript : finalTranscript;
+            }
+        };
+
+        recognition.onend = () => {
+             voiceBtn.innerHTML = originalBtnText;
+             voiceBtn.classList.remove('border-red-500', 'text-white');
+             unlockAchievement('quiz_novice'); // Maybe add a 'speaker' achievement later
+        };
+
+        recognition.start();
     });
 
     // 4. FORM SUBMIT
@@ -281,12 +281,12 @@ const email = "anton@antonebsen.dk";
             if (res.ok) {
                 form.reset();
                 status.classList.remove('hidden');
-                unlockAchievement('recruiter'); // Definitely a recruiter if they contact
+                unlockAchievement('recruiter');
                 
                 if (btn) btn.innerHTML = 'Message Sent!';
                 setTimeout(() => { 
                     status.classList.add('hidden');
-                    if (btn) btn.innerHTML = 'Send Message'; // Reset button text
+                    if (btn) btn.innerHTML = 'Send Message';
                 }, 5000);
             } else {
                 alert(msgErrorAPI);
@@ -298,17 +298,4 @@ const email = "anton@antonebsen.dk";
             if (btn) btn.innerHTML = 'Try Again';
         }
     });
-
-    // 5. Fill random Map Dots
-    const map = document.querySelector('.relative.w-full.h-48');
-    if (map) {
-        for(let i=0; i<20; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'map-dot';
-            dot.style.top = Math.random() * 100 + '%';
-            dot.style.left = Math.random() * 100 + '%';
-            dot.style.opacity = (Math.random() * 0.5 + 0.1).toString();
-            map.querySelector('.absolute')?.appendChild(dot);
-        }
-    }
 </script>
