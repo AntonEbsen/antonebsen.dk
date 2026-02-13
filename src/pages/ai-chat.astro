@@ -37,8 +37,8 @@ const t = {
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script is:inline>
     // Initialize PDF.js worker
-    if ((window as any).pdfjsLib) {
-        (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 </script>
 
@@ -391,56 +391,141 @@ const t = {
     }
 
     // Voice Logic (Full Page)
-    let recognition;
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.lang = lang === 'da' ? 'da-DK' : 'en-US';
-        recognition.interimResults = false;
+    let isRecording = false;
+    let isInitializing = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
 
-        recognition.onstart = () => {
-            console.log("🎤 FP Voice recognition started");
-            voiceIndicator.classList.remove('opacity-0');
-            voiceIndicator.classList.add('animate-pulse', 'border-red-500');
-            voiceBtn.classList.add('text-red-400');
-        };
+    async function startRecording() {
+        if (isInitializing || isRecording) return;
+        
+        isInitializing = true;
+        // UI Feedback: Connecting
+        if (voiceIndicator) {
+             voiceIndicator.classList.remove('opacity-0');
+             voiceIndicator.classList.add('animate-pulse', 'border-red-500');
+        }
+        input.placeholder = "Connecting to ears...";
 
-        recognition.onend = () => {
-             console.log("🎤 FP Voice recognition ended");
-             voiceIndicator.classList.add('opacity-0');
-             voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
-             voiceBtn.classList.remove('text-red-400');
-        };
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            
+            const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
+                           ? 'audio/webm;codecs=opus' 
+                           : 'audio/webm';
+            
+            mediaRecorder = new MediaRecorder(stream, { mimeType });
+            audioChunks = [];
 
-        recognition.onerror = (event) => {
-            console.error("🎤 FP Voice error:", event.error);
-            voiceIndicator.classList.add('opacity-0');
-            voiceBtn.classList.remove('text-red-400');
-            if (event.error === 'not-allowed') {
-                alert("Microphone access denied. Please allow microphone permissions in your browser settings.");
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = async () => {
+                // UI Reset
+                if(voiceIndicator) {
+                    voiceIndicator.classList.add('opacity-0');
+                    voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
+                }
+                voiceBtn?.classList.remove('text-red-400');
+                isRecording = false;
+                isInitializing = false;
+
+                // Process Audio
+                const audioBlob = new Blob(audioChunks, { type: mimeType });
+                
+                if (audioBlob.size < 1000) {
+                    alert("Kunne ikke høre noget (optagelse for kort). Prøv at tale højere/længere.");
+                    input.placeholder = t.placeholder;
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.webm');
+
+                // Show thinking state in input
+                const originalPlaceholder = input.placeholder;
+                input.placeholder = "🧠 Processing voice...";
+                input.disabled = true;
+
+                try {
+                    const response = await fetch('/api/stt', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) throw new Error(`STT failed: ${response.status}`);
+
+                    const data = await response.json();
+                    
+                    if (data.text) {
+                        input.value = (input.value ? input.value + " " : "") + data.text;
+                        input.focus();
+                    } else {
+                       if (data.error) {
+                           alert(`Fejl fra server: ${data.error}`);
+                       } else {
+                           input.placeholder = "Jeg hørte ikke noget...";
+                           setTimeout(() => input.placeholder = originalPlaceholder, 2000);
+                       }
+                    }
+                } catch (err) {
+                    console.error("STT Error:", err);
+                    input.placeholder = "Fejl ved tolkning...";
+                } finally {
+                    input.disabled = false;
+                    if (!input.placeholder.includes("Kunne")) {
+                         input.placeholder = originalPlaceholder;
+                    }
+                }
+
+                // Stop all tracks
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            // Start recording
+            mediaRecorder.start();
+            isRecording = true;
+            isInitializing = false;
+            
+            // UI Update: Listening
+            input.placeholder = "Listening... (Tap mic to stop)";
+            voiceBtn?.classList.add('text-red-400');
+
+        } catch (err) {
+            console.error("Microphone Access Error:", err);
+            isInitializing = false;
+            
+            let msg = "Ukendt fejl";
+            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                msg = "Adgang nægtet. Tjek låsen i adressebaren.";
+            } else {
+                msg = err.message;
             }
-        };
-
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            console.log("🎤 FP Transcript:", transcript);
-            input.value = transcript;
-            input.focus();
-        };
-
-        voiceBtn?.addEventListener('click', () => {
-            console.log("🎤 FP Mic button clicked");
-            try {
-                recognition.start();
-            } catch (e) {
-                console.log("Recognition already started or error:", e);
-                recognition.stop();
-            }
-        });
-    } else {
-         if(voiceBtn) voiceBtn.style.display = 'none';
+            alert(`Kunne ikke starte mikrofon: ${msg}`);
+            input.placeholder = t.placeholder;
+        }
     }
+
+    function stopRecording() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+        }
+    }
+
+    voiceBtn?.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        
+        if (isInitializing) return;
+
+        if (isRecording) {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+    });
 
     // Quick Prompts Logic
     document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
