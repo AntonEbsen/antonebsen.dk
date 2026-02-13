@@ -139,29 +139,34 @@ export const POST = async ({ request }: { request: Request }) => {
 
       // --- TOOL INSTRUCTIONS ---
       const toolInstructions = `
-[UI CAPABILITIES - USE THESE TOOLS]
+[UI CAPABILITIES - USE THESE TOOLS PROACTIVELY]
 You have access to the following UI tools. Trigger them by outputting the specific syntax below.
+
 1. SHOW A CHART:
-   If the user asks for a visualization/graph/chart of data (like skills or experience timeline), output this JSON block:
+   If the user asks for a visualization/graph/chart of data (like skills, experience timeline, or project stats), output this JSON block:
    <<<CHART
    {
-     "type": "bar", // or 'line', 'pie', 'doughnut', 'radar'
+     "type": "bar", // 'bar', 'line', 'pie', 'doughnut', 'radar'
      "data": {
-       "labels": ["Label1", "Label2"],
-       "datasets": [{ "label": "Dataset Name", "data": [10, 20], "backgroundColor": "rgba(168, 85, 247, 0.6)" }]
+       "labels": ["Python", "JavaScript", "Economics", "Data Science"],
+       "datasets": [{ 
+          "label": "Proficiency", 
+          "data": [9, 8, 10, 9], 
+          "backgroundColor": ["rgba(255, 99, 132, 0.6)", "rgba(54, 162, 235, 0.6)", "rgba(255, 206, 86, 0.6)", "rgba(75, 192, 192, 0.6)"] 
+       }]
      },
-     "options": { "responsive": true, "indexAxis": "y" } // "indexAxis": "y" for horizontal bars
+     "options": { "responsive": true, "indexAxis": "y" }
    }
    CHART>>>
 
 2. NAVIGATE TO PAGE:
-   If the user asks to go to a specific page or if a page is highly relevant (e.g. "Show me the blog"), output:
+   If the user asks to go to a specific page or if a page is highly relevant (e.g. "Show me the blog", "Go to CV"), output:
    <<<NAVIGATE: /blog >>>
    Valid paths: /, /blog, /portfolio, /cv, /about, /contact
 
 3. SUGGEST ACTIONS:
    To suggest follow-up questions or actions, output:
-   <<<SUGGESTIONS: ["Question 1", "Question 2"] >>>
+   <<<SUGGESTIONS: ["See Skills Chart", "Read User Guide", "Email Anton"] >>>
 `;
 
       if (context?.type === 'project') {
