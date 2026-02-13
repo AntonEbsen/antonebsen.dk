@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import Card from '../ui/Card.astro';
+
+interface Props {
+  projectId: string;
+  lang: 'da' | 'en' | 'de';
+}
+
+const { projectId, lang } = Astro.props;
+const isDa = lang === 'da';
+
+const projects = await getCollection('portfolio');
+const project = projects.find(p => p.id === projectId);
+
+if (!project) return null;
+
+const { title, tagString, description } = project.data;
+const projectUrl = isDa ? `/projects/${projectId}` : `/en/projects/${projectId}`;
+
+const t = {
+    da: {
+        label: "Relateret projekt",
+        view: "Se projektet"
+    },
+    en: {
+        label: "Related Project",
+        view: "View Project"
+    },
+    de: {
+        label: "Verwandtes Projekt",
+        view: "Projekt ansehen"
+    }
+}[lang] || { label: "Related Project", view: "View Project" };
+---
+
+<div class="sticky top-24 space-y-4">
+    <Card variant="glass" class="p-6 relative overflow-hidden group">
+        <div class="absolute -top-12 -right-12 w-24 h-24 bg-accent/5 rounded-full blur-2xl group-hover:bg-accent/10 transition-all"></div>
+        
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-4">
+            {t.label}
+        </p>
+        
+        <h3 class="text-lg font-bold text-white mb-2 leading-tight">
+            {title}
+        </h3>
+        
+        <p class="text-xs text-dim opacity-70 mb-4 font-medium uppercase tracking-wider">
+            {tagString}
+        </p>
+        
+        <p class="text-sm text-dim leading-relaxed mb-6 line-clamp-3">
+            {description}
+        </p>
+        
+        <a 
+            href={projectUrl}
+            class="inline-flex items-center gap-2 text-xs font-black text-white hover:text-accent transition-colors group/link"
+        >
+            {t.view}
+            <i class="fa-solid fa-arrow-right text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+        </a>
+    </Card>
+</div>

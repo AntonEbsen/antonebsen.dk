@@ -1,21 +1,29 @@
 ---
-import Layout from '../../layouts/BaseLayout.astro';
+import Layout from '../../../layouts/BaseLayout.astro';
 
-import ViewCounter from '../../components/blog/ViewCounter.tsx';
-import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
-import CitationBox from '../../components/blog/CitationBox.tsx';
-import TaylorRuleChart from '../../components/blog/charts/TaylorRuleChart.tsx';
-import RelatedGraph from '../../components/blog/RelatedGraph.tsx';
-import SmartFootnote from '../../components/blog/SmartFootnote.tsx';
-import ProjectSidebar from '../../components/blog/ProjectSidebar.astro';
-import ArticleReactions from '../../components/blog/ArticleReactions.tsx';
-import SignalBrief from '../../components/blog/SignalBrief.astro';
-import SmartSuggestions from '../../components/blog/SmartSuggestions.astro';
-import { renderMarkdown } from '../../utils/markdown';
+import ViewCounter from '../../../components/blog/ViewCounter.tsx';
+import ReadingProgress from '../../../components/blog/ReadingProgress.tsx';
+import CitationBox from '../../../components/blog/CitationBox.tsx';
+import TaylorRuleChart from '../../../components/blog/charts/TaylorRuleChart.tsx';
+import RelatedGraph from '../../../components/blog/RelatedGraph.tsx';
 import 'katex/dist/katex.min.css';
+import ProjectSidebar from '../../../components/blog/ProjectSidebar.astro';
+import ArticleReactions from '../../../components/blog/ArticleReactions.tsx';
+import SignalBrief from '../../../components/blog/SignalBrief.astro';
+import SmartSuggestions from '../../../components/blog/SmartSuggestions.astro';
+import SmartFootnote from '../../../components/blog/SmartFootnote.tsx';
+import { renderMarkdown } from '../../../utils/markdown';
 import { getCollection } from 'astro:content';
+
 export const prerender = false; 
-const lang = 'da';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
 const { slug } = Astro.params;
 if (!slug) return Astro.redirect('/404');
 
@@ -24,23 +32,18 @@ const post = posts.find(p => p.id === slug);
 
 if (!post) return Astro.redirect('/404');
 
-const { title, title_da, description, description_da, meta, category, content, content_da, relatedProjectId } = post.data;
-
-// Use Danish content if available, otherwise fallback to English
-const displayTitle = title_da || title;
-const displayDesc = description_da || description;
-const displayContent = content_da || content;
+const lang = 'en';
+const { title, description, meta, category, content, relatedProjectId } = post.data;
 
 // Generate reading time (rough estimate: 200 words/min)
-const words = displayContent && Array.isArray(displayContent) ? displayContent.join(' ').split(' ').length : 0;
+const words = content && Array.isArray(content) ? content.join(' ').split(' ').length : 0;
 const readTime = Math.ceil(words / 200);
 
 // Detect if this specific chart is needed (simple shortcode replacement for now)
-// In a real MDX setup this would be automatic, but for JSON content we check a flag or string.
 const showTaylorChart = slug === 'ai-monetary-policy'; 
 ---
 
-<Layout title={displayTitle} description={displayDesc} article={true}>
+<Layout title={title} description={description} article={true}>
   <ReadingProgress client:load />
 
   <main class="max-w-6xl mx-auto px-6 py-24 relative">
@@ -54,26 +57,26 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                     <span>•</span>
                     <span>{meta}</span>
                     <span>•</span>
-                    <span>{readTime} min læsning</span>
+                    <span>{readTime} min read</span>
                     <span>•</span>
                     <ViewCounter client:load slug={slug} />
                 </div>
                 
-                <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{displayTitle}</h1>
-                <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto xl:mx-0">{displayDesc}</p>
+                <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{title}</h1>
+                <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto xl:mx-0">{description}</p>
             </header>
 
             {/* The Signal Brief */}
             <SignalBrief 
-                brief={post.data.brief_da || post.data.brief} 
-                audioUrl={post.data.audioUrl_da || post.data.audioUrl}
-                lang="da" 
+                brief={post.data.brief} 
+                audioUrl={post.data.audioUrl}
+                lang="en" 
             />
 
             <article class="space-y-8 prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-p:text-dim prose-p:leading-loose prose-a:text-accent prose-blockquote:border-accent prose-blockquote:bg-white/5 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg">
                 {/* Render content array as paragraphs if it exists */}
-                {displayContent && Array.isArray(displayContent) ? (
-                    displayContent.map((paragraph: string, index: number) => {
+                {content && Array.isArray(content) ? (
+                    content.map((paragraph: string, index: number) => {
                         // Feature 2: Interactive Charts Injection
                         if (showTaylorChart && index === 1) {
                             return (
@@ -87,7 +90,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                     })
                 ) : (
                     <div class="p-4 border border-yellow-500/20 bg-yellow-500/5 rounded text-yellow-200">
-                        <p>Dette indlæg har ikke indhold formateret til denne visning.</p>
+                        <p>This post does not have content formatted for this view.</p>
                     </div>
                 )}
 
@@ -117,7 +120,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
             </article>
 
             {/* Article Reactions */}
-            <ArticleReactions client:visible slug={slug} lang="da" />
+            <ArticleReactions client:visible slug={slug} lang="en" />
 
             {/* Citation System */}
             <div class="mt-16">
@@ -125,7 +128,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                     client:visible 
                     title={title} 
                     author="Anton Meier Ebsen Jørgensen" 
-                    url={`https://antonebsen.dk/blog/${slug}`} 
+                    url={`https://antonebsen.dk/en/blog/${slug}`} 
                     date={new Date().toISOString()}
                 />
             </div>
@@ -139,7 +142,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
             {/* Smart Suggestions */}
             <SmartSuggestions 
                 currentSlug={slug} 
-                lang="da" 
+                lang="en" 
                 tags={post.data.tag} 
                 category={post.data.category}
                 series={post.data.series}
@@ -147,7 +150,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
             />
 
             <div class="mt-8 pt-8 border-t border-white/10 flex justify-between items-center">
-                <a href="/blog" class="text-dim hover:text-white transition-colors flex items-center gap-2">
+                <a href="/en/blog" class="text-dim hover:text-white transition-colors flex items-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i> Back to Blog
                 </a>
             </div>
@@ -155,7 +158,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
 
         {/* Sidebar */}
         <aside class="hidden xl:block">
-            {relatedProjectId && <ProjectSidebar projectId={relatedProjectId} lang={lang || 'da'} />}
+            {relatedProjectId && <ProjectSidebar projectId={relatedProjectId} lang={lang || 'en'} />}
         </aside>
     </div>
 

@@ -84,6 +84,74 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
             : ["Summarize his CV", "Why hire Anton?", "Show skills graph"];
     };
 
+    // --- Voice Logic ---
+    const [isRecording, setIsRecording] = useState(false);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
+
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorderRef.current = mediaRecorder;
+            audioChunksRef.current = [];
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunksRef.current.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.webm');
+
+                try {
+                    // Show some loading state if desired, or just wait
+                    const response = await fetch('/api/stt', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) throw new Error('STT request failed');
+
+                    const data = await response.json();
+                    if (data.text) {
+                        setInput((prev) => (prev ? prev + " " + data.text : data.text));
+                    }
+                } catch (err) {
+                    console.error("STT Error:", err);
+                    alert("Kunne ikke forstå lyden. Prøv igen.");
+                }
+
+                // Stop all tracks
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+            setIsRecording(true);
+        } catch (err) {
+            console.error("Microphone Access Error:", err);
+            alert("Kunne ikke få adgang til mikrofonen.");
+        }
+    };
+
+    const stopRecording = () => {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+        }
+    };
+
+    const toggleRecording = () => {
+        if (isRecording) {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+    };
+
     // --- Render ---
     return (
         <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[9999] flex flex-col items-end pointer-events-none">
@@ -167,6 +235,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                         </div>
                     ))}
 
+                    {/* Loading State */}
                     {isLoading && (
                         <div className="flex gap-4">
                             <div className="w-8 h-8 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center mt-1 animate-pulse">
@@ -222,7 +291,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                             placeholder={initialContext?.type === 'project'
                                 ? (lang === 'da' ? "Auditer dette projekt..." : "Audit this project...")
                                 : (lang === 'da' ? "Spørg om hvad som helst..." : "Ask anything...")}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20 disabled:opacity-50"
+                            className={`w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20 disabled:opacity-50 ${isRecording ? 'border-red-500 animate-pulse bg-red-500/10' : ''}`}
                         />
                         <button
                             type="submit"
@@ -234,9 +303,15 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                     </form>
                     <div className="mt-2 flex justify-between items-center px-1">
                         <span className="text-[10px] text-white/20">Powered by Gemini 2.0 Flash</span>
-                        {/* Future: Voice/File Buttons */}
                         <div className="flex gap-2">
-                            <button className="text-white/20 hover:text-white transition-colors" title="Voice (Coming Soon)"><i className="fa-solid fa-microphone text-xs"></i></button>
+                            <button
+                                type="button"
+                                onClick={toggleRecording}
+                                className={`transition-all duration-300 ${isRecording ? 'text-red-500 scale-110' : 'text-white/20 hover:text-white'}`}
+                                title={isRecording ? "Stop Recording" : "Voice Input"}
+                            >
+                                <i className={`fa-solid ${isRecording ? 'fa-stop-circle' : 'fa-microphone'} text-xs`}></i>
+                            </button>
                         </div>
                     </div>
                 </div>

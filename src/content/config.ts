@@ -4,9 +4,11 @@ const blogCollection = defineCollection({
     type: 'data',
     schema: z.object({
         title: z.string(),
+        title_da: z.string().optional(), // Localized Title
         tag: z.string(),
         meta: z.string().optional(),
         description: z.string(),
+        description_da: z.string().optional(), // Localized Description
         category: z.enum(['academic', 'analysis', 'tech']),
         links: z.array(z.object({
             label: z.string(),
@@ -15,7 +17,19 @@ const blogCollection = defineCollection({
             disabled: z.boolean().optional(),
             class: z.string().optional()
         })).optional(),
-        content: z.array(z.string()).optional()
+        content: z.array(z.string()).optional(),
+        content_da: z.array(z.string()).optional(), // Localized Content
+        footnotes: z.array(z.object({
+            id: z.string(),
+            content: z.string()
+        })).optional(),
+        series: z.string().optional(),
+        seriesOrder: z.number().optional(),
+        relatedProjectId: z.string().optional(),
+        brief: z.array(z.string()).optional(),
+        brief_da: z.array(z.string()).optional(),
+        audioUrl: z.string().optional(),
+        audioUrl_da: z.string().optional()
     })
 });
 

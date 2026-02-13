@@ -1,0 +1,66 @@
+---
+import SignalVoice from './SignalVoice.tsx';
+
+interface Props {
+    brief?: string[];
+    audioUrl?: string;
+    lang?: 'da' | 'en';
+}
+
+const { brief, audioUrl, lang = 'da' } = Astro.props;
+
+if (!brief || brief.length === 0) return null;
+
+const t = {
+    da: {
+        title: "The Signal Brief",
+        subtitle: "3 skarpe pointer fra indlægget"
+    },
+    en: {
+        title: "The Signal Brief",
+        subtitle: "3 key takeaways from the post"
+    }
+};
+
+const labels = t[lang] || t.da;
+---
+
+<div class="my-12 relative group/brief">
+    <!-- Glow Effect -->
+    <div class="absolute -inset-4 bg-accent/5 rounded-[2rem] blur-2xl opacity-0 group-hover/brief:opacity-100 transition-opacity duration-700"></div>
+
+    <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-8 md:p-10 border-l-accent border-l-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div>
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2 block">
+                    Resumé
+                </span>
+                <h3 class="text-2xl font-black text-white tracking-tight">
+                    {labels.title}
+                </h3>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                {audioUrl && <SignalVoice client:load url={audioUrl} lang={lang} />}
+                <div class="px-4 py-2 rounded-full bg-white/5 border border-white/5">
+                    <p class="text-[11px] font-bold text-dim">
+                        {labels.subtitle}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid gap-6 md:gap-8">
+            {brief.map((point, i) => (
+                <div class="flex gap-6 group/point">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xs font-black transition-all group-hover/point:scale-110 group-hover/point:bg-accent group-hover/point:text-black">
+                        {i + 1}
+                    </div>
+                    <p class="text-[15px] leading-relaxed text-dim group-hover/point:text-white transition-colors">
+                        {point}
+                    </p>
+                </div>
+            ))}
+        </div>
+    </div>
+</div>

@@ -5,7 +5,9 @@ interface VideoLink {
     label: string;
     url: string;
     icon?: string;
+    class?: string;
 }
+
 
 interface VideoPart {
     part: number;
@@ -99,7 +101,7 @@ const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da' | 'en'
                         >
                             <span className="flex items-center gap-4">
                                 <span className={`w-2 h-2 rounded-full ${item.category === 'econometrics' ? 'bg-blue-400' :
-                                        item.category === 'data' ? 'bg-green-400' : 'bg-accent'
+                                    item.category === 'data' ? 'bg-green-400' : 'bg-accent'
                                     }`}></span>
                                 <span className="text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{item.question}</span>
                             </span>
@@ -374,7 +376,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                                 <a
                                                     key={i}
                                                     href={link.url}
-                                                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-bold transition-colors border border-white/5"
+                                                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors border border-white/5 ${link.class ? link.class.replace('btn-accent', 'bg-accent text-black hover:bg-accent/80') : 'bg-slate-800 hover:bg-slate-700 text-slate-200'}`}
                                                 >
                                                     <i className={link.icon || "fa-solid fa-arrow-up-right-from-square"}></i>
                                                     {link.label}

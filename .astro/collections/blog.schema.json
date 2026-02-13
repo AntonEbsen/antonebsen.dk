@@ -7,6 +7,9 @@
         "title": {
           "type": "string"
         },
+        "title_da": {
+          "type": "string"
+        },
         "tag": {
           "type": "string"
         },
@@ -14,6 +17,9 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "description_da": {
           "type": "string"
         },
         "category": {
@@ -57,6 +63,58 @@
           "items": {
             "type": "string"
           }
+        },
+        "content_da": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "footnotes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "content"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "series": {
+          "type": "string"
+        },
+        "seriesOrder": {
+          "type": "number"
+        },
+        "relatedProjectId": {
+          "type": "string"
+        },
+        "brief": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "brief_da": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "audioUrl": {
+          "type": "string"
+        },
+        "audioUrl_da": {
+          "type": "string"
         },
         "$schema": {
           "type": "string"

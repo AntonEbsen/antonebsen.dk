@@ -1,0 +1,62 @@
+{
+    "title": "Breaking the Taylor Rule: Why Math Matters",
+    "title_da": "At Knække Taylor-Reglen: Hvorfor Matematik Betyder Noget",
+    "tag": "Econometrics",
+    "meta": "GMM · Endogeneity · Identification",
+    "description": "You can't just run a simple regression on Central Bank data. Here is why the 'Feedback Loop' destroys standard models—and how we fix it.",
+    "description_da": "Du kan ikke bare køre en simpel regression på centralbank-data. Her er hvorfor 'Feedback-loopet' ødelægger standardmodeller – og hvordan vi løser det.",
+    "category": "academic",
+    "series": "ECB Taylor Rules",
+    "seriesOrder": 2,
+    "relatedProjectId": "project-03",
+    "links": [
+        {
+            "label": "ECB: Part 1",
+            "url": "/blog/ecb-part-1",
+            "icon": "fa-solid fa-arrow-left",
+            "class": "btn-outline"
+        },
+        {
+            "label": "ECB: Part 3",
+            "url": "/blog/ecb-part-3",
+            "icon": "fa-solid fa-arrow-right",
+            "class": "btn"
+        }
+    ],
+    "content": [
+        "In Part 1, we established that the ECB faces a dilemma. But to prove it, we need to estimate the ECB's **Reaction Function**. We want to know: *If inflation rises by 1%, how much does the ECB raise rates?*",
+        "## The Trap of Simple Regressions",
+        "A novice data scientist might simple download data for Interest Rates ($i_t$) and Inflation ($\\pi_t$) and run a linear regression (OLS).",
+        "**This would be a mistake.**",
+        "Why? Because of **Reverse Causality**. The Central Bank raises rates to lower inflation. But high inflation causes the Central Bank to raise rates. The arrow points both ways.",
+        "$$ \\text{Inflation} \\leftrightarrow \\text{Interest Rates} $$",
+        "If you run a standard regression, you capture a mix of both effects, resulting in biased and meaningless numbers. This is known as the **Simultaneity Bias** or **Endogeneity**.",
+        "## The Solution: GMM",
+        "To solve this, my project uses the **Generalized Method of Moments (GMM)**. Instead of looking at current inflation (which is endogenous), we use 'Instruments'—variables from the past that correlate with inflation but *cannot* be affected by today's interest rate shock.",
+        "By using lagged values of inflation, output gaps, and commodity prices, we can isolate the *causal* component of the ECB's decision-making.",
+        "## The Result",
+        "When we do this correctly, a shocking picture emerges. The ECB generally follows the Taylor Principle ($$>1$) for the aggregate Eurozone. But when we apply this rule to individual countries, the fit completely falls apart.",
+        "In **Part 3**, we will visualize exactly how big this gap is for countries like Italy vs. Germany."
+    ],
+    "content_da": [
+        "I Del 1 fastslog vi, at ECB står over for et dilemma. Men for at bevise det, skal vi estimere ECB's **Reaktionsfunktion**. Vi vil vide: *Hvis inflationen stiger med 1%, hvor meget hæver ECB så renten?*",
+        "## Fælden ved Simple Regressioner",
+        "En uerfaren data scientist ville måske blot downloade data for Renter ($i_t$) og Inflation ($\\pi_t$) og køre en lineær regression (OLS).",
+        "**Dette ville være en fejl.**",
+        "Hvorfor? På grund af **Omvendt Kausalitet**. Centralbanken hæver renten for at sænke inflationen. Men høj inflation får Centralbanken til at hæve renten. Pilen peger begge veje.",
+        "$$ \\text{Inflation} \\leftrightarrow \\text{Renter} $$",
+        "Hvis du kører en standard regression, fanger du en blanding af begge effekter, hvilket resulterer i biasede og meningsløse tal. Dette kaldes **Simultaritetsbias** eller **Endogenitet**.",
+        "## Løsningen: GMM",
+        "For at løse dette bruger mit projekt **Generalized Method of Moments (GMM)**. I stedet for at se på nuværende inflation (som er endogen), bruger vi 'Instrumenter' – variabler fra fortiden, der korrelerer med inflation, men *ikke* kan påvirkes af dagens rentechok.",
+        "Ved at brugelaggende værdier af inflation, produktionsgab og råvarepriser kan vi isolere den *kausale* komponent af ECB's beslutningstagning.",
+        "## Resultatet",
+        "Når vi gør dette korrekt, tegner der sig et chokerende billede. ECB følger generelt Taylor-princippet ($$>1$) for den samlede Eurozone. Men når vi anvender denne regel på individuelle lande, falder modellen fuldstændig fra hinanden.",
+        "I **Del 3** vil vi visualisere præcis hvor stort dette gab er for lande som Italien kontra Tyskland."
+    ],
+    "footnotes": [
+        {
+            "id": "1",
+            "content": "Clarida, R., Gali, J., & Gertler, M. (1998). <em>Monetary policy rules in practice: Some international evidence</em>. European Economic Review."
+        }
+    ]
+}

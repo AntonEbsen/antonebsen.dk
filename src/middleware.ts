@@ -10,11 +10,13 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     // - connect-src: expanded for Supabase and FontAwesome.
     const csp = [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://va.vercel-scripts.com",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com",
-        "img-src 'self' data: https:",
-        "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com",
+        "script-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://va.vercel-scripts.com https://cdn.vercel-insights.com https://cdnjs.cloudflare.com",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+        "font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com",
+        "img-src 'self' data: https: blob:",
+        "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io",
+        "media-src 'self' https:",
+        "worker-src 'self' blob:",
         "frame-ancestors 'none'",
         "base-uri 'self'",
         "form-action 'self'",
@@ -25,7 +27,7 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     headers.set("X-Frame-Options", "DENY");
     headers.set("X-Content-Type-Options", "nosniff");
     headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-    headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    headers.set("Permissions-Policy", "camera=(), microphone=(self), geolocation=()");
 
     // ... (CSP headers above) ...
 
@@ -35,8 +37,9 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const isAuthRoute = _context.url.pathname.startsWith("/api/auth/");
     const isPublicGuestbook = (_context.url.pathname === "/api/guestbook" || _context.url.pathname === "/api/guestbook/") && _context.request.method === "POST";
     const isPublicChat = (_context.url.pathname === "/api/chat" || _context.url.pathname === "/api/chat/") && _context.request.method === "POST";
+    const isPublicSTT = (_context.url.pathname === "/api/stt" || _context.url.pathname === "/api/stt/") && _context.request.method === "POST";
 
-    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicGuestbook && !isPublicChat) {
+    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicGuestbook && !isPublicChat && !isPublicSTT) {
         const token = _context.cookies.get("auth_token");
         if (!token || token.value !== "authorized_session") {
             // Block request

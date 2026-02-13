@@ -1,0 +1,64 @@
+{
+    "title": "The Fear Gauge: How the VIX Rules the World",
+    "title_da": "Frygtens Indeks: Hvordan VIX Styrer Verden",
+    "tag": "Data & Empirics",
+    "meta": "VIX · Leverage · Global Banks",
+    "description": "Why does a volatility index for US stocks determine whether a firm in Korea can get a loan? The answer lies in the balance sheets of global banks.",
+    "description_da": "Hvorfor bestemmer et volatilitetsindeks for amerikanske aktier, om en virksomhed i Korea kan få et lån? Svaret ligger i de globale bankers balancer.",
+    "category": "analysis",
+    "series": "The Global Financial Cycle",
+    "seriesOrder": 2,
+    "relatedProjectId": "project-01",
+    "links": [
+        {
+            "label": "GFC: Part 1",
+            "url": "/blog/gfc-part-1",
+            "icon": "fa-solid fa-arrow-left",
+            "class": "btn-outline"
+        },
+        {
+            "label": "GFC: Part 3",
+            "url": "/blog/gfc-part-3",
+            "icon": "fa-solid fa-arrow-right",
+            "class": "btn"
+        }
+    ],
+    "content": [
+        "In Part 1, we established that floating exchange rates don't insulate economies from the **Global Financial Cycle (GFC)**. But what drives this cycle? The data points to one prime suspect: The **VIX Index**.",
+        "## Not Just a US Index",
+        "The VIX measures expected volatility in the S&P 500. Technically, it's just about US stocks. But empirically, it acts as a thermometer for the entire global financial system.",
+        "When the VIX is low, it signals 'risk-on'. When it spikes, it signals 'risk-off'. And because the US Dollar is the global funding currency, US risk appetite determines global liquidity.",
+        "## The Transmission Mechanism",
+        "The mechanism works through the balance sheets of global banks. As shown by **Bruno & Shin (2015)**, global banks act like disciplined risk-takers regarding their leverage.",
+        "1.  **Low VIX:** Perceived risk falls. Banks borrow more (leverage up) to lend globally.",
+        "2.  **High VIX:** Perceived risk spikes. Banks contract their balance sheets (deleverage) to protect equity.",
+        "This creates a synchronized expansion and contraction of credit. When Wall Street sneezes, credit lines in Emerging Markets freeze globally.",
+        "## The Data Reality",
+        "My analysis of 20 years of data (2001-2023) confirms this strong negative correlation. A shock to the VIX leads to an immediate and significant drop in cross-border capital flows.",
+        "Interestingly, this relationship has weakened slightly post-COVID, likely due to stricter banking regulations (Basel III) that prevent banks from leveraging up too aggressively during calm periods.",
+        "But the core truth remains: The VIX is arguably the most important number in the global economy.",
+        "In **Part 3**, we bring it home: What does this mean for a small open economy like Denmark?"
+    ],
+    "content_da": [
+        "I Del 1 fastslog vi, at flydende valutakurser ikke isolerer økonomier fra den **Globale Finansielle Cyklus (GFC)**. Men hvad driver denne cyklus? Data peger på en hovedmistænkt: **VIX-indekset**.",
+        "## Ikke Bare et US-indeks",
+        "VIX måler den forventede volatilitet i S&P 500. Teknisk set handler det kun om amerikanske aktier. Men empirisk fungerer det som et termometer for hele det globale finansielle system.",
+        "Når VIX er lav, signalerer det 'risk-on'. Når den stiger, signalerer det 'risk-off'. Og fordi den amerikanske dollar er den globale finansieringsvaluta, bestemmer amerikansk risikoappetit den globale likviditet.",
+        "## Transmissionsmekanismen",
+        "Mekanismen fungerer gennem de globale bankers balancer. Som vist af **Bruno & Shin (2015)** agerer globale banker som disciplinerede risikotagere i forhold til deres gearing.",
+        "1.  **Lav VIX:** Opfattet risiko falder. Banker låner mere (gearer op) for at udlåne globalt.",
+        "2.  **Høj VIX:** Opfattet risiko stiger. Banker skrumper deres balancer (gearer ned) for at beskytte egenkapitalen.",
+        "Dette skaber en synkroniseret udvidelse og sammentrækning af kredit. Når Wall Street nyser, fryser kreditlinjer i Emerging Markets globalt.",
+        "## Dataens Virkelighed",
+        "Min analyse af 20 års data (2001-2023) bekræfter denne stærke negative korrelation. Et chok til VIX fører til et øjeblikkeligt og signifikant fald i grænseoverskridende kapitalstrømme.",
+        "Interessant nok er dette forhold svækket en smule post-COVID, sandsynligvis på grund af strengere bankreguleringer (Basel III), der forhindrer banker i at geare for aggressivt op i rolige perioder.",
+        "Men kernen forbliver: VIX er nok det vigtigste tal i den globale økonomi.",
+        "I **Del 3** bringer vi det hjem: Hvad betyder dette for en lille åben økonomi som Danmark?"
+    ],
+    "footnotes": [
+        {
+            "id": "1",
+            "content": "Bruno, V., & Shin, H. S. (2015). <em>Cross-Border Banking and Global Liquidity</em>. Review of Economic Studies."
+        }
+    ]
+}

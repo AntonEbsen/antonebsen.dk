@@ -1,0 +1,53 @@
+{
+    "title": "The Great Divergence: Core vs. Periphery",
+    "title_da": "Den Store Divergens: Kerne vs. Periferi",
+    "tag": "Results",
+    "meta": "Optimal Rates · Divergence · Policy Gap",
+    "description": "The math reveals a startling truth: The ECB's interest rate fits Germany perfectly, but is disastrous for Italy.",
+    "description_da": "Matematikken afslører en skræmmende sandhed: ECB's rente passer Tyskland perfekt, men er katastrofal for Italien.",
+    "category": "analysis",
+    "series": "ECB Taylor Rules",
+    "seriesOrder": 3,
+    "relatedProjectId": "project-03",
+    "links": [
+        {
+            "label": "ECB: Part 2",
+            "url": "/blog/ecb-part-2",
+            "icon": "fa-solid fa-arrow-left",
+            "class": "btn-outline"
+        },
+        {
+            "label": "Read Full Paper",
+            "url": "/projects/ecb-taylor-rules",
+            "icon": "fa-solid fa-file-pdf",
+            "class": "btn"
+        }
+    ],
+    "content": [
+        "We have the theory (Part 1) and the method (Part 2). Now for the results. We used our GMM model to calculate the **'Optimal' Taylor Rate** for each individual country and compared it to the *actual* ECB rate.",
+        "## The Money Slide",
+        "The results confirm our worst fears. For the 'Core' countries (like Germany), the actual ECB rate tracks their optimal rate almost perfectly. The policy fits like a glove.",
+        "## The Periphery Gap",
+        "But for the 'Periphery' (like Italy and Spain), the story is different. During the boom years (pre-2008), the ECB rate was way too low for them, fueling a massive debt bubble.",
+        "Then, during the crisis, the ECB rate was effectively too high for their collapsing economies (even at zero, due to deflation), exacerbating the recession.",
+        "## Use Interactive Data",
+        "You can see this divergence yourself in the **Interactive Chart** on the main project page. The blue bars (Germany) are small, meaning the policy fits well. The red bars (Italy) are huge, showing a massive policy error.",
+        "## Conclusion: A Structural Flaw?",
+        "This suggests that the Eurozone's monetary structure has an inherent destabilizing mechanism. By trying to fit everyone, the single interest rate risks fitting no one—driving the Core into bubbles and the Periphery into busts.",
+        "The solution? That's a question for fiscal policy, not monetary policy. But the data is clear: **One Rule Does Not Rule Them All.**"
+    ],
+    "content_da": [
+        "Vi har teorien (Del 1) og metoden (Del 2). Nu til resultaterne. Vi brugte vores GMM-model til at beregne den **'Optimale' Taylor-rente** for hvert enkelt land og sammenlignede den med den *faktiske* ECB-rente.",
+        "## The Money Slide",
+        "Resultaterne bekræfter vores værste frygt. For 'Kerne'-landene (som Tyskland) følger den faktiske ECB-rente deres optimale rente næsten perfekt. Politikken passer som hånd i handske.",
+        "## Periferi-gabet",
+        "Men for 'Periferien' (som Italien og Spanien) er historien en anden. I boom-årene (før 2008) var ECB-renten alt for lav for dem, hvilket pustede til en massiv gældsboble.",
+        "Derefter, under krisen, var ECB-renten effektivt for høj for deres kollapsende økonomier (selv ved nul, på grund af deflation), hvilket forværrede recessionen.",
+        "## Brug Interaktiv Data",
+        "Du kan selv se denne divergens i det **Interaktive Chart** på hovedprojektsiden. De blå søjler (Tyskland) er små, hvilket betyder, at politikken passer godt. De røde søjler (Italien) er enorme, hvilket viser en massiv politikfejl.",
+        "## Konklusion: En Strukturel Fejl?",
+        "Dette tyder på, at Eurozonens monetære struktur har en iboende destabiliserende mekanisme. Ved at forsøge at passe til alle, risikerer den fælles rente ikke at passe nogen – og driver Kernen ind i bobler og Periferien ind i krak.",
+        "Løsningen? Det er et spørgsmål for finanspolitik, ikke pengepolitik. Men dataene er klare: **One Rule Does Not Rule Them All.**"
+    ],
+    "footnotes": []
+}

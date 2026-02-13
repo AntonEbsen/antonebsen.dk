@@ -32,6 +32,10 @@ const t = {
     ctaTitle: "Forslag til indlæg?",
     ctaText: "Hvis du har et emne, jeg burde skrive om, så lad mig det vide.",
     readingTime: "min læsning",
+    all: "Alle",
+    academic: "Akademisk",
+    analysis: "Analyse",
+    tech: "Teknologi",
     featured: [
 
       {
@@ -62,6 +66,10 @@ const t = {
     ctaTitle: "Suggestions for posts?",
     ctaText: "If you have a topic I should write about, let me know.",
     readingTime: "min read",
+    all: "All",
+    academic: "Academic",
+    analysis: "Analysis",
+    tech: "Tech",
     featured: [
 
       {
@@ -110,22 +118,71 @@ const content = (t as any)[lang] || t.da;
 // Data Fetching (SSR)
 // Data Fetching (SSR)
 import BlogCard from '@components/blog/BlogCard.astro';
+import HeroCarousel from '@components/blog/HeroCarousel';
+import NewsletterSignup from '@components/blog/NewsletterSignup';
+import EcosystemGraph from '../visuals/EcosystemGraph.tsx';
 import { getCollection } from 'astro:content';
 
 // Fetch Local Content
 const localPosts = await getCollection('blog');
 
+// Helper for reading time
+const getReadingTime = (post: any) => {
+  const textContent = isDa 
+    ? (post.data.content_da || post.data.content || []) 
+    : (post.data.content || []);
+  
+  const text = Array.isArray(textContent) ? textContent.join(' ') : String(textContent);
+  const words = text.replace(/<[^>]*>/g, '').split(/\s+/).length;
+  const minutes = Math.ceil(words / 200);
+  return `${minutes} ${content.readingTime}`; // "min read" / "min læsning"
+};
+
 // Normalize Local Posts to match display format
 const formattedLocalPosts = localPosts.map(p => ({
-  title: p.data.title,
+  title: isDa ? (p.data.title_da || p.data.title) : p.data.title, // Prefer localized title
   category: p.data.category,
   created_at: new Date().toISOString(), // Or add date to frontmatter
-  excerpt: p.data.description,
+  excerpt: isDa ? (p.data.description_da || p.data.description) : p.data.description, // Prefer localized desc
   slug: p.id,
+  series: p.data.series,
+  seriesOrder: p.data.seriesOrder,
+  readingTime: getReadingTime(p),
   isLocal: true
 }));
 
-const posts = formattedLocalPosts; 
+// Group by Series
+const seriesGroups: Record<string, typeof formattedLocalPosts> = {};
+const standalonePosts: typeof formattedLocalPosts = [];
+
+formattedLocalPosts.forEach(p => {
+    if (p.series) {
+        if (!seriesGroups[p.series]) seriesGroups[p.series] = [];
+        seriesGroups[p.series].push(p);
+    } else {
+        standalonePosts.push(p);
+    }
+});
+
+// Sort Series Items
+Object.keys(seriesGroups).forEach(key => {
+    seriesGroups[key].sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0));
+});
+
+// Prepare Carousel Items (Select 3 high-impact posts)
+const carouselSlugs = ['ai-monetary-policy', 'gfc-part-1', 'ecb-part-1'];
+const carouselItems = formattedLocalPosts
+    .filter(p => carouselSlugs.includes(p.slug))
+    .map(p => ({
+        title: p.title,
+        description: p.excerpt,
+        tag: p.category?.toUpperCase() || "FEATURED",
+        meta: p.readingTime,
+        link: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`,
+        linkText: content.readMore
+    }));
+
+const posts = standalonePosts;  // "Latest" now only shows standalone posts 
 // Note: Supabase fetching removed for now to prioritize local "Platinum" content.
 // If valid archives exist in Supabase, we could merge them here.
 ---
@@ -165,29 +222,54 @@ const posts = formattedLocalPosts;
         grid-template-columns: 1fr; 
       }
     }
+
+    .filter-btn {
+      @apply px-4 py-2 rounded-full text-sm font-bold transition-all border border-white/5 bg-white/5 text-dim hover:bg-white/10;
+    }
+
+    .filter-btn.active {
+      @apply bg-accent text-black border-accent;
+    }
+
+    .post-wrapper.hidden {
+      display: none;
+    }
   </style>
 
   <main class="blog-wrap">
 
     <!-- HERO -->
     <Section>
-      <div class="hero-grid">
-        <Card variant="glass" class="p-8">
-          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">Blog</p>
-          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">{content.heroTitle}</h1>
-          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90" set:html={content.heroText} />
+      <div class="hero-grid lg:h-[450px]">
+        <div class="h-full">
+            <HeroCarousel client:load items={carouselItems} lang={lang} />
+        </div>
   
-          <div class="flex flex-wrap gap-3 mb-6">
-            <Button href="#latest">{content.latestBtn}</Button>
-          </div>
-        </Card>
-  
-        <div class="hidden md:block">
-          <Card variant="glass" class="p-6">
-            <SectionHeading>Status</SectionHeading>
-            <p class="text-dim opacity-80 m-0">
-              {posts.length > 0 ? `${content.statusPre} ${posts.length} ${content.statusPost}` : content.statusEmpty}
-            </p>
+        <div class="hidden md:block h-full">
+          <Card variant="glass" class="p-8 h-full flex flex-col justify-between">
+            <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-4 tracking-widest">Status</p>
+                <h2 class="text-2xl font-black mb-4 leading-tight">{content.heroTitle}</h2>
+                <p class="text-dim opacity-70 mb-8 leading-relaxed text-sm" set:html={content.heroText}></p>
+                
+                <p class="text-[13px] font-bold text-white mb-2">
+                    {posts.length > 0 ? `${content.statusPre} ${posts.length} ${content.statusPost}` : content.statusEmpty}
+                </p>
+                <div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+                    <div class="bg-accent h-full w-2/3"></div>
+                </div>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="mt-8">
+                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-dim mb-4">Filtrering</p>
+                <div class="flex flex-wrap gap-2" id="blog-filters">
+                    <button class="filter-btn active text-[11px]" data-filter="all">{content.all}</button>
+                    <button class="filter-btn text-[11px]" data-filter="academic">{content.academic}</button>
+                    <button class="filter-btn text-[11px]" data-filter="analysis">{content.analysis}</button>
+                    <button class="filter-btn text-[11px]" data-filter="tech">{content.tech}</button>
+                </div>
+            </div>
           </Card>
         </div>
       </div>
@@ -211,6 +293,65 @@ const posts = formattedLocalPosts;
       </div>
     </Section>
 
+    <!-- SERIES -->
+    {Object.entries(seriesGroups).map(([seriesName, seriesPosts]) => (
+        <Section class="mb-12">
+            <SectionHeading class="mb-4 text-xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-accent"></i>
+                {seriesName} <span class="text-xs font-normal opacity-50 ml-2">({seriesPosts.length} Parts)</span>
+            </SectionHeading>
+            <div class="posts-grid items-stretch">
+                {seriesPosts.map(p => (
+                    <div class="post-wrapper" data-category={p.category}>
+                        <BlogCard 
+                            title={p.title}
+                            tag={`Part ${p.seriesOrder}`}
+                            meta={new Date(p.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}
+                            readingTime={p.readingTime}
+                            description={p.excerpt || ""}
+                            links={[{ label: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
+                        />
+                    </div>
+                ))}
+            </div>
+        </Section>
+    ))}
+
+    <Section id="latest">
+      <div class="posts-grid items-stretch">
+        {posts.map(p => (
+            <div class="post-wrapper" data-category={p.category}>
+                <BlogCard 
+                title={p.title}
+                tag={p.category || "Blog"}
+                meta={new Date(p.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}
+                readingTime={p.readingTime}
+                description={p.excerpt || ""}
+                links={[{ label: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
+                />
+            </div>
+        ))}
+        {posts.length === 0 && (
+            <div class="col-span-3 text-center py-12 border border-white/5 rounded-lg bg-white/5">
+                <i class="fa-solid fa-feather text-4xl text-dim mb-4 opacity-50"></i>
+                <p class="text-dim">{content.noPosts}</p>
+            </div>
+        )}
+      </div>
+    </Section>
+
+    <!-- NEWSLETTER -->
+    <Section>
+        <NewsletterSignup client:load lang={lang} />
+    </Section>
+
+    <!-- ECOSYSTEM GRAPH -->
+    <Section>
+        <div class="mt-16">
+            <EcosystemGraph client:visible />
+        </div>
+    </Section>
+
     <!-- CTA -->
     <Section>
       <ContactCard 
@@ -223,6 +364,44 @@ const posts = formattedLocalPosts;
 
   </main>
 </Layout>
+
+<script>
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const postWrappers = document.querySelectorAll('.post-wrapper');
+    const sections = document.querySelectorAll('section');
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.getAttribute('data-filter');
+
+            // Update Active State
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter Posts
+            postWrappers.forEach(wrapper => {
+                const category = wrapper.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    (wrapper as HTMLElement).classList.remove('hidden');
+                } else {
+                    (wrapper as HTMLElement).classList.add('hidden');
+                }
+            });
+
+            // Hide empty sections (Series)
+            sections.forEach(section => {
+                const childPosts = section.querySelectorAll('.post-wrapper:not(.hidden)');
+                if (section.id === 'featured' || section.id === 'latest') return;
+                
+                if (childPosts.length === 0) {
+                    (section as HTMLElement).style.display = 'none';
+                } else {
+                    (section as HTMLElement).style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
 
 
 

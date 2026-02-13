@@ -19,10 +19,13 @@ export default function SmartFootnote() {
                 tippy(link, {
                     content: content,
                     allowHTML: true,
-                    theme: 'light',
+                    theme: 'platinum',
                     arrow: true,
                     interactive: true,
-                    maxWidth: 300,
+                    maxWidth: 350,
+                    delay: [200, 300], // Wikipedia-style: slow show, slow hide
+                    animation: 'shift-away',
+                    touch: ['hold', 500],
                 });
             }
         });

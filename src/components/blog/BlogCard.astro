@@ -7,6 +7,7 @@ interface Props {
   title: string;
   tag: string;
   meta: string;
+  readingTime?: string;
   description: string;
   links: {
     label: string;
@@ -17,15 +18,26 @@ interface Props {
   }[];
 }
 
-const { title, tag, meta, description, links } = Astro.props;
+const { title, tag, meta, readingTime, description, links } = Astro.props;
 ---
 
-<Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)] mb-4">
-  <div class="flex justify-between items-start mb-2 gap-2">
-    <h3 class="text-[16px] font-bold leading-tight m-0">{title}</h3>
+<Card variant="bordered" class="flex flex-col h-full bg-[rgba(17,24,39,0.02)] mb-4 group relative overflow-hidden">
+  <div class="flex justify-between items-start mb-2 gap-2 relative z-10">
+    <h3 class="text-[16px] font-bold leading-tight m-0 group-hover:text-accent transition-colors">{title}</h3>
     <Pill variant="accent" class="shrink-0">{tag}</Pill>
   </div>
-  <p class="text-[13px] text-dim mb-3 opacity-90">{meta}</p>
+  <div class="flex items-center gap-3 text-[13px] text-dim mb-3 opacity-90 relative z-10">
+    <span>{meta}</span>
+    {readingTime && (
+      <>
+        <span class="w-1 h-1 rounded-full bg-dim opacity-50"></span>
+        <span class="flex items-center gap-1">
+          <i class="fa-regular fa-clock text-xs"></i>
+          {readingTime}
+        </span>
+      </>
+    )}
+  </div>
   
   <p class="text-[14px] text-dim flex-grow mb-4 leading-relaxed opacity-90">
     {description}

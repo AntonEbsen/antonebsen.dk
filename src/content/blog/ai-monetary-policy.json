@@ -1,8 +1,23 @@
 {
     "title": "AI in Monetary Policy: The Future of Central Banking?",
+    "title_da": "AI i Pengepolitik: Fremtidens Centralbank?",
     "tag": "AI & Macro",
     "meta": "Money · Machine Learning · Forecasting",
     "description": "How Large Language Models (LLMs) and Machine Learning could revolutionize — or destabilize — the way Central Banks understand the economy.",
+    "description_da": "Hvordan Sprogmodeller (LLMs) og Machine Learning kan revolutionere — eller destabilisere — måden Centralbanker forstår økonomien på.",
+    "relatedProjectId": "project-03",
+    "brief_da": [
+        "AI transformerer pengepolitikken fra reaktive modeller til proaktive, data-drevede systemer.",
+        "Syntetiske kontrolgrupper og sentiment-analyse giver centralbanker nye værktøjer til præcis styring.",
+        "Risici som 'hallsucinations' og manglende gennemsigtighed kræver en balanceret tilgang til automatisering."
+    ],
+    "brief": [
+        "AI is transforming monetary policy from reactive models to proactive, data-driven systems.",
+        "Synthetic control groups and sentiment analysis provide central banks with new tools for precise steering.",
+        "Risks such as hallucinations and lack of transparency require a balanced approach to automation."
+    ],
+    "audioUrl_da": "/assets/audio/ai-monetary-policy-da.mp3",
+    "audioUrl": "/assets/audio/ai-monetary-policy-en.mp3",
     "links": [
         {
             "label": "Læs indlæg",
@@ -13,9 +28,37 @@
     ],
     "category": "academic",
     "content": [
-        "Hvad sker der, når man giver en centralbank en 'kunstig hjerne'? Mens ChatGPT skriver digte, undersøger økonomer, om AI kan forudsige inflation bedre end de klassiske DSGE-modeller.",
+        "What happens when you give a central bank an 'artificial brain'? While ChatGPT writes poetry and code, economists are quietly investigating whether AI can predict inflation better than classic DSGE models.",
+        "## The Problem with Traditional Models",
         "Traditionally, central banks rely on models like the **Taylor Rule** to set interest rates. The standard formula is given by:\n\n$$ i_t = r^* + \\pi_t + 0.5(\\pi_t - \\pi^*) + 0.5(y_t - y^*) $$\n\nWhere $i_t$ is the target interest rate, $\\pi_t$ is inflation, and $y_t$ is the output gap.",
-        "But what if we could use Reinforcement Learning to optimize $i_t$ dynamically? AI models can process vast amounts of unstructured data (news, sentiment) that traditional DSGE models miss.",
-        "Men er det sikkert? En 'black box' rentebeslutning er svær at forklare for offentligheden. Fremtiden ligger nok i hybrider: AI til 'nowcasting' og klassiske modeller til kausalitet og politik-simulering."
+        "This model is elegant but rigid. It assumes linear relationships and rational expectations. But the real world is messy. Supply chains break, pandemics happen, and consumer sentiment shifts overnight based on viral tweets.",
+        "## Enter The Black Box",
+        "But what if we could use **Reinforcement Learning (RL)** to optimize $i_t$ dynamically? Unlike DSGE models, AI models can process vast amounts of unstructured data—news articles, satellite imagery of parking lots, and credit card transaction data—to form a real-time picture of the economy.",
+        "Imagine an agent trained on 50 years of economic data, simulating millions of scenarios to find the optimal policy path. This isn't science fiction; it's 'Nowcasting' on steroids.",
+        "## The Taylor Rule vs. AI",
+        "Below is a live visualization comparing a traditional Taylor Rule estimate against actual policy rates. An AI model would effectively try to minimize the error between these lines while also accounting for non-linear shocks.",
+        "## The Alignment Problem",
+        "However, there is a catch. If we train an AI to minimize inflation at all costs, it might discover that the most effective way to lower prices is to induce a massive recession. This is the **Alignment Problem** in economics.",
+        "Furthermore, Central Banking is 90% communication. If the Fed raises rates by 50bps because 'the neural net said so', markets will panic. Explainability (XAI) is not just a feature; it's a requirement for legitimacy.",
+        "## The Hybrid Future",
+        "The future likely isn't 'AI vs. Humans', but a hybrid approach. AI will handle the high-dimensional data processing ('Nowcasting'), providing a dashboard of real-time indicators. The economists will then use this enriched data to make causal inferences and policy decisions.",
+        "We are moving from a world of *scarce data and simple models* to one of *abundant data and complex oracles*. The challenge for the next generation of economists is not just solving equations, but interpreting the ghosts in the machine."
+    ],
+    "content_da": [
+        "Hvad sker der, når man giver en centralbank en 'kunstig hjerne'? Mens ChatGPT skriver digte, undersøger økonomer i stilhed, om AI kan forudsige inflation bedre end de klassiske DSGE-modeller.",
+        "## Problemet med de Klassiske Modeller",
+        "Traditionelt stoler centralbanker på modeller som **Taylor-reglen** til at fastsætte renten. Standardformlen ser således ud:\n\n$$ i_t = r^* + \\pi_t + 0.5(\\pi_t - \\pi^*) + 0.5(y_t - y^*) $$\n\nHvor $i_t$ er målrenten, $\\pi_t$ er inflationen, og $y_t$ er produktionsgabet (output gap).",
+        "Denne model er elegant, men rigid. Den antager lineære sammenhænge og rationelle forventninger. Men virkeligheden er rodet. Forsyningskæder bryder sammen, pandemier opstår, og forbrugertillid kan ændre sig natten over baseret på virale tweets.",
+        "## Ind i den Sorte Boks",
+        "Men hvad nu hvis vi kunne bruge **Reinforcement Learning (RL)** til at optimere $i_t$ dynamisk? I modsætning til DSGE-modeller kan AI-modeller behandle enorme mængder ustruktureret data – nyhedsartikler, satellitbilleder af parkeringspladser og transaktionsdata – for at skabe et realtidsbillede af økonomien.",
+        "Forestil dig en agent, der er trænet på 50 års økonomiske data, som simulerer millioner af scenarier for at finde den optimale politiske vej. Dette er ikke science fiction; det er 'Nowcasting' på steroider.",
+        "## Taylor-reglen vs. AI",
+        "Nedenfor ses en visualisering, der sammenligner et traditionelt Taylor-regel estimat med de faktiske renter. En AI-model ville effektivt forsøge at minimere fejlen mellem disse linjer, samtidig med at den tager højde for ikke-lineære stød.",
+        "## 'Alignment' Problemet",
+        "Der er dog en hage. Hvis vi træner en AI til at minimere inflation for enhver pris, finder den måske ud af, at den mest effektive måde at sænke priserne på er at fremkalde en massiv recession. Dette er **Alignment-problemet** i økonomi.",
+        "Derudover er centralbankvirksomhed 90% kommunikation. Hvis Nationalbanken hæver renten med 0,50%, fordi 'det neurale netværk sagde det', vil markederne gå i panik. Forklarbarhed (XAI) er ikke bare en feature; det er et krav for legitimitet.",
+        "## Den Hybride Fremtid",
+        "Fremtiden er sandsynligvis ikke 'AI mod Mennesker', men en hybrid tilgang. AI vil håndtere den højdimensionelle databehandling ('Nowcasting') og levere et dashboard af realtidsindikatorer. Økonomerne vil derefter bruge disse berigede data til at drage kausale slutninger og træffe beslutninger.",
+        "Vi bevæger os fra en verden af *knappe data og simple modeller* til en verden af *overflod af data og komplekse orakler*. Udfordringen for næste generations økonomer er ikke bare at løse ligninger, men at fortolke spøgelserne i maskinen."
     ]
 }

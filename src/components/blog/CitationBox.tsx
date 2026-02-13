@@ -15,18 +15,28 @@ export default function CitationBox({ title, author, url, date }: CitationBoxPro
     const today = new Date().toISOString().split('T')[0];
     const year = new Date(date).getFullYear() || new Date().getFullYear();
 
+    // escape for BibTeX
+    const escapeBib = (str: string) => str.replace(/[&%$#_{}]/g, '\\$&');
+
     const bibtex = `@misc{ebsen${year},
-  author = {${author}},
-  title = {${title}},
+  author = {${escapeBib(author)}},
+  title = {${escapeBib(title)}},
   year = {${year}},
   url = {${url}},
   note = {Accessed: ${today}}
 }`;
 
+    const apa = `${author}. (${year}). ${title}. Retrieved from ${url}`;
+
     const copyToClipboard = () => {
         navigator.clipboard.writeText(bibtex);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    };
+
+    const copyAPA = () => {
+        navigator.clipboard.writeText(apa);
+        // Simple visual feedback could be added here if needed, but keeping it concise
     };
 
     return (

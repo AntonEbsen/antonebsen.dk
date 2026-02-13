@@ -1,0 +1,47 @@
+{
+    "title": "The Eurozone Dilemma: One Size Fits None",
+    "title_da": "Eurozonens Dilemma: En Rente Der Ikke Passer Nogen",
+    "tag": "Theory & Policy",
+    "meta": "ECB · Taylor Rules · Heterogeneity",
+    "description": "Imagine trying to set a single thermostat for a house where the kitchen is on fire and the basement is flooded. Welcome to the European Central Bank.",
+    "description_da": "Forestil dig at skulle indstille én termostat for et hus, hvor køkkenet brænder, og kælderen er oversvømmet. Velkommen til Den Europæiske Centralbank.",
+    "category": "academic",
+    "series": "ECB Taylor Rules",
+    "seriesOrder": 2,
+    "relatedProjectId": "project-03",
+    "links": [
+        {
+            "label": "ECB: Part 2",
+            "url": "/blog/ecb-part-2",
+            "icon": "fa-solid fa-arrow-right",
+            "class": "btn"
+        }
+    ],
+    "content": [
+        "The Eurozone is a monetary union, but not a fiscal one. This unique structure creates a fundamental dilemma for the European Central Bank (ECB): It must set **one** interest rate for 20 very different economies.",
+        "## The Taylor Rule Benchmark",
+        "Economists use the **Taylor Rule** to determine the 'optimal' interest rate. It's a simple formula: raise rates when inflation is high or the economy is overheating; lower them when the opposite is true.",
+        "$$ i_t = r^* + \\pi_t + 0.5(\\pi_t - \\pi^*) + 0.5(y_t - y^*) $$",
+        "## The Core vs. Periphery Problem",
+        "The problem arises when the 'Core' (e.g., Germany, Netherlands) needs a different rate than the 'Periphery' (e.g., Italy, Spain, Greece).",
+        "If Germany has high inflation, the Taylor Rule says **raise rates**. But if Italy has high unemployment and low growth, the Taylor Rule says **lower rates**. The ECB cannot do both.",
+        "## The Consequence: Pro-Cyclicality",
+        "When the ECB sets a rate based on the *average* of the Eurozone, it often ends up being too low for the booming Core (fueling bubbles) and too high for the struggling Periphery (choking growth).",
+        "Instead of stabilizing the union, the single currency can actually amplify divergences. This is the 'One Size Fits None' problem.",
+        "In **Part 2**, we'll look at how we can mathematically prove this using 25 years of data and a GMM estimation strategy."
+    ],
+    "content_da": [
+        "Eurozonen er en monetær union, men ikke en finanspolitisk union. Denne unikke struktur skaber et fundamentalt dilemma for Den Europæiske Centralbank (ECB): Den skal fastsætte **én** rente for 20 meget forskellige økonomier.",
+        "## Taylor-Reglen som Benchmark",
+        "Økonomer bruger **Taylor-reglen** til at bestemme den 'optimale' rente. Det er en simpel formel: hæv renten, når inflationen er høj, eller økonomien overopheder; sænk den, når det modsatte er tilfældet.",
+        "$$ i_t = r^* + \\pi_t + 0.5(\\pi_t - \\pi^*) + 0.5(y_t - y^*) $$",
+        "## Kerne vs. Periferi Problemet",
+        "Problemet opstår, når 'Kernen' (f.eks. Tyskland, Holland) har brug for en anden rente end 'Periferien' (f.eks. Italien, Spanien, Grækenland).",
+        "Hvis Tyskland har høj inflation, siger Taylor-reglen **hæv renten**. Men hvis Italien har høj arbejdsløshed og lav vækst, siger Taylor-reglen **sænk renten**. ECB kan ikke gøre begge dele.",
+        "## Konsekvensen: Pro-cyklikalitet",
+        "Når ECB fastsætter en rente baseret på *gennemsnittet* af Eurozonen, ender den ofte med at være for lav for den boomende Kerne (hvilket puster til bobler) og for høj for den kæmpende Periferi (hvilket kvæler vækst).",
+        "I stedet for at stabilisere unionen kan den fælles valuta faktisk forstærke divergenserne. Dette er 'One Size Fits None' problemet.",
+        "I **Del 2** vil vi se på, hvordan vi matematisk kan bevise dette ved hjælp af 25 års data og en GMM-estimeringsstrategi."
+    ],
+    "footnotes": []
+}

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BlogCard from './BlogCard.astro';
+
+interface Props {
+    currentSlug: string;
+    lang: 'da' | 'en' | 'de';
+    tags?: string;
+    category?: string;
+    series?: string;
+    seriesOrder?: number;
+}
+
+const { currentSlug, lang, tags, category, series, seriesOrder } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const isDa = lang === 'da';
+
+// Relevance Logic
+const suggestions = allPosts
+    .filter(p => p.id !== currentSlug) // Exclude current
+    .map(p => {
+        let score = 0;
+        
+        // 1. Same Series (Strongest)
+        if (series && p.data.series === series) {
+            score += 100;
+            // Bonus for next in line
+            if (seriesOrder !== undefined && p.data.seriesOrder === seriesOrder + 1) score += 50;
+        }
+
+        // 2. Shared Tags
+        if (tags && p.data.tag) {
+            const currentTagList = tags.split(/[,·/]/).map(t => t.trim().toLowerCase());
+            const otherTagList = p.data.tag.split(/[,·/]/).map(t => t.trim().toLowerCase());
+            const common = currentTagList.filter(t => otherTagList.includes(t));
+            score += common.length * 20;
+        }
+
+        // 3. Same Category
+        if (category && p.data.category === category) {
+            score += 10;
+        }
+
+        return { post: p, score };
+    })
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
+if (suggestions.length === 0) return null;
+
+const t = {
+    da: { title: "Hvad skal du læse nu?", readMore: "Læs mere" },
+    en: { title: "What to read next?", readMore: "Read more" },
+    de: { title: "Was als nächstes lesen?", readMore: "Weiterlesen" }
+};
+
+const labels = t[lang] || t.da;
+
+// Reading time helper (duplicated logic for simplicity in component)
+const getReadingTime = (post: any) => {
+    const textContent = isDa 
+        ? (post.data.content_da || post.data.content || []) 
+        : (post.data.content || []);
+    const text = Array.isArray(textContent) ? textContent.join(' ') : String(textContent);
+    const words = text.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    return Math.ceil(words / 200);
+};
+---
+
+<section class="mt-24 pt-12 border-t border-white/5">
+    <div class="flex items-center gap-4 mb-10">
+        <div class="w-12 h-[1px] bg-accent/30"></div>
+        <h2 class="text-xs uppercase tracking-[0.3em] font-black text-accent/80">
+            {labels.title}
+        </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {suggestions.map(({ post }) => {
+            const title = isDa ? (post.data.title_da || post.data.title) : post.data.title;
+            const desc = isDa ? (post.data.description_da || post.data.description) : post.data.description;
+            const tag = post.data.series ? `${post.data.series} (Part ${post.data.seriesOrder})` : (post.data.category || "Blog");
+            const readTime = getReadingTime(post);
+            const url = isDa ? `/blog/${post.id}` : `/en/blog/${post.id}`;
+
+            return (
+                <BlogCard 
+                    title={title}
+                    tag={tag}
+                    description={desc}
+                    readingTime={`${readTime} min`}
+                    links={[{ label: labels.readMore, url: url, icon: 'arrow-right' }]}
+                />
+            );
+        })}
+    </div>
+</section>
