@@ -127,7 +127,7 @@ const pathname = new URL(Astro.request.url).pathname;
   async function loadSearchIndex() {
       if (isIndexLoaded) return;
       try {
-          const res = await fetch('/api/search-index');
+          const res = await fetch('/search-index.json');
           if (!res.ok) throw new Error("Failed to load index");
           searchIndex = await res.json();
           isIndexLoaded = true;
@@ -173,7 +173,7 @@ const pathname = new URL(Astro.request.url).pathname;
           const html = matches.map((item: any) => `
               <a href="${item.url}" class="block p-3 hover:bg-white/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-white/5">
                   <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-dim group-hover:text-accent group-hover:bg-accent/10 transition-colors">
-                      <i class="fa-solid ${item.icon}"></i>
+                      <i class="${item.icon}"></i>
                   </div>
                   <div class="flex-1">
                       <div class="flex items-center justify-between">
@@ -188,14 +188,8 @@ const pathname = new URL(Astro.request.url).pathname;
           // "Ask AI" Footer
           const aiFooter = `
               <div class="border-t border-white/10 mt-2 pt-2">
-                   <a href="/ai-chat?q=${encodeURIComponent(query)}" class="block p-3 hover:bg-purple-500/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-purple-500/20">
-                      <div class="w-8 h-8 rounded bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:text-purple-300 transition-colors">
-                          <i class="fa-solid fa-sparkles"></i>
-                      </div>
-                      <div>
-                          <span class="text-sm font-medium text-purple-200 group-hover:text-white transition-colors">Ask AI: "${query}"</span>
-                          <p class="text-xs text-purple-400/60 group-hover:text-purple-300/80">Semantic Search & Analysis</p>
-                      </div>
+                   <a href="/search?q=${encodeURIComponent(query)}" class="block p-2 text-center text-xs font-bold text-accent uppercase tracking-widest hover:text-white transition-colors">
+                      Se alle resultater <i class="fa-solid fa-arrow-right ml-1"></i>
                    </a>
               </div>
           `;
