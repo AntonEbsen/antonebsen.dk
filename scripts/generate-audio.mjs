@@ -21,7 +21,7 @@ if (!ELEVENLABS_API_KEY) {
 const client = new ElevenLabsClient({ apiKey: ELEVENLABS_API_KEY });
 
 // Configuration
-const VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"; // 'George' - Standard British
+const VOICE_ID = "vTWuRMncYKymbShl06Ap"; // Anton's Cloned Voice
 const OUTPUT_DIR = path.join(__dirname, '../public/assets/audio');
 const BLOG_DIR = path.join(__dirname, '../src/content/blog');
 
@@ -66,7 +66,7 @@ async function processBlogPosts() {
         // For now, let's process 'ai-monetary-policy.json' specifically or all that miss audio
         const slug = file.replace('.json', '');
 
-        // Check English
+        // Check English (Forcing Update for Anton's Voice)
         if (content.brief && content.brief.length > 0 && (!content.audioUrl || content.audioUrl === "")) {
             console.log(`🎙️ Generating EN audio for: ${content.title}`);
             const text = `${content.title}. ${content.brief.join('. ')}`;
@@ -90,7 +90,7 @@ async function processBlogPosts() {
         // For this MVP, let's stick to English or check if we can switch voice.
         // "eleven_turbo_v2" supports English. "eleven_multilingual_v2" supports Danish.
 
-        const DANISH_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"; // Use same voice for now? No, George is British.
+        const DANISH_VOICE_ID = "vTWuRMncYKymbShl06Ap"; // Anton's Voice (Multilingual)
         // Let's use "eleven_multilingual_v2" model for Danish.
 
         if (content.brief_da && content.brief_da.length > 0 && (!content.audioUrl_da || content.audioUrl_da === "")) {
