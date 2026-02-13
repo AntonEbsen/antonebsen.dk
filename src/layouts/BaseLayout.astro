@@ -316,7 +316,7 @@ const lang = getLangFromUrl(Astro.url);
     });
   </script>
   <script>
-    import { unlockAchievement } from '../lib/gamification';
+    import { unlockAchievement, checkPolyglotAchievement } from '../lib/gamification';
 
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     let cursor = 0;
@@ -334,8 +334,20 @@ const lang = getLangFromUrl(Astro.url);
     });
 
     // Check Polyglot
-    import { checkPolyglotAchievement } from '../lib/gamification';
-    checkPolyglotAchievement();
+    
+    // Check Night Owl (00:00 - 05:00)
+    const hour = new Date().getHours();
+    if (hour >= 0 && hour < 5) {
+        unlockAchievement('night_owl');
+    }
+
+    // Expose for static scripts (search.js)
+    window.unlockAchievement = unlockAchievement;
+    
+    // Run delayed checks
+    setTimeout(() => {
+        checkPolyglotAchievement();
+    }, 1000);
   </script>
 </body>
 </html>

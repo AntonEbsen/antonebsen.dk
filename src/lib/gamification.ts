@@ -80,6 +80,34 @@ export const ACHIEVEMENTS: Achievement[] = [
         description: 'Viewed the site in all 3 languages.',
         icon: 'fa-solid fa-language',
         xp: 200
+    },
+    {
+        id: 'hacker',
+        title: 'The Hacker',
+        description: 'Used the Command Palette.',
+        icon: 'fa-solid fa-terminal',
+        xp: 150
+    },
+    {
+        id: 'night_owl',
+        title: 'Night Owl',
+        description: 'Visited the site between 00:00 and 05:00.',
+        icon: 'fa-solid fa-moon',
+        xp: 100
+    },
+    {
+        id: 'prompt_engineer',
+        title: 'Prompt Engineer',
+        description: 'Sent 5+ messages to the AI.',
+        icon: 'fa-solid fa-robot',
+        xp: 150
+    },
+    {
+        id: 'data_miner',
+        title: 'Data Miner',
+        description: 'Used the search function 3 times.',
+        icon: 'fa-solid fa-magnifying-glass',
+        xp: 100
     }
 ];
 

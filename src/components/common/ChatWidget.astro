@@ -736,6 +736,15 @@ const t = (t_obj as any)[lang] || t_obj.da;
                 }
             }
 
+            // check prompt engineer achievement
+            let msgCount = parseInt(sessionStorage.getItem('ai_msg_count') || '0');
+            msgCount++;
+            sessionStorage.setItem('ai_msg_count', msgCount.toString());
+            
+            if (msgCount >= 5) {
+                unlockAchievement('prompt_engineer');
+            }
+
           }); // End submit listener
 
          // --- TTS HELPER (Widget) ---

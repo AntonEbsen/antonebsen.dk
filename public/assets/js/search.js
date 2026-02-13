@@ -123,6 +123,15 @@
 
     openBox();
     setActive(0);
+
+    // Check Data Miner Achievement
+    let searchCount = parseInt(sessionStorage.getItem('search_count') || '0');
+    searchCount++;
+    sessionStorage.setItem('search_count', searchCount.toString());
+
+    if (searchCount >= 3 && window.unlockAchievement) {
+      window.unlockAchievement('data_miner');
+    }
   }
 
   function escapeHtml(str) {

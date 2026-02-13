@@ -137,6 +137,7 @@ const quickActions = [
 
 <script lang="ts">
   import { track } from '@vercel/analytics';
+  import { unlockAchievement } from '../../lib/gamification';
   // @ts-nocheck
   (() => {
     const palette = document.getElementById('command-palette');
@@ -166,6 +167,8 @@ const quickActions = [
       palette.classList.add('is-open');
       document.body.style.overflow = 'hidden';
       palette.setAttribute('aria-hidden', 'false');
+      
+      unlockAchievement('hacker');
       
       setTimeout(() => {
          input.focus();
