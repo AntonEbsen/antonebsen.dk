@@ -1,0 +1,80 @@
+@media print {
+
+    /* Hide non-essential UI */
+    header,
+    footer,
+    nav,
+    .cv-filter-btn,
+    .sticky,
+    button,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Reset layout for paper */
+    body {
+        background: white !important;
+        color: black !important;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .cv-wrap {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Card resets (remove glassmorphism) */
+    .card-glass {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin-bottom: 2rem !important;
+        backdrop-filter: none !important;
+    }
+
+    /* Typography tweaks */
+    h1,
+    h2,
+    h3 {
+        color: black !important;
+        page-break-after: avoid;
+    }
+
+    p,
+    li {
+        color: #333 !important;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    a {
+        text-decoration: none !important;
+        color: black !important;
+    }
+
+    /* Ensure links are readable */
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 10px;
+        color: #666;
+    }
+
+    /* Structure */
+    .cv-grid {
+        display: block !important;
+    }
+
+    .sidebar {
+        display: none !important;
+        /* Hide sidebar for cleaner A4 layout, or keep it if it fits */
+    }
+
+    article {
+        page-break-inside: avoid;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1rem;
+    }
+}

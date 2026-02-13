@@ -7,10 +7,12 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import Sidebar from '@components/cv/Sidebar.astro';
 import CertificationList from '@components/cv/CertificationList.astro';
 import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
+import CareerTimeline from '@components/cv/CareerTimeline.astro';
+import SkillRadar from '@components/cv/SkillRadar';
 
 import { getEntry } from 'astro:content';
-
 import '@styles/cv.css';
+import '@styles/print.css';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -34,6 +36,11 @@ const cvData: any = cvEntry.data;
 const skillsEntry = await getEntry('skills', lang);
 if (!skillsEntry) throw new Error(`Missing skills entry for ${lang}`);
 const skillsData = skillsEntry.data;
+
+// Prepare Radar Data (Professional Skills)
+// We assign high values to these core competencies for the visual
+const radarLabels = (skillsData.professional || []).map((s: any) => s.name.split(' ')[0]); // Shorten labels
+const radarValues = (skillsData.professional || []).map(() => 9); // Default high proficiency
 ---
 
 <Layout 
@@ -42,13 +49,17 @@ const skillsData = skillsEntry.data;
   bodyClass={content.bodyClass}
 >
   <div class="cv-wrap">
-    <!-- Filter bar -->
-    <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none">
-      <div class="inline-flex items-center gap-1 p-1.5 bg-[#0a0a0c]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
-        <button class="cv-filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">{content.ui.filter.all}</button>
-        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="tech">{content.ui.filter.tech}</button>
-        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="teaching">{content.ui.filter.teaching}</button>
-        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="core">{content.ui.filter.core}</button>
+    <!-- Filter bar (Hidden in Print) -->
+    <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none print:hidden">
+      <div class="inline-flex items-center gap-2 p-1.5 bg-[#0a0a0c]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
+        <button class="cv-filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">{content.ui.filter?.all || 'All'}</button>
+        <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="tech">{content.ui.filter?.tech || 'Tech'}</button>
+        
+        <div class="w-px h-4 bg-white/10 mx-1"></div>
+        
+        <button onclick="window.print()" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-accent hover:text-white bg-accent/10 hover:bg-accent/20 border border-accent/20">
+            <i class="fa-solid fa-print mr-2"></i> PDF
+        </button>
       </div>
     </div>
 
@@ -59,42 +70,42 @@ const skillsData = skillsEntry.data;
       <Sidebar data={skillsData} ui={content.ui.sidebar} />
 
       <div class="cv-main">
+        <!-- PROFILE ROW: Overview + Radar -->
         <Section id="profile">
-          <Card variant="glass" class="p-6 reveal reveal-fade">
-            <SectionHeading>{content.ui.headings.profile}</SectionHeading>
-            {content.profile.text.map((p: string, i: number) => (
-                <p class={`text-[15px] leading-relaxed opacity-90 ${i < content.profile.text.length - 1 ? 'mb-4' : ''}`}>
-                    {p}
-                </p>
-            ))}
-            <div class="mt-6 pt-6 border-t border-glass-border">
-                <Button href={lang === 'da' ? '/about' : '/en/about'} variant="ghost" size="sm">
-                  <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
-                  {content.ui.viewAll}
-                </Button>
-            </div>
-          </Card>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card variant="glass" class="p-6 reveal reveal-fade md:col-span-2">
+                <SectionHeading>{content.ui.headings.profile}</SectionHeading>
+                {content.profile.text.map((p: string, i: number) => (
+                    <p class={`text-[15px] leading-relaxed opacity-90 ${i < content.profile.text.length - 1 ? 'mb-4' : ''}`}>
+                        {p}
+                    </p>
+                ))}
+                <div class="mt-6 pt-6 border-t border-glass-border print:hidden">
+                    <Button href={lang === 'da' ? '/about' : '/en/about'} variant="ghost" size="sm">
+                      <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
+                      {content.ui.viewAll}
+                    </Button>
+                </div>
+              </Card>
+
+              <!-- SKILL RADAR (New) -->
+              <Card variant="glass" class="p-4 reveal reveal-fade flex flex-col items-center justify-center min-h-[300px]">
+                  <h3 class="text-xs font-bold uppercase tracking-widest text-dim mb-4">Core Competencies</h3>
+                  <SkillRadar client:visible labels={radarLabels} data={radarValues} label="Proficiency" />
+              </Card>
+          </div>
         </Section>
 
+        <!-- EXPERIENCE (New Timeline View) -->
         <Section id="experience">
-          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+          <Card variant="glass" class="p-8 reveal reveal-slide-up">
             <SectionHeading>{content.ui.headings.experience}</SectionHeading>
-            <div class="space-y-0 experience-list">
-              {cvData.experience?.map((item: any) => (
-                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
-                  <div class="item-head">
-                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.title} · {item.organization}</h3>
-                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
-                  </div>
-                  <ul class="list-none p-0 m-0 mt-3 space-y-1">
-                    {item.description.map((bullet: string) => (
-                      <li class="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-accent text-[14px] opacity-90">{bullet}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
+            
+            <div class="mt-6">
+                <CareerTimeline items={cvData.experience} />
             </div>
-            <div class="mt-6 pt-6 border-t border-glass-border">
+
+            <div class="mt-6 pt-6 border-t border-glass-border print:hidden">
                 <Button href={lang === 'da' ? '/experience' : '/en/experience'} variant="ghost" size="sm">
                   <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
                   {content.ui.viewAll}
@@ -104,20 +115,14 @@ const skillsData = skillsEntry.data;
         </Section>
 
         <Section id="education">
-          <Card variant="glass" class="p-6 reveal reveal-slide-up">
+          <Card variant="glass" class="p-8 reveal reveal-slide-up">
             <SectionHeading>{content.ui.headings.education}</SectionHeading>
-            <div class="space-y-0 education-list">
-              {cvData.education?.map((item: any) => (
-                <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(item.categories || [])}>
-                  <div class="item-head">
-                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.degree} · {item.institution}</h3>
-                    <span class="text-[13px] text-dim">{item.location} · {item.period}</span>
-                  </div>
-                  {item.description && <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>}
-                </article>
-              ))}
+            
+            <div class="mt-6">
+                <CareerTimeline items={cvData.education} />
             </div>
-            <div class="mt-6 pt-6 border-t border-glass-border">
+
+            <div class="mt-6 pt-6 border-t border-glass-border print:hidden">
                 <Button href={lang === 'da' ? '/education' : '/en/education'} variant="ghost" size="sm">
                   <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
                   {content.ui.viewAll}
@@ -142,7 +147,7 @@ const skillsData = skillsEntry.data;
                 </article>
               ))}
             </div>
-            <div class="mt-6 pt-6 border-t border-glass-border">
+            <div class="mt-6 pt-6 border-t border-glass-border print:hidden">
                 <Button href={lang === 'da' ? '/portfolio' : '/en/portfolio'} variant="ghost" size="sm">
                   <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
                   {content.ui.viewAll}
@@ -171,7 +176,7 @@ const skillsData = skillsEntry.data;
             <SectionHeading>{content.ui.headings.certifications}</SectionHeading>
             
             <CertificationList certifications={cvData.certifications as any} />
-            <div class="mt-6 pt-6 border-t border-glass-border">
+            <div class="mt-6 pt-6 border-t border-glass-border print:hidden">
                 <Button href={lang === 'da' ? '/certifications' : '/en/certifications'} variant="ghost" size="sm">
                   <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
                   {content.ui.viewAll}
@@ -194,7 +199,7 @@ const skillsData = skillsEntry.data;
                 </article>
               ))}
             </div>
-            <div class="mt-4 pt-6 border-t border-glass-border">
+            <div class="mt-4 pt-6 border-t border-glass-border print:hidden">
                 <Button href={lang === 'da' ? '/organizations' : '/en/organizations'} variant="ghost" size="sm">
                   <i class="fa-solid fa-arrow-right mr-2 text-xs"></i>
                   {content.ui.viewAll}
@@ -203,7 +208,7 @@ const skillsData = skillsEntry.data;
           </Card>
         </Section>
 
-        <Section id="discovery">
+        <Section id="discovery" class="print:hidden">
           <DiscoveryGrid 
             title={lang === 'da' ? 'Videre udforskning' : 'Further Discovery'}
             items={[
@@ -247,25 +252,6 @@ const skillsData = skillsEntry.data;
           />
         </Section>
 
-        <Section id="contact">
-          <Card variant="glass" class="p-6 reveal reveal-fade">
-            <SectionHeading>{content.ui.headings.contact}</SectionHeading>
-            <div class="contact-row">
-              <Button href="mailto:anton.ebsen@gmail.com" variant="ghost">
-                <i class="fa-solid fa-envelope mr-2" aria-hidden="true"></i>
-                anton.ebsen@gmail.com
-              </Button>
-  
-              <Button href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener" aria-label="LinkedIn" variant="ghost">
-                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
-              </Button>
-  
-              <Button href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub" variant="ghost">
-                <i class="fa-brands fa-github" aria-hidden="true"></i>
-              </Button>
-            </div>
-          </Card>
-        </Section>
       </div>
     </section>
   </div>
@@ -290,9 +276,18 @@ const skillsData = skillsEntry.data;
   </style>
 
   <script>
+    import { unlockAchievement } from '../../lib/gamification';
+
     const buttons = document.querySelectorAll('.cv-filter-btn');
     const items = document.querySelectorAll('.cv-item');
     const wrap = document.querySelector('.cv-wrap');
+
+    // Gamification Hook for Print
+    window.matchMedia('print').addEventListener('change', (mql) => {
+        if (mql.matches) {
+            unlockAchievement('economist'); // "Headhunter" / Economist badge logic
+        }
+    });
 
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -334,6 +329,3 @@ const skillsData = skillsEntry.data;
     });
   </script>
 </Layout>
-
-
-

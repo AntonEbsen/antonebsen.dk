@@ -1,0 +1,54 @@
+---
+import AIContextButton from './AIContextButton';
+
+interface Item {
+    title: string;
+    organization?: string;
+    degree?: string;
+    institution?: string;
+    period: string;
+    description: string | string[];
+}
+
+interface Props {
+    items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="timeline relative border-l border-white/10 ml-3 space-y-8 pb-8">
+    {items.map((item, index) => (
+        <div class="relative pl-8 group">
+            <!-- Dot -->
+            <div class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-dim group-hover:bg-accent transition-colors duration-300 ring-4 ring-[#0a0a0c]"></div>
+            
+            <!-- Content -->
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1 mb-2">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-lg font-bold text-white group-hover:text-accent transition-colors">
+                        {item.title || item.degree}
+                    </h3>
+                    <AIContextButton client:visible prompt={`Tell me about Anton's time at ${item.organization || item.institution}: ${item.title || item.degree}`} label="Ask AI" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <span class="text-xs font-mono text-dim px-2 py-1 rounded bg-white/5 border border-white/5 whitespace-nowrap">
+                    {item.period}
+                </span>
+            </div>
+            
+            <p class="text-sm text-accent/80 font-medium mb-2">
+                {item.organization || item.institution}
+            </p>
+            
+            {!Array.isArray(item.description) ? (
+                 <p class="text-sm text-dim leading-relaxed max-w-2xl">{item.description}</p>
+            ) : (
+                <ul class="list-disc list-outside ml-4 space-y-1">
+                    {item.description.map((d: string) => (
+                        <li class="text-sm text-dim pl-1 marker:text-dim/50">{d}</li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    ))}
+</div>

@@ -1103,6 +1103,32 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
       loadHistory();
 
+    // --- EXTERNAL TRIGGER LOGIC ---
+    window.addEventListener('anton:chat-open', (e) => {
+        const { message, persona } = e.detail;
+        
+        // Open chat if closed
+        if (!isOpen) toggleChat();
+        
+        // Set Persona
+        if (persona) {
+             const select = document.getElementById('widget-persona-select');
+             if (select) {
+                 select.value = persona;
+                 localStorage.setItem('anton_ai_persona', persona);
+             }
+        }
+
+        // Send Message
+        if (message && input && form) {
+            // Small delay to ensure UI is ready
+            setTimeout(() => {
+                input.value = message;
+                form.dispatchEvent(new Event('submit'));
+            }, 300);
+        }
+    });
+
   } catch (err) {
       console.error("Chat Widget Script Error:", err);
   }
