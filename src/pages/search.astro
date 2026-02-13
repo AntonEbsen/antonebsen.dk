@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+  da: {
+    title: "Søgeresultater",
+    subtitle: "Udforsk indholdet i dybden",
+    noQuery: "Indtast en søgning for at komme i gang",
+    placeholder: "Søg efter artikler, projekter eller emner...",
+    noResults: "Ingen resultater fundet for",
+    resultsFound: "resultater fundet for",
+    back: "Tilbage til forsiden"
+  },
+  en: {
+    title: "Search Results",
+    subtitle: "Explore the content in depth",
+    noQuery: "Enter a query to get started",
+    placeholder: "Search for articles, projects, or topics...",
+    noResults: "No results found for",
+    resultsFound: "results found for",
+    back: "Back to home"
+  },
+  de: {
+    title: "Suchergebnisse",
+    subtitle: "Erkunden Sie den Inhalt in der Tiefe",
+    noQuery: "Geben Sie eine Suchanfrage ein",
+    placeholder: "Suchen Sie nach Artikeln, Projekten oder Themen...",
+    noResults: "Keine Ergebnisse gefunden für",
+    resultsFound: "Ergebnisse gefunden für",
+    back: "Zurück zur Startseite"
+  }
+}[lang];
+---
+
+<BaseLayout title={t.title}>
+  <div class="relative min-h-screen pt-32 pb-20 overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 bg-[url('/assets/images/grid.svg')] opacity-10 pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="container mx-auto px-6 relative z-10 max-w-4xl">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">{t.title}</h1>
+        <p class="text-lg text-dim">{t.subtitle}</p>
+      </div>
+
+      <!-- Search Input (Big) -->
+      <div class="relative group mb-12">
+        <div class="absolute inset-0 bg-accent/20 rounded-2xl blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+        <div class="relative flex items-center bg-white/5 border border-white/10 rounded-2xl p-2 focus-within:border-accent/50 focus-within:bg-black/80 transition-all backdrop-blur-xl">
+            <div class="w-14 h-14 flex items-center justify-center text-accent text-xl">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <input 
+                type="text" 
+                id="pageSearchInput"
+                class="w-full bg-transparent border-none outline-none text-xl text-white placeholder:text-white/20 font-medium h-14"
+                placeholder={t.placeholder}
+                autofocus
+            />
+        </div>
+      </div>
+
+      <!-- Results Container -->
+      <div id="searchResultsContainer" class="space-y-4">
+          <!-- Results injected here -->
+          <div class="text-center py-20 opacity-50">
+              <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-4 text-accent"></i>
+              <p>Indlæser index...</p>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+    // @ts-nocheck
+    const input = document.getElementById('pageSearchInput');
+    const container = document.getElementById('searchResultsContainer');
+    let searchIndex = [];
+
+    // Get Query Param
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q') || '';
+
+    // Load Index
+    async function init() {
+        try {
+            const res = await fetch('/search-index.json');
+            searchIndex = await res.json();
+            
+            if (initialQuery) {
+                input.value = initialQuery;
+                performSearch(initialQuery);
+            } else {
+                container.innerHTML = `<div class="text-center py-12 text-white/30">Skriv for at søge...</div>`;
+            }
+
+        } catch (e) {
+            container.innerHTML = `<div class="text-center text-red-400">Kunne ikke indlæse søgeindeks.</div>`;
+        }
+    }
+
+    input.addEventListener('input', (e) => {
+        const q = e.target.value;
+        // Update URL without reload
+        const url = new URL(window.location);
+        if (q) {
+            url.searchParams.set('q', q);
+        } else {
+            url.searchParams.delete('q');
+        }
+        window.history.replaceState({}, '', url);
+        
+        performSearch(q);
+    });
+
+    function performSearch(q) {
+        if (!q || q.length < 2) {
+            container.innerHTML = '';
+            return;
+        }
+
+        const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+        const results = searchIndex
+            .map(item => {
+                let score = 0;
+                const text = (item.title + ' ' + item.content + ' ' + (item.tags || []).join(' ')).toLowerCase();
+                
+                tokens.forEach(t => {
+                    if (text.includes(t)) score += 1;
+                    if (item.title.toLowerCase().includes(t)) score += 5;
+                });
+
+                return { item, score };
+            })
+            .filter(r => r.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .map(r => r.item);
+
+        renderResults(results, q);
+    }
+
+    function renderResults(results, q) {
+        if (results.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="inline-flex w-16 h-16 rounded-full bg-white/5 items-center justify-center text-white/20 text-2xl mb-4">
+                        <i class="fa-solid fa-ghost"></i>
+                    </div>
+                    <p class="text-lg text-white/50">Ingen resultater for "<span class="text-white">${q}</span>"</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = results.map(r => `
+            <a href="${r.url}" class="group block bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-gold-500/30 rounded-2xl p-6 transition-all duration-300">
+                <div class="flex items-start gap-6">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 transition-all ${getIconStyle(r)}">
+                        <i class="${r.icon}"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-3 mb-2">
+                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-white/5 text-white/40 border border-white/5">
+                                ${r.type}
+                             </span>
+                             <div class="flex gap-1">
+                                ${(r.tags || []).slice(0, 3).map(t => `<span class="px-2 py-0.5 rounded-full text-[10px] bg-white/5 text-dim border border-white/5">#${t}</span>`).join('')}
+                             </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors">${r.title}</h3>
+                        <p class="text-dim/80 leading-relaxed font-light">${r.content ? r.content.substring(0, 200) + '...' : ''}</p>
+                    </div>
+                    <div class="hidden md:flex self-center w-10 h-10 rounded-full bg-white/5 items-center justify-center text-white/20 group-hover:bg-gold-500 group-hover:text-black transition-all transform group-hover:translate-x-2">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        `).join('');
+    }
+
+    function getIconStyle(r) {
+      if (r.type === 'command') return 'bg-purple-500/10 text-purple-400';
+      if (r.type === 'project') return 'bg-blue-500/10 text-blue-400';
+      if (r.type === 'blog') return 'bg-emerald-500/10 text-emerald-400';
+      if (r.type === 'game') return 'bg-yellow-500/10 text-yellow-400';
+      return 'bg-white/5 text-white/40';
+    }
+
+    init();
+</script>

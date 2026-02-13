@@ -268,8 +268,16 @@ const quickActions = [
           </div>
         </a>
       `).join('');
-
-      activeIndex = 0;
+      
+      if (results.length >= 8) {
+          resultsList.innerHTML += `
+            <a href="/search?q=${encodeURIComponent(q)}" class="block mt-2 mx-1 p-3 text-center rounded-xl bg-white/5 hover:bg-accent/20 border border-white/5 hover:border-accent/30 transition-all group">
+                <span class="text-xs font-bold text-dim group-hover:text-accent uppercase tracking-widest">
+                    Se alle ${results.length} resultater <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </span>
+            </a>
+          `;
+      }
     }
 
     function getIconStyle(r) {
