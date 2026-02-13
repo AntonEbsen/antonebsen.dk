@@ -243,7 +243,9 @@ const t = {
       </div>
 
       <!-- Input Area -->
-      <div class="p-4 border-t border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.2)]">
+      <div class="p-4 border-t border-[rgba(255,255,255,0.05)] bg-[rgba(10,10,15,0.6)] backdrop-blur-md relative">
+        <!-- Audio Visualizer -->
+        <canvas id="audio-visualizer" class="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-20 pointer-events-none opacity-0 transition-opacity duration-300 z-10"></canvas>
         <!-- Quick Prompts -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             {t.prompts.map(p => (
@@ -412,6 +414,10 @@ const t = {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
+            // Connect Mic to Visualizer
+            if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
+            if (visualizer) visualizer.connectStream(stream);
+
             const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
                            ? 'audio/webm;codecs=opus' 
                            : 'audio/webm';
@@ -431,6 +437,9 @@ const t = {
                     voiceIndicator.classList.add('opacity-0');
                     voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
                 }
+                if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
+                if (visualizer) visualizer.stop();
+
                 voiceBtn?.classList.remove('text-red-400');
                 isRecording = false;
                 isInitializing = false;
@@ -671,7 +680,17 @@ const t = {
              }
            }); // End submit listener
 
+    // --- VISUALIZER ---
+    import { AudioVisualizer } from '../lib/audio-visualizer'; // Ensure this path is correct
+    const visualizerCanvas = document.getElementById('audio-visualizer');
+    let visualizer = null;
+
+    if (visualizerCanvas) {
+        visualizer = new AudioVisualizer(visualizerCanvas, 'rgb(255, 215, 0)'); // Gold
+    }
+
     // --- TTS HELPER ---
+    let currentAudio = null;
     
     async function playTextToSpeech(text: string) {
         console.log("🔊 playTextToSpeech called");
@@ -680,9 +699,12 @@ const t = {
             currentAudio = null;
         }
 
-        // Visual Feedback (e.g. on the robot icon)
+        // Visual Feedback
         const robotIcon = document.querySelector('.fa-robot');
-        robotIcon?.classList.add('text-purple-400', 'animate-pulse');
+        robotIcon?.classList.add('text-accent', 'animate-pulse'); // Gold
+        
+        // Show Visualizer
+        if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
 
         try {
             console.log("🔊 Fetching TTS from /api/speak...");
@@ -701,17 +723,29 @@ const t = {
             const url = URL.createObjectURL(blob);
             currentAudio = new Audio(url);
             
+            // Connect to Visualizer
+            if (visualizer) {
+                // Ensure context is resumed on user interaction (handled in start inside class typically, but safe here)
+                // Note: CORS/Proxy issue might prevent MediaElementSource unique data if not handled
+                // But for local blob URL it works fine.
+                visualizer.connectElement(currentAudio);
+            }
+            
             currentAudio.onended = () => {
                 console.log("🔊 Playback ended");
-                robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                robotIcon?.classList.remove('text-accent', 'animate-pulse');
+                if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
+                if (visualizer) visualizer.stop();
             };
             
             console.log("🔊 Starting playback...");
             await currentAudio.play();
+            if (visualizer) visualizer.start();
 
         } catch (e) {
             console.error("TTS Playback Error", e);
-            robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+            robotIcon?.classList.remove('text-accent', 'animate-pulse');
+            if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
         }
     }
     

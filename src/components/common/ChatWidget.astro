@@ -95,9 +95,12 @@ const t = (t_obj as any)[lang] || t_obj.da;
       </div>
     </div>
 
-    <!-- Messages -->
-    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-hide text-sm">
-      <div class="flex gap-2">
+    <!-- Chat Area -->
+  <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent relative z-10">
+    <!-- Visualizer Overlay -->
+    <canvas id="widget-visualizer" class="absolute bottom-0 left-0 w-full h-32 pointer-events-none opacity-0 transition-opacity duration-300 z-0"></canvas>
+    
+    <div class="flex gap-3 text-sm text-gray-400 border-b border-white/5 pb-4 mb-4">
         <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
@@ -169,6 +172,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       const messages = document.getElementById('chat-messages');
       const voiceBtn = document.getElementById('voice-btn');
       const voiceIndicator = document.getElementById('voice-indicator');
+      const visualizerCanvas = document.getElementById('widget-visualizer');
 
       // Concierge Logic
       const currentLang = widget?.getAttribute('data-lang') || 'da';
@@ -430,6 +434,10 @@ const t = (t_obj as any)[lang] || t_obj.da;
           try {
               const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
               
+              // Connect Mic to Visualizer
+              if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
+              if (visualizer) visualizer.connectStream(stream);
+
               const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
                              ? 'audio/webm;codecs=opus' 
                              : 'audio/webm';
@@ -449,6 +457,9 @@ const t = (t_obj as any)[lang] || t_obj.da;
                       voiceIndicator.classList.add('opacity-0');
                       voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
                   }
+                  if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
+                  if (visualizer) visualizer.stop();
+
                   voiceBtn?.classList.remove('text-red-400');
                   isRecording = false;
                   isInitializing = false;
@@ -726,6 +737,14 @@ const t = (t_obj as any)[lang] || t_obj.da;
          // --- TTS HELPER (Widget) ---
 
 
+         // --- VISUALIZER ---
+         import { AudioVisualizer } from '../../lib/audio-visualizer'; // Adjust path if needed
+         let visualizer = null;
+         if (visualizerCanvas) {
+             visualizer = new AudioVisualizer(visualizerCanvas, 'rgb(168, 85, 247)'); // Purple for Widget
+         }
+
+
         async function playTextToSpeech(text) {
             console.log("🔊 playTextToSpeech called");
             if (currentAudio) {
@@ -736,6 +755,9 @@ const t = (t_obj as any)[lang] || t_obj.da;
             // Visual Feedback
             const robotIcon = document.querySelector('#chat-window .fa-robot');
             robotIcon?.classList.add('text-purple-400', 'animate-pulse');
+            
+            // Show Visualizer
+            if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
 
             try {
                 console.log("🔊 Fetching TTS from /api/speak...");
@@ -754,19 +776,26 @@ const t = (t_obj as any)[lang] || t_obj.da;
                 const url = URL.createObjectURL(blob);
                 currentAudio = new Audio(url);
                 
+                // Connect to Visualizer
+                if (visualizer) visualizer.connectElement(currentAudio);
+                
                 currentAudio.onended = () => {
                    console.log("🔊 Playback ended");
                    robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                   if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
+                   if (visualizer) visualizer.stop();
                    // Reset flag so next text message doesn't speak unless voice was used again
                    wasVoiceInput = false; 
                 };
                 
                 console.log("🔊 Starting playback...");
                 await currentAudio.play();
+                if (visualizer) visualizer.start();
 
             } catch (e) {
                 console.error("TTS Playback Error", e);
-                robotIcon?.classList.remove('text-accent', 'animate-pulse');
+                robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
             }
         }
         
