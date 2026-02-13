@@ -591,7 +591,9 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
             showTyping();
             
-            try {
+            let accumulatedText = "";
+        
+        try {
               let payload = { message: query, lang: currentLang, persona };
               if (currentFileContent && currentFileContent.type === 'image') {
                   payload.image = { data: currentFileContent.data, mimeType: currentFileContent.mimeType };
@@ -656,10 +658,10 @@ const t = (t_obj as any)[lang] || t_obj.da;
               }
 
               // Handle Streaming (If any)
-              constmessageContent = addMessage("", 'ai', true, persona);
+              const messageContent = addMessage("", 'ai', true, persona);
               const reader = res.body?.getReader();
               const decoder = new TextDecoder();
-              let accumulatedText = "";
+
 
               if (reader) {
                   while (true) {
