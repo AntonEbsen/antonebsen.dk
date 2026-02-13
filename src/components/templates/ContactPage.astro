@@ -17,6 +17,15 @@ if (!entry) {
 }
 
 const content: any = entry.data;
+
+// Social Links (could be moved to config)
+const socials = [
+  { name: 'LinkedIn', icon: 'fa-brands fa-linkedin', url: 'https://www.linkedin.com/in/antonebsen/', id: 'linkedin-link' },
+  { name: 'GitHub', icon: 'fa-brands fa-github', url: 'https://github.com/AntonEbsen', id: 'github-link' },
+  { name: 'X / Twitter', icon: 'fa-brands fa-x-twitter', url: 'https://x.com/antonebsen', id: 'twitter-link' }
+];
+
+const email = "anton@antonebsen.dk";
 ---
 
 <Layout 
@@ -25,61 +34,242 @@ const content: any = entry.data;
   bodyClass={content.bodyClass}
 >
   <style>
-    .contact-wrap {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 16px;
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    @media (min-width: 1024px) {
+        .contact-grid {
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+    }
+
+    /* Abstract Map Dots */
+    .map-dot {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+    }
+    .map-pulse {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 20px var(--accent);
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(0.95); opacity: 1; box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+        70% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+        100% { transform: scale(0.95); opacity: 1; box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
     }
   </style>
 
-  <main class="contact-wrap">
-     <Section>
-        <Card variant="glass" class="p-8 md:p-12">
-            <h1 class="text-4xl font-bold mb-6 text-center">{content.heading}</h1>
-            <p class="text-dim text-center mb-8 text-lg" set:html={content.text} />
+  <Section class="pt-32 pb-20">
+      <div class="contact-grid px-6">
+          
+          <!-- LEFT COLUMN: Info & Map -->
+          <div class="space-y-12 animate-fade-in-left">
+              <div>
+                  <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">{content.heading}</h1>
+                  <p class="text-dim text-lg leading-relaxed max-w-md" set:html={content.text} />
+              </div>
 
-            <form id="contact-form" class="space-y-6 max-w-lg mx-auto" 
-                  data-msg-error-api={content.form?.errorAPI} 
-                  data-msg-error-net={content.form?.errorNet}
-            >
-                <div>
-                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">{content.form?.name}</label>
-                    <input type="text" id="c-name" name="name" required class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder={content.form?.namePlaceholder} />
-                </div>
-                
-                <div>
-                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">{content.form?.email}</label>
-                    <input type="email" id="c-email" name="email" required class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder={content.form?.emailPlaceholder} />
+              <!-- Contact Actions -->
+              <div class="space-y-6">
+                  <!-- Email Copy -->
+                  <div class="group relative cursor-pointer" id="email-trigger">
+                      <div class="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 hover:border-accent/30 transition-all duration-300">
+                          <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                              <i class="fa-solid fa-envelope text-xl"></i>
+                          </div>
+                          <div>
+                              <p class="text-xs text-dim uppercase tracking-wider font-bold mb-1">Email</p>
+                              <p class="text-white font-mono text-lg">{email}</p>
+                          </div>
+                          <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-accent text-sm">
+                              <i class="fa-solid fa-copy"></i>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <!-- Socials -->
+                  <div class="flex gap-4">
+                      {socials.map(s => (
+                          <a href={s.url} target="_blank" rel="noopener noreferrer" id={s.id}
+                             class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-dim hover:text-white hover:bg-accent hover:border-accent transition-all duration-300 hover:scale-110">
+                              <i class={s.icon + " text-xl"}></i>
+                          </a>
+                      ))}
+                  </div>
+              </div>
+
+              <!-- Abstract Map -->
+              <div class="relative w-full h-48 bg-white/5 rounded-2xl border border-white/10 overflow-hidden group">
+                  <div class="absolute inset-0 opacity-30 select-none pointer-events-none">
+                       <!-- Generated dots via script or static for now -->
+                       <div class="map-dot" style="top: 20%; left: 30%;"></div>
+                       <div class="map-dot" style="top: 50%; left: 60%;"></div>
+                       <div class="map-dot" style="top: 80%; left: 20%;"></div>
+                       <div class="map-dot" style="top: 15%; left: 80%;"></div>
+                       <div class="map-dot" style="top: 70%; left: 85%;"></div>
+                  </div>
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center gap-3">
+                      <div class="relative">
+                          <div class="map-pulse"></div>
+                      </div>
+                      <span class="font-bold text-white text-sm bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm border border-white/10">
+                          Copenhagen, DK
+                      </span>
+                  </div>
+                  <div class="absolute bottom-2 right-2 text-[10px] text-dim/50 uppercase tracking-widest">
+                      Remote Friendly
+                  </div>
+              </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Form -->
+          <div class="animate-fade-in-right delay-100">
+             <Card variant="glass" class="p-8 md:p-10 border border-white/10 relative overflow-hidden">
+                <!-- Background Glow -->
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-accent/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Send a Message</h2>
+                    <div class="flex items-center gap-2 text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        OPEN FOR WORK
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block text-accent text-xs font-bold uppercase tracking-wider mb-2">{content.form?.message}</label>
-                    <textarea id="c-message" name="message" required rows="5" class="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:border-accent focus:outline-none transition-colors" placeholder={content.form?.messagePlaceholder}></textarea>
-                </div>
+                <form id="contact-form" class="space-y-5" 
+                      data-msg-error-api={content.form?.errorAPI} 
+                      data-msg-error-net={content.form?.errorNet}
+                >
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="group">
+                            <label class="block text-dim text-xs font-bold uppercase tracking-wider mb-2 group-focus-within:text-white transition-colors">{content.form?.name}</label>
+                            <input type="text" id="c-name" name="name" required 
+                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300" 
+                                   placeholder={content.form?.namePlaceholder} />
+                        </div>
+                        
+                        <div class="group">
+                            <label class="block text-dim text-xs font-bold uppercase tracking-wider mb-2 group-focus-within:text-white transition-colors">{content.form?.email}</label>
+                            <input type="email" id="c-email" name="email" required 
+                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300" 
+                                   placeholder={content.form?.emailPlaceholder} />
+                        </div>
+                    </div>
 
-                <div id="form-status" class="hidden p-4 rounded bg-accent/20 text-accent text-center text-sm mb-4">
-                    {content.form?.success}
-                </div>
+                    <div class="group relative">
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="block text-dim text-xs font-bold uppercase tracking-wider group-focus-within:text-white transition-colors">{content.form?.message}</label>
+                            
+                            <!-- AI Auto-Fill Button -->
+                            <button type="button" id="ai-generate-btn" class="text-[10px] flex items-center gap-1 text-accent hover:text-white transition-colors bg-accent/10 hover:bg-accent/20 px-2 py-1 rounded border border-accent/20">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                AI Generate Intro
+                            </button>
+                        </div>
+                        <textarea id="c-message" name="message" required rows="6" 
+                                  class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300 resize-none" 
+                                  placeholder={content.form?.messagePlaceholder}></textarea>
+                    </div>
 
-                <Button size="lg" icon="paper-plane" class="w-full justify-center">{content.form?.submit}</Button>
-            </form>
-        </Card>
-     </Section>
-  </main>
+                    <div id="form-status" class="hidden p-4 rounded-xl bg-green-500/20 border border-green-500/30 text-green-400 text-center text-sm font-bold animate-fade-in-up">
+                        <i class="fa-solid fa-check-circle mr-2"></i> {content.form?.success}
+                    </div>
+
+                    <Button size="lg" icon="paper-plane" class="w-full justify-center text-base py-4 shadow-lg shadow-accent/10">{content.form?.submit}</Button>
+                </form>
+             </Card>
+          </div>
+      </div>
+  </Section>
 </Layout>
 
 <script>
+    import { unlockAchievement } from '../../lib/gamification';
+
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const status = document.getElementById('form-status')!;
+    const nameInput = document.getElementById('c-name') as HTMLInputElement;
+    const emailInput = document.getElementById('c-email') as HTMLInputElement;
+    const messageInput = document.getElementById('c-message') as HTMLTextAreaElement;
+    const aiBtn = document.getElementById('ai-generate-btn');
+    const emailTrigger = document.getElementById('email-trigger');
+    const linkedinLink = document.getElementById('linkedin-link');
 
+    // 1. COPY EMAIL Logic
+    emailTrigger?.addEventListener('click', () => {
+        const text = "anton@antonebsen.dk";
+        navigator.clipboard.writeText(text).then(() => {
+            // Unlock 'recruiter' achievement
+            unlockAchievement('recruiter');
+            
+            // Simple feedback (could use the Toast but let's keep it simple)
+            const icon = emailTrigger.querySelector('.fa-copy');
+            if(icon) {
+                icon.className = 'fa-solid fa-check text-green-500';
+                setTimeout(() => { icon.className = 'fa-solid fa-copy'; }, 2000);
+            }
+        });
+    });
+
+    // 2. LINKEDIN UNLOCK
+    linkedinLink?.addEventListener('click', () => {
+        unlockAchievement('recruiter');
+    });
+
+    // 3. AI GENERATE INTRO
+    aiBtn?.addEventListener('click', () => {
+        // Unlock 'quiz_novice' or just a tiny feedback?
+        aiBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Writing...';
+        
+        // Simulate thinking
+        setTimeout(() => {
+            const template = "Hi Anton,\n\nI came across your portfolio and was impressed by your work on the AI Chatbot integration. We are looking for someone with your profile for a potential collaboration.\n\nCould we schedule a brief call to discuss?\n\nBest regards,";
+            
+            // Typewriter effect
+            let i = 0;
+            messageInput.value = "";
+            const type = () => {
+                if (i < template.length) {
+                    messageInput.value += template.charAt(i);
+                    i++;
+                    setTimeout(type, 10);
+                } else {
+                    aiBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Generated!';
+                    setTimeout(() => { 
+                         aiBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI Generate Intro';
+                    }, 2000);
+                }
+            };
+            type();
+        }, 600);
+    });
+
+    // 4. FORM SUBMIT
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
         
-        // Read localized messages from data attributes
         const msgErrorAPI = form.dataset.msgErrorApi || 'Error';
         const msgErrorNet = form.dataset.msgErrorNet || 'Network Error';
+
+        const btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
 
         try {
             const res = await fetch('/api/contact', {
@@ -91,16 +281,34 @@ const content: any = entry.data;
             if (res.ok) {
                 form.reset();
                 status.classList.remove('hidden');
-                setTimeout(() => status.classList.add('hidden'), 5000);
+                unlockAchievement('recruiter'); // Definitely a recruiter if they contact
+                
+                if (btn) btn.innerHTML = 'Message Sent!';
+                setTimeout(() => { 
+                    status.classList.add('hidden');
+                    if (btn) btn.innerHTML = 'Send Message'; // Reset button text
+                }, 5000);
             } else {
                 alert(msgErrorAPI);
+                if (btn) btn.innerHTML = 'Try Again';
             }
         } catch (err) {
             console.error(err);
             alert(msgErrorNet);
+            if (btn) btn.innerHTML = 'Try Again';
         }
     });
+
+    // 5. Fill random Map Dots
+    const map = document.querySelector('.relative.w-full.h-48');
+    if (map) {
+        for(let i=0; i<20; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'map-dot';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.opacity = (Math.random() * 0.5 + 0.1).toString();
+            map.querySelector('.absolute')?.appendChild(dot);
+        }
+    }
 </script>
-
-
-
