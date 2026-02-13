@@ -63,6 +63,7 @@ const email = "anton@antonebsen.dk";
                   <p class="text-dim text-lg leading-relaxed max-w-md" set:html={content.text} />
               </div>
 
+
               <!-- Contact Actions -->
               <div class="space-y-6">
                   <!-- Email Copy -->
@@ -81,6 +82,19 @@ const email = "anton@antonebsen.dk";
                       </div>
                   </div>
                   
+                  <!-- Executive Actions (vCard & Meeting) -->
+                  <div class="grid grid-cols-2 gap-4">
+                      <button id="vcard-btn" class="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-dim hover:text-white py-3 rounded-xl transition-all duration-300 group">
+                          <i class="fa-solid fa-address-card group-hover:text-accent transition-colors"></i>
+                          <span class="text-xs font-bold uppercase tracking-wider">Save Contact</span>
+                      </button>
+                      <a href={`mailto:${email}?subject=Meeting%20Request:%20Collaboration&body=Hi%20Anton,%0A%0AI'd%20like%20to%20book%20a%20meeting%20to%20discuss...`} 
+                         class="flex items-center justify-center gap-2 bg-accent/10 hover:bg-accent/20 border border-accent/20 hover:border-accent/40 text-accent hover:text-white py-3 rounded-xl transition-all duration-300 group">
+                          <i class="fa-regular fa-calendar-check group-hover:scale-110 transition-transform"></i>
+                          <span class="text-xs font-bold uppercase tracking-wider">Book Meeting</span>
+                      </a>
+                  </div>
+
                   <!-- Socials -->
                   <div class="flex gap-4">
                       {socials.map(s => (
@@ -192,7 +206,36 @@ const email = "anton@antonebsen.dk";
         unlockAchievement('recruiter');
     });
 
-    // 2. AI GENERATE INTRO
+    // 2.5 VCARD GENERATION
+    const vcardBtn = document.getElementById('vcard-btn');
+    vcardBtn?.addEventListener('click', () => {
+        const vcardData = `BEGIN:VCARD
+VERSION:3.0
+N:Ebsen;Anton;;;
+FN:Anton Ebsen
+ORG:Economist & Developer
+TITLE:Economist & Developer
+EMAIL;type=INTERNET;type=WORK;type=pref:anton@antonebsen.dk
+URL:https://antonebsen.dk
+END:VCARD`;
+        
+        const blob = new Blob([vcardData], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Anton_Ebsen.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        unlockAchievement('recruiter');
+        
+        // Button Feedback
+        const originalText = vcardBtn.innerHTML;
+        vcardBtn.innerHTML = '<i class="fa-solid fa-check text-green-500"></i> <span class="text-green-500 font-bold">Saved!</span>';
+        setTimeout(() => { vcardBtn.innerHTML = originalText; }, 2000);
+    });
+
+    // 3. AI GENERATE INTRO
     aiBtn?.addEventListener('click', () => {
         aiBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Writing...';
         setTimeout(() => {
