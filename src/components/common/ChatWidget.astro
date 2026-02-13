@@ -161,6 +161,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
 </div>
 
 <script>
+  import { AudioVisualizer } from '../../lib/audio-visualizer';
+
   try {
       // Elements
       const widget = document.getElementById('chat-widget');
@@ -738,7 +740,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
 
          // --- VISUALIZER ---
-         import { AudioVisualizer } from '../../lib/audio-visualizer'; // Adjust path if needed
+
          let visualizer = null;
          if (visualizerCanvas) {
              visualizer = new AudioVisualizer(visualizerCanvas, 'rgb(168, 85, 247)'); // Purple for Widget
