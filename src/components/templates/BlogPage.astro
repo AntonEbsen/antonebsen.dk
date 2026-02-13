@@ -26,8 +26,7 @@ const t = {
     statusEmpty: "Ingen indlæg endnu.",
     featuredTitle: "Udvalgte indlæg & ressourcer",
     featuredText: "Her er nogle af de ting, jeg har brugt mest tid på at skrive eller bygge.",
-    latestTitle: "Seneste indlæg",
-    latestSub: "Direkte fra databasen.",
+    featuredText: "Her er nogle af de ting, jeg har brugt mest tid på at skrive eller bygge.",
     readMore: "Læs mere",
     noPosts: "Ingen indlæg fundet. Tjek din database.",
     ctaTitle: "Forslag til indlæg?",
@@ -57,8 +56,7 @@ const t = {
     statusEmpty: "No posts yet.",
     featuredTitle: "Featured Posts & Resources",
     featuredText: "Here are some of the things I have spent most time writing or building.",
-    latestTitle: "Latest Posts",
-    latestSub: "Directly from the database.",
+    featuredText: "Here are some of the things I have spent most time writing or building.",
     readMore: "Read more",
     noPosts: "No posts found. Check your database.",
     ctaTitle: "Suggestions for posts?",
@@ -88,8 +86,7 @@ const t = {
     statusEmpty: "Noch keine Beiträge.",
     featuredTitle: "Hervorgehobene Beiträge & Ressourcen",
     featuredText: "Hier sind einige der Dinge, an denen ich am meisten gearbeitet oder die ich geschrieben habe.",
-    latestTitle: "Neueste Beiträge",
-    latestSub: "Direkt aus der Datenbank.",
+    featuredText: "Hier sind einige der Dinge, an denen ich am meisten gearbeitet oder die ich geschrieben habe.",
     readMore: "Weiterlesen",
     noPosts: "Keine Beiträge gefunden. Überprüfen Sie Ihre Datenbank.",
     ctaTitle: "Vorschläge für Beiträge?",
@@ -211,34 +208,6 @@ const posts = formattedLocalPosts;
               links={[{ label: feat.linkText, url: feat.link, icon: 'arrow-right' }]}
             />
         ))}
-      </div>
-    </Section>
-
-    <!-- ===================== -->
-    <!-- ALL POSTS (DB) -->
-    <!-- ===================== -->
-    <Section id="latest">
-      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-        <SectionHeading class="mb-0 text-xl font-bold">{content.latestTitle}</SectionHeading>
-        <p class="m-0 text-dim text-sm opacity-80">{content.latestSub}</p>
-      </div>
-
-      <div class="posts-grid">
-        {posts.map(p => (
-            <BlogCard 
-              title={p.title}
-              tag={p.category || "Blog"}
-              meta={new Date(p.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}
-              description={p.excerpt || ""}
-              links={[{ label: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
-            />
-        ))}
-        {posts.length === 0 && (
-            <div class="col-span-3 text-center py-12 border border-white/5 rounded-lg bg-white/5">
-                <i class="fa-solid fa-feather text-4xl text-dim mb-4 opacity-50"></i>
-                <p class="text-dim">{content.noPosts}</p>
-            </div>
-        )}
       </div>
     </Section>
 
