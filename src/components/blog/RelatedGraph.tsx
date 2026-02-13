@@ -27,7 +27,7 @@ interface RelatedGraphProps {
 export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
     const [data, setData] = useState<GraphData | null>(null);
     const [dimensions, setDimensions] = useState({ width: 800, height: 300 });
-    const fgRef = useRef<any>();
+    const fgRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

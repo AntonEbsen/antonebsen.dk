@@ -32,7 +32,7 @@ const cvProjects = cvEntry?.data.projects || [];
 const cvLink = lang === 'en' ? '/en/cv' : lang === 'de' ? '/de/cv' : '/cv';
 
 // Supabase Data Fetching
-let supabaseProjects = [];
+let supabaseProjects: any[] = [];
 if (supabase) {
   const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
   if (!error && data) supabaseProjects = data;

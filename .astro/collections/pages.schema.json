@@ -142,6 +142,112 @@
             "additionalProperties": false
           }
         },
+        "cards": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "title",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "papers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "author": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "title",
+              "author",
+              "source",
+              "notes",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "feature": {
+          "type": "object",
+          "properties": {
+            "badge": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "desc": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "badge",
+            "title",
+            "desc",
+            "tags"
+          ],
+          "additionalProperties": false
+        },
+        "skills": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "additionalProperties": false
+        },
+        "cta": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "btn": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "text",
+            "btn"
+          ],
+          "additionalProperties": false
+        },
         "$schema": {
           "type": "string"
         }

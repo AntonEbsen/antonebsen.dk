@@ -207,7 +207,7 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
     import { supabase } from '../../lib/supabase';
 
     if (supabase) {
-        const channel = supabase
+        supabase
             .channel('guestbook-realtime')
             .on(
                 'postgres_changes',
@@ -216,7 +216,7 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
                     const msg = payload.new;
                     const feed = document.getElementById('messages-feed');
                     const locale = feed?.getAttribute('data-locale') || 'en-US';
-                    const date = new Date(msg.created_at).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+                    // Date is not used for new realtime messages (we show "New" badge)
                     
                     const card = document.createElement('div');
                     card.className = "group relative border-l-2 border-gray-800 pl-6 pb-2 hover:border-gold-500/50 transition-colors animate-fade-in";

@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/BaseLayout.astro';
-import Section from '../../components/ui/Section.astro';
+
 import ViewCounter from '../../components/blog/ViewCounter.tsx';
 import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
 import CitationBox from '../../components/blog/CitationBox.tsx';
@@ -15,7 +15,7 @@ const { slug } = Astro.params;
 if (!slug) return Astro.redirect('/404');
 
 const posts = await getCollection('blog');
-const post = posts.find(p => p.slug === slug);
+const post = posts.find(p => p.id === slug);
 
 if (!post) return Astro.redirect('/404');
 
@@ -93,7 +93,7 @@ const showTaylorChart = slug === 'ai-monetary-policy';
         title={title} 
         author="Anton Meier Ebsen Jørgensen" 
         url={`https://antonebsen.dk/blog/${slug}`} 
-        date={new Date().toISOString()} // Should ideally be from frontmatter
+        date={new Date().toISOString()}
     />
 
     {/* Related Content Graph (The Laboratory) */}

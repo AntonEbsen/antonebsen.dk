@@ -7,14 +7,15 @@ const blogCollection = defineCollection({
         tag: z.string(),
         meta: z.string().optional(),
         description: z.string(),
-        category: z.enum(['academic', 'training', 'travel']),
+        category: z.enum(['academic', 'analysis', 'tech']),
         links: z.array(z.object({
             label: z.string(),
             url: z.string(),
             icon: z.string().optional(),
             disabled: z.boolean().optional(),
             class: z.string().optional()
-        })).optional()
+        })).optional(),
+        content: z.array(z.string()).optional()
     })
 });
 
@@ -99,30 +100,34 @@ export const collections = {
                 tags: z.array(z.string()).optional(),
                 tagLabel: z.string().optional(),
                 caption: z.string().optional()
-            })).optional()
-        }).passthrough()
-    }),
-    'exercises': defineCollection({
-        type: 'data',
-        schema: z.object({
-            title: z.string(),
-            muscles: z.array(z.string()),
-            benefits: z.array(z.string()),
-            setup: z.array(z.string()),
-            execution: z.array(z.string()),
-            focusPoints: z.array(z.object({
-                icon: z.string(),
+
+            })).optional(),
+            cards: z.record(z.object({
                 title: z.string(),
                 text: z.string()
-            })),
-            tempo: z.tuple([
-                z.union([z.number(), z.string()]),
-                z.union([z.number(), z.string()]),
-                z.union([z.number(), z.string()]),
-                z.union([z.number(), z.string()])
-            ]).default([3, 0, 1, 0]),
-            tempoNote: z.string().optional()
-        })
+            })).optional(),
+            papers: z.array(z.object({
+                title: z.string(),
+                author: z.string(),
+                source: z.string(),
+                notes: z.string(),
+                url: z.string()
+            })).optional(),
+            feature: z.object({
+                badge: z.string(),
+                title: z.string(),
+                desc: z.string(),
+                tags: z.string()
+            }).optional(),
+            skills: z.object({
+                title: z.string()
+            }).optional(),
+            cta: z.object({
+                title: z.string(),
+                text: z.string(),
+                btn: z.string()
+            }).optional()
+        }).passthrough(),
     }),
     'timeline': defineCollection({
         type: 'data',
@@ -137,17 +142,18 @@ export const collections = {
                 meta: z.string().optional(),
                 links: z.array(z.object({
                     text: z.string(),
-                    url: z.string(), // Changed from 'href' to 'url' to match component usage or fix component
+                    url: z.string(),
                     icon: z.string().optional()
                 })).optional(),
-                relatedSkills: z.array(z.string()).optional(), // Phase 5: Deep Dive
-                relatedProjects: z.array(z.object({           // Phase 5: Deep Dive
+                relatedSkills: z.array(z.string()).optional(),
+                relatedProjects: z.array(z.object({
                     title: z.string(),
                     href: z.string()
                 })).optional()
             }))
         })
     }),
+
     'qa': defineCollection({
         type: 'data',
         schema: z.object({
@@ -236,7 +242,8 @@ export const collections = {
                 description: z.string(),
                 links: z.array(z.object({
                     text: z.string(),
-                    href: z.string()
+                    href: z.string(),
+                    icon: z.string().optional()
                 })).optional()
             })).optional(),
             certifications: z.array(z.object({

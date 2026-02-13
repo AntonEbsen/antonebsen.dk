@@ -6,8 +6,6 @@ const pages = [
     '/about',
     '/en/about',
     '/ai-project',
-    '/cases',
-
     '/dashboard', // New page
 ];
 

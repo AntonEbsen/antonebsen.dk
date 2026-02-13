@@ -37,8 +37,8 @@ const t = {
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script is:inline>
     // Initialize PDF.js worker
-    if (window.pdfjsLib) {
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    if ((window as any).pdfjsLib) {
+        (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 </script>
 
@@ -291,9 +291,9 @@ const t = {
   </main>
 
   <script>
-    const form = document.getElementById('fp-chat-form');
-    const input = document.getElementById('fp-chat-input');
-    const messages = document.getElementById('fp-chat-messages');
+    const form = document.getElementById('fp-chat-form') as HTMLFormElement;
+    const input = document.getElementById('fp-chat-input') as HTMLInputElement;
+    const messages = document.getElementById('fp-chat-messages') as HTMLElement;
     const card = document.getElementById('fp-chat-card');
     const lang = card?.getAttribute('data-lang') || 'da';
     const voiceBtn = document.getElementById('fp-voice-btn');
@@ -309,17 +309,18 @@ const t = {
     }
     
     // File Upload Logic
-    const fileInput = document.getElementById('fp-chat-file');
+    const fileInput = document.getElementById('fp-chat-file') as HTMLInputElement;
     const fileBtn = document.getElementById('fp-file-btn');
     const fileDisplay = document.getElementById('fp-file-display');
     const fileNameSpan = document.getElementById('fp-filename');
     const removeFileBtn = document.getElementById('fp-remove-file');
-    let currentFileContent = null;
+    let currentFileContent: any = null;
 
-    fileBtn?.addEventListener('click', () => fileInput.click());
+    fileBtn?.addEventListener('click', () => fileInput?.click());
 
     fileInput?.addEventListener('change', async (e) => {
-        const file = e.target.files?.[0];
+        const target = e.target as HTMLInputElement;
+        const file = target.files?.[0];
         if (!file) return;
 
         // Show loading state or name
@@ -332,11 +333,11 @@ const t = {
             let text = "";
             if (file.type === 'application/pdf') {
                 const arrayBuffer = await file.arrayBuffer();
-                const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                const pdf = await (window as any).pdfjsLib.getDocument({ data: arrayBuffer }).promise;
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
                     const content = await page.getTextContent();
-                    text += content.items.map(item => item.str).join(' ') + "\n";
+                    text += content.items.map((item: any) => item.str).join(' ') + "\n";
                 }
                 currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
             

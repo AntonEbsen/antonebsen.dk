@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import { supabase } from '@/lib/supabase';
-
 // Server-side: Fetch logs
 // Verify secret key simply via query param for this MVP or just relying on obfuscated URL if needed, 
 // but asking user to uncomment auth logic for real security.
@@ -79,10 +77,10 @@ import { supabase } from '@/lib/supabase';
         const supabaseKey = import.meta.env.PUBLIC_SUPABASE_KEY;
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        const modal = document.getElementById('login-modal');
-        const panel = document.getElementById('admin-panel');
-        const passInput = document.getElementById('admin-pass');
-        const refreshBtn = document.getElementById('refresh-btn');
+        const modal = document.getElementById('login-modal') as HTMLElement;
+        const panel = document.getElementById('admin-panel') as HTMLElement;
+        const passInput = document.getElementById('admin-pass') as HTMLInputElement;
+        const refreshBtn = document.getElementById('refresh-btn') as HTMLElement;
 
         // Simple client-side gate (Not for real security, just to hide from public view)
         // In a real app, use Middleware authentication.
@@ -107,7 +105,7 @@ import { supabase } from '@/lib/supabase';
         });
 
         async function fetchLogs() {
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('chat_logs')
                 .select('*')
                 .order('timestamp', { ascending: false })
@@ -119,20 +117,26 @@ import { supabase } from '@/lib/supabase';
             }
         }
 
-        function calcMetrics(data) {
-            document.getElementById('total-count').innerText = data.length;
-            const uniqueProjects = new Set(data.map(d => d.project)).size;
-            document.getElementById('active-projects').innerText = uniqueProjects;
-            
-            const critiques = data.filter(d => d.bot_mode === 'Critique').length;
-            document.getElementById('critique-count').innerText = critiques;
+        function calcMetrics(data: any[]) {
+            const totalCount = document.getElementById('total-count');
+            if(totalCount) totalCount.innerText = data.length.toString();
 
-            const recruiters = data.filter(d => d.user_message.toLowerCase().includes('job') || d.user_message.toLowerCase().includes('hire')).length;
-            document.getElementById('recruiter-count').innerText = recruiters;
+            const uniqueProjects = new Set(data.map((d: any) => d.project)).size;
+            const activeProjects = document.getElementById('active-projects');
+            if(activeProjects) activeProjects.innerText = uniqueProjects.toString();
+            
+            const critiques = data.filter((d: any) => d.bot_mode === 'Critique').length;
+            const critiqueCount = document.getElementById('critique-count');
+            if(critiqueCount) critiqueCount.innerText = critiques.toString();
+
+            const recruiters = data.filter((d: any) => d.user_message.toLowerCase().includes('job') || d.user_message.toLowerCase().includes('hire')).length;
+            const recruiterCount = document.getElementById('recruiter-count');
+            if(recruiterCount) recruiterCount.innerText = recruiters.toString();
         }
 
-        function renderLogs(logs) {
+        function renderLogs(logs: any[]) {
             const tbody = document.getElementById('logs-body');
+            if(!tbody) return;
             tbody.innerHTML = logs.map(log => `
                 <tr class="hover:bg-slate-800/50 transition-colors">
                     <td class="px-6 py-4 text-slate-500 font-mono text-xs whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>

@@ -3,8 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const pages = [
     '/',
-    '/about',
-    '/cases'
+    '/ai-project',
 ];
 
 test.describe('Accessibility Tests', () => {

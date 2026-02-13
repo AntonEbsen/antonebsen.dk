@@ -18,7 +18,7 @@ const t = {
     title: "Anton Meier Ebsen Jørgensen – Blog",
     desc: "Blog med indlæg om faglige emner, træning og rejser.",
     heroTitle: "Indlæg og noter",
-    heroText: "Tre spor: <strong>Fagligt</strong> (økonomi, data, modeller), <strong>Træning</strong> (struktur og progression) og <strong>Rejser</strong> (vandring, ruter og praktik).",
+    heroText: "Fokus på <strong>Økonomi</strong>, <strong>Data</strong> og <strong>AI</strong>. Her deler jeg analyser, tanker og eksperimenter.",
     latestBtn: "Seneste nyt",
     bucketBtn: "Bucket List",
     statusPre: "Viser",
@@ -49,7 +49,7 @@ const t = {
     title: "Anton Meier Ebsen Jørgensen – Blog",
     desc: "Blog with posts about professional topics, training, and travel.",
     heroTitle: "Posts and Notes",
-    heroText: "Three tracks: <strong>Professional</strong> (economics, data, models), <strong>Training</strong> (structure and progression), and <strong>Travel</strong> (hiking, routes, and practice).",
+    heroText: "Focus on <strong>Economics</strong>, <strong>Data</strong>, and <strong>AI</strong>. Sharing analysis, thoughts, and experiments.",
     latestBtn: "Latest News",
     bucketBtn: "Bucket List",
     statusPre: "Showing",
@@ -80,7 +80,7 @@ const t = {
     title: "Anton Meier Ebsen Jørgensen – Blog",
     desc: "Blog mit Beiträgen über berufliche Themen, Training und Reisen.",
     heroTitle: "Beiträge und Notizen",
-    heroText: "Drei Schwerpunkte: <strong>Fachliches</strong> (Ökonomie, Daten, Modelle), <strong>Training</strong> (Struktur und Progression) und <strong>Reisen</strong> (Wandern, Routen und praktische Erfahrungen).",
+    heroText: "Fokus auf <strong>Ökonomie</strong>, <strong>Daten</strong> und <strong>KI</strong>. Analysen, Gedanken und Experimente.",
     latestBtn: "Aktuelles",
     bucketBtn: "Bucket List",
     statusPre: "Zeige",
@@ -113,21 +113,24 @@ const content = (t as any)[lang] || t.da;
 // Data Fetching (SSR)
 // Data Fetching (SSR)
 import BlogCard from '@components/blog/BlogCard.astro';
-import { supabase } from '@lib/supabase';
-let posts: any[] = [];
-let error = null;
+import { getCollection } from 'astro:content';
 
-if (supabase) {
-  const { data, error: dbError } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('published', true)
-    .eq('lang', lang); // Use the lang prop for filtering
-  posts = data || [];
-  error = dbError;
-}
+// Fetch Local Content
+const localPosts = await getCollection('blog');
 
-if (error || !posts) posts = [];
+// Normalize Local Posts to match display format
+const formattedLocalPosts = localPosts.map(p => ({
+  title: p.data.title,
+  category: p.data.category,
+  created_at: new Date().toISOString(), // Or add date to frontmatter
+  excerpt: p.data.description,
+  slug: p.id,
+  isLocal: true
+}));
+
+const posts = formattedLocalPosts; 
+// Note: Supabase fetching removed for now to prioritize local "Platinum" content.
+// If valid archives exist in Supabase, we could merge them here.
 ---
 
 <Layout 
@@ -179,7 +182,6 @@ if (error || !posts) posts = [];
   
           <div class="flex flex-wrap gap-3 mb-6">
             <Button href="#latest">{content.latestBtn}</Button>
-            <Button href={isDa ? "/bucketlist" : "/en/bucketlist"} variant="ghost" class="text-gold-400 hover:text-gold-300"><i class="fa-solid fa-trophy mr-2"></i>{content.bucketBtn}</Button>
           </div>
         </Card>
   

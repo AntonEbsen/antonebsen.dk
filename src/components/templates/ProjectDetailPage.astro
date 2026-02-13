@@ -1202,7 +1202,7 @@ const t = uiStrings[lang] || uiStrings.en;
 
 <!-- Pass data to script -->
 {project.interactiveChart && (
-    <script define:vars={{ chartData: project.interactiveChart }}>
+    <script is:inline define:vars={{ chartData: project.interactiveChart }}>
         window.PROJECT_CHART_DATA = chartData;
     </script>
 )}

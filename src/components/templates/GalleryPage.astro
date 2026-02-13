@@ -380,7 +380,12 @@ const content: any = entry.data;
     const lbTitle = document.getElementById("lbTitle");
     const lbText = document.getElementById("lbText");
 
-    function openLB(data){
+    // Lightbox State
+    let lastFocusedLB: HTMLElement | null = null;
+    
+    // ...
+
+    function openLB(data: any){
       if(!lb || !lbImg || !lbTitle || !lbText) return;
       if (lbImg instanceof HTMLImageElement) {
           lbImg.src = data.src || "";
@@ -424,7 +429,7 @@ const content: any = entry.data;
     });
 
     // Lightbox State
-    let lastFocusedLB;
+    let lastFocusedLB: HTMLElement | null = null;
 
     if(lb) {
         lb.addEventListener("click", (e) => {

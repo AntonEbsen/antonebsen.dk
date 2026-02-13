@@ -20,8 +20,8 @@
           "type": "string",
           "enum": [
             "academic",
-            "training",
-            "travel"
+            "analysis",
+            "tech"
           ]
         },
         "links": {
@@ -50,6 +50,12 @@
               "url"
             ],
             "additionalProperties": false
+          }
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
         "$schema": {

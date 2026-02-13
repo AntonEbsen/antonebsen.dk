@@ -20,6 +20,7 @@ interface Props {
   article?: boolean;
   bodyClass?: string;
   showChatWidget?: boolean;
+  currentPath?: string;
 }
 
 const { title, description, image, article, bodyClass = "", showChatWidget = true } = Astro.props;
