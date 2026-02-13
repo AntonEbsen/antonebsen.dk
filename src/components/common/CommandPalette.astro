@@ -247,23 +247,37 @@ const quickActions = [
       }
 
       resultsList.innerHTML = results.map((r, i) => `
-        <a href="${r.url}" class="palette-item flex items-center justify-between p-3 rounded-xl transition-all ${i === 0 ? 'is-active' : ''}" data-index="${i}">
-          <div class="flex items-center gap-3">
-             <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-accent/60">
+        <a href="${r.url}" class="palette-item flex items-center justify-between p-4 rounded-xl transition-all border border-transparent group ${i === 0 ? 'is-active bg-white/[0.08] border-white/[0.05]' : 'hover:bg-white/[0.04]'}" data-index="${i}">
+          <div class="flex items-start gap-4 flex-1 min-w-0">
+             <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0 transition-all ${getIconStyle(r)}">
                 <i class="${r.icon || getIcon(r.tags)}"></i>
              </div>
-             <div>
-                <div class="text-sm font-medium">${r.title}</div>
-                <div class="text-[11px] text-white/30 truncate max-w-[300px]">${r.content}</div>
+             <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-0.5">
+                    <span class="text-sm font-bold text-white tracking-tight group-hover:text-accent transition-colors truncate">${r.title}</span>
+                    <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/5 text-white/40 border border-white/5">${r.type || 'page'}</span>
+                </div>
+                <div class="text-xs text-dim/70 leading-relaxed line-clamp-2 pr-4 font-light opacity-80 group-hover:opacity-100 transition-opacity">${r.content}</div>
+                <div class="flex flex-wrap gap-1.5 mt-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                    ${r.tags?.slice(0,3).map(t => `<span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-dim border border-white/5">${t}</span>`).join('')}
+                </div>
              </div>
           </div>
-          <div class="flex gap-1">
-             ${r.tags?.slice(0,2).map(t => `<span class="text-[9px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 uppercase tracking-tighter">${t}</span>`).join('')}
+          <div class="text-white/20 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 self-center">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
           </div>
         </a>
       `).join('');
 
       activeIndex = 0;
+    }
+
+    function getIconStyle(r) {
+      if (r.type === 'command') return 'bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.1)]';
+      if (r.type === 'project') return 'bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.1)]';
+      if (r.type === 'blog') return 'bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.1)]';
+      if (r.type === 'game') return 'bg-yellow-500/10 text-yellow-400 group-hover:bg-yellow-500/20 group-hover:text-yellow-300 shadow-[0_0_15px_rgba(234,179,8,0.1)]';
+      return 'bg-white/5 text-white/40 group-hover:bg-white/10 group-hover:text-white';
     }
 
     function getIcon(tags: string[]) {
