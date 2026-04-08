@@ -1,0 +1,98 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import TravelGlobe from '../components/visuals/TravelGlobe';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+
+// Fetch all travel nodes for the current language
+const travelCollection = await getCollection('travel', ({ id }) => {
+  return id.startsWith(`${lang}/`);
+});
+
+const nodes = travelCollection.map(t => ({
+  city: t.data.city,
+  country: t.data.country,
+  location: [t.data.lat, t.data.lng],
+  category: t.data.category,
+  lesson: t.data.lesson,
+  description: t.data.description
+}));
+
+// Localization
+const localizedContent = {
+  en: {
+    title: "Travel Philosophy",
+    description: "Insights and cognitive shifts from around the world.",
+    heroEyebrow: "Global Footprint",
+    heroTitle: "Travel Philosophy",
+    heroLead: "They say travel broadens the mind. For me, it's about the cognitive friction between different ways of living and thinking.",
+    labels: {
+        close: "Close",
+        lesson: "Philosophy",
+        context: "Context"
+    }
+  },
+  da: {
+    title: "Rejsefilosofi",
+    description: "Indsigter og kognitive skift fra hele verden.",
+    heroEyebrow: "Globalt Aftryk",
+    heroTitle: "Rejsefilosofi",
+    heroLead: "Man siger, at rejser udvider horisonten. For mig handler det om den kognitive friktion mellem forskellige måder at leve og tænke på.",
+    labels: {
+        close: "Luk",
+        lesson: "Filosofi",
+        context: "Kontekst"
+    }
+  }
+};
+
+const t = localizedContent[lang];
+---
+
+<Layout 
+  title={t.title} 
+  description={t.description}
+>
+  <main class="relative bg-[#050508] min-h-screen">
+    
+    <!-- HERO OVERLAY (Fixed or Sticky) -->
+    <div class="pointer-events-none absolute top-24 left-1/2 -translate-x-1/2 z-20 w-full max-w-4xl px-4 text-center">
+      <Section class="animate-on-scroll">
+          <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-4">{t.heroEyebrow}</p>
+          <h1 class="text-6xl md:text-8xl font-black text-white leading-none mb-6">
+            {t.heroTitle}
+          </h1>
+          <p class="text-lg text-white/40 leading-relaxed max-w-xl mx-auto">
+            {t.heroLead}
+          </p>
+      </Section>
+    </div>
+
+    <!-- THE GLOBE (Full Screen) -->
+    <div class="h-screen w-full flex items-center justify-center pt-24">
+       <TravelGlobe 
+            nodes={nodes} 
+            labels={t.labels} 
+            client:only="react" 
+       />
+    </div>
+
+    <!-- HINT -->
+    <div class="absolute bottom-32 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.4em] text-white/20 animate-pulse">
+        Drag to explore · Click to learn
+    </div>
+
+  </main>
+</Layout>
+
+<style>
+  html, body {
+    background: #050508 !important; /* Ensure pure black for neon effect */
+  }
+</style>

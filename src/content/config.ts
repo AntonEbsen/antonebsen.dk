@@ -459,5 +459,18 @@ export const collections = {
                 url: z.string()
             })).optional()
         })
+    }),
+    'travel': defineCollection({
+        type: 'data',
+        schema: z.object({
+            city: z.string(),
+            country: z.string(),
+            lat: z.number(),
+            lng: z.number(),
+            category: z.string(),
+            lesson: z.string(),
+            description: z.string(),
+            image: z.string().optional()
+        })
     })
 };
