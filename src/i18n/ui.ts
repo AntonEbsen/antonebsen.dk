@@ -81,6 +81,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Uddannelse', url: '/education' },
                 { label: 'Kompetencer', url: '/skills' },
                 { label: 'Milepæle', url: '/timeline' },
+                { label: 'Arv (Legacy)', url: '/legacy' },
                 { label: 'Hvad laver jeg nu?', url: '/now' }
             ]
         },
@@ -121,6 +122,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Education', url: '/en/education' },
                 { label: 'Skills', url: '/en/skills' },
                 { label: 'Milestones', url: '/en/timeline' },
+                { label: 'Legacy', url: '/en/legacy' },
                 { label: 'What I\'m doing now', url: '/en/now' }
             ]
         },

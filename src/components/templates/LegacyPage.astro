@@ -1,0 +1,97 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import LegacyCard from '@components/ui/LegacyCard.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+
+// Fetch all legacy entries for the current language
+const legacyCollection = await getCollection('legacy', ({ id }) => {
+  return id.startsWith(`${lang}/`);
+});
+
+// Localization
+const localizedContent = {
+  en: {
+    title: "Legacy",
+    description: "The foundations of the Ebsen family story.",
+    heroEyebrow: "Roots & Genealogy",
+    heroTitle: "The Ebsen Story",
+    heroLead: "We are not isolated individuals; we are the points of intersection for long timelines of labor, care, and resilience. This is a tribute to the working-class roots that defined my foundation.",
+    footerNote: "A shorter timeline of personal identity is a longer timeline of collective effort."
+  },
+  da: {
+    title: "Arv",
+    description: "Fundamentet for Ebsen-familiens historie.",
+    heroEyebrow: "Rødder & Slægt",
+    heroTitle: "Fortællingen om Ebsen",
+    heroLead: "Vi er ikke isolerede individer; vi er skæringspunkter for lange tidslinjer af arbejde, omsorg og modstandskraft. Dette er en hyldest til de arbejderklasse-rødder, der formede mit fundament.",
+    footerNote: "En kortere tidslinje for personlig identitet er en længere tidslinje for kollektiv indsats."
+  }
+};
+
+const t = localizedContent[lang];
+---
+
+<Layout 
+  title={t.title} 
+  description={t.description}
+>
+  <main class="relative bg-[#050505]">
+    
+    <!-- Hero Section -->
+    <Section class="text-center pt-32 pb-24 border-b border-white/5 animate-on-scroll">
+        <div class="max-w-4xl mx-auto px-4">
+            <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-copper mb-6">{t.heroEyebrow}</p>
+            <h1 class="text-6xl md:text-[100px] font-black text-white leading-[0.8] mb-12 uppercase italic">
+                {t.heroTitle}
+            </h1>
+            <p class="text-xl md:text-2xl text-white/50 leading-relaxed font-serif italic max-w-2xl mx-auto">
+                {t.heroLead}
+            </p>
+        </div>
+    </Section>
+
+    <!-- Content Grid -->
+    <Section class="container mx-auto px-4">
+        {legacyCollection.map(entry => (
+            <LegacyCard 
+                title={entry.data.title}
+                role={entry.data.role}
+                period={entry.data.period}
+                story={entry.data.story}
+                impact={entry.data.impact}
+                image={entry.data.image}
+            />
+        ))}
+    </Section>
+
+    <!-- Footer Note -->
+    <Section class="py-32 text-center opacity-30 animate-on-scroll">
+        <p class="text-xs uppercase tracking-[0.5em] font-black text-white">
+            {t.footerNote}
+        </p>
+    </Section>
+
+  </main>
+</Layout>
+
+<style>
+    :root {
+        --copper: #b87333;
+    }
+    .text-copper { color: var(--copper); }
+    
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        background-color: #050505 !important;
+    }
+</style>

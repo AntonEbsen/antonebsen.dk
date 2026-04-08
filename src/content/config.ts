@@ -472,5 +472,20 @@ export const collections = {
             description: z.string(),
             image: z.string().optional()
         })
+    }),
+    'legacy': defineCollection({
+        type: 'data',
+        schema: z.object({
+            title: z.string(),
+            role: z.string(),
+            period: z.string().optional(),
+            story: z.string(),
+            impact: z.string(),
+            image: z.string().optional(),
+            links: z.array(z.object({
+                label: z.string(),
+                url: z.string()
+            })).optional()
+        })
     })
 };

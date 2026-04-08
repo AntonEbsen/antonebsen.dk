@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+    title: string;
+    role: string;
+    period?: string;
+    story: string;
+    impact: string;
+    image: string;
+}
+
+const { title, role, period, story, impact, image } = Astro.props;
+
+// Dynamically import images based on the string path
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/img/legacy/*.{jpeg,jpg,png,gif}');
+const imagePath = image;
+if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in "/src/assets/img/legacy/*.{jpeg,jpg,png,gif}"`);
+---
+
+<div class="legacy-card group relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-24 first:pt-0 last:pb-0 border-b border-white/5 last:border-0 overflow-hidden">
+    
+    <!-- Image Section -->
+    <div class="image-wrapper relative aspect-square lg:aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 group-hover:border-copper/30 transition-all duration-700">
+        <Image 
+            src={images[imagePath]()} 
+            alt={title} 
+            class="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+        
+        <!-- Texture Overlay -->
+        <div class="absolute inset-0 opacity-20 group-hover:opacity-10 mix-blend-overlay transition-opacity pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content flex flex-col justify-center px-4 lg:px-8">
+        <div class="mb-4">
+            <span class="text-xs font-bold uppercase tracking-[0.4em] text-copper mb-2 block">{role}</span>
+            <h2 class="text-5xl md:text-6xl font-black text-white leading-none mb-1">
+                {title}
+            </h2>
+            <p class="text-sm text-dim italic opacity-50">{period}</p>
+        </div>
+
+        <div class="space-y-6 mt-8">
+            <p class="text-xl text-white/70 leading-relaxed font-serif italic border-l-2 border-copper/30 pl-6">
+                "{story}"
+            </p>
+            
+            <div class="impact-box bg-copper/5 border border-copper/10 p-6 rounded-xl">
+                 <h4 class="text-[10px] uppercase tracking-widest text-copper mb-3 font-bold">The Legacy</h4>
+                 <p class="text-lg text-white/90 leading-snug font-medium">
+                    {impact}
+                 </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --copper: #b87333;
+        --copper-glow: rgba(184, 115, 51, 0.3);
+    }
+    
+    .text-copper { color: var(--copper); }
+    .bg-copper\/5 { background-color: rgba(184, 115, 51, 0.05); }
+    .border-copper\/10 { border-color: rgba(184, 115, 51, 0.1); }
+    .border-copper\/30 { border-color: rgba(184, 115, 51, 0.3); }
+    .group-hover\:border-copper\/30:hover { border-color: rgba(184, 115, 51, 0.3); }
+
+    .image-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+        pointer-events: none;
+    }
+</style>
