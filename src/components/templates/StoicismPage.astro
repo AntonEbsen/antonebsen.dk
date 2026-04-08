@@ -1,0 +1,114 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+  da: {
+    title: "Kristen Stoicisme | Anton Meier Ebsen Jørgensen",
+    description: "En personlig syntese af kristen tro og stoisk filosofi - hvor bøn møder prohairesis.",
+    heroTitle: "Kristen Stoicisme",
+    heroText: "Jeg ser ingen modsætning mellem Jerusalem og Athen. For mig er stoicismens fokus på karakter og fornuft det praktiske fundament, som kristendommens håb og kærlighed bygger videre på.",
+    principles: [
+      {
+        title: "Logos & Kristus",
+        text: "Stoikerne troede på Logos som verdens fornuft. Som kristen ser jeg Kristus som den inkarnerede Logos (Joh 1:1). At leve i overensstemmelse med naturen er at leve i Kristus."
+      },
+      {
+        title: "Forsyn & Tillid",
+        text: "Amor Fati (elsk din skæbne) bliver til en dyb tillid til Guds forsyn. Vi accepterer ikke bare det, der sker; vi omfavner det som en del af Guds vilje for vores liv."
+      },
+      {
+        title: "Den Indre Borg",
+        text: "Guds rige er 'inden i jer'. Stoicismens 'indre borg' er det hellige rum, hvor sjælen møder Gud, upåvirket af verdens storme."
+      },
+      {
+        title: "Dyd & Nåde",
+        text: "Stoicismen lærer os at stræbe efter dyd. Kristendommen lærer os, at vi fejler, men reddes af nåde. Dyd er ikke målet i sig selv, men frugten af Guds ånd."
+      }
+    ]
+  },
+  en: {
+    title: "Christian Stoicism | Anton Meier Ebsen Jørgensen",
+    description: "A personal synthesis of Christian faith and Stoic philosophy - where prayer meets prohairesis.",
+    heroTitle: "Christian Stoicism",
+    heroText: "I see no contradiction between Jerusalem and Athens. For me, Stoicism's focus on character and reason is the practical foundation upon which Christianity's hope and love are built.",
+    principles: [
+      {
+        title: "Logos & Christ",
+        text: "The Stoics believed in Logos as the world's reason. As a Christian, I see Christ as the incarnate Logos (John 1:1). To live in accordance with nature is to live in Christ."
+      },
+      {
+        title: "Providence & Trust",
+        text: "Amor Fati (love your fate) transforms into deep trust in Divine Providence. We don't just accept what happens; we embrace it as part of God's will for our lives."
+      },
+      {
+        title: "The Inner Citadel",
+        text: "The Kingdom of God is 'within you'. Stoicism's 'inner citadel' is that sacred space where the soul meets God, untouched by the storms of the world."
+      },
+      {
+        title: "Virtue & Grace",
+        text: "Stoicism teaches us to strive for virtue. Christianity teaches us that we fail, yet are saved by grace. Virtue is not the end in itself, but the fruit of the Spirit."
+      }
+    ]
+  }
+};
+
+const t = isDa ? content.da : content.en;
+---
+
+<Layout title={t.title} description={t.description}>
+  <main class="container mx-auto px-4 py-20">
+    <!-- Hero -->
+    <Section class="mb-24 animate-on-scroll">
+      <div class="max-w-4xl mx-auto text-center">
+        <p class="text-xs font-bold uppercase tracking-widest text-accent mb-4">Philosophy & Faith</p>
+        <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter">
+          {t.heroTitle}
+        </h1>
+        <p class="text-xl md:text-2xl text-dim leading-relaxed max-w-2xl mx-auto px-4 italic opacity-80">
+          "{t.heroText}"
+        </p>
+      </div>
+    </Section>
+
+    <!-- Principles Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
+      {t.principles.map((p, idx) => (
+        <Section class={`animate-on-scroll delay-${(idx + 1) * 100}`}>
+          <div class="relative pl-12">
+            <div class="absolute left-0 top-0 text-3xl font-black text-accent opacity-20 italic">
+               {(idx + 1).toString().padStart(2, '0')}
+            </div>
+            <h2 class="text-2xl font-bold mb-4 text-white group-hover:text-accent transition-colors">
+              {p.title}
+            </h2>
+            <p class="text-dim leading-relaxed text-lg border-l-2 border-accent/10 pl-6">
+              {p.text}
+            </p>
+          </div>
+        </Section>
+      ))}
+    </div>
+
+    <!-- Final Quote -->
+    <Section class="mt-40 animate-on-scroll">
+       <div class="max-w-3xl mx-auto p-12 rounded-2xl border border-accent/10 bg-accent/[0.01] text-center relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
+          <i class="fa-solid fa-cross text-4xl text-accent mb-6 opacity-80"></i>
+          <blockquote class="text-2xl md:text-3xl font-serif italic leading-relaxed mb-6">
+             "{isDa ? 'Giv mig sinnsro til at acceptere de ting, jeg ikke kan ændre, mod til at ændre de ting, jeg kan, og visdom til at se forskellen.' : 'Grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.'}"
+          </blockquote>
+          <cite class="text-sm uppercase tracking-widest text-dim font-bold not-italic">
+            — Reinhold Niebuhr (Serenity Prayer)
+          </cite>
+       </div>
+    </Section>
+  </main>
+</Layout>

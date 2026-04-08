@@ -1,0 +1,66 @@
+{
+  "$ref": "#/definitions/influences",
+  "definitions": {
+    "influences": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Thinker",
+            "Mentor",
+            "Artist",
+            "Author",
+            "Figure"
+          ]
+        },
+        "image": {
+          "type": "string"
+        },
+        "quote": {
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "role",
+        "category",
+        "quote",
+        "impact"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

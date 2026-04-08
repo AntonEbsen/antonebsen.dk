@@ -136,19 +136,17 @@ const pathname = new URL(Astro.request.url).pathname;
       }
   }
 
-  // CMD+K Shortcut
+  // Escape to close
   document.addEventListener('keydown', (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-          e.preventDefault();
-          searchInput?.focus();
-          loadSearchIndex(); // Predownload on shortcut
-      }
-      // Escape to close
       if (e.key === 'Escape') {
           searchInput?.blur();
           searchResults?.classList.remove('is-open');
       }
   });
+
+  // Get current language from HTML tag
+  const currentLang = document.documentElement.lang || 'en';
+
 
   if (searchInput && searchResults) {
       searchInput.addEventListener('focus', loadSearchIndex);
@@ -165,8 +163,9 @@ const pathname = new URL(Astro.request.url).pathname;
 
           // Filter Logic
           const matches = searchIndex.filter((item: any) => 
-               item.title.toLowerCase().includes(query) || 
-               (item.tags && item.tags.some((t: string) => t.toLowerCase().includes(query)))
+               (item.lang === currentLang) && // Strict Filter
+               (item.title.toLowerCase().includes(query) || 
+               (item.tags && item.tags.some((t: string) => t.toLowerCase().includes(query))))
           ).slice(0, 6);
 
           // Render

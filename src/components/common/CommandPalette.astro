@@ -224,8 +224,11 @@ const quickActions = [
 
       if (isAiMode) return; // Handled by Enter
 
+      const currentLang = document.documentElement.lang || 'en';
+
       const filtered = searchIndex
         .filter(item => {
+          if (item.lang && item.lang !== currentLang) return false;
           const content = `${item.title} ${item.content} ${item.tags?.join(' ')}`.toLowerCase();
           return content.includes(q);
         })

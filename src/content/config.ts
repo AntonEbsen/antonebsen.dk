@@ -444,5 +444,20 @@ export const collections = {
                 btnPort: z.string()
             })
         })
+    }),
+    'influences': defineCollection({
+        type: 'data',
+        schema: z.object({
+            name: z.string(),
+            role: z.string(),
+            category: z.enum(['Thinker', 'Mentor', 'Artist', 'Author', 'Figure']),
+            image: z.string().optional(),
+            quote: z.string(),
+            impact: z.string(),
+            links: z.array(z.object({
+                label: z.string(),
+                url: z.string()
+            })).optional()
+        })
     })
 };

@@ -202,6 +202,14 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"influences": Record<string, {
+  id: string;
+  body?: string;
+  collection: "influences";
+  data: InferEntrySchema<"influences">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 "pages": Record<string, {
   id: string;
   body?: string;

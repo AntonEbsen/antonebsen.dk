@@ -1,0 +1,89 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import InfluenceCard from '@components/ui/InfluenceCard.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+
+// Fetch all influences for the current language
+const influences = await getCollection('influences', ({ id }) => {
+  return id.startsWith(`${lang}/`);
+});
+
+// Localization
+const localizedContent = {
+  en: {
+    title: "Digital Altar",
+    description: "The thinkers, mentors, and figures who have shaped my worldview.",
+    heroEyebrow: "Influences & Mentors",
+    heroTitle: "My Digital Altar",
+    heroLead: "The ideas we engage with define the people we become. This is a collection of the figures—historical, intellectual, and spiritual—whose work has fundamentally shifted my perspective on life, economics, and ethics.",
+    categoryFilterAll: "All Influences"
+  },
+  da: {
+    title: "Digitalt Alter",
+    description: "De tænkere, mentorer og figurer, der har formet mit verdensbillede.",
+    heroEyebrow: "Indflydelser & Mentorer",
+    heroTitle: "Mit Digitale Alter",
+    heroLead: "De idéer, vi engagerer os i, definerer de mennesker, vi bliver. Dette er en samling af de figurer – historiske, intellektuelle og spirituelle – hvis arbejde fundamentalt har ændret mit perspektiv på livet, økonomi og etik.",
+    categoryFilterAll: "Alle Indflydelser"
+  }
+};
+
+const t = localizedContent[lang];
+---
+
+<Layout 
+  title={t.title} 
+  description={t.description}
+>
+  <main class="container mx-auto px-4 py-12">
+    
+    <!-- HERO -->
+    <Section class="text-center mb-20 animate-on-scroll">
+      <p class="text-xs font-bold uppercase tracking-[0.2em] text-accent mb-4">{t.heroEyebrow}</p>
+      <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-8">
+        {t.heroTitle}
+      </h1>
+      <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto">
+        {t.heroLead}
+      </p>
+      
+      <div class="mt-12 flex justify-center">
+        <div class="w-24 h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-30"></div>
+      </div>
+    </Section>
+
+    <!-- GRID -->
+    <Section class="animate-on-scroll delay-200">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+        {influences.map(influence => (
+          <InfluenceCard 
+            name={influence.data.name}
+            role={influence.data.role}
+            category={influence.data.category}
+            image={influence.data.image}
+            quote={influence.data.quote}
+            impact={influence.data.impact}
+          />
+        ))}
+      </div>
+    </Section>
+
+    <!-- FOOTER NOTE -->
+    <Section class="mt-32 text-center opacity-50 animate-on-scroll">
+       <p class="text-sm italic text-dim">
+         {lang === 'en' 
+           ? "This list is a living document, evolving as I continue to learn and grow." 
+           : "Denne liste er et levende dokument, der udvikler sig i takt med at jeg lærer og vokser."}
+       </p>
+    </Section>
+
+  </main>
+</Layout>

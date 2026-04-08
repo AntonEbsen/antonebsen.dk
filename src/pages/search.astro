@@ -126,8 +126,11 @@ const t = {
             return;
         }
 
+        const currentLang = document.documentElement.lang || 'en';
+        
         const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
         const results = searchIndex
+            .filter(item => !item.lang || item.lang === currentLang)
             .map(item => {
                 let score = 0;
                 const text = (item.title + ' ' + item.content + ' ' + (item.tags || []).join(' ')).toLowerCase();
