@@ -23,6 +23,18 @@ const localizedContent = {
     heroEyebrow: "Roots & Genealogy",
     heroTitle: "The Ebsen Story",
     heroLead: "We are not isolated individuals; we are the points of intersection for long timelines of labor, care, and resilience. This is a tribute to the working-class roots that defined my foundation.",
+    geneTitle: "The Genetic Pulse",
+    geneLead: "A map of the code that preceded my own.",
+    geneDanish: "65% Jutlandic / Danish",
+    genePolish: "25% Eastern European (Podkarpackie)",
+    valuesTitle: "The Moral Compass",
+    valuesLead: "The unwritten rules passed down through exertion and endurance.",
+    values: [
+        { title: "Industrial Grit", text: "The persistence born on the factory floor." },
+        { title: "Foundational Care", text: "The nurture that builds the future." },
+        { title: "Invisible Reliability", text: "The silent commitment to the common good." },
+        { title: "Immigrant Resilience", text: "The courage of the roepolak in the field." }
+    ],
     footerNote: "A shorter timeline of personal identity is a longer timeline of collective effort."
   },
   da: {
@@ -31,6 +43,18 @@ const localizedContent = {
     heroEyebrow: "Rødder & Slægt",
     heroTitle: "Fortællingen om Ebsen",
     heroLead: "Vi er ikke isolerede individer; vi er skæringspunkter for lange tidslinjer af arbejde, omsorg og modstandskraft. Dette er en hyldest til de arbejderklasse-rødder, der formede mit fundament.",
+    geneTitle: "Den Genetiske Puls",
+    geneLead: "Et kort over den kode, der gik forud for min egen.",
+    geneDanish: "65% Jysk / Dansk",
+    genePolish: "25% Østeuropæisk (Podkarpackie)",
+    valuesTitle: "Det Moralske Kompas",
+    valuesLead: "De uskrevne regler overleveret gennem anstrengelse og udholdenhed.",
+    values: [
+        { title: "Industriel Flid", text: "Udmattelsen og vedholdenheden på fabriksgulvet." },
+        { title: "Grundlæggende Omsorg", text: "Plejen der bygger fremtidens fundament." },
+        { title: "Silent Pålidelighed", text: "Den stille forpligtelse til det fælles bedste." },
+        { title: "Migrantens Mod", text: "Roepolakkens modstandskraft i marken." }
+    ],
     footerNote: "En kortere tidslinje for personlig identitet er en længere tidslinje for kollektiv indsats."
   }
 };
@@ -42,11 +66,11 @@ const t = localizedContent[lang];
   title={t.title} 
   description={t.description}
 >
-  <main class="relative bg-[#050505]">
+  <main class="relative bg-[#050505] overflow-hidden">
     
     <!-- Hero Section -->
     <Section class="text-center pt-32 pb-24 border-b border-white/5 animate-on-scroll">
-        <div class="max-w-4xl mx-auto px-4">
+        <div class="max-w-4xl mx-auto px-4 relative">
             <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-copper mb-6">{t.heroEyebrow}</p>
             <h1 class="text-6xl md:text-[100px] font-black text-white leading-[0.8] mb-12 uppercase italic">
                 {t.heroTitle}
@@ -54,6 +78,58 @@ const t = localizedContent[lang];
             <p class="text-xl md:text-2xl text-white/50 leading-relaxed font-serif italic max-w-2xl mx-auto">
                 {t.heroLead}
             </p>
+        </div>
+    </Section>
+
+    <!-- Genetic Pulse (Gene Map Visualization) -->
+    <Section class="py-24 border-b border-white/5 animate-on-scroll">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="visual order-2 md:order-1">
+                <svg viewBox="0 0 400 400" class="w-full max-w-[400px] mx-auto filter drop-shadow-[0_0_20px_rgba(184,115,51,0.2)]">
+                    <!-- Hub -->
+                    <circle cx="200" cy="200" r="10" fill="var(--copper)" />
+                    <!-- Danish Lines (65%) -->
+                    <g transform="rotate(0 200 200)">
+                        {[...Array(12)].map((_, i) => (
+                            <path 
+                                d={`M 200 200 Q ${200 + Math.sin(i) * 150} ${200 + Math.cos(i) * 150} ${200 + Math.sin(i) * 120} ${200 + Math.cos(i) * 180}`} 
+                                stroke="var(--copper)" 
+                                stroke-width="2" 
+                                fill="none" 
+                                class="opacity-40 animate-[pulse_4s_infinite]"
+                                style={`animation-delay: ${i * 0.1}s`}
+                            />
+                        ))}
+                    </g>
+                    <!-- Polish Lines (25%) -->
+                    <g transform="rotate(180 200 200)">
+                        {[...Array(6)].map((_, i) => (
+                            <path 
+                                d={`M 200 200 Q ${200 + Math.sin(i) * 150} ${200 + Math.cos(i) * 150} ${200 + Math.sin(i) * 120} ${200 + Math.cos(i) * 180}`} 
+                                stroke="white" 
+                                stroke-width="1.5" 
+                                fill="none" 
+                                class="opacity-20 animate-[pulse_6s_infinite]"
+                                style={`animation-delay: ${i * 0.2}s`}
+                            />
+                        ))}
+                    </g>
+                </svg>
+            </div>
+            <div class="text-left order-1 md:order-2">
+                <h3 class="text-xs uppercase tracking-[0.4em] text-copper mb-4 font-bold">{t.geneTitle}</h3>
+                <p class="text-3xl font-black text-white mb-6 uppercase leading-tight">{t.geneLead}</p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-[2px] bg-copper"></div>
+                        <span class="text-white/80 font-mono text-sm uppercase tracking-widest">{t.geneDanish}</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-[2px] bg-white opacity-20"></div>
+                        <span class="text-white/40 font-mono text-sm uppercase tracking-widest">{t.genePolish}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </Section>
 
@@ -69,6 +145,28 @@ const t = localizedContent[lang];
                 image={entry.data.image}
             />
         ))}
+    </Section>
+
+    <!-- Moral Compass (Values Grid) -->
+    <Section class="py-32 bg-white/[0.02] border-y border-white/5 animate-on-scroll">
+        <div class="container mx-auto px-4">
+             <div class="text-center mb-20">
+                <h3 class="text-xs uppercase tracking-[0.4em] text-copper mb-4 font-bold">{t.valuesTitle}</h3>
+                <p class="text-xl text-white/50 italic font-serif">{t.valuesLead}</p>
+             </div>
+             
+             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {t.values.map(v => (
+                    <div class="p-8 border border-white/10 rounded-2xl hover:border-copper/30 transition-all duration-300 group">
+                        <div class="w-10 h-10 rounded-lg bg-copper/10 flex items-center justify-center mb-6 group-hover:bg-copper/20 transition-colors">
+                            <i class="fa-solid fa-compass text-copper"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-3 uppercase tracking-wider">{v.title}</h4>
+                        <p class="text-sm text-dim leading-relaxed">{v.text}</p>
+                    </div>
+                ))}
+             </div>
+        </div>
     </Section>
 
     <!-- Footer Note -->
@@ -93,5 +191,10 @@ const t = localizedContent[lang];
     
     body {
         background-color: #050505 !important;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.1; stroke-dashoffset: 0; }
+        50% { opacity: 0.4; stroke-dashoffset: 100; }
     }
 </style>
