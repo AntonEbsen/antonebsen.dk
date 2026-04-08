@@ -1,0 +1,99 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import SoundtrackCard from '@components/ui/SoundtrackCard.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+
+// Fetch all soundtrack entries for the current language, sorted by chapter
+const soundtrackCollection = await getCollection('soundtrack', ({ id }) => {
+  return id.startsWith(`${lang}/`);
+});
+
+const sortedSoundtracks = soundtrackCollection.sort((a, b) => a.data.chapter - b.data.chapter);
+
+// Localization
+const localizedContent = {
+  en: {
+    title: "Soundtrack",
+    description: "The music that defines my life chapters and cognitive states.",
+    heroEyebrow: "Curated Echoes",
+    heroTitle: "Soundtrack of My Life",
+    heroLead: "Music is the architecture of memory. Here, I've curated the 'echoes' that accompany my most productive, reflective, and transformative moments.",
+    footerNote: "The rhythmic thread of a life lived in focus."
+  },
+  da: {
+    title: "Soundtrack",
+    description: "Musikken der definerer mine livskapitler og kognitive tilstande.",
+    heroEyebrow: "Kuraterede Ekkoer",
+    heroTitle: "Soundtracket til mit liv",
+    heroLead: "Musik er hukommelsens arkitektur. Her har jeg kurateret de 'ekkoer', der ledsager mine mest produktive, reflekterende og transformative øjeblikke.",
+    footerNote: "Den rytmiske tråd i et liv levet i fokus."
+  }
+};
+
+const t = localizedContent[lang];
+---
+
+<Layout 
+  title={t.title} 
+  description={t.description}
+>
+  <main class="relative bg-[#050505] overflow-hidden">
+    
+    <!-- Hero Section -->
+    <Section class="text-center pt-32 pb-24 border-b border-white/5 animate-on-scroll">
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-6">{t.heroEyebrow}</p>
+            <h1 class="text-6xl md:text-[100px] font-black text-white leading-[0.8] mb-12 uppercase italic relative inline-block">
+                {t.heroTitle}
+                <span class="absolute -bottom-4 right-0 w-32 h-[1px] bg-accent/20"></span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/50 leading-relaxed font-serif italic max-w-2xl mx-auto">
+                {t.heroLead}
+            </p>
+        </div>
+        
+        <!-- Abstract Background Aura -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl aspect-video bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-0"></div>
+    </Section>
+
+    <!-- Content Grid -->
+    <Section class="container mx-auto px-4 relative z-10">
+        <div class="space-y-4">
+            {sortedSoundtracks.map(entry => (
+                <SoundtrackCard 
+                    title={entry.data.title}
+                    vibe={entry.data.vibe}
+                    description={entry.data.description}
+                    spotifyId={entry.data.spotifyId}
+                    chapter={entry.data.chapter}
+                />
+            ))}
+        </div>
+    </Section>
+
+    <!-- Footer Note -->
+    <Section class="py-32 text-center opacity-30 animate-on-scroll">
+        <p class="text-xs uppercase tracking-[0.5em] font-black text-white">
+            {t.footerNote}
+        </p>
+    </Section>
+
+  </main>
+</Layout>
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        background-color: #050505 !important;
+    }
+</style>

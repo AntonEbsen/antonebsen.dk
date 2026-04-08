@@ -487,5 +487,15 @@ export const collections = {
                 url: z.string()
             })).optional()
         })
+    }),
+    'soundtrack': defineCollection({
+        type: 'data',
+        schema: z.object({
+            title: z.string(),
+            vibe: z.string(),
+            description: z.string(),
+            spotifyId: z.string(),
+            chapter: z.number()
+        })
     })
 };

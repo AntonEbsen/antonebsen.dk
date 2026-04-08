@@ -82,6 +82,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Kompetencer', url: '/skills' },
                 { label: 'Milepæle', url: '/timeline' },
                 { label: 'Arv (Legacy)', url: '/legacy' },
+                { label: 'Soundtrack', url: '/soundtrack' },
                 { label: 'Hvad laver jeg nu?', url: '/now' }
             ]
         },
@@ -123,6 +124,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Skills', url: '/en/skills' },
                 { label: 'Milestones', url: '/en/timeline' },
                 { label: 'Legacy', url: '/en/legacy' },
+                { label: 'Soundtrack', url: '/en/soundtrack' },
                 { label: 'What I\'m doing now', url: '/en/now' }
             ]
         },

@@ -1,0 +1,71 @@
+---
+import SpotifyEmbed from './SpotifyEmbed.astro';
+
+interface Props {
+  title: string;
+  vibe: string;
+  description: string;
+  spotifyId: string;
+  chapter: number;
+}
+
+const { title, vibe, description, spotifyId, chapter } = Astro.props;
+---
+
+<div class="soundtrack-card group relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20 border-b border-white/5 last:border-0">
+  
+  <!-- Audio Pulse Animation Background -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity duration-1000 overflow-hidden">
+    <svg viewBox="0 0 1000 1000" class="w-full h-full opacity-30">
+        <circle cx="500" cy="500" r="100" fill="none" stroke="var(--accent)" stroke-width="2" class="pulse-ring">
+            <animate attributeName="r" from="100" to="500" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" from="1" to="0" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="500" cy="500" r="150" fill="none" stroke="var(--accent)" stroke-width="1.5" class="pulse-ring opacity-50">
+            <animate attributeName="r" from="150" to="600" dur="6s" repeatCount="indefinite" />
+            <animate attributeName="opacity" from="1" to="0" dur="6s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="500" cy="500" r="200" fill="none" stroke="var(--accent)" stroke-width="1" class="pulse-ring opacity-30">
+            <animate attributeName="r" from="200" to="700" dur="8s" repeatCount="indefinite" />
+            <animate attributeName="opacity" from="1" to="0" dur="8s" repeatCount="indefinite" />
+        </circle>
+    </svg>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content relative z-10 flex flex-col justify-center px-4 md:px-8">
+     <div class="inline-flex items-center gap-3 mb-6">
+        <span class="w-8 h-[1px] bg-accent/40"></span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60">Chapter {chapter}</span>
+     </div>
+     
+     <h2 class="text-5xl md:text-7xl font-black text-white leading-none mb-6 group-hover:text-accent transition-colors duration-500">
+        {title}
+     </h2>
+     
+     <div class="space-y-6 max-w-lg">
+        <p class="text-sm font-mono text-accent uppercase tracking-widest bg-accent/5 px-3 py-1 rounded inline-block">
+            {vibe}
+        </p>
+        <p class="text-lg text-white/50 leading-relaxed font-serif italic border-l-2 border-accent/20 pl-8">
+            {description}
+        </p>
+     </div>
+  </div>
+
+  <!-- Embed Section -->
+  <div class="embed relative z-10 p-4 bg-white/[0.02] rounded-2xl border border-white/5 group-hover:bg-white/[0.04] transition-all duration-500">
+      <SpotifyEmbed spotifyId={spotifyId} />
+  </div>
+
+</div>
+
+<style>
+  .soundtrack-card {
+    perspective: 1000px;
+  }
+  
+  .pulse-ring {
+    transform-origin: center;
+  }
+</style>
