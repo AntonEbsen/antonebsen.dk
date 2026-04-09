@@ -10,6 +10,8 @@ export async function GET() {
     // 1. Admin / Static Commands
     const commands = [
         { title: "Dashboard", url: "/dashboard", type: "command", icon: "fa-solid fa-gauge", tags: ["admin"], lang: "en" },
+        { title: "Research Lab", url: "/research", type: "page", icon: "fa-solid fa-flask-vial", tags: ["academic", "phd", "research"], lang: "en" },
+        { title: "Research Lab", url: "/research", type: "page", icon: "fa-solid fa-flask-vial", tags: ["akademisk", "phd", "forskning"], lang: "da" },
         { title: "Backup Data", url: "/api/backup", type: "command", icon: "fa-solid fa-download", tags: ["admin"], lang: "en" },
         { title: "Trophy Room", url: "#trophy-room", type: "command", icon: "fa-solid fa-trophy", tags: ["game"], lang: "en" },
         { title: "Trophäenraum", url: "#trophy-room", type: "command", icon: "fa-solid fa-trophy", tags: ["game"], lang: "de" },

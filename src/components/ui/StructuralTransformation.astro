@@ -1,0 +1,133 @@
+---
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const data = {
+    da: {
+        title: "Strukturel Transformation",
+        subtitle: "Tre generationer af Ebsen-familien i kontekst af Danmarks økonomiske udvikling.",
+        nodes: [
+            {
+                person: "Oldemor",
+                role: "Roemarker (Polsk migrant)",
+                period: "1900-1920",
+                economicEra: "Den Store Omstilling",
+                academicNote: "Overgangen fra korndyrkning til animalsk eksport og sukkerroer. Denne periode var præget af den andelsbevægelse-ledede professionalisering af landbruget, hvor polsk sæsonarbejde var en essentiel produktionsfaktor i den rurale industrialisering.",
+                link: "https://danmarkshistorien.dk/vis/materiale/roepolakker-1893-1929"
+            },
+            {
+                person: "Far",
+                role: "Fabriksarbejder (Jern & Metal)",
+                period: "1980-2015",
+                economicEra: "Industriel Modning & Globalisering",
+                academicNote: "Konsolidering af den danske fremstillingssektor under pres fra global konkurrence. Perioden omfattede væsentlige strukturreformer i 1980'erne (Kartoffelkur) og en bevægelse mod højt specialiseret niche-produktion.",
+                link: "https://da.wikipedia.org/wiki/Kartoffelkur"
+            },
+            {
+                person: "Mor",
+                role: "Dagplejemor",
+                period: "1990-Nu",
+                economicEra: "Velfærdsstatens Omsorgsøkonomi",
+                academicNote: "Expansionen af den offentlige service-sektor som modsvar til øget arbejdsmarkedsdeltagelse. Professionaliseringen af den tidlige omsorg er en nødvendig forudsætning for den moderne serviceøkonomis produktivitet og humankapital-dannelse."
+            },
+            {
+                person: "Anton",
+                role: "Økonom (PhD Aspirant)",
+                period: "2026+",
+                economicEra: "Den Digitale & Grønne Transition",
+                academicNote: "Skiftet mod viden og data som de primære vækstmotorer. Integrationen af avancerede økonometriske modeller og historisk analyse (Cliometrics) for at navigere i komplekse, globaliserede finansielle systemer."
+            }
+        ]
+    },
+    en: {
+        title: "Structural Transformation",
+        subtitle: "Three generations of Ebsen family history in the context of Danish economic development.",
+        nodes: [
+            {
+                person: "Great-Grandmother",
+                role: "Field Laborer (Polish migrant)",
+                period: "1900-1920",
+                economicEra: "The Great Transition",
+                academicNote: "The shift from cereal production to capital-intensive animal exports and sugar beets. This period was defined by the cooperative-led professionalization of agriculture, where Polish seasonal labor ('roepolakkerne') served as a critical production factor in rural industrialization.",
+                link: "https://danmarkshistorien.dk/vis/materiale/roepolakker-1893-1929"
+            },
+            {
+                person: "Father",
+                role: "Factory Worker (Iron & Metal)",
+                period: "1980-2015",
+                economicEra: "Industrial Maturity & Globalization",
+                academicNote: "Consolidation of the Danish manufacturing sector under pressure from global competition. This era included significant structural reforms in the 1980s (e.g., the 'Potato Diet') and a movement towards highly specialized niche production.",
+                link: "https://da.wikipedia.org/wiki/Kartoffelkur"
+            },
+            {
+                person: "Mother",
+                role: "Childcare Provider",
+                period: "1990-Present",
+                economicEra: "The Rise of the Care Economy",
+                academicNote: "Expansion of the public welfare sector in response to increased labor market participation. The professionalization of early-stage care is a prerequisite for the productivity and human capital formation of the modern service economy."
+            },
+            {
+                person: "Anton",
+                role: "Economist (PhD Candidate)",
+                period: "2026+",
+                economicEra: "The Knowledge & Green Transition",
+                academicNote: "The shift towards knowledge and data as primary drivers of growth. Integration of advanced econometric modeling and historical analysis (Cliometrics) to navigate complex globalized financial systems."
+            }
+        ]
+    }
+};
+
+const t = data[lang];
+---
+
+<div class="structural-transformation-galaxy py-16">
+    <div class="mb-12">
+        <h3 class="text-xs font-bold uppercase tracking-[0.4em] text-copper mb-4">{t.title}</h3>
+        <p class="text-white/50 font-serif italic max-w-2xl">{t.subtitle}</p>
+    </div>
+
+    <div class="relative">
+        <!-- Horizontal Timeline Axis -->
+        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-copper/20 -translate-y-1/2 hidden lg:block"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-4 relative z-10">
+            {t.nodes.map((node, index) => (
+                <div class="group h-full">
+                    <!-- Vertical Connector (Desktop) -->
+                    <div class="absolute w-[1px] h-24 bg-gradient-to-b from-transparent to-copper/30 bottom-1/2 left-[calc(12.5%+(25%*index))] hidden lg:block" hidden={index % 2 === 0}></div>
+                    <div class="absolute w-[1px] h-24 bg-gradient-to-t from-transparent to-copper/30 top-1/2 left-[calc(12.5%+(25%*index))] hidden lg:block" hidden={index % 2 !== 0}></div>
+
+                    <div class={`p-8 bg-white/[0.02] border border-white/10 rounded-2xl hover:border-copper/40 transition-all duration-500 flex flex-col h-full ${index % 2 === 0 ? 'lg:mb-32' : 'lg:mt-32'}`}>
+                        <div class="mb-6">
+                            <span class="text-[10px] uppercase font-mono tracking-widest text-copper/60 block mb-2">{node.period}</span>
+                            <h4 class="text-lg font-black text-white uppercase italic tracking-tight mb-1">{node.person}</h4>
+                            <p class="text-[10px] uppercase font-bold text-dim tracking-[0.2em]">{node.role}</p>
+                        </div>
+
+                        <div class="mt-auto pt-6 border-t border-white/5">
+                            <h5 class="text-xs font-bold text-white mb-3 uppercase tracking-wider">{node.economicEra}</h5>
+                            <p class="text-[11px] text-white/40 leading-relaxed font-serif italic mb-4">
+                                {node.academicNote}
+                            </p>
+                            {node.link && (
+                                <a href={node.link} target="_blank" class="text-[9px] font-bold uppercase text-copper/50 hover:text-copper transition-colors flex items-center gap-1">
+                                    Archive Context <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+</div>
+
+<style>
+    .structural-transformation-galaxy {
+        perspective: 1000px;
+    }
+</style>

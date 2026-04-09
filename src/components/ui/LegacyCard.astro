@@ -8,9 +8,16 @@ interface Props {
     story: string;
     impact: string;
     image: string;
+    historicalContext?: {
+        title: string;
+        text: string;
+        link?: string;
+    };
+    lang: 'da' | 'en';
 }
 
-const { title, role, period, story, impact, image } = Astro.props;
+const { title, role, period, story, impact, image, historicalContext, lang } = Astro.props;
+const isDa = lang === 'da';
 
 // Dynamically import images based on the string path
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/img/legacy/*.{jpeg,jpg,png,gif}');
@@ -54,6 +61,35 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in "/src/
                     {impact}
                  </p>
             </div>
+
+            {historicalContext && (
+                <div class="historical-context mt-8 p-6 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group/context">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover/context:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-monument text-4xl text-copper"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h4 class="text-[10px] font-bold uppercase tracking-[0.3em] text-copper mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-scroll text-[10px]"></i>
+                            Scholarly Insight
+                        </h4>
+                        <h5 class="text-white font-bold mb-2 uppercase tracking-wider text-sm">{historicalContext.title}</h5>
+                        <p class="text-sm text-white/60 leading-relaxed font-serif italic mb-4">
+                            {historicalContext.text}
+                        </p>
+                        {historicalContext.link && (
+                            <a 
+                                href={historicalContext.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="text-[10px] font-bold uppercase tracking-widest text-copper hover:text-white transition-colors flex items-center gap-2"
+                            >
+                                {isDa ? 'Læs mere om konteksten' : 'Read more about the context'}
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                            </a>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     </div>
 </div>

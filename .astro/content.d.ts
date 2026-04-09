@@ -210,6 +210,14 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"legacy": Record<string, {
+  id: string;
+  body?: string;
+  collection: "legacy";
+  data: InferEntrySchema<"legacy">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 "pages": Record<string, {
   id: string;
   body?: string;
@@ -247,6 +255,14 @@ declare module 'astro:content' {
   body?: string;
   collection: "skills";
   data: InferEntrySchema<"skills">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"soundtrack": Record<string, {
+  id: string;
+  body?: string;
+  collection: "soundtrack";
+  data: InferEntrySchema<"soundtrack">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;

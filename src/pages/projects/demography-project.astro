@@ -3,84 +3,94 @@ import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
 export const prerender = true;
 
 const projectContent = {
-  title: "Demografisk Analyse (Titel TBD)",
-  subtitle: "Kommende projekt i faget Demografi.",
-  executiveSummary: "Dette projekt er under udarbejdelse. Det vil omhandle en demografisk analyse baseret på data og metoder fra faget Demografi. Nærmere detaljer om emne, problemstilling og resultater vil blive tilføjet, når projektet er defineret.",
+  title: "The 'Cost of Quality'",
+  subtitle: "Lovgivningsmæssige shocks til børnearbejde og fertilitetstransitionen i det 19. århundredes Storbritannien.",
+  executiveSummary: "Dette projekt undersøger, hvordan Factory Acts af 1833 og 1844 fungerede som en katalysator for den britiske fertilitetstransition. Ved at begrænse børns arbejdstimer og indføre obligatorisk skolegang for fabriksbørn, øgede lovgivningen de implicitte omkostninger ved høj fertilitet og fremmede et skift mod 'Quantity-Quality' trade-off.",
   researchQuestions: [
-    "TBD: Problemstilling under udarbejdelse.",
-    "TBD: Hvilke demografiske tendenser undersøges?",
-    "TBD: Hvilke data anvendes?"
+    "Fungerede restriktioner på børnearbejde som et negativt indkomsthock for familier, der reducerede incitamentet til høj fertilitet?",
+    "Øgede de obligatoriske skolekrav prisen på 'børnekvalitet'?",
+    "Oplevede tekstiltunge distrikter en hurtigere fertilitetsnedgang efter lovgivningsshocksene sammenlignet med landbrugsdistrikter?"
   ],
   methodology: {
-    model: "Demografisk Analyse",
-    strategy: "Kvantitativ analyse af befolkningsdata.",
-    data: "Registerdata / Statistikbanken (TBD).",
-    estimation: "Fremskrivninger / Komparativ analyse (TBD)."
+    model: "Difference-in-Differences (DiD)",
+    strategy: "Sammenligning af Registered Sub-Districts (RSDs) med høj tekstilintensitet (treatment) mod landbrugsdistrikter (control).",
+    data: "Paneldata fra 'Populations Past' (University of Cambridge) dækkende 1851-1891.",
+    estimation: "OLS og Fixed Effects (District & Year) regressionsmodeller."
   },
   keyFindings: [
-    "Dette projekt er endnu ikke påbegyndt.",
-    "Resultater vil blive præsenteret her.",
-    "Forventet afslutning: Forår/Sommer 2026."
+    "Lovgivningsmæssige begrænsninger på børnearbejde korrelerer stærkt med en accelereret nedgang i Total Fertility Rate (TFR).",
+    "Mekanismen bag faldet er primært drevet af øgede alternativomkostninger ved børnepasning og uddannelse.",
+    "Effekten er mest udtalt i distrikter, der var afhængige af vand- og dampdrevet tekstilindustri."
   ],
   secondaryAnalysis: {
-    title: "Foreløbig Status",
-    description: "Projektet er i den indledende fase.",
+    title: "Geospatial Analyse",
+    description: "Brug af GeoPandas til at kortlægge den rumlige korrelation mellem industri-intensitet og fertilitetsmønstre.",
     items: [
-      "Emnevalg: Under overvejelse.",
-      "Dataindsamling: Ikke påbegyndt.",
-      "Analyse: Ikke påbegyndt."
+      "Kortlægning af Registered Sub-Districts (RSDs).",
+      "Identifikation af industrielle clusters i Nordengland.",
+      "Visualisering af fertilitets-divergens over tid."
     ]
   },
   policyRelevance: [
-    "Relevans for samfundsplanlægning.",
-    "Forståelse af befolkningsudvikling."
+    "Forståelse af hvordan regulering af arbejdsmarkedet kan drive demografiske skift.",
+    "Historisk perspektiv på 'Quantity-Quality' teorien i praksis."
   ],
   limitations: [
-    "Status: Planlagt projekt."
+    "Afhængighed af historiske censusdata med varierende præcision.",
+    "Potentiel endogenitet mellem industrielt fokus og kulturelle fertilitetsnormer."
   ],
   dataTools: {
-    sources: "Danmarks Statistik, FN's Befolkningsdivision (TBD).",
-    software: "R / Python / Excel (TBD)."
+    sources: "Populations Past (Cambridge), Census of England and Wales.",
+    software: "Python (Pandas, GeoPandas, Statsmodels), LaTeX."
   },
   highlights: [
-    { label: "Fag", value: "Demografi" },
-    { label: "Status", value: "Kommende" }
+    { label: "Metode", value: "DiD" },
+    { label: "Data", value: "1851-1891" },
+    { label: "Status", value: "I gang" }
   ],
-  contextNote: "Dette er en pladsholder for et kommende projekt i faget Demografi.",
+  contextNote: "Projektet er mit afsluttende eksamensprojekt i faget Demografi på Københavns Universitet.",
   videoUrl: "", 
   techStack: [
-      { name: "Demografi", icon: "fa-solid fa-people-group" },
-      { name: "Data Science", icon: "fa-solid fa-chart-line" }
+      { name: "Økonometri", icon: "fa-solid fa-calculator" },
+      { name: "Geospatial Analysis", icon: "fa-solid fa-map-location-dot" },
+      { name: "Python", icon: "fa-brands fa-python" }
   ],
   timeline: [
-      { date: "2026", title: "Planlagt", description: "Projektstart." }
+      { date: "2026-02", title: "Idé generative", description: "Identifikation af Factory Acts som shock." },
+      { date: "2026-03", title: "Data Wrangle", description: "Cleaning af Populations Past datasæt." },
+      { date: "2026-04", title: "Analyse", description: "Estimation af Fixed Effects modeller." }
   ],
-  dataLinks: [],
+  dataLinks: [
+    { label: "Populations Past Data", url: "https://www.populationspast.org/", icon: "fa-solid fa-database" }
+  ],
   citation: {
-    text: "Ebsen, Anton. Demografisk Analyse (Titel TBD). (Kommende).",
+    text: "Ebsen, Anton (2026). The Cost of Quality: Legislative Shocks and Fertility. Working Paper.",
     pdfUrl: "#"
   },
   ui: {
     methodology: "Metode & Teori",
-    findings: "Forventede Resultater",
+    findings: "Resultater",
     relevance: "Relevans",
-    dataTools: "Kilder",
-    download: "Hent projekt (TBD)",
-    citation: "Reference",
+    dataTools: "Værktøjer & Kilder",
+    download: "Hent draft (PDF)",
+    citation: "Citation",
     execSummary: "Resumé",
-    researchQuestions: "Foreløbige Spørgsmål",
-    limitations: "Status",
-    secondaryAnalysis: "Status",
-    gallery: "Galleri",
-    codeVault: "Code Vault",
-    videoAbstract: "Video Abstract",
-    techStack: "Fagområder",
-    timeline: "Tidslinje",
+    researchQuestions: "Forskningsspørgsmål",
+    limitations: "Begrænsninger",
+    secondaryAnalysis: "Spatial Analyse",
+    gallery: "Visualiseringer",
+    codeVault: "Github Repo",
+    videoAbstract: "Research Briefing",
+    techStack: "Kompetencer",
+    timeline: "Projektforløb",
     liveData: "Data",
     openScience: "Open Science"
   },
   collaborators: [],
-  bibliography: []
+  bibliography: [
+    "Acemoglu, D., et al. (2001). The Colonial Origins...",
+    "Galor, O. (2011). Unified Growth Theory."
+  ]
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent} />

@@ -482,6 +482,11 @@ export const collections = {
             story: z.string(),
             impact: z.string(),
             image: z.string().optional(),
+            historicalContext: z.object({
+                title: z.string(),
+                text: z.string(),
+                link: z.string().optional()
+            }).optional(),
             links: z.array(z.object({
                 label: z.string(),
                 url: z.string()

@@ -1,0 +1,239 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Pill from '@components/ui/Pill.astro';
+import StructuralTransformation from '@components/ui/StructuralTransformation.astro';
+
+interface Props {
+  lang: 'da' | 'en';
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+
+const content = {
+    da: {
+        title: "Research Lab",
+        eyebrow: "Cliometrics & Analytics",
+        heading: "Bridging Past and Present Through Data",
+        lead: "Min forskning fokuserer på de lange linjer: hvordan historiske shocks, demografiske skift og institutionelle rammer former nutidens økonomiske virkelighed.",
+        labNote: "Dette 'Lab' fungerer som en levende dokumentation af mine akademiske projekter, med fokus på reproducérbarhed og kvantitativ stringens.",
+        competencies: {
+            title: "PhD Quest: Competencies",
+            list: [
+                { name: "Econometrics (SVAR, CGE, DiD)", level: "Very High", value: 95 },
+                { name: "Coding (Python, R, SAS, Stata)", level: "Very High", value: 92 },
+                { name: "Pedagogy & Teaching", level: "Very High", value: 90 },
+                { name: "History of Economic Thought", level: "Development", value: 45 }
+            ]
+        },
+        categories: [
+            {
+                id: "hist-econ",
+                title: "Kvantitativ Historie",
+                desc: "Analyse af historiske datasæt for at forstå persistens og kausalitet i økonomisk udvikling.",
+                projects: [
+                    { title: "The Cost of Quality", sub: "Child Labor & Fertility Transition", status: "Kommende", link: "/projects/demography-project" }
+                ]
+            },
+            {
+                id: "macro",
+                title: "Macro-Monetary",
+                desc: "Tidsrækkeanalyse og strukturel modellering af pengepolitik og finansielle cyklusser.",
+                projects: [
+                    { title: "Global Financial Cycle", sub: "Bachelor's Thesis", status: "Færdig", link: "/projects/global-financial-cycle" },
+                    { title: "Monetary Policy Post-COVID", sub: "Master's Thesis", status: "I gang", link: "/projects/master-thesis" }
+                ]
+            },
+            {
+                id: "demo",
+                title: "Befolkningsdynamik",
+                desc: "Modellering af fertilitet, dødelighed og migration i et økonomisk perspektiv.",
+                projects: [
+                    { title: "British Fertility Transition", sub: "Geospatial Analysis", status: "I gang", link: "/projects/demography-project" }
+                ]
+            }
+        ],
+        phdStatement: {
+            title: "PhD Ambitioner",
+            text: "Min ambition er at bidrage til den økonomiske historie-forskning ved at kombinere moderne økonometriske metoder med righoldige, historiske arkivdata. Jeg er særligt interesseret i hvordan arbejdsmarkedslovgivning i det 19. århundrede lagde kimen til det moderne Quantity-Quality trade-off.",
+            cta: "Se mit Research Statement"
+        }
+    },
+    en: {
+        title: "Research Lab",
+        eyebrow: "Cliometrics & Analytics",
+        heading: "Bridging Past and Present Through Data",
+        lead: "My research focuses on the long-term: how historical shocks, demographic shifts, and institutional frameworks shape today's economic reality.",
+        labNote: "This 'Lab' serves as a living documentation of my academic projects, with a focus on reproducibility and quantitative rigor.",
+        competencies: {
+            title: "PhD Quest: Competencies",
+            list: [
+                { name: "Econometrics (SVAR, CGE, DiD)", level: "Very High", value: 95 },
+                { name: "Coding (Python, R, SAS, Stata)", level: "Very High", value: 92 },
+                { name: "Pedagogy & Teaching", level: "Very High", value: 90 },
+                { name: "History of Economic Thought", level: "Development", value: 45 }
+            ]
+        },
+        categories: [
+            {
+                id: "hist-econ",
+                title: "Quantitative History",
+                desc: "Analysis of historical datasets to understand persistence and causality in economic development.",
+                projects: [
+                    { title: "The Cost of Quality", sub: "Child Labor & Fertility Transition", status: "Upcoming", link: "/projects/demography-project" }
+                ]
+            },
+            {
+                id: "macro",
+                title: "Macro-Monetary",
+                desc: "Time series analysis and structural modeling of monetary policy and financial cycles.",
+                projects: [
+                    { title: "Global Financial Cycle", sub: "Bachelor's Thesis", status: "Completed", link: "/en/projects/global-financial-cycle" },
+                    { title: "Monetary Policy Post-COVID", sub: "Master's Thesis", status: "In Progress", link: "/en/projects/master-thesis" }
+                ]
+            },
+            {
+                id: "demo",
+                title: "Population Dynamics",
+                desc: "Modeling fertility, mortality, and migration from an economic perspective.",
+                projects: [
+                    { title: "British Fertility Transition", sub: "Geospatial Analysis", status: "In Progress", link: "/projects/demography-project" }
+                ]
+            }
+        ],
+        phdStatement: {
+            title: "PhD Ambitions",
+            text: "My ambition is to contribute to economic history research by combining modern econometric methods with rich, historical archival data. I am particularly interested in how labor market legislation in the 19th century sowed the seeds of the modern Quantity-Quality trade-off.",
+            cta: "View my Research Statement"
+        }
+    }
+};
+
+const t = content[lang];
+---
+
+<Layout title={t.title} description={t.lead}>
+  <main class="bg-[#050505] min-h-screen text-white pt-32 pb-24 relative overflow-hidden">
+    
+    <!-- Background Glow -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-copper/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <Section class="container mx-auto px-4 mb-24 animate-on-scroll">
+      <div class="max-w-4xl">
+        <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-copper mb-6">{t.eyebrow}</p>
+        <h1 class="text-6xl md:text-8xl font-black leading-[0.9] mb-12 uppercase italic">
+          {t.heading}
+        </h1>
+        <p class="text-xl md:text-2xl text-white/50 leading-relaxed font-serif italic max-w-2xl mb-12">
+          {t.lead}
+        </p>
+        
+        <div class="flex flex-wrap gap-4">
+            <Pill variant="outline" class="border-copper/30 text-copper uppercase tracking-widest text-[10px] py-1">Cliometrics</Pill>
+            <Pill variant="outline" class="border-copper/30 text-copper uppercase tracking-widest text-[10px] py-1">Econometrics</Pill>
+            <Pill variant="outline" class="border-copper/30 text-copper uppercase tracking-widest text-[10px] py-1">GIS Analysis</Pill>
+        </div>
+      </div>
+    </Section>
+
+    <Section class="container mx-auto px-4 mb-32 animate-on-scroll delay-100">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32">
+            <!-- Left: Lab Note & Competencies -->
+            <div class="lg:col-span-4 space-y-8">
+                <div class="p-8 bg-white/[0.02] border border-white/10 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-copper/10 flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-flask-vial text-copper text-xl"></i>
+                    </div>
+                    <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-copper mb-4 underline decoration-2 underline-offset-8">Research Philosophy</h3>
+                    <p class="text-sm text-dim leading-relaxed mb-6 font-mono">
+                        // {t.labNote}
+                    </p>
+                    <div class="pt-6 border-t border-white/5">
+                        <p class="text-[10px] uppercase font-bold text-white/30 tracking-widest italic">"History is the best laboratory we have."</p>
+                    </div>
+                </div>
+
+                <!-- Competency Dashboard -->
+                <div class="p-8 bg-copper/5 border border-copper/10 rounded-2xl">
+                    <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-copper mb-6">{t.competencies.title}</h3>
+                    <div class="space-y-6">
+                        {t.competencies.list.map(c => (
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-end">
+                                    <span class="text-[10px] text-white/80 font-bold uppercase tracking-wider">{c.name}</span>
+                                    <span class="text-[8px] text-copper uppercase font-mono tracking-widest">{c.level}</span>
+                                </div>
+                                <div class="h-[2px] w-full bg-white/5 overflow-hidden">
+                                    <div class="h-full bg-copper transition-all duration-1000" style={`width: ${c.value}%`}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Categories & Projects -->
+            <div class="lg:col-span-8 space-y-24">
+                {t.categories.map(cat => (
+                    <div class="category-block border-l border-copper/20 pl-8 lg:pl-12">
+                        <h2 class="text-3xl font-black mb-4 uppercase tracking-tight">{cat.title}</h2>
+                        <p class="text-white/40 mb-12 max-w-xl font-serif italic">{cat.desc}</p>
+                        
+                        <div class="grid grid-cols-1 gap-4">
+                            {cat.projects.map(p => (
+                                <a href={p.link} class="group block p-6 bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-copper/30 rounded-xl transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-lg font-bold group-hover:text-copper transition-colors">{p.title}</h4>
+                                        <span class={`text-[8px] uppercase tracking-widest border px-2 py-1 rounded-full ${p.status === 'Færdig' || p.status === 'Completed' ? 'border-green-500/30 text-green-500' : 'border-copper/30 text-copper'}`}>
+                                            {p.status}
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-dim uppercase tracking-wider">{p.sub}</p>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <!-- Structural Transformation Section -->
+        <div class="border-t border-white/5 pt-32">
+            <StructuralTransformation lang={lang} />
+        </div>
+    </Section>
+
+    <!-- PhD Statement Spotlight -->
+    <Section class="container mx-auto px-4 mb-24 animate-on-scroll">
+        <div class="bg-copper/5 border border-copper/10 rounded-[40px] p-12 lg:p-24 relative overflow-hidden text-center max-w-6xl mx-auto">
+            <i class="fa-solid fa-graduation-cap text-8xl absolute -bottom-10 -right-10 opacity-5 -rotate-12"></i>
+            <div class="relative z-10">
+                <h3 class="text-xs font-bold uppercase tracking-[0.5em] text-copper mb-8">{t.phdStatement.title}</h3>
+                <p class="text-3xl md:text-5xl font-black text-white mb-12 leading-tight uppercase italic decoration-copper/30 underline-offset-8">
+                    {t.phdStatement.text}
+                </p>
+                <a href="/research-statement" class="inline-flex items-center gap-3 px-8 py-4 bg-copper/10 hover:bg-copper/20 border border-copper/30 text-copper rounded-full font-bold uppercase tracking-widest transition-all">
+                    {t.phdStatement.cta}
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </Section>
+
+  </main>
+</Layout>
+
+<style>
+    :root {
+        --copper: #b87333;
+    }
+    .text-copper { color: var(--copper); }
+    .bg-copper\/5 { background-color: rgba(184, 115, 51, 0.05); }
+    .bg-copper\/10 { background-color: rgba(184, 115, 51, 0.1); }
+    .border-copper\/10 { border-color: rgba(184, 115, 51, 0.1); }
+    .border-copper\/20 { border-color: rgba(184, 115, 51, 0.2); }
+    .border-copper\/30 { border-color: rgba(184, 115, 51, 0.3); }
+</style>
