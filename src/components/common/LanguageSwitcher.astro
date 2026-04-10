@@ -4,11 +4,18 @@ const lang = getLangFromUrl(Astro.url);
 const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog');
 ---
 <div class="nav-item has-dropdown lang-switch">
-  <button type="button" class="nav-link lang-btn" aria-label="Skift sprog" aria-haspopup="true" aria-expanded="false">
+  <button 
+    type="button" 
+    class="nav-link lang-btn" 
+    aria-label={lang === 'en' ? 'Change language' : (lang === 'de' ? 'Sprache ändern' : 'Skift sprog')} 
+    aria-haspopup="true" 
+    aria-expanded="false"
+    aria-controls="lang-dropdown"
+  >
     {label} <span aria-hidden="true">▾</span>
   </button>
 
-  <div class="dropdown" role="menu" aria-label="Sprogvalg">
+  <div id="lang-dropdown" class="dropdown" role="menu" aria-label="Sprogvalg">
     <a href="/" role="menuitem" class="lang-link">
       <span class="lang-text">Dansk</span>
     </a>
@@ -29,29 +36,35 @@ const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog')
     const langBtns = document.querySelectorAll('.lang-btn');
     
     langBtns.forEach(btn => {
+      const parent = btn.closest('.has-dropdown') as HTMLElement;
+      if (!parent) return;
+
+      const updateAria = () => {
+        const isOpen = parent.classList.contains('open');
+        btn.setAttribute('aria-expanded', isOpen.toString());
+      };
+
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const parent = btn.closest('.has-dropdown');
-        if (parent) {
-            parent.classList.toggle('open');
-            const expanded = parent.classList.contains('open');
-            btn.setAttribute('aria-expanded', String(expanded));
+        parent.classList.toggle('open');
+        updateAria();
+      });
+
+      // Close on escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && parent.classList.contains('open')) {
+          parent.classList.remove('open');
+          updateAria();
         }
       });
-    });
 
-    // Close when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!e.target) return;
-      const target = e.target as HTMLElement;
-      
-      if (!target.closest(".lang-switch")) {
-        document.querySelectorAll(".lang-switch.open").forEach(el => {
-            el.classList.remove("open");
-            const btn = el.querySelector('.lang-btn');
-            if(btn) btn.setAttribute('aria-expanded', 'false');
-        });
-      }
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!parent.contains(e.target as Node)) {
+          parent.classList.remove('open');
+          updateAria();
+        }
+      });
     });
   });
 </script>

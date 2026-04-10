@@ -1,0 +1,96 @@
+{
+    "title": "Cliometrics: Den Kvantitative Historie | Anton Ebsen",
+    "description": "Udforskning af fortiden gennem økonomisk teori og økonometriske modeller. Fra den britiske fertilitetstransition til Danmarks rurale industrialisering.",
+    "hero": {
+        "eyebrow": "Cliometric Laboratory",
+        "title": "Hvor Historie Møder Data",
+        "text": "Cliometrics – eller kvantitativ økonomisk historie – er broen mellem fortidens arkiver og nutidens analyseværktøjer. Ved at anvende strenge økonometriske metoder på historiske datasæt kan vi isolere kausale mekanismer, der har formet den moderne verden."
+    },
+    "philosophy": {
+        "title": "Min Tilgang",
+        "text": "Min forskning er drevet af overbevisningen om, at historie er vores bedste laboratorium. Ved at studere de lange linjer kan vi bedre forstå nutidens institutionelle persistence og økonomiske udvikling.",
+        "points": [
+            "Kvantitativ Stringens: Historiske narrativer understøttes af data.",
+            "Institutionel Persistence: Hvordan fortidens valg former nutidens rammer.",
+            "Reproducérbarhed: Åben adgang til kode og historiske datasæt."
+        ]
+    },
+    "projects": {
+        "title": "Udvalgte Projekter",
+        "list": [
+            {
+                "title": "The Cost of Quality",
+                "desc": "Analyse af hvordan Factory Acts i 1800-tallets Storbritannien accelererede fertilitetstransitionen ved at øge de implicitte omkostninger ved børnearbejde.",
+                "url": "/projects/demography-project"
+            },
+            {
+                "title": "Strukturel Transformation",
+                "desc": "En visualisering af tre generationers økonomiske rejse i kontekst af Danmarks skift fra landbrug til velfærdsstat.",
+                "url": "/cliometrics#family-history"
+            }
+        ]
+    },
+    "toolkit": {
+        "title": "Clio's Værktøjskasse",
+        "desc": "De metodiske fundamenter og righoldige datasæt, der muliggør moderne kliometrisk analyse.",
+        "items": [
+            {
+                "name": "Maddison Project",
+                "desc": "Guldstandarden for langsigtede BNP-tidsserier, der gør det muligt at sammenligne velstand på tværs af århundreder.",
+                "icon": "fa-solid fa-chart-area"
+            },
+            {
+                "name": "IPUMS International",
+                "desc": "Harmoniseret census-mikrodata der tillader detaljerede studier af familie- og erhvervsstrukturer over tid.",
+                "icon": "fa-solid fa-users-rectangle"
+            },
+            {
+                "name": "Clio-Infra",
+                "desc": "Et omfattende arkiv over globale historiske indikatorer for ulighed, humankapital og institutioner.",
+                "icon": "fa-solid fa-globe"
+            },
+            {
+                "name": "GeoPandas & GIS",
+                "desc": "Integration af spatial data for at forstå den geografiske dimension af historiske økonomiske shocks.",
+                "icon": "fa-solid fa-map-location-dot"
+            },
+            {
+                "name": "Populations Past",
+                "desc": "Ekstraordinært detaljeret demografisk data fra de britiske censustællinger 1851-1911.",
+                "icon": "fa-solid fa-building-columns"
+            }
+        ]
+    },
+    "archivistLog": {
+        "title": "Arkivarens Log",
+        "desc": "Glimt fra det komplekse arbejde med at transformere støvede arkiver til præcis økonometrisk data.",
+        "stories": [
+            {
+                "title": "Factory Acts Puslespillet",
+                "text": "For at isolere effekten af 1800-tallets fabrikslove, måtte jeg krydsreferere tekstil-distrikter med data om kraftkilder. Udfordringen var at skelne mellem vandkraft-drevet industri (hvor love blev implementeret tidligt) og dampkraft (hvor det tog længere tid).",
+                "tag": "Data Harmonization"
+            },
+            {
+                "title": "China Shock Panelet",
+                "text": "Opbygning af et samlet panel af 32 OECD-lande for at analysere globaliseringens indvirkning. Udfordringen lå i at harmonisere nationale statistikker for sociale overførsler, da definitionen af 'velfærdsstat' varierer markant over tid og grænser.",
+                "tag": "Panel Construction"
+            }
+        ]
+    },
+    "gisGallery": {
+        "title": "GIS & Rumlig Analyse",
+        "desc": "Visualisering af historiske mønstre gennem moderne geografiske informationssystemer.",
+        "maps": [
+            {
+                "title": "Den Britiske Fertilitetstransition",
+                "desc": "Kortet viser den geografiske spredning af faldende fertilitetsrater i slutningen af det 19. århundrede, med fokus på de industrielle clusters i Nordengland.",
+                "image": "/assets/img/cliometrics/fertility_map.png"
+            },
+            {
+                "title": "Globaliseringens Epitemp",
+                "desc": "En spatial analyse af 'China Shock'-eksponering på regionalt niveau i Europa, der illustrerer uligheden i globaliseringens konsekvenser.",
+                "image": "/assets/img/cliometrics/china_shock_map.png"
+            }
+        ]
+    }
+}

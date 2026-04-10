@@ -13,21 +13,33 @@ const pathname = new URL(Astro.request.url).pathname;
       {navItems.map(item => (
         item.children && item.children.length > 0 ? (
           <div class="relative inline-flex items-center group">
-            <a href={item.url} class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-dim hover:text-white hover:bg-white/5 ${pathname.startsWith(item.url) ? "!text-accent !bg-accent-soft font-semibold" : ""}`}>
+            <a 
+              href={item.url} 
+              class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-dim hover:text-white hover:bg-white/5 ${pathname.startsWith(item.url) ? "!text-accent !bg-accent-soft font-semibold" : ""}`}
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls={`nav-dropdown-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+            >
               {item.label} 
-              <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-90"></i>
+              <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-90" aria-hidden="true"></i>
             </a>
             {/* Dropdown */}
-            <div class="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 min-w-[220px] bg-[#0a0a0a] border border-glass-border border-t-[2px] border-t-accent rounded-xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[9999] opacity-0 invisible pointer-events-none translate-y-[10px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 hidden md:block before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3">
+            <div 
+              id={`nav-dropdown-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+              role="menu"
+              aria-label={item.label}
+              class="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 min-w-[220px] bg-[#0a0a0a] border border-glass-border border-t-[2px] border-t-accent rounded-xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[9999] opacity-0 invisible pointer-events-none translate-y-[10px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 hidden md:block before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
+            >
                {item.children.map(child => (
                  <a 
                    href={child.url} 
+                   role="menuitem"
                    class="block px-3.5 py-2.5 rounded-lg text-dim no-underline font-medium text-[13.5px] transition-all duration-200 hover:bg-white/[0.03] hover:text-white hover:pl-[18px]"
                    target={child.external ? "_blank" : "_self"}
                    rel={child.external ? "noopener noreferrer" : ""}
                  >
                    {child.label}
-                   {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-80"></i>}
+                   {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-80" aria-hidden="true"></i>}
                  </a>
                ))}
             </div>
@@ -52,14 +64,17 @@ const pathname = new URL(Astro.request.url).pathname;
     </div>
 
     <div class="relative inline-flex items-center min-w-[220px] max-w-[420px] w-[clamp(220px,28vw,420px)] group/search" role="search">
-      <label class="sr-only" for="siteSearch">Søg på siden</label>
+      <label class="sr-only" for="navbarSearchInput">Søg på siden</label>
       <input
-        id="siteSearch"
+        id="navbarSearchInput"
         class="w-full px-4 py-2.5 rounded-[14px] border border-glass-border bg-white/5 text-text outline-none font-medium transition-all duration-300 focus:border-accent focus:bg-white/10 focus:shadow-[0_0_15px_rgba(96,165,250,0.2)]"
         type="search"
         placeholder="Søg..."
         autocomplete="off"
+        role="combobox"
         aria-autocomplete="list"
+        aria-expanded="false"
+        aria-haspopup="listbox"
         aria-controls="searchResults"
       />
       <div class="absolute bottom-0 left-[10%] w-[80%] h-[1px] bg-accent scale-x-0 transition-transform duration-300 group-focus-within/search:scale-x-100 group-focus-within/search:animate-[scanBar_2s_infinite]"></div>
@@ -119,7 +134,7 @@ const pathname = new URL(Astro.request.url).pathname;
   });
 
   // --- COMMAND MODE / GLOBAL SEARCH ---
-  const searchInput = document.getElementById('siteSearch');
+  const searchInput = document.getElementById('navbarSearchInput');
   const searchResults = document.getElementById('searchResults');
   let searchIndex = [];
   let isIndexLoaded = false;
@@ -195,12 +210,14 @@ const pathname = new URL(Astro.request.url).pathname;
 
           searchResults.innerHTML = html + aiFooter;
           searchResults.classList.add('is-open');
+          searchInput.setAttribute('aria-expanded', 'true');
       });
 
       // Click outside to close
       document.addEventListener('click', (e) => {
           if (!searchInput.contains(e.target as Node) && !searchResults.contains(e.target as Node)) {
               searchResults.classList.remove('is-open');
+              searchInput.setAttribute('aria-expanded', 'false');
           }
       });
   }

@@ -18,6 +18,7 @@ export const ui = {
         'nav.insights': 'Indsigter',
         'nav.more': 'Mere',
         'nav.lab': 'Forsknings-lab',
+        'nav.cliometrics': 'Cliometrics',
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
@@ -38,6 +39,7 @@ export const ui = {
         'nav.insights': 'Insights',
         'nav.more': 'More',
         'nav.lab': 'Research Lab',
+        'nav.cliometrics': 'Cliometrics',
         'nav.contact': 'Contact',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
@@ -58,6 +60,7 @@ export const ui = {
         'nav.insights': 'Einblicke',
         'nav.more': 'Mehr',
         'nav.lab': 'Forschungslabor',
+        'nav.cliometrics': 'Cliometrie',
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
@@ -101,6 +104,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
+        { label: 'Cliometrics', url: '/cliometrics' },
         { label: 'Blog', url: '/blog' },
         {
             label: 'Kontakt',
@@ -143,6 +147,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
+        { label: 'Cliometrics', url: '/en/cliometrics' },
         { label: 'Blog', url: '/en/blog' },
         {
             label: 'Contact',
@@ -182,6 +187,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
+        { label: 'Cliometrics', url: '/de/cliometrics' },
         { label: 'Blog', url: '/de/blog' },
         {
             label: 'Kontakt',

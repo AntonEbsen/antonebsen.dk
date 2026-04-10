@@ -154,8 +154,12 @@ const t = (t_obj as any)[lang] || t_obj.da;
   </div>
 
   <!-- Toggle Button -->
-  <button id="chat-toggle" class="pointer-events-auto w-14 h-14 bg-accent text-bg rounded-full shadow-lg shadow-accent/20 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group">
-    <i class="fa-solid fa-message text-xl group-hover:scale-110 transition-transform"></i>
+  <button 
+    id="chat-toggle" 
+    class="pointer-events-auto w-14 h-14 bg-accent text-bg rounded-full shadow-lg shadow-accent/20 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group"
+    aria-label={lang === 'en' ? 'Open Chat' : (lang === 'de' ? 'Chat öffnen' : 'Åbn Chat')}
+  >
+    <i class="fa-solid fa-message text-xl group-hover:scale-110 transition-transform" aria-hidden="true"></i>
   </button>
 
 </div>

@@ -1,0 +1,96 @@
+{
+    "title": "Cliometrics: Quantitative History | Anton Ebsen",
+    "description": "Exploring the past through economic theory and econometric models. From the British fertility transition to structural transformation patterns.",
+    "hero": {
+        "eyebrow": "Cliometric Laboratory",
+        "title": "Where History Meets Data",
+        "text": "Cliometrics – or quantitative economic history – is the bridge between archival pasts and modern analytical tools. By applying rigorous econometric methods to historical datasets, we can isolate the causal mechanisms that shaped the modern world."
+    },
+    "philosophy": {
+        "title": "My Approach",
+        "text": "My research is driven by the conviction that history is our best laboratory. By studying long-run patterns, we can better understand institutional persistence and today's economic development.",
+        "points": [
+            "Quantitative Rigor: Supporting historical narratives with hard data.",
+            "Institutional Persistence: How past choices shape modern frameworks.",
+            "Reproducibility: Open access to code and historical datasets."
+        ]
+    },
+    "projects": {
+        "title": "Featured Projects",
+        "list": [
+            {
+                "title": "The Cost of Quality",
+                "desc": "Analyzing how the 19th-century British Factory Acts accelerated the fertility transition by increasing the implicit cost of child labor.",
+                "url": "/en/projects/demography-project"
+            },
+            {
+                "title": "Structural Transformation",
+                "desc": "A visualization of three generations' economic journey in the context of Denmark's shift from agriculture to a welfare state.",
+                "url": "/en/cliometrics#family-history"
+            }
+        ]
+    },
+    "toolkit": {
+        "title": "Clio's Toolkit",
+        "desc": "The methodological foundations and rich datasets that enable modern cliometric analysis.",
+        "items": [
+            {
+                "name": "Maddison Project",
+                "desc": "The gold standard for long-term GDP time series, making it possible to compare prosperity across centuries.",
+                "icon": "fa-solid fa-chart-area"
+            },
+            {
+                "name": "IPUMS International",
+                "desc": "Harmonized census microdata allowing for detailed studies of family and occupational structures over time.",
+                "icon": "fa-solid fa-users-rectangle"
+            },
+            {
+                "name": "Clio-Infra",
+                "desc": "A comprehensive archive of global historical indicators for inequality, human capital, and institutions.",
+                "icon": "fa-solid fa-globe"
+            },
+            {
+                "name": "GeoPandas & GIS",
+                "desc": "Integrating spatial data to understand the geographical dimension of historical economic shocks.",
+                "icon": "fa-solid fa-map-location-dot"
+            },
+            {
+                "name": "Populations Past",
+                "desc": "Extraordinarily detailed demographic data from British censuses 1851-1911.",
+                "icon": "fa-solid fa-building-columns"
+            }
+        ]
+    },
+    "archivistLog": {
+        "title": "The Archivist's Log",
+        "desc": "Insights into the complex work of transforming dusty archives into precise econometric data.",
+        "stories": [
+            {
+                "title": "The Factory Acts Puzzle",
+                "text": "To isolate the effect of 19th-century factory laws, I had to cross-reference textile districts with data on energy sources. The challenge was distinguishing between water-powered industry (early implementation) and steam-powered (later adoption).",
+                "tag": "Data Harmonization"
+            },
+            {
+                "title": "The Globalization Panel",
+                "text": "Building a unified panel of 32 OECD countries to analyze the impact of globalization. The challenge lay in harmonizing national statistics for social transfers, as definitions of 'welfare state' vary across borders.",
+                "tag": "Panel Construction"
+            }
+        ]
+    },
+    "gisGallery": {
+        "title": "GIS & Spatial Analysis",
+        "desc": "Visualizing historical patterns through modern Geographical Information Systems.",
+        "maps": [
+            {
+                "title": "The British Fertility Transition",
+                "desc": "The map showing the geographical spread of declining fertility rates in the late 19th century, focusing on industrial clusters in Northern England.",
+                "image": "/assets/img/cliometrics/fertility_map.png"
+            },
+            {
+                "title": "Globalization Impact",
+                "desc": "A spatial analysis of 'China Shock' exposure at the regional level in Europe, illustrating the inequality in globalization's consequences.",
+                "image": "/assets/img/cliometrics/china_shock_map.png"
+            }
+        ]
+    }
+}
