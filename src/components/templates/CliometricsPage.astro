@@ -164,9 +164,97 @@ const content: any = entry.data;
                         {project.desc}
                     </p>
                     <div class="flex items-center gap-2 text-[10px] font-bold uppercase text-copper/60 group-hover:text-copper">
-                        View Project Analysis <i class="fa-solid fa-arrow-right"></i>
+                        {isDa ? 'Se Projectanalyse' : 'View Project Analysis'} <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </a>
+            ))}
+        </div>
+    </Section>
+
+    <!-- Replication Dashboard -->
+    <Section id="replication" class="container mx-auto px-4 mb-32 animate-on-scroll">
+        <div class="mb-16">
+            <h2 class="text-xs font-bold uppercase tracking-[0.5em] text-copper mb-4">{content.replication.title}</h2>
+            <p class="text-dim text-sm max-w-2xl font-mono">// {content.replication.desc}</p>
+        </div>
+        
+        <div class="overflow-x-auto border border-white/5 rounded-3xl bg-white/[0.01] backdrop-blur-sm">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-white/10 uppercase text-[10px] tracking-widest text-copper">
+                        <th class="p-6 font-bold">{isDa ? 'Projekt' : 'Project'}</th>
+                        <th class="p-6 font-bold">Stack</th>
+                        <th class="p-6 font-bold">Data</th>
+                        <th class="p-6 font-bold">Access</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    {content.replication.items.map(item => (
+                        <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                            <td class="p-6">
+                                <div class="font-bold text-white mb-1">{item.title}</div>
+                                <div class="text-[10px] text-dim font-mono">{item.doi}</div>
+                            </td>
+                            <td class="p-6 font-mono text-xs text-white/60">{item.stack}</td>
+                            <td class="p-6 text-xs italic font-serif text-dim">{item.data}</td>
+                            <td class="p-6">
+                                <a href={item.repo} class="inline-flex items-center gap-2 text-copper hover:text-white transition-colors">
+                                    <i class="fa-brands fa-github"></i> <span class="text-[10px] font-bold uppercase tracking-tighter">{isDa ? 'Hent Kode' : 'Get Code'}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </Section>
+
+    <!-- Identification Strategy -->
+    <Section id="methodology" class="container mx-auto px-4 mb-32 animate-on-scroll">
+        <div class="max-w-4xl mx-auto p-12 bg-copper/5 border border-copper/10 rounded-[40px] relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-copper/10 blur-[100px] rounded-full"></div>
+            
+            <div class="relative z-10">
+                <h2 class="text-xs font-bold uppercase tracking-[0.5em] text-copper mb-8">{content.methodology.title}</h2>
+                <h3 class="text-3xl font-black italic uppercase tracking-tighter mb-6">{content.methodology.caseStudy.title}</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-copper/60 tracking-widest mb-3">// Research Context</p>
+                        <p class="text-dim font-serif italic leading-relaxed">{content.methodology.caseStudy.context}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-copper/60 tracking-widest mb-3">// Identification Strategy</p>
+                        <p class="text-dim font-serif italic leading-relaxed">{content.methodology.caseStudy.identification}</p>
+                    </div>
+                </div>
+
+                <div class="p-8 bg-black/40 rounded-2xl border border-white/5 text-center">
+                    <p class="text-[10px] uppercase font-mono tracking-widest text-copper/40 mb-6">Structural Model Spec:</p>
+                    <code class="text-2xl md:text-3xl font-mono text-white/90 tracking-tighter">
+                        {content.methodology.caseStudy.math}
+                    </code>
+                </div>
+            </div>
+        </div>
+    </Section>
+
+    <!-- Reading Room -->
+    <Section id="library" class="container mx-auto px-4 mb-32 animate-on-scroll">
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-bold uppercase tracking-[0.5em] text-copper mb-4">{content.library.title}</h2>
+            <p class="text-white/40 font-serif italic max-w-xl mx-auto">{content.library.desc}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {content.library.books.map(book => (
+                <div class="p-8 border-l border-white/5 hover:border-copper/40 transition-colors">
+                    <span class="text-[10px] font-mono text-copper mb-4 block">{book.author} ({book.year})</span>
+                    <h4 class="text-lg font-black uppercase italic mb-4 tracking-tight">{book.title}</h4>
+                    <p class="text-xs text-dim leading-relaxed font-serif italic">
+                        {book.impact}
+                    </p>
+                </div>
             ))}
         </div>
     </Section>

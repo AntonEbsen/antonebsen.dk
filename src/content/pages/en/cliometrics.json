@@ -92,5 +92,59 @@
                 "image": "/assets/img/cliometrics/china_shock_map.png"
             }
         ]
+    },
+    "replication": {
+        "title": "Replication Dashboard",
+        "desc": "Transparency and reproducibility are fundamental to my research process. Access the code and data behind my published papers and working projects.",
+        "items": [
+            {
+                "title": "The Cost of Quality - Full Package",
+                "repo": "https://github.com/AntonEbsen/cost-of-quality",
+                "data": "Zenodo (Access-Restricted)",
+                "stack": "R, Stata, Python",
+                "doi": "10.5281/zenodo.xxxxxxx"
+            },
+            {
+                "title": "China Shock & Welfare State Spillovers",
+                "repo": "https://github.com/AntonEbsen/globalization-panel",
+                "data": "Public (Open Source)",
+                "stack": "Python (Pandas, Statsmodels)",
+                "doi": "N/A (Working Paper)"
+            }
+        ]
+    },
+    "methodology": {
+        "title": "Identification Strategy",
+        "desc": "How we isolate causality in historical settings.",
+        "caseStudy": {
+            "title": "Diff-in-Diffs in the 19th Century",
+            "context": "The 1833 Factory Act limited child labor hours, but only in textile mills. This created a natural experiment where we can compare textile districts (Treatment) with other industrial districts (Control).",
+            "identification": "By using a Difference-in-Differences estimator, I can control for time-invariant regional characteristics and common time shocks, isolating the Act's impact on family fertility choices.",
+            "math": "Y_{it} = \\alpha + \\beta(Treat_i \\times Post_t) + \\gamma_i + \\delta_t + \\epsilon_{it}"
+        }
+    },
+    "library": {
+        "title": "The Reading Room",
+        "desc": "A curated bibliography of the works that have most influenced my approach to cliometric history.",
+        "books": [
+            {
+                "author": "Goldin & Katz",
+                "title": "The Race between Education and Technology",
+                "year": "2008",
+                "impact": "Crucial for understanding how human capital formation drives long-run growth."
+            },
+            {
+                "author": "Douglass C. North",
+                "title": "Institutions, Institutional Change and Economic Performance",
+                "year": "1990",
+                "impact": "The theoretical foundation for why institutions matter more than geography."
+            },
+            {
+                "author": "Thomas Piketty",
+                "title": "Capital in the Twenty-First Century",
+                "year": "2013",
+                "impact": "A masterclass in using historical tax records to visualize long-run inequality."
+            }
+        ]
     }
 }

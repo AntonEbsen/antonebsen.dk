@@ -92,5 +92,59 @@
                 "image": "/assets/img/cliometrics/china_shock_map.png"
             }
         ]
+    },
+    "replication": {
+        "title": "Replication Dashboard",
+        "desc": "Gennemsigtighed og reproducerbarhed er fundamentale for min forskningsproces. Her kan du tilgå koden og data bag mine publikationer og igangværende projekter.",
+        "items": [
+            {
+                "title": "The Cost of Quality - Fuld Pakke",
+                "repo": "https://github.com/AntonEbsen/cost-of-quality",
+                "data": "Zenodo (Adgangsbegrænset)",
+                "stack": "R, Stata, Python",
+                "doi": "10.5281/zenodo.xxxxxxx"
+            },
+            {
+                "title": "China Shock & Welfare State Spillovers",
+                "repo": "https://github.com/AntonEbsen/globalization-panel",
+                "data": "Offentlig (Open Source)",
+                "stack": "Python (Pandas, Statsmodels)",
+                "doi": "N/A (Working Paper)"
+            }
+        ]
+    },
+    "methodology": {
+        "title": "Identifikationsstrategi",
+        "desc": "Hvordan vi isolerer kausalitet i historiske kontekster.",
+        "caseStudy": {
+            "title": "Diff-in-Diffs i det 19. århundrede",
+            "context": "Factory Act af 1833 begrænsede børnearbejde, men kun i tekstilfabrikker. Dette skabte et naturligt eksperiment, hvor vi kan sammenligne tekstil-distrikter (Treatment) med andre industrielle distrikter (Control).",
+            "identification": "Ved at bruge en Difference-in-Differences estimator kan jeg kontrollere for tids-invariante regionale karakteristika og fælles tids-shocks, og dermed isolere lovens effekt på familiers fertilitetsvalg.",
+            "math": "Y_{it} = \\alpha + \\beta(Treat_i \\times Post_t) + \\gamma_i + \\delta_t + \\epsilon_{it}"
+        }
+    },
+    "library": {
+        "title": "Læsesalen",
+        "desc": "En kurateret bibliografi over de værker, der har haft størst indflydelse på min tilgang til kliometrisk historie.",
+        "books": [
+            {
+                "author": "Goldin & Katz",
+                "title": "The Race between Education and Technology",
+                "year": "2008",
+                "impact": "Afgørende for at forstå, hvordan dannelsen af humankapital driver langsigtet vækst."
+            },
+            {
+                "author": "Douglass C. North",
+                "title": "Institutions, Institutional Change and Economic Performance",
+                "year": "1990",
+                "impact": "Det teoretiske fundament for, hvorfor institutioner betyder mere end geografi."
+            },
+            {
+                "author": "Thomas Piketty",
+                "title": "Capital in the Twenty-First Century",
+                "year": "2013",
+                "impact": "En mesterklasse i at bruge historiske skatteregistre til at visualisere langsigtet ulighed."
+            }
+        ]
     }
 }
