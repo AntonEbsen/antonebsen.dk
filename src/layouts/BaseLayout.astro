@@ -237,7 +237,9 @@ const lang = getLangFromUrl(Astro.url);
   
   <!-- 4. Non-critical CSS and scripts (deferred) -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Font Awesome: load asynchronously so it doesn't block first paint -->
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
 
   <slot name="head" />
   
@@ -245,7 +247,7 @@ const lang = getLangFromUrl(Astro.url);
   <script is:inline>
     window.addEventListener('DOMContentLoaded', function() {
       const grain = document.createElement('div');
-      grain.style.cssText = 'content:"";position:fixed;inset:0;background:url("https://grainy-gradients.vercel.app/noise.svg");opacity:0.03;pointer-events:none;z-index:1000;';
+      grain.style.cssText = 'content:"";position:fixed;inset:0;background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbikiLz48L3N2Zz4=");opacity:0.03;pointer-events:none;z-index:1000;';
       document.body.insertBefore(grain, document.body.firstChild);
     });
   </script>
@@ -266,8 +268,8 @@ const lang = getLangFromUrl(Astro.url);
   
   {showChatWidget && <ChatWidget />}
   <CommandPalette />
-  <AchievementToast client:load />
-  <TrophyRoom client:load />
+  <AchievementToast client:idle />
+  <TrophyRoom client:idle />
 
   <script>
     // Premium reveal observer

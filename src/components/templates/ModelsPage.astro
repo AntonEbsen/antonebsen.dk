@@ -83,7 +83,7 @@ const { lang, content } = Astro.props;
       </Card>
     </Section>
 
-    <MacroDashboard client:load lang={lang === 'de' ? 'en' : lang as 'da' | 'en'} />
+    <MacroDashboard client:visible lang={lang === 'de' ? 'en' : lang as 'da' | 'en'} />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {content.models.map((model: any) => (

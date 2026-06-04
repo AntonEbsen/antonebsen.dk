@@ -389,7 +389,7 @@ const others = cv.courses?.filter(c => !c.level) || [];
 
       {/* SYNERGY MAP */}
       <div class="mt-8">
-        <SynergyMap client:load courses={cv.courses || []} lang={lang} />
+        <SynergyMap client:visible courses={cv.courses || []} lang={lang} />
       </div>
     </Section>
 
@@ -402,7 +402,7 @@ const others = cv.courses?.filter(c => !c.level) || [];
             ? 'Interaktiv visualisering af hvordan mine fag bygger ovenpå hinanden. Hold musen over et fag for at se den faglige sammenhæng.' 
             : 'Interactive visualization of how my courses build upon each other. Hover over a course to see the conceptual thread.'}
         </p>
-        <ConceptNetwork client:load courses={cv.courses || []} lang={lang} />
+        <ConceptNetwork client:visible courses={cv.courses || []} lang={lang} />
       </div>
     </Section>
 
