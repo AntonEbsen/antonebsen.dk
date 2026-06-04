@@ -51,6 +51,17 @@ const breadcrumbItems = [
     };
   })
 ];
+
+// hreflang alternates. Danish is served at the root; English/German are
+// prefixed (/en, /de). Most content pages exist in all three languages.
+const SITE = 'https://antonebsen.dk';
+const localizedPath = Astro.url.pathname.replace(/^\/(en|de)(?=\/|$)/, '') || '/';
+const hreflangs = [
+  { lang: 'da', href: SITE + localizedPath },
+  { lang: 'en', href: SITE + '/en' + (localizedPath === '/' ? '' : localizedPath) },
+  { lang: 'de', href: SITE + '/de' + (localizedPath === '/' ? '' : localizedPath) },
+  { lang: 'x-default', href: SITE + localizedPath },
+];
 ---
 
 <!-- Global Metadata -->
@@ -61,6 +72,11 @@ const breadcrumbItems = [
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+
+<!-- hreflang alternates for da / en / de -->
+{hreflangs.map(h => (
+  <link rel="alternate" hreflang={h.lang} href={h.href} />
+))}
 
 <!-- Primary Meta Tags -->
 <title>{pageTitle}</title>
