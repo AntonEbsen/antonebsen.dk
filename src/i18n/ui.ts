@@ -22,7 +22,7 @@ export const ui = {
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
-        'footer.brand.text': 'Økonomistuderende (cand.polit.) med fokus på makroøkonomi, økonometri og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis.',
+        'footer.brand.text': 'Økonom og kvantitativ forsker med fokus på makroøkonomi, pengepolitik og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis.',
 
         'footer.col.links': 'Links',
         'footer.col.selected': 'Udvalgt',
@@ -43,7 +43,7 @@ export const ui = {
         'nav.contact': 'Contact',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
-        'footer.brand.text': 'Economics student (cand.polit) focusing on macroeconomics, econometrics, and economic modeling. I build analyses and templates for practical use.',
+        'footer.brand.text': 'Economist and quantitative researcher focusing on macroeconomics, monetary policy, and economic modeling. I build analyses and templates for practical use.',
 
         'footer.col.links': 'Links',
         'footer.col.selected': 'Selected',
@@ -64,7 +64,7 @@ export const ui = {
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
-        'footer.brand.text': 'Wirtschaftsstudent (cand.polit.) mit Fokus auf Makroökonomie, Ökonometrie und ökonomische Modelle. Ich erstelle Analysen und Vorlagen für die Praxis.',
+        'footer.brand.text': 'Ökonom und quantitativer Forscher mit Fokus auf Makroökonomie, Geldpolitik und ökonomische Modelle. Ich erstelle Analysen und Vorlagen für die Praxis.',
 
         'footer.col.links': 'Links',
         'footer.col.selected': 'Ausgewählt',
@@ -106,11 +106,11 @@ export const navigation: { [key: string]: { label: string; url: string; children
         },
         { label: 'Cliometrics', url: '/cliometrics' },
         { label: 'Blog', url: '/blog' },
+        { label: 'Samarbejde', url: '/services' },
         {
             label: 'Kontakt',
             url: '/contact',
             children: [
-                { label: 'Samarbejde', url: '/services' },
                 { label: 'Q&A', url: '/qa' },
                 { label: 'Kontakt mig', url: '/contact' }
             ]
@@ -149,11 +149,11 @@ export const navigation: { [key: string]: { label: string; url: string; children
         },
         { label: 'Cliometrics', url: '/en/cliometrics' },
         { label: 'Blog', url: '/en/blog' },
+        { label: 'Work with me', url: '/en/services' },
         {
             label: 'Contact',
             url: '/en/contact',
             children: [
-                { label: 'Services', url: '/en/services' },
                 { label: 'Q&A', url: '/en/qa' },
                 { label: 'Contact me', url: '/en/contact' }
             ]
@@ -189,11 +189,11 @@ export const navigation: { [key: string]: { label: string; url: string; children
         },
         { label: 'Cliometrics', url: '/de/cliometrics' },
         { label: 'Blog', url: '/de/blog' },
+        { label: 'Zusammenarbeit', url: '/en/services' },
         {
             label: 'Kontakt',
             url: '/de/contact',
             children: [
-                { label: 'Dienstleistungen', url: '/de/services' },
                 { label: 'Q&A', url: '/de/qa' },
                 { label: 'Kontaktieren Sie mich', url: '/de/contact' }
             ]

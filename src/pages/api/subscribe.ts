@@ -1,12 +1,15 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { checkRateLimit } from '../../lib/ratelimit';
 import { z } from 'zod';
+
+export const prerender = false;
 
 const SubscribeSchema = z.object({
     email: z.string().email(),
 });
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (!supabase) {
         return new Response(JSON.stringify({ error: "Database connection unavailable." }), { status: 500 });
     }
@@ -17,6 +20,13 @@ export const POST: APIRoute = async ({ request }) => {
 
         if (!result.success) {
             return new Response(JSON.stringify({ error: "Ugyldig e-mail adresse." }), { status: 400 });
+        }
+
+        // Rate limit by IP
+        const clientIP = request.headers.get('x-forwarded-for') || clientAddress || 'unknown';
+        const limit = await checkRateLimit('subscribe', clientIP);
+        if (!limit.success) {
+            return new Response(JSON.stringify({ error: "For mange forsøg. Prøv igen om lidt." }), { status: 429 });
         }
 
         const { email } = result.data;

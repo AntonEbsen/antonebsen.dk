@@ -22,6 +22,18 @@ export const ratelimits = {
         analytics: true,
         prefix: '@upstash/ratelimit/guestbook',
     }) : null,
+    contact: enabled ? new Ratelimit({
+        redis: redis!,
+        limiter: Ratelimit.slidingWindow(3, '120 s'), // 3 messages per 2 minutes
+        analytics: true,
+        prefix: '@upstash/ratelimit/contact',
+    }) : null,
+    subscribe: enabled ? new Ratelimit({
+        redis: redis!,
+        limiter: Ratelimit.slidingWindow(3, '120 s'), // 3 attempts per 2 minutes
+        analytics: true,
+        prefix: '@upstash/ratelimit/subscribe',
+    }) : null,
     login: enabled ? new Ratelimit({
         redis: redis!,
         limiter: Ratelimit.slidingWindow(5, '900 s'), // 5 attempts per 15 minutes

@@ -29,7 +29,15 @@ export default defineConfig({
   integrations: [
     sentry(),
     react(),
-    sitemap(),
+    sitemap({
+      // Keep admin, internal and API routes out of the sitemap.
+      filter: (page) =>
+        !page.includes('/admin') &&
+        !page.includes('/dashboard') &&
+        !page.includes('/debug') &&
+        !page.includes('/api/') &&
+        !/\/test-[^/]+\/?$/.test(page),
+    }),
     // partytown({
     //   config: {
     //     forward: ["dataLayer.push"],

@@ -123,10 +123,13 @@ const email = "anton@antonebsen.dk";
                     <AvailabilityStatus client:load />
                 </div>
 
-                <form id="contact-form" class="space-y-5" 
-                      data-msg-error-api={content.form?.errorAPI} 
+                <form id="contact-form" class="space-y-5"
+                      data-msg-error-api={content.form?.errorAPI}
                       data-msg-error-net={content.form?.errorNet}
                 >
+                    <!-- Honeypot: hidden from humans, bots tend to fill it -->
+                    <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div class="group">
                             <label class="block text-dim text-xs font-bold uppercase tracking-wider mb-2 group-focus-within:text-white transition-colors">{content.form?.name}</label>

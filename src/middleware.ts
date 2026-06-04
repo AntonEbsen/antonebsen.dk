@@ -35,11 +35,20 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const protectedMethods = ["POST", "PUT", "DELETE"];
     const isApiRequest = _context.url.pathname.startsWith("/api/");
     const isAuthRoute = _context.url.pathname.startsWith("/api/auth/");
-    const isPublicGuestbook = (_context.url.pathname === "/api/guestbook" || _context.url.pathname === "/api/guestbook/") && _context.request.method === "POST";
-    const isPublicChat = (_context.url.pathname === "/api/chat" || _context.url.pathname === "/api/chat/") && _context.request.method === "POST";
-    const isPublicSTT = (_context.url.pathname === "/api/stt" || _context.url.pathname === "/api/stt/") && _context.request.method === "POST";
 
-    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicGuestbook && !isPublicChat && !isPublicSTT) {
+    // Public POST endpoints: forms/widgets a visitor can submit without logging in.
+    // These have their own hardening (Zod validation, honeypot, rate limiting).
+    const publicPostRoutes = new Set([
+        "/api/guestbook",
+        "/api/chat",
+        "/api/stt",
+        "/api/contact",
+        "/api/subscribe",
+    ]);
+    const normalizedPath = _context.url.pathname.replace(/\/$/, "") || "/";
+    const isPublicPost = _context.request.method === "POST" && publicPostRoutes.has(normalizedPath);
+
+    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicPost) {
         const token = _context.cookies.get("auth_token");
         if (!token || token.value !== "authorized_session") {
             // Block request

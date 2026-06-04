@@ -1,0 +1,114 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+
+interface Section {
+  id: string;
+  heading: string;
+  html: string;
+}
+
+interface RelatedLink {
+  label: string;
+  href: string;
+  primary?: boolean;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  updated: string;
+  tocLabel: string;
+  intro?: string;
+  sections: Section[];
+  relatedLabel?: string;
+  related?: RelatedLink[];
+}
+
+const {
+  title,
+  description,
+  eyebrow,
+  heading,
+  lead,
+  updated,
+  tocLabel,
+  intro,
+  sections,
+  relatedLabel,
+  related = [],
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <main class="max-w-[1100px] mx-auto px-5 pt-32 pb-24">
+    <header class="mb-10">
+      <p class="text-accent text-[11px] font-extrabold uppercase tracking-[0.2em] mb-3">{eyebrow}</p>
+      <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">{heading}</h1>
+      <p class="text-dim text-lg max-w-2xl leading-relaxed">{lead}</p>
+      <p class="text-sm text-dim/70 mt-4">{updated}</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8 items-start">
+      <aside
+        class="lg:sticky lg:top-28 bg-[var(--glass)] border border-[var(--glass-border)] rounded-2xl p-5"
+        aria-label={tocLabel}
+      >
+        <h2 class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent mb-3">{tocLabel}</h2>
+        <nav class="flex flex-col gap-2 text-sm">
+          {sections.map((s) => (
+            <a href={`#${s.id}`} class="text-dim hover:text-white transition-colors">{s.heading}</a>
+          ))}
+        </nav>
+      </aside>
+
+      <article class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-2xl p-6 md:p-10 legal-prose">
+        {intro && <p class="text-dim text-base mb-8 leading-relaxed" set:html={intro} />}
+        {sections.map((s) => (
+          <section class="mb-8 scroll-mt-28" id={s.id}>
+            <h2 class="text-xl md:text-2xl font-bold mb-3">{s.heading}</h2>
+            <div class="text-dim leading-relaxed space-y-3" set:html={s.html} />
+          </section>
+        ))}
+
+        {related.length > 0 && (
+          <div class="mt-10 pt-6 border-t border-[var(--glass-border)]">
+            {relatedLabel && <h2 class="text-sm uppercase tracking-widest font-extrabold text-accent mb-4">{relatedLabel}</h2>}
+            <div class="flex flex-wrap gap-3">
+              {related.map((r) => (
+                <a
+                  href={r.href}
+                  class={`inline-flex items-center px-5 py-2.5 rounded-full font-bold text-sm transition-all ${
+                    r.primary
+                      ? 'bg-[var(--accent)] text-[#050506] hover:-translate-y-0.5'
+                      : 'border border-[var(--glass-border)] text-text hover:bg-white/5'
+                  }`}
+                >{r.label}</a>
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .legal-prose :global(ul) {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0.25rem 0;
+  }
+  .legal-prose :global(li) {
+    margin: 0.35rem 0;
+  }
+  .legal-prose :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .legal-prose :global(strong) {
+    color: var(--text);
+  }
+</style>

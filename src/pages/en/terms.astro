@@ -1,0 +1,63 @@
+---
+import LegalPage from '@components/templates/LegalPage.astro';
+export const prerender = true;
+
+const sections = [
+  {
+    id: 'accept',
+    heading: '1. Acceptance of terms',
+    html: `<p>By accessing this website you agree to be bound by these terms. If you do not accept any part of them, please do not use the website.</p>`,
+  },
+  {
+    id: 'rights',
+    heading: '2. Intellectual property',
+    html: `<p>All content on the website (text, images, graphics, code, etc.) belongs to Anton Meier Ebsen Jørgensen or is licensed for use. You may not copy, distribute or reuse the content without written permission, unless it is clearly marked as freely available (e.g. via downloads or an open-source licence).</p>`,
+  },
+  {
+    id: 'use',
+    heading: '3. Use of the website',
+    html: `<ul>
+      <li>You may not use the website in a way that harms, overloads or compromises its operation and security.</li>
+      <li>You may not attempt to gain unauthorised access to systems, data or features.</li>
+      <li>You may not use the website for unlawful purposes or in breach of applicable law.</li>
+    </ul>`,
+  },
+  {
+    id: 'disclaimer',
+    heading: '4. Disclaimer',
+    html: `<p>Content is provided "as is" and without warranty. I strive to keep it up to date and accurate but cannot guarantee completeness. Use of the content is at your own risk. Note that AI-generated chatbot responses may contain errors.</p>`,
+  },
+  {
+    id: 'thirdparty',
+    heading: '5. Third-party links',
+    html: `<p>The website may contain links to third-party sites (e.g. GitHub, LinkedIn). I have no control over their content or practices and accept no responsibility for them.</p>`,
+  },
+  {
+    id: 'changes',
+    heading: '6. Changes to terms',
+    html: `<p>I reserve the right to update these terms. The latest version will always be available on this page.</p>`,
+  },
+  {
+    id: 'contact',
+    heading: '7. Contact',
+    html: `<p>Questions about the terms? Write to <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>.</p>`,
+  },
+];
+---
+
+<LegalPage
+  title="Terms of Use"
+  description="Terms of use for antonebsen.dk."
+  eyebrow="Legal"
+  heading="Terms of Use"
+  lead="The framework for using the website and the content on antonebsen.dk."
+  updated="Last updated: 3 June 2026"
+  tocLabel="Contents"
+  intro="By using the site you accept these terms. If you do not accept them, please do not use the website."
+  sections={sections}
+  relatedLabel="Related"
+  related={[
+    { label: 'Privacy Policy', href: '/en/privacy' },
+    { label: 'Contact', href: '/en/contact', primary: true },
+  ]}
+/>

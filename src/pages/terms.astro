@@ -1,0 +1,63 @@
+---
+import LegalPage from '@components/templates/LegalPage.astro';
+export const prerender = true;
+
+const sections = [
+  {
+    id: 'accept',
+    heading: '1. Accept af vilkår',
+    html: `<p>Ved at tilgå denne hjemmeside accepterer du at være bundet af disse vilkår. Hvis du ikke accepterer nogen del af dem, bør du undlade at bruge hjemmesiden.</p>`,
+  },
+  {
+    id: 'rights',
+    heading: '2. Immaterielle rettigheder',
+    html: `<p>Alt indhold på hjemmesiden (tekst, billeder, grafik, kode m.m.) tilhører Anton Meier Ebsen Jørgensen eller er licenseret til brug. Du må ikke kopiere, distribuere eller genbruge indholdet uden skriftlig tilladelse, medmindre det tydeligt fremgår, at materiale er frit tilgængeligt (fx via downloads eller open source-licens).</p>`,
+  },
+  {
+    id: 'use',
+    heading: '3. Brug af hjemmesiden',
+    html: `<ul>
+      <li>Du må ikke bruge hjemmesiden på en måde, der skader, overbelaster eller kompromitterer drift og sikkerhed.</li>
+      <li>Du må ikke forsøge at få uautoriseret adgang til systemer, data eller funktioner.</li>
+      <li>Du må ikke bruge hjemmesiden til ulovlige formål eller i strid med gældende lovgivning.</li>
+    </ul>`,
+  },
+  {
+    id: 'disclaimer',
+    heading: '4. Ansvarsfraskrivelse',
+    html: `<p>Indholdet stilles til rådighed "som det er" og uden garanti. Jeg bestræber mig på at holde det opdateret og korrekt, men kan ikke garantere fuldstændig nøjagtighed. Brug af indhold sker på eget ansvar. Bemærk, at AI-genererede svar fra chatbotten kan indeholde fejl.</p>`,
+  },
+  {
+    id: 'thirdparty',
+    heading: '5. Links til tredjepart',
+    html: `<p>Hjemmesiden kan indeholde links til tredjeparts hjemmesider (fx GitHub, LinkedIn). Jeg har ikke kontrol over deres indhold eller praksis og påtager mig intet ansvar for disse.</p>`,
+  },
+  {
+    id: 'changes',
+    heading: '6. Ændringer af vilkår',
+    html: `<p>Jeg forbeholder mig retten til at opdatere vilkårene. Den nyeste version vil altid være tilgængelig på denne side.</p>`,
+  },
+  {
+    id: 'contact',
+    heading: '7. Kontakt',
+    html: `<p>Spørgsmål til vilkårene? Skriv til <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>.</p>`,
+  },
+];
+---
+
+<LegalPage
+  title="Vilkår for brug"
+  description="Vilkår for brug af antonebsen.dk."
+  eyebrow="Juridisk"
+  heading="Vilkår for brug"
+  lead="Rammerne for brug af hjemmesiden og indholdet på antonebsen.dk."
+  updated="Senest opdateret: 3. juni 2026"
+  tocLabel="Indhold"
+  intro="Ved at bruge siden accepterer du disse vilkår. Accepterer du dem ikke, bør du undlade at bruge hjemmesiden."
+  sections={sections}
+  relatedLabel="Relateret"
+  related={[
+    { label: 'Privatlivspolitik', href: '/privacy' },
+    { label: 'Kontakt', href: '/contact', primary: true },
+  ]}
+/>

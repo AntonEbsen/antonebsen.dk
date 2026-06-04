@@ -1,0 +1,89 @@
+---
+import LegalPage from '@components/templates/LegalPage.astro';
+export const prerender = true;
+
+const sections = [
+  {
+    id: 'controller',
+    heading: '1. Dataansvarlig',
+    html: `<p>Dataansvarlig for denne hjemmeside er <strong>Anton Meier Ebsen Jørgensen</strong>, København, Danmark.<br>Email: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></p>`,
+  },
+  {
+    id: 'data',
+    heading: '2. Hvilke data indsamles?',
+    html: `<ul>
+      <li><strong>Kontaktformular:</strong> navn, email og din besked, hvis du skriver til mig.</li>
+      <li><strong>Nyhedsbrev ("The Signal"):</strong> din email-adresse, hvis du tilmelder dig.</li>
+      <li><strong>Gæstebog:</strong> det navn og den besked, du selv vælger at offentliggøre.</li>
+      <li><strong>AI-chat:</strong> de beskeder, du skriver til chatbotten, sendes til Google for at generere svar.</li>
+      <li><strong>Tekniske oplysninger:</strong> fx browser, enhed, tidspunkt og IP-adresse kan blive registreret automatisk til drift, statistik og sikkerhed.</li>
+    </ul>
+    <p>Der indsamles ikke følsomme personoplysninger via hjemmesiden.</p>`,
+  },
+  {
+    id: 'purpose',
+    heading: '3. Formål og retsgrundlag',
+    html: `<ul>
+      <li><strong>Besvare henvendelser</strong> og tilmeldinger. Retsgrundlag: legitim interesse og/eller samtykke.</li>
+      <li><strong>Drift, statistik og sikkerhed</strong> (fejlfinding, forebyggelse af misbrug, anonym trafikmåling). Retsgrundlag: legitim interesse.</li>
+    </ul>`,
+  },
+  {
+    id: 'processors',
+    heading: '4. Databehandlere og tredjepart',
+    html: `<p>Jeg sælger ikke dine data. For at drive hjemmesiden anvendes følgende databehandlere:</p>
+    <ul>
+      <li><strong>Vercel</strong> – hosting samt cookiefri webstatistik og performance-måling.</li>
+      <li><strong>Supabase</strong> – database (EU), hvor kontakt-, nyhedsbrevs- og gæstebogsdata gemmes.</li>
+      <li><strong>Upstash</strong> – rate-limiting (midlertidig lagring af IP for at forhindre spam).</li>
+      <li><strong>Sentry</strong> – fejlovervågning, så jeg kan opdage og rette tekniske fejl.</li>
+      <li><strong>Google (Gemini)</strong> – behandler beskeder sendt til AI-chatbotten.</li>
+    </ul>
+    <p>Følger du links til tredjeparter (fx LinkedIn eller GitHub), gælder deres egne privatlivspolitikker.</p>`,
+  },
+  {
+    id: 'cookies',
+    heading: '5. Cookies og tracking',
+    html: `<p>Webstatistikken fra Vercel er som udgangspunkt cookiefri og bruger ikke målrettet tracking. Hjemmesiden anvender browserens <em>localStorage</em> til at huske dine præferencer (fx tema og oplåste "achievements"). Det er ikke tracking og deles ikke med tredjepart.</p>`,
+  },
+  {
+    id: 'security',
+    heading: '6. Sikkerhed',
+    html: `<p>Jeg tager rimelige forholdsregler for at beskytte oplysninger mod uautoriseret adgang, tab og misbrug. Ingen online løsning kan dog garantere 100% sikkerhed.</p>`,
+  },
+  {
+    id: 'rights',
+    heading: '7. Dine rettigheder',
+    html: `<p>Efter databeskyttelsesreglerne har du bl.a. ret til:</p>
+    <ul>
+      <li>Indsigt i, hvilke oplysninger jeg har om dig.</li>
+      <li>Berigtigelse af urigtige oplysninger.</li>
+      <li>Sletning (hvor der ikke er lovkrav om opbevaring).</li>
+      <li>Indsigelse mod behandling baseret på legitim interesse.</li>
+    </ul>
+    <p>Vil du gøre brug af dine rettigheder, så skriv til <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>.</p>`,
+  },
+  {
+    id: 'changes',
+    heading: '8. Ændringer',
+    html: `<p>Jeg kan opdatere denne privatlivspolitik, hvis hjemmesiden ændrer sig. Den nyeste version vil altid ligge her.</p>`,
+  },
+];
+---
+
+<LegalPage
+  title="Privatlivspolitik"
+  description="Privatlivspolitik for antonebsen.dk – hvilke data der behandles, og hvordan de bruges."
+  eyebrow="Juridisk"
+  heading="Privatlivspolitik"
+  lead="Hvilke oplysninger der kan blive behandlet, når du besøger antonebsen.dk, og hvordan de bruges."
+  updated="Senest opdateret: 3. juni 2026"
+  tocLabel="Indhold"
+  intro="Kort fortalt: Jeg indsamler så lidt som muligt. Kontakter du mig, behandler jeg kun de oplysninger, du selv sender."
+  sections={sections}
+  relatedLabel="Relateret"
+  related={[
+    { label: 'Vilkår for brug', href: '/terms' },
+    { label: 'Kontakt', href: '/contact', primary: true },
+  ]}
+/>

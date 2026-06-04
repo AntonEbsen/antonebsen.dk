@@ -88,9 +88,9 @@ const year = new Date().getFullYear();
 
     <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between pt-4 sm:flex-row flex-col sm:items-center items-start">
       <nav class="flex flex-wrap gap-2 items-center text-[13px] text-white/80" aria-label="Juridiske sider">
-           <a href="#" class="hover:underline text-text">Privacy</a>
+           <a href={isEn || isDe ? "/en/privacy" : "/privacy"} class="hover:underline text-text">{isEn ? "Privacy" : isDe ? "Datenschutz" : "Privatliv"}</a>
            <span aria-hidden="true">·</span>
-           <a href="#" class="hover:underline text-text">Terms</a>
+           <a href={isEn || isDe ? "/en/terms" : "/terms"} class="hover:underline text-text">{isEn ? "Terms" : isDe ? "Bedingungen" : "Vilkår"}</a>
            <span aria-hidden="true">·</span>
            <a href="/dashboard" class="opacity-50 hover:opacity-100 text-gold-500 transition-opacity" title="Quantum Analytics" aria-label="Admin Dashboard">π</a>
       </nav>
