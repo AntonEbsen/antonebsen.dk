@@ -1,0 +1,89 @@
+---
+import LegalPage from '@components/templates/LegalPage.astro';
+export const prerender = true;
+
+const sections = [
+  {
+    id: 'controller',
+    heading: '1. Data controller',
+    html: `<p>The data controller for this website is <strong>Anton Meier Ebsen Jørgensen</strong>, Copenhagen, Denmark.<br>Email: <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a></p>`,
+  },
+  {
+    id: 'data',
+    heading: '2. What data is collected?',
+    html: `<ul>
+      <li><strong>Contact form:</strong> your name, email and message, if you write to me.</li>
+      <li><strong>Newsletter ("The Signal"):</strong> your email address, if you subscribe.</li>
+      <li><strong>Guestbook:</strong> the name and message you choose to publish.</li>
+      <li><strong>AI chat:</strong> the messages you send to the chatbot are forwarded to Google to generate responses.</li>
+      <li><strong>Technical data:</strong> browser, device, timestamp and IP address may be logged automatically for operation, analytics and security.</li>
+    </ul>
+    <p>No sensitive personal data is intentionally collected via the website.</p>`,
+  },
+  {
+    id: 'purpose',
+    heading: '3. Purpose and legal basis',
+    html: `<ul>
+      <li><strong>Responding to enquiries</strong> and sign-ups. Legal basis: legitimate interest and/or consent.</li>
+      <li><strong>Operation, analytics and security</strong> (debugging, abuse prevention, anonymous traffic measurement). Legal basis: legitimate interest.</li>
+    </ul>`,
+  },
+  {
+    id: 'processors',
+    heading: '4. Processors and third parties',
+    html: `<p>I do not sell your data. The following processors are used to run the website:</p>
+    <ul>
+      <li><strong>Vercel</strong> – hosting plus cookieless web analytics and performance monitoring.</li>
+      <li><strong>Supabase</strong> – database (EU) storing contact, newsletter and guestbook data.</li>
+      <li><strong>Upstash</strong> – rate limiting (temporary storage of IP to prevent spam).</li>
+      <li><strong>Sentry</strong> – error monitoring so technical issues can be detected and fixed.</li>
+      <li><strong>Google (Gemini)</strong> – processes messages sent to the AI chatbot.</li>
+    </ul>
+    <p>If you follow links to third parties (e.g. LinkedIn or GitHub), their own privacy policies apply.</p>`,
+  },
+  {
+    id: 'cookies',
+    heading: '5. Cookies and tracking',
+    html: `<p>Vercel's web analytics is cookieless by default and does not use targeted tracking. The site uses your browser's <em>localStorage</em> to remember preferences (e.g. theme and unlocked achievements). This is not tracking and is not shared with third parties.</p>`,
+  },
+  {
+    id: 'security',
+    heading: '6. Security',
+    html: `<p>I take reasonable measures to protect information against unauthorised access, loss and misuse. However, no online solution can guarantee 100% security.</p>`,
+  },
+  {
+    id: 'rights',
+    heading: '7. Your rights',
+    html: `<p>Under data protection rules you have, among others, the right to:</p>
+    <ul>
+      <li>Access the information I hold about you.</li>
+      <li>Rectification of inaccurate information.</li>
+      <li>Erasure (where there is no legal requirement to retain it).</li>
+      <li>Object to processing based on legitimate interest.</li>
+    </ul>
+    <p>To exercise your rights, write to <a href="mailto:anton.ebsen@gmail.com">anton.ebsen@gmail.com</a>.</p>`,
+  },
+  {
+    id: 'changes',
+    heading: '8. Changes',
+    html: `<p>I may update this privacy policy if the website changes. The latest version will always be available here.</p>`,
+  },
+];
+---
+
+<LegalPage
+  title="Privacy Policy"
+  description="Privacy policy for antonebsen.dk – what data is processed and how it is used."
+  eyebrow="Legal"
+  heading="Privacy Policy"
+  lead="What information may be processed when you visit antonebsen.dk, and how it is used."
+  updated="Last updated: 3 June 2026"
+  tocLabel="Contents"
+  intro="In short: I collect as little as possible. If you contact me, I only process the information you send."
+  sections={sections}
+  relatedLabel="Related"
+  related={[
+    { label: 'Terms of Use', href: '/en/terms' },
+    { label: 'Contact', href: '/en/contact', primary: true },
+  ]}
+/>

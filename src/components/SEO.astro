@@ -7,10 +7,10 @@ export interface Props {
 }
 
 
-const { 
-  title, 
-  description = "Anton Meier Ebsen Jørgensen – Økonomistuderende (cand.polit.)", 
-  article = false 
+const {
+  title,
+  description = "Anton Meier Ebsen Jørgensen — Economist & quantitative researcher in macroeconomics, monetary policy and cliometrics.",
+  article = false
 } = Astro.props;
 
 const siteTitle = "Anton Meier Ebsen Jørgensen";
@@ -90,10 +90,29 @@ const breadcrumbItems = [
       "name": "Anton Meier Ebsen Jørgensen",
       "url": "https://antonebsen.dk",
       "image": socialImageURL,
-      "jobTitle": "Student of Economics (cand.polit)",
+      "jobTitle": "Economist",
+      "description": "Economist and quantitative researcher specializing in macroeconomics, monetary policy and cliometrics.",
+      "knowsAbout": [
+        "Macroeconomics",
+        "Monetary policy",
+        "Econometrics",
+        "Cliometrics",
+        "Economic modeling",
+        "Data analysis"
+      ],
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Copenhagen"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Copenhagen",
+        "addressCountry": "DK"
+      },
       "sameAs": [
         "https://www.linkedin.com/in/antonebsen/",
-        "https://github.com/AntonEbsen"
+        "https://github.com/AntonEbsen",
+        "https://x.com/antonebsen"
       ]
     },
     {

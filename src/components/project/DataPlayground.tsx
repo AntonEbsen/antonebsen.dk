@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as duckdb from '@duckdb/duckdb-wasm';
 import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import duckdb_wasm_next from '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url';
@@ -10,80 +10,76 @@ interface DataPlaygroundProps {
 }
 
 export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
-    const [db, setDb] = useState<duckdb.AsyncDuckDB | null>(null);
-    const [conn, setConn] = useState<duckdb.AsyncDuckDBConnection | null>(null);
+    // Engine + connection are held in refs so they survive re-renders and can be
+    // awaited directly (avoids stale-state races between init and the first query).
+    const connRef = useRef<duckdb.AsyncDuckDBConnection | null>(null);
+    const initPromiseRef = useRef<Promise<duckdb.AsyncDuckDBConnection> | null>(null);
+
     const [query, setQuery] = useState('SELECT * FROM main_data LIMIT 5');
     const [results, setResults] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [initializing, setInitializing] = useState(false);
+    const [ready, setReady] = useState(false);
+
+    // Lazily boot DuckDB (~70MB WASM) only when the user actually runs a query,
+    // instead of on mount — so visiting a project page doesn't download the engine.
+    const initDB = async (): Promise<duckdb.AsyncDuckDBConnection> => {
+        const MANUAL_BUNDLES: duckdb.DuckDBBundle[] = [
+            {
+                mvp: { mainModule: duckdb_wasm, mainWorker: worker_url },
+                eh: { mainModule: duckdb_wasm_next, mainWorker: worker_next_url },
+            },
+        ];
+        const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);
+        const worker = new Worker(bundle.mainWorker!);
+        const logger = new duckdb.ConsoleLogger();
+        const db = new duckdb.AsyncDuckDB(logger, worker);
+        await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+
+        const connection = await db.connect();
+
+        // Load CSV
+        await db.registerFileURL('main_data.csv', dataUrl, duckdb.DuckDBDataProtocol.HTTP, false);
+        await connection.insertCSVFromPath('main_data.csv', {
+            name: 'main_data',
+            schema: 'auto',
+            header: true,
+            detect: true,
+        });
+
+        connRef.current = connection;
+        setReady(true);
+        return connection;
+    };
+
+    const ensureDb = (): Promise<duckdb.AsyncDuckDBConnection> => {
+        if (connRef.current) return Promise.resolve(connRef.current);
+        if (!initPromiseRef.current) {
+            setInitializing(true);
+            initPromiseRef.current = initDB().finally(() => setInitializing(false));
+        }
+        return initPromiseRef.current;
+    };
 
     useEffect(() => {
-        const initDB = async () => {
-            try {
-                const MANUAL_BUNDLES: duckdb.DuckDBBundle[] = [
-                    {
-                        mvp: {
-                            mainModule: duckdb_wasm,
-                            mainWorker: worker_url,
-                        },
-                        eh: {
-                            mainModule: duckdb_wasm_next,
-                            mainWorker: worker_next_url,
-                        },
-                    },
-                ];
-                // Select bundle based on browser support
-                const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);
-                const worker = new Worker(bundle.mainWorker!);
-                const logger = new duckdb.ConsoleLogger();
-                const db = new duckdb.AsyncDuckDB(logger, worker);
-                await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-                setDb(db);
+        // Reset the (lazy) engine if the data source changes.
+        connRef.current = null;
+        initPromiseRef.current = null;
+        setReady(false);
 
-                const connection = await db.connect();
-                setConn(connection);
-
-                // Load CSV
-                await db.registerFileURL('main_data.csv', dataUrl, duckdb.DuckDBDataProtocol.HTTP, false);
-                await connection.insertCSVFromPath('main_data.csv', {
-                    name: 'main_data',
-                    schema: 'auto',
-                    header: true,
-                    detect: true
-                });
-
-                setLoading(false);
-            } catch (err: any) {
-                console.error("DuckDB Init Error", err);
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
-        initDB();
-
-        // Listen for SQL events from the Bot
-        const handleBotSQL = (e: CustomEvent) => {
-            console.log("Playground received SQL:", e.detail);
-            setQuery(e.detail);
-            // Optionally auto-run, but safer to let user click run (or we can trigger it)
-            // Let's trigger it for the magic effect
-            // But we can't call runQuery easily from here without moving it or using a ref
-            // So we'll just set it for now and maybe add a toast "SQL generated!"
-        };
-
+        // Allow the Project Bot to push generated SQL into the editor.
+        const handleBotSQL = (e: CustomEvent) => setQuery(e.detail);
         window.addEventListener('project-bot-sql', handleBotSQL as EventListener);
 
         return () => {
             window.removeEventListener('project-bot-sql', handleBotSQL as EventListener);
-            // connection?.close(); 
-        }
+        };
     }, [dataUrl]);
 
     const runQuery = async () => {
-        if (!conn) return;
         try {
             setError(null);
+            const conn = await ensureDb();
             const result = await conn.query(query);
             setResults(result.toArray().map((row: any) => row.toJSON()));
         } catch (err: any) {
@@ -114,8 +110,6 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
 
             setQuery(data.sql);
             setGenerating(false);
-            // Optional: Auto-run?
-            // runQuery(); 
         } catch (err: any) {
             setError("AI Error: " + err.message);
             setGenerating(false);
@@ -129,7 +123,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     <i className="fa-solid fa-database text-blue-500"></i>
                     Data Playground (DuckDB)
                 </span>
-                <span className="text-[10px] text-slate-400">{loading ? 'Loading Engine...' : 'Ready'}</span>
+                <span className="text-[10px] text-slate-400">{initializing ? 'Starting engine…' : ready ? 'Ready' : 'Idle — run a query to start'}</span>
             </div>
 
             {/* AI Natural Language Input */}
@@ -145,7 +139,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     />
                     <button
                         onClick={generateSql}
-                        disabled={generating || loading}
+                        disabled={generating}
                         className="px-3 py-1.5 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg text-xs font-bold hover:bg-blue-600/30 transition-colors disabled:opacity-50"
                     >
                         {generating ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-wand-magic-sparkles"></i>}
@@ -165,10 +159,12 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
             <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex justify-end">
                 <button
                     onClick={runQuery}
-                    disabled={loading}
+                    disabled={initializing}
                     className="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
                 >
-                    <i className="fa-solid fa-play"></i> Run SQL
+                    {initializing
+                        ? <><i className="fa-solid fa-circle-notch fa-spin"></i> Starting engine…</>
+                        : <><i className="fa-solid fa-play"></i> Run SQL</>}
                 </button>
             </div>
 
