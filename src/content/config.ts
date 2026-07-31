@@ -106,6 +106,20 @@ const videosCollection = defineCollection({
             label: z.string(),
             label_da: z.string().optional()
         })).optional(),
+        // "Trail in numbers". Either drop a .gpx export into src/data/gpx/ and name it
+        // here (distance, climb and the elevation profile are then derived at build
+        // time), or fill in `trail` by hand. Values in `trail` win over the GPX.
+        gpxFile: z.string().optional(),
+        trail: z.object({
+            distanceKm: z.number().optional(),
+            elevationGainM: z.number().optional(),
+            elevationLossM: z.number().optional(),
+            maxAltitudeM: z.number().optional(),
+            durationMin: z.number().optional(),
+            steps: z.number().optional(),
+            startPlace: z.string().optional(),
+            endPlace: z.string().optional()
+        }).optional(),
         relatedProjectUrl: z.string().optional(),
         relatedBlogSlug: z.string().optional(),
         links: z.array(z.object({

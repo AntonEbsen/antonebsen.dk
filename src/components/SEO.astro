@@ -24,7 +24,8 @@ if (Astro.props.image) {
 } else {
   // Generate Dynamic OG
   const ogTitle = title.replace(` | ${siteTitle}`, ''); // Clean title
-  const ogEndpoint = new URL('/api/og', Astro.url);
+  // Route file is src/pages/api/og.png.ts, so the path must carry the .png suffix.
+  const ogEndpoint = new URL('/api/og.png', Astro.url);
   ogEndpoint.searchParams.set('title', ogTitle);
   ogEndpoint.searchParams.set('desc', description.slice(0, 80) + (description.length > 80 ? '...' : ''));
   socialImageURL = ogEndpoint;

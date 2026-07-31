@@ -99,6 +99,39 @@
             "additionalProperties": false
           }
         },
+        "gpxFile": {
+          "type": "string"
+        },
+        "trail": {
+          "type": "object",
+          "properties": {
+            "distanceKm": {
+              "type": "number"
+            },
+            "elevationGainM": {
+              "type": "number"
+            },
+            "elevationLossM": {
+              "type": "number"
+            },
+            "maxAltitudeM": {
+              "type": "number"
+            },
+            "durationMin": {
+              "type": "number"
+            },
+            "steps": {
+              "type": "number"
+            },
+            "startPlace": {
+              "type": "string"
+            },
+            "endPlace": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "relatedProjectUrl": {
           "type": "string"
         },

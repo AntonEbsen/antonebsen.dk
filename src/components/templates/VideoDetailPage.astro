@@ -1,0 +1,251 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Pill from '@components/ui/Pill.astro';
+import Button from '@components/ui/Button.astro';
+import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
+import { CHANNEL_URL } from '@lib/youtube';
+import { resolveTrail } from '@lib/trail';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  video: CollectionEntry<'videos'>['data'];
+  slug: string;
+  lang: 'da' | 'en';
+}
+
+const { video, slug, lang } = Astro.props;
+const isDa = lang === 'da';
+
+const title = (isDa && video.title_da) || video.title;
+const description = (isDa && video.description_da) || video.description;
+const series = (isDa && video.series_da) || video.series;
+
+const trail = resolveTrail(video);
+
+const t = isDa
+  ? {
+      back: 'Alle videoer', watch: 'Se på YouTube', chapters: 'Kapitler',
+      inNumbers: 'Turen i tal', profile: 'Højdeprofil',
+      distance: 'Distance', climb: 'Stigning', descent: 'Fald', peak: 'Højeste punkt',
+      duration: 'Varighed', steps: 'Skridt', pace: 'Gns. tempo', route: 'Rute',
+      axisKm: 'Kilometer', axisEle: 'Meter over havet', related: 'Læs projektet'
+    }
+  : {
+      back: 'All videos', watch: 'Watch on YouTube', chapters: 'Chapters',
+      inNumbers: 'The walk in numbers', profile: 'Elevation profile',
+      distance: 'Distance', climb: 'Ascent', descent: 'Descent', peak: 'High point',
+      duration: 'Duration', steps: 'Steps', pace: 'Avg. pace', route: 'Route',
+      axisKm: 'Kilometres', axisEle: 'Metres above sea level', related: 'Read the project'
+    };
+
+const trackLabel = { hiking: isDa ? 'Vandring' : 'Hiking', economics: isDa ? 'Økonomi' : 'Economics' }[video.track];
+const listUrl = isDa ? '/videoer' : '/en/videos';
+
+const hhmm = (min: number) => `${Math.floor(min / 60)} t ${min % 60} min`.replace(' t ', isDa ? ' t ' : ' h ');
+const stamp = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+const tiles = [
+  trail.distanceKm && { label: t.distance, value: `${trail.distanceKm} km`, icon: 'fa-solid fa-route' },
+  trail.elevationGainM && { label: t.climb, value: `${trail.elevationGainM} m`, icon: 'fa-solid fa-arrow-trend-up' },
+  trail.elevationLossM && { label: t.descent, value: `${trail.elevationLossM} m`, icon: 'fa-solid fa-arrow-trend-down' },
+  trail.maxAltitudeM && { label: t.peak, value: `${trail.maxAltitudeM} m`, icon: 'fa-solid fa-mountain' },
+  trail.durationMin && { label: t.duration, value: hhmm(trail.durationMin), icon: 'fa-solid fa-clock' },
+  trail.steps && { label: t.steps, value: trail.steps.toLocaleString(isDa ? 'da-DK' : 'en-GB'), icon: 'fa-solid fa-shoe-prints' },
+  trail.avgSpeedKmh && { label: t.pace, value: `${trail.avgSpeedKmh} km/t`.replace('km/t', isDa ? 'km/t' : 'km/h'), icon: 'fa-solid fa-gauge-high' }
+].filter(Boolean) as { label: string; value: string; icon: string }[];
+
+const relatedUrl = video.relatedProjectUrl
+  ?? (video.relatedBlogSlug ? `${isDa ? '/da' : ''}/blog/${video.relatedBlogSlug}` : undefined);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: title,
+  description,
+  uploadDate: video.publishedAt,
+  thumbnailUrl: video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`,
+  embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
+  contentUrl: `https://www.youtube.com/watch?v=${video.youtubeId}`,
+  ...(video.chapters?.length
+    ? {
+        hasPart: video.chapters.map((c) => ({
+          '@type': 'Clip',
+          name: (isDa && c.label_da) || c.label,
+          startOffset: c.t,
+          url: `https://www.youtube.com/watch?v=${video.youtubeId}&t=${c.t}s`
+        }))
+      }
+    : {})
+};
+---
+
+<!-- The real thumbnail beats a generated title card as a share image for a video. -->
+<Layout
+  title={title}
+  description={description}
+  image={video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`}
+  article={true}
+>
+  <main class="container mx-auto px-4 pt-28 pb-24 max-w-5xl">
+
+    <a href={listUrl} class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-dim opacity-60 hover:text-accent hover:opacity-100 transition-all no-underline mb-8">
+      <i class="fa-solid fa-arrow-left text-[10px]"></i>{t.back}
+    </a>
+
+    <Section class="!mb-10">
+      <div class="flex flex-wrap items-center gap-2 mb-5">
+        <Pill variant="accent">{trackLabel}</Pill>
+        {series && <Pill>{series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}</Pill>}
+        <time datetime={video.publishedAt} class="text-[11px] uppercase tracking-wider text-dim opacity-40 ml-1">
+          {new Date(video.publishedAt).toLocaleDateString(isDa ? 'da-DK' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric' })}
+        </time>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-black text-white leading-tight mb-5">{title}</h1>
+      <p class="text-lg text-dim opacity-70 leading-relaxed max-w-3xl mb-8">{description}</p>
+
+      {(trail.startPlace || trail.endPlace) && (
+        <p class="text-sm text-dim opacity-50 mb-8">
+          <i class="fa-solid fa-location-dot mr-2 text-accent/60"></i>
+          <span class="uppercase tracking-widest text-[10px] mr-2">{t.route}</span>
+          {[trail.startPlace, trail.endPlace].filter(Boolean).join(' → ')}
+        </p>
+      )}
+
+      <YouTubeEmbed
+        youtubeId={video.youtubeId}
+        title={title}
+        orientation={video.orientation}
+        class={video.orientation === 'portrait' ? 'max-w-[360px]' : ''}
+      />
+    </Section>
+
+    {trail.hasData && (
+      <Section>
+        <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">{t.inNumbers}</h2>
+
+        <dl class="grid grid-cols-2 md:grid-cols-4 gap-4 m-0 mb-10">
+          {tiles.map((tile) => (
+            <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-5">
+              <dt class="text-[10px] uppercase tracking-widest text-dim opacity-50 mb-2">
+                <i class={`${tile.icon} mr-1.5 text-accent/60`}></i>{tile.label}
+              </dt>
+              <dd class="text-2xl font-black text-white m-0 tabular-nums">{tile.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {trail.hasProfile && (
+          <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6">
+            <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-50 mb-4">{t.profile}</h3>
+            <div class="relative h-[280px]">
+              <canvas
+                id="elevation-chart"
+                data-profile={JSON.stringify(trail.profile)}
+                data-axis-km={t.axisKm}
+                data-axis-ele={t.axisEle}
+              ></canvas>
+            </div>
+          </div>
+        )}
+      </Section>
+    )}
+
+    {video.chapters && video.chapters.length > 0 && (
+      <Section>
+        <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-5">{t.chapters}</h2>
+        <ul class="list-none p-0 m-0 border-t border-white/5">
+          {video.chapters.map((chapter) => (
+            <li>
+              <a
+                href={`https://www.youtube.com/watch?v=${video.youtubeId}&t=${chapter.t}s`}
+                target="_blank" rel="noopener noreferrer"
+                class="flex gap-5 py-3 border-b border-white/5 text-dim no-underline hover:text-accent transition-colors"
+              >
+                <span class="font-mono text-accent/70 tabular-nums text-sm">{stamp(chapter.t)}</span>
+                <span class="text-sm">{(isDa && chapter.label_da) || chapter.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )}
+
+    <Section class="flex flex-wrap gap-4">
+      <Button href={`https://www.youtube.com/watch?v=${video.youtubeId}`}>{t.watch}</Button>
+      {relatedUrl && <Button href={relatedUrl} variant="ghost">{t.related}</Button>}
+      <Button href={CHANNEL_URL} variant="ghost">The Wandering Economist</Button>
+    </Section>
+
+  </main>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>
+
+<script>
+  // Chart.js is ~200 kB — only pull it in when there is actually a profile to draw,
+  // matching the dynamic-import pattern used on the training stats page.
+  const canvas = document.getElementById('elevation-chart') as HTMLCanvasElement | null;
+
+  if (canvas) {
+    (async () => {
+      const profile: { km: number; ele: number }[] = JSON.parse(canvas.dataset.profile || '[]');
+      if (profile.length < 2) return;
+
+      const { default: Chart } = await import('chart.js/auto');
+
+      const css = getComputedStyle(document.documentElement);
+      const accent = css.getPropertyValue('--accent').trim() || '#D4AF37';
+      const dim = 'rgba(255,255,255,0.45)';
+      const grid = 'rgba(255,255,255,0.06)';
+
+      const gradient = canvas.getContext('2d')!.createLinearGradient(0, 0, 0, 280);
+      gradient.addColorStop(0, 'rgba(212,175,55,0.35)');
+      gradient.addColorStop(1, 'rgba(212,175,55,0)');
+
+      new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: profile.map((p) => p.km.toFixed(1)),
+          datasets: [{
+            data: profile.map((p) => p.ele),
+            borderColor: accent,
+            backgroundColor: gradient,
+            borderWidth: 2,
+            fill: true,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { intersect: false, mode: 'index' },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                title: (items: any) => `${items[0].label} km`,
+                label: (item: any) => `${item.parsed.y} m`
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: canvas.dataset.axisKm, color: dim, font: { size: 10 } },
+              ticks: { color: dim, maxTicksLimit: 8 },
+              grid: { color: grid }
+            },
+            y: {
+              title: { display: true, text: canvas.dataset.axisEle, color: dim, font: { size: 10 } },
+              ticks: { color: dim, maxTicksLimit: 6 },
+              grid: { color: grid }
+            }
+          }
+        }
+      });
+    })();
+  }
+</script>

@@ -6,10 +6,14 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   video: CollectionEntry<'videos'>['data'];
   lang: 'da' | 'en';
+  /** Entry id without extension — enables the link through to the detail page. */
+  slug?: string;
 }
 
-const { video, lang } = Astro.props;
+const { video, lang, slug } = Astro.props;
 const isDa = lang === 'da';
+
+const detailUrl = slug ? `${isDa ? '/videoer' : '/en/videos'}/${slug}` : undefined;
 
 const title = (isDa && video.title_da) || video.title;
 const description = (isDa && video.description_da) || video.description;
@@ -34,8 +38,11 @@ const relatedUrl = video.relatedProjectUrl
 const t = {
   chapters: isDa ? 'Kapitler' : 'Chapters',
   related: isDa ? 'Læs projektet' : 'Read the project',
-  watchOn: isDa ? 'Se på YouTube' : 'Watch on YouTube'
+  watchOn: isDa ? 'Se på YouTube' : 'Watch on YouTube',
+  details: isDa ? 'Turen i tal' : 'The walk in numbers'
 };
+
+const hasTrail = !!(video.gpxFile || video.trail);
 
 // mm:ss for chapter deep-links.
 const stamp = (seconds: number) => {
@@ -62,7 +69,9 @@ const stamp = (seconds: number) => {
     </div>
 
     <h3 class="text-lg font-bold text-white leading-snug group-hover:text-accent transition-colors">
-      {title}
+      {detailUrl
+        ? <a href={detailUrl} class="no-underline text-inherit hover:text-accent transition-colors">{title}</a>
+        : title}
     </h3>
 
     <p class="text-sm text-dim opacity-70 leading-relaxed m-0">{description}</p>
@@ -109,6 +118,12 @@ const stamp = (seconds: number) => {
       <time datetime={video.publishedAt} class="text-dim opacity-40 uppercase tracking-wider">
         {published}
       </time>
+
+      {detailUrl && hasTrail && (
+        <a href={detailUrl} class="text-accent font-bold no-underline hover:text-white transition-colors">
+          <i class="fa-solid fa-chart-line mr-1 text-[9px]"></i>{t.details}
+        </a>
+      )}
 
       {relatedUrl && (
         <a href={relatedUrl} class="text-accent font-bold no-underline hover:text-white transition-colors">

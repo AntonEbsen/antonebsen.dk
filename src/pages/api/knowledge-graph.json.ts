@@ -18,10 +18,12 @@ export async function GET() {
     // 1: Books (Gold)
     // 2: Authors/Influences (Blue)
     // 3: Categories (Green)
+    // 4: Videos (Red)
 
     // Fetch collections
     const books = await getCollection('books');
     const influences = await getCollection('influences');
+    const videos = await getCollection('videos');
 
     // Add Influences (Authors/Thinkers)
     influences.forEach(inf => {
@@ -50,6 +52,26 @@ export async function GET() {
             // Ensure author node exists even if not in influences collection
             addNode(author, 2, 15, '#60A5FA', { title: "Author" });
             links.push({ source: title, target: author, value: 5 });
+        }
+    });
+
+    // Add Videos, hung off the channel's two tracks and their series
+    videos.forEach(video => {
+        const title = video.data.title;
+
+        addNode(title, 4, 10, '#F87171', {
+            title: 'Video',
+            desc: video.data.description,
+            url: `/en/videos/${video.id.replace(/\.json$/, '')}`
+        });
+
+        const track = video.data.track === 'hiking' ? 'Hiking' : 'Economics';
+        addNode(track, 3, 20, '#34D399');
+        links.push({ source: title, target: track, value: 2 });
+
+        if (video.data.series) {
+            addNode(video.data.series, 3, 14, '#34D399');
+            links.push({ source: title, target: video.data.series, value: 3 });
         }
     });
 
