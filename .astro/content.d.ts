@@ -282,6 +282,14 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"videos": Record<string, {
+  id: string;
+  body?: string;
+  collection: "videos";
+  data: InferEntrySchema<"videos">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 "website-history": Record<string, {
   id: string;
   body?: string;

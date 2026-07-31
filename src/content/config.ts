@@ -70,8 +70,55 @@ const booksCollection = defineCollection({
     })
 });
 
+// YouTube videos from "The Wandering Economist".
+// One file per video with localized copy alongside (the `blog` pattern), rather than
+// per-language folders: the YouTube id, chapters and stats are language-neutral facts
+// and duplicating them across da/ and en/ would invite drift.
+const videosCollection = defineCollection({
+    type: 'data',
+    schema: z.object({
+        youtubeId: z.string(),
+        title: z.string(),
+        title_da: z.string().optional(),
+        description: z.string(),
+        description_da: z.string().optional(),
+        publishedAt: z.string(), // ISO date
+        // The channel's two worlds.
+        track: z.enum(['hiking', 'economics']),
+        // Shorts are 9:16; everything else is 16:9.
+        orientation: z.enum(['landscape', 'portrait']).default('landscape'),
+        series: z.string().optional(),
+        series_da: z.string().optional(),
+        seriesOrder: z.number().optional(),
+        featured: z.boolean().optional(),
+        // Overrides the default i.ytimg.com thumbnail.
+        thumbnail: z.string().optional(),
+        // "12.4 km", "940 m↑", "18,200 steps" — the data angle the channel is built on.
+        stats: z.array(z.object({
+            label: z.string(),
+            label_da: z.string().optional(),
+            value: z.string(),
+            icon: z.string().optional()
+        })).optional(),
+        // Deep-linkable timestamps; `t` is seconds into the video.
+        chapters: z.array(z.object({
+            t: z.number(),
+            label: z.string(),
+            label_da: z.string().optional()
+        })).optional(),
+        relatedProjectUrl: z.string().optional(),
+        relatedBlogSlug: z.string().optional(),
+        links: z.array(z.object({
+            label: z.string(),
+            url: z.string(),
+            icon: z.string().optional()
+        })).optional()
+    })
+});
+
 export const collections = {
     'blog': blogCollection,
+    'videos': videosCollection,
     'portfolio': portfolioCollection,
     'books': booksCollection,
     'pages': defineCollection({

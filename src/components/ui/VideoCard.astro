@@ -1,0 +1,131 @@
+---
+import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
+import Pill from '@components/ui/Pill.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  video: CollectionEntry<'videos'>['data'];
+  lang: 'da' | 'en';
+}
+
+const { video, lang } = Astro.props;
+const isDa = lang === 'da';
+
+const title = (isDa && video.title_da) || video.title;
+const description = (isDa && video.description_da) || video.description;
+const series = (isDa && video.series_da) || video.series;
+
+const trackLabel = {
+  hiking: isDa ? 'Vandring' : 'Hiking',
+  economics: isDa ? 'Økonomi' : 'Economics'
+}[video.track];
+
+const trackIcon = video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line';
+
+const published = new Date(video.publishedAt).toLocaleDateString(isDa ? 'da-DK' : 'en-GB', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+
+const relatedUrl = video.relatedProjectUrl
+  ?? (video.relatedBlogSlug ? `${isDa ? '/da' : ''}/blog/${video.relatedBlogSlug}` : undefined);
+
+const t = {
+  chapters: isDa ? 'Kapitler' : 'Chapters',
+  related: isDa ? 'Læs projektet' : 'Read the project',
+  watchOn: isDa ? 'Se på YouTube' : 'Watch on YouTube'
+};
+
+// mm:ss for chapter deep-links.
+const stamp = (seconds: number) => {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+};
+---
+
+<article
+  class="video-card group flex flex-col gap-4 opacity-100 transition-opacity duration-300"
+  data-category={video.track}
+>
+  <YouTubeEmbed
+    youtubeId={video.youtubeId}
+    title={title}
+    orientation={video.orientation}
+  />
+
+  <div class="flex flex-col gap-3 px-1">
+    <div class="flex flex-wrap items-center gap-2">
+      <Pill variant="accent"><i class={`${trackIcon} mr-1.5`}></i>{trackLabel}</Pill>
+      {series && <Pill>{series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}</Pill>}
+    </div>
+
+    <h3 class="text-lg font-bold text-white leading-snug group-hover:text-accent transition-colors">
+      {title}
+    </h3>
+
+    <p class="text-sm text-dim opacity-70 leading-relaxed m-0">{description}</p>
+
+    {video.stats && video.stats.length > 0 && (
+      <dl class="flex flex-wrap gap-x-6 gap-y-2 mt-1 border-t border-white/5 pt-3 m-0">
+        {video.stats.map((stat) => (
+          <div class="flex flex-col">
+            <dt class="text-[10px] uppercase tracking-widest text-dim opacity-50">
+              {(isDa && stat.label_da) || stat.label}
+            </dt>
+            <dd class="text-sm font-bold text-accent m-0">
+              {stat.icon && <i class={`${stat.icon} mr-1.5 opacity-70`}></i>}{stat.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )}
+
+    {video.chapters && video.chapters.length > 0 && (
+      <details class="mt-1 border-t border-white/5 pt-3">
+        <summary class="text-[10px] uppercase tracking-widest text-dim opacity-60 cursor-pointer hover:text-accent transition-colors">
+          {t.chapters}
+        </summary>
+        <ul class="mt-3 space-y-1.5 list-none p-0 m-0">
+          {video.chapters.map((chapter) => (
+            <li>
+              <a
+                href={`https://www.youtube.com/watch?v=${video.youtubeId}&t=${chapter.t}s`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex gap-3 text-xs text-dim opacity-70 hover:opacity-100 hover:text-accent transition-all no-underline"
+              >
+                <span class="font-mono text-accent/70 tabular-nums">{stamp(chapter.t)}</span>
+                <span>{(isDa && chapter.label_da) || chapter.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    )}
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-[11px]">
+      <time datetime={video.publishedAt} class="text-dim opacity-40 uppercase tracking-wider">
+        {published}
+      </time>
+
+      {relatedUrl && (
+        <a href={relatedUrl} class="text-accent font-bold no-underline hover:text-white transition-colors">
+          {t.related} <i class="fa-solid fa-arrow-right text-[9px] ml-0.5"></i>
+        </a>
+      )}
+
+      {video.links?.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-accent font-bold no-underline hover:text-white transition-colors"
+        >
+          {link.icon && <i class={`${link.icon} mr-1`}></i>}{link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</article>

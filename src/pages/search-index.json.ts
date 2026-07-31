@@ -4,6 +4,7 @@ export async function GET() {
     const posts = await getCollection('blog');
     const projects = await getCollection('portfolio');
     const pages = await getCollection('pages');
+    const videos = await getCollection('videos');
 
     const index = [];
 
@@ -74,7 +75,32 @@ export async function GET() {
         });
     }
 
-    // 4. Pages
+    // 4. Videos (The Wandering Economist)
+    for (const video of videos) {
+        const trackTag = video.data.track === 'hiking' ? 'hiking' : 'economics';
+
+        index.push({
+            title: video.data.title,
+            url: '/en/videos',
+            content: video.data.description,
+            tags: ['video', 'youtube', trackTag, video.data.series].filter(Boolean),
+            type: 'video',
+            icon: 'fa-brands fa-youtube',
+            lang: 'en'
+        });
+
+        index.push({
+            title: video.data.title_da || video.data.title,
+            url: '/videoer',
+            content: video.data.description_da || video.data.description,
+            tags: ['video', 'youtube', video.data.track === 'hiking' ? 'vandring' : 'økonomi', video.data.series].filter(Boolean),
+            type: 'video',
+            icon: 'fa-brands fa-youtube',
+            lang: 'da'
+        });
+    }
+
+    // 5. Pages
     for (const page of pages) {
         if (page.data.title) {
             index.push({

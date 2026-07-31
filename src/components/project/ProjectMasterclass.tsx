@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CHANNEL_URL } from '@lib/youtube';
 
 interface VideoLink {
     label: string;
@@ -14,9 +15,16 @@ interface VideoPart {
     title: string;
     signal: string;
     description: string;
-    youtubeId: string;
+    /** Omitted until the episode is published on YouTube. */
+    youtubeId?: string;
     links?: VideoLink[];
 }
+
+// Historic placeholder that shipped with the scaffolding. Treated as "not published"
+// so an unfinished series can never render a real (wrong) video.
+const PLACEHOLDER_ID = 'dQw4w9WgXcQ';
+
+const isPublished = (id?: string): id is string => !!id && id !== PLACEHOLDER_ID;
 
 interface RobustnessItem {
     question: string;
@@ -135,19 +143,23 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
 
     const activeVideo = series[activeIndex];
 
+    // Progress key: the first published id, falling back to the series title so the key
+    // stays stable while a series is still unpublished.
+    const progressKey = `progress_${series.find(v => isPublished(v.youtubeId))?.youtubeId ?? title ?? series[0]?.title}`;
+
     useEffect(() => {
         setIsClient(true);
-        const savedProgress = localStorage.getItem(`progress_${series[0].youtubeId}`);
+        const savedProgress = localStorage.getItem(progressKey);
         if (savedProgress) {
             setWatched(JSON.parse(savedProgress));
         }
-    }, [series]);
+    }, [progressKey]);
 
     useEffect(() => {
         if (isClient && watched.length > 0) {
-            localStorage.setItem(`progress_${series[0].youtubeId}`, JSON.stringify(watched));
+            localStorage.setItem(progressKey, JSON.stringify(watched));
         }
-    }, [watched, series, isClient]);
+    }, [watched, progressKey, isClient]);
 
     const markAsWatched = (part: number) => {
         if (!watched.includes(part)) {
@@ -157,6 +169,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
 
     // Auto-mark as watched when active for more than 10 seconds (simulated)
     useEffect(() => {
+        if (!isPublished(activeVideo.youtubeId)) return;
         const timer = setTimeout(() => {
             markAsWatched(activeVideo.part);
         }, 10000);
@@ -174,7 +187,10 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
             progress: "Din fremgang",
             completed: "Gennemført",
             resources: "Metodiske ressourcer",
-            downloadBriefing: "Download Executive Briefing"
+            downloadBriefing: "Download Executive Briefing",
+            comingSoon: "Denne episode er endnu ikke udgivet",
+            comingSoonSub: "Følg kanalen for at få besked, når den lander.",
+            subscribe: "Følg på YouTube"
         },
         en: {
             masterclass: "Project Masterclass",
@@ -186,7 +202,10 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
             progress: "Your Progress",
             completed: "Completed",
             resources: "Methodological Resources",
-            downloadBriefing: "Download Executive Briefing"
+            downloadBriefing: "Download Executive Briefing",
+            comingSoon: "This episode isn't published yet",
+            comingSoonSub: "Follow the channel to hear when it lands.",
+            subscribe: "Follow on YouTube"
         }
     }[lang];
 
@@ -317,21 +336,41 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                         <div className="aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative">
                             <AnimatePresence mode="wait">
                                 <motion.div
-                                    key={activeVideo.youtubeId}
+                                    key={activeVideo.youtubeId ?? `part-${activeVideo.part}`}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.5 }}
                                     className="w-full h-full"
                                 >
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?rel=0&modestbranding=1`}
-                                        title={activeVideo.title}
-                                        className="w-full h-full"
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                    ></iframe>
+                                    {isPublished(activeVideo.youtubeId) ? (
+                                        <iframe
+                                            src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtubeId}?rel=0&modestbranding=1`}
+                                            title={activeVideo.title}
+                                            className="w-full h-full"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        ></iframe>
+                                    ) : (
+                                        <div className="w-full h-full flex flex-col items-center justify-center text-center px-8 bg-gradient-to-br from-slate-900 to-black">
+                                            <div className="w-14 h-14 rounded-full border border-accent/30 flex items-center justify-center mb-6">
+                                                <i className="fa-solid fa-clapperboard text-accent"></i>
+                                            </div>
+                                            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent/80 mb-3">
+                                                {t.comingSoon}
+                                            </p>
+                                            <p className="text-slate-500 text-sm max-w-xs mb-6">{t.comingSoonSub}</p>
+                                            <a
+                                                href={CHANNEL_URL}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-xs font-bold uppercase tracking-widest text-slate-300 hover:text-white border border-white/10 hover:border-white/25 rounded-full px-5 py-2 transition-colors"
+                                            >
+                                                <i className="fa-brands fa-youtube mr-2"></i>{t.subscribe}
+                                            </a>
+                                        </div>
+                                    )}
                                 </motion.div>
                             </AnimatePresence>
                         </div>

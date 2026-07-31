@@ -1,0 +1,145 @@
+{
+  "$ref": "#/definitions/videos",
+  "definitions": {
+    "videos": {
+      "type": "object",
+      "properties": {
+        "youtubeId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "title_da": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "description_da": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string",
+          "enum": [
+            "hiking",
+            "economics"
+          ]
+        },
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "landscape",
+            "portrait"
+          ],
+          "default": "landscape"
+        },
+        "series": {
+          "type": "string"
+        },
+        "series_da": {
+          "type": "string"
+        },
+        "seriesOrder": {
+          "type": "number"
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "label_da": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "chapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "number"
+              },
+              "label": {
+                "type": "string"
+              },
+              "label_da": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "t",
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "relatedProjectUrl": {
+          "type": "string"
+        },
+        "relatedBlogSlug": {
+          "type": "string"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "youtubeId",
+        "title",
+        "description",
+        "publishedAt",
+        "track"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

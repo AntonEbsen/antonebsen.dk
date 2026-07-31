@@ -65,7 +65,7 @@ shocks, irf = identify_shocks(macro_data)`
       { src: "/assets/images/gfc-irf.png", caption: "Impulse Response Funtions: VIX shock effect on Global Credit", alt: "IRF Plot" },
       { src: "/assets/images/gfc-system.png", caption: "System Architecture: Transmission Channels", alt: "System Diagram" }
   ],
-  videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
+  videoUrl: "", // No video abstract published yet
   techStack: [
       { name: "Python", icon: "fa-brands fa-python", version: "3.9" },
       { name: "Stata", icon: "fa-solid fa-table-cells", version: "17" },
@@ -152,7 +152,6 @@ shocks, irf = identify_shocks(macro_data)`
       title: "Hvad er den Globale Finansielle Cyklus?",
       signal: "Du forstår litteraturen og de institutionelle rammer.",
       description: "Hvordan Hélène Rey (2013) omdefinerede international finans. Hvorfor USA stadig er center-økonomien, og hvorfor VIX er en policy-relevant indikator for global risiko.",
-      youtubeId: "dQw4w9WgXcQ",
       links: [
         { label: "Rey (2013) Speciale", url: "https://www.kansascityfed.org/documents/3400/2013-Rey.pdf", icon: "fa-solid fa-file-pdf" },
         { label: "Læs Artikel (Del 1)", url: "/blog/gfc-part-1", icon: "fa-solid fa-book-open", class: "btn-accent" }
@@ -163,7 +162,6 @@ shocks, irf = identify_shocks(macro_data)`
       title: "Monetary Spillovers: Intuition før matematik",
       signal: "Du kan forklare komplekse mekanismer uden at gemme dig bag algebra.",
       description: "Eksploration af risk-taking channel vs. credit channel. Hvorfor EFFR påvirker europæiske banker og problemet med den 'irreconcilable duo'.",
-      youtubeId: "dQw4w9WgXcQ",
       links: [
         { label: "Transmissionskanaler", url: "#methodology", icon: "fa-solid fa-diagram-project" },
         { label: "Læs Artikel (Del 2)", url: "/blog/gfc-part-2", icon: "fa-solid fa-chart-line", class: "btn-accent" }
@@ -174,7 +172,6 @@ shocks, irf = identify_shocks(macro_data)`
       title: "Hvorfor en strukturel VAR? (Og hvorfor rekursiv?)",
       signal: "Du er ikke SVAR-maximalist – du udviser metodisk modenhed.",
       description: "Hvorfor SVAR er nødvendig for at udlede kausale chok. Hvordan Cholesky dekomponering giver struktur, og hvorfor vi må adressere dens kritikpunkter.",
-      youtubeId: "dQw4w9WgXcQ",
       links: [
         { label: "SVAR Logik", url: "#code-vault", icon: "fa-solid fa-code" }
       ]
@@ -184,7 +181,6 @@ shocks, irf = identify_shocks(macro_data)`
       title: "Mit Setup: Data, ordering og antagelser",
       signal: "Du adresserer proaktivt identifikation som det svageste led.",
       description: "Variabelvalg (EFFR, VIX, EULEV). Logikken bag Cholesky-rækkefølgen og hvordan den påvirker de resulterende IRF estimater.",
-      youtubeId: "dQw4w9WgXcQ",
       links: [
         { label: "FRED Datakilde", url: "https://fred.stlouisfed.org/", icon: "fa-solid fa-database" }
       ]
@@ -194,7 +190,6 @@ shocks, irf = identify_shocks(macro_data)`
       title: "Resultater: Findes US spillovers stadig?",
       signal: "Du kan fortolke resultater – ikke bare plotte dem.",
       description: "Centrale IRF resultater. Hvordan bankernes Gearing reagerer på amerikanske chok, og hvorfor strukturelle skift efter COVID sandsynligvis dæmper spillovers.",
-      youtubeId: "dQw4w9WgXcQ",
       links: [
         { label: "Interaktivt IRF Chart", url: "#live-data", icon: "fa-solid fa-chart-line" },
         { label: "Læs Artikel (Del 3)", url: "/blog/gfc-part-3", icon: "fa-solid fa-flag", class: "btn-accent" }
@@ -205,14 +200,12 @@ shocks, irf = identify_shocks(macro_data)`
       title: "Bruddet med Rey (2013): Akademisk selvstændighed",
       signal: "Du er ikke bare en studerende der gentager – du tænker selvstændigt.",
       description: "Hvad replikerer du, hvad bryder med litteraturen, og hvorfor det giver empirisk mening.",
-      youtubeId: "dQw4w9WgXcQ"
     },
     {
       part: 7,
       title: "Begrænsninger & Fremtidsperspektiv",
       signal: "Coachability + refleksion = ansættelses-guld.",
       description: "Ordering sensitivity, alternative identifikationsstrategier og hvad jeg ville gøre anderledes på et ph.d.-niveau.",
-      youtubeId: "dQw4w9WgXcQ"
     }
   ],
   robustness: [

@@ -6,7 +6,7 @@ export const caminoContent: any = {
         h1: "Camino de Santiago 2027",
         subtitle: "Camino Francés · Año Santo · ~800 km fra Saint-Jean-Pied-de-Port til Santiago de Compostela",
         socials: [
-            { name: "YouTube", url: "#", icon: "fa-youtube", color: "#FF0000" },
+            { name: "YouTube", url: "https://www.youtube.com/@thewanderingeconomist", icon: "fa-youtube", color: "#FF0000" },
             { name: "Strava", url: "#", icon: "fa-strava", color: "#FC4C02" },
             { name: "AllTrails", url: "#", icon: "fa-mountain", color: "#458143" }
         ],
@@ -471,7 +471,7 @@ export const caminoContent: any = {
         h1: "Camino de Santiago 2027",
         subtitle: "Camino Francés · Año Santo · ~800 km from Saint-Jean-Pied-de-Port to Santiago de Compostela",
         socials: [
-            { name: "YouTube", url: "#", icon: "fa-youtube", color: "#FF0000" },
+            { name: "YouTube", url: "https://www.youtube.com/@thewanderingeconomist", icon: "fa-youtube", color: "#FF0000" },
             { name: "Strava", url: "#", icon: "fa-strava", color: "#FC4C02" },
             { name: "AllTrails", url: "#", icon: "fa-mountain", color: "#458143" }
         ],

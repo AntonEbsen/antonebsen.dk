@@ -17,6 +17,9 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
         "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io",
         "media-src 'self' https:",
         "worker-src 'self' blob:",
+        // frame-src: third-party embeds. Without this, iframes fall back to default-src 'self'
+        // and are blocked outright (this silently broke the Spotify embeds on /soundtrack).
+        "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://open.spotify.com",
         "frame-ancestors 'none'",
         "base-uri 'self'",
         "form-action 'self'",
