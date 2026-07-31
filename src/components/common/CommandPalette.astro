@@ -135,7 +135,10 @@ const quickActions = [
   }
 </style>
 
-<script lang="ts">
+<!-- No lang="ts": any attribute other than src makes Astro emit the script raw,
+     which shipped these imports and TS casts straight to the browser. Astro
+     compiles TypeScript in <script> by default. -->
+<script>
   import { track } from '@vercel/analytics';
   import { unlockAchievement } from '../../lib/gamification';
   // @ts-nocheck

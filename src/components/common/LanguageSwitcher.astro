@@ -30,7 +30,8 @@ const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog')
   </div>
 </div>
 
-<script lang="ts">
+<!-- No lang="ts" — see CommandPalette.astro; it shipped raw TS and threw. -->
+<script>
   // Simple logic to handle dropdown toggle on click for touch devices / accessibility
   document.addEventListener('DOMContentLoaded', () => {
     const langBtns = document.querySelectorAll('.lang-btn');

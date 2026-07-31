@@ -4,14 +4,16 @@ import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
 import ChatWidget from '../components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
-import { AchievementToast } from '../components/game/AchievementToast';
-import TrophyRoom from '../components/game/TrophyRoom';
+import AchievementToast from '../components/game/AchievementToast.astro';
+import TrophyRoom from '../components/game/TrophyRoom.astro';
 import Chameleon from '@components/core/Chameleon.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
 import '@styles/themes.css';
 import SpeedInsights from "@vercel/speed-insights/astro"
-import { Analytics } from "@vercel/analytics/react"
+// The /astro entry, not /react: the React one mounted a client:load island that
+// dragged React onto all ~196 pages (only ~10 have a genuine React island).
+import Analytics from "@vercel/analytics/astro"
 import '@fontsource-variable/inter';
 import 'katex/dist/katex.min.css';
 
@@ -230,7 +232,7 @@ const lang = getLangFromUrl(Astro.url);
   <SEO title={title} description={description} image={image} article={article} />
   <meta name="design-version" content="dark-gold-v1" />
   <SpeedInsights />
-  <Analytics client:load />
+  <Analytics />
   
   <!-- 3. Font preloading for instant text rendering -->
   <!-- Replaced with @fontsource-variable/inter -->
@@ -268,8 +270,8 @@ const lang = getLangFromUrl(Astro.url);
   
   {showChatWidget && <ChatWidget />}
   <CommandPalette />
-  <AchievementToast client:idle />
-  <TrophyRoom client:idle />
+  <AchievementToast />
+  <TrophyRoom />
 
   <script>
     // Premium reveal observer
