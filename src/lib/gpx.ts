@@ -24,6 +24,9 @@ export interface ElevationSample {
     ele: number;
 }
 
+/** [latitude, longitude] — the order Leaflet expects. */
+export type LatLng = [number, number];
+
 export interface TrailStats {
     distanceKm: number;
     elevationGainM: number;
@@ -36,6 +39,8 @@ export interface TrailStats {
     avgSpeedKmh?: number;
     /** Downsampled series for charting. */
     profile: ElevationSample[];
+    /** Downsampled route for drawing on a map. */
+    path: LatLng[];
 }
 
 const EARTH_RADIUS_M = 6371008.8;
@@ -106,17 +111,22 @@ function accumulateElevation(points: TrackPoint[], threshold = 3) {
     return { gain: Math.round(gain), loss: Math.round(loss) };
 }
 
-/** Evenly downsamples the profile so charts stay light. */
-function downsample(samples: ElevationSample[], target: number): ElevationSample[] {
+/** Evenly downsamples a series so charts and map polylines stay light. */
+function downsample<T>(samples: T[], target: number): T[] {
     if (samples.length <= target) return samples;
 
     const step = (samples.length - 1) / (target - 1);
-    const out: ElevationSample[] = [];
+    const out: T[] = [];
     for (let i = 0; i < target; i++) out.push(samples[Math.round(i * step)]);
     return out;
 }
 
-export function computeTrailStats(points: TrackPoint[], profilePoints = 120): TrailStats | null {
+export function computeTrailStats(
+    points: TrackPoint[],
+    profilePoints = 120,
+    // A polyline can carry more detail than a chart before it costs anything.
+    pathPoints = 400
+): TrailStats | null {
     if (points.length < 2) return null;
 
     const samples: ElevationSample[] = [];
@@ -148,11 +158,15 @@ export function computeTrailStats(points: TrackPoint[], profilePoints = 120): Tr
         maxAltitudeM: Math.round(Math.max(...elevations)),
         durationMin,
         avgSpeedKmh: durationMin ? +(distanceKm / (durationMin / 60)).toFixed(1) : undefined,
-        profile: downsample(samples, profilePoints)
+        profile: downsample(samples, profilePoints),
+        path: downsample(
+            points.map((p): LatLng => [+p.lat.toFixed(5), +p.lon.toFixed(5)]),
+            pathPoints
+        )
     };
 }
 
 /** Convenience: raw GPX text straight to stats. Returns null if unparseable. */
-export function statsFromGpx(xml: string, profilePoints = 120): TrailStats | null {
-    return computeTrailStats(parseTrackPoints(xml), profilePoints);
+export function statsFromGpx(xml: string, profilePoints = 120, pathPoints = 400): TrailStats | null {
+    return computeTrailStats(parseTrackPoints(xml), profilePoints, pathPoints);
 }

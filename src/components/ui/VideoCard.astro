@@ -1,6 +1,7 @@
 ---
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import Pill from '@components/ui/Pill.astro';
+import { seriesPath, slugifySeries } from '@lib/video-feed';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -65,7 +66,15 @@ const stamp = (seconds: number) => {
   <div class="flex flex-col gap-3 px-1">
     <div class="flex flex-wrap items-center gap-2">
       <Pill variant="accent"><i class={`${trackIcon} mr-1.5`}></i>{trackLabel}</Pill>
-      {series && <Pill>{series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}</Pill>}
+      {series && (
+        video.series
+          ? <a href={seriesPath(slugifySeries(video.series), lang)} class="no-underline">
+              <Pill class="hover:border-accent/50 hover:text-accent transition-colors">
+                {series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}
+              </Pill>
+            </a>
+          : <Pill>{series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}</Pill>
+      )}
     </div>
 
     <h3 class="text-lg font-bold text-white leading-snug group-hover:text-accent transition-colors">

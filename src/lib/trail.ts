@@ -1,4 +1,4 @@
-import { statsFromGpx, type ElevationSample } from './gpx';
+import { statsFromGpx, type ElevationSample, type LatLng } from './gpx';
 
 /**
  * Resolves the "trail in numbers" for a video.
@@ -23,10 +23,14 @@ export interface ResolvedTrail {
     startPlace?: string;
     endPlace?: string;
     profile: ElevationSample[];
+    /** Route coordinates for the map; empty when there is no GPX. */
+    path: LatLng[];
     /** True when any figure is present — templates use this to decide whether to render. */
     hasData: boolean;
     /** True when a profile chart is worth drawing. */
     hasProfile: boolean;
+    /** True when there is a route worth mapping. */
+    hasPath: boolean;
 }
 
 interface VideoTrailInput {
@@ -68,8 +72,10 @@ export function resolveTrail(video: VideoTrailInput): ResolvedTrail {
         startPlace: manual.startPlace,
         endPlace: manual.endPlace,
         profile: derived?.profile ?? [],
+        path: derived?.path ?? [],
         hasData: false,
-        hasProfile: false
+        hasProfile: false,
+        hasPath: false
     };
 
     // Recompute average speed if the duration or distance was overridden by hand.
@@ -78,8 +84,10 @@ export function resolveTrail(video: VideoTrailInput): ResolvedTrail {
     }
 
     merged.hasProfile = merged.profile.length > 1;
+    merged.hasPath = merged.path.length > 1;
     merged.hasData =
         merged.hasProfile ||
+        merged.hasPath ||
         [merged.distanceKm, merged.elevationGainM, merged.durationMin, merged.steps, merged.maxAltitudeM]
             .some((v) => typeof v === 'number');
 

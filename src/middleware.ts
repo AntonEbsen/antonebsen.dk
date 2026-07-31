@@ -14,7 +14,8 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
         "font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com",
         "img-src 'self' data: https: blob:",
-        "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io",
+        // api.open-meteo.com powers the weather cards on /camino/route.
+        "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io https://api.open-meteo.com",
         "media-src 'self' https:",
         "worker-src 'self' blob:",
         // frame-src: third-party embeds. Without this, iframes fall back to default-src 'self'

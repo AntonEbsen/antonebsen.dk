@@ -4,6 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Pill from '@components/ui/Pill.astro';
 import Button from '@components/ui/Button.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
+import RouteMap from '@components/ui/RouteMap.astro';
+import StatTiles from '@components/ui/StatTiles.astro';
 import { CHANNEL_URL } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
 import type { CollectionEntry } from 'astro:content';
@@ -42,7 +44,12 @@ const t = isDa
 const trackLabel = { hiking: isDa ? 'Vandring' : 'Hiking', economics: isDa ? 'Økonomi' : 'Economics' }[video.track];
 const listUrl = isDa ? '/videoer' : '/en/videos';
 
-const hhmm = (min: number) => `${Math.floor(min / 60)} t ${min % 60} min`.replace(' t ', isDa ? ' t ' : ' h ');
+const hourUnit = isDa ? 't' : 'h';
+const hhmm = (min: number) => {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return h ? `${h} ${hourUnit} ${m} min` : `${m} min`;
+};
 const stamp = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
 const tiles = [
@@ -125,30 +132,25 @@ const jsonLd = {
       <Section>
         <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">{t.inNumbers}</h2>
 
-        <dl class="grid grid-cols-2 md:grid-cols-4 gap-4 m-0 mb-10">
-          {tiles.map((tile) => (
-            <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-5">
-              <dt class="text-[10px] uppercase tracking-widest text-dim opacity-50 mb-2">
-                <i class={`${tile.icon} mr-1.5 text-accent/60`}></i>{tile.label}
-              </dt>
-              <dd class="text-2xl font-black text-white m-0 tabular-nums">{tile.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <StatTiles tiles={tiles} class="mb-10" />
 
-        {trail.hasProfile && (
-          <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6">
-            <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-50 mb-4">{t.profile}</h3>
-            <div class="relative h-[280px]">
-              <canvas
-                id="elevation-chart"
-                data-profile={JSON.stringify(trail.profile)}
-                data-axis-km={t.axisKm}
-                data-axis-ele={t.axisEle}
-              ></canvas>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          {trail.hasPath && <RouteMap paths={[trail.path]} label={t.route} />}
+
+          {trail.hasProfile && (
+            <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6">
+              <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-50 mb-4">{t.profile}</h3>
+              <div class="relative h-[280px]">
+                <canvas
+                  id="elevation-chart"
+                  data-profile={JSON.stringify(trail.profile)}
+                  data-axis-km={t.axisKm}
+                  data-axis-ele={t.axisEle}
+                ></canvas>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </Section>
     )}
 
@@ -157,14 +159,23 @@ const jsonLd = {
         <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-5">{t.chapters}</h2>
         <ul class="list-none p-0 m-0 border-t border-white/5">
           {video.chapters.map((chapter) => (
-            <li>
-              <a
-                href={`https://www.youtube.com/watch?v=${video.youtubeId}&t=${chapter.t}s`}
-                target="_blank" rel="noopener noreferrer"
-                class="flex gap-5 py-3 border-b border-white/5 text-dim no-underline hover:text-accent transition-colors"
+            <li class="flex items-center gap-3 border-b border-white/5">
+              <button
+                type="button"
+                class="chapter-seek flex flex-1 gap-5 py-3 text-left text-dim hover:text-accent transition-colors"
+                data-seek={chapter.t}
+                data-youtube-id={video.youtubeId}
               >
                 <span class="font-mono text-accent/70 tabular-nums text-sm">{stamp(chapter.t)}</span>
                 <span class="text-sm">{(isDa && chapter.label_da) || chapter.label}</span>
+              </button>
+              <a
+                href={`https://www.youtube.com/watch?v=${video.youtubeId}&t=${chapter.t}s`}
+                target="_blank" rel="noopener noreferrer"
+                class="text-dim opacity-30 hover:opacity-100 hover:text-accent transition-all shrink-0 px-2"
+                aria-label={`${t.watch}: ${(isDa && chapter.label_da) || chapter.label}`}
+              >
+                <i class="fa-brands fa-youtube text-xs"></i>
               </a>
             </li>
           ))}
@@ -182,6 +193,20 @@ const jsonLd = {
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </Layout>
+
+<script>
+  // Chapters drive the player already on the page instead of navigating to YouTube.
+  document.querySelectorAll<HTMLElement>('.chapter-seek').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('yt-facade:play', {
+        detail: {
+          start: Number(btn.dataset.seek),
+          youtubeId: btn.dataset.youtubeId
+        }
+      }));
+    });
+  });
+</script>
 
 <script>
   // Chart.js is ~200 kB — only pull it in when there is actually a profile to draw,

@@ -79,6 +79,10 @@ const hreflangs = [
   <link rel="alternate" hreflang={h.lang} href={h.href} />
 ))}
 
+<!-- Feed autodiscovery: without these the video feeds are unreachable from the site -->
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videos" href="/videos.xml" />
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videoer" href="/videoer.xml" hreflang="da" />
+
 <!-- Primary Meta Tags -->
 <title>{pageTitle}</title>
 <meta name="title" content={pageTitle} />

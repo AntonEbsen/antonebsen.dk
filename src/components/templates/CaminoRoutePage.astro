@@ -1,6 +1,9 @@
 ---
 import CaminoLayout from '../../layouts/CaminoLayout.astro';
 import { caminoContent } from '../../data/camino';
+// Bundled from node_modules; the old unpkg tag was blocked by the site's CSP, and
+// the stylesheet was never loaded here at all so tiles would have been mispositioned.
+import 'leaflet/dist/leaflet.css';
 
 interface Props {
   lang: 'da' | 'en';
@@ -56,7 +59,7 @@ const weatherCities = t.weatherCities;
                 <p>{t.mapDesc}</p>
               </div>
             </div>
-            <div id="camino-map" class="map-container"></div>
+            <div id="camino-map" class="map-container" data-waypoints={JSON.stringify(waypoints)}></div>
           </section>
 
           <!-- Live Weather -->
@@ -88,7 +91,7 @@ const weatherCities = t.weatherCities;
               </div>
             </div>
             <div class="elevation-chart-wrapper">
-              <svg viewBox="0 0 800 200" class="elevation-svg" id="elevation-chart">
+              <svg viewBox="0 0 800 200" class="elevation-svg" id="elevation-chart" data-elevation={JSON.stringify(elevationData)}>
                 <!-- Grid Lines -->
                 <line x1="0" y1="180" x2="800" y2="180" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
                 <line x1="0" y1="130" x2="800" y2="130" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
@@ -259,12 +262,16 @@ const weatherCities = t.weatherCities;
     .difficulty.easy { color: #4ade80; }
   </style>
 
-  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script define:vars={{ waypoints, elevationData }}>
+  <script>
+    import L from 'leaflet';
+
+    // Data arrives via data-* attributes rather than define:vars, because scripts
+    // using define:vars are emitted inline and therefore cannot use imports.
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Map Logic
       const mapContainer = document.getElementById('camino-map');
       if (mapContainer) {
+        const waypoints = JSON.parse(mapContainer.dataset.waypoints || '[]');
         const map = L.map('camino-map').setView([42.5, -4.0], 6);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
@@ -305,6 +312,8 @@ const weatherCities = t.weatherCities;
       const path = document.getElementById('elev-path');
       const tooltip = document.getElementById('elev-tooltip');
       const chart = document.getElementById('elevation-chart');
+
+      const elevationData = JSON.parse((chart as HTMLElement | null)?.dataset.elevation || '[]');
 
       if (path && elevationData.length > 0) {
         const width = 800;

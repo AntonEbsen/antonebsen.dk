@@ -97,6 +97,39 @@ describe('computeTrailStats', () => {
         expect(computeTrailStats(long, 120)!.profile).toHaveLength(120);
     });
 
+    describe('path (for the route map)', () => {
+        it('emits [lat, lng] pairs in Leaflet order', () => {
+            const stats = statsFromGpx(GPX)!;
+
+            expect(stats.path).toHaveLength(4);
+            expect(stats.path[0][0]).toBeCloseTo(46.54, 4); // lat
+            expect(stats.path[0][1]).toBeCloseTo(11.98, 4); // lng
+        });
+
+        it('starts and ends at the first and last trackpoint', () => {
+            const pts = parseTrackPoints(GPX);
+            const { path } = computeTrailStats(pts)!;
+
+            expect(path[0][0]).toBeCloseTo(pts[0].lat, 4);
+            expect(path.at(-1)![0]).toBeCloseTo(pts.at(-1)!.lat, 4);
+            expect(path.at(-1)![1]).toBeCloseTo(pts.at(-1)!.lon, 4);
+        });
+
+        it('downsamples long tracks independently of the profile', () => {
+            const long = Array.from({ length: 5000 }, (_, i) => ({
+                lat: 46.54 + i * 0.0001, lon: 11.98 + i * 0.0001, ele: 1200
+            }));
+
+            const stats = computeTrailStats(long, 120, 400)!;
+            expect(stats.profile).toHaveLength(120);
+            expect(stats.path).toHaveLength(400);
+        });
+
+        it('is empty-safe for unparseable input', () => {
+            expect(statsFromGpx('<html>nope</html>')).toBeNull();
+        });
+    });
+
     it('returns null when there is nothing to measure', () => {
         expect(computeTrailStats([])).toBeNull();
         expect(computeTrailStats([{ lat: 1, lon: 2, ele: 3 }])).toBeNull();

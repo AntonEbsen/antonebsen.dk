@@ -1,0 +1,127 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import VideoCard from '@components/ui/VideoCard.astro';
+import RouteMap from '@components/ui/RouteMap.astro';
+import StatTiles from '@components/ui/StatTiles.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import { resolveTrail } from '@lib/trail';
+import type { FeedVideoEntry } from '@lib/video-feed';
+
+interface Props {
+  series: string;
+  videos: FeedVideoEntry[];
+  lang: 'da' | 'en';
+}
+
+const { series, videos, lang } = Astro.props;
+const isDa = lang === 'da';
+
+// Episodes run in narrative order here, not newest-first like the index.
+const ordered = [...videos].sort(
+  (a, b) =>
+    (a.seriesOrder ?? Number.MAX_SAFE_INTEGER) - (b.seriesOrder ?? Number.MAX_SAFE_INTEGER) ||
+    new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+);
+
+const trails = ordered.map((video) => resolveTrail(video));
+
+const totals = trails.reduce(
+  (acc, trail) => ({
+    distanceKm: acc.distanceKm + (trail.distanceKm ?? 0),
+    elevationGainM: acc.elevationGainM + (trail.elevationGainM ?? 0),
+    durationMin: acc.durationMin + (trail.durationMin ?? 0),
+    steps: acc.steps + (trail.steps ?? 0)
+  }),
+  { distanceKm: 0, elevationGainM: 0, durationMin: 0, steps: 0 }
+);
+
+const paths = trails.filter((t) => t.hasPath).map((t) => t.path);
+
+const seriesTitle = (isDa && ordered[0]?.series_da) || series;
+
+const t = isDa
+  ? {
+      eyebrow: 'Serie', back: 'Alle videoer', episodes: 'Afsnit', inNumbers: 'Serien i tal',
+      route: 'Ruten', distance: 'Distance', climb: 'Stigning', duration: 'Tid på fode', steps: 'Skridt',
+      films: 'Film', contactTitle: 'Følg med',
+      contactText: 'Nye afsnit lander på kanalen først. Du finder mig også her:'
+    }
+  : {
+      eyebrow: 'Series', back: 'All videos', episodes: 'Episodes', inNumbers: 'The series in numbers',
+      route: 'The route', distance: 'Distance', climb: 'Ascent', duration: 'Time on foot', steps: 'Steps',
+      films: 'Films', contactTitle: 'Follow along',
+      contactText: 'New episodes land on the channel first. You can also find me here:'
+    };
+
+const hourUnit = isDa ? 't' : 'h';
+const hhmm = (min: number) => {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return h ? `${h} ${hourUnit} ${m} min` : `${m} min`;
+};
+
+const tiles = [
+  { label: t.films, value: String(ordered.length), icon: 'fa-solid fa-film' },
+  totals.distanceKm > 0 && {
+    label: t.distance, value: `${totals.distanceKm.toFixed(1)} km`, icon: 'fa-solid fa-route'
+  },
+  totals.elevationGainM > 0 && {
+    label: t.climb, value: `${totals.elevationGainM.toLocaleString(isDa ? 'da-DK' : 'en-GB')} m`,
+    icon: 'fa-solid fa-arrow-trend-up'
+  },
+  totals.durationMin > 0 && {
+    label: t.duration, value: hhmm(totals.durationMin), icon: 'fa-solid fa-clock'
+  },
+  totals.steps > 0 && {
+    label: t.steps, value: totals.steps.toLocaleString(isDa ? 'da-DK' : 'en-GB'),
+    icon: 'fa-solid fa-shoe-prints'
+  }
+].filter(Boolean) as { label: string; value: string; icon: string }[];
+
+const listUrl = isDa ? '/videoer' : '/en/videos';
+const description = isDa
+  ? `${seriesTitle} — ${ordered.length} film fra The Wandering Economist.`
+  : `${seriesTitle} — ${ordered.length} films from The Wandering Economist.`;
+---
+
+<Layout title={seriesTitle} description={description}>
+  <main class="container mx-auto px-4 pt-28 pb-24 max-w-6xl">
+
+    <a href={listUrl} class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-dim opacity-60 hover:text-accent hover:opacity-100 transition-all no-underline mb-8">
+      <i class="fa-solid fa-arrow-left text-[10px]"></i>{t.back}
+    </a>
+
+    <Section class="!mb-12">
+      <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-4">{t.eyebrow}</p>
+      <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-6">{seriesTitle}</h1>
+    </Section>
+
+    <Section>
+      <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">{t.inNumbers}</h2>
+      <StatTiles tiles={tiles} class="mb-10" />
+      {paths.length > 0 && <RouteMap paths={paths} label={t.route} />}
+    </Section>
+
+    <Section>
+      <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">{t.episodes}</h2>
+      <div class="series-grid">
+        {ordered.map((video) => <VideoCard video={video} slug={video.slug} lang={lang} />)}
+      </div>
+    </Section>
+
+    <Section>
+      <ContactCard title={t.contactTitle} text={t.contactText} lang={lang} />
+    </Section>
+
+  </main>
+</Layout>
+
+<style>
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    align-items: start;
+  }
+</style>

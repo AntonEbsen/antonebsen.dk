@@ -35,6 +35,7 @@ const posterFallback = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
   class:list={['yt-facade group relative w-full overflow-hidden rounded-xl bg-black/40 border border-white/5 shadow-2xl transition-all duration-500 hover:border-accent/40', aspect, className]}
   data-embed-src={embedSrc}
   data-title={title}
+  data-youtube-id={youtubeId}
 >
   <button type="button" class="yt-play absolute inset-0 w-full h-full cursor-pointer" aria-label={`Play: ${title}`}>
     <img
@@ -57,19 +58,25 @@ const posterFallback = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
 </div>
 
 <script>
-  // Delegated so it also covers cards rendered after hydration.
-  document.addEventListener('click', (event) => {
-    const trigger = (event.target as HTMLElement)?.closest('.yt-play');
-    if (!trigger) return;
+  /** Swaps the thumbnail for the real player, optionally seeking to `start` seconds. */
+  function activate(facade: HTMLElement, start?: number) {
+    const base = facade.dataset.embedSrc;
+    if (!base) return;
 
-    const facade = trigger.closest('.yt-facade') as HTMLElement | null;
-    if (!facade) return;
+    const url = new URL(base);
+    if (typeof start === 'number' && Number.isFinite(start)) {
+      url.searchParams.set('start', String(Math.max(0, Math.floor(start))));
+    }
 
-    const src = facade.dataset.embedSrc;
-    if (!src) return;
+    // Already playing: reuse the existing iframe so the seek doesn't rebuild it.
+    const existing = facade.querySelector('iframe');
+    if (existing) {
+      existing.src = url.toString();
+      return;
+    }
 
     const iframe = document.createElement('iframe');
-    iframe.src = src;
+    iframe.src = url.toString();
     iframe.title = facade.dataset.title || 'YouTube video';
     iframe.className = 'absolute inset-0 w-full h-full';
     iframe.setAttribute('frameborder', '0');
@@ -77,6 +84,29 @@ const posterFallback = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
     iframe.setAttribute('allowfullscreen', '');
 
     facade.replaceChildren(iframe);
+  }
+
+  // Delegated so it also covers cards rendered after hydration.
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as HTMLElement)?.closest('.yt-play');
+    if (!trigger) return;
+
+    const facade = trigger.closest('.yt-facade') as HTMLElement | null;
+    if (facade) activate(facade);
+  });
+
+  // Chapter links elsewhere on the page seek this player rather than sending the
+  // visitor off to YouTube. Detail is { start: seconds, youtubeId?: string }.
+  document.addEventListener('yt-facade:play', (event) => {
+    const { start, youtubeId } = (event as CustomEvent).detail || {};
+
+    const facade = (youtubeId
+      ? document.querySelector(`.yt-facade[data-youtube-id="${youtubeId}"]`)
+      : document.querySelector('.yt-facade')) as HTMLElement | null;
+
+    if (!facade) return;
+    activate(facade, start);
+    facade.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
   // maxresdefault 404s on some uploads and YouTube serves a 120x90 grey placeholder.

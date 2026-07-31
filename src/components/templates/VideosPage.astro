@@ -4,7 +4,9 @@ import Section from '@components/ui/Section.astro';
 import VideoCard from '@components/ui/VideoCard.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { getCollection } from 'astro:content';
+import StatTiles from '@components/ui/StatTiles.astro';
 import { getLatestVideos, CHANNEL_URL, CHANNEL_NAME } from '@lib/youtube';
+import { resolveTrail } from '@lib/trail';
 
 interface Props {
   lang: 'da' | 'en';
@@ -31,6 +33,17 @@ const counts = {
   hiking: videos.filter((v) => v.track === 'hiking').length,
   economics: videos.filter((v) => v.track === 'economics').length
 };
+
+// Lifetime totals across every hike that carries trail data. Hidden entirely
+// until at least one video has numbers behind it.
+const totals = videos.map(resolveTrail).reduce(
+  (acc, trail) => ({
+    distanceKm: acc.distanceKm + (trail.distanceKm ?? 0),
+    elevationGainM: acc.elevationGainM + (trail.elevationGainM ?? 0),
+    steps: acc.steps + (trail.steps ?? 0)
+  }),
+  { distanceKm: 0, elevationGainM: 0, steps: 0 }
+);
 
 const localizedContent = {
   da: {
@@ -64,6 +77,26 @@ const localizedContent = {
 };
 
 const t = localizedContent[lang];
+
+const totalTiles = [
+  totals.distanceKm > 0 && {
+    label: isDa ? 'Gået i alt' : 'Distance walked',
+    value: `${totals.distanceKm.toFixed(1)} km`, icon: 'fa-solid fa-route'
+  },
+  totals.elevationGainM > 0 && {
+    label: isDa ? 'Samlet stigning' : 'Total ascent',
+    value: `${totals.elevationGainM.toLocaleString(isDa ? 'da-DK' : 'en-GB')} m`,
+    icon: 'fa-solid fa-arrow-trend-up'
+  },
+  totals.steps > 0 && {
+    label: isDa ? 'Skridt' : 'Steps',
+    value: totals.steps.toLocaleString(isDa ? 'da-DK' : 'en-GB'), icon: 'fa-solid fa-shoe-prints'
+  },
+  { label: isDa ? 'Film' : 'Films', value: String(videos.length), icon: 'fa-solid fa-film' }
+].filter(Boolean) as { label: string; value: string; icon: string }[];
+
+// A lone "films" tile is not worth a section.
+const showTotals = totalTiles.length > 1;
 
 const filters = [
   { key: 'all', label: t.filters.all, icon: 'fa-solid fa-layer-group', count: counts.all },
@@ -117,6 +150,15 @@ const jsonLd = {
 
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl aspect-video bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-0"></div>
     </Section>
+
+    {showTotals && (
+      <Section class="container mx-auto px-4 relative z-10">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">
+          {isDa ? 'Til fods, i tal' : 'On foot, in numbers'}
+        </h2>
+        <StatTiles tiles={totalTiles} />
+      </Section>
+    )}
 
     <Section class="container mx-auto px-4 relative z-10">
       {videos.length === 0 ? (
