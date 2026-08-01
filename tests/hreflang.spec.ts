@@ -76,3 +76,34 @@ test('non-video pages keep the prefix-derived alternates', async ({ page }) => {
     expect(byLang.en).toBe('/en/about');
     expect(byLang.de).toBe('/de/about');
 });
+
+/**
+ * A language is only claimed once its page exists. Previously every page
+ * advertised a German alternate regardless, and most of the site has no German
+ * version — 143 of the site's hreflang links pointed at 404s.
+ */
+test.describe('alternates match what is actually translated', () => {
+    test('a page with all three languages advertises all three', async ({ page, request }) => {
+        const alts = await hreflangsOf(page, '/data-map');
+        const langs = alts.map((a) => a.lang).sort();
+
+        expect(langs).toEqual(['da', 'de', 'en', 'x-default']);
+        for (const { path } of alts) expect((await request.get(path)).status()).toBe(200);
+    });
+
+    test('a page without a German version does not claim one', async ({ page, request }) => {
+        const alts = await hreflangsOf(page, '/cliometrics');
+        const langs = alts.map((a) => a.lang).sort();
+
+        expect(langs).toEqual(['da', 'en', 'x-default']);
+        expect(langs).not.toContain('de');
+        for (const { path } of alts) expect((await request.get(path)).status()).toBe(200);
+    });
+
+    test('an untranslated page emits no hreflang at all', async ({ page }) => {
+        // A lone self-referential alternate tells search engines nothing, so the
+        // cluster is omitted entirely.
+        const alts = await hreflangsOf(page, '/traeningsstatistik');
+        expect(alts).toEqual([]);
+    });
+});

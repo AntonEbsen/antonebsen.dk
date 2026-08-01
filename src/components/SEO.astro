@@ -1,4 +1,6 @@
 ---
+import { availableAlternates } from '@lib/routes';
+
 export interface Props {
   title: string;
   description?: string;
@@ -61,27 +63,29 @@ const breadcrumbItems = [
   })
 ];
 
-// hreflang alternates. Danish is served at the root; English/German are
-// prefixed (/en, /de). Most content pages exist in all three languages at the
-// same path, so stripping the prefix is enough — but a section whose slugs are
-// themselves translated must pass `alternates` instead, or it would advertise
-// URLs that 404.
+// hreflang alternates. Danish is served at the root, English and German are
+// prefixed (/en, /de).
+//
+// Two things previously made these wrong. The prefix rule assumed every page
+// exists in all three languages, but only a fraction is translated into German,
+// so most /de alternates 404'd. And it assumed the rest of the path is identical
+// across languages, which is false wherever slugs are translated — hence the
+// `alternates` prop, which sections like /videoer pass explicitly.
+//
+// availableAlternates consults the actual page files, so a language only appears
+// once its route exists, and adding one makes the alternate show up by itself.
 const SITE = 'https://antonebsen.dk';
-const localizedPath = Astro.url.pathname.replace(/^\/(en|de)(?=\/|$)/, '') || '/';
 
-const byPrefix = {
-  da: localizedPath,
-  en: '/en' + (localizedPath === '/' ? '' : localizedPath),
-  de: '/de' + (localizedPath === '/' ? '' : localizedPath)
-};
-
-const paths = { ...byPrefix, ...alternates };
+const paths = alternates ?? availableAlternates(Astro.url.pathname);
 
 const hreflangs = [
-  { lang: 'da', href: SITE + paths.da },
-  { lang: 'en', href: SITE + paths.en },
-  { lang: 'de', href: SITE + paths.de },
-  { lang: 'x-default', href: SITE + paths.da },
+  ...(['da', 'en', 'de'] as const)
+    .filter((lang) => paths[lang])
+    .map((lang) => ({ lang, href: SITE + paths[lang]! })),
+  // x-default goes to Danish when it exists, else whichever version does.
+  ...(Object.keys(paths).length
+    ? [{ lang: 'x-default', href: SITE + (paths.da ?? paths.en ?? paths.de)! }]
+    : [])
 ];
 ---
 

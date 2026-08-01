@@ -169,7 +169,7 @@ const jsonLd = {
           rel="noopener noreferrer"
           class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent text-black font-bold text-xs uppercase tracking-widest no-underline hover:bg-white transition-colors"
         >
-          <i class="fa-brands fa-youtube text-base"></i>{t.subscribe}
+          <i class="fa-brands fa-youtube text-base" aria-hidden="true"></i>{t.subscribe}
         </a>
       </div>
 
@@ -200,7 +200,7 @@ const jsonLd = {
                 ]}
                 data-category={filter.key}
               >
-                <i class={`${filter.icon} mr-2 opacity-70`}></i>{filter.label}
+                <i class={`${filter.icon} mr-2 opacity-70`} aria-hidden="true"></i>{filter.label}
                 <span class="ml-2 opacity-50">{filter.count}</span>
               </button>
             ))}
@@ -238,13 +238,13 @@ const jsonLd = {
                   />
                   <span class="flex-1 min-w-0">
                     <span class="block font-bold text-white/90 truncate">{video.title}</span>
-                    <time datetime={video.publishedAt} class="block text-[11px] uppercase tracking-wider opacity-40 mt-0.5">
+                    <time datetime={video.publishedAt} class="block text-[11px] uppercase tracking-wider opacity-70 mt-0.5">
                       {new Date(video.publishedAt).toLocaleDateString(locale, {
                         year: 'numeric', month: 'short', day: 'numeric'
                       })}
                     </time>
                   </span>
-                  <i class="fa-brands fa-youtube text-accent/60 shrink-0"></i>
+                  <i class="fa-brands fa-youtube text-accent/60 shrink-0" aria-hidden="true"></i>
                 </a>
               </li>
             ))}

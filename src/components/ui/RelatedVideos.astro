@@ -67,7 +67,7 @@ const t = {
           <div>
             <div class="flex flex-wrap items-center gap-2 mb-3">
               <Pill variant="accent">
-                <i class={`${video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line'} mr-1.5`}></i>
+                <i class={`${video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line'} mr-1.5`} aria-hidden="true"></i>
                 {video.track === 'hiking'
                   ? { da: 'Vandring', en: 'Hiking', de: 'Wandern' }[lang]
                   : { da: 'Økonomi', en: 'Economics', de: 'Wirtschaft' }[lang]}
@@ -88,7 +88,7 @@ const t = {
               href={videoPath(video.slug, lang)}
               class="text-accent text-[11px] font-bold uppercase tracking-wider no-underline hover:text-white transition-colors"
             >
-              {t.watch} <i class="fa-solid fa-arrow-right text-[9px] ml-0.5"></i>
+              {t.watch} <i class="fa-solid fa-arrow-right text-[9px] ml-0.5" aria-hidden="true"></i>
             </a>
           </div>
         </article>

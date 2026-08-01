@@ -19,7 +19,7 @@ const drawable = paths.filter((p) => p && p.length > 1);
 
 {drawable.length > 0 && (
   <div class:list={['route-map-wrap bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6', className]}>
-    {label && <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-50 mb-4">{label}</h3>}
+    {label && <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-70 mb-4">{label}</h3>}
     <div class="route-map rounded-xl overflow-hidden" data-paths={JSON.stringify(drawable)}></div>
   </div>
 )}
