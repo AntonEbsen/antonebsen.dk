@@ -1,6 +1,9 @@
 ---
 import CaminoLayout from '../../layouts/CaminoLayout.astro';
 import { caminoContent } from '../../data/camino';
+// Bundled from node_modules; the old unpkg tag was blocked by the site's CSP, and
+// the stylesheet was never loaded here at all so tiles would have been mispositioned.
+import 'leaflet/dist/leaflet.css';
 
 interface Props {
   lang: 'da' | 'en';
@@ -211,8 +214,9 @@ const subpages = [
     .section-padding { padding: 8rem 0; }
   </style>
 
-  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script is:inline>
+  <script>
+    import L from 'leaflet';
+
     // Countdown Logic
     (function () {
       const targetDate = new Date("2026-12-31T23:59:59").getTime();

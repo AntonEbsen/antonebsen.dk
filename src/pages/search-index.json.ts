@@ -1,9 +1,14 @@
 import { getCollection } from 'astro:content';
+import {
+    getVideosNewestFirst, videoPath, seriesPath, groupBySeries,
+    videoTitle, videoDescription, videoSeriesName
+} from '@lib/video-feed';
 
 export async function GET() {
     const posts = await getCollection('blog');
     const projects = await getCollection('portfolio');
     const pages = await getCollection('pages');
+    const videos = await getVideosNewestFirst();
 
     const index = [];
 
@@ -74,7 +79,49 @@ export async function GET() {
         });
     }
 
-    // 4. Pages
+    // 4. Videos (The Wandering Economist)
+    // These point at each video's own page. They used to point at the index, which
+    // predated detail pages existing.
+    const trackTags: Record<string, Record<string, string>> = {
+        hiking: { da: 'vandring', en: 'hiking', de: 'wandern' },
+        economics: { da: 'økonomi', en: 'economics', de: 'wirtschaft' }
+    };
+
+    for (const video of videos) {
+        for (const lang of ['da', 'en', 'de'] as const) {
+            index.push({
+                title: videoTitle(video, lang),
+                url: videoPath(video.slug, lang),
+                content: videoDescription(video, lang),
+                tags: ['video', 'youtube', trackTags[video.track][lang], video.series].filter(Boolean),
+                type: 'video',
+                icon: 'fa-brands fa-youtube',
+                lang
+            });
+        }
+    }
+
+    // 4b. Series pages
+    for (const group of groupBySeries(videos)) {
+        for (const lang of ['da', 'en', 'de'] as const) {
+            const count = group.videos.length;
+            index.push({
+                title: videoSeriesName(group.videos[0], lang) ?? group.name,
+                url: seriesPath(group.slug, lang),
+                content: {
+                    da: `Serie med ${count} film fra The Wandering Economist.`,
+                    en: `A ${count}-part series from The Wandering Economist.`,
+                    de: `Eine ${count}-teilige Serie von The Wandering Economist.`
+                }[lang],
+                tags: ['video', 'youtube', 'series', group.name].filter(Boolean),
+                type: 'video',
+                icon: 'fa-solid fa-layer-group',
+                lang
+            });
+        }
+    }
+
+    // 5. Pages
     for (const page of pages) {
         if (page.data.title) {
             index.push({

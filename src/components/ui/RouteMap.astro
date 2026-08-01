@@ -1,0 +1,100 @@
+---
+// Leaflet is bundled from node_modules, not a CDN — see the CSP notes in
+// src/middleware.ts. Tile hosts are allow-listed in vercel.json's img-src.
+import 'leaflet/dist/leaflet.css';
+import type { LatLng } from '@lib/gpx';
+
+interface Props {
+  /** One or more routes to draw. Multiple paths let a series overlay every day. */
+  paths: LatLng[][];
+  label?: string;
+  class?: string;
+}
+
+const { paths, label, class: className = '' } = Astro.props;
+
+// Nothing to draw is a normal state (a video with no GPX), not an error.
+const drawable = paths.filter((p) => p && p.length > 1);
+---
+
+{drawable.length > 0 && (
+  <div class:list={['route-map-wrap bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6', className]}>
+    {label && <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-70 mb-4">{label}</h3>}
+    <div class="route-map rounded-xl overflow-hidden" data-paths={JSON.stringify(drawable)}></div>
+  </div>
+)}
+
+<script>
+  import L from 'leaflet';
+
+  // Gold to match --accent; read from CSS so a theme override carries through.
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#D4AF37';
+
+  document.querySelectorAll<HTMLElement>('.route-map').forEach((el) => {
+    let paths: [number, number][][];
+    try {
+      paths = JSON.parse(el.dataset.paths || '[]');
+    } catch {
+      return;
+    }
+    if (!paths.length) return;
+
+    const map = L.map(el, {
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap, &copy; CARTO'
+    }).addTo(map);
+
+    const lines = paths.map((path) =>
+      L.polyline(path, { color: accent, weight: 3, opacity: 0.9 }).addTo(map)
+    );
+
+    // Start and end of the first (or only) route.
+    const first = paths[0];
+    const last = paths[paths.length - 1];
+    const dot = (latlng: [number, number], fill: string) =>
+      L.circleMarker(latlng, {
+        radius: 6, fillColor: fill, color: '#000', weight: 2, opacity: 1, fillOpacity: 1
+      }).addTo(map);
+
+    dot(first[0], '#4ade80');
+    dot(last[last.length - 1], accent);
+
+    map.fitBounds(L.featureGroup(lines).getBounds(), { padding: [24, 24] });
+
+    // Scroll-wheel zoom is off by default so the page still scrolls; enable it
+    // once the user deliberately clicks into the map.
+    map.on('click', () => map.scrollWheelZoom.enable());
+    map.on('mouseout', () => map.scrollWheelZoom.disable());
+  });
+</script>
+
+<style>
+  .route-map {
+    height: 320px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* Leaflet's default controls and attribution are far too bright on this theme. */
+  .route-map :global(.leaflet-control-attribution) {
+    background: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 9px;
+  }
+  .route-map :global(.leaflet-control-attribution a) {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .route-map :global(.leaflet-control-zoom a) {
+    background: rgba(15, 15, 20, 0.9);
+    color: var(--accent);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .route-map :global(.leaflet-control-zoom a:hover) {
+    background: rgba(30, 30, 38, 0.95);
+  }
+</style>

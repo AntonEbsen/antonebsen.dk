@@ -11,6 +11,7 @@ import ProjectSidebar from '../../components/blog/ProjectSidebar.astro';
 import ArticleReactions from '../../components/blog/ArticleReactions.tsx';
 import SignalBrief from '../../components/blog/SignalBrief.astro';
 import SmartSuggestions from '../../components/blog/SmartSuggestions.astro';
+import RelatedVideos from '../../components/ui/RelatedVideos.astro';
 import { renderMarkdown } from '../../utils/markdown';
 import 'katex/dist/katex.min.css';
 import { getCollection } from 'astro:content';
@@ -115,6 +116,9 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                     </ol>
                 </div>
             </article>
+
+            {/* Any published video whose JSON names this article. */}
+            <RelatedVideos lang="da" blogSlug={slug} />
 
             {/* Article Reactions */}
             <ArticleReactions client:visible slug={slug} lang="da" />

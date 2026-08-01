@@ -1,0 +1,127 @@
+---
+/**
+ * Lite YouTube facade.
+ *
+ * A full YouTube iframe pulls well over a megabyte of third-party JavaScript, which
+ * is unacceptable in a grid. This renders a static thumbnail and only swaps in the
+ * real player on click — so a page with twelve videos costs twelve images.
+ *
+ * Uses youtube-nocookie.com to match the site's privacy posture. Both hosts are
+ * allow-listed in the CSP (src/middleware.ts and vercel.json).
+ */
+interface Props {
+  youtubeId: string;
+  title: string;
+  orientation?: 'landscape' | 'portrait';
+  /** Seconds to start at — used by chapter deep-links. */
+  start?: number;
+  class?: string;
+}
+
+const { youtubeId, title, orientation = 'landscape', start, class: className = '' } = Astro.props;
+
+const aspect = orientation === 'portrait' ? 'aspect-[9/16]' : 'aspect-video';
+
+const params = new URLSearchParams({ rel: '0', modestbranding: '1', autoplay: '1' });
+if (start) params.set('start', String(start));
+const embedSrc = `https://www.youtube-nocookie.com/embed/${youtubeId}?${params}`;
+
+// maxresdefault doesn't exist for every upload; hqdefault always does.
+const poster = `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`;
+const posterFallback = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
+---
+
+<div
+  class:list={['yt-facade group relative w-full overflow-hidden rounded-xl bg-black/40 border border-white/5 shadow-2xl transition-all duration-500 hover:border-accent/40', aspect, className]}
+  data-embed-src={embedSrc}
+  data-title={title}
+  data-youtube-id={youtubeId}
+>
+  <button type="button" class="yt-play absolute inset-0 w-full h-full cursor-pointer" aria-label={`Play: ${title}`}>
+    <img
+      src={poster}
+      data-fallback={posterFallback}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
+    />
+
+    <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></span>
+
+    <span
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-16 h-16 rounded-full bg-black/60 backdrop-blur-sm border border-accent/40 text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-black group-hover:scale-110"
+    >
+      <i class="fa-solid fa-play text-lg translate-x-[2px]"></i>
+    </span>
+  </button>
+</div>
+
+<script>
+  /** Swaps the thumbnail for the real player, optionally seeking to `start` seconds. */
+  function activate(facade: HTMLElement, start?: number) {
+    const base = facade.dataset.embedSrc;
+    if (!base) return;
+
+    const url = new URL(base);
+    if (typeof start === 'number' && Number.isFinite(start)) {
+      url.searchParams.set('start', String(Math.max(0, Math.floor(start))));
+    }
+
+    // Already playing: reuse the existing iframe so the seek doesn't rebuild it.
+    const existing = facade.querySelector('iframe');
+    if (existing) {
+      existing.src = url.toString();
+      return;
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.src = url.toString();
+    iframe.title = facade.dataset.title || 'YouTube video';
+    iframe.className = 'absolute inset-0 w-full h-full';
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen', '');
+
+    facade.replaceChildren(iframe);
+  }
+
+  // Delegated so it also covers cards rendered after hydration.
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as HTMLElement)?.closest('.yt-play');
+    if (!trigger) return;
+
+    const facade = trigger.closest('.yt-facade') as HTMLElement | null;
+    if (facade) activate(facade);
+  });
+
+  // Chapter links elsewhere on the page seek this player rather than sending the
+  // visitor off to YouTube. Detail is { start: seconds, youtubeId?: string }.
+  document.addEventListener('yt-facade:play', (event) => {
+    const { start, youtubeId } = (event as CustomEvent).detail || {};
+
+    const facade = (youtubeId
+      ? document.querySelector(`.yt-facade[data-youtube-id="${youtubeId}"]`)
+      : document.querySelector('.yt-facade')) as HTMLElement | null;
+
+    if (!facade) return;
+    activate(facade, start);
+    facade.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // maxresdefault 404s on some uploads and YouTube serves a 120x90 grey placeholder.
+  document.querySelectorAll<HTMLImageElement>('.yt-facade img[data-fallback]').forEach((img) => {
+    const swap = () => {
+      const fallback = img.dataset.fallback;
+      if (fallback && img.src !== fallback) img.src = fallback;
+    };
+    img.addEventListener('error', swap);
+    if (img.complete && img.naturalWidth > 0 && img.naturalWidth < 200) swap();
+  });
+</script>
+
+<style>
+  .yt-facade {
+    mask-image: linear-gradient(to bottom, black 97%, transparent 100%);
+  }
+</style>

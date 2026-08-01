@@ -1,0 +1,98 @@
+---
+import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
+import Pill from '@components/ui/Pill.astro';
+import {
+  getVideosNewestFirst, videoPath, videoTitle, videoDescription,
+  type FeedVideoEntry, type Lang
+} from '@lib/video-feed';
+
+/**
+ * The other half of the video cross-link.
+ *
+ * A video's JSON names the project or article it explains via `relatedProjectUrl`
+ * / `relatedBlogSlug`. Those fields were only ever read by the video pages, so a
+ * project page never surfaced its own explainer. This closes that loop.
+ *
+ * Matching happens here rather than in each page, so all 12 project pages get it
+ * from the one shared template.
+ */
+interface Props {
+  lang: Lang;
+  /** Match videos whose relatedProjectUrl points at this path (any /en or /de prefix is ignored). */
+  projectPath?: string;
+  /** Match videos whose relatedBlogSlug equals this. */
+  blogSlug?: string;
+  class?: string;
+}
+
+const { lang, projectPath, blogSlug, class: className = '' } = Astro.props;
+
+// Same normalisation SEO.astro uses for hreflang alternates.
+const stripLocale = (path: string) => path.replace(/^\/(en|de|da)(?=\/|$)/, '') || '/';
+
+const target = projectPath ? stripLocale(projectPath.replace(/\/$/, '')) : undefined;
+
+const all = await getVideosNewestFirst();
+
+const matches: FeedVideoEntry[] = all.filter((video) => {
+  if (blogSlug && video.relatedBlogSlug === blogSlug) return true;
+  if (target && video.relatedProjectUrl) {
+    return stripLocale(video.relatedProjectUrl.replace(/\/$/, '')) === target;
+  }
+  return false;
+});
+
+const t = {
+  da: { eyebrow: 'Fra kanalen', heading: 'Se forklaringen', watch: 'Se videoen' },
+  en: { eyebrow: 'From the channel', heading: 'Watch the explainer', watch: 'Watch the video' },
+  de: { eyebrow: 'Vom Kanal', heading: 'Zur Erklärung', watch: 'Video ansehen' }
+}[lang];
+---
+
+{matches.length > 0 && (
+  <section class:list={['related-videos my-16', className]}>
+    <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-3">{t.eyebrow}</p>
+    <h2 class="text-2xl font-serif text-white mb-8">{t.heading}</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {matches.map((video) => (
+        <article class="flex flex-col gap-4">
+          <YouTubeEmbed
+            youtubeId={video.youtubeId}
+            title={videoTitle(video, lang)}
+            orientation={video.orientation}
+            class={video.orientation === 'portrait' ? 'max-w-[260px]' : ''}
+          />
+
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <Pill variant="accent">
+                <i class={`${video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line'} mr-1.5`} aria-hidden="true"></i>
+                {video.track === 'hiking'
+                  ? { da: 'Vandring', en: 'Hiking', de: 'Wandern' }[lang]
+                  : { da: 'Økonomi', en: 'Economics', de: 'Wirtschaft' }[lang]}
+              </Pill>
+            </div>
+
+            <h3 class="text-lg font-bold text-white leading-snug mb-2">
+              <a href={videoPath(video.slug, lang)} class="no-underline text-inherit hover:text-accent transition-colors">
+                {videoTitle(video, lang)}
+              </a>
+            </h3>
+
+            <p class="text-sm text-dim opacity-70 leading-relaxed m-0 mb-3">
+              {videoDescription(video, lang)}
+            </p>
+
+            <a
+              href={videoPath(video.slug, lang)}
+              class="text-accent text-[11px] font-bold uppercase tracking-wider no-underline hover:text-white transition-colors"
+            >
+              {t.watch} <i class="fa-solid fa-arrow-right text-[9px] ml-0.5" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

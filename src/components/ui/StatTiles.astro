@@ -1,0 +1,28 @@
+---
+/** Shared stat-tile row used by video detail pages, series pages and the index. */
+export interface Tile {
+  label: string;
+  value: string;
+  icon?: string;
+}
+
+interface Props {
+  tiles: Tile[];
+  class?: string;
+}
+
+const { tiles, class: className = '' } = Astro.props;
+---
+
+{tiles.length > 0 && (
+  <dl class:list={['grid grid-cols-2 md:grid-cols-4 gap-4 m-0', className]}>
+    {tiles.map((tile) => (
+      <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-5">
+        <dt class="text-[10px] uppercase tracking-widest text-dim opacity-70 mb-2">
+          {tile.icon && <i class={`${tile.icon} mr-1.5 text-accent/60`} aria-hidden="true"></i>}{tile.label}
+        </dt>
+        <dd class="text-2xl font-black text-white m-0 tabular-nums">{tile.value}</dd>
+      </div>
+    ))}
+  </dl>
+)}

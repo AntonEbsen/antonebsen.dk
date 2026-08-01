@@ -1,0 +1,18 @@
+---
+import VideoDetailPage from '@components/templates/VideoDetailPage.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const videos = await getCollection('videos');
+  return videos.map((entry) => ({
+    params: { slug: entry.id.replace(/\.json$/, '') },
+    props: { video: entry.data }
+  }));
+}
+
+const { video } = Astro.props;
+const { slug } = Astro.params;
+---
+<VideoDetailPage video={video} slug={slug!} lang="de" />

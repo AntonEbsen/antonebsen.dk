@@ -1,16 +1,26 @@
 ---
+import { availableAlternates } from '@lib/routes';
+
 export interface Props {
   title: string;
   description?: string;
   image?: string;
   article?: boolean;
+  /**
+   * Explicit hreflang targets, for sections whose path differs by language rather
+   * than only by prefix — the video routes use /videoer and /serie in Danish
+   * against /videos and /series elsewhere, so the prefix rule below would point
+   * at URLs that do not exist.
+   */
+  alternates?: Partial<Record<'da' | 'en' | 'de', string>>;
 }
 
 
 const {
   title,
   description = "Anton Meier Ebsen Jørgensen — Economist & quantitative researcher in macroeconomics, monetary policy and cliometrics.",
-  article = false
+  article = false,
+  alternates
 } = Astro.props;
 
 const siteTitle = "Anton Meier Ebsen Jørgensen";
@@ -24,7 +34,8 @@ if (Astro.props.image) {
 } else {
   // Generate Dynamic OG
   const ogTitle = title.replace(` | ${siteTitle}`, ''); // Clean title
-  const ogEndpoint = new URL('/api/og', Astro.url);
+  // Route file is src/pages/api/og.png.ts, so the path must carry the .png suffix.
+  const ogEndpoint = new URL('/api/og.png', Astro.url);
   ogEndpoint.searchParams.set('title', ogTitle);
   ogEndpoint.searchParams.set('desc', description.slice(0, 80) + (description.length > 80 ? '...' : ''));
   socialImageURL = ogEndpoint;
@@ -51,6 +62,31 @@ const breadcrumbItems = [
     };
   })
 ];
+
+// hreflang alternates. Danish is served at the root, English and German are
+// prefixed (/en, /de).
+//
+// Two things previously made these wrong. The prefix rule assumed every page
+// exists in all three languages, but only a fraction is translated into German,
+// so most /de alternates 404'd. And it assumed the rest of the path is identical
+// across languages, which is false wherever slugs are translated — hence the
+// `alternates` prop, which sections like /videoer pass explicitly.
+//
+// availableAlternates consults the actual page files, so a language only appears
+// once its route exists, and adding one makes the alternate show up by itself.
+const SITE = 'https://antonebsen.dk';
+
+const paths = alternates ?? availableAlternates(Astro.url.pathname);
+
+const hreflangs = [
+  ...(['da', 'en', 'de'] as const)
+    .filter((lang) => paths[lang])
+    .map((lang) => ({ lang, href: SITE + paths[lang]! })),
+  // x-default goes to Danish when it exists, else whichever version does.
+  ...(Object.keys(paths).length
+    ? [{ lang: 'x-default', href: SITE + (paths.da ?? paths.en ?? paths.de)! }]
+    : [])
+];
 ---
 
 <!-- Global Metadata -->
@@ -61,6 +97,16 @@ const breadcrumbItems = [
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+
+<!-- hreflang alternates for da / en / de -->
+{hreflangs.map(h => (
+  <link rel="alternate" hreflang={h.lang} href={h.href} />
+))}
+
+<!-- Feed autodiscovery: without these the video feeds are unreachable from the site -->
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videos" href="/videos.xml" hreflang="en" />
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videoer" href="/videoer.xml" hreflang="da" />
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videos" href="/de/videos.xml" hreflang="de" />
 
 <!-- Primary Meta Tags -->
 <title>{pageTitle}</title>

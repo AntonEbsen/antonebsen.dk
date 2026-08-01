@@ -1,0 +1,18 @@
+---
+import VideoSeriesPage from '@components/templates/VideoSeriesPage.astro';
+import { getVideosNewestFirst, groupBySeries } from '@lib/video-feed';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const groups = groupBySeries(await getVideosNewestFirst());
+
+  return groups.map((group) => ({
+    params: { series: group.slug },
+    props: { series: group.name, videos: group.videos }
+  }));
+}
+
+const { series, videos } = Astro.props;
+---
+<VideoSeriesPage series={series} videos={videos} lang="da" />

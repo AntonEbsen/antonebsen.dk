@@ -94,6 +94,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/portfolio',
             children: [
                 { label: 'Projekter', url: '/portfolio' },
+                { label: 'Videoer', url: '/videoer' },
                 { label: 'Policy Arkiv', url: '/archive' },
                 { label: 'Model Library', url: '/models' },
                 { label: 'Speaking', url: '/speaking' },
@@ -137,6 +138,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/en/portfolio',
             children: [
                 { label: 'Projects', url: '/en/portfolio' },
+                { label: 'Videos', url: '/en/videos' },
                 { label: 'Policy Archive', url: '/en/archive' },
                 { label: 'Model Library', url: '/en/models' },
                 { label: 'Speaking', url: '/en/speaking' },
@@ -178,6 +180,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/de/portfolio',
             children: [
                 { label: 'Projekte', url: '/de/portfolio' },
+                { label: 'Videos', url: '/de/videos' },
                 { label: 'Model Library', url: '/en/models' },
                 { label: 'Speaking', url: '/en/speaking' },
                 { label: 'Economic Toolkit', url: '/de/toolkit' },

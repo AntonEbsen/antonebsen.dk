@@ -1,0 +1,310 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import VideoCard from '@components/ui/VideoCard.astro';
+import ContactCard from '@components/common/ContactCard.astro';
+import StatTiles from '@components/ui/StatTiles.astro';
+import { getLatestVideos, CHANNEL_URL, CHANNEL_NAME } from '@lib/youtube';
+import { resolveTrail } from '@lib/trail';
+import {
+  getVideosNewestFirst, videoPath, videosRoot, videoTitle, videoDescription, type Lang
+} from '@lib/video-feed';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const locale = { da: 'da-DK', en: 'en-GB', de: 'de-DE' }[lang];
+
+// Curated entries are the source of truth.
+const videos = await getVideosNewestFirst();
+
+const curatedIds = new Set(videos.map((v) => v.youtubeId));
+
+// Build-time RSS pull, so a fresh upload appears on the next deploy without a content
+// commit. Returns [] if YouTube is unreachable — the page still renders from the collection.
+const latest = await getLatestVideos();
+const uncurated = latest.filter((v) => !curatedIds.has(v.youtubeId)).slice(0, 4);
+
+const counts = {
+  all: videos.length,
+  hiking: videos.filter((v) => v.track === 'hiking').length,
+  economics: videos.filter((v) => v.track === 'economics').length
+};
+
+// Lifetime totals across every hike that carries trail data. Hidden entirely
+// until at least one video has numbers behind it.
+const totals = videos.map(resolveTrail).reduce(
+  (acc, trail) => ({
+    distanceKm: acc.distanceKm + (trail.distanceKm ?? 0),
+    elevationGainM: acc.elevationGainM + (trail.elevationGainM ?? 0),
+    steps: acc.steps + (trail.steps ?? 0)
+  }),
+  { distanceKm: 0, elevationGainM: 0, steps: 0 }
+);
+
+const localizedContent = {
+  da: {
+    title: 'Videoer',
+    description: 'Vandrefilm fra Europas bjerge og økonomi forklaret gennem data — fra YouTube-kanalen The Wandering Economist.',
+    heroEyebrow: 'The Wandering Economist',
+    heroTitle: 'Til fods. I tal.',
+    heroLead: 'Jeg er økonomisk historiker, der hellere ville stå på en bjergtop. Her mødes mine to verdener: de ruter jeg går, og de data jeg graver i.',
+    subscribe: 'Abonnér på YouTube',
+    filters: { all: 'Alle', hiking: 'Vandring', economics: 'Økonomi' },
+    newTitle: 'Nyt på YouTube',
+    newLead: 'Netop udgivet — endnu ikke skrevet ind her.',
+    empty: 'Der er ingen videoer endnu. Følg kanalen for at få besked, når de første lander.',
+    contactTitle: 'Følg med',
+    contactText: 'Nye videoer lander på kanalen først. Du finder mig også her:'
+  },
+  en: {
+    title: 'Videos',
+    description: 'Hiking films from the mountains of Europe and economics explained through data — from the YouTube channel The Wandering Economist.',
+    heroEyebrow: 'The Wandering Economist',
+    heroTitle: 'On foot. In numbers.',
+    heroLead: "I'm an economic historian who'd rather be on a summit. This is where my two worlds meet: the trails I walk and the data I dig through.",
+    subscribe: 'Subscribe on YouTube',
+    filters: { all: 'All', hiking: 'Hiking', economics: 'Economics' },
+    newTitle: 'New on YouTube',
+    newLead: "Just published — not written up here yet.",
+    empty: 'No videos yet. Follow the channel to hear when the first ones land.',
+    contactTitle: 'Follow along',
+    contactText: 'New videos land on the channel first. You can also find me here:'
+  },
+  // The videos themselves are in English; only the page chrome is translated.
+  de: {
+    title: 'Videos',
+    description: 'Wanderfilme aus den Bergen Europas und Wirtschaft anhand von Daten erklärt — vom YouTube-Kanal The Wandering Economist.',
+    heroEyebrow: 'The Wandering Economist',
+    heroTitle: 'Zu Fuß. In Zahlen.',
+    heroLead: 'Ich bin Wirtschaftshistoriker und stünde lieber auf einem Gipfel. Hier treffen meine zwei Welten aufeinander: die Wege, die ich gehe, und die Daten, in denen ich grabe.',
+    subscribe: 'Auf YouTube abonnieren',
+    filters: { all: 'Alle', hiking: 'Wandern', economics: 'Wirtschaft' },
+    newTitle: 'Neu auf YouTube',
+    newLead: 'Gerade veröffentlicht — hier noch nicht aufbereitet.',
+    empty: 'Noch keine Videos. Folge dem Kanal, um zu erfahren, wann die ersten erscheinen.',
+    contactTitle: 'Bleib dabei',
+    contactText: 'Neue Videos erscheinen zuerst auf dem Kanal. Du findest mich auch hier:'
+  }
+};
+
+const t = localizedContent[lang];
+
+// The Danish index lives at /videoer, not /videos, so the prefix rule in SEO.astro
+// would advertise a URL that does not exist.
+const alternates = { da: videosRoot('da'), en: videosRoot('en'), de: videosRoot('de') };
+
+const totalLabels = {
+  da: { distance: 'Gået i alt', ascent: 'Samlet stigning', steps: 'Skridt', films: 'Film', onFoot: 'Til fods, i tal' },
+  en: { distance: 'Distance walked', ascent: 'Total ascent', steps: 'Steps', films: 'Films', onFoot: 'On foot, in numbers' },
+  de: { distance: 'Insgesamt gelaufen', ascent: 'Gesamtaufstieg', steps: 'Schritte', films: 'Filme', onFoot: 'Zu Fuß, in Zahlen' }
+}[lang];
+
+const totalTiles = [
+  totals.distanceKm > 0 && {
+    label: totalLabels.distance,
+    value: `${totals.distanceKm.toFixed(1)} km`, icon: 'fa-solid fa-route'
+  },
+  totals.elevationGainM > 0 && {
+    label: totalLabels.ascent,
+    value: `${totals.elevationGainM.toLocaleString(locale)} m`,
+    icon: 'fa-solid fa-arrow-trend-up'
+  },
+  totals.steps > 0 && {
+    label: totalLabels.steps,
+    value: totals.steps.toLocaleString(locale), icon: 'fa-solid fa-shoe-prints'
+  },
+  { label: totalLabels.films, value: String(videos.length), icon: 'fa-solid fa-film' }
+].filter(Boolean) as { label: string; value: string; icon: string }[];
+
+// A lone "films" tile is not worth a section.
+const showTotals = totalTiles.length > 1;
+
+const filters = [
+  { key: 'all', label: t.filters.all, icon: 'fa-solid fa-layer-group', count: counts.all },
+  { key: 'hiking', label: t.filters.hiking, icon: 'fa-solid fa-mountain-sun', count: counts.hiking },
+  { key: 'economics', label: t.filters.economics, icon: 'fa-solid fa-chart-line', count: counts.economics }
+];
+
+// VideoObject rich results.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${t.title} — ${CHANNEL_NAME}`,
+  itemListElement: videos.map((video, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'VideoObject',
+      name: videoTitle(video, lang),
+      description: videoDescription(video, lang),
+      uploadDate: video.publishedAt,
+      thumbnailUrl: video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`,
+      embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
+      contentUrl: `https://www.youtube.com/watch?v=${video.youtubeId}`,
+      url: new URL(videoPath(video.slug, lang), Astro.site ?? 'https://antonebsen.dk').href
+    }
+  }))
+};
+---
+
+<Layout title={t.title} description={t.description} alternates={alternates}>
+  <main class="relative overflow-hidden">
+
+    <Section class="text-center pt-32 pb-20 border-b border-white/5">
+      <div class="max-w-4xl mx-auto px-4 relative z-10">
+        <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-6">{t.heroEyebrow}</p>
+        <h1 class="text-5xl md:text-7xl font-black text-white leading-[0.9] mb-8 uppercase italic">
+          {t.heroTitle}
+        </h1>
+        <p class="text-lg md:text-xl text-white/50 leading-relaxed font-serif italic max-w-2xl mx-auto mb-10">
+          {t.heroLead}
+        </p>
+        <a
+          href={CHANNEL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent text-black font-bold text-xs uppercase tracking-widest no-underline hover:bg-white transition-colors"
+        >
+          <i class="fa-brands fa-youtube text-base" aria-hidden="true"></i>{t.subscribe}
+        </a>
+      </div>
+
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl aspect-video bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-0"></div>
+    </Section>
+
+    {showTotals && (
+      <Section class="container mx-auto px-4 relative z-10">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">
+          {totalLabels.onFoot}
+        </h2>
+        <StatTiles tiles={totalTiles} />
+      </Section>
+    )}
+
+    <Section class="container mx-auto px-4 relative z-10">
+      {videos.length === 0 ? (
+        <p class="text-center text-dim opacity-60 py-16">{t.empty}</p>
+      ) : (
+        <>
+          <div class="flex flex-wrap justify-center gap-3 mb-12">
+            {filters.map((filter, index) => (
+              <button
+                type="button"
+                class:list={[
+                  'filter-btn px-5 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest text-dim transition-all hover:border-accent/40 hover:text-white',
+                  index === 0 && 'active bg-accent text-bg border-accent'
+                ]}
+                data-category={filter.key}
+              >
+                <i class={`${filter.icon} mr-2 opacity-70`} aria-hidden="true"></i>{filter.label}
+                <span class="ml-2 opacity-50">{filter.count}</span>
+              </button>
+            ))}
+          </div>
+
+          <div class="videos-grid">
+            {videos.map((video) => <VideoCard video={video} slug={video.slug} lang={lang} />)}
+          </div>
+        </>
+      )}
+    </Section>
+
+    {uncurated.length > 0 && (
+      <Section class="container mx-auto px-4 relative z-10">
+        <div class="border-t border-white/5 pt-12">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">{t.newTitle}</h2>
+          <p class="text-sm text-dim opacity-60 mb-6">{t.newLead}</p>
+          <ul class="flex flex-col gap-2 list-none p-0 m-0">
+            {uncurated.map((video) => (
+              <li>
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center gap-4 py-3 border-b border-white/5 text-dim no-underline hover:text-accent transition-colors"
+                >
+                  <img
+                    src={`https://i.ytimg.com/vi/${video.youtubeId}/mqdefault.jpg`}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    width="96"
+                    height="54"
+                    class="w-24 h-[54px] shrink-0 object-cover rounded border border-white/5 opacity-80 group-hover:opacity-100 transition-opacity"
+                  />
+                  <span class="flex-1 min-w-0">
+                    <span class="block font-bold text-white/90 truncate">{video.title}</span>
+                    <time datetime={video.publishedAt} class="block text-[11px] uppercase tracking-wider opacity-70 mt-0.5">
+                      {new Date(video.publishedAt).toLocaleDateString(locale, {
+                        year: 'numeric', month: 'short', day: 'numeric'
+                      })}
+                    </time>
+                  </span>
+                  <i class="fa-brands fa-youtube text-accent/60 shrink-0" aria-hidden="true"></i>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    )}
+
+    <Section class="container mx-auto px-4 pb-24">
+      <ContactCard title={t.contactTitle} text={t.contactText} lang={lang === 'de' ? 'en' : lang} />
+    </Section>
+
+  </main>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const videoCards = document.querySelectorAll('.video-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = (btn as HTMLElement).dataset.category;
+
+      filterBtns.forEach(b => b.classList.remove('active', 'bg-accent', 'text-bg', 'border-accent'));
+      btn.classList.add('active', 'bg-accent', 'text-bg', 'border-accent');
+
+      videoCards.forEach(card => {
+        const cardCat = (card as HTMLElement).dataset.category;
+        if (category === 'all' || cardCat === category) {
+          (card as HTMLElement).style.display = 'flex';
+          setTimeout(() => (card as HTMLElement).style.opacity = '1', 10);
+        } else {
+          (card as HTMLElement).style.opacity = '0';
+          setTimeout(() => (card as HTMLElement).style.display = 'none', 300);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    align-items: start;
+  }
+
+  .filter-btn.active {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    /* The base class carries `text-dim`, and `text-bg` from the active variant is
+       the same specificity, so source order decided which won — it lost, leaving
+       #d4d4d8 on gold at 1.42:1. This two-class rule wins deterministically. */
+    color: var(--bg);
+  }
+
+  /* Same reason: keep the label readable while hovering an already-active filter. */
+  .filter-btn.active:hover {
+    color: var(--bg);
+  }
+</style>

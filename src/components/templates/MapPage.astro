@@ -1,6 +1,9 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
+// Leaflet is bundled from node_modules rather than a CDN: the previous unpkg tags
+// were blocked outright by the site's own CSP (script-src/style-src allow neither).
+import 'leaflet/dist/leaflet.css';
 
 interface Props {
   lang: 'da' | 'en';
@@ -218,11 +221,7 @@ const content: any = entry.data;
       font-weight: 600;
     }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" slot="head" />
-  
-  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" slot="head"></script>
-
-  <main class="map-wrap" 
+  <main class="map-wrap"
         data-msg-empty={content.list.empty}
         data-msg-error={content.list.error}
         data-ui-open={content.ui.openMap}
@@ -281,10 +280,28 @@ const content: any = entry.data;
 
   </main>
 
-  <script is:inline>
+  <script>
+    import L from 'leaflet';
+    // Leaflet's default icon derives its image paths from the script URL, which
+    // breaks once bundled — markers render as invisible boxes. Point them at the
+    // hashed assets Vite emits instead.
+    import markerIcon from 'leaflet/dist/images/marker-icon.png';
+    import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+    import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+    // Vite hands back a plain URL string here; Astro's asset pipeline can hand back
+    // an object with .src. Accept either so this cannot silently regress.
+    const assetUrl = (asset: any): string => (typeof asset === 'string' ? asset : asset?.src);
+
+    L.Icon.Default.mergeOptions({
+      iconUrl: assetUrl(markerIcon),
+      iconRetinaUrl: assetUrl(markerIcon2x),
+      shadowUrl: assetUrl(markerShadow)
+    });
+
     document.addEventListener("DOMContentLoaded", () => {
       // ===== 1) Data Fetching =====
-      let places = [];
+      let places: any[] = [];
       const wrap = document.querySelector('.map-wrap');
       const MSG = {
           empty: wrap.dataset.msgEmpty || 'Map empty',
