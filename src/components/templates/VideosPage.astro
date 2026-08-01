@@ -7,7 +7,7 @@ import StatTiles from '@components/ui/StatTiles.astro';
 import { getLatestVideos, CHANNEL_URL, CHANNEL_NAME } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
 import {
-  getVideosNewestFirst, videoPath, videoTitle, videoDescription, type Lang
+  getVideosNewestFirst, videoPath, videosRoot, videoTitle, videoDescription, type Lang
 } from '@lib/video-feed';
 
 interface Props {
@@ -93,6 +93,10 @@ const localizedContent = {
 
 const t = localizedContent[lang];
 
+// The Danish index lives at /videoer, not /videos, so the prefix rule in SEO.astro
+// would advertise a URL that does not exist.
+const alternates = { da: videosRoot('da'), en: videosRoot('en'), de: videosRoot('de') };
+
 const totalLabels = {
   da: { distance: 'Gået i alt', ascent: 'Samlet stigning', steps: 'Skridt', films: 'Film', onFoot: 'Til fods, i tal' },
   en: { distance: 'Distance walked', ascent: 'Total ascent', steps: 'Steps', films: 'Films', onFoot: 'On foot, in numbers' },
@@ -147,7 +151,7 @@ const jsonLd = {
 };
 ---
 
-<Layout title={t.title} description={t.description}>
+<Layout title={t.title} description={t.description} alternates={alternates}>
   <main class="relative overflow-hidden">
 
     <Section class="text-center pt-32 pb-20 border-b border-white/5">
@@ -293,5 +297,14 @@ const jsonLd = {
 
   .filter-btn.active {
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    /* The base class carries `text-dim`, and `text-bg` from the active variant is
+       the same specificity, so source order decided which won — it lost, leaving
+       #d4d4d8 on gold at 1.42:1. This two-class rule wins deterministically. */
+    color: var(--bg);
+  }
+
+  /* Same reason: keep the label readable while hovering an already-active filter. */
+  .filter-btn.active:hover {
+    color: var(--bg);
   }
 </style>

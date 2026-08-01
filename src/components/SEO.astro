@@ -4,13 +4,21 @@ export interface Props {
   description?: string;
   image?: string;
   article?: boolean;
+  /**
+   * Explicit hreflang targets, for sections whose path differs by language rather
+   * than only by prefix — the video routes use /videoer and /serie in Danish
+   * against /videos and /series elsewhere, so the prefix rule below would point
+   * at URLs that do not exist.
+   */
+  alternates?: Partial<Record<'da' | 'en' | 'de', string>>;
 }
 
 
 const {
   title,
   description = "Anton Meier Ebsen Jørgensen — Economist & quantitative researcher in macroeconomics, monetary policy and cliometrics.",
-  article = false
+  article = false,
+  alternates
 } = Astro.props;
 
 const siteTitle = "Anton Meier Ebsen Jørgensen";
@@ -54,14 +62,26 @@ const breadcrumbItems = [
 ];
 
 // hreflang alternates. Danish is served at the root; English/German are
-// prefixed (/en, /de). Most content pages exist in all three languages.
+// prefixed (/en, /de). Most content pages exist in all three languages at the
+// same path, so stripping the prefix is enough — but a section whose slugs are
+// themselves translated must pass `alternates` instead, or it would advertise
+// URLs that 404.
 const SITE = 'https://antonebsen.dk';
 const localizedPath = Astro.url.pathname.replace(/^\/(en|de)(?=\/|$)/, '') || '/';
+
+const byPrefix = {
+  da: localizedPath,
+  en: '/en' + (localizedPath === '/' ? '' : localizedPath),
+  de: '/de' + (localizedPath === '/' ? '' : localizedPath)
+};
+
+const paths = { ...byPrefix, ...alternates };
+
 const hreflangs = [
-  { lang: 'da', href: SITE + localizedPath },
-  { lang: 'en', href: SITE + '/en' + (localizedPath === '/' ? '' : localizedPath) },
-  { lang: 'de', href: SITE + '/de' + (localizedPath === '/' ? '' : localizedPath) },
-  { lang: 'x-default', href: SITE + localizedPath },
+  { lang: 'da', href: SITE + paths.da },
+  { lang: 'en', href: SITE + paths.en },
+  { lang: 'de', href: SITE + paths.de },
+  { lang: 'x-default', href: SITE + paths.da },
 ];
 ---
 
@@ -80,8 +100,9 @@ const hreflangs = [
 ))}
 
 <!-- Feed autodiscovery: without these the video feeds are unreachable from the site -->
-<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videos" href="/videos.xml" />
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videos" href="/videos.xml" hreflang="en" />
 <link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videoer" href="/videoer.xml" hreflang="da" />
+<link rel="alternate" type="application/rss+xml" title="The Wandering Economist — Videos" href="/de/videos.xml" hreflang="de" />
 
 <!-- Primary Meta Tags -->
 <title>{pageTitle}</title>

@@ -7,7 +7,8 @@ import StatTiles from '@components/ui/StatTiles.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { resolveTrail } from '@lib/trail';
 import {
-  videosRoot, videoPath, videoTitle, videoDescription, videoSeriesName, thumbnailUrl,
+  videosRoot, videoPath, seriesPath, slugifySeries,
+  videoTitle, videoDescription, videoSeriesName, thumbnailUrl,
   type FeedVideoEntry, type Lang
 } from '@lib/video-feed';
 
@@ -100,6 +101,15 @@ const description = {
 // ContactCard only speaks da/en; German visitors get English rather than Danish.
 const contactLang = lang === 'de' ? 'en' : lang;
 
+// Danish uses /videoer/serie/, the others /videos/series/ — both segments differ,
+// so SEO.astro's prefix rule would advertise two URLs that 404.
+const seriesSlug = ordered[0]?.series ? slugifySeries(ordered[0].series) : slugifySeries(series);
+const alternates = {
+  da: seriesPath(seriesSlug, 'da'),
+  en: seriesPath(seriesSlug, 'en'),
+  de: seriesPath(seriesSlug, 'de')
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -122,7 +132,7 @@ const jsonLd = {
 };
 ---
 
-<Layout title={seriesTitle} description={description}>
+<Layout title={seriesTitle} description={description} alternates={alternates}>
   <main class="container mx-auto px-4 pt-28 pb-24 max-w-6xl">
 
     <a href={listUrl} class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-dim opacity-60 hover:text-accent hover:opacity-100 transition-all no-underline mb-8">

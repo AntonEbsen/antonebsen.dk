@@ -100,6 +100,14 @@ const tiles = [
 const relatedUrl = video.relatedProjectUrl
   ?? (video.relatedBlogSlug ? `${isDa ? '/da' : ''}/blog/${video.relatedBlogSlug}` : undefined);
 
+// Danish detail pages live under /videoer, so SEO.astro's prefix rule cannot
+// derive the alternates — supply them from the same helper that builds the routes.
+const alternates = {
+  da: videoPath(slug, 'da'),
+  en: videoPath(slug, 'en'),
+  de: videoPath(slug, 'de')
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'VideoObject',
@@ -128,6 +136,7 @@ const jsonLd = {
   description={description}
   image={thumbnailUrl(entry)}
   article={true}
+  alternates={alternates}
 >
   <main class="container mx-auto px-4 pt-28 pb-24 max-w-5xl">
 
@@ -243,22 +252,30 @@ const jsonLd = {
         <ol class="list-none p-0 m-0 border-t border-white/5">
           {group.videos.map((episode) => {
             const current = episode.slug === slug;
+            const rowClass = 'flex items-center gap-4 py-3 border-b border-white/5 no-underline transition-colors';
+
+            // The current episode is rendered as a span, not a link. `pointer-events:
+            // none` hid it from the mouse but left it in the tab order, so keyboard
+            // users could still "navigate" to the page they were already on.
+            const inner = (
+              <>
+                <span class="font-mono tabular-nums text-xs opacity-60 w-6 shrink-0">
+                  {String(episode.seriesOrder ?? '·').padStart(2, '0')}
+                </span>
+                <span class="text-sm flex-1">{videoTitle(episode, lang)}</span>
+                {current && <i class="fa-solid fa-play text-[9px] shrink-0" aria-hidden="true"></i>}
+              </>
+            );
+
             return (
               <li>
-                <a
-                  href={videoPath(episode.slug, lang)}
-                  aria-current={current ? 'page' : undefined}
-                  class:list={[
-                    'flex items-center gap-4 py-3 border-b border-white/5 no-underline transition-colors',
-                    current ? 'text-accent pointer-events-none' : 'text-dim hover:text-accent'
-                  ]}
-                >
-                  <span class="font-mono tabular-nums text-xs opacity-60 w-6 shrink-0">
-                    {String(episode.seriesOrder ?? '·').padStart(2, '0')}
-                  </span>
-                  <span class="text-sm flex-1">{videoTitle(episode, lang)}</span>
-                  {current && <i class="fa-solid fa-play text-[9px] shrink-0"></i>}
-                </a>
+                {current ? (
+                  <span aria-current="page" class:list={[rowClass, 'text-accent']}>{inner}</span>
+                ) : (
+                  <a href={videoPath(episode.slug, lang)} class:list={[rowClass, 'text-dim hover:text-accent']}>
+                    {inner}
+                  </a>
+                )}
               </li>
             );
           })}

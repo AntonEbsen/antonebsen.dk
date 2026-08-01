@@ -4,6 +4,10 @@ import AxeBuilder from '@axe-core/playwright';
 const pages = [
     '/',
     '/ai-project',
+    // The video section: index, a detail page and a series page.
+    '/videoer',
+    '/videoer/dolomites-day-1',
+    '/videoer/serie/italy-2026',
 ];
 
 test.describe('Accessibility Tests', () => {

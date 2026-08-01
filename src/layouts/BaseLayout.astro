@@ -25,9 +25,11 @@ interface Props {
   bodyClass?: string;
   showChatWidget?: boolean;
   currentPath?: string;
+  /** Explicit hreflang targets for sections with translated slugs — see SEO.astro. */
+  alternates?: Partial<Record<'da' | 'en' | 'de', string>>;
 }
 
-const { title, description, image, article, bodyClass = "", showChatWidget = true } = Astro.props;
+const { title, description, image, article, bodyClass = "", showChatWidget = true, alternates } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 ---
 
@@ -229,7 +231,7 @@ const lang = getLangFromUrl(Astro.url);
   </script>
 
   <!-- 2. SEO and other metadata -->
-  <SEO title={title} description={description} image={image} article={article} />
+  <SEO title={title} description={description} image={image} article={article} alternates={alternates} />
   <meta name="design-version" content="dark-gold-v1" />
   <SpeedInsights />
   <Analytics />
