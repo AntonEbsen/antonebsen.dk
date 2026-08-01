@@ -14,6 +14,7 @@ import PolicyRadar from '@components/project/PolicyRadar';
 import GalaxyGraph from '@components/common/GalaxyGraph';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
 import LabModal from '@components/project/LabModal';
+import RelatedVideos from '@components/ui/RelatedVideos.astro';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -542,15 +543,19 @@ const t = uiStrings[lang] || uiStrings.en;
 
         {project.videoSeries && (
             <section id="video-series" class="mb-24 scroll-mt-24">
-                <ProjectMasterclass 
-                    client:visible 
-                    series={project.videoSeries} 
-                    lang={lang} 
+                <ProjectMasterclass
+                    client:visible
+                    series={project.videoSeries}
+                    lang={lang}
                     briefingUrl={project.briefingUrl}
                     robustness={project.robustness}
                 />
             </section>
         )}
+
+        <!-- Any published video whose JSON names this project. Renders nothing
+             when there is no match, which is the usual case. -->
+        <RelatedVideos lang={lang} projectPath={Astro.url.pathname} />
 
         <!-- Methodology -->
         <section id="methodology" class="mb-24 scroll-mt-24 academic-section">

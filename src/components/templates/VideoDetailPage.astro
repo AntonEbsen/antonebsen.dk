@@ -8,43 +8,71 @@ import RouteMap from '@components/ui/RouteMap.astro';
 import StatTiles from '@components/ui/StatTiles.astro';
 import { CHANNEL_URL } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
+import {
+  getVideosNewestFirst, seriesNeighbours, videoPath, seriesPath, videosRoot,
+  videoTitle, videoDescription, videoSeriesName, thumbnailUrl, slugifySeries,
+  type Lang
+} from '@lib/video-feed';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  video: CollectionEntry<'videos'>['data'];
+  video: CollectionEntry<'videos'>['data'] & { slug?: string };
   slug: string;
-  lang: 'da' | 'en';
+  lang: Lang;
 }
 
 const { video, slug, lang } = Astro.props;
 const isDa = lang === 'da';
 
-const title = (isDa && video.title_da) || video.title;
-const description = (isDa && video.description_da) || video.description;
-const series = (isDa && video.series_da) || video.series;
+// video-feed's helpers expect the slug alongside the data.
+const entry = { ...video, slug } as any;
+
+const title = videoTitle(entry, lang);
+const description = videoDescription(entry, lang);
+const series = videoSeriesName(entry, lang);
 
 const trail = resolveTrail(video);
 
-const t = isDa
-  ? {
-      back: 'Alle videoer', watch: 'Se på YouTube', chapters: 'Kapitler',
-      inNumbers: 'Turen i tal', profile: 'Højdeprofil',
-      distance: 'Distance', climb: 'Stigning', descent: 'Fald', peak: 'Højeste punkt',
-      duration: 'Varighed', steps: 'Skridt', pace: 'Gns. tempo', route: 'Rute',
-      axisKm: 'Kilometer', axisEle: 'Meter over havet', related: 'Læs projektet'
-    }
-  : {
-      back: 'All videos', watch: 'Watch on YouTube', chapters: 'Chapters',
-      inNumbers: 'The walk in numbers', profile: 'Elevation profile',
-      distance: 'Distance', climb: 'Ascent', descent: 'Descent', peak: 'High point',
-      duration: 'Duration', steps: 'Steps', pace: 'Avg. pace', route: 'Route',
-      axisKm: 'Kilometres', axisEle: 'Metres above sea level', related: 'Read the project'
-    };
+// Siblings in the same series, for previous/next and the episode rail.
+const allVideos = await getVideosNewestFirst();
+const { group, previous, next } = seriesNeighbours(allVideos, entry);
 
-const trackLabel = { hiking: isDa ? 'Vandring' : 'Hiking', economics: isDa ? 'Økonomi' : 'Economics' }[video.track];
-const listUrl = isDa ? '/videoer' : '/en/videos';
+const t = {
+  da: {
+    back: 'Alle videoer', watch: 'Se på YouTube', chapters: 'Kapitler',
+    inNumbers: 'Turen i tal', inNumbersPlain: 'I tal', profile: 'Højdeprofil',
+    distance: 'Distance', climb: 'Stigning', descent: 'Fald', peak: 'Højeste punkt',
+    duration: 'Varighed', steps: 'Skridt', pace: 'Gns. tempo', route: 'Rute',
+    axisKm: 'Kilometer', axisEle: 'Meter over havet', related: 'Læs projektet',
+    episodes: 'Afsnit i serien', prev: 'Forrige', next: 'Næste', allInSeries: 'Se hele serien'
+  },
+  en: {
+    back: 'All videos', watch: 'Watch on YouTube', chapters: 'Chapters',
+    inNumbers: 'The walk in numbers', inNumbersPlain: 'In numbers', profile: 'Elevation profile',
+    distance: 'Distance', climb: 'Ascent', descent: 'Descent', peak: 'High point',
+    duration: 'Duration', steps: 'Steps', pace: 'Avg. pace', route: 'Route',
+    axisKm: 'Kilometres', axisEle: 'Metres above sea level', related: 'Read the project',
+    episodes: 'Episodes in this series', prev: 'Previous', next: 'Next', allInSeries: 'View the whole series'
+  },
+  de: {
+    back: 'Alle Videos', watch: 'Auf YouTube ansehen', chapters: 'Kapitel',
+    inNumbers: 'Die Tour in Zahlen', inNumbersPlain: 'In Zahlen', profile: 'Höhenprofil',
+    distance: 'Distanz', climb: 'Aufstieg', descent: 'Abstieg', peak: 'Höchster Punkt',
+    duration: 'Dauer', steps: 'Schritte', pace: 'Ø Tempo', route: 'Route',
+    axisKm: 'Kilometer', axisEle: 'Meter über dem Meer', related: 'Zum Projekt',
+    episodes: 'Folgen dieser Serie', prev: 'Zurück', next: 'Weiter', allInSeries: 'Ganze Serie ansehen'
+  }
+}[lang];
 
-const hourUnit = isDa ? 't' : 'h';
+const trackLabel = {
+  hiking: { da: 'Vandring', en: 'Hiking', de: 'Wandern' }[lang],
+  economics: { da: 'Økonomi', en: 'Economics', de: 'Wirtschaft' }[lang]
+}[video.track];
+
+const listUrl = videosRoot(lang);
+const locale = { da: 'da-DK', en: 'en-GB', de: 'de-DE' }[lang];
+
+const hourUnit = { da: 't', en: 'h', de: 'Std' }[lang];
 const hhmm = (min: number) => {
   const h = Math.floor(min / 60);
   const m = min % 60;
@@ -58,8 +86,15 @@ const tiles = [
   trail.elevationLossM && { label: t.descent, value: `${trail.elevationLossM} m`, icon: 'fa-solid fa-arrow-trend-down' },
   trail.maxAltitudeM && { label: t.peak, value: `${trail.maxAltitudeM} m`, icon: 'fa-solid fa-mountain' },
   trail.durationMin && { label: t.duration, value: hhmm(trail.durationMin), icon: 'fa-solid fa-clock' },
-  trail.steps && { label: t.steps, value: trail.steps.toLocaleString(isDa ? 'da-DK' : 'en-GB'), icon: 'fa-solid fa-shoe-prints' },
-  trail.avgSpeedKmh && { label: t.pace, value: `${trail.avgSpeedKmh} km/t`.replace('km/t', isDa ? 'km/t' : 'km/h'), icon: 'fa-solid fa-gauge-high' }
+  trail.steps && { label: t.steps, value: trail.steps.toLocaleString(locale), icon: 'fa-solid fa-shoe-prints' },
+  trail.avgSpeedKmh && { label: t.pace, value: `${trail.avgSpeedKmh} ${isDa ? 'km/t' : 'km/h'}`, icon: 'fa-solid fa-gauge-high' },
+  // Free-form badges (see the `stats` note in src/content/config.ts). These used to
+  // render on the card and then silently vanish here.
+  ...(video.stats ?? []).map((stat) => ({
+    label: (isDa && stat.label_da) || (lang === 'de' && stat.label_de) || stat.label,
+    value: stat.value,
+    icon: stat.icon ?? 'fa-solid fa-circle-info'
+  }))
 ].filter(Boolean) as { label: string; value: string; icon: string }[];
 
 const relatedUrl = video.relatedProjectUrl
@@ -71,14 +106,14 @@ const jsonLd = {
   name: title,
   description,
   uploadDate: video.publishedAt,
-  thumbnailUrl: video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`,
+  thumbnailUrl: thumbnailUrl(entry),
   embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
   contentUrl: `https://www.youtube.com/watch?v=${video.youtubeId}`,
   ...(video.chapters?.length
     ? {
         hasPart: video.chapters.map((c) => ({
           '@type': 'Clip',
-          name: (isDa && c.label_da) || c.label,
+          name: (isDa && c.label_da) || (lang === 'de' && c.label_de) || c.label,
           startOffset: c.t,
           url: `https://www.youtube.com/watch?v=${video.youtubeId}&t=${c.t}s`
         }))
@@ -91,7 +126,7 @@ const jsonLd = {
 <Layout
   title={title}
   description={description}
-  image={video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`}
+  image={thumbnailUrl(entry)}
   article={true}
 >
   <main class="container mx-auto px-4 pt-28 pb-24 max-w-5xl">
@@ -103,9 +138,15 @@ const jsonLd = {
     <Section class="!mb-10">
       <div class="flex flex-wrap items-center gap-2 mb-5">
         <Pill variant="accent">{trackLabel}</Pill>
-        {series && <Pill>{series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}</Pill>}
+        {series && video.series && (
+          <a href={seriesPath(slugifySeries(video.series), lang)} class="no-underline">
+            <Pill class="hover:border-accent/50 hover:text-accent transition-colors">
+              {series}{video.seriesOrder ? ` · ${video.seriesOrder}` : ''}
+            </Pill>
+          </a>
+        )}
         <time datetime={video.publishedAt} class="text-[11px] uppercase tracking-wider text-dim opacity-40 ml-1">
-          {new Date(video.publishedAt).toLocaleDateString(isDa ? 'da-DK' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric' })}
+          {new Date(video.publishedAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}
         </time>
       </div>
 
@@ -128,9 +169,13 @@ const jsonLd = {
       />
     </Section>
 
-    {trail.hasData && (
+    {/* Gated on the tiles, not on trail data alone: an economics video may carry
+        only free-form `stats` and still deserves the section. */}
+    {tiles.length > 0 && (
       <Section>
-        <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">{t.inNumbers}</h2>
+        <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-6">
+          {trail.hasData ? t.inNumbers : t.inNumbersPlain}
+        </h2>
 
         <StatTiles tiles={tiles} class="mb-10" />
 
@@ -167,19 +212,81 @@ const jsonLd = {
                 data-youtube-id={video.youtubeId}
               >
                 <span class="font-mono text-accent/70 tabular-nums text-sm">{stamp(chapter.t)}</span>
-                <span class="text-sm">{(isDa && chapter.label_da) || chapter.label}</span>
+                <span class="text-sm">{(isDa && chapter.label_da) || (lang === 'de' && chapter.label_de) || chapter.label}</span>
               </button>
               <a
                 href={`https://www.youtube.com/watch?v=${video.youtubeId}&t=${chapter.t}s`}
                 target="_blank" rel="noopener noreferrer"
                 class="text-dim opacity-30 hover:opacity-100 hover:text-accent transition-all shrink-0 px-2"
-                aria-label={`${t.watch}: ${(isDa && chapter.label_da) || chapter.label}`}
+                aria-label={`${t.watch}: ${(isDa && chapter.label_da) || (lang === 'de' && chapter.label_de) || chapter.label}`}
               >
                 <i class="fa-brands fa-youtube text-xs"></i>
               </a>
             </li>
           ))}
         </ul>
+      </Section>
+    )}
+
+    {group && group.videos.length > 1 && (
+      <Section>
+        <div class="flex flex-wrap items-baseline justify-between gap-3 mb-5">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-accent">{t.episodes}</h2>
+          <a
+            href={seriesPath(group.slug, lang)}
+            class="text-[11px] uppercase tracking-wider text-dim opacity-50 hover:opacity-100 hover:text-accent transition-all no-underline"
+          >
+            {t.allInSeries} <i class="fa-solid fa-arrow-right text-[9px] ml-0.5"></i>
+          </a>
+        </div>
+
+        <ol class="list-none p-0 m-0 border-t border-white/5">
+          {group.videos.map((episode) => {
+            const current = episode.slug === slug;
+            return (
+              <li>
+                <a
+                  href={videoPath(episode.slug, lang)}
+                  aria-current={current ? 'page' : undefined}
+                  class:list={[
+                    'flex items-center gap-4 py-3 border-b border-white/5 no-underline transition-colors',
+                    current ? 'text-accent pointer-events-none' : 'text-dim hover:text-accent'
+                  ]}
+                >
+                  <span class="font-mono tabular-nums text-xs opacity-60 w-6 shrink-0">
+                    {String(episode.seriesOrder ?? '·').padStart(2, '0')}
+                  </span>
+                  <span class="text-sm flex-1">{videoTitle(episode, lang)}</span>
+                  {current && <i class="fa-solid fa-play text-[9px] shrink-0"></i>}
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+
+        <nav class="flex justify-between gap-4 mt-8">
+          {previous ? (
+            <a href={videoPath(previous.slug, lang)} class="group flex-1 max-w-[48%] no-underline">
+              <span class="block text-[10px] uppercase tracking-widest text-dim opacity-50 mb-1">
+                <i class="fa-solid fa-arrow-left text-[9px] mr-1.5"></i>{t.prev}
+              </span>
+              <span class="block text-sm text-white/80 group-hover:text-accent transition-colors">
+                {videoTitle(previous, lang)}
+              </span>
+            </a>
+          ) : <span />}
+
+          {next && (
+            <a href={videoPath(next.slug, lang)} class="group flex-1 max-w-[48%] text-right no-underline">
+              <span class="block text-[10px] uppercase tracking-widest text-dim opacity-50 mb-1">
+                {t.next}<i class="fa-solid fa-arrow-right text-[9px] ml-1.5"></i>
+              </span>
+              <span class="block text-sm text-white/80 group-hover:text-accent transition-colors">
+                {videoTitle(next, lang)}
+              </span>
+            </a>
+          )}
+        </nav>
       </Section>
     )}
 

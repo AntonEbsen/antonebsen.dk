@@ -1,22 +1,15 @@
 ---
 import VideoSeriesPage from '@components/templates/VideoSeriesPage.astro';
-import { getVideosNewestFirst, slugifySeries } from '@lib/video-feed';
+import { getVideosNewestFirst, groupBySeries } from '@lib/video-feed';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const videos = await getVideosNewestFirst();
-  const bySeries = new Map<string, typeof videos>();
+  const groups = groupBySeries(await getVideosNewestFirst());
 
-  for (const video of videos) {
-    if (!video.series) continue;
-    const slug = slugifySeries(video.series);
-    bySeries.set(slug, [...(bySeries.get(slug) ?? []), video]);
-  }
-
-  return [...bySeries].map(([slug, entries]) => ({
-    params: { series: slug },
-    props: { series: entries[0].series!, videos: entries }
+  return groups.map((group) => ({
+    params: { series: group.slug },
+    props: { series: group.name, videos: group.videos }
   }));
 }
 

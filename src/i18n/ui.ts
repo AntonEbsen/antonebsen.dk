@@ -180,7 +180,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
             url: '/de/portfolio',
             children: [
                 { label: 'Projekte', url: '/de/portfolio' },
-                { label: 'Videos', url: '/en/videos' },
+                { label: 'Videos', url: '/de/videos' },
                 { label: 'Model Library', url: '/en/models' },
                 { label: 'Speaking', url: '/en/speaking' },
                 { label: 'Economic Toolkit', url: '/de/toolkit' },

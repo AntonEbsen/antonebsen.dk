@@ -6,16 +6,20 @@ import RouteMap from '@components/ui/RouteMap.astro';
 import StatTiles from '@components/ui/StatTiles.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { resolveTrail } from '@lib/trail';
-import type { FeedVideoEntry } from '@lib/video-feed';
+import {
+  videosRoot, videoPath, videoTitle, videoDescription, videoSeriesName, thumbnailUrl,
+  type FeedVideoEntry, type Lang
+} from '@lib/video-feed';
 
 interface Props {
   series: string;
   videos: FeedVideoEntry[];
-  lang: 'da' | 'en';
+  lang: Lang;
 }
 
 const { series, videos, lang } = Astro.props;
 const isDa = lang === 'da';
+const locale = { da: 'da-DK', en: 'en-GB', de: 'de-DE' }[lang];
 
 // Episodes run in narrative order here, not newest-first like the index.
 const ordered = [...videos].sort(
@@ -38,23 +42,30 @@ const totals = trails.reduce(
 
 const paths = trails.filter((t) => t.hasPath).map((t) => t.path);
 
-const seriesTitle = (isDa && ordered[0]?.series_da) || series;
+const seriesTitle = (ordered[0] && videoSeriesName(ordered[0], lang)) || series;
 
-const t = isDa
-  ? {
-      eyebrow: 'Serie', back: 'Alle videoer', episodes: 'Afsnit', inNumbers: 'Serien i tal',
-      route: 'Ruten', distance: 'Distance', climb: 'Stigning', duration: 'Tid på fode', steps: 'Skridt',
-      films: 'Film', contactTitle: 'Følg med',
-      contactText: 'Nye afsnit lander på kanalen først. Du finder mig også her:'
-    }
-  : {
-      eyebrow: 'Series', back: 'All videos', episodes: 'Episodes', inNumbers: 'The series in numbers',
-      route: 'The route', distance: 'Distance', climb: 'Ascent', duration: 'Time on foot', steps: 'Steps',
-      films: 'Films', contactTitle: 'Follow along',
-      contactText: 'New episodes land on the channel first. You can also find me here:'
-    };
+const t = {
+  da: {
+    eyebrow: 'Serie', back: 'Alle videoer', episodes: 'Afsnit', inNumbers: 'Serien i tal',
+    route: 'Ruten', distance: 'Distance', climb: 'Stigning', duration: 'Tid på fode', steps: 'Skridt',
+    films: 'Film', contactTitle: 'Følg med',
+    contactText: 'Nye afsnit lander på kanalen først. Du finder mig også her:'
+  },
+  en: {
+    eyebrow: 'Series', back: 'All videos', episodes: 'Episodes', inNumbers: 'The series in numbers',
+    route: 'The route', distance: 'Distance', climb: 'Ascent', duration: 'Time on foot', steps: 'Steps',
+    films: 'Films', contactTitle: 'Follow along',
+    contactText: 'New episodes land on the channel first. You can also find me here:'
+  },
+  de: {
+    eyebrow: 'Serie', back: 'Alle Videos', episodes: 'Folgen', inNumbers: 'Die Serie in Zahlen',
+    route: 'Die Route', distance: 'Distanz', climb: 'Aufstieg', duration: 'Zeit zu Fuß', steps: 'Schritte',
+    films: 'Filme', contactTitle: 'Bleib dabei',
+    contactText: 'Neue Folgen erscheinen zuerst auf dem Kanal. Du findest mich auch hier:'
+  }
+}[lang];
 
-const hourUnit = isDa ? 't' : 'h';
+const hourUnit = { da: 't', en: 'h', de: 'Std' }[lang];
 const hhmm = (min: number) => {
   const h = Math.floor(min / 60);
   const m = min % 60;
@@ -67,22 +78,48 @@ const tiles = [
     label: t.distance, value: `${totals.distanceKm.toFixed(1)} km`, icon: 'fa-solid fa-route'
   },
   totals.elevationGainM > 0 && {
-    label: t.climb, value: `${totals.elevationGainM.toLocaleString(isDa ? 'da-DK' : 'en-GB')} m`,
+    label: t.climb, value: `${totals.elevationGainM.toLocaleString(locale)} m`,
     icon: 'fa-solid fa-arrow-trend-up'
   },
   totals.durationMin > 0 && {
     label: t.duration, value: hhmm(totals.durationMin), icon: 'fa-solid fa-clock'
   },
   totals.steps > 0 && {
-    label: t.steps, value: totals.steps.toLocaleString(isDa ? 'da-DK' : 'en-GB'),
+    label: t.steps, value: totals.steps.toLocaleString(locale),
     icon: 'fa-solid fa-shoe-prints'
   }
 ].filter(Boolean) as { label: string; value: string; icon: string }[];
 
-const listUrl = isDa ? '/videoer' : '/en/videos';
-const description = isDa
-  ? `${seriesTitle} — ${ordered.length} film fra The Wandering Economist.`
-  : `${seriesTitle} — ${ordered.length} films from The Wandering Economist.`;
+const listUrl = videosRoot(lang);
+const description = {
+  da: `${seriesTitle} — ${ordered.length} film fra The Wandering Economist.`,
+  en: `${seriesTitle} — ${ordered.length} films from The Wandering Economist.`,
+  de: `${seriesTitle} — ${ordered.length} Filme von The Wandering Economist.`
+}[lang];
+
+// ContactCard only speaks da/en; German visitors get English rather than Danish.
+const contactLang = lang === 'de' ? 'en' : lang;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: seriesTitle,
+  numberOfItems: ordered.length,
+  itemListElement: ordered.map((video, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'VideoObject',
+      name: videoTitle(video, lang),
+      description: videoDescription(video, lang),
+      uploadDate: video.publishedAt,
+      thumbnailUrl: thumbnailUrl(video),
+      embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
+      contentUrl: `https://www.youtube.com/watch?v=${video.youtubeId}`,
+      url: new URL(videoPath(video.slug, lang), Astro.site ?? 'https://antonebsen.dk').href
+    }
+  }))
+};
 ---
 
 <Layout title={seriesTitle} description={description}>
@@ -111,10 +148,12 @@ const description = isDa
     </Section>
 
     <Section>
-      <ContactCard title={t.contactTitle} text={t.contactText} lang={lang} />
+      <ContactCard title={t.contactTitle} text={t.contactText} lang={contactLang} />
     </Section>
 
   </main>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </Layout>
 
 <style>

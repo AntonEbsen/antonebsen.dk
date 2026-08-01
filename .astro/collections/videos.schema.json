@@ -13,10 +13,16 @@
         "title_da": {
           "type": "string"
         },
+        "title_de": {
+          "type": "string"
+        },
         "description": {
           "type": "string"
         },
         "description_da": {
+          "type": "string"
+        },
+        "description_de": {
           "type": "string"
         },
         "publishedAt": {
@@ -43,6 +49,9 @@
         "series_da": {
           "type": "string"
         },
+        "series_de": {
+          "type": "string"
+        },
         "seriesOrder": {
           "type": "number"
         },
@@ -61,6 +70,9 @@
                 "type": "string"
               },
               "label_da": {
+                "type": "string"
+              },
+              "label_de": {
                 "type": "string"
               },
               "value": {
@@ -89,6 +101,9 @@
                 "type": "string"
               },
               "label_da": {
+                "type": "string"
+              },
+              "label_de": {
                 "type": "string"
               }
             },

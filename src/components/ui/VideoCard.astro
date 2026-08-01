@@ -1,12 +1,15 @@
 ---
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import Pill from '@components/ui/Pill.astro';
-import { seriesPath, slugifySeries } from '@lib/video-feed';
+import {
+  seriesPath, slugifySeries, videoPath, videoTitle, videoDescription, videoSeriesName,
+  type Lang
+} from '@lib/video-feed';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   video: CollectionEntry<'videos'>['data'];
-  lang: 'da' | 'en';
+  lang: Lang;
   /** Entry id without extension — enables the link through to the detail page. */
   slug?: string;
 }
@@ -14,20 +17,24 @@ interface Props {
 const { video, lang, slug } = Astro.props;
 const isDa = lang === 'da';
 
-const detailUrl = slug ? `${isDa ? '/videoer' : '/en/videos'}/${slug}` : undefined;
+const entry = { ...video, slug: slug ?? '' } as any;
 
-const title = (isDa && video.title_da) || video.title;
-const description = (isDa && video.description_da) || video.description;
-const series = (isDa && video.series_da) || video.series;
+const detailUrl = slug ? videoPath(slug, lang) : undefined;
+
+const title = videoTitle(entry, lang);
+const description = videoDescription(entry, lang);
+const series = videoSeriesName(entry, lang);
 
 const trackLabel = {
-  hiking: isDa ? 'Vandring' : 'Hiking',
-  economics: isDa ? 'Økonomi' : 'Economics'
+  hiking: { da: 'Vandring', en: 'Hiking', de: 'Wandern' }[lang],
+  economics: { da: 'Økonomi', en: 'Economics', de: 'Wirtschaft' }[lang]
 }[video.track];
 
 const trackIcon = video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line';
 
-const published = new Date(video.publishedAt).toLocaleDateString(isDa ? 'da-DK' : 'en-GB', {
+const locale = { da: 'da-DK', en: 'en-GB', de: 'de-DE' }[lang];
+
+const published = new Date(video.publishedAt).toLocaleDateString(locale, {
   year: 'numeric',
   month: 'short',
   day: 'numeric'
@@ -37,11 +44,10 @@ const relatedUrl = video.relatedProjectUrl
   ?? (video.relatedBlogSlug ? `${isDa ? '/da' : ''}/blog/${video.relatedBlogSlug}` : undefined);
 
 const t = {
-  chapters: isDa ? 'Kapitler' : 'Chapters',
-  related: isDa ? 'Læs projektet' : 'Read the project',
-  watchOn: isDa ? 'Se på YouTube' : 'Watch on YouTube',
-  details: isDa ? 'Turen i tal' : 'The walk in numbers'
-};
+  da: { chapters: 'Kapitler', related: 'Læs projektet', watchOn: 'Se på YouTube', details: 'Turen i tal' },
+  en: { chapters: 'Chapters', related: 'Read the project', watchOn: 'Watch on YouTube', details: 'The walk in numbers' },
+  de: { chapters: 'Kapitel', related: 'Zum Projekt', watchOn: 'Auf YouTube ansehen', details: 'Die Tour in Zahlen' }
+}[lang];
 
 const hasTrail = !!(video.gpxFile || video.trail);
 
@@ -90,7 +96,7 @@ const stamp = (seconds: number) => {
         {video.stats.map((stat) => (
           <div class="flex flex-col">
             <dt class="text-[10px] uppercase tracking-widest text-dim opacity-50">
-              {(isDa && stat.label_da) || stat.label}
+              {(isDa && stat.label_da) || (lang === 'de' && stat.label_de) || stat.label}
             </dt>
             <dd class="text-sm font-bold text-accent m-0">
               {stat.icon && <i class={`${stat.icon} mr-1.5 opacity-70`}></i>}{stat.value}
@@ -115,7 +121,7 @@ const stamp = (seconds: number) => {
                 class="flex gap-3 text-xs text-dim opacity-70 hover:opacity-100 hover:text-accent transition-all no-underline"
               >
                 <span class="font-mono text-accent/70 tabular-nums">{stamp(chapter.t)}</span>
-                <span>{(isDa && chapter.label_da) || chapter.label}</span>
+                <span>{(isDa && chapter.label_da) || (lang === 'de' && chapter.label_de) || chapter.label}</span>
               </a>
             </li>
           ))}

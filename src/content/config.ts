@@ -78,10 +78,14 @@ const videosCollection = defineCollection({
     type: 'data',
     schema: z.object({
         youtubeId: z.string(),
+        // The videos are in English. Danish gets hand-written titles; German falls
+        // back to English unless a _de field is supplied.
         title: z.string(),
         title_da: z.string().optional(),
+        title_de: z.string().optional(),
         description: z.string(),
         description_da: z.string().optional(),
+        description_de: z.string().optional(),
         publishedAt: z.string(), // ISO date
         // The channel's two worlds.
         track: z.enum(['hiking', 'economics']),
@@ -89,14 +93,19 @@ const videosCollection = defineCollection({
         orientation: z.enum(['landscape', 'portrait']).default('landscape'),
         series: z.string().optional(),
         series_da: z.string().optional(),
+        series_de: z.string().optional(),
         seriesOrder: z.number().optional(),
         featured: z.boolean().optional(),
         // Overrides the default i.ytimg.com thumbnail.
         thumbnail: z.string().optional(),
-        // "12.4 km", "940 m↑", "18,200 steps" — the data angle the channel is built on.
+        // Free-form badges, for facts that are not trail measurements — "19 countries",
+        // "25 years of data" on an economics video. For hiking numbers use `trail`
+        // below instead: those are typed, drive the chart and map, and aggregate
+        // across a series. Both render as stat tiles on the card and detail page.
         stats: z.array(z.object({
             label: z.string(),
             label_da: z.string().optional(),
+            label_de: z.string().optional(),
             value: z.string(),
             icon: z.string().optional()
         })).optional(),
@@ -104,7 +113,8 @@ const videosCollection = defineCollection({
         chapters: z.array(z.object({
             t: z.number(),
             label: z.string(),
-            label_da: z.string().optional()
+            label_da: z.string().optional(),
+            label_de: z.string().optional()
         })).optional(),
         // "Trail in numbers". Either drop a .gpx export into src/data/gpx/ and name it
         // here (distance, climb and the elevation profile are then derived at build
