@@ -3,6 +3,7 @@ import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import Pill from '@components/ui/Pill.astro';
 import {
   getVideosNewestFirst, videoPath, videoTitle, videoDescription,
+  trackIcon, trackPillVariant,
   type FeedVideoEntry, type Lang
 } from '@lib/video-feed';
 
@@ -66,8 +67,8 @@ const t = {
 
           <div>
             <div class="flex flex-wrap items-center gap-2 mb-3">
-              <Pill variant="accent">
-                <i class={`${video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line'} mr-1.5`} aria-hidden="true"></i>
+              <Pill variant={trackPillVariant(video.track)}>
+                <i class={`${trackIcon(video.track)} mr-1.5`} aria-hidden="true"></i>
                 {video.track === 'hiking'
                   ? { da: 'Vandring', en: 'Hiking', de: 'Wandern' }[lang]
                   : { da: 'Økonomi', en: 'Economics', de: 'Wirtschaft' }[lang]}

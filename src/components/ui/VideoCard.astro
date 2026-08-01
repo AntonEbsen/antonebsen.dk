@@ -3,7 +3,7 @@ import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import Pill from '@components/ui/Pill.astro';
 import {
   seriesPath, slugifySeries, videoPath, videoTitle, videoDescription, videoSeriesName,
-  type Lang
+  trackIcon, trackPillVariant, type Lang
 } from '@lib/video-feed';
 import type { CollectionEntry } from 'astro:content';
 
@@ -30,7 +30,8 @@ const trackLabel = {
   economics: { da: 'Økonomi', en: 'Economics', de: 'Wirtschaft' }[lang]
 }[video.track];
 
-const trackIcon = video.track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line';
+const icon = trackIcon(video.track);
+const pillVariant = trackPillVariant(video.track);
 
 const locale = { da: 'da-DK', en: 'en-GB', de: 'de-DE' }[lang];
 
@@ -71,7 +72,7 @@ const stamp = (seconds: number) => {
 
   <div class="flex flex-col gap-3 px-1">
     <div class="flex flex-wrap items-center gap-2">
-      <Pill variant="accent"><i class={`${trackIcon} mr-1.5`} aria-hidden="true"></i>{trackLabel}</Pill>
+      <Pill variant={pillVariant}><i class={`${icon} mr-1.5`} aria-hidden="true"></i>{trackLabel}</Pill>
       {series && (
         video.series
           ? <a href={seriesPath(slugifySeries(video.series), lang)} class="no-underline">

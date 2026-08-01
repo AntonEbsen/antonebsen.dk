@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { TRACK_HEX } from '@lib/video-feed';
 
 export const prerender = false; // We want it to build dynamically if needed, or static if prerendered
 
@@ -55,22 +56,25 @@ export async function GET() {
         }
     });
 
-    // Add Videos, hung off the channel's two tracks and their series
+    // Add Videos, hung off the channel's two tracks and their series.
+    // Colours are literals because these feed three.js, which cannot read CSS
+    // variables — TRACK_HEX mirrors --accent-2 / --accent.
     videos.forEach(video => {
         const title = video.data.title;
+        const trackHex = TRACK_HEX[video.data.track];
 
-        addNode(title, 4, 10, '#F87171', {
+        addNode(title, 4, 10, trackHex, {
             title: 'Video',
             desc: video.data.description,
             url: `/en/videos/${video.id.replace(/\.json$/, '')}`
         });
 
         const track = video.data.track === 'hiking' ? 'Hiking' : 'Economics';
-        addNode(track, 3, 20, '#34D399');
+        addNode(track, 3, 20, trackHex);
         links.push({ source: title, target: track, value: 2 });
 
         if (video.data.series) {
-            addNode(video.data.series, 3, 14, '#34D399');
+            addNode(video.data.series, 3, 14, trackHex);
             links.push({ source: title, target: video.data.series, value: 3 });
         }
     });

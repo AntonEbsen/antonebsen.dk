@@ -14,6 +14,12 @@ import SpeedInsights from "@vercel/speed-insights/astro"
 // dragged React onto all ~196 pages (only ~10 have a genuine React island).
 import Analytics from "@vercel/analytics/astro"
 import '@fontsource-variable/inter';
+// Fraunces for display. 80 font-serif usages previously fell through to Tailwind's
+// default ui-serif stack and rendered as whatever Georgia/Times the OS supplied.
+// Weight axis only: SOFT/WONK/opsz would cost 264 KB across both styles against
+// 80 KB here, and at display sizes the weight axis carries the character.
+import '@fontsource-variable/fraunces/wght.css';
+import '@fontsource-variable/fraunces/wght-italic.css';
 import 'katex/dist/katex.min.css';
 
 interface Props {
@@ -81,6 +87,9 @@ const lang = getLangFromUrl(Astro.url);
       
       /* TYPOGRAPHY - System font stack for instant render, Inter loads progressively */
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      /* Display face. Georgia leads the fallback because it is the metric-closest
+         serif already on most machines, which keeps the swap from shifting layout. */
+      --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
       --h1-size: clamp(48px, 6vw, 76px);
       --h2-size: clamp(28px, 4vw, 42px);
       --body-size: 16px;

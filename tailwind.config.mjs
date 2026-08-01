@@ -41,6 +41,10 @@ export default {
             },
             fontFamily: {
                 sans: ['var(--font-main)', 'sans-serif'],
+                // Overriding `serif` means the 80 existing font-serif usages pick
+                // Fraunces up with no markup churn. Without this they silently fall
+                // back to Tailwind's default ui-serif/Georgia stack.
+                serif: ['var(--font-display)'],
             }
         },
     },

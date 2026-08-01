@@ -6,12 +6,13 @@ import Button from '@components/ui/Button.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import RouteMap from '@components/ui/RouteMap.astro';
 import StatTiles from '@components/ui/StatTiles.astro';
+import ElevationRule from '@components/ui/ElevationRule.astro';
 import { CHANNEL_URL } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
 import {
   getVideosNewestFirst, seriesNeighbours, videoPath, seriesPath, videosRoot,
   videoTitle, videoDescription, videoSeriesName, thumbnailUrl, slugifySeries,
-  type Lang
+  trackIcon, trackPillVariant, type Lang
 } from '@lib/video-feed';
 import type { CollectionEntry } from 'astro:content';
 
@@ -146,7 +147,9 @@ const jsonLd = {
 
     <Section class="!mb-10">
       <div class="flex flex-wrap items-center gap-2 mb-5">
-        <Pill variant="accent">{trackLabel}</Pill>
+        <Pill variant={trackPillVariant(video.track)}>
+          <i class={`${trackIcon(video.track)} mr-1.5`} aria-hidden="true"></i>{trackLabel}
+        </Pill>
         {series && video.series && (
           <a href={seriesPath(slugifySeries(video.series), lang)} class="no-underline">
             <Pill class="hover:border-accent/50 hover:text-accent transition-colors">
@@ -207,6 +210,10 @@ const jsonLd = {
         </div>
       </Section>
     )}
+
+    {/* The divider between sections is the shape of this walk. Renders nothing
+        until a .gpx exists for the video. */}
+    <ElevationRule profile={trail.profile} />
 
     {video.chapters && video.chapters.length > 0 && (
       <Section>
