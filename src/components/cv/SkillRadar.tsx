@@ -32,13 +32,13 @@ export default function SkillRadar({ labels, data, label }: Props) {
             {
                 label,
                 data,
-                backgroundColor: 'rgba(212, 175, 55, 0.2)', // Accent color with opacity
-                borderColor: 'rgba(212, 175, 55, 1)',
+                backgroundColor: 'rgba(212,121,79,0.2)', // Accent color with opacity
+                borderColor: 'rgba(212, 121, 79, 1)',
                 borderWidth: 1,
                 pointBackgroundColor: 'rgba(255, 255, 255, 1)',
                 pointBorderColor: '#fff',
                 pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(212, 175, 55, 1)',
+                pointHoverBorderColor: 'rgba(212, 121, 79, 1)',
             },
         ],
     };

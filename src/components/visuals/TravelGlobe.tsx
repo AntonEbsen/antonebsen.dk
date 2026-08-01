@@ -129,7 +129,7 @@ export default function TravelGlobe({ nodes, labels }: Props) {
               initial={{ scale: 0.9, y: 20, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
-              className="relative w-full max-w-4xl bg-[#0a0a0c] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
+              className="relative w-full max-w-4xl bg-[#1E2122] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
             >
               {/* Close Button */}
               <button 

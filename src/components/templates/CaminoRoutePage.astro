@@ -276,12 +276,12 @@ const weatherCities = t.weatherCities;
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         const routeLine = waypoints.map(w => [w.lat, w.lng]);
-        L.polyline(routeLine, { color: '#D4AF37', weight: 4, opacity: 0.7 }).addTo(map);
+        L.polyline(routeLine, { color: 'var(--accent)', weight: 4, opacity: 0.7 }).addTo(map);
 
         waypoints.forEach(w => {
            const dot = L.circleMarker([w.lat, w.lng], {
             radius: w.type === 'city' ? 8 : 5,
-            fillColor: w.type === 'start' || w.type === 'end' ? '#D4AF37' : '#fff',
+            fillColor: w.type === 'start' || w.type === 'end' ? 'var(--accent)' : '#fff',
             color: '#000',
             weight: 2,
             opacity: 1,

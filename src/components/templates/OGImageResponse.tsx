@@ -16,8 +16,8 @@ export function OGImageResponse({ title, desc }: { title: string; desc: string }
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'center',
-                backgroundColor: '#050505',
-                backgroundImage: 'radial-gradient(circle at 50% 0%, #1a1505 0%, #050505 60%)',
+                backgroundColor: '#17191A',
+                backgroundImage: 'radial-gradient(circle at 50% 0%, #1a1505 0%, #17191A 60%)',
                 padding: '40px 80px',
                 fontFamily: '"Inter"',
             }}
@@ -29,7 +29,7 @@ export function OGImageResponse({ title, desc }: { title: string; desc: string }
                     left: 0,
                     width: '100%',
                     height: '4px',
-                    background: 'linear-gradient(90deg, #D4AF37 0%, transparent 100%)',
+                    background: 'linear-gradient(90deg, #D4794F 0%, transparent 100%)',
                 }}
             />
 
@@ -45,14 +45,14 @@ export function OGImageResponse({ title, desc }: { title: string; desc: string }
                         width: '40px',
                         height: '40px',
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #D4AF37 0%, #F4C430 100%)',
+                        background: 'linear-gradient(135deg, #D4794F 0%, #E39068 100%)',
                         marginRight: '15px',
                     }}
                 />
                 <span
                     style={{
                         fontSize: 24,
-                        color: '#D4AF37',
+                        color: '#D4794F',
                         fontWeight: 600,
                         letterSpacing: '-0.02em',
                     }}

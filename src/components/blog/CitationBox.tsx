@@ -50,7 +50,7 @@ export default function CitationBox({ title, author, url, date }: CitationBoxPro
             </button>
 
             <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] mt-4 opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                <div className="overflow-hidden bg-[#0a0a0c] border border-white/10 rounded-lg relative group">
+                <div className="overflow-hidden bg-[#1E2122] border border-white/10 rounded-lg relative group">
                     <button
                         onClick={copyToClipboard}
                         className="absolute top-2 right-2 px-2 py-1 bg-white/5 hover:bg-white/10 rounded text-[10px] text-dim hover:text-white transition-colors border border-white/5"

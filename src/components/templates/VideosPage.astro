@@ -187,7 +187,7 @@ const jsonLd = {
 
     <Section class="container mx-auto px-4 relative z-10">
       {videos.length === 0 ? (
-        <p class="text-center text-dim opacity-60 py-16">{t.empty}</p>
+        <p class="text-center text-muted py-16">{t.empty}</p>
       ) : (
         <>
           <div class="flex flex-wrap justify-center gap-3 mb-12">
@@ -217,7 +217,7 @@ const jsonLd = {
       <Section class="container mx-auto px-4 relative z-10">
         <div class="border-t border-white/5 pt-12">
           <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">{t.newTitle}</h2>
-          <p class="text-sm text-dim opacity-60 mb-6">{t.newLead}</p>
+          <p class="text-sm text-muted mb-6">{t.newLead}</p>
           <ul class="flex flex-col gap-2 list-none p-0 m-0">
             {uncurated.map((video) => (
               <li>
@@ -296,7 +296,7 @@ const jsonLd = {
   }
 
   .filter-btn.active {
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 0 15px rgba(212, 121, 79, 0.2);
     /* The base class carries `text-dim`, and `text-bg` from the active variant is
        the same specificity, so source order decided which won — it lost, leaving
        #d4d4d8 on gold at 1.42:1. This two-class rule wins deterministically. */

@@ -25,7 +25,7 @@ const isEn = lang === 'en';
   <h2 class="text-xs font-bold uppercase tracking-wider text-accent mb-4">{title}</h2>
   
   {action === "socials" ? (
-      <p class="text-dim opacity-80 m-0">
+      <p class="text-muted m-0">
         {text} 
         <br class="hidden md:block"/>
         <span class="inline-flex gap-4 mt-2">
@@ -34,14 +34,14 @@ const isEn = lang === 'en';
         </span>
       </p>
   ) : action === "email" ? (
-      <p class="text-dim opacity-70 mb-6">{text}</p>
+      <p class="text-muted mb-6">{text}</p>
       <div class="flex flex-wrap gap-3">
           <Button href={`mailto:anton.ebsen@gmail.com`}>Email</Button>
           <Button href={isEn ? "/en/contact" : "/contact"} variant="ghost">{isEn ? "Contact" : "Kontakt"}</Button>
       </div>
   ) : (
      <>
-        <p class="text-dim opacity-70 mb-6">{text}</p>
+        <p class="text-muted mb-6">{text}</p>
         <div class="flex flex-wrap gap-3">
           <Button href={isEn ? "/en/contact" : "/contact"}><i class="fa-solid fa-envelope mr-2"></i> {isEn ? "Contact" : "Kontakt"}</Button>
           <Button href={isEn ? "/en/services" : "/services"} variant="ghost"><i class="fa-solid fa-handshake mr-2"></i> {isEn ? "Services" : "Samarbejde"}</Button>

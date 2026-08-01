@@ -92,7 +92,7 @@ export default function SignalVoice({ url, lang = 'da' }: SignalVoiceProps) {
 
             <button
                 onClick={togglePlay}
-                className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-black hover:scale-105 transition-transform shadow-[0_0_15px_rgba(212,175,55,0.3)]"
+                className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-black hover:scale-105 transition-transform shadow-[0_0_15px_rgba(212,121,79,0.3)]"
             >
                 <AnimatePresence mode="wait">
                     {isPlaying ? (

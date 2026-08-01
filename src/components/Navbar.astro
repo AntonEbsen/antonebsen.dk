@@ -7,7 +7,7 @@ const navItems = useNav(lang);
 const pathname = new URL(Astro.request.url).pathname;
 ---
 
-<nav class="navbar sticky top-0 z-[1000] bg-[#050505]/80 backdrop-blur-[16px] px-6 py-4 border-b border-[#d4af37]/15 shadow-[0_4px_30px_rgba(0,0,0,0.4)]" aria-label="Primær navigation">
+<nav class="navbar sticky top-0 z-[1000] bg-[#17191A]/80 backdrop-blur-[16px] px-6 py-4 border-b border-[var(--accent)]/15 shadow-[0_4px_30px_rgba(0,0,0,0.4)]" aria-label="Primær navigation">
   <div class="max-w-[1300px] mx-auto flex items-center justify-between gap-4 flex-col md:flex-row md:gap-4">
     <div class="flex items-center gap-1 flex-wrap justify-center md:justify-start">
       {navItems.map(item => (
@@ -28,7 +28,7 @@ const pathname = new URL(Astro.request.url).pathname;
               id={`nav-dropdown-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
               role="menu"
               aria-label={item.label}
-              class="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 min-w-[220px] bg-[#0a0a0a] border border-glass-border border-t-[2px] border-t-accent rounded-xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[9999] opacity-0 invisible pointer-events-none translate-y-[10px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 hidden md:block before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
+              class="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 min-w-[220px] bg-[#1E2122] border border-glass-border border-t-[2px] border-t-accent rounded-xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[9999] opacity-0 invisible pointer-events-none translate-y-[10px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 hidden md:block before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
             >
                {item.children.map(child => (
                  <a 
@@ -78,7 +78,7 @@ const pathname = new URL(Astro.request.url).pathname;
         aria-controls="searchResults"
       />
       <div class="absolute bottom-0 left-[10%] w-[80%] h-[1px] bg-accent scale-x-0 transition-transform duration-300 group-focus-within/search:scale-x-100 group-focus-within/search:animate-[scanBar_2s_infinite]"></div>
-      <div id="searchResults" class="absolute top-[calc(100%+10px)] left-0 right-0 bg-[#0a0a0c]/95 backdrop-blur-2xl rounded-[14px] shadow-card border border-glass-border p-2 z-[9999] opacity-0 invisible pointer-events-none -translate-y-[2px] transition-all duration-150 [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto [&.is-open]:translate-y-0" role="listbox" aria-label="Søgeresultater"></div>
+      <div id="searchResults" class="absolute top-[calc(100%+10px)] left-0 right-0 bg-[#1E2122]/95 backdrop-blur-2xl rounded-[14px] shadow-card border border-glass-border p-2 z-[9999] opacity-0 invisible pointer-events-none -translate-y-[2px] transition-all duration-150 [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto [&.is-open]:translate-y-0" role="listbox" aria-label="Søgeresultater"></div>
     </div>
     
     <div class="flex items-center gap-3">

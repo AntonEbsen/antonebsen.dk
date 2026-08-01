@@ -280,6 +280,17 @@ const chatLink = lang === 'da' ? '/chat' : '/en/chat';
       transform: translateY(0);
     }
   }
+
+  /* Content started at opacity 0 and only became visible via the animation, so
+     anyone who suppresses motion — or hits a failed animation — got a blank
+     section. Show it outright instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
 </style>
 
 

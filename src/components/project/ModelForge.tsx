@@ -106,7 +106,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
             {
                 label: t.labelActual,
                 data: macroData.map(d => d.actual),
-                borderColor: 'rgba(212, 175, 55, 0.4)',
+                borderColor: 'rgba(212,121,79,0.4)',
                 backgroundColor: 'transparent',
                 borderWidth: 2,
                 pointRadius: 0,
@@ -116,11 +116,11 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
             {
                 label: t.labelTaylor,
                 data: simulatedRates,
-                borderColor: '#D4AF37',
-                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                borderColor: '#D4794F',
+                backgroundColor: 'rgba(212, 121, 79, 0.1)',
                 borderWidth: 4,
                 pointRadius: 4,
-                pointBackgroundColor: '#D4AF37',
+                pointBackgroundColor: '#D4794F',
                 fill: true,
                 tension: 0.3,
             }
@@ -137,9 +137,9 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
             },
             tooltip: {
                 backgroundColor: 'rgba(10, 10, 15, 0.9)',
-                titleColor: '#D4AF37',
+                titleColor: '#D4794F',
                 bodyColor: '#fff',
-                borderColor: 'rgba(212, 175, 55, 0.2)',
+                borderColor: 'rgba(212, 121, 79, 0.2)',
                 borderWidth: 1,
                 padding: 12,
                 displayColors: false,

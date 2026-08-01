@@ -46,7 +46,7 @@ export async function GET() {
         // Some placeholder books might have "Titel på bog", ignore them if we want, or just add them
         if (title.includes("Titel på bog")) return;
 
-        addNode(title, 1, 10, '#D4AF37', { desc: book.data.note, period: book.data.period });
+        addNode(title, 1, 10, '#D4794F', { desc: book.data.note, period: book.data.period });
         
         if (author) {
             // Ensure author node exists even if not in influences collection

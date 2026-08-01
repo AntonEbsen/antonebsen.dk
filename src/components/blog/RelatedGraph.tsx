@@ -59,10 +59,10 @@ export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
         return () => resizeObserver.disconnect();
     }, []);
 
-    if (!isMounted) return <div className="w-full h-[300px] bg-[#050505] border border-white/10 rounded-xl" />;
+    if (!isMounted) return <div className="w-full h-[300px] bg-[#17191A] border border-white/10 rounded-xl" />;
 
     return (
-        <div ref={containerRef} className="w-full h-[300px] bg-[#050505] border border-white/10 rounded-xl overflow-hidden relative group">
+        <div ref={containerRef} className="w-full h-[300px] bg-[#17191A] border border-white/10 rounded-xl overflow-hidden relative group">
             <div className="absolute top-3 left-3 z-10 pointer-events-none">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-dim bg-black/50 px-2 py-1 rounded">
                     <i className="fa-solid fa-circle-nodes mr-1 text-accent"></i>
@@ -81,7 +81,7 @@ export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
                         nodeColor={(node: any) => node.color || '#fff'}
                         nodeRelSize={4}
                         linkColor={() => 'rgba(255,255,255,0.1)'}
-                        backgroundColor="#050505"
+                        backgroundColor="#17191A"
                         enableNodeDrag={false}
                         enableZoomInteraction={false}
                         onEngineStop={() => fgRef.current?.zoomToFit(400)}

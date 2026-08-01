@@ -9,7 +9,6 @@ import TrophyRoom from '../components/game/TrophyRoom.astro';
 import Chameleon from '@components/core/Chameleon.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
-import '@styles/themes.css';
 import SpeedInsights from "@vercel/speed-insights/astro"
 // The /astro entry, not /react: the React one mounted a client:load island that
 // dragged React onto all ~196 pages (only ~10 have a genuine React island).
@@ -38,34 +37,46 @@ const lang = getLangFromUrl(Astro.url);
 <head>
   <!-- 1. CRITICAL CSS: Inline everything needed for first paint -->
   <style is:inline>
-    /* === CSS VARIABLES === */
+    /* === CSS VARIABLES ===
+       Palette: terrain and archive. Stone underfoot, paper for the record,
+       terracotta for waymarks and clay, moss for the Camino.
+       Every pairing below is verified against WCAG AA (4.5:1) — the first
+       terracotta tried, #C2673F, measured 4.46:1 and was rejected. */
     :root {
-      /* BACKGROUNDS */
-      --bg: #050505;
-      --bg-gradient: radial-gradient(circle at 50% 0%, #1a1505 0%, #050505 60%);
-      --depth-bg: radial-gradient(circle at 60% -20%, #1c1810 0%, #050505 50%);
-      
-      /* TEXT */
-      --text: #f2f2f0;
-      --text-dim: #d4d4d8;
-      --muted: rgba(161, 161, 170, 0.4);
-      
-      /* ACCENT: GOLD */
-      --accent: #D4AF37;
-      --accent-light: #F4C430;
-      --accent-soft: rgba(212, 175, 55, 0.15);
-      --accent-glow: 0 0 25px rgba(212, 175, 55, 0.3);
-      
+      /* BACKGROUNDS — stone, not the boutique black this used to be */
+      --bg: #17191A;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #23201D 0%, #17191A 60%);
+      --depth-bg: radial-gradient(circle at 60% -20%, #26221E 0%, #17191A 50%);
+      --card: #1E2122;
+
+      /* TEXT — paper white, warm rather than clinical */
+      --text: #E8E4DC;          /* 13.9:1 on --bg */
+      --text-dim: #B8BCB5;      /*  9.2:1 on --bg, still 5.1:1 at opacity-70 */
+      --text-muted: #8E938B;    /*  5.0:1 on --bg — use this instead of stacking
+                                    opacity on --text-dim, which is what caused
+                                    the contrast failures found in the a11y pass */
+      --muted: rgba(184, 188, 181, 0.4);
+
+      /* ACCENT: TERRACOTTA */
+      --accent: #D4794F;        /*  5.6:1 on --bg, 5.1:1 on --card */
+      --accent-light: #E39068;
+      --accent-soft: rgba(212, 121, 79, 0.15);
+      --accent-glow: 0 0 25px rgba(212, 121, 79, 0.28);
+
+      /* SECONDARY: MOSS — the Camino green, promoted to a real token */
+      --accent-2: #6F9E7B;      /*  5.8:1 on --bg */
+      --accent-2-soft: rgba(111, 158, 123, 0.15);
+
       /* COMPONENTS */
-      --nav: rgba(5, 5, 5, 0.85);
-      --navHover: rgba(255, 255, 255, 0.06);
-      
+      --nav: rgba(23, 25, 26, 0.85);
+      --navHover: rgba(232, 228, 220, 0.06);
+
       /* GLASS / BORDERS */
-      --glass: rgba(15, 15, 20, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-border-hover: rgba(212, 175, 55, 0.5);
-      
-      --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+      --glass: rgba(30, 33, 34, 0.7);
+      --glass-border: rgba(232, 228, 220, 0.10);
+      --glass-border-hover: rgba(212, 121, 79, 0.5);
+
+      --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
       --radius: 16px;
       
       /* TYPOGRAPHY - System font stack for instant render, Inter loads progressively */
@@ -129,57 +140,6 @@ const lang = getLangFromUrl(Astro.url);
       font-weight: 800;
     }
     
-    /* === THEME STYLES === */
-    .theme-lent {
-      --bg: #0d0a14;
-      --nav: rgba(20, 15, 30, 0.9);
-      --accent: #9333ea;
-      --depth-bg: radial-gradient(circle at 50% -20%, #171026 0%, #0d0a14 100%);
-    }
-    
-    .theme-easter {
-      --bg: #0a0f0e;
-      --nav: rgba(15, 25, 20, 0.9);
-      --accent: #14b8a6;
-      --depth-bg: radial-gradient(circle at 50% -20%, #152520 0%, #0a0f0e 100%);
-    }
-    
-    .theme-ascension {
-      --bg: #0a0c14;
-      --nav: rgba(15, 18, 25, 0.9);
-      --accent: #3b82f6;
-      --depth-bg: radial-gradient(circle at 50% -20%, #141a2b 0%, #0a0c14 100%);
-    }
-    
-    .theme-pentecost {
-      --bg: #0f0a0a;
-      --nav: rgba(25, 15, 15, 0.9);
-      --accent: #ef4444;
-      --depth-bg: radial-gradient(circle at 50% -20%, #2b1515 0%, #0f0a0a 100%);
-    }
-    
-    .theme-corpus {
-      --bg: #0a0a05;
-      --nav: rgba(25, 25, 15, 0.9);
-      --accent: #f59e0b;
-      --depth-bg: radial-gradient(circle at 50% -20%, #2b2b15 0%, #0a0a05 100%);
-    }
-    
-    .theme-advent {
-      --bg: #050810;
-      --nav: rgba(10, 15, 30, 0.9);
-      --accent: #314480;
-      --depth-bg: radial-gradient(circle at 50% -20%, #101a35 0%, #050810 100%);
-    }
-    
-    .theme-camino {
-      --bg: #f6fff8;
-      --nav: #123026;
-      --navHover: #1a4537;
-      --accent: #15803d;
-      --season-bar: linear-gradient(90deg, rgba(21, 128, 61, 0.95), rgba(255, 255, 255, 0.15));
-    }
-
     /* === MATH / KATEX === */
     .katex-display {
       overflow-x: auto;
@@ -188,51 +148,10 @@ const lang = getLangFromUrl(Astro.url);
       -webkit-overflow-scrolling: touch;
     }
   </style>
-  <script is:inline>
-    // Theme detection runs immediately before any content renders
-    (function applyTheme() {
-      const doc = document.documentElement;
-      const override = localStorage.getItem("themeOverride");
-      doc.classList.remove("theme-lent", "theme-easter", "theme-ascension", "theme-pentecost", "theme-corpus", "theme-advent", "theme-camino");
-      if (override && override !== "auto") { doc.classList.add(override); return; }
-
-      function atNoon(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0, 0); }
-      function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
-      const today = atNoon(new Date()); const y = today.getFullYear();
-      const easter = ((year) => {
-        const a = year % 19, b = Math.floor(year / 100), c = year % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
-        const month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
-        return atNoon(new Date(year, month - 1, day));
-      })(y);
-
-      const ashWednesday = addDays(easter, -46), holySaturday = addDays(easter, -1), ascension = addDays(easter, 39), pentecost = addDays(easter, 49), corpusChristi = addDays(easter, 60), stJames = atNoon(new Date(y, 6, 25)), adventStart = (() => { for (let day = 27; day <= 33; day++) { const d = atNoon(new Date(y, 10, day)); if (d.getDay() === 0) return d; } return atNoon(new Date(y, 10, 27)); })();
-
-      const inRangeFlags = (d, start, end) => { const x = d.getTime(); return x >= start.getTime() && x <= end.getTime(); };
-      const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-
-      let theme = null;
-      if (inRangeFlags(today, ashWednesday, holySaturday)) theme = "theme-lent";
-      else if (inRangeFlags(today, easter, addDays(ascension, -1))) theme = "theme-easter";
-      else if (inRangeFlags(today, ascension, addDays(pentecost, -1))) theme = "theme-ascension";
-      else if (inRangeFlags(today, pentecost, addDays(pentecost, 1))) theme = "theme-pentecost";
-      else if (sameDay(today, corpusChristi) || sameDay(today, addDays(corpusChristi, 3))) theme = "theme-corpus";
-      else if (inRangeFlags(today, adventStart, atNoon(new Date(y, 11, 24)))) theme = "theme-advent";
-      else if (inRangeFlags(today, addDays(stJames, -1), addDays(stJames, 1))) theme = "theme-camino";
-      if (theme) doc.classList.add(theme);
-    })();
-    
-    // Re-apply theme after page transitions
-    document.addEventListener('astro:after-swap', function() {
-      const doc = document.documentElement;
-      const override = localStorage.getItem("themeOverride");
-      doc.classList.remove("theme-lent", "theme-easter", "theme-ascension", "theme-pentecost", "theme-corpus", "theme-advent", "theme-camino");
-      if (override && override !== "auto") { doc.classList.add(override); }
-    });
-  </script>
 
   <!-- 2. SEO and other metadata -->
   <SEO title={title} description={description} image={image} article={article} alternates={alternates} />
-  <meta name="design-version" content="dark-gold-v1" />
+  <meta name="design-version" content="terrain-v1" />
   <SpeedInsights />
   <Analytics />
   
