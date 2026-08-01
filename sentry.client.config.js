@@ -2,13 +2,19 @@ import * as Sentry from "@sentry/astro";
 
 Sentry.init({
     dsn: import.meta.env.PUBLIC_SENTRY_DSN,
+
     integrations: [
         Sentry.browserTracingIntegration(),
-        Sentry.replayIntegration(),
+        // Session Replay is deliberately not enabled. replayIntegration() pulls the
+        // rrweb DOM recorder into the client bundle that every page loads, which was
+        // roughly half of it. Error reports keep their stack traces and breadcrumbs
+        // without it. If a specific bug ever needs replay, prefer loading it on
+        // demand via Sentry.lazyLoadIntegration('replayIntegration') rather than
+        // putting it back on the critical path.
     ],
-    // Tracing
-    tracesSampleRate: 1.0, // Capture 100% of the transactions
-    // Session Replay
-    replaysSessionSampleRate: 0.1, // This sample rate is for sessions where errors occur
-    replaysOnErrorSampleRate: 1.0, // If you see an error, capture the replay
+
+    // Was 1.0, which sends a transaction for every single page view: enough to
+    // burn the quota with no extra signal at this traffic level, and Vercel Speed
+    // Insights already covers Web Vitals.
+    tracesSampleRate: 0.1,
 });

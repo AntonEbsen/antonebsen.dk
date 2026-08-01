@@ -20,7 +20,18 @@ export default defineConfig({
   },
 
   integrations: [
-    sentry(),
+    sentry({
+      // Belt-and-braces alongside dropping replayIntegration() from
+      // sentry.client.config.js: these strip replay and debug code even if it is
+      // pulled in transitively, so the client bundle cannot silently regrow.
+      bundleSizeOptimizations: {
+        excludeDebugStatements: true,
+        excludeReplayIframe: true,
+        excludeReplayShadowDom: true,
+        excludeReplayWorker: true,
+        excludeReplayCanvas: true,
+      },
+    }),
     react(),
     sitemap({
       // Keep admin, internal and API routes out of the sitemap.
