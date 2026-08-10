@@ -240,7 +240,7 @@ const content: any = entry.data;
             <Button href={lang === 'en' ? "/en/contact" : "/contact"} variant="ghost">{content.hero.btnPropose}</Button>
           </div>
           
-          <p class="text-xs text-dim mt-4 opacity-50" set:html={content.hero.tip} />
+          <p class="text-xs text-muted mt-4" set:html={content.hero.tip} />
         </Card>
 
         <div class="hidden md:block">

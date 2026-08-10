@@ -58,17 +58,17 @@ import { ACHIEVEMENTS } from '@lib/gamification';
           class="achievement-card relative p-4 rounded-xl border transition-all duration-300 group bg-white/[0.02] border-white/[0.05] opacity-60 grayscale hover:opacity-100 hover:grayscale-0"
         >
           <div class="flex items-start gap-4">
-            <div class="achievement-icon w-12 h-12 shrink-0 rounded-lg flex items-center justify-center text-xl shadow-inner bg-white/5 text-white/20">
+            <div class="achievement-icon w-12 h-12 shrink-0 rounded-lg flex items-center justify-center text-xl shadow-inner bg-white/5 text-muted">
               <i class={achievement.icon}></i>
             </div>
             <div>
-              <h3 class="achievement-title font-bold text-sm mb-1 text-white/50">{achievement.title}</h3>
+              <h3 class="achievement-title font-bold text-sm mb-1 text-muted">{achievement.title}</h3>
               <p class="achievement-description text-xs text-dim leading-relaxed">Locked...</p>
               <div class="mt-2 text-[10px] font-mono opacity-50">{achievement.xp} XP</div>
             </div>
           </div>
 
-          <div class="achievement-lock absolute top-2 right-2 text-white/10 text-xs">
+          <div class="achievement-lock absolute top-2 right-2 text-muted text-xs">
             <i class="fa-solid fa-lock"></i>
           </div>
         </div>
@@ -111,11 +111,11 @@ import { ACHIEVEMENTS } from '@lib/gamification';
         icon.classList.toggle('to-amber-700', unlocked);
         icon.classList.toggle('text-white', unlocked);
         icon.classList.toggle('bg-white/5', !unlocked);
-        icon.classList.toggle('text-white/20', !unlocked);
+        icon.classList.toggle('text-muted', !unlocked);
 
         const title = card.querySelector('.achievement-title')!;
         title.classList.toggle('text-white', unlocked);
-        title.classList.toggle('text-white/50', !unlocked);
+        title.classList.toggle('text-muted', !unlocked);
 
         card.querySelector('.achievement-description')!.textContent = unlocked
           ? card.dataset.description!

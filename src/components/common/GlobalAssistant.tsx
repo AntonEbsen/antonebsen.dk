@@ -195,7 +195,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                                 <option value="eli5">ELI5</option>
                             </select>
                         )}
-                        <button onClick={() => setIsOpen(false)} className="w-7 h-7 flex items-center justify-center text-white/50 hover:text-white transition-colors">
+                        <button onClick={() => setIsOpen(false)} className="w-7 h-7 flex items-center justify-center text-muted hover:text-white transition-colors">
                             <i className="fa-solid fa-xmark"></i>
                         </button>
                     </div>
@@ -291,7 +291,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                             placeholder={initialContext?.type === 'project'
                                 ? (lang === 'da' ? "Auditer dette projekt..." : "Audit this project...")
                                 : (lang === 'da' ? "Spørg om hvad som helst..." : "Ask anything...")}
-                            className={`w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20 disabled:opacity-50 ${isRecording ? 'border-red-500 animate-pulse bg-red-500/10' : ''}`}
+                            className={`w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-muted disabled:opacity-50 ${isRecording ? 'border-red-500 animate-pulse bg-red-500/10' : ''}`}
                         />
                         <button
                             type="submit"
@@ -302,12 +302,12 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                         </button>
                     </form>
                     <div className="mt-2 flex justify-between items-center px-1">
-                        <span className="text-[10px] text-white/20">Powered by Gemini 2.0 Flash</span>
+                        <span className="text-[10px] text-muted">Powered by Gemini 2.0 Flash</span>
                         <div className="flex gap-2">
                             <button
                                 type="button"
                                 onClick={toggleRecording}
-                                className={`transition-all duration-300 ${isRecording ? 'text-red-500 scale-110' : 'text-white/20 hover:text-white'}`}
+                                className={`transition-all duration-300 ${isRecording ? 'text-red-500 scale-110' : 'text-muted hover:text-white'}`}
                                 title={isRecording ? "Stop Recording" : "Voice Input"}
                             >
                                 <i className={`fa-solid ${isRecording ? 'fa-stop-circle' : 'fa-microphone'} text-xs`}></i>

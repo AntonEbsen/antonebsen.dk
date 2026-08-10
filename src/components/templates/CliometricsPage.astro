@@ -54,7 +54,7 @@ const content: any = entry.data;
         <h1 class="text-6xl md:text-8xl font-black leading-[0.9] mb-12 uppercase italic">
           {content.hero.title}
         </h1>
-        <p class="text-xl md:text-2xl text-white/50 leading-relaxed font-serif italic max-w-2xl">
+        <p class="text-xl md:text-2xl text-muted leading-relaxed font-serif italic max-w-2xl">
           {content.hero.text}
         </p>
       </div>
@@ -93,7 +93,7 @@ const content: any = entry.data;
                 <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-8 italic">
                     {content.philosophy.title}
                 </h2>
-                <p class="text-white/40 mb-12 text-lg font-serif italic leading-relaxed">
+                <p class="text-muted mb-12 text-lg font-serif italic leading-relaxed">
                     {content.philosophy.text}
                 </p>
                 <div class="space-y-6">
@@ -135,7 +135,7 @@ const content: any = entry.data;
                             <h3 class="text-2xl font-black text-white uppercase italic tracking-tight">{story.title}</h3>
                         </div>
                         <div class="md:w-2/3 border-l md:border-l-0 md:border-r border-accent/10 pl-8 md:pl-0 md:pr-12 md:text-right" class:list={[{ 'md:border-r-0 md:border-l md:pl-12 md:text-left': i % 2 !== 0 }]}>
-                            <p class="text-white/50 leading-relaxed font-serif italic text-lg">
+                            <p class="text-muted leading-relaxed font-serif italic text-lg">
                                 {story.text}
                             </p>
                         </div>
@@ -149,7 +149,7 @@ const content: any = entry.data;
     <Section class="container mx-auto px-4 mb-32 animate-on-scroll">
         <div class="text-center mb-16">
             <h2 class="text-xs font-bold uppercase tracking-[0.5em] text-accent mb-4">{content.gisGallery.title}</h2>
-            <p class="text-white/40 font-serif italic">{content.gisGallery.desc}</p>
+            <p class="text-muted font-serif italic">{content.gisGallery.desc}</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -270,7 +270,7 @@ const content: any = entry.data;
     <Section id="library" class="container mx-auto px-4 mb-32 animate-on-scroll">
         <div class="text-center mb-16">
             <h2 class="text-xs font-bold uppercase tracking-[0.5em] text-accent mb-4">{content.library.title}</h2>
-            <p class="text-white/40 font-serif italic max-w-xl mx-auto">{content.library.desc}</p>
+            <p class="text-muted font-serif italic max-w-xl mx-auto">{content.library.desc}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

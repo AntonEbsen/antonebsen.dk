@@ -63,14 +63,14 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                                 onClick={onClose}
                                 className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors border border-white/10"
                             >
-                                <i className="fa-solid fa-xmark text-white/40"></i>
+                                <i className="fa-solid fa-xmark text-muted"></i>
                             </button>
 
                             <div className="flex items-center gap-3 mb-3">
                                 <span className="px-3 py-1 rounded-full bg-accent/20 text-accent text-[10px] font-bold uppercase tracking-widest border border-accent/20">
                                     {course.tag}
                                 </span>
-                                <span className="text-white/40 text-[10px] uppercase font-mono tracking-widest">
+                                <span className="text-muted text-[10px] uppercase font-mono tracking-widest">
                                     {course.institution} • {course.ects} ECTS
                                 </span>
                             </div>
@@ -153,13 +153,13 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                         <div className="p-6 bg-white/2 border-t border-white/5 flex items-center justify-between">
                             <div className="flex gap-4">
                                 {course.verifiedSkills?.map((s: string) => (
-                                    <span key={s} className="text-[10px] font-mono text-white/30 px-2 py-1 rounded border border-white/5">
+                                    <span key={s} className="text-[10px] font-mono text-muted px-2 py-1 rounded border border-white/5">
                                         #{s.replace(/\s+/g, '')}
                                     </span>
                                 ))}
                             </div>
                             <div className="text-right">
-                                <span className="text-white/40 text-[10px] block uppercase font-mono tracking-widest">{isDa ? 'Karakter' : 'Grade'}</span>
+                                <span className="text-muted text-[10px] block uppercase font-mono tracking-widest">{isDa ? 'Karakter' : 'Grade'}</span>
                                 <span className="text-2xl font-black text-accent">{course.grade}</span>
                             </div>
                         </div>

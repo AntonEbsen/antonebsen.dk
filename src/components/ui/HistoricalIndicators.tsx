@@ -110,7 +110,7 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
                 <div className="h-[300px]">
                     <Line data={gdpData} options={chartOptions} />
                 </div>
-                <p className="mt-6 text-[9px] text-white/30 italic uppercase tracking-widest">{t.source}</p>
+                <p className="mt-6 text-[9px] text-muted italic uppercase tracking-widest">{t.source}</p>
             </div>
 
             <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.tfrSubtitle}>

@@ -128,7 +128,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           type="text" 
           id="chat-input"
           placeholder={t.placeholder}
-          class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-white/40"
+          class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-muted"
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
@@ -1034,7 +1034,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                 
                 <div class="flex gap-2 mt-2 ml-1">
                    ${text ? `
-                   <button class="text-xs text-dim hover:text-accent transition-colors flex items-center gap-1 opacity-50 hover:opacity-100" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText).then(() => alert('Copied!'))">
+                   <button class="text-xs text-muted hover:text-accent transition-colors flex items-center gap-1 hover:opacity-100" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText).then(() => alert('Copied!'))">
                       <i class="fa-regular fa-copy"></i>
                    </button>
                    ` : ''}

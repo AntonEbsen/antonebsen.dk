@@ -78,7 +78,7 @@ const quickActions = [
       <input 
         id="palette-input"
         type="text" 
-        class="w-full bg-transparent border-none outline-none text-lg text-white font-medium placeholder:text-white/30"
+        class="w-full bg-transparent border-none outline-none text-lg text-white font-medium placeholder:text-muted"
         placeholder={t.placeholder}
         autocomplete="off"
       />
@@ -87,7 +87,7 @@ const quickActions = [
           <i class="fa-solid fa-robot"></i>
           <span class="hidden md:inline">Quantum AI</span>
         </button>
-        <span class="text-[10px] bg-white/5 border border-white/10 px-2 py-1 rounded text-white/50 font-mono hidden md:inline">ESC</span>
+        <span class="text-[10px] bg-white/5 border border-white/10 px-2 py-1 rounded text-muted font-mono hidden md:inline">ESC</span>
       </div>
     </div>
 
@@ -95,7 +95,7 @@ const quickActions = [
     <div id="palette-results" class="flex-1 overflow-y-auto p-2 scrollbar-hide min-h-[100px]">
       <!-- State: Quick Actions (Default) -->
       <div id="palette-default-state">
-         <h3 class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white/30 mb-1">{t.quickActions}</h3>
+         <h3 class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-muted mb-1">{t.quickActions}</h3>
          <div class="grid grid-cols-2 gap-1 mb-4">
            {quickActions.map(action => (
              <a href={action.url} class="palette-item flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 group transition-all">
@@ -122,14 +122,14 @@ const quickActions = [
 
     <!-- Footer -->
     <div class="p-4 bg-white/[0.02] border-t border-glass-border flex justify-between items-center">
-       <p class="text-[10px] text-white/30 font-medium">
+       <p class="text-[10px] text-muted font-medium">
          <i class="fa-solid fa-keyboard mr-1"></i> {t.keyboardHint}
        </p>
        <div class="flex items-center gap-3">
-         <span class="flex items-center gap-1.5 text-[10px] text-white/40">
+         <span class="flex items-center gap-1.5 text-[10px] text-muted">
            <kbd class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 font-mono">↑↓</kbd> {t.navigate}
          </span>
-         <span class="flex items-center gap-1.5 text-[10px] text-white/40">
+         <span class="flex items-center gap-1.5 text-[10px] text-muted">
             <kbd class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 font-mono">↵</kbd> {t.select}
           </span>
        </div>
@@ -323,7 +323,7 @@ const quickActions = [
 
       if (results.length === 0) {
         const label = `${t.noResults ?? 'Ingen resultater for'} “${escapeHtml(q)}”`;
-        resultsList.innerHTML = `<div class="p-8 text-center text-dim text-sm opacity-50">${label}</div>`;
+        resultsList.innerHTML = `<div class="p-8 text-center text-muted text-sm">${label}</div>`;
         return;
       }
 
@@ -336,7 +336,7 @@ const quickActions = [
              <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-0.5">
                     <span class="text-sm font-bold text-white tracking-tight group-hover:text-accent transition-colors truncate">${r.title}</span>
-                    <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/5 text-white/40 border border-white/5">${r.type || 'page'}</span>
+                    <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-white/5 text-muted border border-white/5">${r.type || 'page'}</span>
                 </div>
                 <div class="text-xs text-dim/70 leading-relaxed line-clamp-2 pr-4 font-light opacity-80 group-hover:opacity-100 transition-opacity">${r.content}</div>
                 <div class="flex flex-wrap gap-1.5 mt-2 opacity-50 group-hover:opacity-100 transition-opacity">
@@ -344,7 +344,7 @@ const quickActions = [
                 </div>
              </div>
           </div>
-          <div class="text-white/20 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 self-center">
+          <div class="text-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 self-center">
             <i class="fa-solid fa-chevron-right text-xs"></i>
           </div>
         </a>
@@ -378,7 +378,7 @@ const quickActions = [
       if (r.type === 'project') return 'bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.1)]';
       if (r.type === 'blog') return 'bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.1)]';
       if (r.type === 'game') return 'bg-yellow-500/10 text-yellow-400 group-hover:bg-yellow-500/20 group-hover:text-yellow-300 shadow-[0_0_15px_rgba(234,179,8,0.1)]';
-      return 'bg-white/5 text-white/40 group-hover:bg-white/10 group-hover:text-white';
+      return 'bg-white/5 text-muted group-hover:bg-white/10 group-hover:text-white';
     }
 
     function getIcon(tags?: string[]): string {
@@ -539,7 +539,7 @@ const quickActions = [
 
         if (textContainer) {
            const footer = document.createElement('div');
-           footer.className = "text-[10px] text-white/20 italic mt-2";
+           footer.className = "text-[10px] text-muted italic mt-2";
            footer.innerText = t.aiFooter ?? 'Svaret er genereret af AI baseret på Antons CV og projekter.';
            textContainer.appendChild(footer);
         }

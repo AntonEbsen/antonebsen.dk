@@ -145,7 +145,7 @@ const AcademicDNA: React.FC<AcademicDNAProps> = ({ courses, lang }) => {
                 <Radar data={data} options={options} />
             </div>
             <div className="mt-4 text-center">
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/30">
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted">
                     {isDa ? 'Baseret på ECTS-vægtning' : 'Based on ECTS Weighting'}
                 </span>
             </div>

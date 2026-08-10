@@ -41,7 +41,7 @@ const { title, author, year, genre, tag, note, links } = Astro.props;
           href={link.url}
           class:list={[
             "text-xs font-bold transition-colors inline-flex items-center",
-            link.disabled ? "opacity-50 cursor-not-allowed text-dim" : "text-accent hover:text-white"
+            link.disabled ? " cursor-not-allowed text-muted" : "text-accent hover:text-white"
           ]}
           aria-disabled={link.disabled}
         >

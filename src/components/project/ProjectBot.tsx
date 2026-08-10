@@ -115,25 +115,25 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             </div>
                             <div>
                                 <h3 className="font-bold text-white text-sm">The Reviewer</h3>
-                                <p className="text-[10px] text-white/50 uppercase tracking-widest">Constructive Critic</p>
+                                <p className="text-[10px] text-muted uppercase tracking-widest">Constructive Critic</p>
                             </div>
                         </div>
                         <div className='flex gap-2'>
                             <button
                                 onClick={() => setSimpleMode(!simpleMode)}
-                                className={`px-2 py-1 text-[10px] rounded border ${simpleMode ? 'bg-green-500/20 border-green-500 text-green-500' : 'border-white/20 text-white/50 hover:text-white'}`}
+                                className={`px-2 py-1 text-[10px] rounded border ${simpleMode ? 'bg-green-500/20 border-green-500 text-green-500' : 'border-white/20 text-muted hover:text-white'}`}
                                 title="Simple Mode"
                             >
                                 ELI5
                             </button>
                             <button
                                 onClick={() => setCritiqueMode(!critiqueMode)}
-                                className={`px-2 py-1 text-[10px] rounded border ${critiqueMode ? 'bg-red-500/20 border-red-500 text-red-500' : 'border-white/20 text-white/50 hover:text-white'}`}
+                                className={`px-2 py-1 text-[10px] rounded border ${critiqueMode ? 'bg-red-500/20 border-red-500 text-red-500' : 'border-white/20 text-muted hover:text-white'}`}
                                 title="Critique Mode"
                             >
                                 Roast
                             </button>
-                            <a href="/ai-reviewer" className="text-white/30 hover:text-white transition-colors" title="Help">
+                            <a href="/ai-reviewer" className="text-muted hover:text-white transition-colors" title="Help">
                                 <i className="fa-solid fa-circle-question"></i>
                             </a>
                         </div>
@@ -220,7 +220,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                 value={input}
                                 onChange={handleInputChange}
                                 placeholder="Ask about the stack, scalability, or code..."
-                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-white/20"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-muted"
                             />
                             <button
                                 type="submit"
@@ -231,12 +231,12 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             </button>
                         </form>
                         <div className="mt-2 flex justify-between items-center px-1">
-                            <span className="text-[10px] text-white/20">Powered by Gemini 2.0 Flash</span>
+                            <span className="text-[10px] text-muted">Powered by Gemini 2.0 Flash</span>
                             <div className="flex gap-2">
-                                <button className="text-white/20 hover:text-white transition-colors" title="Attach Code/File (Coming Soon)">
+                                <button className="text-muted hover:text-white transition-colors" title="Attach Code/File (Coming Soon)">
                                     <i className="fa-solid fa-paperclip text-xs"></i>
                                 </button>
-                                <button className="text-white/20 hover:text-white transition-colors" title="Voice Input (Coming Soon)">
+                                <button className="text-muted hover:text-white transition-colors" title="Voice Input (Coming Soon)">
                                     <i className="fa-solid fa-microphone text-xs"></i>
                                 </button>
                             </div>

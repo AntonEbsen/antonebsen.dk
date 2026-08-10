@@ -942,7 +942,7 @@ const t = uiStrings[lang] || uiStrings.en;
                          <div class="w-full h-full border-2 border-dashed border-accent/20 rounded-full animate-spin-slow"></div>
                          <div class="absolute inset-8 border-2 border-accent/10 rounded-full animate-reverse-spin-slow"></div>
                          <div class="absolute flex flex-col items-center">
-                             <span class="text-4xl font-black text-white/10 font-serif uppercase tracking-tighter -rotate-12 select-none">Live Simulation</span>
+                             <span class="text-4xl font-black text-muted font-serif uppercase tracking-tighter -rotate-12 select-none">Live Simulation</span>
                          </div>
                     </div>
                 </div>
@@ -958,7 +958,7 @@ const t = uiStrings[lang] || uiStrings.en;
                 {prevProject && (
                     <a href={prevProject.url} class="group text-left opacity-30 hover:opacity-100 transition-opacity hidden md:block">
                          <span class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1 block group-hover:text-accent transition-colors">&larr; {t.prevProject}</span>
-                         <span class="text-sm font-bold text-white/50 group-hover:text-white transition-colors">{prevProject.title}</span>
+                         <span class="text-sm font-bold text-muted group-hover:text-white transition-colors">{prevProject.title}</span>
                     </a>
                 )}
              </div>
