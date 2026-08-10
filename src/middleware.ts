@@ -1,5 +1,6 @@
 
 import type { APIContext, MiddlewareNext } from "astro";
+import { verifySession } from "./lib/session";
 
 export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const response = await next();
@@ -52,9 +53,12 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const normalizedPath = _context.url.pathname.replace(/\/$/, "") || "/";
     const isPublicPost = _context.request.method === "POST" && publicPostRoutes.has(normalizedPath);
 
+    // This compared the cookie against the constant "authorized_session" — a literal
+    // sitting in a public repo, so the check was forgeable with a plain header and
+    // every write route below it was effectively open. Sessions are now HMAC-signed
+    // and expiring; see src/lib/session.ts.
     if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicPost) {
-        const token = _context.cookies.get("auth_token");
-        if (!token || token.value !== "authorized_session") {
+        if (!verifySession(_context.cookies.get("auth_token")?.value)) {
             // Block request
             return new Response(JSON.stringify({ error: "Unauthorized" }), {
                 status: 401,
@@ -66,8 +70,7 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     // Protect sensitive GET endpoints
     const sensitiveGetRoutes = ["/api/contact", "/api/backup"];
     if (sensitiveGetRoutes.includes(_context.url.pathname) && _context.request.method === "GET") {
-        const token = _context.cookies.get("auth_token");
-        if (!token || token.value !== "authorized_session") {
+        if (!verifySession(_context.cookies.get("auth_token")?.value)) {
             return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
         }
     }

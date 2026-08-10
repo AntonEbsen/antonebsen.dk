@@ -1,4 +1,20 @@
 import { defineConfig, devices } from '@playwright/test';
+import { readFileSync, existsSync } from 'node:fs';
+
+// Vite loads .env for the dev server, but the Playwright process does not see it —
+// which left the one test that proves a *correct* password still works permanently
+// skipped, and a skipped test proves nothing. Parse it here; values already present
+// in the environment win, so CI is unaffected.
+if (existsSync('.env')) {
+    for (const line of readFileSync('.env', 'utf8').split(/\r?\n/)) {
+        const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)$/);
+        if (!m) continue;
+        const [, key, raw] = m;
+        if (process.env[key] === undefined) {
+            process.env[key] = raw.trim().replace(/^["']|["']$/g, '');
+        }
+    }
+}
 
 export default defineConfig({
     testDir: './tests',

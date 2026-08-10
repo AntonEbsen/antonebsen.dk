@@ -4,6 +4,11 @@ const requiredEnvVars = [
     'SUPABASE_URL',
     'SUPABASE_ANON_KEY',
     'GEMINI_API_KEY',
+    // Admin auth fails closed without these. They are listed here so a deploy that
+    // forgets them breaks loudly at build time — the previous arrangement fell back
+    // to a password published in the repo and nobody would have noticed.
+    'ADMIN_PASSWORD',
+    'SESSION_SECRET',
     // Add other critical keys here if needed
 ];
 

@@ -14,6 +14,10 @@ interface ImportMetaEnv {
     readonly UPSTASH_REDIS_REST_TOKEN?: string;
     readonly ADMIN_SECRET?: string;
     readonly CRON_SECRET?: string;
+    /** Admin dashboard password. Required — login fails closed without it. */
+    readonly ADMIN_PASSWORD: string;
+    /** HMAC key for admin session cookies. Required — see src/lib/session.ts. */
+    readonly SESSION_SECRET: string;
 }
 
 interface ImportMeta {
