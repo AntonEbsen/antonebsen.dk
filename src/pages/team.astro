@@ -3,13 +3,22 @@ import Layout from '@layouts/BaseLayout.astro';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
 import Pill from '@components/ui/Pill.astro';
 import ResearchRadar from '@components/project/ResearchRadar';
+import { getImage } from 'astro:assets';
+import portraitSrc from '../assets/img/billede-af-mig.jpg';
+
+// CollaboratorSpotlight is a React island and wants a plain URL, so getImage() is
+// the right tool rather than <Image>. Linking /assets/img/billede-af-mig.jpg
+// directly shipped the untouched 2362x3543, 785 KB original for a small avatar.
+// The largest slot CollaboratorSpotlight renders this in is w-12 (48px), so 128
+// covers it at 2x. Height follows the source aspect ratio; object-cover crops it.
+const portrait = await getImage({ src: portraitSrc, width: 128, format: 'webp' });
 
 // Collaborator Data
 const team = [
-    { 
-        name: "Anton M. E. Jørgensen", 
-        role: "Hovedforfatter & Udvikler", 
-        image: "/assets/img/billede-af-mig.jpg", 
+    {
+        name: "Anton M. E. Jørgensen",
+        role: "Hovedforfatter & Udvikler",
+        image: portrait.src,
         description: "Specialiseret i makroøkonomisk modellering, webudvikling og brobygning mellem økonomisk teori og data science.",
         links: { linkedin: "https://linkedin.com/in/antonebsen", github: "https://github.com/AntonEbsen" },
         status: { text: "Writing Thesis", color: "red" }

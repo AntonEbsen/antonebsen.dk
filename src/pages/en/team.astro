@@ -1,12 +1,19 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
+import { getImage } from 'astro:assets';
+import portraitSrc from '../../assets/img/billede-af-mig.jpg';
+
+// See the note in the Danish team page: the island needs a URL string, and the raw
+// public path meant shipping the 785 KB original for an avatar.
+const portrait = await getImage({ src: portraitSrc, width: 128, format: 'webp' });
+
 // Collaborator Data
 const team = [
-    { 
-        name: "Anton M. E. Jørgensen", 
-        role: "Lead Author & Developer", 
-        image: "/assets/img/billede-af-mig.jpg", 
+    {
+        name: "Anton M. E. Jørgensen",
+        role: "Lead Author & Developer",
+        image: portrait.src,
         description: "Specializes in macroeconomic modeling, web development, and bridging the gap between economic theory and data science.",
         links: { linkedin: "https://linkedin.com/in/antonebsen", github: "https://github.com/AntonEbsen" } 
     },
