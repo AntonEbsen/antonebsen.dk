@@ -1,1 +1,13 @@
-npx astro check
+# This hook used to be a bare `npx astro check`, which exits 1 on the ~617
+# pre-existing type errors. It could never pass, so every commit needed
+# --no-verify — and a hook that always fails is worse than no hook, because it
+# trains the bypass and a real failure gets waved through with everything else.
+#
+# Both commands below can pass. If one fails, that is a genuine signal.
+#
+# vitest is ~1.5s and was previously ungated entirely.
+npx vitest run
+
+# Fails only if the type-error count rises above type-errors.json.
+# Lower the floor with: node scripts/check-ratchet.mjs --update
+node scripts/check-ratchet.mjs

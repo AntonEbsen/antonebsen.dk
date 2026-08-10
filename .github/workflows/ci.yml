@@ -27,9 +27,6 @@ jobs:
       - name: Security Audit
         run: npm audit --audit-level=high
 
-      - name: Type Check
-        run: npx astro check
-
       - name: Build
         run: npm run build
 
@@ -38,3 +35,11 @@ jobs:
 
       - name: Run Tests
         run: npm run test
+
+      # Deliberately last, and a ratchet rather than a clean-slate check. This step
+      # used to sit above Build as a bare `npx astro check`, which exits 1 on the
+      # ~617 pre-existing errors — so Build and Run Tests above had never once
+      # executed. Gating on "no worse than type-errors.json" keeps new errors out
+      # while letting the steps that catch real regressions actually run.
+      - name: Type Check (ratchet)
+        run: node scripts/check-ratchet.mjs
