@@ -27,8 +27,10 @@ const drawable = paths.filter((p) => p && p.length > 1);
 <script>
   import L from 'leaflet';
 
-  // Gold to match --accent; read from CSS so a theme override carries through.
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || 'var(--accent)';
+  // Read the terracotta from CSS so a token change carries through. The fallback
+  // must be a literal: Leaflet passes this straight to an SVG stroke, and if the
+  // computed value were empty then var(--accent) would resolve to nothing too.
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#D4794F';
 
   document.querySelectorAll<HTMLElement>('.route-map').forEach((el) => {
     let paths: [number, number][][];

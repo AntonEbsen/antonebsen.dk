@@ -354,9 +354,11 @@ const jsonLd = {
       const { default: Chart } = await import('chart.js/auto');
 
       const css = getComputedStyle(document.documentElement);
-      const accent = css.getPropertyValue('--accent').trim() || 'var(--accent)';
-      const dim = 'rgba(255,255,255,0.45)';
-      const grid = 'rgba(255,255,255,0.06)';
+      // Literal fallback, not var(): Chart.js paints to a canvas, where CSS
+      // variables never resolve.
+      const accent = css.getPropertyValue('--accent').trim() || '#D4794F';
+      const dim = 'rgba(232,228,220,0.45)';
+      const grid = 'rgba(232,228,220,0.06)';
 
       const gradient = canvas.getContext('2d')!.createLinearGradient(0, 0, 0, 280);
       gradient.addColorStop(0, 'rgba(212, 121, 79, 0.35)');
