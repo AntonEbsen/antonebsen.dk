@@ -3,6 +3,7 @@ import {
     getVideosNewestFirst, videoPath, seriesPath, groupBySeries,
     videoTitle, videoDescription, videoSeriesName
 } from '@lib/video-feed';
+import { resolveTranscript } from '@lib/video-transcript';
 
 export async function GET() {
     const posts = await getCollection('blog');
@@ -89,10 +90,21 @@ export async function GET() {
 
     for (const video of videos) {
         for (const lang of ['da', 'en', 'de'] as const) {
+            // The index carried only title and description, so a phrase actually
+            // spoken in a video was unfindable. Appending the transcript makes the
+            // videos searchable by content; capped so one long video cannot
+            // dominate the payload every visitor downloads.
+            // getVideosNewestFirst flattens entry.data onto the object, so the
+            // transcript fields sit directly on `video`, not under `.data`.
+            const spoken = resolveTranscript(video, lang);
+            const content = spoken.hasTranscript
+                ? `${videoDescription(video, lang)} ${spoken.plain}`.slice(0, 4000)
+                : videoDescription(video, lang);
+
             index.push({
                 title: videoTitle(video, lang),
                 url: videoPath(video.slug, lang),
-                content: videoDescription(video, lang),
+                content,
                 tags: ['video', 'youtube', trackTags[video.track][lang], video.series].filter(Boolean),
                 type: 'video',
                 icon: 'fa-brands fa-youtube',

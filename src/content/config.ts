@@ -120,6 +120,14 @@ const videosCollection = defineCollection({
         // here (distance, climb and the elevation profile are then derived at build
         // time), or fill in `trail` by hand. Values in `trail` win over the GPX.
         gpxFile: z.string().optional(),
+        // Captions exported from YouTube Studio (Subtitles -> language -> Download),
+        // dropped into src/data/transcripts/ and named here — the same arrangement
+        // as gpxFile above. Parsed at build time into a collapsible panel, folded
+        // into the search index, and published as the VideoObject `transcript`.
+        // Danish and German files are optional; both fall back to the English one.
+        transcriptFile: z.string().optional(),
+        transcriptFile_da: z.string().optional(),
+        transcriptFile_de: z.string().optional(),
         trail: z.object({
             distanceKm: z.number().optional(),
             elevationGainM: z.number().optional(),

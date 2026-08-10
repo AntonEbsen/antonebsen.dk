@@ -9,6 +9,8 @@ import StatTiles from '@components/ui/StatTiles.astro';
 import ElevationRule from '@components/ui/ElevationRule.astro';
 import { CHANNEL_URL } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
+import { resolveTranscript } from '@lib/video-transcript';
+import { formatTimestamp } from '@lib/transcript';
 import {
   getVideosNewestFirst, seriesNeighbours, videoPath, seriesPath, videosRoot,
   videoTitle, videoDescription, videoSeriesName, thumbnailUrl, slugifySeries,
@@ -33,6 +35,7 @@ const description = videoDescription(entry, lang);
 const series = videoSeriesName(entry, lang);
 
 const trail = resolveTrail(video);
+const transcript = resolveTranscript(video, lang);
 
 // Siblings in the same series, for previous/next and the episode rail.
 const allVideos = await getVideosNewestFirst();
@@ -45,7 +48,9 @@ const t = {
     distance: 'Distance', climb: 'Stigning', descent: 'Fald', peak: 'Højeste punkt',
     duration: 'Varighed', steps: 'Skridt', pace: 'Gns. tempo', route: 'Rute',
     axisKm: 'Kilometer', axisEle: 'Meter over havet', related: 'Læs projektet',
-    episodes: 'Afsnit i serien', prev: 'Forrige', next: 'Næste', allInSeries: 'Se hele serien'
+    episodes: 'Afsnit i serien', prev: 'Forrige', next: 'Næste', allInSeries: 'Se hele serien',
+    transcript: 'Transskription', transcriptOpen: 'Vis transskription',
+    transcriptNote: 'Fra videoens undertekster. Klik et afsnit for at springe dertil.'
   },
   en: {
     back: 'All videos', watch: 'Watch on YouTube', chapters: 'Chapters',
@@ -53,7 +58,9 @@ const t = {
     distance: 'Distance', climb: 'Ascent', descent: 'Descent', peak: 'High point',
     duration: 'Duration', steps: 'Steps', pace: 'Avg. pace', route: 'Route',
     axisKm: 'Kilometres', axisEle: 'Metres above sea level', related: 'Read the project',
-    episodes: 'Episodes in this series', prev: 'Previous', next: 'Next', allInSeries: 'View the whole series'
+    episodes: 'Episodes in this series', prev: 'Previous', next: 'Next', allInSeries: 'View the whole series',
+    transcript: 'Transcript', transcriptOpen: 'Show transcript',
+    transcriptNote: 'From the video captions. Click a passage to jump there.'
   },
   de: {
     back: 'Alle Videos', watch: 'Auf YouTube ansehen', chapters: 'Kapitel',
@@ -61,7 +68,9 @@ const t = {
     distance: 'Distanz', climb: 'Aufstieg', descent: 'Abstieg', peak: 'Höchster Punkt',
     duration: 'Dauer', steps: 'Schritte', pace: 'Ø Tempo', route: 'Route',
     axisKm: 'Kilometer', axisEle: 'Meter über dem Meer', related: 'Zum Projekt',
-    episodes: 'Folgen dieser Serie', prev: 'Zurück', next: 'Weiter', allInSeries: 'Ganze Serie ansehen'
+    episodes: 'Folgen dieser Serie', prev: 'Zurück', next: 'Weiter', allInSeries: 'Ganze Serie ansehen',
+    transcript: 'Transkript', transcriptOpen: 'Transkript anzeigen',
+    transcriptNote: 'Aus den Untertiteln. Klicke einen Abschnitt, um dorthin zu springen.'
   }
 }[lang];
 
@@ -118,6 +127,9 @@ const jsonLd = {
   thumbnailUrl: thumbnailUrl(entry),
   embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
   contentUrl: `https://www.youtube.com/watch?v=${video.youtubeId}`,
+  // schema.org/VideoObject.transcript. Capped because a full hour of speech would
+  // dwarf the rest of the document; the readable copy is on the page regardless.
+  ...(transcript.hasTranscript ? { transcript: transcript.plain.slice(0, 5000) } : {}),
   ...(video.chapters?.length
     ? {
         hasPart: video.chapters.map((c) => ({
@@ -241,6 +253,38 @@ const jsonLd = {
             </li>
           ))}
         </ul>
+      </Section>
+    )}
+
+    {transcript.hasTranscript && (
+      <Section>
+        {/* Collapsed by default: a full transcript is long, and it is here to be
+            searched, quoted and read by anyone who cannot use the audio — not to
+            push the rest of the page down. <details> gives that for free, and keeps
+            the text in the DOM so it is indexable and findable with Ctrl-F. */}
+        <details class="transcript group">
+          <summary class="flex cursor-pointer list-none items-center gap-3 text-xs font-bold uppercase tracking-widest text-accent">
+            <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open:rotate-90" aria-hidden="true"></i>
+            {t.transcript}
+          </summary>
+
+          <p class="mt-4 text-xs text-muted">{t.transcriptNote}</p>
+
+          <div class="mt-5 border-t border-white/5">
+            {transcript.paragraphs.map((para) => (
+              <button
+                type="button"
+                class="chapter-seek flex w-full gap-5 border-b border-white/5 py-4 text-left transition-colors hover:bg-white/[0.02]"
+                data-seek={para.t}
+                data-youtube-id={video.youtubeId}
+                aria-label={`${t.watch} ${formatTimestamp(para.t)}`}
+              >
+                <span class="shrink-0 font-mono text-sm tabular-nums text-accent">{formatTimestamp(para.t)}</span>
+                <span class="text-sm leading-relaxed text-dim">{para.text}</span>
+              </button>
+            ))}
+          </div>
+        </details>
       </Section>
     )}
 
