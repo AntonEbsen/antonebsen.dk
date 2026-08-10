@@ -41,6 +41,17 @@ const exercises = allExercises.filter(e => e.id.startsWith(`${lang}/`)).map(e =>
         <p class="text-lg text-dim">{content.hero?.text || ''}</p>
       </Card>
       
+      {exercises.length === 0 && (
+        <Card variant="bordered" class="p-10 text-center">
+          <i class="fa-solid fa-person-running text-3xl text-accent/60 mb-4 block" aria-hidden="true"></i>
+          <p class="text-dim">
+            {isDa
+              ? 'Der er ingen øvelser i biblioteket endnu.'
+              : 'There are no exercises in the library yet.'}
+          </p>
+        </Card>
+      )}
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {exercises.map(ex => (
           <Card variant="bordered" class="p-6 hover:border-gold-500/30 transition-colors">

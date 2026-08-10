@@ -1,0 +1,20 @@
+---
+import ExerciseDetailPage from '@components/templates/ExerciseDetailPage.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+// Entries are keyed `{lang}/{slug}`, matching how ExercisesPage filters them.
+export async function getStaticPaths() {
+  const exercises = await getCollection('exercises');
+  return exercises
+    .filter((entry) => entry.id.startsWith('da/'))
+    .map((entry) => ({
+      params: { slug: entry.id.replace(/^da\//, '').replace(/\.json$/, '') },
+      props: { entry }
+    }));
+}
+
+const { entry } = Astro.props;
+---
+<ExerciseDetailPage entry={entry} lang="da" />

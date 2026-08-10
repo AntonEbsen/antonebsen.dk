@@ -581,5 +581,25 @@ export const collections = {
             spotifyId: z.string(),
             chapter: z.number()
         })
+    }),
+    // /exercises and /en/exercises, ExercisesPage and ExerciseDetailPage all existed
+    // and were linked from NotesPage, but this collection was never declared — so
+    // every build logged "The collection exercises does not exist or is empty" and
+    // the library could never hold anything. The shape below is exactly what the two
+    // templates read; entries are keyed `{lang}/{slug}`, e.g. da/goblet-squat.json,
+    // which is how ExercisesPage filters them.
+    'exercises': defineCollection({
+        type: 'data',
+        schema: z.object({
+            title: z.string(),
+            muscles: z.array(z.string()).optional(),
+            benefits: z.array(z.string()).optional(),
+            setup: z.array(z.string()).optional(),
+            execution: z.array(z.string()).optional(),
+            /** Rendered joined with " - ", e.g. ["3", "1", "2", "0"]. */
+            tempo: z.array(z.string()).optional(),
+            tempoNote: z.string().optional(),
+            focusPoints: z.array(z.string()).optional()
+        })
     })
 };

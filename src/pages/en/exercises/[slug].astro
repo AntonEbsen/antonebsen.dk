@@ -1,0 +1,19 @@
+---
+import ExerciseDetailPage from '@components/templates/ExerciseDetailPage.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const exercises = await getCollection('exercises');
+  return exercises
+    .filter((entry) => entry.id.startsWith('en/'))
+    .map((entry) => ({
+      params: { slug: entry.id.replace(/^en\//, '').replace(/\.json$/, '') },
+      props: { entry }
+    }));
+}
+
+const { entry } = Astro.props;
+---
+<ExerciseDetailPage entry={entry} lang="en" />
