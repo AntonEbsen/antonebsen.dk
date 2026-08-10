@@ -19,7 +19,7 @@ const { tiles, class: className = '' } = Astro.props;
     {tiles.map((tile) => (
       <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-5">
         <dt class="text-[10px] uppercase tracking-widest text-muted mb-2">
-          {tile.icon && <i class={`${tile.icon} mr-1.5 text-accent/60`} aria-hidden="true"></i>}{tile.label}
+          {tile.icon && <i class={`${tile.icon} mr-1.5 text-accent`} aria-hidden="true"></i>}{tile.label}
         </dt>
         <dd class="text-2xl font-black text-white m-0 tabular-nums">{tile.value}</dd>
       </div>

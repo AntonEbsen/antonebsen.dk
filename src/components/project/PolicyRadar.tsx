@@ -160,7 +160,7 @@ const PolicyRadar: React.FC<Props> = ({ data, lang }) => {
             {/* Sidebar Signal Decoration */}
             <div className="absolute top-6 left-6 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                <span className="text-[9px] uppercase font-black tracking-[0.2em] text-accent/80">
+                <span className="text-[9px] uppercase font-black tracking-[0.2em] text-accent">
                     {lang === 'da' ? 'Policy Relevans Matrix' : 'Policy Relevance Matrix'}
                 </span>
             </div>

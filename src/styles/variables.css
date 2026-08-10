@@ -48,6 +48,19 @@
   --glass-border: rgba(232, 228, 220, 0.10);
   --glass-border-hover: rgba(212, 121, 79, 0.5);
 
+  /* CHANNEL FORMS — mirrors of the hex tokens above, as bare R G B values.
+     Tailwind needs channels to inject an alpha into; given `var(--accent)` it
+     emits nothing for `bg-accent/20`. See the note in tailwind.config.mjs.
+     Keep these in step with the hex tokens. */
+  --bg-rgb: 23 25 26;
+  --card-rgb: 30 33 34;
+  --text-rgb: 232 228 220;
+  --text-dim-rgb: 184 188 181;
+  --text-muted-rgb: 142 147 139;
+  --accent-rgb: 212 121 79;
+  --accent-light-rgb: 227 144 104;
+  --accent-2-rgb: 111 158 123;
+
   --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
   --radius: 16px;
 

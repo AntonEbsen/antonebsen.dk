@@ -30,7 +30,7 @@ const { item } = Astro.props;
             <h3 class="text-lg font-bold mb-2 text-gold-100 line-through decoration-gold-500/50">{item.title}</h3>
             <p class="text-dim text-xs mb-3">{item.description}</p>
             {item.image_url && <img src={item.image_url} class="w-full h-32 object-cover rounded sepia-[.5] group-hover:sepia-0 transition-all border border-gold-500/20" alt={item.title} />}
-            <p class="text-[10px] text-gold-500/60 mt-2 uppercase tracking-widest text-right">
+            <p class="text-[10px] text-gold-500 mt-2 uppercase tracking-widest text-right">
             {item.completed_at ? new Date(item.completed_at).getFullYear() : ''}
             </p>
     </Card>

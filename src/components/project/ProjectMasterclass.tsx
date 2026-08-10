@@ -235,7 +235,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(var(--accent-rgb),0.8)]"></div>
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-[9px] uppercase font-bold tracking-[0.4em] text-accent/80 leading-none mb-1">
+                        <span className="text-[9px] uppercase font-bold tracking-[0.4em] text-accent leading-none mb-1">
                             {lang === 'da' ? 'Vanguard Eksklusiv' : 'Vanguard Exclusive'}
                         </span>
                         <span className="text-sm font-serif text-white/90 font-bold tracking-tighter">
@@ -312,7 +312,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                                 {video.part.toString().padStart(2, '0')}
                                             </span>
                                             {isWatched && (
-                                                <i className="fa-solid fa-check-circle text-[10px] text-accent/60 mt-2"></i>
+                                                <i className="fa-solid fa-check-circle text-[10px] text-accent mt-2"></i>
                                             )}
                                         </div>
                                         <div>
@@ -320,7 +320,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                                 {video.title}
                                             </h4>
                                             {activeIndex === index && (
-                                                <span className="text-[10px] uppercase font-bold text-accent/80 tracking-widest mt-1 block">
+                                                <span className="text-[10px] uppercase font-bold text-accent tracking-widest mt-1 block">
                                                     {t.nowPlaying}
                                                 </span>
                                             )}
@@ -357,7 +357,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                             <div className="w-14 h-14 rounded-full border border-accent/30 flex items-center justify-center mb-6">
                                                 <i className="fa-solid fa-clapperboard text-accent"></i>
                                             </div>
-                                            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent/80 mb-3">
+                                            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-3">
                                                 {t.comingSoon}
                                             </p>
                                             <p className="text-slate-500 text-sm max-w-xs mb-6">{t.comingSoonSub}</p>

@@ -36,7 +36,7 @@ const { items } = Astro.props;
                 </span>
             </div>
             
-            <p class="text-sm text-accent/80 font-medium mb-2">
+            <p class="text-sm text-accent font-medium mb-2">
                 {item.organization || item.institution}
             </p>
             
@@ -45,7 +45,7 @@ const { items } = Astro.props;
             ) : (
                 <ul class="list-disc list-outside ml-4 space-y-1">
                     {item.description.map((d: string) => (
-                        <li class="text-sm text-dim pl-1 marker:text-dim/50">{d}</li>
+                        <li class="text-sm text-dim pl-1 marker:text-muted">{d}</li>
                     ))}
                 </ul>
             )}

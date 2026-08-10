@@ -127,7 +127,7 @@ export default function NewsletterSignup({ lang }: Props) {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder={t.placeholder}
-                                            className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-dim/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all group-hover:border-white/20"
+                                            className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all group-hover:border-white/20"
                                             required
                                         />
                                         <div className="absolute inset-0 rounded-xl bg-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>

@@ -121,7 +121,7 @@ const stamp = (seconds: number) => {
                 rel="noopener noreferrer"
                 class="flex gap-3 text-xs text-muted hover:text-accent transition-all no-underline"
               >
-                <span class="font-mono text-accent/70 tabular-nums">{stamp(chapter.t)}</span>
+                <span class="font-mono text-accent tabular-nums">{stamp(chapter.t)}</span>
                 <span>{(isDa && chapter.label_da) || (lang === 'de' && chapter.label_de) || chapter.label}</span>
               </a>
             </li>

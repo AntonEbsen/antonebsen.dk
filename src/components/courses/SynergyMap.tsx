@@ -152,7 +152,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
 
                 {/* Left Column: Courses */}
                 <div className="flex flex-col gap-4 relative z-10">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent/60 mb-2 pl-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-2 pl-2">
                         {lang === 'da' ? 'Akademisk Fundament' : 'Academic Foundation'}
                     </span>
                     {relevantCourses.map((course) => (

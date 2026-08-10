@@ -62,7 +62,7 @@ export default function EcosystemGraph() {
     return (
         <div ref={containerRef} className="w-full relative group">
             <div className="absolute top-8 left-8 z-10 pointer-events-none">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/50 mb-2 block">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2 block">
                     Interactive Map
                 </span>
                 <h2 className="text-2xl font-black text-white mb-2">Explore the Ecosystem</h2>
