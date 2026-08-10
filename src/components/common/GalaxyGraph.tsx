@@ -74,7 +74,7 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
     }, [isMounted]);
 
     const getNodeColor = (node: any) => {
-        if (node.group === 1) return '#D4AF37'; // Gold (Thesis/Project)
+        if (node.group === 1) return '#D4794F'; // Gold (Thesis/Project)
         if (node.group === 2) return '#60a5fa'; // Blue (Primary Sources)
         if (node.group === 3) return '#10b981'; // Green (Secondary/Method)
         return '#94a3b8'; // Slate (Context)

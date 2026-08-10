@@ -1,0 +1,119 @@
+---
+/**
+ * Topographic contour lines, as page texture.
+ *
+ * The brief was "cool, but not minimalism" — fill space with something that means
+ * something rather than leaving it empty. Contours are the natural ornament for a
+ * site about walking and measuring: they read as a survey map without shouting.
+ *
+ * Procedural, so it works on every page regardless of whether a GPX exists. Sits
+ * behind content at the same register as the grain overlay in BaseLayout (0.03),
+ * and is decorative only — aria-hidden, pointer-events: none.
+ */
+interface Props {
+  /** Nudges the shape so two fields on one page do not look stamped. */
+  seed?: number;
+  /** 'corner' anchors bottom-right; 'center' bleeds behind a hero. */
+  anchor?: 'corner' | 'center';
+  class?: string;
+}
+
+const { seed = 0, anchor = 'corner', class: className = '' } = Astro.props;
+
+// Concentric irregular rings, the way a hill reads on a map. Each ring is a
+// closed cubic path whose radii wobble with the seed, so rings are not simple
+// scaled copies of one another.
+const RINGS = 7;
+const rings: string[] = [];
+
+for (let i = 0; i < RINGS; i++) {
+  const base = 40 + i * 34;
+  const pts: string[] = [];
+  const steps = 12;
+
+  for (let s = 0; s < steps; s++) {
+    const angle = (s / steps) * Math.PI * 2;
+    // Deterministic pseudo-noise — no RNG, so server and client agree and the
+    // markup is stable between builds.
+    const wobble =
+      Math.sin(angle * 3 + i * 0.9 + seed) * 9 +
+      Math.cos(angle * 5 - i * 0.6 + seed * 1.7) * 5;
+    const r = base + wobble;
+    const x = 300 + Math.cos(angle) * r * 1.35;
+    const y = 300 + Math.sin(angle) * r;
+    pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+
+  rings.push(`M${pts.join(' L')} Z`);
+}
+---
+
+<div
+  class:list={['contour-field', `contour-${anchor}`, className]}
+  aria-hidden="true"
+>
+  <svg viewBox="0 0 600 600" fill="none" preserveAspectRatio="xMidYMid slice">
+    {rings.map((d, i) => (
+      <path
+        d={d}
+        stroke="var(--text)"
+        stroke-width={i % 3 === 0 ? 1.4 : 0.7}
+        vector-effect="non-scaling-stroke"
+      />
+    ))}
+  </svg>
+</div>
+
+<style>
+  .contour-field {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    /* Above the 0.03 grain so the lines read as contours rather than a smudge,
+       but still texture — you should notice it only if you look. */
+    opacity: 0.09;
+    overflow: hidden;
+  }
+
+  .contour-field svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .contour-corner {
+    right: -12%;
+    bottom: -18%;
+    width: min(46rem, 70vw);
+    aspect-ratio: 1;
+    /* Fade the outer edge so it reads as terrain running off the page rather
+       than a pasted-on graphic. */
+    mask-image: radial-gradient(circle at 60% 60%, black 25%, transparent 72%);
+  }
+
+  /* Centred on the section so the rings sit behind the headline, and masked
+     gently enough that several rings stay legible rather than one faint arc. */
+  .contour-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(78rem, 130vw);
+    aspect-ratio: 1;
+    mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 78%);
+  }
+
+  @media (max-width: 640px) {
+    .contour-field {
+      opacity: 0.04;
+    }
+  }
+
+  /* Decorative texture is exactly the kind of thing to drop when the viewer has
+     asked for less. */
+  @media (prefers-reduced-motion: reduce) {
+    .contour-field {
+      opacity: 0.03;
+    }
+  }
+</style>

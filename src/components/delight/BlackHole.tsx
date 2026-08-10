@@ -31,7 +31,7 @@ const BlackHole: React.FC = () => {
         const posArray = new Float32Array(particlesCount * 3);
         const colorArray = new Float32Array(particlesCount * 3);
 
-        const colorInside = new THREE.Color(0xD4AF37); // Gold
+        const colorInside = new THREE.Color(0xD4794F); // --accent terracotta
         const colorOutside = new THREE.Color(0xffffff); // White
 
         for (let i = 0; i < particlesCount * 3; i += 3) {

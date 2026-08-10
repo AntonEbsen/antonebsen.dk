@@ -51,7 +51,7 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
   <div class="cv-wrap">
     <!-- Filter bar (Hidden in Print) -->
     <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none print:hidden">
-      <div class="inline-flex items-center gap-2 p-1.5 bg-[#0a0a0c]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
+      <div class="inline-flex items-center gap-2 p-1.5 bg-[#1E2122]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
         <button class="cv-filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">{content.ui.filter?.all || 'All'}</button>
         <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="tech">{content.ui.filter?.tech || 'Tech'}</button>
         
@@ -260,7 +260,7 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
     .cv-filter-btn.active {
       background: var(--accent);
       color: #000;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      box-shadow: 0 0 15px rgba(212, 121, 79, 0.4);
     }
 
     .cv-item.is-dimmed {

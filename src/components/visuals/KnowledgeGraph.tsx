@@ -46,7 +46,7 @@ const KnowledgeGraph: React.FC = () => {
                         }}
                         linkWidth={1}
                         linkColor={() => 'rgba(255,255,255,0.15)'}
-                        backgroundColor="#050505"
+                        backgroundColor="#17191A"
                         onNodeClick={handleClick}
                         showNavInfo={false}
                         controlType="orbit"

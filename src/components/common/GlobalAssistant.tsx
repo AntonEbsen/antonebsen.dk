@@ -161,7 +161,7 @@ export default function GlobalAssistant({ initialContext, defaultPersona = 'defa
                 className={`
                     pointer-events-auto 
                     w-[calc(100vw-2rem)] md:w-[380px] h-[550px] max-h-[75vh] 
-                    mb-4 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl 
+                    mb-4 bg-[#1E2122] border border-white/10 rounded-2xl shadow-2xl 
                     flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-300 origin-bottom-right
                     ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-10 pointer-events-none'}
                 `}

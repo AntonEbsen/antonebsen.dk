@@ -20,7 +20,7 @@ export default function InteractiveGlobe() {
             mapSamples: 16000,
             mapBrightness: 6,
             baseColor: [0.1, 0.1, 0.1],
-            markerColor: [0.83, 0.69, 0.22], // #D4AF37 (Gold)
+            markerColor: [0.831, 0.475, 0.310], // --accent terracotta #D4794F
             glowColor: [0.2, 0.2, 0.2],
             markers: [
                 // Copenhagen

@@ -251,7 +251,7 @@ const t = caminoContent[lang];
 
     /* Weight Dashboard */
     .weight-dashboard { 
-      background: rgba(212, 175, 55, 0.05); border: 1px solid var(--accent-soft); border-radius: 24px; padding: 2rem; margin-bottom: 3rem;
+      background: rgba(212, 121, 79, 0.05); border: 1px solid var(--accent-soft); border-radius: 24px; padding: 2rem; margin-bottom: 3rem;
       display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: center;
     }
     @media (max-width: 768px) { .weight-dashboard { grid-template-columns: 1fr; } }
@@ -355,9 +355,9 @@ const t = caminoContent[lang];
           weightAdvice.textContent = "🟠 Du nærmer dig grænsen. Hold øje med vægten.";
           weightAdvice.style.color = '#fbbf24';
         } else {
-          weightFill.style.background = '#D4AF37';
+          weightFill.style.background = 'var(--accent)';
           weightAdvice.textContent = "🟢 Perfekt! Din oppakning er inden for den anbefalede vægtgrænse.";
-          weightAdvice.style.color = '#D4AF37';
+          weightAdvice.style.color = 'var(--accent)';
         }
       }
 

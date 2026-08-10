@@ -4,10 +4,12 @@ import Section from '@components/ui/Section.astro';
 import VideoCard from '@components/ui/VideoCard.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import StatTiles from '@components/ui/StatTiles.astro';
+import ContourField from '@components/ui/ContourField.astro';
 import { getLatestVideos, CHANNEL_URL, CHANNEL_NAME } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
 import {
-  getVideosNewestFirst, videoPath, videosRoot, videoTitle, videoDescription, type Lang
+  getVideosNewestFirst, videoPath, videosRoot, videoTitle, videoDescription,
+  trackIcon, type Lang
 } from '@lib/video-feed';
 
 interface Props {
@@ -123,10 +125,12 @@ const totalTiles = [
 // A lone "films" tile is not worth a section.
 const showTotals = totalTiles.length > 1;
 
+// Each track carries its own colour, so the filter row reads as the two worlds
+// rather than three identical buttons. `all` stays neutral.
 const filters = [
-  { key: 'all', label: t.filters.all, icon: 'fa-solid fa-layer-group', count: counts.all },
-  { key: 'hiking', label: t.filters.hiking, icon: 'fa-solid fa-mountain-sun', count: counts.hiking },
-  { key: 'economics', label: t.filters.economics, icon: 'fa-solid fa-chart-line', count: counts.economics }
+  { key: 'all', label: t.filters.all, icon: 'fa-solid fa-layer-group', count: counts.all, color: 'var(--text-dim)' },
+  { key: 'hiking', label: t.filters.hiking, icon: trackIcon('hiking'), count: counts.hiking, color: 'var(--accent-2)' },
+  { key: 'economics', label: t.filters.economics, icon: trackIcon('economics'), count: counts.economics, color: 'var(--accent)' }
 ];
 
 // VideoObject rich results.
@@ -154,7 +158,7 @@ const jsonLd = {
 <Layout title={t.title} description={t.description} alternates={alternates}>
   <main class="relative overflow-hidden">
 
-    <Section class="text-center pt-32 pb-20 border-b border-white/5">
+    <Section class="relative text-center pt-32 pb-20 border-b border-white/5">
       <div class="max-w-4xl mx-auto px-4 relative z-10">
         <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-6">{t.heroEyebrow}</p>
         <h1 class="text-5xl md:text-7xl font-black text-white leading-[0.9] mb-8 uppercase italic">
@@ -174,6 +178,7 @@ const jsonLd = {
       </div>
 
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl aspect-video bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-0"></div>
+      <ContourField anchor="center" />
     </Section>
 
     {showTotals && (
@@ -187,7 +192,7 @@ const jsonLd = {
 
     <Section class="container mx-auto px-4 relative z-10">
       {videos.length === 0 ? (
-        <p class="text-center text-dim opacity-60 py-16">{t.empty}</p>
+        <p class="text-center text-muted py-16">{t.empty}</p>
       ) : (
         <>
           <div class="flex flex-wrap justify-center gap-3 mb-12">
@@ -195,13 +200,14 @@ const jsonLd = {
               <button
                 type="button"
                 class:list={[
-                  'filter-btn px-5 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest text-dim transition-all hover:border-accent/40 hover:text-white',
-                  index === 0 && 'active bg-accent text-bg border-accent'
+                  'filter-btn px-5 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest text-dim transition-all',
+                  index === 0 && 'active'
                 ]}
                 data-category={filter.key}
+                style={`--filter-color: ${filter.color}`}
               >
-                <i class={`${filter.icon} mr-2 opacity-70`} aria-hidden="true"></i>{filter.label}
-                <span class="ml-2 opacity-50">{filter.count}</span>
+                <i class={`${filter.icon} mr-2`} style={`color: ${filter.color}`} aria-hidden="true"></i>{filter.label}
+                <span class="ml-2 filter-count">{filter.count}</span>
               </button>
             ))}
           </div>
@@ -217,7 +223,7 @@ const jsonLd = {
       <Section class="container mx-auto px-4 relative z-10">
         <div class="border-t border-white/5 pt-12">
           <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">{t.newTitle}</h2>
-          <p class="text-sm text-dim opacity-60 mb-6">{t.newLead}</p>
+          <p class="text-sm text-muted mb-6">{t.newLead}</p>
           <ul class="flex flex-col gap-2 list-none p-0 m-0">
             {uncurated.map((video) => (
               <li>
@@ -270,8 +276,10 @@ const jsonLd = {
     btn.addEventListener('click', () => {
       const category = (btn as HTMLElement).dataset.category;
 
-      filterBtns.forEach(b => b.classList.remove('active', 'bg-accent', 'text-bg', 'border-accent'));
-      btn.classList.add('active', 'bg-accent', 'text-bg', 'border-accent');
+      // Colour comes from each button's own --filter-color, so the active state is
+      // moss for hiking and terracotta for economics rather than one shared accent.
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
       videoCards.forEach(card => {
         const cardCat = (card as HTMLElement).dataset.category;
@@ -295,16 +303,33 @@ const jsonLd = {
     align-items: start;
   }
 
+  .filter-btn:hover {
+    border-color: var(--filter-color);
+    color: var(--text);
+  }
+
+  /* Filled with the track's own colour — moss for hiking, terracotta for economics.
+     These are two-class rules so they beat the single-class Tailwind utilities on
+     the base element; relying on source order is what previously left dim text on
+     the fill at 1.42:1. */
   .filter-btn.active {
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-    /* The base class carries `text-dim`, and `text-bg` from the active variant is
-       the same specificity, so source order decided which won — it lost, leaving
-       #d4d4d8 on gold at 1.42:1. This two-class rule wins deterministically. */
+    background: var(--filter-color);
+    border-color: var(--filter-color);
+    color: var(--bg);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--filter-color) 25%, transparent);
+  }
+
+  .filter-btn.active:hover {
     color: var(--bg);
   }
 
-  /* Same reason: keep the label readable while hovering an already-active filter. */
-  .filter-btn.active:hover {
-    color: var(--bg);
+  /* The icon carries an inline colour for the inactive state; on the filled state
+     it has to invert, and an inline style can only be beaten with !important. */
+  .filter-btn.active i {
+    color: var(--bg) !important;
+  }
+
+  .filter-count {
+    opacity: 0.6;
   }
 </style>

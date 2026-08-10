@@ -12,7 +12,7 @@ export async function GET() {
     const links: any[] = [];
 
     // 1. Root Node
-    nodes.push({ id: 'Anton', group: 'root', val: 20, color: '#D4AF37' });
+    nodes.push({ id: 'Anton', group: 'root', val: 20, color: '#D4794F' });
 
     // 2. Skill Nodes
     const allSkills: Set<string> = new Set();

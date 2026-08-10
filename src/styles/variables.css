@@ -1,44 +1,59 @@
+/* Terrain and archive.
+   Stone underfoot, paper for the record, terracotta for waymarks and clay,
+   moss for the Camino.
+
+   These mirror the critical-CSS block in src/layouts/BaseLayout.astro — that
+   copy is inlined for first paint, this one is for stylesheets that import it.
+   Keep the two in step.
+
+   Every pairing is verified against WCAG AA (4.5:1). The first terracotta tried,
+   #C2673F, measured 4.46:1 and was rejected — close enough to look fine and
+   still fail. */
 :root {
   /* BACKGROUNDS */
-  --bg: #050505;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #1a1505 0%, #050505 60%);
-  --depth-bg: radial-gradient(circle at 60% -20%, #1c1810 0%, #050505 50%);
+  --bg: #17191A;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #23201D 0%, #17191A 60%);
+  --depth-bg: radial-gradient(circle at 60% -20%, #26221E 0%, #17191A 50%);
+  --card: #1E2122;
 
   /* TEXT */
-  --text: #f2f2f0;
-  /* Ivory / Off-white for readability */
-  /* Ivory / Off-white for readability */
-  --text-dim: #d4d4d8;
-  /* Cool gray (Zinc 300) - improved for a11y */
-  --muted: rgba(161, 161, 170, 0.4);
+  --text: #E8E4DC;
+  /* Paper white — warm, not clinical. 13.9:1 on --bg */
+  --text-dim: #B8BCB5;
+  /* 9.2:1 on --bg, and still 5.1:1 at opacity-70 */
+  --text-muted: #8E938B;
+  /* 5.0:1 — reach for this instead of stacking opacity on --text-dim.
+     Compositing a dim colour against the background is what produced the
+     contrast failures the accessibility pass caught. */
+  --muted: rgba(184, 188, 181, 0.4);
 
-  /* ACCENT: GOLD */
-  --accent: #D4AF37;
-  /* Metallic Gold */
-  --accent-light: #F4C430;
-  /* Bright Gold */
-  --accent-soft: rgba(212, 175, 55, 0.15);
-  /* Gold tint */
-  --accent-glow: 0 0 25px rgba(212, 175, 55, 0.3);
+  /* ACCENT: TERRACOTTA */
+  --accent: #D4794F;
+  /* 5.6:1 on --bg, 5.1:1 on --card */
+  --accent-light: #E39068;
+  --accent-soft: rgba(212, 121, 79, 0.15);
+  --accent-glow: 0 0 25px rgba(212, 121, 79, 0.28);
+
+  /* SECONDARY: MOSS */
+  --accent-2: #6F9E7B;
+  /* 5.8:1 on --bg */
+  --accent-2-soft: rgba(111, 158, 123, 0.15);
 
   /* COMPONENTS */
-  --nav: rgba(5, 5, 5, 0.85);
-  /* Darker nav */
-  --navHover: rgba(255, 255, 255, 0.06);
+  --nav: rgba(23, 25, 26, 0.85);
+  --navHover: rgba(232, 228, 220, 0.06);
 
   /* GLASS / BORDERS */
-  --glass: rgba(15, 15, 20, 0.7);
-  /* Darker, slightly blue-tinted glass */
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(212, 175, 55, 0.5);
-  /* Gold border on hover */
+  --glass: rgba(30, 33, 34, 0.7);
+  --glass-border: rgba(232, 228, 220, 0.10);
+  --glass-border-hover: rgba(212, 121, 79, 0.5);
 
-  --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+  --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
   --radius: 16px;
-  /* Slightly tighter radius for professional look */
 
   /* TYPOGRAPHY */
   --font-main: "Inter", system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   --h1-size: clamp(48px, 6vw, 76px);
   --h2-size: clamp(28px, 4vw, 42px);
   --body-size: 16px;

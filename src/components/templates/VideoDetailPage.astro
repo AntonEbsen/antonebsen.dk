@@ -6,12 +6,13 @@ import Button from '@components/ui/Button.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import RouteMap from '@components/ui/RouteMap.astro';
 import StatTiles from '@components/ui/StatTiles.astro';
+import ElevationRule from '@components/ui/ElevationRule.astro';
 import { CHANNEL_URL } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
 import {
   getVideosNewestFirst, seriesNeighbours, videoPath, seriesPath, videosRoot,
   videoTitle, videoDescription, videoSeriesName, thumbnailUrl, slugifySeries,
-  type Lang
+  trackIcon, trackPillVariant, type Lang
 } from '@lib/video-feed';
 import type { CollectionEntry } from 'astro:content';
 
@@ -140,13 +141,15 @@ const jsonLd = {
 >
   <main class="container mx-auto px-4 pt-28 pb-24 max-w-5xl">
 
-    <a href={listUrl} class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-dim opacity-60 hover:text-accent hover:opacity-100 transition-all no-underline mb-8">
+    <a href={listUrl} class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted hover:text-accent transition-all no-underline mb-8">
       <i class="fa-solid fa-arrow-left text-[10px]" aria-hidden="true"></i>{t.back}
     </a>
 
     <Section class="!mb-10">
       <div class="flex flex-wrap items-center gap-2 mb-5">
-        <Pill variant="accent">{trackLabel}</Pill>
+        <Pill variant={trackPillVariant(video.track)}>
+          <i class={`${trackIcon(video.track)} mr-1.5`} aria-hidden="true"></i>{trackLabel}
+        </Pill>
         {series && video.series && (
           <a href={seriesPath(slugifySeries(video.series), lang)} class="no-underline">
             <Pill class="hover:border-accent/50 hover:text-accent transition-colors">
@@ -154,16 +157,16 @@ const jsonLd = {
             </Pill>
           </a>
         )}
-        <time datetime={video.publishedAt} class="text-[11px] uppercase tracking-wider text-dim opacity-70 ml-1">
+        <time datetime={video.publishedAt} class="text-[11px] uppercase tracking-wider text-muted ml-1">
           {new Date(video.publishedAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}
         </time>
       </div>
 
       <h1 class="text-4xl md:text-5xl font-black text-white leading-tight mb-5">{title}</h1>
-      <p class="text-lg text-dim opacity-70 leading-relaxed max-w-3xl mb-8">{description}</p>
+      <p class="text-lg text-muted leading-relaxed max-w-3xl mb-8">{description}</p>
 
       {(trail.startPlace || trail.endPlace) && (
-        <p class="text-sm text-dim opacity-70 mb-8">
+        <p class="text-sm text-muted mb-8">
           <i class="fa-solid fa-location-dot mr-2 text-accent/60" aria-hidden="true"></i>
           <span class="uppercase tracking-widest text-[10px] mr-2">{t.route}</span>
           {[trail.startPlace, trail.endPlace].filter(Boolean).join(' → ')}
@@ -193,7 +196,7 @@ const jsonLd = {
 
           {trail.hasProfile && (
             <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6">
-              <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-70 mb-4">{t.profile}</h3>
+              <h3 class="text-[10px] uppercase tracking-widest text-muted mb-4">{t.profile}</h3>
               <div class="relative h-[280px]">
                 <canvas
                   id="elevation-chart"
@@ -207,6 +210,10 @@ const jsonLd = {
         </div>
       </Section>
     )}
+
+    {/* The divider between sections is the shape of this walk. Renders nothing
+        until a .gpx exists for the video. */}
+    <ElevationRule profile={trail.profile} />
 
     {video.chapters && video.chapters.length > 0 && (
       <Section>
@@ -226,7 +233,7 @@ const jsonLd = {
               <a
                 href={`https://www.youtube.com/watch?v=${video.youtubeId}&t=${chapter.t}s`}
                 target="_blank" rel="noopener noreferrer"
-                class="text-dim opacity-30 hover:opacity-100 hover:text-accent transition-all shrink-0 px-2"
+                class="text-muted hover:text-accent transition-colors shrink-0 px-2"
                 aria-label={`${t.watch}: ${(isDa && chapter.label_da) || (lang === 'de' && chapter.label_de) || chapter.label}`}
               >
                 <i class="fa-brands fa-youtube text-xs" aria-hidden="true"></i>
@@ -243,7 +250,7 @@ const jsonLd = {
           <h2 class="text-xs font-bold uppercase tracking-widest text-accent">{t.episodes}</h2>
           <a
             href={seriesPath(group.slug, lang)}
-            class="text-[11px] uppercase tracking-wider text-dim opacity-70 hover:opacity-100 hover:text-accent transition-all no-underline"
+            class="text-[11px] uppercase tracking-wider text-muted hover:text-accent transition-all no-underline"
           >
             {t.allInSeries} <i class="fa-solid fa-arrow-right text-[9px] ml-0.5" aria-hidden="true"></i>
           </a>
@@ -261,7 +268,7 @@ const jsonLd = {
               <>
                 {/* opacity-60 over the accent colour came out at 3.93:1, under the
                     4.5 needed at this size. */}
-                <span class="font-mono tabular-nums text-xs opacity-80 w-6 shrink-0">
+                <span class="font-mono tabular-nums text-xs w-6 shrink-0">
                   {String(episode.seriesOrder ?? '·').padStart(2, '0')}
                 </span>
                 <span class="text-sm flex-1">{videoTitle(episode, lang)}</span>
@@ -286,7 +293,7 @@ const jsonLd = {
         <nav class="flex justify-between gap-4 mt-8">
           {previous ? (
             <a href={videoPath(previous.slug, lang)} class="group flex-1 max-w-[48%] no-underline">
-              <span class="block text-[10px] uppercase tracking-widest text-dim opacity-70 mb-1">
+              <span class="block text-[10px] uppercase tracking-widest text-muted mb-1">
                 <i class="fa-solid fa-arrow-left text-[9px] mr-1.5" aria-hidden="true"></i>{t.prev}
               </span>
               <span class="block text-sm text-white/80 group-hover:text-accent transition-colors">
@@ -297,7 +304,7 @@ const jsonLd = {
 
           {next && (
             <a href={videoPath(next.slug, lang)} class="group flex-1 max-w-[48%] text-right no-underline">
-              <span class="block text-[10px] uppercase tracking-widest text-dim opacity-70 mb-1">
+              <span class="block text-[10px] uppercase tracking-widest text-muted mb-1">
                 {t.next}<i class="fa-solid fa-arrow-right text-[9px] ml-1.5" aria-hidden="true"></i>
               </span>
               <span class="block text-sm text-white/80 group-hover:text-accent transition-colors">
@@ -347,13 +354,15 @@ const jsonLd = {
       const { default: Chart } = await import('chart.js/auto');
 
       const css = getComputedStyle(document.documentElement);
-      const accent = css.getPropertyValue('--accent').trim() || '#D4AF37';
-      const dim = 'rgba(255,255,255,0.45)';
-      const grid = 'rgba(255,255,255,0.06)';
+      // Literal fallback, not var(): Chart.js paints to a canvas, where CSS
+      // variables never resolve.
+      const accent = css.getPropertyValue('--accent').trim() || '#D4794F';
+      const dim = 'rgba(232,228,220,0.45)';
+      const grid = 'rgba(232,228,220,0.06)';
 
       const gradient = canvas.getContext('2d')!.createLinearGradient(0, 0, 0, 280);
-      gradient.addColorStop(0, 'rgba(212,175,55,0.35)');
-      gradient.addColorStop(1, 'rgba(212,175,55,0)');
+      gradient.addColorStop(0, 'rgba(212, 121, 79, 0.35)');
+      gradient.addColorStop(1, 'rgba(212, 121, 79, 0)');
 
       new Chart(canvas, {
         type: 'line',

@@ -9,7 +9,7 @@ export async function GET() {
     const links: any[] = [];
 
     // 1. Root Node
-    nodes.push({ id: 'Anton', group: 'root', val: 25, color: '#D4AF37' });
+    nodes.push({ id: 'Anton', group: 'root', val: 25, color: '#D4794F' });
 
     // Categories
     const categories = [

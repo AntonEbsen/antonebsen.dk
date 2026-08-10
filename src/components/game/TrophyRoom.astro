@@ -22,7 +22,7 @@ import { ACHIEVEMENTS } from '@lib/gamification';
   <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" data-trophy-close></div>
 
   <!-- Modal -->
-  <div class="relative w-full max-w-4xl bg-[#0a0a0c] border border-gold-500/20 rounded-2xl shadow-[0_0_50px_rgba(212,175,55,0.1)] overflow-hidden flex flex-col max-h-[85vh] animate-fade-in-up">
+  <div class="relative w-full max-w-4xl bg-[#1E2122] border border-gold-500/20 rounded-2xl shadow-[0_0_50px_rgba(212,121,79,0.1)] overflow-hidden flex flex-col max-h-[85vh] animate-fade-in-up">
 
     <div class="p-6 border-b border-white/5 bg-gradient-to-r from-gold-500/10 to-transparent flex justify-between items-start">
       <div>
@@ -46,7 +46,7 @@ import { ACHIEVEMENTS } from '@lib/gamification';
 
     <!-- Progress toward the next level -->
     <div class="h-1 bg-white/5 w-full">
-      <div class="h-full bg-gold-500 shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-all duration-1000" style="width: 0%" data-trophy-progress></div>
+      <div class="h-full bg-gold-500 shadow-[0_0_10px_rgba(212,121,79,0.5)] transition-all duration-1000" style="width: 0%" data-trophy-progress></div>
     </div>
 
     <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 scrollbar-thin scrollbar-thumb-white/10">
@@ -89,7 +89,7 @@ import { ACHIEVEMENTS } from '@lib/gamification';
     const cards = Array.from(root.querySelectorAll<HTMLElement>('.achievement-card'));
 
     const LOCKED_CARD = ['bg-white/[0.02]', 'border-white/[0.05]', 'opacity-60', 'grayscale', 'hover:opacity-100', 'hover:grayscale-0'];
-    const UNLOCKED_CARD = ['bg-gold-500/5', 'border-gold-500/30', 'shadow-[0_0_15px_rgba(212,175,55,0.05)]'];
+    const UNLOCKED_CARD = ['bg-gold-500/5', 'border-gold-500/30', 'shadow-[0_0_15px_rgba(212,121,79,0.05)]'];
 
     function render() {
       const state = getGameState();

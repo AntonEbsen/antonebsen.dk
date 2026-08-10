@@ -107,7 +107,7 @@ const ArticleReactions: React.FC<ArticleReactionsProps> = ({ slug, lang = 'da' }
                                     <motion.div
                                         initial={{ scale: 0, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
-                                        className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full border-2 border-[#050505]"
+                                        className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full border-2 border-[#17191A]"
                                     />
                                 )}
                             </AnimatePresence>

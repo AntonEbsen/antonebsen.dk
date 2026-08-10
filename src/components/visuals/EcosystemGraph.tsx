@@ -57,7 +57,7 @@ export default function EcosystemGraph() {
         }
     };
 
-    if (!isMounted) return <div className="w-full h-[500px] bg-[#050505] rounded-3xl border border-white/5 animate-pulse" />;
+    if (!isMounted) return <div className="w-full h-[500px] bg-[#17191A] rounded-3xl border border-white/5 animate-pulse" />;
 
     return (
         <div ref={containerRef} className="w-full relative group">
@@ -68,7 +68,7 @@ export default function EcosystemGraph() {
                 <h2 className="text-2xl font-black text-white mb-2">Explore the Ecosystem</h2>
                 <div className="flex gap-4 mt-4">
                     <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+                        <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
                         <span className="text-[10px] text-dim font-bold uppercase tracking-wider">Anton</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export default function EcosystemGraph() {
                 </div>
             </div>
 
-            <div className="w-full h-[500px] bg-[#050505] rounded-3xl border border-white/5 overflow-hidden shadow-2xl relative">
+            <div className="w-full h-[500px] bg-[#17191A] rounded-3xl border border-white/5 overflow-hidden shadow-2xl relative">
                 <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-dim">Synthesizing Network...</div>}>
                     {data && (
                         <ForceGraph2D
@@ -98,7 +98,7 @@ export default function EcosystemGraph() {
                             nodeLabel={(n: any) => n.id}
                             nodeRelSize={5}
                             linkColor={() => 'rgba(255,255,255,0.05)'}
-                            backgroundColor="#050505"
+                            backgroundColor="#17191A"
                             onNodeClick={handleNodeClick}
                             onNodeHover={setHoverNode}
                             cooldownTicks={100}

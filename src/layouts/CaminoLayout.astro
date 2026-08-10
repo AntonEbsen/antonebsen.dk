@@ -20,18 +20,18 @@ const { title, description, lang } = Astro.props;
   <style is:global>
     /* Premium Camino Theme Overrides */
     :root {
-      --camino-gold: #D4AF37;
-      --camino-gold-muted: rgba(212, 175, 55, 0.2);
+      --camino-gold: var(--accent);
+      --camino-gold-muted: rgba(212, 121, 79, 0.2);
     }
 
     body.camino-theme-active {
-      --bg: #080808;
-      --bg-gradient: radial-gradient(circle at 50% 0%, #1a1508 0%, #080808 70%);
+      --bg: #131516;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #23201D 0%, #131516 70%);
       --accent: var(--camino-gold);
       --accent-soft: var(--camino-gold-muted);
       --glass: rgba(10, 10, 12, 0.85);
-      --glass-border: rgba(212, 175, 55, 0.15);
-      --glass-border-hover: rgba(212, 175, 55, 0.5);
+      --glass-border: rgba(212, 121, 79, 0.15);
+      --glass-border-hover: rgba(212, 121, 79, 0.5);
     }
 
     .camino-layout-wrapper {

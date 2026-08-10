@@ -64,6 +64,35 @@ export const videoSeriesName = (video: FeedVideoEntry, lang: Lang) =>
 export const thumbnailUrl = (video: FeedVideoEntry) =>
     video.thumbnail ?? `https://i.ytimg.com/vi/${video.youtubeId}/maxresdefault.jpg`;
 
+// --- Track identity -------------------------------------------------------
+
+export type Track = 'hiking' | 'economics';
+
+/**
+ * The channel's two worlds get their own colour: moss for the trails, terracotta
+ * for the economics. One place decides, so a pill, a filter button and a graph
+ * node cannot drift apart.
+ */
+export const trackPillVariant = (track: Track): 'moss' | 'accent' =>
+    track === 'hiking' ? 'moss' : 'accent';
+
+/** CSS custom property holding this track's colour. */
+export const trackColorVar = (track: Track) =>
+    track === 'hiking' ? 'var(--accent-2)' : 'var(--accent)';
+
+/**
+ * Literal hex, for the places CSS variables cannot reach — three.js in the
+ * Knowledge Web, Chart.js canvases, Satori OG images. Keep in step with
+ * --accent-2 / --accent in BaseLayout.astro and variables.css.
+ */
+export const TRACK_HEX: Record<Track, string> = {
+    hiking: '#6F9E7B',
+    economics: '#D4794F'
+};
+
+export const trackIcon = (track: Track) =>
+    track === 'hiking' ? 'fa-solid fa-mountain-sun' : 'fa-solid fa-chart-line';
+
 // --- Series ----------------------------------------------------------------
 
 export interface SeriesGroup {

@@ -104,7 +104,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
             {/* Chat Window */}
             {isOpen && (
                 <div
-                    className="fixed bottom-24 right-6 w-[90vw] md:w-[450px] h-[600px] max-h-[70vh] bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl flex flex-col z-[2147483647] overflow-hidden backdrop-blur-xl"
+                    className="fixed bottom-24 right-6 w-[90vw] md:w-[450px] h-[600px] max-h-[70vh] bg-[#1E2122] border border-white/10 rounded-2xl shadow-2xl flex flex-col z-[2147483647] overflow-hidden backdrop-blur-xl"
                     style={{ boxShadow: '0 0 50px rgba(0,0,0,0.8)' }}
                 >
                     {/* Header */}

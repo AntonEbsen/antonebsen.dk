@@ -19,7 +19,7 @@ const drawable = paths.filter((p) => p && p.length > 1);
 
 {drawable.length > 0 && (
   <div class:list={['route-map-wrap bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6', className]}>
-    {label && <h3 class="text-[10px] uppercase tracking-widest text-dim opacity-70 mb-4">{label}</h3>}
+    {label && <h3 class="text-[10px] uppercase tracking-widest text-muted mb-4">{label}</h3>}
     <div class="route-map rounded-xl overflow-hidden" data-paths={JSON.stringify(drawable)}></div>
   </div>
 )}
@@ -27,8 +27,10 @@ const drawable = paths.filter((p) => p && p.length > 1);
 <script>
   import L from 'leaflet';
 
-  // Gold to match --accent; read from CSS so a theme override carries through.
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#D4AF37';
+  // Read the terracotta from CSS so a token change carries through. The fallback
+  // must be a literal: Leaflet passes this straight to an SVG stroke, and if the
+  // computed value were empty then var(--accent) would resolve to nothing too.
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#D4794F';
 
   document.querySelectorAll<HTMLElement>('.route-map').forEach((el) => {
     let paths: [number, number][][];
