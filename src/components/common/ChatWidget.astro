@@ -176,11 +176,17 @@ const t = (t_obj as any)[lang] || t_obj.da;
       const toggle = document.getElementById('chat-toggle');
       const close = document.getElementById('close-chat');
       const form = document.getElementById('chat-form');
-      const input = document.getElementById('chat-input');
+      const input = document.querySelector<HTMLInputElement>('#chat-input');
       const messages = document.getElementById('chat-messages');
       const voiceBtn = document.getElementById('voice-btn');
       const voiceIndicator = document.getElementById('voice-indicator');
       const visualizerCanvas = document.getElementById('widget-visualizer');
+
+      // The server renders the placeholder from the frontmatter `t`, which this
+      // script cannot see — two voice handlers below assigned `t.placeholder` and
+      // threw "ReferenceError: t is not defined" when a recording was too short or
+      // the microphone was denied. Read back what the server already wrote.
+      const defaultPlaceholder = input?.placeholder ?? '';
 
       // Concierge Logic
       const currentLang = widget?.getAttribute('data-lang') || 'da';
@@ -479,7 +485,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   
                   if (audioBlob.size < 1000) {
                       alert("Kunne ikke høre noget (optagelse for kort). Prøv at tale højere/længere.");
-                      input.placeholder = t.placeholder;
+                      input.placeholder = defaultPlaceholder;
                       return;
                   }
                   
@@ -556,7 +562,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   msg = err.message || "Mikrofon fejl";
               }
               alert(`Kunne ikke starte mikrofon: ${msg}`);
-              input.placeholder = t.placeholder;
+              input.placeholder = defaultPlaceholder;
           }
       }
 
