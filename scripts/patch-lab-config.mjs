@@ -22,8 +22,16 @@ if (fs.existsSync(mainConfigPath)) {
 // Patch Lab Config
 if (fs.existsSync(labConfigPath)) {
     const labConfig = JSON.parse(fs.readFileSync(labConfigPath, 'utf8'));
-    labConfig['jupyter-config-data'].themesUrl = '/research/build/themes';
-    labConfig['jupyter-config-data'].settingsUrl = '/research/build/schemas';
+    // Settled empirically, because this JupyterLite version resolves these against a
+    // base that matches none of the obvious guesses:
+    //   '/research/build/…'  -> /research/research/build/… (concatenated onto baseUrl)
+    //   './build/…'          -> 314 console errors, the notebook never opens
+    //   '../build/…'         -> the app loads and the notebook opens
+    // With '../' one stylesheet still 404s: the dark theme resolves to /build/themes
+    // instead of /research/build/themes, so JupyterLite falls back to its light theme.
+    // Everything else works. Worth another look if the lab is themed properly later.
+    labConfig['jupyter-config-data'].themesUrl = '../build/themes';
+    labConfig['jupyter-config-data'].settingsUrl = '../build/schemas';
     labConfig['jupyter-config-data'].appUrl = '/research/lab';
     fs.writeFileSync(labConfigPath, JSON.stringify(labConfig, null, 2));
     console.log(`Updated all URLs to absolute paths in ${labConfigPath}`);
