@@ -5,9 +5,19 @@ import {
 } from '@lib/video-feed';
 import { resolveTranscript } from '@lib/video-transcript';
 
+// Which projects actually have an English page, derived from the filesystem so it
+// cannot drift as pages are added.
+const enProjectSlugs = new Set(
+    Object.keys(import.meta.glob('./en/projects/*.astro'))
+        .map(path => path.split('/').pop()!.replace(/\.astro$/, ''))
+);
+
+// Astro 5 does not put `slug` on `type: 'data'` collections — every entry here has
+// `id` only. The index used to read `.slug` throughout, so it emitted `/undefined`
+// for every blog post, page and project. Everything below uses `id`.
 export async function GET() {
     const posts = await getCollection('blog');
-    const projects = await getCollection('portfolio');
+    const cvEntries = await getCollection('cv');
     const pages = await getCollection('pages');
     const videos = await getVideosNewestFirst();
 
@@ -35,7 +45,7 @@ export async function GET() {
         // English
         index.push({
             title: post.data.title,
-            url: `/blog/${post.slug}`,
+            url: `/blog/${post.id}`,
             content: Array.isArray(post.data.content) ? post.data.content.join(' ') : post.data.description,
             tags: [post.data.tag, ...(post.data.tags || [])],
             type: 'blog',
@@ -47,7 +57,7 @@ export async function GET() {
         if (post.data.title_da) {
             index.push({
                 title: post.data.title_da,
-                url: `/da/blog/${post.slug}`,
+                url: `/da/blog/${post.id}`,
                 content: Array.isArray(post.data.content_da) ? post.data.content_da.join(' ') : (post.data.description_da || post.data.description),
                 tags: [post.data.tag, ...(post.data.tags || [])],
                 type: 'blog',
@@ -57,27 +67,28 @@ export async function GET() {
         }
     }
 
-    // 3. Projects
-    for (const project of projects) {
-        index.push({
-            title: project.data.title,
-            url: `/portfolio/${project.slug}`,
-            content: project.data.description,
-            tags: project.data.tags || [],
-            type: 'project',
-            icon: 'fa-solid fa-briefcase',
-            lang: 'en' // Projects might be English only or mixed
-        });
-        // Add Danish version if project structure supports it (assuming en default for now)
-        index.push({
-            title: project.data.title, // Or title_da if exists
-            url: `/da/portfolio/${project.slug}`,
-            content: project.data.description,
-            tags: project.data.tags || [],
-            type: 'project',
-            icon: 'fa-solid fa-briefcase',
-            lang: 'da'
-        });
+    // 3. Projects. These come from the `cv` collection, which is what /portfolio,
+    // /cv and the AI chat all read — the old `portfolio` collection holds four
+    // placeholder entries and has no route to point at.
+    for (const cvEntry of cvEntries) {
+        const lang = cvEntry.id; // 'da' | 'en' | 'de'
+        for (const p of cvEntry.data.projects ?? []) {
+            if (!p.url) continue;
+            // cv/en.json stores un-prefixed paths; send English searchers to the
+            // English page where one exists.
+            const url = lang === 'en' && p.url.startsWith('/projects/') && enProjectSlugs.has(p.url.slice('/projects/'.length))
+                ? `/en${p.url}`
+                : p.url;
+            index.push({
+                title: p.title,
+                url,
+                content: p.description,
+                tags: [p.tag, ...(p.technologies ?? [])].filter(Boolean),
+                type: 'project',
+                icon: 'fa-solid fa-briefcase',
+                lang
+            });
+        }
     }
 
     // 4. Videos (The Wandering Economist)
@@ -133,19 +144,23 @@ export async function GET() {
         }
     }
 
-    // 5. Pages
+    // 5. Pages. Ids are "<lang>/<name>"; Danish lives at the site root, the other
+    // two under their own prefix. Previously this emitted "/undefined" with every
+    // entry hardcoded to English.
     for (const page of pages) {
-        if (page.data.title) {
-            index.push({
-                title: page.data.title,
-                url: `/${page.slug}`,
-                content: page.data.description,
-                tags: [],
-                type: 'page',
-                icon: 'fa-solid fa-file',
-                lang: 'en'
-            });
-        }
+        if (!page.data.title) continue;
+        const [pageLang, ...rest] = page.id.split('/');
+        const name = rest.join('/');
+        if (!name || !['da', 'en', 'de'].includes(pageLang)) continue;
+        index.push({
+            title: page.data.title,
+            url: pageLang === 'da' ? `/${name}` : `/${pageLang}/${name}`,
+            content: page.data.description,
+            tags: [],
+            type: 'page',
+            icon: 'fa-solid fa-file',
+            lang: pageLang
+        });
     }
 
     return new Response(JSON.stringify(index), {

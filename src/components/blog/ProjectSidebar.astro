@@ -13,10 +13,12 @@ const isDa = lang === 'da';
 const projects = await getCollection('portfolio');
 const project = projects.find(p => p.id === projectId);
 
-if (!project) return null;
+// The entry id ("project-01") is not a route. Without a mapped slug there is no
+// page to link to, so render nothing rather than a link that 404s.
+if (!project?.data.slug) return null;
 
-const { title, tagString, description } = project.data;
-const projectUrl = isDa ? `/projects/${projectId}` : `/en/projects/${projectId}`;
+const { title, tagString, description, slug } = project.data;
+const projectUrl = isDa ? `/projects/${slug}` : `/en/projects/${slug}`;
 
 const t = {
     da: {
