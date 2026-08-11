@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -86,19 +87,15 @@ const projectContent = {
     openScience: "Open Science"
   },
   collaborators: [
-    { 
-        name: "Sheng Ye Michael Chen", 
-        role: "Co-author", 
-        image: "/assets/collaborators/sheng.jpg",
-        description: "Contributed to survey design and ML implementation strategy.",
-        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    {
+        ...sheng,
+        role: "Co-author",
+        description: "Contributed to survey design and ML implementation strategy."
     },
-    { 
-        name: "Jonas Amasa Skov Nielsen", 
-        role: "Co-author", 
-        image: "/assets/collaborators/jonas.jpg",
-        description: "Contributed to the theoretical framework and educational sociology literature review.",
-        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+    {
+        ...jonas,
+        role: "Co-author",
+        description: "Contributed to the theoretical framework and educational sociology literature review."
     }
   ],
   bibliography: [

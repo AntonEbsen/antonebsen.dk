@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -135,7 +136,19 @@ const projectContent = {
   ],
   briefingUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf",
   simulatorUrl: "/en/models/taylor-rule",
-  notebookPath: "content/exchange-rate-analysis.ipynb"
+  notebookPath: "content/exchange-rate-analysis.ipynb",
+  collaborators: [
+    {
+        ...sheng,
+        role: "Study Group Member",
+        description: "Drove the GMM estimation strategy and the Stata implementation of the counterfactual simulations."
+    },
+    {
+        ...jonas,
+        role: "Study Group Member",
+        description: "Contributed the theoretical framework and the analysis of structural breaks in Eurozone monetary policy transmission."
+    }
+  ]
 };
 ---
 <ProjectDetailPage lang="en" project={projectContent} />
