@@ -1,89 +1,322 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
-  title: "Seminar: Economics of the Welfare State (TBD)",
-  subtitle: "Kommende seminarprojekt i velfærdsstatsøkonomi.",
-  executiveSummary: "Dette projekt er under udarbejdelse. Det vil omhandle en dybdegående analyse af velfærdsstatens økonomi, udarbejdet i samarbejde med Sheng og Jonas. Nærmere detaljer om emne, problemstilling og resultater vil blive tilføjet, når projektet er defineret.",
+  title: "Globalization and the Welfare State",
+  subtitle: "En paneldataanalyse af 32 OECD-lande, 1980–2023.",
+  heroImage: "/assets/projects/welfare-state-seminar/fig-kof.png",
+  status: "Afsluttet · Juni 2026",
+  pdfMeta: "Fuld tekst · 40 sider · 1,1 MB",
+  contextNote: "Seminaropgave på økonomistudiet ved Københavns Universitet, afleveret 3. juni 2026 og vejledt af Amalie Sofie Jensen. Skrevet sammen med Jonas Skov Nielsen og Sheng Ye Michael Chen. Estimaterne er korrelationelle, ikke kausale — globalisering tildeles ikke tilfældigt til lande, og det er en begrænsning vi behandler eksplicit frem for at tale udenom.",
+  executiveSummary: "Presser globaliseringen velfærdsstaten i knæ, eller skaber den efterspørgsel efter mere social beskyttelse? Vi undersøger spørgsmålet med sociale overførsler som andel af BNP i 32 OECD-lande fra 1980 til 2023 — en forlængelse af Yay og Aksoy (2018) med 13 ekstra år, der omfatter både finanskrisen og pandemien. Vi finder ingen robust generel sammenhæng. Social globalisering er den eneste af de fire KOF-indeks, der er signifikant i baseline-modellen, og det resultat overlever ikke en test for omvendt kausalitet. Til gengæld finder vi noget mere interessant: selve sammenhængen er ustabil over tid. Rullende regressioner viser koefficienter, der skifter fra insignifikante til positive og signifikante, i takt med at estimationsvinduet fyldes med observationer efter 2008, og en Chow-test bekræfter et strukturelt brud netop dér. Konklusionen er metodisk: ét langsigtet estimat over 44 år beskriver ikke én relation, men gennemsnittet af flere forskellige.",
+  highlights: [
+    { label: "Grade", value: "10" },
+    { label: "Method", value: "Panel FE" },
+    { label: "Lande", value: "32" },
+    { label: "Observationer", value: "996" }
+  ],
   researchQuestions: [
-    "TBD: Problemstilling under udarbejdelse.",
-    "TBD: Fokusområde inden for velfærdsøkonomi?",
-    "TBD: Hvilke data og metoder anvendes?"
+    "Holder sammenhængen mellem globalisering og sociale overførsler, som den findes hos Yay og Aksoy (2018), når stikprøven forlænges til 2023?",
+    "Adskiller sammenhængen sig systematisk på tværs af velfærdsregimer — eller er regime-heterogeniteten i litteraturen et artefakt af den valgte periode?",
+    "Er relationen overhovedet stabil over tid, og hvad betyder det for de enkeltkoefficienter litteraturen normalt rapporterer?"
   ],
   methodology: {
-    model: "Økonomisk Analyse",
-    strategy: "Teoretisk og empirisk undersøgelse.",
-    data: "TBD.",
-    estimation: "TBD."
+    model: "Paneldatamodel med tovejs-faste effekter: landefast effekt δᵢ og årsfast effekt γₜ. Sociale overførsler i procent af BNP er proxy for velfærdsstatens størrelse, og alle højresidevariable er lagget ét år.",
+    strategy: "To specifikationer. Baseline estimerer hvert KOF-indeks separat med makroøkonomiske og demografiske kontroller. Heterogenitetsspecifikationen tilføjer interaktionsled mellem globalisering og fire velfærdsregimer, med det socialdemokratiske regime som reference, og de regimespecifikke marginale effekter beregnes efterfølgende.",
+    data: "32 OECD-lande, årlige observationer 1980–2023, N = 996 i de fuldt specificerede modeller. Afhængig variabel fra CPDS; globalisering fra KOF; kontroller fra OECD og Verdensbanken.",
+    estimation: "Within-estimator med standardfejl klyngefordelt på landeniveau. Robusthed via Driscoll-Kraay-standardfejl, rullende regressioner over 10-årige vinduer, Chow-test for strukturelt brud og feedback-regressioner for omvendt kausalitet."
   },
   keyFindings: [
-    "Dette projekt er endnu ikke påbegyndt.",
-    "Resultater vil blive præsenteret her.",
-    "Forventet afslutning: 2026."
+    "Ingen robust generel sammenhæng. Af de fire KOF-indeks er kun social globalisering signifikant i baseline (β = 0,129, t = 2,63). Samlet globalisering (0,088), økonomisk (−0,020) og politisk (0,046) er alle insignifikante med landeklyngede standardfejl.",
+    "Det ene signifikante resultat er sandsynligvis omvendt kausalitet. Feedback-regressioner viser, at laggede sociale overførsler forudsiger social globalisering (β = 0,225, t = 2,15) — altså den modsatte retning af den, litteraturen normalt undersøger.",
+    "Regimeforskellene er reelle, men svagere end de ser ud. Middelhavsregimet adskiller sig positivt fra det socialdemokratiske på alle fire indeks, og det liberale på samlet og økonomisk globalisering. Men interaktionsled måler forskelle fra referencen, ikke effekter i sig selv.",
+    "Ser man på de marginale effekter inden for hvert regime, er kun ét estimat signifikant: økonomisk globalisering i socialdemokratiske velfærdsstater, med koefficienten −0,187 — den eneste egentlige støtte til efficienshypotesen i hele analysen.",
+    "Relationen er historisk betinget. Rullende regressioner over 10-årige vinduer viser koefficienter, der er insignifikante eller negative før 2015 og bliver positive og signifikante i de vinduer, der domineres af observationer efter finanskrisen (samlet globalisering: 0,183 i vinduet, der slutter i 2023).",
+    "En Chow-test afviser parameterstabilitet i 2008 for alle fire indeks (F mellem 4,9 og 9,9, alle p < 0,001). Regime-heterogeniteten hos Yay og Aksoy (2018) holder derfor ikke, når stikprøven forlænges til 2023."
   ],
-  secondaryAnalysis: {
-    title: "Foreløbig Status",
-    description: "Projektet er i planlægningsfasen.",
-    items: [
-      "Emnevalg: Under overvejelse.",
-      "Gruppedannelse: Etableret (Sheng, Jonas, Anton).",
-      "Analyse: Ikke påbegyndt."
+  robustness: [
+    {
+      question: "Social globalisering er det eneste signifikante indeks. Er den effekt reel?",
+      answer: "Sandsynligvis ikke, i hvert fald ikke i den retning. Vi vender specifikationen om og regresserer KOF-indeksene på laggede sociale overførsler. For samlet, økonomisk og politisk globalisering er koefficienten insignifikant, men for social globalisering er den 0,225 og signifikant på 5 %-niveau. Dekomponerer vi social globalisering i dens seks underkomponenter, er kun de jure interpersonel globalisering signifikant (0,355), mens de facto-modstykket er 0,044 og insignifikant. Det, der driver sammenhængen, er altså institutionel åbenhed — visumfrihed, teledækning, internationale lufthavne — og ikke realiserede migrationsstrømme. Vi konkluderer, at baseline-resultatet for social globalisering skal fortolkes med stort forbehold.",
+      category: "econometrics"
+    },
+    {
+      question: "Pesaran CD-testen afviser tværsnitsuafhængighed. Hvorfor så bruge landeklyngede standardfejl?",
+      answer: "Fordi de er det mest konservative valg, vi kan træffe. Landeklyngede standardfejl er robuste over for heteroskedasticitet og seriel korrelation inden for lande, men ikke over for tværsnitsafhængighed — og den afviser vi klart (CD ≈ −3,6, p = 0,000), hvilket er forventeligt i et panel af 32 åbne økonomier, der deler konjunkturer. Driscoll-Kraay-standardfejl håndterer netop det, så vi rapporterer begge dele. Under Driscoll-Kraay bliver samlet globalisering (p = 0,007) og politisk globalisering (p = 0,011) også signifikante, og flere af de marginale effekter skifter status. Vi lægger de konservative standardfejl til grund, så kun de mest robuste koefficienter overlever, men vi er eksplicitte om, at inferensen er følsom over for valget.",
+      category: "econometrics"
+    },
+    {
+      question: "Hvorfor rullende regressioner, når litteraturen nøjes med én koefficient?",
+      answer: "Netop derfor. En enkelt koefficient estimeret over 1980–2023 lægger perioder sammen, der ikke ligner hinanden. Vi genestimerer baseline-modellen på 10-årige vinduer, og billedet er entydigt: samlet, social og politisk globalisering går fra insignifikante til positive og signifikante, så snart vinduet domineres af observationer efter 2008. En Chow-test i 2008 afviser parameterstabilitet for alle fire indeks. Så vidt vi ved, er rullende regressioner ikke tidligere brugt i denne litteratur til at vise netop det — sandsynligvis fordi metoden først bliver informativ med en tilstrækkelig lang stikprøve. Det giver også en forklaring på uenigheden i litteraturen: Yay og Aksoy (2018) finder insignifikante resultater med data til 2010, hvilket ifølge vores vinduer er før sammenhængen vender.",
+      category: "econometrics"
+    },
+    {
+      question: "Middelhavs- og liberale regimer har positive interaktionsled. Bekræfter det så kompensationshypotesen dér?",
+      answer: "Nej, og det er en fortolkningsfælde, der er værd at være præcis om. Et interaktionsled måler forskellen i forhold til referencekategorien, ikke effekten inden for regimet. At Middelhavsregimet har en signifikant positiv interaktion betyder, at det reagerer anderledes end socialdemokratiske velfærdsstater — ikke at det udvider velfærdsstaten som svar på globalisering. Beregner vi de marginale effekter regime for regime, er ingen af koefficienterne for Middelhavs- og liberale regimer signifikante. Det eneste regime med en signifikant egeneffekt er det socialdemokratiske, og den er negativ. Forskellene mellem regimer er altså ikke matchet af præcist estimerede effekter inden for dem.",
+      category: "intuition"
+    },
+    {
+      question: "Kan noget af det her læses kausalt?",
+      answer: "Nej, og det er ikke bare et forbehold af høflighed. Globalisering tildeles ikke tilfældigt, der findes ingen ikke-globaliseret kontrolgruppe, og de mindst globaliserede økonomier mangler typisk den institutionelle kapacitet til at levere lange datarækker, der kunne fungere som en. Variationen i vores estimater kommer fra bevægelser i KOF-indeksene inden for lande over tid, og vi fortolker den som association. Dertil kommer aggregeringsproblemet: sociale overførsler som andel af BNP siger intet om ydelsernes kvalitet, om visitationsregler, eller om naturalieydelser som sundhed og uddannelse. Vi kan derfor ikke skelne mellem ændringer i velfærdsstatens størrelse og ændringer i sammensætningen af dens udgifter.",
+      category: "data"
+    }
+  ] as const,
+  popScience: {
+    title: "Tvinger globaliseringen velfærdsstaten til at skrumpe?",
+    text: "Det er en af de mest sejlivede påstande i økonomisk debat: når kapital, virksomheder og arbejdskraft kan flytte over grænser, må lande sænke skatterne for at holde på dem — og så har de ikke råd til velfærd. Den modsatte påstand er lige så udbredt: åbne økonomier er mere udsatte for chok udefra, så borgerne kræver mere social sikring, ikke mindre. Begge historier er plausible, begge har prominente fortalere, og de kan ikke begge være rigtige. Vi testede dem på 44 års data fra 32 rige lande.",
+  },
+  popularScienceResult: "Ingen af dem holder generelt. Der er simpelthen ikke nogen stabil sammenhæng mellem, hvor globaliseret et land er, og hvor meget det bruger på sociale overførsler. Men det mest brugbare resultat er ikke selve nullet — det er, at spørgsmålet er stillet forkert. Da vi kiggede på 10-årige perioder ad gangen i stedet for hele forløbet under ét, viste det sig, at sammenhængen skifter fortegn undervejs. Før finanskrisen peger den svagt i én retning, efter finanskrisen i den anden. Det betyder, at to forskere kan analysere præcis det samme spørgsmål med præcis den samme metode og nå modsatte konklusioner, alene fordi deres data stopper i forskellige år. Det forklarer meget godt, hvorfor forskningen på området har været så uenig med sig selv.",
+  interactiveChart: {
+    title: "Rullende regressioner: sammenhængen skifter fortegn omkring finanskrisen",
+    description: "Koefficienten for hvert KOF-indeks, estimeret på 10-årige vinduer. X-aksen angiver vinduets slutår, så punktet ved 2018 er estimeret på 2009–2018 — det første vindue med udelukkende observationer efter finanskrisen. Tal fra opgavens Tabel 5.5.",
+    type: "line" as const,
+    labels: ["1995", "2000", "2007", "2008", "2015", "2018", "2020", "2023"],
+    datasets: [
+      {
+        label: "Samlet globalisering",
+        data: [-0.0335, 0.0184, 0.0972, 0.0921, 0.0923, 0.1856, 0.1714, 0.1831],
+        borderColor: "rgb(239, 68, 68)",
+        backgroundColor: "rgba(239, 68, 68, 0.15)"
+      },
+      {
+        label: "Økonomisk globalisering",
+        data: [-0.1493, -0.0379, 0.0190, 0.0149, 0.0276, 0.0521, 0.0404, 0.0765],
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.15)"
+      },
+      {
+        label: "Social globalisering",
+        data: [0.0650, 0.0931, 0.0884, 0.0854, 0.0360, 0.0742, 0.1034, 0.1213],
+        borderColor: "rgb(16, 185, 129)",
+        backgroundColor: "rgba(16, 185, 129, 0.15)"
+      },
+      {
+        label: "Politisk globalisering",
+        data: [0.0372, 0.0261, 0.0509, 0.0402, 0.0792, 0.1254, 0.1020, 0.0735],
+        borderColor: "rgb(245, 158, 11)",
+        backgroundColor: "rgba(245, 158, 11, 0.15)"
+      }
+    ]
+  },
+  gallery: [
+    {
+      src: "/assets/projects/welfare-state-seminar/fig-transfers.png",
+      caption: "Figur 3.1 — Gennemsnitlige sociale overførsler som andel af BNP, 1980–2023. De to spring i 2009 og 2020 er finanskrisen og pandemien; det er dem, der gør en enkelt koefficient over hele perioden misvisende.",
+      alt: "Kurve over gennemsnitlige sociale overførsler i procent af BNP for 32 OECD-lande fra 1980 til 2023, med markante stigninger omkring 2009 og 2020."
+    },
+    {
+      src: "/assets/projects/welfare-state-seminar/fig-kof.png",
+      caption: "Figur 3.2 — KOF-globaliseringsindeksene, 1980–2023. Alle fire stiger over perioden. Faldet i politisk globalisering sidst i 1980'erne afspejler formentlig den kolde krigs sidste år.",
+      alt: "Fire kurver der viser samlet, økonomisk, social og politisk globalisering målt ved KOF-indeksene fra 1980 til 2023, alle med stigende tendens."
+    },
+    {
+      src: "/assets/projects/welfare-state-seminar/fig-rolling.png",
+      caption: "Figur 5.1 — Rullende OLS-koefficienter over 10-årige vinduer med 95 %-konfidensbånd. Den stiplede linje markerer 2018, det første vindue der udelukkende bygger på observationer efter finanskrisen.",
+      alt: "Fire delfigurer med rullende regressionskoefficienter og konfidensbånd for hvert globaliseringsindeks, med en lodret stiplet linje ved 2018."
+    }
+  ],
+  codeSnippet: {
+    lang: "Python",
+    title: "Baseline- og interaktionsspecifikation (lign. 4.1–4.2)",
+    code: `import pandas as pd
+from linearmodels.panel import PanelOLS
+
+KOF = ["KOFGI", "KOFEcGI", "KOFSoGI", "KOFPoGI"]
+CONTROLS = ["ln_gdppc", "inflation", "deficit", "debt", "ln_pop", "dep_ratio"]
+REGIMES = ["conservative", "mediterranean", "liberal", "post_communist"]
+
+panel = df.set_index(["country", "year"])
+
+# Alle regressorer indgår lagget ét år.
+lagged = lambda cols: [f"{c}_lag1" for c in cols]
+
+# --- Ligning 4.1: baseline, ét indeks ad gangen -------------------------
+for index in KOF:
+    spec = " + ".join(lagged([index]) + lagged(CONTROLS))
+    fit = PanelOLS.from_formula(
+        f"sstran ~ 1 + {spec} + EntityEffects + TimeEffects", panel
+    ).fit(cov_type="clustered", cluster_entity=True)
+
+# --- Ligning 4.2: velfærdsregime-heterogenitet --------------------------
+# Socialdemokratisk regime er reference, så beta1 er dets egeneffekt og
+# hvert interaktionsled er forskellen i forhold til det.
+for index in KOF:
+    interactions = [f"{index}_lag1:{r}" for r in REGIMES]
+    spec = " + ".join(lagged([index]) + interactions + lagged(CONTROLS))
+    fit = PanelOLS.from_formula(
+        f"sstran ~ 1 + {spec} + EntityEffects + TimeEffects", panel
+    ).fit(cov_type="clustered", cluster_entity=True)
+
+    # Marginal effekt pr. regime: beta1 for referencen, beta1 + beta_r ellers.
+    for regime in REGIMES:
+        margin = fit.params[f"{index}_lag1"] + fit.params[f"{index}_lag1:{regime}"]
+
+# --- Parameterstabilitet: rullende 10-års vinduer -----------------------
+# Hvert punkt i figur 5.1 er en selvstændig estimation af ligning 4.1.
+for end in range(1989, 2024):
+    window = panel.loc[panel.index.get_level_values("year").isin(
+        range(end - 9, end + 1)
+    )]
+    spec = " + ".join(lagged(["KOFGI"]) + lagged(CONTROLS))
+    PanelOLS.from_formula(
+        f"sstran ~ 1 + {spec} + EntityEffects + TimeEffects", window
+    ).fit(cov_type="clustered", cluster_entity=True)`
+  },
+  knowledgeGraph: {
+    nodes: [
+      { id: "Globalization & the Welfare State (2026)", group: 1, radius: 12 },
+      { id: "Yay & Aksoy (2018)", group: 3, radius: 9 },
+      { id: "Rodrik (1998)", group: 2, radius: 8 },
+      { id: "Esping-Andersen (1990)", group: 2, radius: 8 },
+      { id: "Ferrera (1996)", group: 2 },
+      { id: "Bergh (2021)", group: 2 },
+      { id: "Leibrecht et al. (2011)", group: 3 },
+      { id: "Meinhard & Potrafke (2012)", group: 3 },
+      { id: "Brady et al. (2005)", group: 3 },
+      { id: "Dreher (2006b)", group: 3 },
+      { id: "Kim & Zurlo (2009)", group: 3 },
+      { id: "Busemeyer (2009)", group: 3 },
+      { id: "Agersnap et al. (2020)", group: 4 },
+      { id: "Autor et al. (2013)", group: 4 },
+      { id: "Fetzer (2019)", group: 4 },
+      { id: "Gygli et al. (2025)", group: 4 },
+      { id: "Driscoll & Kraay (1998)", group: 4 }
+    ],
+    links: [
+      { source: "Globalization & the Welfare State (2026)", target: "Yay & Aksoy (2018)", value: 6 },
+      { source: "Globalization & the Welfare State (2026)", target: "Rodrik (1998)", value: 5 },
+      { source: "Globalization & the Welfare State (2026)", target: "Esping-Andersen (1990)", value: 5 },
+      { source: "Globalization & the Welfare State (2026)", target: "Ferrera (1996)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Leibrecht et al. (2011)", value: 4 },
+      { source: "Globalization & the Welfare State (2026)", target: "Meinhard & Potrafke (2012)", value: 4 },
+      { source: "Globalization & the Welfare State (2026)", target: "Brady et al. (2005)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Kim & Zurlo (2009)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Agersnap et al. (2020)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Gygli et al. (2025)", value: 4 },
+      { source: "Globalization & the Welfare State (2026)", target: "Driscoll & Kraay (1998)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Fetzer (2019)", value: 2 },
+      { source: "Yay & Aksoy (2018)", target: "Rodrik (1998)", value: 3 },
+      { source: "Yay & Aksoy (2018)", target: "Esping-Andersen (1990)", value: 3 },
+      { source: "Yay & Aksoy (2018)", target: "Dreher (2006b)", value: 2 },
+      { source: "Leibrecht et al. (2011)", target: "Esping-Andersen (1990)", value: 2 },
+      { source: "Leibrecht et al. (2011)", target: "Ferrera (1996)", value: 2 },
+      { source: "Kim & Zurlo (2009)", target: "Esping-Andersen (1990)", value: 2 },
+      { source: "Bergh (2021)", target: "Rodrik (1998)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Bergh (2021)", value: 3 },
+      { source: "Busemeyer (2009)", target: "Rodrik (1998)", value: 2 },
+      { source: "Globalization & the Welfare State (2026)", target: "Busemeyer (2009)", value: 2 },
+      { source: "Autor et al. (2013)", target: "Rodrik (1998)", value: 2 },
+      { source: "Globalization & the Welfare State (2026)", target: "Autor et al. (2013)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Dreher (2006b)", value: 3 }
     ]
   },
   policyRelevance: [
-    "Velfærdspolitik.",
-    "Offentlig økonomi."
-  ],
-  limitations: [
-    "Status: Planlagt projekt."
+    "De negative koefficienter for politisk globalisering i socialdemokratiske og sydeuropæiske velfærdsstater efter 2008 afspejler formentlig EU's svar på gældskrisen — det europæiske semester, finanspagten og en styrket stabilitets- og vækstpagt — snarere end en generel globaliseringseffekt. Grækenland og Portugal havde låneprogrammer med betingelser, Italien og Spanien var underlagt overvågning, og resultatet var velfærdstilbagerulning på tværs af regionen.",
+    "Debatten om kompensation versus efficiens afgøres normalt med ét langsigtet estimat. Vores resultater tyder på, at det tal siger meget lidt: sammenhængen er periodeafhængig, og hvilket svar en analyse når frem til, afhænger i høj grad af, hvornår dens data tilfældigvis stopper.",
+    "Sociale overførsler som andel af BNP er standardmålet, og det er et groft mål. Det kan ikke skelne mellem en ændring i velfærdsstatens størrelse og en ændring i sammensætningen af dens udgifter — og det er netop den skelnen, politiske beslutninger handler om."
   ],
   dataTools: {
-    sources: "TBD.",
-    software: "Stata / R / Python (TBD)."
+    sources: "Comparative Political Data Set 1960–2023 (Armingeon et al., 2025), KOF Globalisation Index (Gygli et al., 2025), OECD Data Explorer, Verdensbanken.",
+    software: "Python (pandas, linearmodels, statsmodels) til estimation og diagnostik; matplotlib til figurer; LaTeX til opgaven."
   },
-  highlights: [
-    { label: "Fag", value: "Seminar" },
-    { label: "Status", value: "Kommende" }
+  simulatorUrl: "/models/rolling-window",
+  // Label must contain "csv" — that substring is what opens the DuckDB playground.
+  // Until the file is published the playground shows a "not yet available" state.
+  dataLinks: [
+    { label: "Paneldata (csv)", url: "/assets/data/welfare-state-panel.csv", icon: "fa-solid fa-file-csv" },
+    { label: "Replikationspakke (GitHub)", url: "https://github.com/AntonEbsen/economics-of-the-welfare-state", icon: "fa-brands fa-github" }
   ],
-  contextNote: "Dette er en pladsholder for et kommende seminarprojekt.",
-  videoUrl: "", 
   techStack: [
-      { name: "Economics", icon: "fa-solid fa-chart-pie" },
-      { name: "Public Policy", icon: "fa-solid fa-scale-balanced" }
+    { name: "Python", icon: "fa-brands fa-python" },
+    { name: "pandas", icon: "fa-solid fa-table" },
+    { name: "linearmodels", icon: "fa-solid fa-chart-line" },
+    { name: "Paneløkonometri", icon: "fa-solid fa-layer-group" },
+    { name: "LaTeX", icon: "fa-solid fa-file-lines" }
   ],
-  timeline: [
-      { date: "2026", title: "Planlagt", description: "Projektstart." }
+  glossary: [
+    { term: "Kompensationshypotesen", definition: "Åbne økonomier er mere udsatte for chok udefra, hvilket øger efterspørgslen efter social sikring og dermed offentlige udgifter (Rodrik, 1998)." },
+    { term: "Efficienshypotesen", definition: "Globalisering skærper konkurrencen om mobil kapital, presser skatterne ned og begrænser dermed finansieringen af velfærdsstaten. Kaldes også 'race to the bottom'." },
+    { term: "KOF-indekset", definition: "Sammensat mål for globalisering fra ETH Zürich på skalaen 0–100, med separate indeks for økonomisk, social og politisk globalisering." },
+    { term: "Velfærdsregime", definition: "Klassifikation af velfærdsstater efter institutionel logik. Vi bruger fem: socialdemokratisk, konservativ, liberal, sydeuropæisk og postkommunistisk." },
+    { term: "de facto vs. de jure", definition: "KOF måler både realiserede strømme (de facto: migration, handel) og politisk åbenhed (de jure: visumregler, traktater). Skelnen viste sig afgørende for vores resultat om omvendt kausalitet." },
+    { term: "Driscoll-Kraay", definition: "Standardfejl der er robuste over for tværsnitsafhængighed — altså at chok spreder sig mellem lande i panelet. Alternativ til klyngning på landeniveau." }
   ],
-  dataLinks: [],
   citation: {
-    text: "Ebsen, Anton, Sheng & Jonas. Seminar: Economics of the Welfare State (TBD). (Kommende).",
-    pdfUrl: "#"
+    text: "Nielsen, J. S., Chen, S. Y. M., & Jørgensen, A. M. E. (2026). Globalization and the Welfare State: A Panel Data Analysis of 32 OECD Countries (1980–2023). Seminaropgave, Økonomisk Institut, Københavns Universitet. JEL: F62, H53, I38, P16, P51.",
+    pdfUrl: "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf",
+    year: 2026,
+    authors: ["Nielsen, Jonas Skov", "Chen, Sheng Ye Michael", "Jørgensen, Anton Meier Ebsen"],
+    bibtex: `@mastersthesis{nielsen_chen_jorgensen_2026_globalization,
+  author = {Nielsen, Jonas Skov and Chen, Sheng Ye Michael and J{\\o}rgensen, Anton Meier Ebsen},
+  title  = {Globalization and the Welfare State: A Panel Data Analysis of 32 OECD Countries (1980--2023)},
+  type   = {Seminar paper},
+  school = {University of Copenhagen, Department of Economics},
+  year   = {2026},
+  month  = {6},
+  url    = {https://antonebsen.dk/projects/welfare-state-seminar}
+}`
   },
   ui: {
-    methodology: "Metode & Teori",
-    findings: "Forventede Resultater",
-    relevance: "Relevans",
-    dataTools: "Kilder",
-    download: "Hent projekt (TBD)",
-    citation: "Reference",
+    methodology: "Metode & Identifikation",
+    findings: "Resultater",
+    relevance: "Politisk Relevans",
+    dataTools: "Data & Værktøjer",
+    download: "Download",
+    citation: "Foreslået Citering",
     execSummary: "Resumé",
-    researchQuestions: "Foreløbige Spørgsmål",
-    limitations: "Status",
-    secondaryAnalysis: "Status",
-    gallery: "Galleri",
+    researchQuestions: "Forskningsspørgsmål",
+    gallery: "Figurer fra opgaven",
     codeVault: "Code Vault",
-    videoAbstract: "Video Abstract",
-    techStack: "Fagområder",
-    timeline: "Tidslinje",
-    liveData: "Data",
-    openScience: "Open Science"
+    techStack: "Værktøjer",
+    liveData: "Parameterstabilitet",
+    continuityTitle: "Litteraturnetværk",
+    lineageDesc: "Opgaven er en direkte forlængelse af Yay og Aksoy (2018) og trækker på to litteraturer: den teoretiske debat mellem kompensations- og efficienshypotesen, og velfærdsregimelitteraturen efter Esping-Andersen. Grafen viser citationsnetværket med denne opgave som centrum."
   },
   collaborators: [
-    { name: "Sheng", role: "Projektpartner", image: "/assets/collaborators/sheng.jpg", description: "Medforfatter." },
-    { name: "Jonas", role: "Projektpartner", image: "/assets/collaborators/jonas.jpg", description: "Medforfatter." }
+    {
+      ...jonas,
+      role: "Medforfatter",
+      description: "Skrev velfærdsregimeklassifikationen og den teoretiske begrundelse for kontrolvariablene, baseline-regressionerne, delperiodeanalysen, den sekventielle inklusion af kontroller samt afsnittene om welfare magnets, måleproblemer og ekstern validitet."
+    },
+    {
+      ...sheng,
+      role: "Medforfatter",
+      description: "Skrev litteraturgennemgangen af kompensations- og efficienshypotesen, databeskrivelsen, heterogenitetsanalysen på tværs af velfærdsregimer, robusthedstjekket for social globalisering samt fortolkningen af de aggregerede resultater."
+    }
   ],
-  bibliography: []
+  bibliography: [
+    "Agersnap, O., Jensen, A., & Kleven, H. (2020). The Welfare Magnet Hypothesis: Evidence from an Immigrant Welfare Scheme in Denmark. American Economic Review: Insights, 2(4), 527–542.",
+    "Alesina, A., & Wacziarg, R. (1998). Openness, country size and government. Journal of Public Economics, 69(3), 305–321.",
+    "Armingeon, K., Engler, S., Leemann, L., & Weisstanner, D. (2025). Comparative Political Data Set 1960–2023. University of Zurich, Leuphana University Lueneburg, and University of Lucerne.",
+    "Autor, D. H., Dorn, D., & Hanson, G. H. (2013). The China Syndrome: Local Labor Market Effects of Import Competition in the United States. American Economic Review, 103(6), 2121–2168.",
+    "Bergh, A. (2021). The compensation hypothesis revisited and reversed. Scandinavian Political Studies, 44(2), 140–147.",
+    "Bohle, D., & Greskovits, B. (2007). Neoliberalism, embedded neoliberalism and neocorporatism: Towards transnational capitalism in Central-Eastern Europe. West European Politics, 30(3), 443–466.",
+    "Brady, D., Beckfield, J., & Seeleib-Kaiser, M. (2005). Economic Globalization and the Welfare State in Affluent Democracies, 1975–2001. American Sociological Review, 70(6), 921–948.",
+    "Busemeyer, M. R. (2009). From myth to reality: Globalisation and public spending in OECD countries revisited. European Journal of Political Research, 48(4), 455–482.",
+    "Devereux, M. P., Lockwood, B., & Redoano, M. (2008). Do countries compete over corporate tax rates? Journal of Public Economics, 92(5–6), 1210–1235.",
+    "Dreher, A. (2006a). Does globalization affect growth? Evidence from a new index of globalization. Applied Economics, 38(10), 1091–1110.",
+    "Dreher, A. (2006b). The influence of globalization on taxes and social policy: An empirical analysis for OECD countries. European Journal of Political Economy, 22(1), 179–201.",
+    "Driscoll, J. C., & Kraay, A. C. (1998). Consistent Covariance Matrix Estimation with Spatially Dependent Panel Data. The Review of Economics and Statistics, 80(4), 549–560.",
+    "Egger, P. H., Nigai, S., & Strecker, N. M. (2019). The Taxing Deed of Globalization. American Economic Review, 109(2), 353–390.",
+    "Esping-Andersen, G. (1990). The Three Worlds of Welfare Capitalism. Princeton University Press.",
+    "Ferrera, M. (1996). The 'Southern Model' of Welfare in Social Europe. Journal of European Social Policy, 6(1), 17–37.",
+    "Fetzer, T. (2019). Did Austerity Cause Brexit? American Economic Review, 109(11), 3849–3886.",
+    "Frankel, J. A., & Romer, D. (1999). Does Trade Cause Growth? American Economic Review, 89(3), 379–399.",
+    "Giovanni, J. di, & Levchenko, A. A. (2009). Trade Openness and Volatility. The Review of Economics and Statistics, 91(3), 558–585.",
+    "Gygli, S., Haelg, F., Potrafke, N., & Sturm, J.-E. (2025). The KOF Globalisation Index – Revisited. The Review of International Organizations, 14(3), 543–574.",
+    "Hines Jr., J. R., & Summers, L. H. (2009). How Globalization Affects Tax Design. Tax Policy and the Economy, 23(1), 123–158.",
+    "Kim, T. K., & Zurlo, K. (2009). How does economic globalisation affect the welfare state? Focusing on the mediating effect of welfare regimes. International Journal of Social Welfare, 18(2), 130–141.",
+    "Leibrecht, M., Klien, M., & Onaran, Ö. (2011). Globalization, welfare regimes and social protection expenditures in Western and Eastern European countries. Public Choice, 148(3), 569–594.",
+    "Marshall, J., & Fisher, S. D. (2015). Compensation or Constraint? How Different Dimensions of Economic Globalization Affect Government Spending and Electoral Turnout. British Journal of Political Science, 45(2), 353–389.",
+    "Meinhard, S., & Potrafke, N. (2012). The Globalization–Welfare State Nexus Reconsidered. Review of International Economics, 20(2), 271–287.",
+    "Pesaran, M. H. (2004). General Diagnostic Tests for Cross Section Dependence in Panels. IZA Discussion Paper 1240.",
+    "Potrafke, N. (2015). The Evidence on Globalisation. The World Economy, 38(3), 509–552.",
+    "Rodrik, D. (1998). Why Do More Open Economies Have Bigger Governments? Journal of Political Economy, 106(5), 997–1032.",
+    "Shelton, C. A. (2007). The size and composition of government expenditure. Journal of Public Economics, 91(11–12), 2230–2260.",
+    "Yay, G. G., & Aksoy, T. (2018). Globalization and the welfare state. Quality & Quantity, 52(3), 1015–1040."
+  ]
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent} />

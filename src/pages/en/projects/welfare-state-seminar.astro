@@ -1,89 +1,322 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
-  title: "Seminar: Economics of the Welfare State (TBD)",
-  subtitle: "Upcoming seminar project in welfare state economics.",
-  executiveSummary: "This project is under development. It will involve an in-depth analysis of welfare state economics, developed in collaboration with Sheng and Jonas. Further details on the topic, research questions, and findings will be added once the project is defined.",
+  title: "Globalization and the Welfare State",
+  subtitle: "A panel data analysis of 32 OECD countries, 1980–2023.",
+  heroImage: "/assets/projects/welfare-state-seminar/fig-kof.png",
+  status: "Completed · June 2026",
+  pdfMeta: "Full text · 40 pages · 1.1 MB",
+  contextNote: "Seminar paper in economics at the University of Copenhagen, submitted 3 June 2026 and supervised by Amalie Sofie Jensen. Written with Jonas Skov Nielsen and Sheng Ye Michael Chen. The estimates are correlational, not causal — globalization is not randomly assigned to countries, and that is a limitation we address explicitly rather than write around.",
+  executiveSummary: "Does globalization squeeze the welfare state, or does it create demand for more social protection? We examine the question using social security transfers as a share of GDP across 32 OECD countries from 1980 to 2023 — extending Yay and Aksoy (2018) by thirteen years that include both the financial crisis and the pandemic. We find no robust overall relationship. Social globalization is the only one of the four KOF indices significant in the baseline, and that result does not survive a test for reverse causality. What we do find is more interesting: the relationship itself is unstable over time. Rolling regressions show coefficients moving from insignificant to positive and significant as the estimation window fills with post-2008 observations, and a Chow test confirms a structural break at exactly that point. The conclusion is methodological: a single long-run estimate spanning 44 years does not describe one relationship, but the average of several.",
+  highlights: [
+    { label: "Grade", value: "10" },
+    { label: "Method", value: "Panel FE" },
+    { label: "Countries", value: "32" },
+    { label: "Observations", value: "996" }
+  ],
   researchQuestions: [
-    "TBD: Research question under development.",
-    "TBD: Focus area within welfare economics?",
-    "TBD: Which data and methods are used?"
+    "Does the association between globalization and social security transfers, as found in Yay and Aksoy (2018), remain valid when the sample is extended to 2023?",
+    "Does the association differ systematically across welfare regimes — or is the regime heterogeneity in the literature an artefact of the period chosen?",
+    "Is the relationship stable over time at all, and what does the answer imply for the single coefficients the literature normally reports?"
   ],
   methodology: {
-    model: "Economic Analysis",
-    strategy: "Theoretical and empirical investigation.",
-    data: "TBD.",
-    estimation: "TBD."
+    model: "Two-way fixed effects panel model with country effects δᵢ and year effects γₜ. Social security transfers as a percentage of GDP proxy for the size of the welfare state, and every right-hand-side variable enters with a one-year lag.",
+    strategy: "Two specifications. The baseline estimates each KOF index separately with macroeconomic and demographic controls. The heterogeneity specification adds interaction terms between globalization and four welfare regimes, with the social democratic regime as reference, and regime-specific marginal effects are recovered afterwards.",
+    data: "32 OECD countries, annual observations 1980–2023, N = 996 in the fully specified models. Dependent variable from CPDS; globalization from KOF; controls from the OECD and the World Bank.",
+    estimation: "Within estimator with standard errors clustered by country. Robustness via Driscoll-Kraay standard errors, rolling regressions over 10-year windows, a Chow test for a structural break, and feedback regressions for reverse causality."
   },
   keyFindings: [
-    "This project has not yet started.",
-    "Results will be presented here.",
-    "Expected completion: 2026."
+    "No robust overall relationship. Of the four KOF indices, only social globalization is significant in the baseline (β = 0.129, t = 2.63). Overall globalization (0.088), economic (−0.020) and political (0.046) are all insignificant under country-clustered standard errors.",
+    "The one significant result is likely reverse causality. Feedback regressions show that lagged social security transfers predict social globalization (β = 0.225, t = 2.15) — the opposite direction to the one the literature normally studies.",
+    "Regime differences are real but weaker than they look. The Mediterranean regime differs positively from the social democratic one on all four indices, and the liberal regime on overall and economic globalization. But interaction terms measure differences from the reference, not effects in their own right.",
+    "Turning to marginal effects within each regime, only one estimate is significant: economic globalization in social democratic welfare states, with a coefficient of −0.187 — the only genuine support for the efficiency hypothesis in the whole analysis.",
+    "The relationship is historically contingent. Rolling regressions over 10-year windows show coefficients that are insignificant or negative before 2015 and turn positive and significant in the windows dominated by post-crisis observations (overall globalization: 0.183 in the window ending 2023).",
+    "A Chow test rejects parameter stability at 2008 for all four indices (F between 4.9 and 9.9, all p < 0.001). The regime heterogeneity reported by Yay and Aksoy (2018) therefore does not hold once the sample is extended to 2023."
   ],
-  secondaryAnalysis: {
-    title: "Preliminary Status",
-    description: "The project is in the planning phase.",
-    items: [
-      "Topic Selection: Under consideration.",
-      "Group Formation: Established (Sheng, Jonas, Anton).",
-      "Analysis: Not started."
+  robustness: [
+    {
+      question: "Social globalization is the only significant index. Is that effect real?",
+      answer: "Probably not, at least not in that direction. We invert the specification and regress the KOF indices on lagged social security transfers. For overall, economic and political globalization the coefficient is insignificant, but for social globalization it is 0.225 and significant at the 5% level. Decomposing social globalization into its six under-components, only de jure interpersonal globalization is significant (0.355), while its de facto counterpart is 0.044 and insignificant. What drives the association is therefore institutional openness — visa freedom, telecom coverage, international airports — and not realised migration flows. We conclude that the baseline result for social globalization must be read with heavy caution.",
+      category: "econometrics"
+    },
+    {
+      question: "The Pesaran CD test rejects cross-sectional independence. So why use country-clustered standard errors?",
+      answer: "Because they are the most conservative choice available to us. Country-clustered errors are robust to heteroskedasticity and serial correlation within countries, but not to cross-sectional dependence — which we clearly reject (CD ≈ −3.6, p = 0.000), unsurprising in a panel of 32 open economies sharing business cycles. Driscoll-Kraay standard errors handle exactly that, so we report both. Under Driscoll-Kraay, overall globalization (p = 0.007) and political globalization (p = 0.011) also become significant, and several marginal effects change status. We lead with the conservative errors so that only the most robust coefficients survive, but we are explicit that inference is sensitive to the choice.",
+      category: "econometrics"
+    },
+    {
+      question: "Why rolling regressions, when the literature settles for a single coefficient?",
+      answer: "That is precisely the reason. One coefficient estimated over 1980–2023 pools periods that do not resemble each other. We re-estimate the baseline on 10-year windows and the pattern is unambiguous: overall, social and political globalization move from insignificant to positive and significant as soon as the window is dominated by post-2008 observations. A Chow test at 2008 rejects parameter stability for all four indices. To our knowledge, rolling regressions have not previously been used in this literature to demonstrate that — likely because the method only becomes informative with a sufficiently long sample. It also explains the disagreement in the field: Yay and Aksoy (2018) report insignificant results with data ending in 2010, which by our windows is before the relationship turns.",
+      category: "econometrics"
+    },
+    {
+      question: "Mediterranean and liberal regimes have positive interaction terms. Doesn't that confirm the compensation hypothesis there?",
+      answer: "No, and this is an interpretive trap worth being precise about. An interaction term measures the difference relative to the reference category, not the effect within the regime. A significant positive interaction for the Mediterranean regime means it responds differently from social democratic welfare states — not that it expands its welfare state in response to globalization. When we compute marginal effects regime by regime, none of the coefficients for the Mediterranean or liberal regimes are significant. The only regime with a significant effect of its own is the social democratic one, and it is negative. The cross-regime differences are therefore not matched by precisely estimated effects within them.",
+      category: "intuition"
+    },
+    {
+      question: "Can any of this be read causally?",
+      answer: "No, and this is not a caveat offered out of politeness. Globalization is not randomly assigned, there is no non-globalized control group, and the least globalized economies typically lack the institutional capacity to produce the long data series that could serve as one. The variation behind our estimates is within-country movement in the KOF indices over time, and we interpret it as association. On top of that sits the aggregation problem: transfers as a share of GDP say nothing about benefit quality, eligibility rules, or in-kind services such as healthcare and education. We therefore cannot distinguish changes in the size of the welfare state from changes in the composition of its spending.",
+      category: "data"
+    }
+  ] as const,
+  popScience: {
+    title: "Does globalization force the welfare state to shrink?",
+    text: "It is one of the most persistent claims in economic debate: once capital, firms and labour can move across borders, countries must cut taxes to hold on to them — and then they cannot afford welfare. The opposite claim is just as widespread: open economies are more exposed to external shocks, so citizens demand more social insurance, not less. Both stories are plausible, both have prominent advocates, and they cannot both be right. We tested them on 44 years of data from 32 wealthy countries.",
+  },
+  popularScienceResult: "Neither holds in general. There simply is no stable relationship between how globalized a country is and how much it spends on social transfers. But the most useful result is not the null itself — it is that the question is posed wrongly. When we looked at ten-year stretches one at a time instead of the whole period at once, the relationship turned out to change sign along the way. Before the financial crisis it points weakly one way; after it, the other. Which means two researchers can study exactly the same question with exactly the same method and reach opposite conclusions, purely because their data stop in different years. That goes a long way towards explaining why the research in this area has disagreed with itself for so long.",
+  interactiveChart: {
+    title: "Rolling regressions: the relationship changes sign around the financial crisis",
+    description: "The coefficient on each KOF index, estimated on 10-year windows. The x-axis gives the window's end year, so the point at 2018 is estimated on 2009–2018 — the first window containing only post-crisis observations. Figures from Table 5.5 of the paper.",
+    type: "line" as const,
+    labels: ["1995", "2000", "2007", "2008", "2015", "2018", "2020", "2023"],
+    datasets: [
+      {
+        label: "Overall globalization",
+        data: [-0.0335, 0.0184, 0.0972, 0.0921, 0.0923, 0.1856, 0.1714, 0.1831],
+        borderColor: "rgb(239, 68, 68)",
+        backgroundColor: "rgba(239, 68, 68, 0.15)"
+      },
+      {
+        label: "Economic globalization",
+        data: [-0.1493, -0.0379, 0.0190, 0.0149, 0.0276, 0.0521, 0.0404, 0.0765],
+        borderColor: "rgb(59, 130, 246)",
+        backgroundColor: "rgba(59, 130, 246, 0.15)"
+      },
+      {
+        label: "Social globalization",
+        data: [0.0650, 0.0931, 0.0884, 0.0854, 0.0360, 0.0742, 0.1034, 0.1213],
+        borderColor: "rgb(16, 185, 129)",
+        backgroundColor: "rgba(16, 185, 129, 0.15)"
+      },
+      {
+        label: "Political globalization",
+        data: [0.0372, 0.0261, 0.0509, 0.0402, 0.0792, 0.1254, 0.1020, 0.0735],
+        borderColor: "rgb(245, 158, 11)",
+        backgroundColor: "rgba(245, 158, 11, 0.15)"
+      }
+    ]
+  },
+  gallery: [
+    {
+      src: "/assets/projects/welfare-state-seminar/fig-transfers.png",
+      caption: "Figure 3.1 — Average social security transfers as a share of GDP, 1980–2023. The two jumps in 2009 and 2020 are the financial crisis and the pandemic; they are what makes a single coefficient across the whole period misleading.",
+      alt: "Line chart of average social security transfers as a percentage of GDP across 32 OECD countries from 1980 to 2023, with sharp increases around 2009 and 2020."
+    },
+    {
+      src: "/assets/projects/welfare-state-seminar/fig-kof.png",
+      caption: "Figure 3.2 — The KOF globalization indices, 1980–2023. All four rise over the period. The dip in political globalization in the late 1980s likely reflects the closing years of the Cold War.",
+      alt: "Four lines showing overall, economic, social and political globalization measured by the KOF indices from 1980 to 2023, all trending upwards."
+    },
+    {
+      src: "/assets/projects/welfare-state-seminar/fig-rolling.png",
+      caption: "Figure 5.1 — Rolling OLS coefficients over 10-year windows with 95% confidence bands. The dashed line marks 2018, the first window built entirely on post-crisis observations.",
+      alt: "Four panels of rolling regression coefficients with confidence bands for each globalization index, with a vertical dashed line at 2018."
+    }
+  ],
+  codeSnippet: {
+    lang: "Python",
+    title: "Baseline and interaction specification (eq. 4.1–4.2)",
+    code: `import pandas as pd
+from linearmodels.panel import PanelOLS
+
+KOF = ["KOFGI", "KOFEcGI", "KOFSoGI", "KOFPoGI"]
+CONTROLS = ["ln_gdppc", "inflation", "deficit", "debt", "ln_pop", "dep_ratio"]
+REGIMES = ["conservative", "mediterranean", "liberal", "post_communist"]
+
+panel = df.set_index(["country", "year"])
+
+# Every regressor enters with a one-year lag.
+lagged = lambda cols: [f"{c}_lag1" for c in cols]
+
+# --- Equation 4.1: baseline, one index at a time ------------------------
+for index in KOF:
+    spec = " + ".join(lagged([index]) + lagged(CONTROLS))
+    fit = PanelOLS.from_formula(
+        f"sstran ~ 1 + {spec} + EntityEffects + TimeEffects", panel
+    ).fit(cov_type="clustered", cluster_entity=True)
+
+# --- Equation 4.2: welfare regime heterogeneity -------------------------
+# The social democratic regime is the reference, so beta1 is its own effect
+# and each interaction term is the difference relative to it.
+for index in KOF:
+    interactions = [f"{index}_lag1:{r}" for r in REGIMES]
+    spec = " + ".join(lagged([index]) + interactions + lagged(CONTROLS))
+    fit = PanelOLS.from_formula(
+        f"sstran ~ 1 + {spec} + EntityEffects + TimeEffects", panel
+    ).fit(cov_type="clustered", cluster_entity=True)
+
+    # Marginal effect per regime: beta1 for the reference, beta1 + beta_r otherwise.
+    for regime in REGIMES:
+        margin = fit.params[f"{index}_lag1"] + fit.params[f"{index}_lag1:{regime}"]
+
+# --- Parameter stability: rolling 10-year windows -----------------------
+# Each point in Figure 5.1 is a separate estimation of equation 4.1.
+for end in range(1989, 2024):
+    window = panel.loc[panel.index.get_level_values("year").isin(
+        range(end - 9, end + 1)
+    )]
+    spec = " + ".join(lagged(["KOFGI"]) + lagged(CONTROLS))
+    PanelOLS.from_formula(
+        f"sstran ~ 1 + {spec} + EntityEffects + TimeEffects", window
+    ).fit(cov_type="clustered", cluster_entity=True)`
+  },
+  knowledgeGraph: {
+    nodes: [
+      { id: "Globalization & the Welfare State (2026)", group: 1, radius: 12 },
+      { id: "Yay & Aksoy (2018)", group: 3, radius: 9 },
+      { id: "Rodrik (1998)", group: 2, radius: 8 },
+      { id: "Esping-Andersen (1990)", group: 2, radius: 8 },
+      { id: "Ferrera (1996)", group: 2 },
+      { id: "Bergh (2021)", group: 2 },
+      { id: "Leibrecht et al. (2011)", group: 3 },
+      { id: "Meinhard & Potrafke (2012)", group: 3 },
+      { id: "Brady et al. (2005)", group: 3 },
+      { id: "Dreher (2006b)", group: 3 },
+      { id: "Kim & Zurlo (2009)", group: 3 },
+      { id: "Busemeyer (2009)", group: 3 },
+      { id: "Agersnap et al. (2020)", group: 4 },
+      { id: "Autor et al. (2013)", group: 4 },
+      { id: "Fetzer (2019)", group: 4 },
+      { id: "Gygli et al. (2025)", group: 4 },
+      { id: "Driscoll & Kraay (1998)", group: 4 }
+    ],
+    links: [
+      { source: "Globalization & the Welfare State (2026)", target: "Yay & Aksoy (2018)", value: 6 },
+      { source: "Globalization & the Welfare State (2026)", target: "Rodrik (1998)", value: 5 },
+      { source: "Globalization & the Welfare State (2026)", target: "Esping-Andersen (1990)", value: 5 },
+      { source: "Globalization & the Welfare State (2026)", target: "Ferrera (1996)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Leibrecht et al. (2011)", value: 4 },
+      { source: "Globalization & the Welfare State (2026)", target: "Meinhard & Potrafke (2012)", value: 4 },
+      { source: "Globalization & the Welfare State (2026)", target: "Brady et al. (2005)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Kim & Zurlo (2009)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Agersnap et al. (2020)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Gygli et al. (2025)", value: 4 },
+      { source: "Globalization & the Welfare State (2026)", target: "Driscoll & Kraay (1998)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Fetzer (2019)", value: 2 },
+      { source: "Yay & Aksoy (2018)", target: "Rodrik (1998)", value: 3 },
+      { source: "Yay & Aksoy (2018)", target: "Esping-Andersen (1990)", value: 3 },
+      { source: "Yay & Aksoy (2018)", target: "Dreher (2006b)", value: 2 },
+      { source: "Leibrecht et al. (2011)", target: "Esping-Andersen (1990)", value: 2 },
+      { source: "Leibrecht et al. (2011)", target: "Ferrera (1996)", value: 2 },
+      { source: "Kim & Zurlo (2009)", target: "Esping-Andersen (1990)", value: 2 },
+      { source: "Bergh (2021)", target: "Rodrik (1998)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Bergh (2021)", value: 3 },
+      { source: "Busemeyer (2009)", target: "Rodrik (1998)", value: 2 },
+      { source: "Globalization & the Welfare State (2026)", target: "Busemeyer (2009)", value: 2 },
+      { source: "Autor et al. (2013)", target: "Rodrik (1998)", value: 2 },
+      { source: "Globalization & the Welfare State (2026)", target: "Autor et al. (2013)", value: 3 },
+      { source: "Globalization & the Welfare State (2026)", target: "Dreher (2006b)", value: 3 }
     ]
   },
   policyRelevance: [
-    "Welfare Policy.",
-    "Public Economics."
-  ],
-  limitations: [
-    "Status: Planned project."
+    "The negative coefficients on political globalization in social democratic and Southern European welfare states after 2008 likely reflect the EU's response to the sovereign debt crisis — the European Semester, the Fiscal Compact and a strengthened Stability and Growth Pact — rather than a general globalization effect. Greece and Portugal had conditional lending programmes, Italy and Spain were subject to surveillance, and the result was welfare retrenchment across the region.",
+    "The compensation-versus-efficiency debate is normally settled with a single long-run estimate. Our results suggest that number says very little: the association is period-dependent, and the answer an analysis reaches depends heavily on where its data happen to stop.",
+    "Social security transfers as a share of GDP is the standard measure, and it is a blunt one. It cannot distinguish a change in the size of the welfare state from a change in the composition of its spending — and that distinction is exactly what policy decisions turn on."
   ],
   dataTools: {
-    sources: "TBD.",
-    software: "Stata / R / Python (TBD)."
+    sources: "Comparative Political Data Set 1960–2023 (Armingeon et al., 2025), KOF Globalisation Index (Gygli et al., 2025), OECD Data Explorer, World Bank.",
+    software: "Python (pandas, linearmodels, statsmodels) for estimation and diagnostics; matplotlib for figures; LaTeX for the paper."
   },
-  highlights: [
-    { label: "Course", value: "Seminar" },
-    { label: "Status", value: "Upcoming" }
+  simulatorUrl: "/en/models/rolling-window",
+  // Label must contain "csv" — that substring is what opens the DuckDB playground.
+  // Until the file is published the playground shows a "not yet available" state.
+  dataLinks: [
+    { label: "Panel data (csv)", url: "/assets/data/welfare-state-panel.csv", icon: "fa-solid fa-file-csv" },
+    { label: "Replication package (GitHub)", url: "https://github.com/AntonEbsen/economics-of-the-welfare-state", icon: "fa-brands fa-github" }
   ],
-  contextNote: "This is a placeholder for an upcoming seminar project.",
-  videoUrl: "", 
   techStack: [
-      { name: "Economics", icon: "fa-solid fa-chart-pie" },
-      { name: "Public Policy", icon: "fa-solid fa-scale-balanced" }
+    { name: "Python", icon: "fa-brands fa-python" },
+    { name: "pandas", icon: "fa-solid fa-table" },
+    { name: "linearmodels", icon: "fa-solid fa-chart-line" },
+    { name: "Panel Econometrics", icon: "fa-solid fa-layer-group" },
+    { name: "LaTeX", icon: "fa-solid fa-file-lines" }
   ],
-  timeline: [
-      { date: "2026", title: "Planned", description: "Project start." }
+  glossary: [
+    { term: "Compensation hypothesis", definition: "Open economies are more exposed to external shocks, raising demand for social insurance and therefore public spending (Rodrik, 1998)." },
+    { term: "Efficiency hypothesis", definition: "Globalization sharpens competition for mobile capital, pushes taxes down and thereby constrains the financing of the welfare state. Also known as the 'race to the bottom'." },
+    { term: "KOF Index", definition: "A composite measure of globalization from ETH Zurich on a 0–100 scale, with separate indices for economic, social and political globalization." },
+    { term: "Welfare regime", definition: "A classification of welfare states by institutional logic. We use five: social democratic, conservative, liberal, Mediterranean and post-communist." },
+    { term: "de facto vs. de jure", definition: "KOF measures both realised flows (de facto: migration, trade) and policy openness (de jure: visa rules, treaties). The distinction proved decisive for our reverse-causality result." },
+    { term: "Driscoll-Kraay", definition: "Standard errors robust to cross-sectional dependence — that is, to shocks propagating between countries in the panel. An alternative to clustering by country." }
   ],
-  dataLinks: [],
   citation: {
-    text: "Ebsen, Anton, Sheng & Jonas. Seminar: Economics of the Welfare State (TBD). (Upcoming).",
-    pdfUrl: "#"
+    text: "Nielsen, J. S., Chen, S. Y. M., & Jørgensen, A. M. E. (2026). Globalization and the Welfare State: A Panel Data Analysis of 32 OECD Countries (1980–2023). Seminar Paper, Department of Economics, University of Copenhagen. JEL: F62, H53, I38, P16, P51.",
+    pdfUrl: "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf",
+    year: 2026,
+    authors: ["Nielsen, Jonas Skov", "Chen, Sheng Ye Michael", "Jørgensen, Anton Meier Ebsen"],
+    bibtex: `@mastersthesis{nielsen_chen_jorgensen_2026_globalization,
+  author = {Nielsen, Jonas Skov and Chen, Sheng Ye Michael and J{\\o}rgensen, Anton Meier Ebsen},
+  title  = {Globalization and the Welfare State: A Panel Data Analysis of 32 OECD Countries (1980--2023)},
+  type   = {Seminar paper},
+  school = {University of Copenhagen, Department of Economics},
+  year   = {2026},
+  month  = {6},
+  url    = {https://antonebsen.dk/en/projects/welfare-state-seminar}
+}`
   },
   ui: {
-    methodology: "Method & Theory",
-    findings: "Expected Results",
-    relevance: "Relevance",
-    dataTools: "Sources",
-    download: "Download Project (TBD)",
-    citation: "Reference",
-    execSummary: "Summary",
-    researchQuestions: "Preliminary Questions",
-    limitations: "Status",
-    secondaryAnalysis: "Status",
-    gallery: "Gallery",
+    methodology: "Method & Identification",
+    findings: "Findings",
+    relevance: "Policy Relevance",
+    dataTools: "Data & Tools",
+    download: "Download",
+    citation: "Suggested Citation",
+    execSummary: "Abstract",
+    researchQuestions: "Research Questions",
+    gallery: "Figures from the paper",
     codeVault: "Code Vault",
-    videoAbstract: "Video Abstract",
-    techStack: "Subjects",
-    timeline: "Timeline",
-    liveData: "Data",
-    openScience: "Open Science"
+    techStack: "Tools",
+    liveData: "Parameter Stability",
+    continuityTitle: "Literature Network",
+    lineageDesc: "The paper is a direct extension of Yay and Aksoy (2018) and draws on two literatures: the theoretical debate between the compensation and efficiency hypotheses, and the welfare regime literature following Esping-Andersen. The graph shows the citation network with this paper at the centre."
   },
   collaborators: [
-    { name: "Sheng", role: "Project Partner", image: "/assets/collaborators/sheng.jpg", description: "Co-author." },
-    { name: "Jonas", role: "Project Partner", image: "/assets/collaborators/jonas.jpg", description: "Co-author." }
+    {
+      ...jonas,
+      role: "Co-author",
+      description: "Wrote the welfare regime classification and the theoretical rationale for the control variables, the baseline regressions, the sub-period analysis, the sequential inclusion of controls, and the sections on welfare magnets, measurement and external validity."
+    },
+    {
+      ...sheng,
+      role: "Co-author",
+      description: "Wrote the literature review of the compensation and efficiency hypotheses, the data description, the welfare regime heterogeneity analysis, the robustness check for social globalization, and the interpretation of the aggregate results."
+    }
   ],
-  bibliography: []
+  bibliography: [
+    "Agersnap, O., Jensen, A., & Kleven, H. (2020). The Welfare Magnet Hypothesis: Evidence from an Immigrant Welfare Scheme in Denmark. American Economic Review: Insights, 2(4), 527–542.",
+    "Alesina, A., & Wacziarg, R. (1998). Openness, country size and government. Journal of Public Economics, 69(3), 305–321.",
+    "Armingeon, K., Engler, S., Leemann, L., & Weisstanner, D. (2025). Comparative Political Data Set 1960–2023. University of Zurich, Leuphana University Lueneburg, and University of Lucerne.",
+    "Autor, D. H., Dorn, D., & Hanson, G. H. (2013). The China Syndrome: Local Labor Market Effects of Import Competition in the United States. American Economic Review, 103(6), 2121–2168.",
+    "Bergh, A. (2021). The compensation hypothesis revisited and reversed. Scandinavian Political Studies, 44(2), 140–147.",
+    "Bohle, D., & Greskovits, B. (2007). Neoliberalism, embedded neoliberalism and neocorporatism: Towards transnational capitalism in Central-Eastern Europe. West European Politics, 30(3), 443–466.",
+    "Brady, D., Beckfield, J., & Seeleib-Kaiser, M. (2005). Economic Globalization and the Welfare State in Affluent Democracies, 1975–2001. American Sociological Review, 70(6), 921–948.",
+    "Busemeyer, M. R. (2009). From myth to reality: Globalisation and public spending in OECD countries revisited. European Journal of Political Research, 48(4), 455–482.",
+    "Devereux, M. P., Lockwood, B., & Redoano, M. (2008). Do countries compete over corporate tax rates? Journal of Public Economics, 92(5–6), 1210–1235.",
+    "Dreher, A. (2006a). Does globalization affect growth? Evidence from a new index of globalization. Applied Economics, 38(10), 1091–1110.",
+    "Dreher, A. (2006b). The influence of globalization on taxes and social policy: An empirical analysis for OECD countries. European Journal of Political Economy, 22(1), 179–201.",
+    "Driscoll, J. C., & Kraay, A. C. (1998). Consistent Covariance Matrix Estimation with Spatially Dependent Panel Data. The Review of Economics and Statistics, 80(4), 549–560.",
+    "Egger, P. H., Nigai, S., & Strecker, N. M. (2019). The Taxing Deed of Globalization. American Economic Review, 109(2), 353–390.",
+    "Esping-Andersen, G. (1990). The Three Worlds of Welfare Capitalism. Princeton University Press.",
+    "Ferrera, M. (1996). The 'Southern Model' of Welfare in Social Europe. Journal of European Social Policy, 6(1), 17–37.",
+    "Fetzer, T. (2019). Did Austerity Cause Brexit? American Economic Review, 109(11), 3849–3886.",
+    "Frankel, J. A., & Romer, D. (1999). Does Trade Cause Growth? American Economic Review, 89(3), 379–399.",
+    "Giovanni, J. di, & Levchenko, A. A. (2009). Trade Openness and Volatility. The Review of Economics and Statistics, 91(3), 558–585.",
+    "Gygli, S., Haelg, F., Potrafke, N., & Sturm, J.-E. (2025). The KOF Globalisation Index – Revisited. The Review of International Organizations, 14(3), 543–574.",
+    "Hines Jr., J. R., & Summers, L. H. (2009). How Globalization Affects Tax Design. Tax Policy and the Economy, 23(1), 123–158.",
+    "Kim, T. K., & Zurlo, K. (2009). How does economic globalisation affect the welfare state? Focusing on the mediating effect of welfare regimes. International Journal of Social Welfare, 18(2), 130–141.",
+    "Leibrecht, M., Klien, M., & Onaran, Ö. (2011). Globalization, welfare regimes and social protection expenditures in Western and Eastern European countries. Public Choice, 148(3), 569–594.",
+    "Marshall, J., & Fisher, S. D. (2015). Compensation or Constraint? How Different Dimensions of Economic Globalization Affect Government Spending and Electoral Turnout. British Journal of Political Science, 45(2), 353–389.",
+    "Meinhard, S., & Potrafke, N. (2012). The Globalization–Welfare State Nexus Reconsidered. Review of International Economics, 20(2), 271–287.",
+    "Pesaran, M. H. (2004). General Diagnostic Tests for Cross Section Dependence in Panels. IZA Discussion Paper 1240.",
+    "Potrafke, N. (2015). The Evidence on Globalisation. The World Economy, 38(3), 509–552.",
+    "Rodrik, D. (1998). Why Do More Open Economies Have Bigger Governments? Journal of Political Economy, 106(5), 997–1032.",
+    "Shelton, C. A. (2007). The size and composition of government expenditure. Journal of Public Economics, 91(11–12), 2230–2260.",
+    "Yay, G. G., & Aksoy, T. (2018). Globalization and the welfare state. Quality & Quantity, 52(3), 1015–1040."
+  ]
 };
 ---
 <ProjectDetailPage lang="en" project={projectContent} />
