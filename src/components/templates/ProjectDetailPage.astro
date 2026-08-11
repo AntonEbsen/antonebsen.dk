@@ -9,7 +9,7 @@ import SlideDeck from '@components/common/SlideDeck.astro';
 import ProjectBot from '../project/ProjectBot';
 import DataPlayground from '@components/project/DataPlayground';
 import CodeVault from '@components/project/CodeVault';
-import ProjectMasterclass from '@components/project/ProjectMasterclass';
+import ProjectMasterclass, { RobustnessAccordion } from '@components/project/ProjectMasterclass';
 import PolicyRadar from '@components/project/PolicyRadar';
 import GalaxyGraph from '@components/common/GalaxyGraph';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
@@ -23,6 +23,10 @@ interface Props {
     title: string;
     subtitle: string;
     heroImage?: string;
+    /** Sidebar status line. Falls back to the generic "Archived (2024)" string. */
+    status?: string;
+    /** Subtitle under the PDF download link, e.g. page count and file size. */
+    pdfMeta?: string;
     executiveSummary: string;
     popularScienceResult?: string;
     researchQuestions: string[];
@@ -41,6 +45,12 @@ interface Props {
     citation: {
         text: string;
         pdfUrl: string;
+        /** Publication year. Without it the BibTeX falls back to the build year, which drifts. */
+        year?: string | number;
+        /** Authors as "Surname, Given" — joined with " and " for BibTeX. */
+        authors?: string[];
+        /** Hand-written BibTeX. Preferred over the generated entry when present. */
+        bibtex?: string;
     };
     popScience?: {
         title?: string;
@@ -147,6 +157,8 @@ interface Props {
         liveData?: string;
         openScience?: string;
         continuityTitle?: string;
+        /** Overrides the knowledge-graph blurb, which otherwise assumes monetary economics. */
+        lineageDesc?: string;
     };
     collaborators?: {
         name: string;
@@ -281,7 +293,8 @@ const uiStrings = {
         meetTeam: "Mød Forskningsteamet",
         bibliography: "Litteraturliste",
         trySimulator: "Prøv Simulatoren",
-        forgeLink: "Gå til The Model Forge &rarr;",
+        // No HTML entity here — this is interpolated as text, so "&rarr;" printed literally.
+        forgeLink: "Gå til The Model Forge →",
         executeLab: "Execute in Lab",
         labHint: "Kør koden i browseren"
     },
@@ -331,13 +344,90 @@ const uiStrings = {
         meetTeam: "Meet the Research Group",
         bibliography: "Bibliography",
         trySimulator: "Try the Simulator",
-        forgeLink: "Go to The Model Forge &rarr;",
+        forgeLink: "Go to The Model Forge →",
         executeLab: "Execute in Lab",
         labHint: "Run analysis in browser"
     }
 };
 
 const t = uiStrings[lang] || uiStrings.en;
+
+// --- BibTeX -----------------------------------------------------------------
+// The old inline generator produced entries that would not compile: authors joined
+// by commas (BibTeX needs " and "), an unescaped &, a url built by slugifying the
+// title (which never matched the real route), and year = build year, so a 2024
+// thesis cited as whatever year the site happened to be built.
+const bibtexEscape = (s: string) => s.replace(/&/g, '\\&');
+
+// Undefined when the citation carries no year. Deliberately not defaulted to the
+// build year: that silently re-dated every paper on 1 January.
+const citationYear = project.citation.year
+    ? String(project.citation.year)
+    : project.citation.text.match(/\((?:[^)]*?)(\d{4})\)/)?.[1];
+
+// Every citation on this site follows "Last, First, Last, First & Last, First".
+// Split on the ampersand, then pair up the remaining comma-separated tokens — the
+// names carry internal commas, so a naive split on "," mangles them. Falls back to
+// the raw string if the token count is odd, i.e. the format isn't what we expect.
+const parseAuthors = (text: string): string[] | null => {
+    // Cut at the year if there is one; otherwise at the first sentence break. The
+    // lookbehind requires two lowercase letters so "Anton M. E." survives but
+    // "Walther. Det Indre..." does not.
+    const head = text.split('(')[0].split(/(?<=[a-zæøå]{2})\.\s+/)[0].trim().replace(/[,\s]+$/, '');
+    const [lead, ...tail] = head.split(/\s*&\s*/);
+    const leadTokens = lead.split(/,\s*/).filter(Boolean);
+    if (leadTokens.length === 0 || leadTokens.length % 2 !== 0) return null;
+    const paired: string[] = [];
+    for (let i = 0; i < leadTokens.length; i += 2) {
+        paired.push(`${leadTokens[i]}, ${leadTokens[i + 1]}`);
+    }
+    return [...paired, ...tail.map(n => n.trim())].filter(Boolean);
+};
+
+const bibtexAuthors = (project.citation.authors ?? parseAuthors(project.citation.text))?.join(' and ')
+    ?? bibtexEscape(project.citation.text.split('(')[0].trim().replace(/,\s*$/, ''));
+
+const canonicalUrl = `https://antonebsen.dk${Astro.url.pathname}`;
+// ø/æ/å are their own codepoints, so NFD alone leaves them behind and turns
+// "Jørgensen" into "jrgensen". Transliterate them before stripping.
+const firstSurname = (project.citation.authors ?? parseAuthors(project.citation.text) ?? ['jorgensen'])[0]
+    .split(',')[0].toLowerCase()
+    .replace(/ø/g, 'o').replace(/æ/g, 'ae').replace(/å/g, 'aa')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+const citationKey = `${firstSurname}${citationYear ?? ''}`;
+
+const bibtexEntry = project.citation.bibtex ?? [
+    `@misc{${citationKey},`,
+    `  author = {${bibtexAuthors}},`,
+    `  title  = {${bibtexEscape(project.title)}},`,
+    ...(citationYear ? [`  year   = {${citationYear}},`] : []),
+    `  url    = {${canonicalUrl}}`,
+    `}`
+].join('\n');
+
+// --- Structured data --------------------------------------------------------
+// Follows the pattern already used by VideoDetailPage: build the object here,
+// emit one <script type="application/ld+json"> inside the layout slot.
+const scholarlyJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ScholarlyArticle',
+    headline: project.title,
+    name: project.title,
+    alternativeHeadline: project.subtitle,
+    abstract: project.executiveSummary,
+    inLanguage: lang,
+    ...(citationYear ? { datePublished: citationYear } : {}),
+    url: canonicalUrl,
+    author: (project.collaborators?.length
+        ? [{ '@type': 'Person', name: 'Anton Meier Ebsen Jørgensen' },
+           ...project.collaborators.map(c => ({ '@type': 'Person', name: c.name }))]
+        : [{ '@type': 'Person', name: 'Anton Meier Ebsen Jørgensen' }]),
+    ...(project.citation.pdfUrl && project.citation.pdfUrl !== '#'
+        ? { encoding: { '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: `https://antonebsen.dk${project.citation.pdfUrl}` } }
+        : {}),
+    ...(project.bibliography?.length ? { citation: project.bibliography } : {}),
+    ...(project.techStack?.length ? { keywords: project.techStack.map(tech => tech.name).join(', ') } : {})
+};
 ---
 
 <Layout 
@@ -383,10 +473,14 @@ const t = uiStrings[lang] || uiStrings.en;
             {project.subtitle}
             </p>
 
-            {/* Collaborators */}
-            {project.collaborators && (
+            {/* Collaborators. Guard on length: several projects pass an empty array,
+                which is truthy and used to render a bare label with nothing under it. */}
+            {project.collaborators && project.collaborators.length > 0 && (
                 <div class="mb-16 flex flex-col items-center gap-6">
                     <CollaboratorSpotlight client:visible collaborators={project.collaborators} label={t.collaborators} />
+                    <a href={lang === 'da' ? '/team' : '/en/team'} class="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-accent transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-users-viewfinder"></i> {t.meetTeam}
+                    </a>
                 </div>
             )}
             
@@ -457,6 +551,7 @@ const t = uiStrings[lang] || uiStrings.en;
                       <li><a href="#executive-summary" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.execSummary}</a></li>
                       <li><a href="#methodology" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.methodology}</a></li>
                       <li><a href="#key-findings" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.findings}</a></li>
+                      {project.robustness && !project.videoSeries && <li><a href="#robustness" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{lang === 'da' ? 'Robusthed' : 'Robustness'}</a></li>}
                       {project.videoSeries && <li><a href="#video-series" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{lang === 'da' ? 'Video Masterclass' : 'Video Masterclass'}</a></li>}
                       {project.videoUrl && <li><a href="#video-abstract" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.videoAbstract}</a></li>}
                       {project.gallery && <li><a href="#gallery" class="block pl-4 py-1 text-slate-400 hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.gallery}</a></li>}
@@ -468,7 +563,7 @@ const t = uiStrings[lang] || uiStrings.en;
                   <p class="text-xs text-slate-400 uppercase font-bold mb-2">{t.projectStatus}</p>
                   <div class="flex items-center gap-2 mb-4">
                       <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                      <span class="text-sm font-bold text-slate-200">{t.archived}</span>
+                      <span class="text-sm font-bold text-slate-200">{project.status ?? t.archived}</span>
                   </div>
                   <a href="/contact" class="text-xs text-accent hover:underline">{t.requestAccess} &rarr;</a>
               </div>
@@ -612,6 +707,13 @@ const t = uiStrings[lang] || uiStrings.en;
             </ul>
         </section>
 
+        <!-- Robustness on its own, for projects with no video series to nest it in. -->
+        {project.robustness && !project.videoSeries && (
+            <section id="robustness" class="mb-24 scroll-mt-24 academic-section">
+                <RobustnessAccordion client:visible items={[...project.robustness]} lang={lang} />
+            </section>
+        )}
+
         <!-- Popular Science Section -->
         {project.popularScienceResult && (
             <section class="mb-24 view-animate">
@@ -651,7 +753,7 @@ const t = uiStrings[lang] || uiStrings.en;
                             <div>
                                 <h3 class="text-xl font-bold text-white mb-2">{t.intellectualLineage}</h3>
                                 <p class="text-sm text-slate-400 leading-relaxed">
-                                    {t.lineageDesc}
+                                    {project.ui.lineageDesc ?? t.lineageDesc}
                                 </p>
                             </div>
                             
@@ -803,7 +905,7 @@ const t = uiStrings[lang] || uiStrings.en;
                             <div class="w-10 h-10 rounded-lg bg-white/10 shadow-sm text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-pdf"></i></div>
                             <div class="flex flex-col">
                                 <span class="text-sm">{t.downloadThesis}</span>
-                                <span class="text-[10px] text-slate-500 font-normal">{t.fullText}</span>
+                                <span class="text-[10px] text-slate-500 font-normal">{project.pdfMeta ?? t.fullText}</span>
                             </div>
                         </a>
                         {project.dataLinks?.map(link => (
@@ -1023,16 +1125,9 @@ const t = uiStrings[lang] || uiStrings.en;
           <div class="mb-4">
               <label class="text-xs font-bold uppercase text-slate-500 mb-2 block">BibTeX</label>
               <div class="relative">
-                  <pre class="bg-black/30 p-4 rounded-lg text-xs text-slate-300 overflow-x-auto font-mono custom-scrollbar">
-{`@misc{${project.title.split(' ')[0].toLowerCase()}_${new Date().getFullYear()},
-  author = {${project.citation.text.split('(')[0].trim()}},
-  title = {${project.title}},
-  year = {${new Date().getFullYear()}},
-  url = {https://antonebsen.dk/projects/${project.title.toLowerCase().replace(/\s+/g, '-')}}
-}`}
-                  </pre>
-                  <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded" 
-                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">
+                  <pre class="bg-black/30 p-4 rounded-lg text-xs text-slate-300 overflow-x-auto font-mono custom-scrollbar">{bibtexEntry}</pre>
+                  <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded"
+                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText.trim())">
                       {t.copy}
                   </button>
               </div>
@@ -1044,8 +1139,8 @@ const t = uiStrings[lang] || uiStrings.en;
                   <div class="bg-black/30 p-4 rounded-lg text-sm text-slate-300">
                       {project.citation.text}
                   </div>
-                   <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded" 
-                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">
+                   <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded"
+                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText.trim())">
                       {t.copy}
                   </button>
               </div>
@@ -1056,6 +1151,8 @@ const t = uiStrings[lang] || uiStrings.en;
           </form>
       </div>
   </dialog>
+
+  <script type="application/ld+json" set:html={JSON.stringify(scholarlyJsonLd)} />
 
 </Layout>
 
