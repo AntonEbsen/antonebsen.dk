@@ -1,7 +1,20 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import SpecCurveExplorer from '@components/project/SpecCurveExplorer';
 import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
+
+// Velfærdsregimerne som klassificeret i opgavens Tabel A.4. Kontrolleret mod
+// panelet: de fem grupper dækker præcis de 32 lande i datasættet.
+// Farveklasserne skrives fuldt ud: Tailwind kan ikke se klassenavne, der sættes
+// sammen af strenge, og ville rense dem væk.
+const regimes = [
+  { name: "Socialdemokratisk", countries: "DNK · FIN · ISL · NOR · SWE", n: 5, dot: "bg-emerald-500" },
+  { name: "Konservativ", countries: "AUT · BEL · CHE · DEU · FRA · LUX · NLD", n: 7, dot: "bg-amber-500" },
+  { name: "Liberal", countries: "AUS · CAN · GBR · IRL · JPN · NZL · USA", n: 7, dot: "bg-blue-500" },
+  { name: "Middelhav", countries: "ESP · GRC · ITA · PRT", n: 4, dot: "bg-pink-500" },
+  { name: "Postkommunistisk", countries: "BGR · CZE · EST · HUN · LTU · LVA · POL · SVK · SVN", n: 9, dot: "bg-lime-500" }
+];
 
 const projectContent = {
   title: "Globalization and the Welfare State",
@@ -222,6 +235,11 @@ for end in range(1989, 2024):
     software: "Python (pandas, linearmodels, statsmodels) til estimation og diagnostik; matplotlib til figurer; LaTeX til opgaven."
   },
   simulatorUrl: "/models/rolling-window",
+  extraToc: [
+    { href: "#structural-break", label: "1995 eller 2008?" },
+    { href: "#spec-curve", label: "Specifikationskurve" },
+    { href: "#subindices", label: "Ni indeks, ikke fire" }
+  ],
   // Label must contain "csv" — that substring is what opens the DuckDB playground.
   // Until the file is published the playground shows a "not yet available" state.
   dataLinks: [
@@ -319,4 +337,151 @@ for end in range(1989, 2024):
   ]
 };
 ---
-<ProjectDetailPage lang="da" project={projectContent} />
+<ProjectDetailPage lang="da" project={projectContent}>
+
+  {/* ---- Analyser ud over den afleverede opgave ------------------------- */}
+  <div class="mb-8 flex items-center gap-3">
+      <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-accent">Ud over opgaven</span>
+      <div class="h-px flex-grow bg-accent/20"></div>
+  </div>
+  <p class="text-sm text-slate-500 leading-relaxed mb-16 italic font-serif">
+      Alt herunder er kørt efter afleveringen den 3. juni 2026 og indgår ikke i den bedømte opgave.
+      Tallene kommer fra replikationspakken.
+  </p>
+
+  <!-- 1995 vs 2008 -->
+  <section id="structural-break" class="mb-24 scroll-mt-24 academic-section">
+      <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">Bruddet: 1995 eller 2008?</h2>
+
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-8 mb-8">
+          <p class="text-slate-300 leading-relaxed font-serif mb-6">
+              Opgaven <em>pålægger</em> 2008 og tester med en Chow-test, som forkaster. Det svarer på spørgsmålet
+              “er der et brud netop her?”. Et andet spørgsmål er “hvor ligger bruddet stærkest?” — og det kræver
+              test, der søger over alle mulige bruddatoer. To af dem peger samstemmende på <strong class="text-white">1995</strong>.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="bg-black/20 border border-white/5 rounded-2xl p-5">
+                  <h3 class="text-sm font-bold text-white mb-1">QLR (sup-Wald)</h3>
+                  <p class="text-[11px] text-slate-500 mb-4">Ukendt bruddato, 15 % trimning. Kritiske værdier: 8,68 (5 %) og 12,16 (1 %).</p>
+                  <ul class="space-y-1.5 text-xs font-mono text-slate-300">
+                      <li class="flex justify-between"><span>Samlet</span><span class="tabular-nums">12,895 → 1995</span></li>
+                      <li class="flex justify-between"><span>Økonomisk</span><span class="tabular-nums">16,080 → 1995</span></li>
+                      <li class="flex justify-between"><span>Social</span><span class="tabular-nums">10,855 → 1995</span></li>
+                      <li class="flex justify-between"><span>Politisk</span><span class="tabular-nums">11,552 → 1995</span></li>
+                  </ul>
+              </div>
+              <div class="bg-black/20 border border-white/5 rounded-2xl p-5">
+                  <h3 class="text-sm font-bold text-white mb-1">Bai-Perron (sekventiel)</h3>
+                  <p class="text-[11px] text-slate-500 mb-4">Antal brud valgt ved BIC. Andrews 5 %-værdi: 8,68. N = 1.026.</p>
+                  <ul class="space-y-1.5 text-xs font-mono text-slate-300">
+                      <li class="flex justify-between"><span>Handel</span><span class="tabular-nums">13,21 → 1995</span></li>
+                      <li class="flex justify-between"><span>Økonomisk</span><span class="tabular-nums">12,69 → 1995</span></li>
+                      <li class="flex justify-between"><span>Samlet</span><span class="tabular-nums">10,40 → 1995</span></li>
+                      <li class="flex justify-between text-slate-500"><span>Kulturel, politisk</span><span>intet brud</span></li>
+                  </ul>
+              </div>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+              Bai-Perron vælger 1995 for syv af ni indeks, alle med ét brud. De to test er ikke helt enige:
+              QLR finder et brud for politisk globalisering (11,552 &gt; 8,68), hvor Bai-Perrons sekventielle
+              procedure ikke gør.
+          </p>
+      </div>
+
+      <div class="group mb-8">
+          <div class="rounded-3xl overflow-hidden border border-white/10 shadow-lg mb-4 bg-white p-2">
+              <img
+                  src="/assets/projects/welfare-state-seminar/fig-qlr-path.png"
+                  alt="Chow F-statistikken beregnet for hvert muligt brudår fra 1992 til 2017. Kurven topper i 1995 over 1 %-værdien, falder til et lavpunkt omkring 2001, og stiger til en anden top omkring 2009 der overstiger 5 %-værdien."
+                  class="w-full h-auto"
+              />
+          </div>
+          <div class="flex gap-4 items-start pl-4">
+              <div class="h-px bg-white/10 w-12 mt-3 shrink-0"></div>
+              <p class="text-xs text-slate-500 italic font-serif">
+                  F-statistikken ved hvert kandidat-brudår. Den globale top ligger i 1995 og bryder 1 %-værdien.
+                  Men bemærk den anden top omkring 2008–09, som også ligger over 5 %-værdien: 2008 <em>er</em> et
+                  reelt brudår — bare ikke det stærkeste.
+              </p>
+          </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-accent/10 to-transparent border border-accent/20 p-8 rounded-3xl">
+          <h3 class="text-accent font-bold mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb"></i> Hvad det betyder
+          </h3>
+          <p class="text-slate-200 leading-relaxed font-serif">
+              De to resultater modsiger ikke hinanden. Chow-testen i opgaven har ret: der <em>er</em> et brud ved 2008,
+              og figuren viser det tydeligt som den anden top. Men parameterustabiliteten begynder tidligere — omkring
+              afslutningen af Uruguay-runden og WTO’s oprettelse i 1995. Finanskrisen <strong class="text-white">forstærkede
+              et skift, der allerede var i gang</strong>, snarere end at sætte det i gang. Det trækker i samme retning
+              som de rullende regressioner: relationen er historisk betinget hele vejen igennem.
+          </p>
+      </div>
+  </section>
+
+  <!-- Specification curve -->
+  <section id="spec-curve" class="mb-24 scroll-mt-24">
+      <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">Specifikationskurve</h2>
+      <p class="text-sm text-slate-400 leading-relaxed mb-8">
+          Ét estimat kan altid være et heldigt valg af kontrolvariable. Her er alle 64 kombinationer af de seks
+          kontroller — hele potensmængden — estimeret hver for sig, så du kan se hvor meget koefficienten
+          overhovedet flytter sig.
+      </p>
+      <SpecCurveExplorer client:visible lang="da" />
+  </section>
+
+  <!-- Nine indices -->
+  <section id="subindices" class="mb-24 scroll-mt-24 academic-section">
+      <h2 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-8">Ni indeks, ikke fire</h2>
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-8">
+          <p class="text-slate-300 leading-relaxed font-serif mb-6">
+              Opgavens hovedtekst bruger fire KOF-indeks. Analysen bag dækker ni: økonomisk globalisering deler sig i
+              <strong class="text-white">handel</strong> og <strong class="text-white">finans</strong>, og social globalisering i
+              <strong class="text-white">interpersonel</strong>, <strong class="text-white">informationel</strong> og
+              <strong class="text-white">kulturel</strong>. To resultater derfra nåede aldrig ind i opgaven:
+          </p>
+          <ul class="space-y-4">
+              <li class="flex gap-4">
+                  <span class="text-accent mt-1"><i class="fa-solid fa-arrow-right text-xs"></i></span>
+                  <p class="text-sm text-slate-300 leading-relaxed">
+                      <strong class="text-white">Handelsglobalisering har det stærkeste brud af alle ni indeks</strong>
+                      (sup-F 13,21 i 1995) — bemærkelsesværdigt, fordi det økonomiske indeks, som handel indgår i,
+                      er netop det der aldrig bliver signifikant i hovedanalysen.
+                  </p>
+              </li>
+              <li class="flex gap-4">
+                  <span class="text-accent mt-1"><i class="fa-solid fa-arrow-right text-xs"></i></span>
+                  <p class="text-sm text-slate-300 leading-relaxed">
+                      <strong class="text-white">Kulturel globalisering er det eneste indeks, der skifter fortegn omkring finanskrisen</strong>
+                      — fra +0,0482 før til −0,0238 efter.
+                      <span class="text-slate-400">Med det forbehold, der afgør sagen: stjernerne gælder kun under
+                      Driscoll-Kraay-standardfejl. Under de landeklyngede standardfejl, opgaven lægger til grund, er
+                      begge insignifikante (p = 0,374 og p = 0,394). Det er en antydning under én fejlstruktur, ikke et resultat.</span>
+                  </p>
+              </li>
+          </ul>
+      </div>
+
+      <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mt-12 mb-6">De 32 lande efter velfærdsregime</h3>
+      <div class="space-y-3">
+          {regimes.map(r => (
+              <div class="bg-white/5 border border-white/5 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <div class="sm:w-52 shrink-0 flex items-center gap-3">
+                      <span class={`w-2.5 h-2.5 rounded-full shrink-0 ${r.dot}`}></span>
+                      <span class="text-sm font-bold text-slate-200">{r.name}</span>
+                      <span class="text-[10px] text-slate-500 tabular-nums">({r.n})</span>
+                  </div>
+                  <span class="text-xs font-mono text-slate-400 leading-relaxed">{r.countries}</span>
+              </div>
+          ))}
+      </div>
+      <p class="text-[11px] text-slate-600 mt-4">
+          Klassifikationen følger opgavens Tabel A.4 (Esping-Andersen 1990; Ferrera 1996). Det socialdemokratiske
+          regime er referencekategori i interaktionsregressionerne.
+      </p>
+  </section>
+
+</ProjectDetailPage>
