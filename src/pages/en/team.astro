@@ -1,6 +1,8 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
+import ResearchRadar from '@components/project/ResearchRadar';
+import { anton, sheng, jonas } from '@data/collaborators';
 import { getImage } from 'astro:assets';
 import portraitSrc from '../../assets/img/billede-af-mig.jpg';
 
@@ -8,43 +10,84 @@ import portraitSrc from '../../assets/img/billede-af-mig.jpg';
 // public path meant shipping the 785 KB original for an avatar.
 const portrait = await getImage({ src: portraitSrc, width: 128, format: 'webp' });
 
-// Collaborator Data
+// Identity comes from @data/collaborators; the role, bio and status are what this
+// page adds on top.
 const team = [
     {
-        name: "Anton M. E. Jørgensen",
+        ...anton,
         role: "Lead Author & Developer",
         image: portrait.src,
         description: "Specializes in macroeconomic modeling, web development, and bridging the gap between economic theory and data science.",
-        links: { linkedin: "https://linkedin.com/in/antonebsen", github: "https://github.com/AntonEbsen" } 
+        status: { text: "Starting thesis", color: "yellow" }
     },
-    { 
-        name: "Sheng Ye Michael Chen", 
-        role: "Co-Author & Data Scientist", 
-        image: "/assets/collaborators/sheng.jpg",
+    {
+        ...sheng,
+        role: "Co-Author & Data Scientist",
         description: "Expertise in high-dimensional data handling, Stata programming, and rigorous econometric implementation (GMM).",
-        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+        status: { text: "Coding Stata", color: "blue" }
     },
-    { 
-        name: "Jonas Amasa Skov Nielsen", 
-        role: "Co-Author & Theorist", 
-        image: "/assets/collaborators/jonas.jpg",
+    {
+        ...jonas,
+        role: "Co-Author & Theorist",
         description: "Focus on monetary policy transmission mechanisms, game theory, and structural break analysis in time-series data.",
-        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+        status: { text: "Reviewing Theory", color: "green" }
     }
 ];
 
+// The four joint works. Titles, years, grades and PDF paths come from each project's
+// own citation block; `pdf` is omitted where the file doesn't exist yet.
+const jointOutput = [
+    {
+        title: "Globalization and the Welfare State",
+        year: "2026",
+        kind: "Seminar paper",
+        venue: "Economics of the Welfare State, University of Copenhagen. Supervisor: Amalie Sofie Jensen.",
+        role: "Method and identification, residual diagnostics, rolling regressions, sub-period analysis, choice of standard errors and reverse causality.",
+        grade: "10",
+        href: "/en/projects/welfare-state-seminar",
+        pdf: "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf"
+    },
+    {
+        title: "Does GenAI Help Those Who Need It Most?",
+        year: "2026",
+        kind: "Research proposal",
+        venue: "AI for Humanity, University of Copenhagen. Heterogeneous effects of generative AI in Danish upper-secondary schools.",
+        grade: "10",
+        href: "/en/projects/genai-inequality"
+    },
+    {
+        title: "One Rule to Rule Them All?",
+        year: "2024",
+        kind: "Seminar paper",
+        venue: "ECB monetary policy and asymmetric effects across the euro area. Supervisor: Michael Bergman.",
+        grade: "10",
+        href: "/en/projects/ecb-taylor-rules"
+    },
+    {
+        title: "Monetary Policy & Economic Relations",
+        year: "2026–27",
+        kind: "Master's thesis",
+        venue: "Starts 20 August 2026. Empirical analysis of monetary policy in a post-COVID world.",
+        href: null
+    }
+];
+
+// "Projects", not "publications" — these are seminar papers and a proposal, and
+// every tile is checkable against a page on this site.
 const stats = [
-    { label: "Joint Publications", value: "3", icon: "fa-book-open" },
-    { label: "Collaborative Years", value: "5", icon: "fa-calendar-check" },
-    { label: "Academic Focus", value: "Macro", icon: "fa-globe" },
-    { label: "Data Points", value: "20k+", icon: "fa-database" },
+    { label: "Joint Projects", value: "4", icon: "fa-book-open" },
+    { label: "Collaborative Years", value: "6", icon: "fa-calendar-check" },
+    { label: "Academic Focus", value: "Macro & Political Economy", icon: "fa-globe" },
+    { label: "Latest Paper", value: "June 2026", icon: "fa-file-lines" },
 ];
 
 const timeline = [
-    { year: "2020", title: "Formation", desc: "Met at the University of Copenhagen. Established a collaborative workflow for Microeconomics and Mathematical Analysis." },
-    { year: "2023", title: "Exchange Rate Dynamics", desc: "First major joint research project. Analyzed inflation and relative exchange rates in Denmark using high-frequency data." },
-    { year: "2024", title: "ECB Taylor Rules", desc: "Advanced seminar paper. Implemented GMM estimation to test for asymmetric policy responses in the Eurozone." },
-    { year: "2025", title: "Master's Thesis", desc: "Upcoming magnum opus focusing on the Global Financial Cycle and its transmission to small open economies." },
+    { year: "2020", title: "Formation", desc: "Met at the University of Copenhagen. Established a collaborative workflow for Microeconomics and Mathematical Analysis.", href: null },
+    { year: "2023", title: "Exchange Rate Dynamics", desc: "First joint project, written with Sheng during our bachelor's. Analysis of Danish inflation and relative exchange rates.", href: "/en/projects/exchange-rate-dynamics" },
+    { year: "2024", title: "ECB Taylor Rules", desc: "The first seminar paper all three of us wrote together. GMM estimation of asymmetric policy responses in the euro area.", href: "/en/projects/ecb-taylor-rules" },
+    { year: "2026", title: "Does GenAI Help Those Who Need It Most?", desc: "Research proposal on the heterogeneous effects of generative AI across socioeconomic lines in Danish upper-secondary schools.", href: "/en/projects/genai-inequality" },
+    { year: "2026", title: "Globalization and the Welfare State", desc: "Seminar paper submitted June 2026. Panel data analysis of 32 OECD countries 1980–2023; rolling regressions uncover a structural break at 2008.", href: "/en/projects/welfare-state-seminar" },
+    { year: "2026", title: "Master's Thesis", desc: "Monetary Policy & Economic Relations. Starts 20 August 2026, focusing on monetary policy in a post-COVID world.", href: null },
 ];
 ---
 
@@ -96,14 +139,57 @@ const timeline = [
             
             <div class="space-y-24">
                 {timeline.map((item, i) => (
-                    <div class={`relative flex items-center justify-between ${i % 2 === 0 ? 'flex-row-reverse' : ''}`}>
-                        <div class="w-5/12"></div>
-                        <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700 z-10"></div>
-                        <div class={`w-5/12 ${i % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                            <span class="text-5xl font-bold text-white/5 absolute -top-8 left-0 right-0 pointer-events-none select-none font-serif">{item.year}</span>
+                    <div class={`relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                        <div class="hidden md:block md:w-5/12"></div>
+                        <div class="absolute left-4 md:left-1/2 md:-translate-x-1/2 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-700 z-10 mt-1.5 md:mt-0"></div>
+                        <div class={`w-full pl-12 md:pl-0 md:w-5/12 ${i % 2 === 0 ? 'md:text-right' : 'md:text-left'} relative`}>
+                            <span class="text-3xl md:text-5xl font-bold text-white/5 absolute -top-6 md:-top-8 left-12 md:left-0 md:right-0 pointer-events-none select-none font-serif">{item.year}</span>
                             <div class="relative z-10">
-                                <h3 class="text-lg font-bold text-white mb-2">{item.title}</h3>
+                                <h3 class="text-lg font-bold text-white mb-2">
+                                    {item.href
+                                        ? <a href={item.href} class="hover:text-blue-400 transition-colors">{item.title}</a>
+                                        : item.title}
+                                </h3>
                                 <p class="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        {/* Joint output — every field comes from the relevant project's own citation
+            block. PDF links appear only where the file actually exists, and the
+            thesis has no href because there is no English master-thesis page yet. */}
+        <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Joint output</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {jointOutput.map(w => (
+                    <div class="bg-slate-900/50 border border-white/5 rounded-2xl p-6 flex flex-col hover:border-blue-500/30 transition-colors group">
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">{w.kind}</span>
+                            <span class="text-[10px] font-mono text-slate-500 shrink-0">{w.year}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2 leading-snug">
+                            {w.href ? <a href={w.href} class="hover:text-blue-400 transition-colors">{w.title}</a> : w.title}
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">{w.venue}</p>
+                        {w.role && (
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4 pl-3 border-l border-blue-500/20 italic">
+                                <span class="not-italic font-bold text-slate-400">My role:</span> {w.role}
+                            </p>
+                        )}
+                        <div class="mt-auto pt-4 border-t border-white/5 flex items-center gap-4">
+                            {w.grade && (
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400/80">Grade {w.grade}</span>
+                            )}
+                            <div class="ml-auto flex items-center gap-4">
+                                {w.href && <a href={w.href} class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-400 transition-colors">Project &rarr;</a>}
+                                {w.pdf && (
+                                    <a href={w.pdf} class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-red-400 transition-colors">
+                                        <i class="fa-solid fa-file-pdf mr-1"></i>PDF
+                                    </a>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -147,33 +233,32 @@ const timeline = [
                          <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2">
                             <i class="fa-solid fa-satellite-dish animate-pulse"></i> Thesis Tracker
                         </h2>
-                        <h3 class="text-3xl font-serif text-white mt-2">Global Financial Cycles</h3>
-                        <p class="text-slate-400 text-sm mt-1">Expected Completion: Summer 2025</p>
+                        <h3 class="text-3xl font-serif text-white mt-2">Monetary Policy &amp; Economic Relations</h3>
+                        <p class="text-slate-400 text-sm mt-1">Starts 20 August 2026 · expected submission January 2027</p>
                     </div>
                     <div class="text-right">
-                        <span class="text-4xl font-bold text-white tabular-nums">35%</span>
-                        <span class="block text-xs uppercase tracking-widest text-slate-500">Complete</span>
+                        <span class="text-sm font-bold uppercase tracking-widest text-blue-400">Not yet started</span>
+                        <span class="block text-xs text-slate-500 mt-1">Planned phases</span>
                     </div>
                 </div>
 
-                <div class="space-y-4">
+                {/* Phases, not percentages: the thesis has not begun. */}
+                <ol class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {[
-                        { label: "Literature Review", prog: "80%" },
-                        { label: "Data Collection", prog: "60%" },
-                        { label: "Model Validation", prog: "10%" },
-                        { label: "Drafting", prog: "5%" }
-                    ].map(t => (
-                        <div>
-                            <div class="flex justify-between text-xs uppercase font-bold text-slate-500 mb-1">
-                                <span>{t.label}</span>
-                                <span>{t.prog}</span>
+                        { label: "Literature Review", note: "Aug–Sep 2026" },
+                        { label: "Data Collection", note: "Sep–Oct 2026" },
+                        { label: "Model Validation", note: "Oct–Nov 2026" },
+                        { label: "Drafting", note: "Nov 2026–Jan 2027" }
+                    ].map((t, i) => (
+                        <li class="flex items-start gap-3 bg-slate-900/60 border border-white/5 rounded-xl p-4">
+                            <span class="w-6 h-6 rounded-full border border-blue-500/30 text-blue-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                            <div>
+                                <span class="block text-sm font-bold text-slate-200">{t.label}</span>
+                                <span class="block text-xs text-slate-500 mt-0.5">{t.note}</span>
                             </div>
-                            <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full" style={`width: ${t.prog}`}></div>
-                            </div>
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ol>
             </div>
         </section>
 
@@ -183,19 +268,54 @@ const timeline = [
                 <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Data Scale</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                     <div>
-                        <span class="block text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">20M+</span>
-                        <span class="text-sm font-bold text-blue-400 uppercase tracking-widest">Observations</span>
-                        <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">High-frequency financial data from Bloomberg and Datastream.</p>
+                        <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">32 countries</span>
+                        <span class="text-sm font-bold text-blue-400 uppercase tracking-widest">OECD panel, 1980–2023</span>
+                        <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">CPDS, KOF, OECD and the World Bank harmonised into one panel. N = 996 in the fully specified models. <a href="/en/projects/welfare-state-seminar" class="text-blue-400 hover:underline">Globalization and the Welfare State</a>.</p>
                     </div>
                     <div>
-                        <span class="block text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">150+</span>
-                        <span class="text-sm font-bold text-purple-400 uppercase tracking-widest">Variables</span>
-                        <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">Macroeconomic indicators across 30+ countries.</p>
+                        <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">1999–2024</span>
+                        <span class="text-sm font-bold text-purple-400 uppercase tracking-widest">Quarterly, euro area</span>
+                        <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">Eurostat, OECD Economic Outlook and the ECB Statistical Data Warehouse. <a href="/en/projects/ecb-taylor-rules" class="text-purple-400 hover:underline">ECB Taylor Rules</a>.</p>
                     </div>
                     <div>
-                        <span class="block text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">40GB</span>
-                        <span class="text-sm font-bold text-emerald-400 uppercase tracking-widest">Raw Data</span>
-                        <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">Processed and structured in SQL databases.</p>
+                        <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">20,000+</span>
+                        <span class="text-sm font-bold text-emerald-400 uppercase tracking-widest">Data points, high-frequency financial data</span>
+                        <p class="text-slate-400 text-sm mt-2 max-w-xs mx-auto">Structured and processed for SVAR estimation. <a href="/en/projects/global-financial-cycle" class="text-emerald-400 hover:underline">Global Financial Cycle</a> (bachelor's thesis).</p>
+                    </div>
+                </div>
+
+                {/* Method coverage. Now renders here too — the radar's labels used to be
+                    hardcoded Danish, which is why this page never had it. */}
+                <div class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div class="bg-slate-900/50 border border-white/5 p-8 rounded-3xl relative overflow-hidden group hover:border-blue-500/30 transition-colors">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[40px] group-hover:bg-blue-500/20 transition-colors"></div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-radar text-blue-400"></i> Method coverage
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                            How many of the four joint works use each method family. The axis runs 0 to 4.
+                        </p>
+                        <ResearchRadar
+                            client:visible
+                            labels={["Panel data & FE", "Time series / VAR", "IV & GMM", "Robustness & diagnostics", "Survey & ML"]}
+                            values={[1, 2, 1, 2, 1]}
+                            seriesLabel="Joint works"
+                            max={4}
+                            unit=" of 4 projects"
+                        />
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-4">What the group actually does</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                            Five method families across four joint works, counted rather than self-rated.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-500">
+                            <li><span class="font-bold text-slate-400">Panel data &amp; FE</span> — the welfare state seminar.</li>
+                            <li><span class="font-bold text-slate-400">Time series / VAR</span> — the ECB project and the thesis.</li>
+                            <li><span class="font-bold text-slate-400">IV &amp; GMM</span> — the ECB project.</li>
+                            <li><span class="font-bold text-slate-400">Robustness &amp; diagnostics</span> — the ECB project and the welfare seminar.</li>
+                            <li><span class="font-bold text-slate-400">Survey &amp; ML</span> — the GenAI proposal.</li>
+                        </ul>
                     </div>
                 </div>
              </div>
@@ -209,7 +329,11 @@ const timeline = [
                     "Gabaix, X. & Maggiori, M. (2015). International Liquidity and Exchange Rate Dynamics. QJE.",
                     "Rey, H. (2015). Dilemma not Trilemma: The Global Financial Cycle and Monetary Policy Independence. NBER.",
                     "Miranda-Agrippino, S. & Rey, H. (2020). U.S. Monetary Policy and the Global Financial Cycle. RES.",
-                    "Bruno, V. & Shin, H. S. (2015). Cross-Border Banking and Global Liquidity. RES."
+                    "Bruno, V. & Shin, H. S. (2015). Cross-Border Banking and Global Liquidity. RES.",
+                    "Rodrik, D. (1998). Why Do More Open Economies Have Bigger Governments? JPE.",
+                    "Esping-Andersen, G. (1990). The Three Worlds of Welfare Capitalism. Princeton University Press.",
+                    "Yay, G. G. & Aksoy, T. (2018). Globalization and the welfare state. Quality & Quantity.",
+                    "Agersnap, O., Jensen, A. & Kleven, H. (2020). The Welfare Magnet Hypothesis. AER: Insights."
                 ].map(cite => (
                     <div class="bg-slate-900 border border-white/5 p-4 rounded-lg flex items-start gap-3 hover:border-white/20 transition-colors">
                         <i class="fa-solid fa-quote-left text-slate-600 mt-1"></i>
@@ -222,16 +346,15 @@ const timeline = [
         {/* 5. Visual Abstracts (Gallery) */}
         <section class="container mx-auto max-w-6xl px-4 py-16 mb-16">
              <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Gallery</h2>
+             {/* Figures from the seminar paper. object-contain rather than object-cover:
+                 these are white matplotlib plots, and cover would crop the axes off. */}
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                 <div class="aspect-square bg-slate-800 rounded-2xl overflow-hidden relative group">
-                     {/* Placeholder or real images if available */}
-                     <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
-                     <img src="/assets/projects/exchange-rate-dynamics/hero.png" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-                 </div>
-                  <div class="aspect-square bg-slate-800 rounded-2xl overflow-hidden relative group md:col-span-2">
-                     <div class="absolute inset-0 bg-slate-900/50 group-hover:bg-transparent transition-colors z-10"></div>
-                     <img src="/assets/projects/ecb-taylor-rules/hero.png" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-                 </div>
+                 <a href="/en/projects/welfare-state-seminar" class="aspect-square bg-white rounded-2xl overflow-hidden relative group block">
+                     <img src="/assets/projects/welfare-state-seminar/fig-kof.png" alt="The KOF globalization indices for 32 OECD countries, 1980–2023. All four indices trend upwards over the period." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                 </a>
+                  <a href="/en/projects/welfare-state-seminar" class="aspect-square bg-white rounded-2xl overflow-hidden relative group md:col-span-2 block">
+                     <img src="/assets/projects/welfare-state-seminar/fig-rolling.png" alt="Rolling OLS coefficients over 10-year windows with 95% confidence bands, for each of the four globalization indices." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                 </a>
              </div>
         </section>
 
@@ -269,7 +392,7 @@ const timeline = [
                     <i class="fa-solid fa-lock-open"></i> Open Science Pledge
                 </h3>
                 <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                    We believe in transparency. All data cleaning is scripted, and we strive for full reproducibility via public replication packages for every major release.
+                    We believe in transparency. All data cleaning is scripted rather than manual, so a dataset can be rebuilt from its sources. The <a href="/en/projects/welfare-state-seminar" class="text-slate-300 hover:text-emerald-400 underline decoration-emerald-500/30 transition-colors">welfare state seminar</a> goes first: the whole pipeline is public on <a href="https://github.com/AntonEbsen/economics-of-the-welfare-state" target="_blank" rel="noopener" class="text-slate-300 hover:text-emerald-400 underline decoration-emerald-500/30 transition-colors">GitHub</a>, with raw data, a Makefile, a Docker image and tests. The others will follow as they are prepared.
                 </p>
                 <div class="flex gap-4">
                     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
@@ -299,15 +422,6 @@ const timeline = [
                                  <p class="text-xs text-slate-500">Department of Economics (ØI)</p>
                              </div>
                         </li>
-                         <li class="flex items-start gap-4">
-                             <div class="w-8 h-8 rounded-full bg-blue-900/20 border border-blue-500/30 flex items-center justify-center shrink-0">
-                                 <i class="fa-solid fa-flask text-blue-500 text-xs"></i>
-                             </div>
-                             <div>
-                                 <h4 class="font-bold text-slate-200 text-sm">CeBIL</h4>
-                                 <p class="text-xs text-slate-500">Data Support & Research</p>
-                             </div>
-                        </li>
                     </ul>
 
                     {/* Supervisors */}
@@ -332,6 +446,18 @@ const timeline = [
                                     <p class="text-xs text-slate-500">Assoc. Professor. Supervisor on AI & SDS.</p>
                                 </div>
                             </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                     <i class="fa-solid fa-user-tie text-slate-400 text-xs"></i>
+                                </div>
+                                <div>
+                                    <a href="https://www.econ.ku.dk/ansatte/vip/?pure=da/persons/374532" target="_blank" rel="noopener" class="font-bold text-slate-200 text-sm hover:text-blue-400 transition-colors">Amalie Sofie Jensen</a>
+                                    <p class="text-xs text-slate-500">
+                                        Supervisor on <a href="/en/projects/welfare-state-seminar" class="hover:text-blue-400 transition-colors">Globalization and the Welfare State</a> (2026).
+                                        <a href="https://www.amaliejensen.com/" target="_blank" rel="noopener" class="text-slate-600 hover:text-blue-400 transition-colors ml-1">Website &#8599;</a>
+                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -343,9 +469,11 @@ const timeline = [
              <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Research Log</h2>
              <div class="space-y-6">
                  {[
-                    { date: "Feb 2025", title: "Automating FX Data", desc: "Implemented a fully automated pipeline for fetching ECB exchange rates via API." },
-                    { date: "Jan 2025", title: "Mastering DuckDB", desc: "Migrated large datasets from CSV to DuckDB/Parquet format for 50x faster I/O." },
-                    { date: "Dec 2024", title: "GMM Estimation", desc: "Successful replication of Gertler & Karadi (2015) instruments in Stata." }
+                    { date: "Jun 2026", title: "Rolling regressions & Chow test", desc: "Estimating the globalization coefficient over 10-year windows exposed parameter instability; a Chow test confirmed a structural break at 2008 for all four KOF indices." },
+                    { date: "Apr 2026", title: "OECD panel assembled", desc: "Harmonised CPDS, KOF, OECD and World Bank sources into a single panel covering 32 countries, 1980–2023." },
+                    { date: "Feb 2025", title: "Automating exchange rate data", desc: "Scripted the retrieval and harmonisation of exchange rate and price index series from Statistics Denmark, so the dataset can be rebuilt from scratch." },
+                    { date: "Jan 2025", title: "DuckDB in the workflow", desc: "Migrated larger datasets from CSV to DuckDB/Parquet for faster queries during the exploratory phase." },
+                    { date: "Dec 2024", title: "GMM estimation", desc: "Two-step GMM with lagged instruments implemented in Stata for the ECB project's Taylor rules." }
                  ].map(l => (
                      <div class="flex gap-6 items-start group">
                          <div class="w-24 text-right pt-1 shrink-0">
@@ -370,27 +498,29 @@ const timeline = [
                          <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
                          <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
                      </div>
-                     <span class="text-xs font-mono text-slate-500">pipeline.py</span>
+                     <span class="text-xs font-mono text-slate-500">rolling_windows.py</span>
                  </div>
-                 {/* Code Content */}
+                 {/* Code Content. Trimmed from the estimation code behind
+                     "Globalization and the Welfare State" (eq. 4.1). */}
                  <div class="p-6 overflow-x-auto">
                      <pre class="font-mono text-sm leading-relaxed">
 <span class="text-purple-400">import</span> pandas <span class="text-purple-400">as</span> pd
-<span class="text-purple-400">import</span> statsmodels.api <span class="text-purple-400">as</span> sm
+<span class="text-purple-400">from</span> linearmodels.panel <span class="text-purple-400">import</span> PanelOLS
 
-<span class="text-slate-500"># 1. Load and Clean High-Frequency Data</span>
-df = (
-    pd.<span class="text-blue-400">read_parquet</span>(<span class="text-green-400">"data/raw/ecb_ticks.parquet"</span>)
-    .<span class="text-blue-400">query</span>(<span class="text-green-400">"currency == 'USD/EUR'"</span>)
-    .<span class="text-blue-400">resample</span>(<span class="text-green-400">"1min"</span>)
-    .<span class="text-blue-400">agg</span>(&#123;<span class="text-green-400">"price"</span>: <span class="text-green-400">"ohlc"</span>, <span class="text-green-400">"vol"</span>: <span class="text-green-400">"sum"</span>&#125;)
-    .<span class="text-blue-400">dropna</span>()
-)
+<span class="text-slate-500"># 1. Balanced panel: 32 OECD countries, 1980–2023</span>
+panel = df.<span class="text-blue-400">set_index</span>([<span class="text-green-400">"country"</span>, <span class="text-green-400">"year"</span>])
+spec = <span class="text-green-400">"sstran ~ 1 + KOFGI_lag1 + ln_gdppc_lag1 + inflation_lag1"</span> \
+       <span class="text-green-400">" + deficit_lag1 + debt_lag1 + ln_pop_lag1 + dep_ratio_lag1"</span> \
+       <span class="text-green-400">" + EntityEffects + TimeEffects"</span>
 
-<span class="text-slate-500"># 2. Local Projection (Jordà, 2005)</span>
-model = sm.<span class="text-yellow-400">OLS</span>(df[<span class="text-green-400">"future_return"</span>], df[[<span class="text-green-400">"shock"</span>, <span class="text-green-400">"controls"</span>]])
-results = model.<span class="text-blue-400">fit</span>(cov_type=<span class="text-green-400">'HAC'</span>, cov_kwds=&#123;<span class="text-green-400">'maxlags'</span>: <span class="text-orange-400">12</span>&#125;)
-<span class="text-purple-400">print</span>(results.<span class="text-blue-400">summary</span>())
+<span class="text-slate-500"># 2. Rolling 10-year windows: each point is a separate estimation</span>
+<span class="text-purple-400">for</span> end <span class="text-purple-400">in</span> <span class="text-blue-400">range</span>(<span class="text-orange-400">1989</span>, <span class="text-orange-400">2024</span>):
+    years = <span class="text-blue-400">range</span>(end - <span class="text-orange-400">9</span>, end + <span class="text-orange-400">1</span>)
+    window = panel.<span class="text-blue-400">loc</span>[panel.index.<span class="text-blue-400">get_level_values</span>(<span class="text-green-400">"year"</span>).<span class="text-blue-400">isin</span>(years)]
+    fit = PanelOLS.<span class="text-blue-400">from_formula</span>(spec, window).<span class="text-blue-400">fit</span>(
+        cov_type=<span class="text-green-400">"clustered"</span>, cluster_entity=<span class="text-orange-400">True</span>
+    )
+    <span class="text-purple-400">print</span>(end, fit.params[<span class="text-green-400">"KOFGI_lag1"</span>], fit.std_errors[<span class="text-green-400">"KOFGI_lag1"</span>])
                      </pre>
                  </div>
                  {/* Label */}
@@ -405,16 +535,20 @@ results = model.<span class="text-blue-400">fit</span>(cov_type=<span class="tex
         <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
              <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Academic Curriculum (M.Sc. Econ)</h2>
              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 {/* Verified against cv/en.json — real courses with their recorded ECTS and grades. */}
                  {[
-                    { course: "Advanced Macroeconomics", ects: "7.5", desc: "DSGE models, real business cycles & New Keynesian theory." },
-                    { course: "Econometrics II", ects: "7.5", desc: "Instrument variables, GMM, Time Series Analysis & asymptotic theory." },
-                    { course: "Mechanism Design", ects: "7.5", desc: "Auction theory, contract theory & matching markets." },
-                    { course: "Corporate Finance", ects: "7.5", desc: "Capital structure, valuation & financial options." }
+                    { course: "Seminar – Economics of the Welfare State", ects: null, grade: "10", desc: "Economics of the welfare state. Completed with the seminar paper behind this project." },
+                    { course: "Advanced Macroeconomics – Structural VAR", ects: "7.5", grade: "10", desc: "Identification, impulse responses and robustness in structural VAR models." },
+                    { course: "Advanced Macroeconomics – Business Cycles", ects: "7.5", grade: "10", desc: "Business cycle theory, DSGE models and macroeconomic fluctuations." },
+                    { course: "Applied Economic Modelling", ects: "7.5", grade: "10", desc: "Calibration, SAM, shocks and baseline checks. Tool: GAMS." }
                  ].map(c => (
                      <div class="bg-slate-900/50 border border-white/5 p-6 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all group">
                          <div class="flex justify-between items-start mb-4">
-                             <div class="bg-blue-900/20 text-blue-400 text-[10px] font-bold px-2 py-1 rounded border border-blue-500/20">{c.ects} ECTS</div>
-                             <i class="fa-solid fa-graduation-cap text-slate-600 group-hover:text-blue-500 transition-colors"></i>
+                             <div class="bg-blue-900/20 text-blue-400 text-[10px] font-bold px-2 py-1 rounded border border-blue-500/20">{c.ects ? `${c.ects} ECTS` : 'Seminar'}</div>
+                             <div class="flex items-center gap-2">
+                                 <span class="text-[10px] font-bold text-emerald-400/80">{c.grade}</span>
+                                 <i class="fa-solid fa-graduation-cap text-slate-600 group-hover:text-blue-500 transition-colors"></i>
+                             </div>
                          </div>
                          <h3 class="font-bold text-white text-sm mb-2">{c.course}</h3>
                          <p class="text-xs text-slate-400 leading-relaxed">{c.desc}</p>
@@ -422,4 +556,5 @@ results = model.<span class="text-blue-400">fit</span>(cov_type=<span class="tex
                  ))}
              </div>
         </section>
+    </main>
 </Layout>

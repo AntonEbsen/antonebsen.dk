@@ -37,6 +37,9 @@ const portfolioCollection = defineCollection({
     type: 'data',
     schema: z.object({
         title: z.string(),
+        // Route slug under /projects/. The entry ids are "project-01" style, which
+        // matches no route — blog sidebars linked to /projects/project-01 and 404'd.
+        slug: z.string().optional(),
         tagString: z.string(),
         description: z.string(),
         tools: z.string(),

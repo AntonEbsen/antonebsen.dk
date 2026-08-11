@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -78,7 +79,14 @@ const projectContent = {
     limitations: "Limitations",
     continuityTitle: "Conceptual Continuity",
     visualAnalysis: "Visual Analysis"
-  }
+  },
+  collaborators: [
+    {
+        ...sheng,
+        role: "Study Group Member",
+        description: "Co-author on this project during our bachelor's. Contributed substantially to the data harmonisation and the correlation analysis."
+    }
+  ]
 };
 ---
 <ProjectDetailPage lang="en" project={projectContent} />

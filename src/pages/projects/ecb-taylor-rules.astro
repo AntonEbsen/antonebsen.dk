@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -225,19 +226,15 @@ foreach c within "DE" "FR" "IT" "ES" {
   ],
   briefingUrl: "/assets/docs/Jorgensen_2024_ECB_Rules.pdf",
   collaborators: [
-    { 
-        name: "Sheng Ye Michael Chen", 
-        role: "Studiegruppemedlem", 
-        image: "/assets/collaborators/sheng.jpg",
-        description: "Nøgleperson bag GMM-estimeringsstrategien og Stata-implementeringen af de kontrafaktiske simuleringer.",
-        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    {
+        ...sheng,
+        role: "Studiegruppemedlem",
+        description: "Nøgleperson bag GMM-estimeringsstrategien og Stata-implementeringen af de kontrafaktiske simuleringer."
     },
-    { 
-        name: "Jonas Amasa Skov Nielsen", 
-        role: "Studiegruppemedlem", 
-        image: "/assets/collaborators/jonas.jpg",
-        description: "Bidrog til den teoretiske ramme og analysen af strukturelle brud i Eurozonens pengepolitiske transmission.",
-        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+    {
+        ...jonas,
+        role: "Studiegruppemedlem",
+        description: "Bidrog til den teoretiske ramme og analysen af strukturelle brud i Eurozonens pengepolitiske transmission."
     }
   ],
   bibliography: [

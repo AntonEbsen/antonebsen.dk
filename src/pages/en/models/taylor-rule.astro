@@ -63,15 +63,17 @@ const t = {
                             </div>
                             <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Data</p>
-                                <p class="text-sm font-bold text-white">ECB/Eurostat</p>
+                                <p class="text-sm font-bold text-white">{lang === 'da' ? 'Illustrativ serie' : 'Illustrative series'}</p>
                             </div>
                             <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Software</p>
                                 <p class="text-sm font-bold text-white">React & Chart.js</p>
                             </div>
+                            {/* The underlying series is a stylised illustration, not the
+                                estimated series — saying "Empirical Match" overclaimed it. */}
                             <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Precision</p>
-                                <p class="text-sm font-bold text-white">Empirical Match</p>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{lang === 'da' ? 'Formål' : 'Purpose'}</p>
+                                <p class="text-sm font-bold text-white">{lang === 'da' ? 'Intuition, ikke estimat' : 'Intuition, not estimate'}</p>
                             </div>
                         </div>
                     </div>

@@ -206,9 +206,16 @@
             "title": "Seminar - Economics of the Welfare State",
             "tag": "Seminar",
             "institution": "Universität Kopenhagen",
-            "description": "Ökonomische Analyse der Gestaltung und Herausforderungen des Sozialstaates.",
+            "description": "Ökonomische Analyse der Gestaltung und Herausforderungen des Sozialstaates. Abgeschlossen mit der Seminararbeit \"Globalization and the Welfare State\" — eine Paneldatenanalyse von 32 OECD-Ländern von 1980 bis 2023, die den Zusammenhang zwischen Globalisierung und Sozialtransfers als historisch bedingt statt stabil ausweist.",
             "level": "master",
-            "grade": "10"
+            "grade": "10",
+            "relatedProjects": [
+                {
+                    "title": "Globalization and the Welfare State",
+                    "href": "/projects/welfare-state-seminar",
+                    "previewImage": "/assets/projects/welfare-state-seminar/fig-rolling.png"
+                }
+            ]
         },
         {
             "title": "Stichprobentheorie",
@@ -551,6 +558,38 @@
                 {
                     "text": "Code",
                     "href": "#"
+                }
+            ]
+        },
+        {
+            "title": "Globalization and the Welfare State",
+            "url": "/projects/welfare-state-seminar",
+            "tag": "Seminar",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Python",
+                "Paneldaten",
+                "Ökonometrie"
+            ],
+            "highlights": [
+                {
+                    "label": "Note",
+                    "value": "10"
+                },
+                {
+                    "label": "Daten",
+                    "value": "32 Länder, N=996"
+                }
+            ],
+            "meta": "Betreuerin: Amalie Sofie Jensen · Universität Kopenhagen, Juni 2026",
+            "description": "Seminararbeit mit Jonas Skov Nielsen und Sheng Ye Michael Chen. Paneldatenanalyse mit fixen Effekten für 32 OECD-Länder, 1980–2023: kein robuster Zusammenhang zwischen Globalisierung und Sozialtransfers — rollierende Regressionen zeigen jedoch einen Strukturbruch im Jahr 2008 und einen Zusammenhang, der im Zeitverlauf das Vorzeichen wechselt.",
+            "links": [
+                {
+                    "text": "PDF",
+                    "href": "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf"
                 }
             ]
         },

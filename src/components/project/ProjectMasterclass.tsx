@@ -86,7 +86,9 @@ const MethodologyTooltip: React.FC<{ term: string, lang: 'da' | 'en' }> = ({ ter
     );
 };
 
-const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da' | 'en' }> = ({ items, lang }) => {
+// Exported so a project without a video series can still show its robustness
+// section — the accordion used to be reachable only through the masterclass.
+export const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da' | 'en' }> = ({ items, lang }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     const labels = {

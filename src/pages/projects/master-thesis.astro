@@ -1,6 +1,7 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
 import ThesisDashboard from '@components/project/ThesisDashboard.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const dashboardData = {
@@ -88,18 +89,8 @@ const projectContent = {
         { label: "ECTS", value: "30" }
     ],
     collaborators: [
-     {
-        name: "Sheng Ye Michael Chen",
-        role: "Medforfatter & Data Scientist",
-        image: "/assets/collaborators/sheng.jpg",
-        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" }
-     },
-     {
-        name: "Jonas Amasa Skov Nielsen",
-        role: "Medforfatter & Teoretiker",
-        image: "/assets/collaborators/jonas.jpg",
-        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" }
-     }
+     { ...sheng, role: "Medforfatter & Data Scientist" },
+     { ...jonas, role: "Medforfatter & Teoretiker" }
   ],
   codeSnippet: {
         lang: "latex",

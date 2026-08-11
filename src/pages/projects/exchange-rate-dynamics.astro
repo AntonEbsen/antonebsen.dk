@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -177,12 +178,10 @@ plt.show()`
     openScience: "Open Science"
   },
   collaborators: [
-    { 
-        name: "Sheng Ye Michael Chen", 
-        role: "Studiegruppemedlem", 
-        image: "/assets/collaborators/sheng.jpg",
-        description: "Medforfatter på dette projekt under vores bachelor. Bidrog væsentligt til dataharmonisering og korrelationsanalysen.",
-        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    {
+        ...sheng,
+        role: "Studiegruppemedlem",
+        description: "Medforfatter på dette projekt under vores bachelor. Bidrog væsentligt til dataharmonisering og korrelationsanalysen."
     }
   ],
   bibliography: [

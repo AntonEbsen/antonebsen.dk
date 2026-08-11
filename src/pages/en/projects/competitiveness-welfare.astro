@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { noah, marius, elias } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -85,9 +86,9 @@ const projectContent = {
     openScience: "Open Science"
   },
   collaborators: [
-    { name: "Noah Hjorth Berge", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
-    { name: "Marius Bruun Hansen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." },
-    { name: "Elias Walther Børresen", role: "Project Partner", image: "/assets/collaborators/avatar.svg", description: "Co-author." }
+    { ...noah, role: "Project Partner", description: "Co-author." },
+    { ...marius, role: "Project Partner", description: "Co-author." },
+    { ...elias, role: "Project Partner", description: "Co-author." }
   ],
   bibliography: []
 };

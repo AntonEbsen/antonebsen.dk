@@ -352,9 +352,16 @@
             "title": "Seminar - Economics of the Welfare State",
             "tag": "Seminar",
             "institution": "UCPH",
-            "description": "Economic analysis of the welfare state's design and challenges.",
+            "description": "Economic analysis of the welfare state's design and challenges. Completed with the seminar paper \"Globalization and the Welfare State\" — a panel data analysis of 32 OECD countries from 1980 to 2023, finding the relationship between globalization and social security transfers to be historically contingent rather than stable.",
             "level": "master",
-            "grade": "10"
+            "grade": "10",
+            "relatedProjects": [
+                {
+                    "title": "Globalization and the Welfare State",
+                    "href": "/en/projects/welfare-state-seminar",
+                    "previewImage": "/assets/projects/welfare-state-seminar/fig-rolling.png"
+                }
+            ]
         },
         {
             "title": "Sampling Theory",
@@ -792,7 +799,7 @@
     "projects": [
         {
             "title": "Monetary Policy & Economic Relations",
-            "description": "Master's Thesis (Sept 2026 - Jan 2027). A comprehensive empirical analysis of the role of monetary policy in a post-COVID world. This 'living' project documents the process from ideation to defense.",
+            "description": "Master's Thesis (Aug 2026 - Jan 2027). A comprehensive empirical analysis of the role of monetary policy in a post-COVID world. This 'living' project documents the process from ideation to defense.",
             "technologies": [
                 "Python",
                 "Stata",
@@ -806,6 +813,38 @@
                     "text": "View Project",
                     "href": "/projects/master-thesis",
                     "icon": "arrow-right"
+                }
+            ]
+        },
+        {
+            "title": "Globalization and the Welfare State",
+            "url": "/projects/welfare-state-seminar",
+            "tag": "Seminar",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Python",
+                "Panel Data",
+                "Econometrics"
+            ],
+            "highlights": [
+                {
+                    "label": "Grade",
+                    "value": "10"
+                },
+                {
+                    "label": "Data",
+                    "value": "32 countries, N=996"
+                }
+            ],
+            "meta": "Supervisor: Amalie Sofie Jensen · UCPH, June 2026",
+            "description": "Seminar paper with Jonas Skov Nielsen and Sheng Ye Michael Chen. Fixed-effects panel analysis of 32 OECD countries, 1980–2023: no robust relationship between globalization and social security transfers — but rolling regressions reveal a structural break in 2008 and a relationship that changes sign over time.",
+            "links": [
+                {
+                    "text": "PDF",
+                    "href": "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf"
                 }
             ]
         },
@@ -1012,27 +1051,6 @@
                 {
                     "text": "View Placeholder",
                     "href": "/projects/demography-project"
-                }
-            ]
-        },
-        {
-            "title": "Seminar: Economics of the Welfare State (TBD)",
-            "url": "/projects/welfare-state-seminar",
-            "tag": "Upcoming",
-            "categories": [
-                "tech",
-                "core"
-            ],
-            "technologies": [
-                "Economics",
-                "Public Policy"
-            ],
-            "meta": "Status: Planned",
-            "description": "Upcoming seminar project in welfare state economics. Developed in collaboration with Sheng and Jonas.",
-            "links": [
-                {
-                    "text": "View Placeholder",
-                    "href": "/projects/welfare-state-seminar"
                 }
             ]
         }

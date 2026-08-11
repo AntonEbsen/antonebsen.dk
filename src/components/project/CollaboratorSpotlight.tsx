@@ -65,11 +65,13 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                     <span className="relative flex h-2 w-2 ml-2 inline-block">
                                         <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${collab.status.color === 'green' ? 'bg-emerald-400' :
                                             collab.status.color === 'red' ? 'bg-red-400' :
-                                                'bg-blue-400'
+                                                collab.status.color === 'yellow' ? 'bg-amber-400' :
+                                                    'bg-blue-400'
                                             }`}></span>
                                         <span className={`relative inline-flex rounded-full h-2 w-2 ${collab.status.color === 'green' ? 'bg-emerald-500' :
                                             collab.status.color === 'red' ? 'bg-red-500' :
-                                                'bg-blue-500'
+                                                collab.status.color === 'yellow' ? 'bg-amber-500' :
+                                                    'bg-blue-500'
                                             }`}></span>
                                     </span>
                                 )}
@@ -111,11 +113,13 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                             inline-flex items-center gap-2 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide mb-3 border
                                             ${selected.status.color === 'green' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                                                 selected.status.color === 'red' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                                                    'bg-blue-500/10 text-blue-400 border-blue-500/20'}
+                                                    selected.status.color === 'yellow' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
+                                                        'bg-blue-500/10 text-blue-400 border-blue-500/20'}
                                         `}>
                                             <span className={`w-1.5 h-1.5 rounded-full ${selected.status.color === 'green' ? 'bg-emerald-500' :
                                                     selected.status.color === 'red' ? 'bg-red-500' :
-                                                        'bg-blue-500'} animate-pulse`}></span>
+                                                        selected.status.color === 'yellow' ? 'bg-amber-500' :
+                                                            'bg-blue-500'} animate-pulse`}></span>
                                             {selected.status.text}
                                         </div>
                                     )}
