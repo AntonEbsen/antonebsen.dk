@@ -20,6 +20,13 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
     const [error, setError] = useState<string | null>(null);
     const [initializing, setInitializing] = useState(false);
     const [ready, setReady] = useState(false);
+    // null = not checked yet, false = the CSV isn't published.
+    const [dataAvailable, setDataAvailable] = useState<boolean | null>(null);
+    // Real column list, read from the loaded file rather than assumed. Kept in a ref
+    // as well: generateSql needs it immediately after booting the engine, before a
+    // state update would be visible in that closure.
+    const schemaRef = useRef<string | null>(null);
+    const setSchema = (s: string | null) => { schemaRef.current = s; };
 
     // Lazily boot DuckDB (~70MB WASM) only when the user actually runs a query,
     // instead of on mount — so visiting a project page doesn't download the engine.
@@ -47,6 +54,18 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
             detect: true,
         });
 
+        // Ask DuckDB what it actually loaded, so the AI helper describes this file
+        // rather than the VIX columns that used to be hardcoded here.
+        try {
+            const described = await connection.query('DESCRIBE main_data');
+            const cols = described.toArray()
+                .map((r: any) => r.toJSON())
+                .map((r: any) => `${r.column_name} (${r.column_type})`);
+            setSchema(`Table: main_data. Columns: ${cols.join(', ')}`);
+        } catch {
+            setSchema('Table: main_data.');
+        }
+
         connRef.current = connection;
         setReady(true);
         return connection;
@@ -66,12 +85,23 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
         connRef.current = null;
         initPromiseRef.current = null;
         setReady(false);
+        setSchema(null);
+        setDataAvailable(null);
+
+        // Check the file exists before offering a query box. Several projects link
+        // to replication data that hasn't been published yet; without this the user
+        // downloads a 70MB engine only to get a raw SQL error.
+        let cancelled = false;
+        fetch(dataUrl, { method: 'HEAD' })
+            .then(res => { if (!cancelled) setDataAvailable(res.ok); })
+            .catch(() => { if (!cancelled) setDataAvailable(false); });
 
         // Allow the Project Bot to push generated SQL into the editor.
         const handleBotSQL = (e: CustomEvent) => setQuery(e.detail);
         window.addEventListener('project-bot-sql', handleBotSQL as EventListener);
 
         return () => {
+            cancelled = true;
             window.removeEventListener('project-bot-sql', handleBotSQL as EventListener);
         };
     }, [dataUrl]);
@@ -101,7 +131,8 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     text: nlQuery,
-                    schema: 'Table: main_data. Columns: date (DATE), vix (DOUBLE), sp500 (DOUBLE), vix_diff (DOUBLE)' // Hardcoded for demo, ideally dynamic
+                    // Boot the engine first if needed, so the model is told the real columns.
+                    schema: schemaRef.current ?? (await ensureDb(), schemaRef.current) ?? 'Table: main_data.'
                 })
             });
 
@@ -123,15 +154,30 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     <i className="fa-solid fa-database text-blue-500"></i>
                     Data Playground (DuckDB)
                 </span>
-                <span className="text-[10px] text-slate-400">{initializing ? 'Starting engine…' : ready ? 'Ready' : 'Idle — run a query to start'}</span>
+                <span className="text-[10px] text-slate-400">
+                    {dataAvailable === false
+                        ? 'Dataset not published yet'
+                        : initializing ? 'Starting engine…' : ready ? 'Ready' : 'Idle — run a query to start'}
+                </span>
             </div>
 
+            {dataAvailable === false && (
+                <div className="p-6 text-center">
+                    <i className="fa-solid fa-database text-slate-300 text-2xl mb-3"></i>
+                    <p className="text-sm font-bold text-slate-600 mb-1">The replication data isn't published yet</p>
+                    <p className="text-xs text-slate-500 max-w-md mx-auto">
+                        This playground runs SQL against the project's own dataset in your browser.
+                        It will light up as soon as <code className="font-mono text-slate-600">{dataUrl.split('/').pop()}</code> is available.
+                    </p>
+                </div>
+            )}
+
             {/* AI Natural Language Input */}
-            <div className="p-4 bg-slate-900 border-b border-slate-700">
+            <div className="p-4 bg-slate-900 border-b border-slate-700" hidden={dataAvailable === false}>
                 <div className="flex gap-2">
                     <input
                         type="text"
-                        placeholder="✨ Ask the data... (e.g., 'Show average VIX by year')"
+                        placeholder="✨ Ask the data in plain English…"
                         className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
                         value={nlQuery}
                         onChange={(e) => setNlQuery(e.target.value)}
@@ -147,7 +193,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 </div>
             </div>
 
-            <div className="p-0">
+            <div className="p-0" hidden={dataAvailable === false}>
                 <textarea
                     className="w-full h-24 p-4 font-mono text-sm bg-slate-950 text-green-400 focus:outline-none resize-none"
                     value={query}
@@ -156,7 +202,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 />
             </div>
 
-            <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex justify-end">
+            <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex justify-end" hidden={dataAvailable === false}>
                 <button
                     onClick={runQuery}
                     disabled={initializing}

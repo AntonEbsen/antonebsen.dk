@@ -39,6 +39,15 @@
             "tech": "Programmering i GAMS for at løse komplekse markeds-ligevægte.",
             "formula": "Y = A \\cdot [\\alpha K^\\rho + (1-\\alpha) L^\\rho]^{1/\\rho}",
             "icon": "fa-solid fa-network-wired"
+        },
+        {
+            "id": "rolling-window",
+            "title": "Rullende regressioner",
+            "desc": "Estimation af samme model på glidende tidsvinduer for at afsløre parameterustabilitet.",
+            "tech": "Brugt i velfærdsstatsseminaret til at vise, at globaliseringskoefficienten skifter fortegn omkring finanskrisen.",
+            "formula": "\\hat{\\beta}_{[t-w+1,\\,t]} = \\arg\\min_{\\beta} \\sum_{s=t-w+1}^{t} \\left(WS_{is} - \\beta G_{i,s-1} - Z_{i,s-1}'\\gamma - \\delta_i - \\gamma_s\\right)^2",
+            "icon": "fa-solid fa-wave-square",
+            "simulatorUrl": "/models/rolling-window"
         }
     ]
 }

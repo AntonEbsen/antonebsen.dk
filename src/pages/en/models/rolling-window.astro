@@ -1,0 +1,7 @@
+---
+// Thin locale shell, matching en/models/taylor-rule.astro. getLangFromUrl picks up
+// the /en prefix, so the shared page component renders the English strings.
+import RollingWindowPage from '../../models/rolling-window.astro';
+export const prerender = true;
+---
+<RollingWindowPage />
