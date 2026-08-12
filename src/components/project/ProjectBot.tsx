@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { useChat } from '@ai-sdk/react';
-import mermaid from 'mermaid';
+// mermaid is imported dynamically where it is used. As a top-level import it
+// pulled cytoscape and every diagram renderer — about 1.4 MB — into the eager
+// payload of every project page, for a widget most visitors never open.
 
 interface ProjectBotProps {
     projectTitle: string;
@@ -20,10 +22,6 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
         content: `Analyzing ${projectTitle}... Ready for review.`
     };
 
-    // Initialize Mermaid - Lazy load to prevent hydration crash
-    useEffect(() => {
-        // mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
-    }, []);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -62,15 +60,24 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
 
     const { messages, input, handleInputChange, handleSubmit, isLoading, append, setInput } = chatHelpers;
 
-    // Run Mermaid on new messages
+    // Run Mermaid on new messages. The engine is fetched on first use only —
+    // most conversations never contain a diagram, and it is ~1.4 MB.
     useEffect(() => {
         if (!isOpen) return;
-        setTimeout(() => {
-            mermaid.run({
-                querySelector: '.mermaid'
-            });
-            scrollToBottom();
+        let cancelled = false;
+        const timer = setTimeout(async () => {
+            if (document.querySelector('.mermaid')) {
+                try {
+                    const { default: mermaid } = await import('mermaid');
+                    if (cancelled) return;
+                    await mermaid.run({ querySelector: '.mermaid' });
+                } catch {
+                    // A diagram that fails to render must not take the chat down.
+                }
+            }
+            if (!cancelled) scrollToBottom();
         }, 100);
+        return () => { cancelled = true; clearTimeout(timer); };
     }, [messages, isOpen]);
 
 
