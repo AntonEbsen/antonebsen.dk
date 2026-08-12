@@ -41,30 +41,34 @@ export async function GET() {
     index.push(...commands);
 
     // 2. Blog Posts (Multi-language)
+    // Danish is served from /blog/<id> and English from /en/blog/<id>, matching the
+    // rest of the site. This loop had the two the other way round and pointed Danish
+    // at /da/blog/<id>, a route that does not exist — so every Danish blog hit 404'd
+    // and every English one served Danish.
     for (const post of posts) {
+        // Danish (site root)
+        index.push({
+            title: post.data.title_da || post.data.title,
+            url: `/blog/${post.id}`,
+            content: Array.isArray(post.data.content_da)
+                ? post.data.content_da.join(' ')
+                : (post.data.description_da || post.data.description),
+            tags: [post.data.tag, ...(post.data.tags || [])],
+            type: 'blog',
+            icon: 'fa-solid fa-newspaper',
+            lang: 'da'
+        });
+
         // English
         index.push({
             title: post.data.title,
-            url: `/blog/${post.id}`,
+            url: `/en/blog/${post.id}`,
             content: Array.isArray(post.data.content) ? post.data.content.join(' ') : post.data.description,
             tags: [post.data.tag, ...(post.data.tags || [])],
             type: 'blog',
             icon: 'fa-solid fa-newspaper',
             lang: 'en'
         });
-
-        // Danish
-        if (post.data.title_da) {
-            index.push({
-                title: post.data.title_da,
-                url: `/da/blog/${post.id}`,
-                content: Array.isArray(post.data.content_da) ? post.data.content_da.join(' ') : (post.data.description_da || post.data.description),
-                tags: [post.data.tag, ...(post.data.tags || [])],
-                type: 'blog',
-                icon: 'fa-solid fa-newspaper',
-                lang: 'da'
-            });
-        }
     }
 
     // 3. Projects. These come from the `cv` collection, which is what /portfolio,
