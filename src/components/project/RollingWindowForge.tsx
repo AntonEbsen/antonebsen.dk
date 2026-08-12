@@ -85,6 +85,21 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
     const upper = series.map(p => p.coef + 1.96 * p.se);
     const lower = series.map(p => p.coef - 1.96 * p.se);
 
+    // Read out to a screen reader in place of the canvas.
+    const chartSummary = (() => {
+        const first = series[0];
+        const last = series[series.length - 1];
+        const label = t.indices[index];
+        const n = series.length;
+        return lang === 'da'
+            ? `Rullende ${length}-års koefficient på ${label}, ${n} vinduer. `
+              + `Fra ${first.coef.toFixed(3)} i vinduet der slutter ${first.end} `
+              + `til ${last.coef.toFixed(3)} i vinduet der slutter ${last.end}.`
+            : `Rolling ${length}-year coefficient on ${label}, ${n} windows. `
+              + `From ${first.coef.toFixed(3)} in the window ending ${first.end} `
+              + `to ${last.coef.toFixed(3)} in the window ending ${last.end}.`;
+    })();
+
     const data: ChartData<'line'> = {
         labels: series.map(p => String(p.end)),
         datasets: [
@@ -172,10 +187,11 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
             <div className="flex flex-col lg:flex-row gap-6 mb-6">
                 {/* Window length */}
                 <div className="flex-1">
-                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">
+                    <label htmlFor="rwf-window-length" className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">
                         {t.windowLength}: <span className="text-accent">{length} {t.years}</span>
                     </label>
                     <input
+                        id="rwf-window-length"
                         type="range"
                         min={lengths[0]}
                         max={lengths[lengths.length - 1]}
@@ -195,7 +211,7 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
 
                 {/* Index picker */}
                 <div className="flex-1">
-                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">
                         {t.index}
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -206,7 +222,7 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
                                     index === k
                                         ? 'bg-white/10 text-white border-white/20'
-                                        : 'bg-transparent text-slate-500 border-white/5 hover:text-slate-300'
+                                        : 'bg-transparent text-slate-400 border-white/5 hover:text-slate-300'
                                 }`}
                                 style={index === k ? { borderColor: `rgb(${SERIES_COLOR[k]})` } : undefined}
                             >
@@ -217,8 +233,12 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
                 </div>
             </div>
 
+            {/* Chart.js renders a bare <canvas role="img">, which a screen reader
+                announces as an unlabelled image. Describe what the line actually
+                does — the endpoints and the sign change are the whole finding, so
+                this is the summary a sighted reader takes away too. */}
             <div className="h-[340px] mb-6">
-                <Line data={data} options={options} />
+                <Line data={data} options={options} aria-label={chartSummary} />
             </div>
 
             <div className="flex flex-wrap items-center gap-6 mb-6">
@@ -235,27 +255,27 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
 
             {/* Readout for the clicked (or latest) window */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-4">
-                <p className="text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-3">{t.readoutTitle}</p>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-3">{t.readoutTitle}</p>
                 <div className="flex flex-wrap gap-x-8 gap-y-3 items-baseline">
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-500">{t.window}</span>
+                        <span className="block text-[10px] uppercase text-slate-400">{t.window}</span>
                         <span className="text-sm font-bold text-white tabular-nums">
                             {readout.end - length + 1}–{readout.end}
                         </span>
                     </div>
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-500">{t.coefficient}</span>
+                        <span className="block text-[10px] uppercase text-slate-400">{t.coefficient}</span>
                         <span className="text-2xl font-bold text-white tabular-nums">{readout.coef.toFixed(4)}</span>
                     </div>
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-500">{t.stdErr}</span>
+                        <span className="block text-[10px] uppercase text-slate-400">{t.stdErr}</span>
                         <span className="text-sm font-bold text-slate-300 tabular-nums">{readout.se.toFixed(4)}</span>
                     </div>
                     <span
                         className={`text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border ${
                             significant
                                 ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                                : 'text-slate-500 border-white/10 bg-white/5'
+                                : 'text-slate-400 border-white/10 bg-white/5'
                         }`}
                     >
                         {significant ? t.significant : t.notSignificant}
@@ -266,7 +286,7 @@ export default function RollingWindowForge({ lang = 'en' }: { lang?: 'da' | 'en'
             <p className="text-xs text-slate-400 leading-relaxed mb-3">{t.takeaway}</p>
 
             {lengths.length === 1 && (
-                <p className="text-[11px] text-slate-600 leading-relaxed border-t border-white/5 pt-3">
+                <p className="text-[11px] text-slate-400 leading-relaxed border-t border-white/5 pt-3">
                     {t.singleWindowNote}
                 </p>
             )}

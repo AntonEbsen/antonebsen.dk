@@ -76,9 +76,14 @@ const emojiMap: Record<string, string> = {
     </div>
 
     <div class="cta-row">
-      <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+      {/* This linked to /assets/Anton-CV.pdf, a file that has never existed — so the
+          one button on the CV page 404'd. There is already a print stylesheet
+          (@styles/print.css, imported by CVPage) that strips the chrome and lays the
+          page out for paper, so print-to-PDF genuinely produces the document the
+          label promises. No asset to keep in sync, and it is never out of date. */}
+      <button type="button" class="btn no-print" onclick="window.print()">
         <i class="fa-solid fa-download" aria-hidden="true"></i> {ui.downloadCV}
-      </a>
+      </button>
     </div>
   </div>
 

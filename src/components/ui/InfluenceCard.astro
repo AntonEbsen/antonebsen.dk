@@ -1,5 +1,6 @@
 ---
 import Card from './Card.astro';
+import { assetExists } from '@lib/public-asset';
 
 interface Props {
   name: string;
@@ -12,8 +13,13 @@ interface Props {
 
 const { name, role, category, image, quote, impact } = Astro.props;
 
-// Default image if none provided
-const displayImage = image || "/assets/img/placeholder-influence.jpg";
+// The fallback used to be /assets/img/placeholder-influence.jpg, which was never
+// added — so every card without its own portrait showed a broken image. None of
+// them have one. Fall back to the person's initials on a tinted panel instead:
+// deterministic, always renders, and reads as a deliberate design rather than a
+// missing file.
+const displayImage = assetExists(image) ? image : null;
+const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 ---
 
 <div class="influence-container group cursor-pointer h-[450px] w-full">
@@ -22,11 +28,17 @@ const displayImage = image || "/assets/img/placeholder-influence.jpg";
     <!-- FRONT -->
     <div class="influence-front absolute inset-0 backface-hidden rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-      <img 
-        src={displayImage} 
-        alt={name} 
-        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
-      />
+      {displayImage ? (
+        <img
+          src={displayImage}
+          alt={name}
+          class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+        />
+      ) : (
+        <div class="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center" aria-hidden="true">
+          <span class="text-7xl font-serif font-bold text-white/15 tracking-widest select-none">{initials}</span>
+        </div>
+      )}
       <div class="absolute bottom-6 left-6 right-6 z-20 text-left">
         <span class="text-[10px] uppercase tracking-widest text-accent font-bold mb-1 block">{category}</span>
         <h3 class="text-2xl font-bold text-white leading-tight">{name}</h3>

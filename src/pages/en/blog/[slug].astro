@@ -101,17 +101,17 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                         {post.data.footnotes ? (
                             post.data.footnotes.map((fn: any) => (
                                 <li id={`fn-${fn.id}`}>
-                                    <span set:html={fn.content} /> <a href={`#ref-${fn.id}`} class="text-accent no-underline">↩</a>
+                                    <span set:html={fn.content} /> <a href={`#ref-${fn.id}`} class="text-accent underline underline-offset-2">↩</a>
                                 </li>
                             ))
                         ) : (
                             /* Fallback for AI Post (Legacy) */
                             <>
                                 <li id="fn-1">
-                                    Bernanke, B. (2025). <em>Artificial Intelligence and the Future of Central Banking</em>. Journal of Monetary Economics. <a href="#ref-1" class="text-accent no-underline">↩</a>
+                                    Bernanke, B. (2025). <em>Artificial Intelligence and the Future of Central Banking</em>. Journal of Monetary Economics. <a href="#ref-1" class="text-accent underline underline-offset-2">↩</a>
                                 </li>
                                 <li id="fn-2">
-                                    Lagarde, C. (2024). <em>Speech at the ECB Forum on Central Banking</em>. Sintra. <a href="#ref-2" class="text-accent no-underline">↩</a>
+                                    Lagarde, C. (2024). <em>Speech at the ECB Forum on Central Banking</em>. Sintra. <a href="#ref-2" class="text-accent underline underline-offset-2">↩</a>
                                 </li>
                             </>
                         )}

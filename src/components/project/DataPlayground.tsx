@@ -154,7 +154,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     <i className="fa-solid fa-database text-blue-500"></i>
                     Data Playground (DuckDB)
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-slate-600">
                     {dataAvailable === false
                         ? 'Dataset not published yet'
                         : initializing ? 'Starting engine…' : ready ? 'Ready' : 'Idle — run a query to start'}
@@ -165,7 +165,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 <div className="p-6 text-center">
                     <i className="fa-solid fa-database text-slate-300 text-2xl mb-3"></i>
                     <p className="text-sm font-bold text-slate-600 mb-1">The replication data isn't published yet</p>
-                    <p className="text-xs text-slate-500 max-w-md mx-auto">
+                    <p className="text-xs text-slate-600 max-w-md mx-auto">
                         This playground runs SQL against the project's own dataset in your browser.
                         It will light up as soon as <code className="font-mono text-slate-600">{dataUrl.split('/').pop()}</code> is available.
                     </p>
@@ -186,9 +186,12 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     <button
                         onClick={generateSql}
                         disabled={generating}
+                        aria-label="Generate SQL from the question above"
                         className="px-3 py-1.5 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg text-xs font-bold hover:bg-blue-600/30 transition-colors disabled:opacity-50"
                     >
-                        {generating ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-wand-magic-sparkles"></i>}
+                        {generating
+                            ? <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+                            : <i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>}
                     </button>
                 </div>
             </div>
@@ -199,6 +202,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     spellCheck={false}
+                    aria-label="SQL query"
                 />
             </div>
 
@@ -223,7 +227,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
             {results.length > 0 && (
                 <div className="overflow-x-auto max-h-60 border-t border-slate-100">
                     <table className="w-full text-xs text-left">
-                        <thead className="bg-slate-50 text-slate-500 font-bold sticky top-0">
+                        <thead className="bg-slate-50 text-slate-600 font-bold sticky top-0">
                             <tr>
                                 {Object.keys(results[0]).map(key => (
                                     <th key={key} className="px-4 py-2 border-b border-slate-200 whitespace-nowrap">{key}</th>

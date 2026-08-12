@@ -13,7 +13,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             <div class="flex justify-between items-end mb-8">
                 <div>
                     <h1 class="text-3xl font-bold text-white mb-2">Command Center <span class="text-green-500 animate-pulse">●</span></h1>
-                    <p class="text-slate-500">Live Neural Feed</p>
+                    <p class="text-slate-400">Live Neural Feed</p>
                 </div>
                 <button id="refresh-btn" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded transition-colors">
                     REFRESH FEED
@@ -23,19 +23,19 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             {/* Metrics */}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
                 <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Total Interactions</div>
+                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Total Interactions</div>
                     <div class="text-2xl font-bold text-white" id="total-count">-</div>
                 </div>
                 <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Active Projects</div>
+                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Active Projects</div>
                     <div class="text-2xl font-bold text-blue-400" id="active-projects">-</div>
                 </div>
                  <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Critique Mode</div>
+                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Critique Mode</div>
                     <div class="text-2xl font-bold text-red-400" id="critique-count">-</div>
                 </div>
                 <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-500 text-xs uppercase tracking-wider mb-1">Recruiter Interest</div>
+                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Recruiter Interest</div>
                     <div class="text-2xl font-bold text-purple-400" id="recruiter-count">-</div>
                 </div>
             </div>
@@ -44,7 +44,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-950 text-slate-500 uppercase text-xs">
+                        <thead class="bg-slate-950 text-slate-400 uppercase text-xs">
                             <tr>
                                 <th class="px-6 py-4 font-normal">Time</th>
                                 <th class="px-6 py-4 font-normal">Project</th>
@@ -139,7 +139,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             if(!tbody) return;
             tbody.innerHTML = logs.map(log => `
                 <tr class="hover:bg-slate-800/50 transition-colors">
-                    <td class="px-6 py-4 text-slate-500 font-mono text-xs whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>
+                    <td class="px-6 py-4 text-slate-400 font-mono text-xs whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>
                     <td class="px-6 py-4 text-blue-400">${log.project}</td>
                     <td class="px-6 py-4">
                         <span class="px-2 py-1 rounded-full text-xs ${

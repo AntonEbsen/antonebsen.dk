@@ -40,6 +40,10 @@ interface Props {
 export default function ResearchRadar({ labels, values, seriesLabel, max, unit = '' }: Props) {
     const axisMax = max ?? Math.max(...values, 1);
 
+    const chartSummary = `${seriesLabel}: `
+        + labels.map((l, i) => `${l} ${values[i]}${unit}`).join(', ')
+        + '.';
+
     const data: ChartData<'radar'> = {
         labels,
         datasets: [
@@ -102,7 +106,9 @@ export default function ResearchRadar({ labels, values, seriesLabel, max, unit =
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-1/2 h-1/2 bg-blue-500/5 rounded-full blur-3xl"></div>
             </div>
-            <Radar data={data} options={options} />
+            {/* Chart.js emits a bare <canvas role="img">; without a label a screen
+                reader announces an unnamed image. Read out each axis and its value. */}
+            <Radar data={data} options={options} aria-label={chartSummary} />
         </div>
     );
 }

@@ -2,6 +2,12 @@
 import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 import type { VideoCV } from 'src/types/content';
+// The page used to <link> this from /assets/css/video-cv.css, a path nothing has
+// ever written to — so every visitor got the unstyled version. The stylesheet was
+// in src the whole time; import it and let Vite bundle it, as CVPage does with
+// print.css.
+import '@styles/video-cv.css';
+import { assetExists } from '@lib/public-asset';
 
 interface Props {
   lang: 'da' | 'en';
@@ -26,9 +32,6 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
   description={content.description}
   bodyClass={content.bodyClass}
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/video-cv.css" slot="head" />
-
   <main class="video-wrap">
     <section class="card hero">
       <div>
@@ -40,7 +43,9 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
 
         <div class="cta">
           <a class="btn" href="#video"><i class="fa-solid fa-play"></i> {content.hero.cta.video}</a>
-          <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+          {/* Was /assets/Anton-CV.pdf, which does not exist. The CV page carries the
+              print-to-PDF button, so send people there. */}
+          <a class="btn ghost" href={cvLink}>
             <i class="fa-solid fa-file-pdf"></i> {content.hero.cta.pdf}
           </a>
           <a class="btn ghost" href={contactLink}><i class="fa-solid fa-envelope"></i> {content.hero.cta.contact}</a>
@@ -68,14 +73,24 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
       <section class="card" id="video">
         <h2 class="section-title">Video</h2>
 
-        <!-- OPTION A: Lokal MP4 -->
-        <div class="video-box" style="margin-top:12px;">
-          <video controls preload="metadata">
-            <source src={content.video.src} type="video/mp4">
-            {content.video.downloadText}
-            <a href={content.video.src}>{content.video.downloadLink}</a>.
-          </video>
-        </div>
+        {/* The video has not been recorded yet, so the <video> element rendered a
+            permanently broken player. Say so instead, and start showing the real
+            player the moment the file appears in public/. */}
+        {assetExists(content.video.src) ? (
+          <div class="video-box" style="margin-top:12px;">
+            <video controls preload="metadata">
+              <source src={content.video.src} type="video/mp4">
+              {content.video.downloadText}
+              <a href={content.video.src}>{content.video.downloadLink}</a>.
+            </video>
+          </div>
+        ) : (
+          <p class="muted" style="margin-top:12px;">
+            {lang === 'da'
+              ? 'Videoen er under optagelse. Indtil da giver CV’et nedenfor det fulde billede.'
+              : 'The video is still being recorded. Until then, the CV below has the full picture.'}
+          </p>
+        )}
 
         <div class="two-col">
           <div class="mini-card">
@@ -106,8 +121,9 @@ const cvLink = lang === 'en' ? '/en/cv' : '/cv';
         <p class="muted">{content.links.text}</p>
 
         <div class="cta">
+          {/* The "PDF" button next to this pointed at a file that does not exist; the
+              CV link beside it reaches the page that can produce one. */}
           <a class="btn" href={cvLink}><i class="fa-solid fa-id-card"></i> {content.links.items.cv}</a>
-          <a class="btn ghost" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf"></i> {content.links.items.pdf}</a>
           <a class="btn ghost" href="https://www.linkedin.com/in/antonebsen/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> {content.links.items.linkedin}</a>
           <a class="btn ghost" href="https://github.com/AntonEbsen" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> {content.links.items.github}</a>
         </div>

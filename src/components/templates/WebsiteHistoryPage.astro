@@ -26,9 +26,9 @@ const catHash = isDa ? '#cat-fagligt' : '';
   description={content.desc}
   bodyClass="blog-page"
 >
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="/assets/css/blog.css" slot="head" />
-
+  {/* A <link> to /assets/css/blog.css stood here. That file has never existed in
+      public/ and there is no blog.css in src/styles either — the page's .blog-*
+      classes come from the global stylesheet. The link only ever produced a 404. */}
   <main class="blog-wrap">
 
     <!-- POST HERO -->

@@ -169,9 +169,9 @@ const curriculum = [
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {stats.map(stat => (
                     <div class="bg-white/5 border border-white/10 p-8 rounded-2xl text-center hover:border-blue-500/30 transition-colors group">
-                        <i class={`fa-solid ${stat.icon} text-2xl text-slate-500 mb-4 group-hover:text-blue-400 transition-colors`}></i>
+                        <i class={`fa-solid ${stat.icon} text-2xl text-slate-400 mb-4 group-hover:text-blue-400 transition-colors`}></i>
                         <h3 class="text-3xl font-bold text-white mb-2 font-serif">{stat.value}</h3>
-                        <p class="text-xs uppercase tracking-widest text-slate-500 font-bold">{stat.label}</p>
+                        <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">{stat.label}</p>
                     </div>
                 ))}
             </div>
@@ -179,13 +179,13 @@ const curriculum = [
 
         {/* The Team */}
         <section class="container mx-auto max-w-4xl px-4 py-16 border-t border-white/5">
-             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Holdet</h2>
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-16">Holdet</h2>
              <CollaboratorSpotlight client:visible collaborators={team} label="" />
         </section>
 
         {/* Timeline */}
         <section class="container mx-auto max-w-3xl px-4 py-16 relative">
-            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Samarbejdshistorik</h2>
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-16">Samarbejdshistorik</h2>
             
             <div class="absolute left-1/2 top-32 bottom-0 w-px bg-white/10 -translate-x-1/2"></div>
             
@@ -201,7 +201,7 @@ const curriculum = [
                         
                         {/* Content */}
                         <div class={`w-full pl-12 md:pl-0 md:w-5/12 ${i % 2 === 0 ? 'md:text-right' : 'md:text-left'} relative`}>
-                            <span class="text-3xl md:text-5xl font-bold text-white/5 absolute -top-6 md:-top-8 left-12 md:left-0 md:right-0 pointer-events-none select-none font-serif">{item.year}</span>
+                            <span class="deco-numeral text-3xl md:text-5xl font-bold absolute -top-6 md:-top-8 left-12 md:left-0 md:right-0 pointer-events-none select-none font-serif" data-numeral={item.year} aria-hidden="true"></span>
                             <div class="relative z-10">
                                 <h3 class="text-lg font-bold text-white mb-2">
                                     {item.href
@@ -219,20 +219,20 @@ const curriculum = [
         {/* Fælles output — hvert felt stammer fra det pågældende projekts egen
             citation-blok. PDF-link vises kun hvor filen faktisk findes. */}
         <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
-            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Fælles output</h2>
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-16">Fælles output</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {jointOutput.map(w => (
                     <div class="bg-slate-900/50 border border-white/5 rounded-2xl p-6 flex flex-col hover:border-blue-500/30 transition-colors group">
                         <div class="flex items-start justify-between gap-4 mb-3">
                             <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">{w.kind}</span>
-                            <span class="text-[10px] font-mono text-slate-500 shrink-0">{w.year}</span>
+                            <span class="text-[10px] font-mono text-slate-400 shrink-0">{w.year}</span>
                         </div>
                         <h3 class="text-lg font-bold text-white mb-2 leading-snug">
                             <a href={w.href} class="hover:text-blue-400 transition-colors">{w.title}</a>
                         </h3>
                         <p class="text-xs text-slate-400 leading-relaxed mb-4">{w.venue}</p>
                         {w.role && (
-                            <p class="text-xs text-slate-500 leading-relaxed mb-4 pl-3 border-l border-blue-500/20 italic">
+                            <p class="text-xs text-slate-400 leading-relaxed mb-4 pl-3 border-l border-blue-500/20 italic">
                                 <span class="not-italic font-bold text-slate-400">Min rolle:</span> {w.role}
                             </p>
                         )}
@@ -256,7 +256,7 @@ const curriculum = [
 
         {/* 1. Methodology Workflow */}
         <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
-             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Metodologi & Workflow</h2>
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-16">Metodologi & Workflow</h2>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
                  {/* Connecting Line (Desktop) */}
                  <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent -z-10"></div>
@@ -268,7 +268,7 @@ const curriculum = [
                          </div>
                          <h3 class="text-xl font-bold text-white mb-2">{s.title}</h3>
                          <p class="text-slate-400 text-sm leading-relaxed">{s.desc}</p>
-                         <span class="absolute top-4 right-6 text-4xl font-black text-white/5">{s.step}</span>
+                         <span class="deco-numeral absolute top-4 right-6 text-4xl font-black" data-numeral={s.step} aria-hidden="true"></span>
                      </div>
                  ))}
              </div>
@@ -289,7 +289,7 @@ const curriculum = [
                     </div>
                     <div class="text-right">
                         <span class="text-sm font-bold uppercase tracking-widest text-blue-400">Ikke påbegyndt</span>
-                        <span class="block text-xs text-slate-500 mt-1">Planlagte faser</span>
+                        <span class="block text-xs text-slate-400 mt-1">Planlagte faser</span>
                     </div>
                 </div>
 
@@ -299,7 +299,7 @@ const curriculum = [
                             <span class="w-6 h-6 rounded-full border border-blue-500/30 text-blue-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
                             <div>
                                 <span class="block text-sm font-bold text-slate-200">{t.label}</span>
-                                <span class="block text-xs text-slate-500 mt-0.5">{t.note}</span>
+                                <span class="block text-xs text-slate-400 mt-0.5">{t.note}</span>
                             </div>
                         </li>
                     ))}
@@ -314,7 +314,7 @@ const curriculum = [
                     
                     {/* Left: Big Numbers */}
                     <div>
-                        <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Datagrundlaget</h2>
+                        <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-12">Datagrundlaget</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-center md:text-left">
                             <div>
                                 <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">32 lande</span>
@@ -324,12 +324,12 @@ const curriculum = [
                             <div>
                                 <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">1999–2024</span>
                                 <span class="text-xs font-bold text-purple-400 uppercase tracking-widest">Kvartalsdata, euroområdet</span>
-                                <p class="text-slate-400 text-xs mt-2">Eurostat, OECD Economic Outlook og ECB Statistical Data Warehouse. <a href="/projects/ecb-taylor-rules" class="text-purple-400 hover:underline">ECB Taylor Rules</a>.</p>
+                                <p class="text-slate-400 text-xs mt-2">Eurostat, OECD Economic Outlook og ECB Statistical Data Warehouse. <a href="/projects/ecb-taylor-rules" class="text-purple-400 underline decoration-purple-400/40 underline-offset-2 hover:decoration-purple-400">ECB Taylor Rules</a>.</p>
                             </div>
                             <div class="sm:col-span-2">
                                 <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-2">20.000+</span>
                                 <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Datapunkter, højfrekvente finansielle data</span>
-                                <p class="text-slate-400 text-xs mt-2">Struktureret og processeret til SVAR-estimation. <a href="/projects/global-financial-cycle" class="text-emerald-400 hover:underline">Global Financial Cycle</a> (bachelorprojekt).</p>
+                                <p class="text-slate-400 text-xs mt-2">Struktureret og processeret til SVAR-estimation. <a href="/projects/global-financial-cycle" class="text-emerald-400 underline decoration-emerald-400/40 underline-offset-2 hover:decoration-emerald-400">Global Financial Cycle</a> (bachelorprojekt).</p>
                             </div>
                         </div>
                     </div>
@@ -340,7 +340,7 @@ const curriculum = [
                         <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
                             <i class="fa-solid fa-chart-radar text-blue-400"></i> Metodedækning
                         </h3>
-                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">
                             Antal af de fire fælles arbejder der anvender hver metodefamilie. Aksen går fra 0 til 4.
                         </p>
                         <ResearchRadar
@@ -351,7 +351,7 @@ const curriculum = [
                             max={4}
                             unit=" af 4 projekter"
                         />
-                        <p class="text-[10px] text-slate-600 mt-4 leading-relaxed">
+                        <p class="text-[10px] text-slate-400 mt-4 leading-relaxed">
                             Paneldata: velfærdsseminaret. Tidsrække/VAR: ECB-projektet og specialet. IV/GMM: ECB-projektet.
                             Robusthed: ECB-projektet og velfærdsseminaret. Survey/ML: GenAI-forslaget.
                         </p>
@@ -362,11 +362,11 @@ const curriculum = [
 
         {/* 4. The Library (Citations) */}
         <section class="container mx-auto max-w-4xl px-4 py-16">
-            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Vidensbanken</h2>
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-12">Vidensbanken</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {citations.map(cite => (
                     <div class="bg-slate-900 border border-white/5 p-4 rounded-lg flex items-start gap-3 hover:border-white/20 transition-colors">
-                        <i class="fa-solid fa-quote-left text-slate-600 mt-1"></i>
+                        <i class="fa-solid fa-quote-left text-slate-400 mt-1"></i>
                         <p class="text-sm text-slate-300 font-serif italic">{cite}</p>
                     </div>
                 ))}
@@ -375,7 +375,7 @@ const curriculum = [
 
         {/* 5. Visual Abstracts (Gallery) */}
         <section class="container mx-auto max-w-6xl px-4 py-16 mb-16">
-             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Galleri</h2>
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-12">Galleri</h2>
              {/* Figurer fra seminaropgaven. object-contain frem for object-cover: det er
                  hvide matplotlib-plots, og cover ville beskære akserne væk. */}
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -390,7 +390,7 @@ const curriculum = [
 
         {/* 6. Stack Deep Dive (Detailed Toolkit) */}
         <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
-             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Værktøjskassen 2.0</h2>
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-16">Værktøjskassen 2.0</h2>
              <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                  {tools.map(t => (
                      <div class="bg-slate-900/50 border border-white/5 p-6 rounded-xl hover:border-white/10 transition-colors">
@@ -420,10 +420,10 @@ const curriculum = [
                     Vi tror på gennemsigtighed. Al data-rensning er scriptet frem for manuel, så et datasæt kan genopbygges fra kilderne. <a href="/projects/welfare-state-seminar" class="text-slate-300 hover:text-emerald-400 underline decoration-emerald-500/30 transition-colors">Velfærdsstatsseminaret</a> er først ud: hele pipelinen ligger offentligt på <a href="https://github.com/AntonEbsen/economics-of-the-welfare-state" target="_blank" rel="noopener" class="text-slate-300 hover:text-emerald-400 underline decoration-emerald-500/30 transition-colors">GitHub</a> med rådata, Makefile, Docker-image og tests. Resten følger efterhånden som de gøres klar.
                 </p>
                 <div class="flex gap-4">
-                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-400">
                         <i class="fa-solid fa-check text-emerald-500"></i> Scripted Cleaning
                     </div>
-                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-400">
                         <i class="fa-solid fa-check text-emerald-500"></i> Version Control
                     </div>
                 </div>
@@ -432,7 +432,7 @@ const curriculum = [
             {/* Network */}
             <div class="bg-slate-900 border border-white/10 p-8 rounded-2xl">
                  <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-network-wired text-slate-500"></i> Netværk & Affiliering
+                    <i class="fa-solid fa-network-wired text-slate-400"></i> Netværk & Affiliering
                 </h3>
                 
                 <div class="space-y-8">
@@ -444,7 +444,7 @@ const curriculum = [
                              </div>
                              <div>
                                  <h4 class="font-bold text-slate-200 text-sm">Københavns Universitet</h4>
-                                 <p class="text-xs text-slate-500">Økonomisk Institut (ØI)</p>
+                                 <p class="text-xs text-slate-400">Økonomisk Institut (ØI)</p>
                              </div>
                         </li>
 
@@ -452,7 +452,7 @@ const curriculum = [
 
                     {/* Supervisors */}
                     <div>
-                        <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-4 border-b border-white/10 pb-2">Vejledning</h4>
+                        <h4 class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-4 border-b border-white/10 pb-2">Vejledning</h4>
                         <ul class="space-y-4">
                             <li class="flex items-start gap-4">
                                 <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
@@ -460,7 +460,7 @@ const curriculum = [
                                 </div>
                                 <div>
                                     <a href="https://www.econ.ku.dk/ansatte/vip/?pure=da/persons/280616" target="_blank" class="font-bold text-slate-200 text-sm hover:text-blue-400 transition-colors">Michael Bergman</a>
-                                    <p class="text-xs text-slate-500">Lektor. Vejleder på ECB Taylor Rules.</p>
+                                    <p class="text-xs text-slate-400">Lektor. Vejleder på ECB Taylor Rules.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-4">
@@ -469,7 +469,7 @@ const curriculum = [
                                 </div>
                                 <div>
                                     <a href="https://www.econ.ku.dk/ansatte/vip/?pure=da/persons/296313" target="_blank" class="font-bold text-slate-200 text-sm hover:text-blue-400 transition-colors">Andreas Bjerre-Nielsen</a>
-                                    <p class="text-xs text-slate-500">Lektor. Vejleder på AI & Social Data Science.</p>
+                                    <p class="text-xs text-slate-400">Lektor. Vejleder på AI & Social Data Science.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-4">
@@ -478,9 +478,9 @@ const curriculum = [
                                 </div>
                                 <div>
                                     <a href="https://www.econ.ku.dk/ansatte/vip/?pure=da/persons/374532" target="_blank" rel="noopener" class="font-bold text-slate-200 text-sm hover:text-blue-400 transition-colors">Amalie Sofie Jensen</a>
-                                    <p class="text-xs text-slate-500">
+                                    <p class="text-xs text-slate-400">
                                         Vejleder på <a href="/projects/welfare-state-seminar" class="hover:text-blue-400 transition-colors">Globalization and the Welfare State</a> (2026).
-                                        <a href="https://www.amaliejensen.com/" target="_blank" rel="noopener" class="text-slate-600 hover:text-blue-400 transition-colors ml-1">Hjemmeside &#8599;</a>
+                                        <a href="https://www.amaliejensen.com/" target="_blank" rel="noopener" class="text-slate-400 hover:text-blue-400 transition-colors ml-1">Hjemmeside &#8599;</a>
                                     </p>
                                 </div>
                             </li>
@@ -492,12 +492,12 @@ const curriculum = [
 
         {/* 8. Research Changelog */}
         <section class="container mx-auto max-w-3xl px-4 py-16 border-t border-white/5">
-             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-12">Logbog</h2>
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-12">Logbog</h2>
              <div class="space-y-6">
                  {changelog.map(l => (
                      <div class="flex gap-6 items-start group">
                          <div class="w-24 text-right pt-1 shrink-0">
-                             <span class="text-xs font-bold text-slate-500 group-hover:text-slate-300 transition-colors">{l.date}</span>
+                             <span class="text-xs font-bold text-slate-400 group-hover:text-slate-300 transition-colors">{l.date}</span>
                          </div>
                          <div class="w-px h-12 bg-white/10 group-hover:bg-blue-500/50 transition-colors"></div>
                          <div class="pb-6">
@@ -518,22 +518,24 @@ const curriculum = [
                          <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
                          <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
                      </div>
-                     <span class="text-xs font-mono text-slate-500">rolling_windows.py</span>
+                     <span class="text-xs font-mono text-slate-400">rolling_windows.py</span>
                  </div>
                  {/* Code Content. Trimmed from the estimation code behind
                      "Globalization and the Welfare State" (ligning 4.1). */}
-                 <div class="p-6 overflow-x-auto">
+                 <!-- Scrolls sideways at phone width; tabindex makes that overflow
+                      reachable from the keyboard, which it otherwise is not. -->
+                 <div class="p-6 overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent" tabindex="0" role="region" aria-label="rolling_windows.py">
                      <pre class="font-mono text-sm leading-relaxed">
 <span class="text-purple-400">import</span> pandas <span class="text-purple-400">as</span> pd
 <span class="text-purple-400">from</span> linearmodels.panel <span class="text-purple-400">import</span> PanelOLS
 
-<span class="text-slate-500"># 1. Balanceret panel: 32 OECD-lande, 1980–2023</span>
+<span class="text-slate-400"># 1. Balanceret panel: 32 OECD-lande, 1980–2023</span>
 panel = df.<span class="text-blue-400">set_index</span>([<span class="text-green-400">"country"</span>, <span class="text-green-400">"year"</span>])
 spec = <span class="text-green-400">"sstran ~ 1 + KOFGI_lag1 + ln_gdppc_lag1 + inflation_lag1"</span> \
        <span class="text-green-400">" + deficit_lag1 + debt_lag1 + ln_pop_lag1 + dep_ratio_lag1"</span> \
        <span class="text-green-400">" + EntityEffects + TimeEffects"</span>
 
-<span class="text-slate-500"># 2. Rullende 10-års vinduer: hvert punkt er en selvstændig estimation</span>
+<span class="text-slate-400"># 2. Rullende 10-års vinduer: hvert punkt er en selvstændig estimation</span>
 <span class="text-purple-400">for</span> end <span class="text-purple-400">in</span> <span class="text-blue-400">range</span>(<span class="text-orange-400">1989</span>, <span class="text-orange-400">2024</span>):
     years = <span class="text-blue-400">range</span>(end - <span class="text-orange-400">9</span>, end + <span class="text-orange-400">1</span>)
     window = panel.<span class="text-blue-400">loc</span>[panel.index.<span class="text-blue-400">get_level_values</span>(<span class="text-green-400">"year"</span>).<span class="text-blue-400">isin</span>(years)]
@@ -545,15 +547,15 @@ spec = <span class="text-green-400">"sstran ~ 1 + KOFGI_lag1 + ln_gdppc_lag1 + i
                  </div>
                  {/* Label */}
                  <div class="absolute top-16 right-6 text-right">
-                     <span class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Koden bag tallene</span>
-                     <span class="text-xs text-slate-600">Reproducerbart & Robust</span>
+                     <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Koden bag tallene</span>
+                     <span class="text-xs text-slate-400">Reproducerbart & Robust</span>
                  </div>
              </div>
         </section>
 
         {/* 10. The Curriculum */}
         <section class="container mx-auto max-w-5xl px-4 py-16 border-t border-white/5">
-             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-16">Faglig Profil (M.Sc. Econ)</h2>
+             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-slate-400 mb-16">Faglig Profil (M.Sc. Econ)</h2>
              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                  {curriculum.map(c => (
                      <div class="bg-slate-900/50 border border-white/5 p-6 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all group">
@@ -561,7 +563,7 @@ spec = <span class="text-green-400">"sstran ~ 1 + KOFGI_lag1 + ln_gdppc_lag1 + i
                              <div class="bg-blue-900/20 text-blue-400 text-[10px] font-bold px-2 py-1 rounded border border-blue-500/20">{c.ects ? `${c.ects} ECTS` : 'Seminar'}</div>
                              <div class="flex items-center gap-2">
                                  <span class="text-[10px] font-bold text-emerald-400/80">{c.grade}</span>
-                                 <i class="fa-solid fa-graduation-cap text-slate-600 group-hover:text-blue-500 transition-colors"></i>
+                                 <i class="fa-solid fa-graduation-cap text-slate-400 group-hover:text-blue-500 transition-colors"></i>
                              </div>
                          </div>
                          <h3 class="font-bold text-white text-sm mb-2">{c.course}</h3>

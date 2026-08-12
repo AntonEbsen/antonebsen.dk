@@ -5,6 +5,7 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import { getEntry } from 'astro:content';
+import { assetExists } from '@lib/public-asset';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -123,18 +124,32 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
                 <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
                   {res.desc}
                 </p>
+                {/* None of the four files under /assets/downloads/ were ever produced,
+                    so every "Download" button here 404'd. The data already had a
+                    `disabled` flag for links that are not ready; a missing file now
+                    resolves to the same state, and renders as text rather than a link
+                    you can click into nothing. */}
                 <div class="flex flex-wrap gap-2 mt-auto">
                     {res.links.map(l => (
-                        <Button 
-                            href={l.url} 
-                            download={l.download ? true : undefined}
-                            target={l.external ? "_blank" : undefined}
-                            rel={l.external ? "noopener" : undefined} 
-                            variant={l.ghost ? "ghost" : "primary"}
-                            class={`px-4 py-2 text-xs ${l.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        >
-                            {l.icon && <i class={`${l.icon} mr-2`}></i>} {l.text}
-                        </Button>
+                        l.disabled || !assetExists(l.url) ? (
+                            <span
+                                class="inline-flex items-center px-4 py-2 text-xs font-bold rounded-lg border border-white/10 text-[var(--text-dim)] opacity-50 cursor-not-allowed"
+                                title={lang === 'da' ? 'Ikke klar endnu' : 'Not ready yet'}
+                            >
+                                {l.icon && <i class={`${l.icon} mr-2`}></i>} {l.text}
+                            </span>
+                        ) : (
+                            <Button
+                                href={l.url}
+                                download={l.download ? true : undefined}
+                                target={l.external ? "_blank" : undefined}
+                                rel={l.external ? "noopener" : undefined}
+                                variant={l.ghost ? "ghost" : "primary"}
+                                class="px-4 py-2 text-xs"
+                            >
+                                {l.icon && <i class={`${l.icon} mr-2`}></i>} {l.text}
+                            </Button>
+                        )
                     ))}
                 </div>
               </Card>

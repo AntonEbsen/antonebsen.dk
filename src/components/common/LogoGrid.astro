@@ -1,9 +1,14 @@
 ---
+import { assetExists } from '@lib/public-asset';
+
+// The Lübeck entry spelled the file hwk-luebeck.png while the file on disk is
+// hwk-lubeck.png, so it rendered as a broken image. Filtering on top of the fix
+// means the next typo shows up as a missing logo rather than a broken one.
 const logos = [
     { src: '/assets/img/logos/djoef.png', alt: 'Djøf', width: 120 },
-    { src: '/assets/img/logos/hwk-luebeck.png', alt: 'Handwerkskammer Lübeck', width: 140 },
+    { src: '/assets/img/logos/hwk-lubeck.png', alt: 'Handwerkskammer Lübeck', width: 140 },
     // Add more logos here or fetch from props if fully dynamic
-];
+].filter(logo => assetExists(logo.src));
 
 interface Props {
   title?: string;

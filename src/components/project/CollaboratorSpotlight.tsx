@@ -27,7 +27,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
 
     return (
         <div className="flex flex-col items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200 relative z-20">
-            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">{label}</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">{label}</span>
 
             <div className="flex flex-wrap justify-center gap-3">
                 {collaborators.map((collab) => (
@@ -77,7 +77,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                 )}
                             </span>
                             {collab.role && (
-                                <span className="block text-[10px] text-slate-500 uppercase tracking-wider">{collab.role}</span>
+                                <span className="block text-[10px] text-slate-400 uppercase tracking-wider">{collab.role}</span>
                             )}
                         </div>
                     </button>
@@ -97,7 +97,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 w-4 h-4 bg-slate-900 border-t border-l border-white/10 rotate-45"></div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-xl text-slate-500 shrink-0 border border-white/5">
+                                <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-xl text-slate-400 shrink-0 border border-white/5">
                                     {selected.image ? (
                                         <img src={selected.image} alt={selected.name} className="w-full h-full object-cover rounded-full" />
                                     ) : (

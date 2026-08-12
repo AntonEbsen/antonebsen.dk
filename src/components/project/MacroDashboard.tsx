@@ -123,7 +123,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter italic">
                             {t.title}
                         </h2>
-                        <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-2">{t.subtitle}</p>
+                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-2">{t.subtitle}</p>
                     </div>
 
                     {/* Terminal Logs */}
@@ -150,7 +150,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                     <div className="p-6 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-accent/30 transition-all group">
                         <div className="flex justify-between items-start mb-6">
                             <div>
-                                <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">{t.signals[0]}</p>
+                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">{t.signals[0]}</p>
                                 <h3 className="text-lg font-bold text-white leading-none">{t.metrics.deviation}</h3>
                             </div>
                             <span className="text-2xl font-black text-accent">-0.42%</span>
@@ -164,7 +164,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                     <div className="p-6 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-accent/30 transition-all group">
                         <div className="flex justify-between items-start mb-6">
                             <div>
-                                <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">{t.signals[1]}</p>
+                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">{t.signals[1]}</p>
                                 <h3 className="text-lg font-bold text-white leading-none">{t.metrics.hicp}</h3>
                             </div>
                             <span className="text-2xl font-black text-red-500">2.2%</span>
@@ -176,7 +176,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
 
                     {/* Activity Radar / Status */}
                     <div className="p-6 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-accent/30 transition-all group overflow-hidden">
-                        <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-4">SYSTEM TRANSMISSION</p>
+                        <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">SYSTEM TRANSMISSION</p>
                         <div className="space-y-4">
                             {[
                                 { l: "Monetary Pass-through", v: "High", c: "bg-accent" },
@@ -211,7 +211,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                         { label: "VIX Index", val: "14.22" }
                     ].map((stat, i) => (
                         <div key={i} className="flex flex-col">
-                            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1">{stat.label}</span>
+                            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">{stat.label}</span>
                             <span className="text-sm font-bold text-white tabular-nums">{stat.val}</span>
                         </div>
                     ))}

@@ -3,8 +3,11 @@ import { getLangFromUrl } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 
-// Everything the <script> renders at runtime lives here too, and is handed over as
-// a data attribute below. The script previously hardcoded Danish for results, the
+// Everything the client script renders at runtime lives here too, and is handed over
+// as a data attribute below. (Do not write the script tag literally in this comment:
+// esbuild's dependency scanner reads it as a real script block and then fails to
+// parse the prose that follows, which takes the whole dev server down.)
+// The script previously hardcoded Danish for results, the
 // AI placeholder and the error text, so /en and /de visitors saw "Ingen resultater"
 // and "Spørg Quantum AI" inside an otherwise translated palette.
 const t_obj = {

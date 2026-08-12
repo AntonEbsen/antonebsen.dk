@@ -29,9 +29,9 @@ const progress = Math.min(Math.round((pageCount / targetPages) * 100), 100);
       </div>
       <div class="flex items-baseline gap-2">
         <span class="text-4xl font-black text-white">{daysLeft}</span>
-        <span class="text-sm font-bold text-slate-500">Days</span>
+        <span class="text-sm font-bold text-slate-400">Days</span>
       </div>
-      <p class="text-xs text-slate-500 mt-2">Deadline: {deadlineDate.toLocaleDateString('da-DK', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <p class="text-xs text-slate-400 mt-2">Deadline: {deadlineDate.toLocaleDateString('da-DK', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
     </div>
   </div>
 
@@ -47,7 +47,7 @@ const progress = Math.min(Math.round((pageCount / targetPages) * 100), 100);
       </div>
       <div class="flex items-baseline gap-2">
         <span class="text-4xl font-black text-white">{pageCount}</span>
-        <span class="text-sm font-bold text-slate-500">/ {targetPages} Pages</span>
+        <span class="text-sm font-bold text-slate-400">/ {targetPages} Pages</span>
       </div>
       
       <!-- Progress Bar -->
@@ -71,9 +71,9 @@ const progress = Math.min(Math.round((pageCount / targetPages) * 100), 100);
       </div>
       <div class="flex items-baseline gap-2">
         <span class="text-4xl font-black text-white">{coffeeCount}</span>
-        <span class="text-sm font-bold text-slate-500">Cups</span>
+        <span class="text-sm font-bold text-slate-400">Cups</span>
       </div>
-      <p class="text-xs text-slate-500 mt-2">Correlation with output: <span class="text-green-400 font-bold">High (r=0.85)</span></p>
+      <p class="text-xs text-slate-400 mt-2">Correlation with output: <span class="text-green-400 font-bold">High (r=0.85)</span></p>
     </div>
   </div>
 </div>

@@ -97,7 +97,7 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                             </div>
                             <div>
                                 <h2 className="text-white font-bold leading-none">{t.title}</h2>
-                                <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">{t.subtitle}</p>
+                                <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">{t.subtitle}</p>
                             </div>
                         </div>
 

@@ -166,7 +166,7 @@ const PolicyRadar: React.FC<Props> = ({ data, lang }) => {
             </div>
 
             <div className="absolute bottom-6 right-8 text-right">
-                <p className="text-[8px] uppercase tracking-widest text-slate-600 font-bold mb-1">
+                <p className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-1">
                     {lang === 'da' ? 'Analytisk overførselsscore' : 'Analytical Transfer Score'}
                 </p>
                 <div className="flex justify-end gap-1">
