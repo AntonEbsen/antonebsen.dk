@@ -30,7 +30,7 @@ export default function ViewCounter({ slug }: ViewCounterProps) {
         }
     }, [slug]);
 
-    if (views === null) return <span className="text-dim text-xs opacity-50">...</span>;
+    if (views === null) return <span className="text-muted text-xs">...</span>;
 
     return (
         <span className="flex items-center gap-1.5 text-xs font-mono text-dim opacity-80" title={`${views} views`}>

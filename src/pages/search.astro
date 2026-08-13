@@ -58,7 +58,7 @@ const t = {
             <input 
                 type="text" 
                 id="pageSearchInput"
-                class="w-full bg-transparent border-none outline-none text-xl text-white placeholder:text-white/20 font-medium h-14"
+                class="w-full bg-transparent border-none outline-none text-xl text-white placeholder:text-muted font-medium h-14"
                 placeholder={t.placeholder}
                 autofocus
             />
@@ -98,7 +98,7 @@ const t = {
                 input.value = initialQuery;
                 performSearch(initialQuery);
             } else {
-                container.innerHTML = `<div class="text-center py-12 text-white/30">Skriv for at søge...</div>`;
+                container.innerHTML = `<div class="text-center py-12 text-muted">Skriv for at søge...</div>`;
             }
 
         } catch (e) {
@@ -153,10 +153,10 @@ const t = {
         if (results.length === 0) {
             container.innerHTML = `
                 <div class="text-center py-12">
-                    <div class="inline-flex w-16 h-16 rounded-full bg-white/5 items-center justify-center text-white/20 text-2xl mb-4">
+                    <div class="inline-flex w-16 h-16 rounded-full bg-white/5 items-center justify-center text-muted text-2xl mb-4">
                         <i class="fa-solid fa-ghost"></i>
                     </div>
-                    <p class="text-lg text-white/50">Ingen resultater for "<span class="text-white">${q}</span>"</p>
+                    <p class="text-lg text-muted">Ingen resultater for "<span class="text-white">${q}</span>"</p>
                 </div>
             `;
             return;
@@ -170,7 +170,7 @@ const t = {
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-3 mb-2">
-                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-white/5 text-white/40 border border-white/5">
+                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-white/5 text-muted border border-white/5">
                                 ${r.type}
                              </span>
                              <div class="flex gap-1">
@@ -180,7 +180,7 @@ const t = {
                         <h3 class="text-xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors">${r.title}</h3>
                         <p class="text-dim/80 leading-relaxed font-light">${r.content ? r.content.substring(0, 200) + '...' : ''}</p>
                     </div>
-                    <div class="hidden md:flex self-center w-10 h-10 rounded-full bg-white/5 items-center justify-center text-white/20 group-hover:bg-gold-500 group-hover:text-black transition-all transform group-hover:translate-x-2">
+                    <div class="hidden md:flex self-center w-10 h-10 rounded-full bg-white/5 items-center justify-center text-muted group-hover:bg-gold-500 group-hover:text-black transition-all transform group-hover:translate-x-2">
                         <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ const t = {
       if (r.type === 'project') return 'bg-blue-500/10 text-blue-400';
       if (r.type === 'blog') return 'bg-emerald-500/10 text-emerald-400';
       if (r.type === 'game') return 'bg-yellow-500/10 text-yellow-400';
-      return 'bg-white/5 text-white/40';
+      return 'bg-white/5 text-muted';
     }
 
     init();

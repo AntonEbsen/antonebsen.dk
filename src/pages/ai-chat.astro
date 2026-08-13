@@ -293,13 +293,27 @@ const t = {
   </main>
 
   <script>
-    const form = document.getElementById('fp-chat-form');
-    const input = document.getElementById('fp-chat-input');
-    const messages = document.getElementById('fp-chat-messages');
-    const card = document.getElementById('fp-chat-card');
+    // Typed at the query rather than cast at each use: getElementById returns
+    // HTMLElement, so every `input.value` and `form.reset()` below was an error the
+    // checker reported and nobody could see among the other 600.
+    // Asserted non-null: all four are rendered unconditionally by the markup in this
+    // same file, and the handlers below already dereference them without guarding.
+    // Narrowing would not survive into the nested functions anyway, and a page script
+    // that cannot find its own form should fail loudly rather than half-work.
+    const form = document.querySelector<HTMLFormElement>('#fp-chat-form')!;
+    const input = document.querySelector<HTMLTextAreaElement>('#fp-chat-input')!;
+    const messages = document.querySelector<HTMLElement>('#fp-chat-messages')!;
+    const card = document.querySelector<HTMLElement>('#fp-chat-card')!;
     const lang = card?.getAttribute('data-lang') || 'da';
-    const voiceBtn = document.getElementById('fp-voice-btn');
-    const voiceIndicator = document.getElementById('fp-voice-indicator');
+
+    // The server renders the placeholder from the frontmatter `t`, which this script
+    // cannot see — two handlers below assigned `t.placeholder` and threw
+    // "ReferenceError: t is not defined" when a recording was too short or the
+    // microphone was denied. Reading the rendered value keeps it correct in every
+    // language without shipping the table twice.
+    const defaultPlaceholder = input?.placeholder ?? '';
+    const voiceBtn = document.querySelector<HTMLButtonElement>('#fp-voice-btn');
+    const voiceIndicator = document.querySelector<HTMLElement>('#fp-voice-indicator');
     
     // Handle URL Params (for Static Site)
     if (typeof window !== 'undefined') {
@@ -311,17 +325,17 @@ const t = {
     }
     
     // File Upload Logic
-    const fileInput = document.getElementById('fp-chat-file');
-    const fileBtn = document.getElementById('fp-file-btn');
-    const fileDisplay = document.getElementById('fp-file-display');
-    const fileNameSpan = document.getElementById('fp-filename');
-    const removeFileBtn = document.getElementById('fp-remove-file');
-    let currentFileContent: any = null;
+    const fileInput = document.querySelector<HTMLInputElement>('#fp-chat-file');
+    const fileBtn = document.querySelector<HTMLButtonElement>('#fp-file-btn');
+    const fileDisplay = document.querySelector<HTMLElement>('#fp-file-display');
+    const fileNameSpan = document.querySelector<HTMLElement>('#fp-filename');
+    const removeFileBtn = document.querySelector<HTMLButtonElement>('#fp-remove-file');
+    let currentFileContent: string | null = null;
 
     fileBtn?.addEventListener('click', () => fileInput?.click());
 
     fileInput?.addEventListener('change', async (e) => {
-        const target = e.target;
+        const target = e.target as HTMLInputElement;
         const file = target.files?.[0];
         if (!file) return;
 
@@ -449,7 +463,7 @@ const t = {
                 
                 if (audioBlob.size < 1000) {
                     alert("Kunne ikke høre noget (optagelse for kort). Prøv at tale højere/længere.");
-                    input.placeholder = t.placeholder;
+                    input.placeholder = defaultPlaceholder;
                     return;
                 }
                 
@@ -518,7 +532,7 @@ const t = {
                 msg = err.message;
             }
             alert(`Kunne ikke starte mikrofon: ${msg}`);
-            input.placeholder = t.placeholder;
+            input.placeholder = defaultPlaceholder;
         }
     }
 

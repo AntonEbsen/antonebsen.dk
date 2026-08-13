@@ -1,10 +1,14 @@
 ---
 import Layout from '../layouts/BaseLayout.astro';
 import DashboardContent from '../components/dashboard/DashboardContent.astro';
+import { verifySession } from '@lib/session';
 
 export const prerender = false;
 
-const isLoggedIn = Astro.cookies.has("auth_token");
+// This was `Astro.cookies.has("auth_token")` — presence, not value — so any cookie
+// at all opened the dashboard. Verify the signature and expiry like every other
+// call site does.
+const isLoggedIn = verifySession(Astro.cookies.get("auth_token")?.value);
 ---
 
 <Layout title="Quantum Dashboard | System Metrics">

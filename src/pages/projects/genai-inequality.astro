@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -87,19 +88,15 @@ const projectContent = {
     openScience: "Open Science"
   },
   collaborators: [
-    { 
-        name: "Sheng Ye Michael Chen", 
-        role: "Medforfatter", 
-        image: "/assets/collaborators/sheng.jpg",
-        description: "Bidrog til survey-design og ML-implementeringsstrategi.",
-        links: { linkedin: "https://www.linkedin.com/in/sheng-ye-michael-chen-a52595275/", github: "https://github.com/nsr708" } 
+    {
+        ...sheng,
+        role: "Medforfatter",
+        description: "Bidrog til survey-design og ML-implementeringsstrategi."
     },
-    { 
-        name: "Jonas Amasa Skov Nielsen", 
-        role: "Medforfatter", 
-        image: "/assets/collaborators/jonas.jpg",
-        description: "Bidrog til den teoretiske ramme og litteraturreview inden for uddannelsessociologi.",
-        links: { linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/", github: "https://github.com/JonasASNielsen" } 
+    {
+        ...jonas,
+        role: "Medforfatter",
+        description: "Bidrog til den teoretiske ramme og litteraturreview inden for uddannelsessociologi."
     }
   ],
   bibliography: [

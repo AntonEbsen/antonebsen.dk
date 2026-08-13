@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { sheng } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -61,7 +62,7 @@ const projectContent = {
     sources: "Statistics Denmark (DST) via API/Bulk download.",
     software: "Python (Pandas for data cleaning, Matplotlib/Seaborn for visualization)."
   },
-  launchLabUrl: "/research/lab/index.html?path=content/exchange-rate-analysis.ipynb",
+  launchLabUrl: "/research/lab/index.html?path=exchange-rate-analysis.ipynb",
   citation: {
     text: "Jørgensen, A. M. E. (2023). Exchange Rate Dynamics: Inflation and Relative Rates in Denmark. Applied Data Analysis Project. Ref: ADA-2023-DK.",
     pdfUrl: "file:///c:/Users/Anton/antonebsen.dk/public/assets/docs/Jorgensen_2023_ExchangeRates.pdf"
@@ -78,7 +79,14 @@ const projectContent = {
     limitations: "Limitations",
     continuityTitle: "Conceptual Continuity",
     visualAnalysis: "Visual Analysis"
-  }
+  },
+  collaborators: [
+    {
+        ...sheng,
+        role: "Study Group Member",
+        description: "Co-author on this project during our bachelor's. Contributed substantially to the data harmonisation and the correlation analysis."
+    }
+  ]
 };
 ---
 <ProjectDetailPage lang="en" project={projectContent} />

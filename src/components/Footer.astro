@@ -11,7 +11,7 @@ const notesUrl = isEn ? '/en/notes' : isDe ? '/de/notes' : '/notes';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-[#101213] border-t border-glass-border text-dim mt-20 relative pb-5 before:content-[''] before:absolute before:-top-px before:left-[20%] before:right-[20%] before:h-px before:bg-[radial-gradient(circle,var(--accent)_0%,transparent_100%)] before:opacity-50" role="contentinfo">
+<footer class="bg-[#101213] border-t border-glass-border text-muted mt-20 relative pb-5 before:content-[''] before:absolute before:-top-px before:left-[20%] before:right-[20%] before:h-px before:bg-[radial-gradient(circle,var(--accent)_0%,transparent_100%)] before:" role="contentinfo">
   <div class="max-w-[1200px] mx-auto px-5 py-7">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.15fr] gap-6 items-start pb-5 border-b border-glass-border">
@@ -26,9 +26,9 @@ const year = new Date().getFullYear();
           <a class="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/15 font-bold no-underline text-text hover:bg-white/20 hover:no-underline" href={isEn ? "/en/cv" : "/cv"}>
             <i class="fa-solid fa-file-lines" aria-hidden="true"></i> {isEn ? "CV" : "CV"}
           </a>
-          <a class="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-transparent border border-white/20 font-bold no-underline text-text hover:bg-white/20 hover:no-underline" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
-            <i class="fa-solid fa-download" aria-hidden="true"></i> {isEn ? "Download PDF" : "Download PDF"}
-          </a>
+          {/* A "Download PDF" button pointing at /assets/Anton-CV.pdf sat here in the
+              footer of every page on the site, and that file has never existed. The CV
+              link beside it goes to the page that can actually produce the PDF. */}
         </div>
       </section>
 

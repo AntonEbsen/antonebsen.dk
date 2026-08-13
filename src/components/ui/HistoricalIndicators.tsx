@@ -45,8 +45,8 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
             {
                 label: isDa ? 'Danmark' : 'Denmark',
                 data: [1500, 2100, 2600, 4200, 5600, 7100, 10500, 25000, 36000, 52000],
-                borderColor: '#b87333', // Copper
-                backgroundColor: 'rgba(184, 115, 51, 0.1)',
+                borderColor: '#D4794F', // Terracotta, matching --accent
+                backgroundColor: 'rgba(212, 121, 79, 0.1)',
                 fill: true,
                 tension: 0.4
             },
@@ -67,8 +67,8 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
             {
                 label: isDa ? 'UK Fertilitet' : 'UK Fertility',
                 data: [4.8, 4.6, 3.5, 2.8, 1.8, 2.7, 1.9, 1.9],
-                borderColor: '#b87333',
-                backgroundColor: 'rgba(184, 115, 51, 0.2)',
+                borderColor: '#D4794F',
+                backgroundColor: 'rgba(212, 121, 79, 0.2)',
                 borderDash: [5, 5],
                 tension: 0.3
             }
@@ -105,23 +105,23 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
             <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.subtitle}>
                 <div className="mb-6">
                     <h3 className="text-xl font-black text-white uppercase italic tracking-tight mb-1">{t.title}</h3>
-                    <p className="text-[10px] uppercase font-bold text-copper tracking-[0.2em]">{t.subtitle}</p>
+                    <p className="text-[10px] uppercase font-bold text-accent tracking-[0.2em]">{t.subtitle}</p>
                 </div>
                 <div className="h-[300px]">
                     <Line data={gdpData} options={chartOptions} />
                 </div>
-                <p className="mt-6 text-[9px] text-white/30 italic uppercase tracking-widest">{t.source}</p>
+                <p className="mt-6 text-[9px] text-muted italic uppercase tracking-widest">{t.source}</p>
             </div>
 
             <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.tfrSubtitle}>
                 <div className="mb-6">
                     <h3 className="text-xl font-black text-white uppercase italic tracking-tight mb-1">{t.tfrTitle}</h3>
-                    <p className="text-[10px] uppercase font-bold text-copper tracking-[0.2em]">{t.tfrSubtitle}</p>
+                    <p className="text-[10px] uppercase font-bold text-accent tracking-[0.2em]">{t.tfrSubtitle}</p>
                 </div>
                 <div className="h-[300px]">
                     <Line data={tfrData} options={chartOptions} />
                 </div>
-                <div className="mt-8 p-4 bg-copper/5 border-l-2 border-copper">
+                <div className="mt-8 p-4 bg-accent/5 border-l-2 border-accent">
                     <p className="text-[11px] text-white/60 leading-relaxed font-serif italic">
                         {isDa 
                             ? "Kliometrisk indsigt: Faldet i fertilitet i det 19. århundrede var tæt korreleret med indførelsen af arbejdsmarkedslovgivning, der begrænsede børnearbejde og øgede værdien af humankapital."

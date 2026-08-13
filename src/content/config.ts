@@ -37,6 +37,9 @@ const portfolioCollection = defineCollection({
     type: 'data',
     schema: z.object({
         title: z.string(),
+        // Route slug under /projects/. The entry ids are "project-01" style, which
+        // matches no route — blog sidebars linked to /projects/project-01 and 404'd.
+        slug: z.string().optional(),
         tagString: z.string(),
         description: z.string(),
         tools: z.string(),
@@ -120,6 +123,14 @@ const videosCollection = defineCollection({
         // here (distance, climb and the elevation profile are then derived at build
         // time), or fill in `trail` by hand. Values in `trail` win over the GPX.
         gpxFile: z.string().optional(),
+        // Captions exported from YouTube Studio (Subtitles -> language -> Download),
+        // dropped into src/data/transcripts/ and named here — the same arrangement
+        // as gpxFile above. Parsed at build time into a collapsible panel, folded
+        // into the search index, and published as the VideoObject `transcript`.
+        // Danish and German files are optional; both fall back to the English one.
+        transcriptFile: z.string().optional(),
+        transcriptFile_da: z.string().optional(),
+        transcriptFile_de: z.string().optional(),
         trail: z.object({
             distanceKm: z.number().optional(),
             elevationGainM: z.number().optional(),
@@ -572,6 +583,26 @@ export const collections = {
             description: z.string(),
             spotifyId: z.string(),
             chapter: z.number()
+        })
+    }),
+    // /exercises and /en/exercises, ExercisesPage and ExerciseDetailPage all existed
+    // and were linked from NotesPage, but this collection was never declared — so
+    // every build logged "The collection exercises does not exist or is empty" and
+    // the library could never hold anything. The shape below is exactly what the two
+    // templates read; entries are keyed `{lang}/{slug}`, e.g. da/goblet-squat.json,
+    // which is how ExercisesPage filters them.
+    'exercises': defineCollection({
+        type: 'data',
+        schema: z.object({
+            title: z.string(),
+            muscles: z.array(z.string()).optional(),
+            benefits: z.array(z.string()).optional(),
+            setup: z.array(z.string()).optional(),
+            execution: z.array(z.string()).optional(),
+            /** Rendered joined with " - ", e.g. ["3", "1", "2", "0"]. */
+            tempo: z.array(z.string()).optional(),
+            tempoNote: z.string().optional(),
+            focusPoints: z.array(z.string()).optional()
         })
     })
 };

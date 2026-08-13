@@ -217,7 +217,7 @@ const ConceptNetwork: React.FC<ConceptNetworkProps> = ({ courses, lang }) => {
                         <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                         Den Røde Tråd
                     </h3>
-                    <p className="text-white/40 text-[10px]">
+                    <p className="text-muted text-[10px]">
                         {lang === 'da' ? 'Hold musen over et fag for at se den faglige sammenhæng' : 'Hover over a course to see the conceptual network'}
                     </p>
                 </div>

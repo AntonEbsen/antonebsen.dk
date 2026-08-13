@@ -5,25 +5,23 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
-import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
-export async function getStaticPaths() {
-  const exercises = await getCollection('exercises');
-  return exercises.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+/**
+ * `getStaticPaths` used to live here, along with a note wondering which routes would
+ * use it. It does nothing in a component — only a page can define it — so the
+ * exercise library had no detail routes at all and every "View Guide" card would
+ * have 404'd. The real paths now live in src/pages/exercises/[slug].astro and
+ * src/pages/en/exercises/[slug].astro, which pass the entry in.
+ */
+interface Props {
+  entry: CollectionEntry<'exercises'>;
+  lang: 'da' | 'en';
 }
 
-const { entry } = Astro.props;
+const { entry, lang } = Astro.props;
 const { data } = entry;
-const { lang } = Astro.params; // Note: This might need adjustment for dynamic routes structure
-/* 
-  Actually, for dynamic routes in Astro [slug].astro usually handles one lang.
-  I'll assume this template is used by `src/pages/exercises/[slug].astro` (defaults to Da)
-  and `src/pages/en/exercises/[slug].astro`.
-*/
-const isDa = !Astro.url.pathname.startsWith('/en');
+const isDa = lang === 'da';
 
 const t = {
   muscles: isDa ? "Muskler" : "Muscles",

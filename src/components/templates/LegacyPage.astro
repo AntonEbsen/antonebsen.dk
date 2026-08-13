@@ -71,11 +71,11 @@ const t = localizedContent[lang];
     <!-- Hero Section -->
     <Section class="text-center pt-32 pb-24 border-b border-white/5 animate-on-scroll">
         <div class="max-w-4xl mx-auto px-4 relative">
-            <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-copper mb-6">{t.heroEyebrow}</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-6">{t.heroEyebrow}</p>
             <h1 class="text-6xl md:text-[100px] font-black text-white leading-[0.8] mb-12 uppercase italic">
                 {t.heroTitle}
             </h1>
-            <p class="text-xl md:text-2xl text-white/50 leading-relaxed font-serif italic max-w-2xl mx-auto">
+            <p class="text-xl md:text-2xl text-muted leading-relaxed font-serif italic max-w-2xl mx-auto">
                 {t.heroLead}
             </p>
         </div>
@@ -85,15 +85,15 @@ const t = localizedContent[lang];
     <Section class="py-24 border-b border-white/5 animate-on-scroll">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div class="visual order-2 md:order-1">
-                <svg viewBox="0 0 400 400" class="w-full max-w-[400px] mx-auto filter drop-shadow-[0_0_20px_rgba(184,115,51,0.2)]">
+                <svg viewBox="0 0 400 400" class="w-full max-w-[400px] mx-auto filter drop-shadow-[0_0_20px_rgba(212,121,79,0.2)]">
                     <!-- Hub -->
-                    <circle cx="200" cy="200" r="10" fill="var(--copper)" />
+                    <circle cx="200" cy="200" r="10" fill="var(--accent)" />
                     <!-- Danish Lines (65%) -->
                     <g transform="rotate(0 200 200)">
                         {[...Array(12)].map((_, i) => (
                             <path 
                                 d={`M 200 200 Q ${200 + Math.sin(i) * 150} ${200 + Math.cos(i) * 150} ${200 + Math.sin(i) * 120} ${200 + Math.cos(i) * 180}`} 
-                                stroke="var(--copper)" 
+                                stroke="var(--accent)" 
                                 stroke-width="2" 
                                 fill="none" 
                                 class="opacity-40 animate-[pulse_4s_infinite]"
@@ -117,16 +117,16 @@ const t = localizedContent[lang];
                 </svg>
             </div>
             <div class="text-left order-1 md:order-2">
-                <h3 class="text-xs uppercase tracking-[0.4em] text-copper mb-4 font-bold">{t.geneTitle}</h3>
+                <h3 class="text-xs uppercase tracking-[0.4em] text-accent mb-4 font-bold">{t.geneTitle}</h3>
                 <p class="text-3xl font-black text-white mb-6 uppercase leading-tight">{t.geneLead}</p>
                 <div class="space-y-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-[2px] bg-copper"></div>
+                        <div class="w-12 h-[2px] bg-accent"></div>
                         <span class="text-white/80 font-mono text-sm uppercase tracking-widest">{t.geneDanish}</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="w-8 h-[2px] bg-white opacity-20"></div>
-                        <span class="text-white/40 font-mono text-sm uppercase tracking-widest">{t.genePolish}</span>
+                        <span class="text-muted font-mono text-sm uppercase tracking-widest">{t.genePolish}</span>
                     </div>
                 </div>
             </div>
@@ -153,15 +153,15 @@ const t = localizedContent[lang];
     <Section class="py-32 bg-white/[0.02] border-y border-white/5 animate-on-scroll">
         <div class="container mx-auto px-4">
              <div class="text-center mb-20">
-                <h3 class="text-xs uppercase tracking-[0.4em] text-copper mb-4 font-bold">{t.valuesTitle}</h3>
-                <p class="text-xl text-white/50 italic font-serif">{t.valuesLead}</p>
+                <h3 class="text-xs uppercase tracking-[0.4em] text-accent mb-4 font-bold">{t.valuesTitle}</h3>
+                <p class="text-xl text-muted italic font-serif">{t.valuesLead}</p>
              </div>
              
              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {t.values.map(v => (
-                    <div class="p-8 border border-white/10 rounded-2xl hover:border-copper/30 transition-all duration-300 group">
-                        <div class="w-10 h-10 rounded-lg bg-copper/10 flex items-center justify-center mb-6 group-hover:bg-copper/20 transition-colors">
-                            <i class="fa-solid fa-compass text-copper"></i>
+                    <div class="p-8 border border-white/10 rounded-2xl hover:border-accent/30 transition-all duration-300 group">
+                        <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+                            <i class="fa-solid fa-compass text-accent"></i>
                         </div>
                         <h4 class="text-white font-bold mb-3 uppercase tracking-wider">{v.title}</h4>
                         <p class="text-sm text-dim leading-relaxed">{v.text}</p>
@@ -182,10 +182,6 @@ const t = localizedContent[lang];
 </Layout>
 
 <style>
-    :root {
-        --copper: #b87333;
-    }
-    .text-copper { color: var(--copper); }
     
     html {
         scroll-behavior: smooth;

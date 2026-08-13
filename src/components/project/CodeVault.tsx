@@ -52,15 +52,24 @@ export default function CodeVault({ title, lang, code }: CodeVaultProps) {
                     <span className="text-xs font-mono text-slate-400 ml-2">{title}</span>
                 </div>
                 <div className="flex items-center gap-4">
-                    <span className="text-[10px] text-slate-500 italic hidden group-hover:block transition-all animate-pulse">
+                    <span className="text-[10px] text-slate-400 italic hidden group-hover:block transition-all animate-pulse">
                         Select text to explain
                     </span>
-                    <span className="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider">{lang}</span>
+                    {/* Accent-on-accent/20 measured 3.75:1 — below AA for 10px text.
+                        A neutral panel behind the same accent text clears it. */}
+                    <span className="text-[10px] bg-slate-950 text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider border border-accent/30">{lang}</span>
                 </div>
             </div>
 
             {/* Code */}
-            <div className="p-6 md:p-8 overflow-x-auto bg-[#0d1117] relative min-h-[200px]">
+            {/* Long lines scroll sideways on a phone. Without tabindex a keyboard user
+                cannot reach the overflow at all — nothing inside is focusable. */}
+            <div
+                className="p-6 md:p-8 overflow-x-auto bg-[#0d1117] relative min-h-[200px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+                tabIndex={0}
+                role="region"
+                aria-label={`${lang} source`}
+            >
                 <pre className="font-mono text-sm leading-relaxed text-slate-300"><code>{code}</code></pre>
             </div>
 

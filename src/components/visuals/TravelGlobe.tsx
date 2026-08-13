@@ -134,7 +134,7 @@ export default function TravelGlobe({ nodes, labels }: Props) {
               {/* Close Button */}
               <button 
                 onClick={() => setActiveNode(null)}
-                className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all"
+                className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted hover:text-white hover:bg-white/10 transition-all"
               >
                 <i className="fa-solid fa-xmark"></i>
               </button>
@@ -148,19 +148,19 @@ export default function TravelGlobe({ nodes, labels }: Props) {
                   <h2 className="text-4xl md:text-6xl font-black text-white leading-tight mb-2">
                     {activeNode.city}
                   </h2>
-                  <p className="text-xl text-white/40 font-medium">{activeNode.country}</p>
+                  <p className="text-xl text-muted font-medium">{activeNode.country}</p>
                 </div>
 
                 <div className="space-y-8">
                    <div>
-                      <h4 className="text-[10px] uppercase tracking-widest text-white/30 mb-3">{labels.lesson}</h4>
+                      <h4 className="text-[10px] uppercase tracking-widest text-muted mb-3">{labels.lesson}</h4>
                       <p className="text-2xl md:text-3xl font-serif italic text-white/90 leading-snug">
                         "{activeNode.lesson}"
                       </p>
                    </div>
                    
                    <div>
-                      <h4 className="text-[10px] uppercase tracking-widest text-white/30 mb-3">{labels.context}</h4>
+                      <h4 className="text-[10px] uppercase tracking-widest text-muted mb-3">{labels.context}</h4>
                       <p className="text-lg text-white/60 leading-relaxed max-w-xl">
                         {activeNode.description}
                       </p>

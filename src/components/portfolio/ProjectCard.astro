@@ -59,7 +59,7 @@ const t = labels[lang as keyof typeof labels] || labels.da;
                </p>
 
                <div class="mt-auto border-t border-white/5 pt-6 flex justify-between items-center">
-                   <div class="flex gap-3 text-xs text-slate-500">
+                   <div class="flex gap-3 text-xs text-slate-400">
                       {tools && tools.split(',').slice(0,3).map(t => (
                           <span class="px-2 py-1 bg-white/5 rounded border border-white/5">{t.trim()}</span>
                       ))}
@@ -78,7 +78,7 @@ const t = labels[lang as keyof typeof labels] || labels.da;
         <div class="p-6 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <h2 class="text-lg font-bold text-slate-200 group-hover/card:text-accent transition-colors">{title}</h2>
-                {tagString && <span class="text-[10px] font-mono text-slate-500 border border-white/10 px-2 py-1 rounded bg-black/20">{tagString}</span>}
+                {tagString && <span class="text-[10px] font-mono text-slate-400 border border-white/10 px-2 py-1 rounded bg-black/20">{tagString}</span>}
             </div>
 
             <p class="text-sm text-slate-400 mb-6 leading-relaxed flex-grow">
@@ -90,7 +90,7 @@ const t = labels[lang as keyof typeof labels] || labels.da;
                 <div class="grid grid-cols-2 gap-2 mb-6">
                     {highlights.slice(0, 2).map(h => (
                         <div class="bg-black/20 p-2 rounded border border-white/5">
-                            <p class="text-[10px] text-slate-500 uppercase font-bold">{h.label}</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-bold">{h.label}</p>
                             <p class="text-xs font-bold text-slate-300">{h.value}</p>
                         </div>
                     ))}
@@ -106,7 +106,7 @@ const t = labels[lang as keyof typeof labels] || labels.da;
                 ) : (
                      <div class="flex gap-3">
                         {links && links.map(link => (
-                             <a href={link.url} class="text-xs font-bold text-slate-500 hover:text-white transition-colors flex items-center gap-1">
+                             <a href={link.url} class="text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center gap-1">
                                 {link.label} {link.icon === 'arrow-right' && '→'}
                              </a>
                         ))}

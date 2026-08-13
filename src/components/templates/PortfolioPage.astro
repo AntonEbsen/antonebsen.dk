@@ -8,6 +8,7 @@ import ProjectCard from '@components/portfolio/ProjectCard.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
+import { assetExists } from '@lib/public-asset';
 import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
 
@@ -207,7 +208,7 @@ const t = uiStrings[lang] || uiStrings.en;
                          </div>
                          
                          {/* The Blueprint (Spotlight Version) - Now on the right for better balance */}
-                         {cvProjects[0].blueprint && (
+                         {assetExists(cvProjects[0].blueprint) && (
                             <div class="flex-1 w-full max-w-lg perspective-1000">
                                 <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl transform rotate-y-[-5deg] rotate-x-[5deg] hover:rotate-0 transition-transform duration-700 bg-slate-900">
                                     <div class="bg-black/60 backdrop-blur p-3 text-[10px] text-dim font-mono border-b border-white/10 flex justify-between items-center">

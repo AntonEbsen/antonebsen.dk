@@ -53,7 +53,7 @@ const { title, skills, variant = 'default' } = Astro.props;
                                     class="text-[10px] uppercase font-bold text-dim bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded mt-1 transition-colors flex items-center gap-1 group/btn"
                                     onclick={`event.stopPropagation(); window.dispatchEvent(new CustomEvent('open-snippet', { detail: { snippet: ${JSON.stringify(skill.snippet)}, title: '${skill.name}' } }))`}
                                 >
-                                    <i class="fa-solid fa-code text-accent/70 group-hover/btn:text-accent"></i>
+                                    <i class="fa-solid fa-code text-accent group-hover/btn:text-accent"></i>
                                     View Code
                                 </button>
                             )}
@@ -66,7 +66,7 @@ const { title, skills, variant = 'default' } = Astro.props;
                                     class="text-[10px] uppercase font-bold text-dim bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded mt-1 ml-1 transition-colors flex items-center gap-1 group/btn inline-flex"
                                     onclick="event.stopPropagation();"
                                 >
-                                    <i class="fa-solid fa-flask text-accent/70 group-hover/btn:text-accent"></i>
+                                    <i class="fa-solid fa-flask text-accent group-hover/btn:text-accent"></i>
                                     Launch Kernel
                                 </a>
                             )}
@@ -88,10 +88,10 @@ const { title, skills, variant = 'default' } = Astro.props;
                     {/* Courses */}
                     {skill.verifiedIn && skill.verifiedIn.length > 0 && (
                         <div>
-                            <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Verified in</p>
+                            <p class="text-[10px] uppercase text-muted mb-1 font-bold tracking-wider">Verified in</p>
                             {skill.verifiedIn.slice(0, 1).map(c => (
                                 <a href={c.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
-                                    <i class="fa-solid fa-graduation-cap text-accent/50 text-[10px]"></i>
+                                    <i class="fa-solid fa-graduation-cap text-accent text-[10px]"></i>
                                     <span class="truncate">{c.title}</span>
                                     {c.grade && <Pill variant="accent" class="text-[10px] py-0 px-1.5 h-4">Grade: {c.grade}</Pill>}
                                 </a>
@@ -102,10 +102,10 @@ const { title, skills, variant = 'default' } = Astro.props;
                     {/* Professional Proof (Work Experience) */}
                     {skill.appliedWork && skill.appliedWork.length > 0 && (
                         <div>
-                             <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Verified in Work</p>
+                             <p class="text-[10px] uppercase text-muted mb-1 font-bold tracking-wider">Verified in Work</p>
                              {skill.appliedWork.slice(0, 1).map(w => (
                                 <a href={w.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
-                                    <i class="fa-solid fa-briefcase text-accent/50 text-[10px]"></i>
+                                    <i class="fa-solid fa-briefcase text-accent text-[10px]"></i>
                                     <span class="truncate">{w.title}</span>
                                 </a>
                             ))}
@@ -115,10 +115,10 @@ const { title, skills, variant = 'default' } = Astro.props;
                     {/* Projects */}
                     {skill.appliedIn && skill.appliedIn.length > 0 && (
                         <div>
-                             <p class="text-[10px] uppercase text-dim mb-1 font-bold tracking-wider opacity-60">Applied in Projects</p>
+                             <p class="text-[10px] uppercase text-muted mb-1 font-bold tracking-wider">Applied in Projects</p>
                              {skill.appliedIn.slice(0, 1).map(p => (
                                 <a href={p.href} class="flex items-center gap-2 text-xs hover:text-white transition-colors group/link truncate">
-                                    <i class="fa-solid fa-rocket text-accent/50 text-[10px]"></i>
+                                    <i class="fa-solid fa-rocket text-accent text-[10px]"></i>
                                     <span class="truncate">{p.title}</span>
                                 </a>
                             ))}

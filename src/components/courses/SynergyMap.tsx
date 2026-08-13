@@ -120,7 +120,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                 <h3 className="text-2xl font-black text-white mb-2 tracking-tight">
                     {lang === 'da' ? 'Synergi: Fra Teori til Praksis' : 'Synergy: Theory to Practice'}
                 </h3>
-                <p className="text-white/40 text-sm max-w-lg mx-auto leading-relaxed">
+                <p className="text-muted text-sm max-w-lg mx-auto leading-relaxed">
                     {lang === 'da'
                         ? 'Visualisering af hvordan akademiske kurser flyder ind i mine professionelle projekter.'
                         : 'Visualizing how academic foundations flow into applied professional projects.'}
@@ -152,7 +152,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
 
                 {/* Left Column: Courses */}
                 <div className="flex flex-col gap-4 relative z-10">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent/60 mb-2 pl-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-2 pl-2">
                         {lang === 'da' ? 'Akademisk Fundament' : 'Academic Foundation'}
                     </span>
                     {relevantCourses.map((course) => (
@@ -176,7 +176,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                                 </div>
                                 <div>
                                     <h4 className="text-sm font-bold text-white line-clamp-1">{course.title}</h4>
-                                    <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">{course.tag}</span>
+                                    <span className="text-[10px] font-mono text-muted uppercase tracking-widest">{course.tag}</span>
                                 </div>
                             </div>
                         </motion.div>
@@ -211,11 +211,11 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-1">{project.title}</h4>
-                                        <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Applied Artifact</span>
+                                        <span className="text-[10px] font-mono text-muted uppercase tracking-widest">Applied Artifact</span>
                                     </div>
                                 </div>
                                 <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
-                                    <i className="fa-solid fa-arrow-right text-white/40 group-hover:text-white/80 transition-all text-[10px]"></i>
+                                    <i className="fa-solid fa-arrow-right text-muted group-hover:text-white/80 transition-all text-[10px]"></i>
                                 </div>
                             </div>
                         </motion.a>

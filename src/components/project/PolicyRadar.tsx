@@ -160,13 +160,13 @@ const PolicyRadar: React.FC<Props> = ({ data, lang }) => {
             {/* Sidebar Signal Decoration */}
             <div className="absolute top-6 left-6 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                <span className="text-[9px] uppercase font-black tracking-[0.2em] text-accent/80">
+                <span className="text-[9px] uppercase font-black tracking-[0.2em] text-accent">
                     {lang === 'da' ? 'Policy Relevans Matrix' : 'Policy Relevance Matrix'}
                 </span>
             </div>
 
             <div className="absolute bottom-6 right-8 text-right">
-                <p className="text-[8px] uppercase tracking-widest text-slate-600 font-bold mb-1">
+                <p className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-1">
                     {lang === 'da' ? 'Analytisk overførselsscore' : 'Analytical Transfer Score'}
                 </p>
                 <div className="flex justify-end gap-1">

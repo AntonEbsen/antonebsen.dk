@@ -36,7 +36,7 @@ const { title, vibe, description, spotifyId, chapter } = Astro.props;
   <div class="content relative z-10 flex flex-col justify-center px-4 md:px-8">
      <div class="inline-flex items-center gap-3 mb-6">
         <span class="w-8 h-[1px] bg-accent/40"></span>
-        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60">Chapter {chapter}</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-accent">Chapter {chapter}</span>
      </div>
      
      <h2 class="text-5xl md:text-7xl font-black text-white leading-none mb-6 group-hover:text-accent transition-colors duration-500">
@@ -47,7 +47,7 @@ const { title, vibe, description, spotifyId, chapter } = Astro.props;
         <p class="text-sm font-mono text-accent uppercase tracking-widest bg-accent/5 px-3 py-1 rounded inline-block">
             {vibe}
         </p>
-        <p class="text-lg text-white/50 leading-relaxed font-serif italic border-l-2 border-accent/20 pl-8">
+        <p class="text-lg text-muted leading-relaxed font-serif italic border-l-2 border-accent/20 pl-8">
             {description}
         </p>
      </div>

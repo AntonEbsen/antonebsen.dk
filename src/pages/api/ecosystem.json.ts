@@ -55,7 +55,8 @@ export async function GET() {
             group: 'project',
             val: 14,
             color: '#F59E0B',
-            url: `/projects/${proj.id}`
+            // proj.id is "project-01", which is not a route; the mapped slug is.
+            url: proj.data.slug ? `/projects/${proj.data.slug}` : undefined
         });
         links.push({ source: 'Projects', target: id, value: 3 });
 

@@ -2,6 +2,7 @@
 import Card from '@components/ui/Card.astro';
 import Pill from '@components/ui/Pill.astro';
 import Button from '@components/ui/Button.astro';
+import { assetExists } from '@lib/public-asset';
 
 interface Props {
   title: string;
@@ -115,7 +116,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
                                             <div class={`w-2 h-2 rounded-full border border-white/20 ${freshness.class} animate-pulse shadow-lg`}></div>
                                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/fresh:opacity-100 transition-all pointer-events-none translate-y-1 group-hover/fresh:translate-y-0 z-50">
                                                 <div class="bg-black/95 backdrop-blur-md border border-white/20 px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter text-white whitespace-nowrap flex flex-col gap-0.5 shadow-2xl">
-                                                    <span class="text-white/40 text-[7px] tracking-[0.1em]">{isDa ? 'FRISKHEID' : 'FRESHNESS'}</span>
+                                                    <span class="text-muted text-[7px] tracking-[0.1em]">{isDa ? 'FRISKHEID' : 'FRESHNESS'}</span>
                                                     <div class="flex items-center gap-1.5">
                                                         <i class={`fa-solid ${freshness.icon} text-[8px]`} style={`color: ${freshness.class.split(' ')[0].replace('bg-', '')}`}></i>
                                                         {freshness.label}
@@ -178,11 +179,11 @@ const getIcon = (type?: string, defaultIcon?: string) => {
             {/* Syllabus */}
             {syllabus && syllabus.length > 0 && (
                 <div class="mb-4">
-                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold opacity-60">Syllabus</h4>
+                    <h4 class="text-xs uppercase tracking-wider text-muted mb-2 font-bold">Syllabus</h4>
                     <ul class="text-sm text-dim space-y-1">
                         {syllabus.map(item => (
                             <li class="flex items-center gap-2">
-                                <i class="fa-solid fa-check text-accent/50 text-[10px]"></i>
+                                <i class="fa-solid fa-check text-accent text-[10px]"></i>
                                 {item}
                             </li>
                         ))}
@@ -193,7 +194,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
             {/* Verified Skills */}
             {verifiedSkills && verifiedSkills.length > 0 && (
                  <div class="mb-4">
-                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold opacity-60">Verified Skills</h4>
+                    <h4 class="text-xs uppercase tracking-wider text-muted mb-2 font-bold">Verified Skills</h4>
                     <div class="flex flex-wrap gap-2">
                         {verifiedSkills.map(skill => (
                             <div class="px-2 py-1 rounded bg-accent/5 border border-accent/10 text-[10px] text-accent/90 flex items-center gap-1.5">
@@ -208,18 +209,18 @@ const getIcon = (type?: string, defaultIcon?: string) => {
             {/* Related Projects */}
             {relatedProjects && relatedProjects.length > 0 && (
                  <div class="mb-4">
-                    <h4 class="text-xs uppercase tracking-wider text-dim mb-2 font-bold opacity-60">Applied In</h4>
+                    <h4 class="text-xs uppercase tracking-wider text-muted mb-2 font-bold">Applied In</h4>
                     <div class="flex flex-col gap-3">
                         {relatedProjects.map(proj => (
                             <a href={proj.href} class="flex items-center gap-3 group/proj p-1.5 rounded-lg hover:bg-white/5 transition-colors">
-                                {proj.previewImage && (
+                                {assetExists(proj.previewImage) && (
                                     <div class="w-12 h-12 rounded bg-white/5 border border-white/10 overflow-hidden flex-shrink-0">
                                         <img src={proj.previewImage} alt={proj.title} loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover/proj:opacity-100 transition-opacity" />
                                     </div>
                                 )}
                                 <div>
                                     <p class="text-xs font-bold text-accent group-hover/proj:underline">{proj.title}</p>
-                                    <p class="text-[10px] text-dim opacity-50 font-mono">View Project Artifacts</p>
+                                    <p class="text-[10px] text-muted font-mono">View Project Artifacts</p>
                                 </div>
                             </a>
                         ))}

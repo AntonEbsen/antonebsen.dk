@@ -65,6 +65,71 @@ test.describe('design tokens', () => {
     });
 });
 
+test.describe('opacity modifiers', () => {
+    test('token colours accept an alpha channel', async ({ page }) => {
+        await page.goto('/');
+
+        /**
+         * Tailwind cannot apply an opacity modifier to a colour handed to it as the
+         * bare string `var(--accent)`: there are no channels to inject the alpha
+         * into, so `bg-accent/20` emitted no declaration at all. Roughly 414 classes
+         * in the markup carry a modifier — bg-accent/10, border-accent/30 and
+         * friends — and not one of them rendered. The config now supplies
+         * `rgb(var(--accent-rgb) / <alpha-value>)`, which is what makes it work.
+         *
+         * Asserted by generating the classes here rather than by finding them in the
+         * page, so this holds regardless of which components happen to be mounted.
+         */
+        // Tailwind only emits classes it finds in the markup, so this asserts
+        // combinations the codebase actually uses — bg-accent/10 appears 58 times and
+        // border-accent/20 52 times. Deliberately not asserting a text-accent/NN:
+        // those were all raised to solid because terracotta at 60% is 2.81:1 on the
+        // background, well under AA, so the class no longer exists to be generated.
+        const computed = await page.evaluate(() => {
+            const probe = document.createElement('div');
+            probe.className = 'bg-accent/10 border-accent/20';
+            document.body.appendChild(probe);
+            const cs = getComputedStyle(probe);
+            const out = { bg: cs.backgroundColor, border: cs.borderTopColor };
+            probe.remove();
+            return out;
+        });
+
+        // A working alpha modifier yields rgba() with the terracotta channels.
+        // Before the fix these were 'rgba(0, 0, 0, 0)' and Tailwind's default grey.
+        expect(computed.bg, 'bg-accent/10').toBe('rgba(212, 121, 79, 0.1)');
+        expect(computed.border, 'border-accent/20').toBe('rgba(212, 121, 79, 0.2)');
+    });
+
+    test('the channel tokens agree with the hex tokens', async ({ page }) => {
+        await page.goto('/');
+
+        // Two spellings of the same colour sit next to each other in BaseLayout, and
+        // nothing but this test stops them drifting apart.
+        const pairs = await page.evaluate(() => {
+            const cs = getComputedStyle(document.documentElement);
+            const read = (n: string) => cs.getPropertyValue(n).trim();
+            return [
+                ['--bg', read('--bg'), read('--bg-rgb')],
+                ['--card', read('--card'), read('--card-rgb')],
+                ['--text', read('--text'), read('--text-rgb')],
+                ['--text-dim', read('--text-dim'), read('--text-dim-rgb')],
+                ['--text-muted', read('--text-muted'), read('--text-muted-rgb')],
+                ['--accent', read('--accent'), read('--accent-rgb')],
+                ['--accent-light', read('--accent-light'), read('--accent-light-rgb')],
+                ['--accent-2', read('--accent-2'), read('--accent-2-rgb')]
+            ];
+        });
+
+        for (const [name, hex, channels] of pairs) {
+            const m = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+            expect(m, `${name} is a plain hex value`).toBeTruthy();
+            const fromHex = m!.slice(1).map((h) => parseInt(h, 16)).join(' ');
+            expect(channels, `${name}-rgb matches ${hex}`).toBe(fromHex);
+        }
+    });
+});
+
 test.describe('typography', () => {
     test('font-serif resolves to Fraunces, not the OS fallback', async ({ page }) => {
         await page.goto('/videoer');

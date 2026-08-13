@@ -77,7 +77,7 @@ export default function HeroCarousel({ items, lang }: Props) {
                         <span className="px-2 py-1 rounded bg-accent/20 text-accent text-[10px] font-black uppercase tracking-widest border border-accent/20">
                             {item.tag}
                         </span>
-                        <span className="text-xs text-dim opacity-50 font-medium">{item.meta}</span>
+                        <span className="text-xs text-muted font-medium">{item.meta}</span>
                     </div>
 
                     <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight tracking-tight text-white drop-shadow-sm">

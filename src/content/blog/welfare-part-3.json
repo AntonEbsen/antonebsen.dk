@@ -1,0 +1,52 @@
+{
+    "title": "The Coefficient That Changes Sign",
+    "title_da": "Koefficienten der skifter fortegn",
+    "tag": "Structural Breaks",
+    "meta": "Del 3 af 3 · Globalization and the Welfare State",
+    "description": "One number for 44 years hides more than it shows. Rolling windows, a Chow test at 2008 — and two tests that were never asked to assume a date, and picked 1995 instead.",
+    "description_da": "Ét tal for 44 år skjuler mere, end det viser. Rullende vinduer, en Chow-test i 2008 — og to test, der aldrig blev bedt om at antage en dato, og som valgte 1995 i stedet.",
+    "category": "academic",
+    "series": "Globalization and the Welfare State",
+    "seriesOrder": 3,
+    "relatedProjectId": "project-05",
+    "links": [
+        {
+            "label": "Se projektet",
+            "url": "/projects/welfare-state-seminar",
+            "icon": "fa-solid fa-arrow-right"
+        },
+        {
+            "label": "Prøv simulatoren",
+            "url": "/models/rolling-window",
+            "icon": "fa-solid fa-sliders"
+        }
+    ],
+    "content": [
+        "Part 2 ended with a null result. This part is about why that null was the wrong thing to be looking for.",
+        "Every estimate so far collapses 44 years into a single number. That is standard practice, and it carries an assumption nobody usually states out loud: that the relationship being estimated is the *same* relationship in 1983 as in 2021. Our sample contains the end of the Cold War, the founding of the WTO, China's accession, a global financial crisis and a pandemic. Assuming stability across all of that is a strong claim to make silently.",
+        "So we tested it. We re-estimated the baseline on **rolling ten-year windows** — 1980–1989, then 1981–1990, and so on to 2014–2023 — each one a separate regression, each plotted at the year the window ends.",
+        "The coefficient does not sit still. In windows ending before 2015 it is small, unstable and mostly insignificant. In the window ending 2018 — the first containing *only* post-crisis observations — overall globalization comes in at **0.186** and clears the 1% level. By 2023 it is 0.183 and still significant. Social and political globalization follow the same path. Economic globalization is the holdout: significantly negative in the earliest window, and never decisively positive after.",
+        "A Chow test at 2008 confirms it formally, rejecting parameter stability for all four indices with F-statistics between 4.9 and 9.9. So the paper's conclusion is not 'globalization doesn't matter'. It is that **a single long-run coefficient is the wrong object**. It averages over periods that do not resemble each other, and the average is close to zero because the pieces point in different directions.",
+        "That, incidentally, explains the literature's disagreement better than any individual paper does. Yay and Aksoy report insignificant baseline results with data ending in 2010 — which, by our rolling estimates, is before the relationship turns. They were not wrong. They were looking at a different period, and nobody had established that the period was the variable.",
+        "There is a footnote to this that we only got to after submitting, and it complicates our own story.",
+        "A Chow test answers a specific question: *is there a break at this date I have chosen?* It does not answer *where is the break strongest?* Two tests do answer that — the QLR sup-Wald test, which searches every candidate year, and the Bai-Perron sequential procedure, which also decides how many breaks there are. We ran both.",
+        "They agree with each other and disagree with us. QLR puts the break at **1995** for all four headline indices, with sup-F statistics from 10.9 to 16.1 against a 5% critical value of 8.68. Bai-Perron selects 1995 for seven of nine indices, each with a single break. The strongest break of all is trade globalization, at 13.21 — notable, because trade sits inside the economic index that never reaches significance anywhere else in the paper.",
+        "The natural reaction is that 2008 was wrong. It is worth looking at the F-statistic path before concluding that. The curve peaks at 1995, drops well below the critical value through the early 2000s, and then rises to a **second peak around 2008–09 that also clears the 5% line**. Both dates are real breaks. 1995 is simply the bigger one.",
+        "The reading we take from that: the instability was building from the mid-1990s acceleration of globalization — the Uruguay Round, the founding of the WTO — and the financial crisis **amplified a shift that was already underway** rather than starting one. Our Chow test found something genuine. It just found the second-largest break, because we told it where to look.",
+        "Which is a fitting way for the project to end. The paper's contribution is not a coefficient. It is the observation that this literature has been arguing about the value of a parameter that does not hold still — and the small, slightly uncomfortable demonstration that when you stop imposing your assumptions on the data, it will happily tell you that you imposed the wrong one."
+    ],
+    "content_da": [
+        "Del 2 sluttede med et nulresultat. Denne del handler om, hvorfor det nulresultat var det forkerte at lede efter.",
+        "Alle estimater indtil nu presser 44 år sammen til ét tal. Det er standardpraksis, og det bærer en antagelse, ingen normalt siger højt: at den sammenhæng, man estimerer, er den *samme* sammenhæng i 1983 som i 2021. Vores stikprøve rummer afslutningen på den kolde krig, WTO’s oprettelse, Kinas optagelse, en global finanskrise og en pandemi. At antage stabilitet hen over alt det er en stærk påstand at fremsætte i tavshed.",
+        "Så vi testede den. Vi genestimerede baseline på **rullende ti-års vinduer** — 1980-1989, så 1981-1990, og så videre til 2014-2023 — hvert vindue en selvstændig regression, hver afsat ved vinduets slutår.",
+        "Koefficienten ligger ikke stille. I vinduer, der slutter før 2015, er den lille, ustabil og for det meste insignifikant. I vinduet, der slutter i 2018 — det første med *udelukkende* observationer efter krisen — lander samlet globalisering på **0,186** og passerer 1 %-niveauet. I 2023 er den 0,183 og fortsat signifikant. Social og politisk globalisering følger samme bane. Økonomisk globalisering er undtagelsen: signifikant negativ i det tidligste vindue og aldrig entydigt positiv derefter.",
+        "En Chow-test i 2008 bekræfter det formelt og forkaster parameterstabilitet for alle fire indeks med F-værdier mellem 4,9 og 9,9. Opgavens konklusion er altså ikke “globalisering betyder ikke noget”. Den er, at **én langsigtet koefficient er det forkerte objekt**. Den midler hen over perioder, der ikke ligner hinanden, og gennemsnittet ligger tæt på nul, fordi delene peger hver sin vej.",
+        "Det forklarer i øvrigt litteraturens uenighed bedre, end nogen enkelt artikel gør. Yay og Aksoy rapporterer insignifikante baseline-resultater med data til 2010 — hvilket ifølge vores rullende estimater er før, relationen vender. De tog ikke fejl. De kiggede på en anden periode, og ingen havde påvist, at perioden var variablen.",
+        "Der er en fodnote til det her, som vi først nåede efter afleveringen, og den komplicerer vores egen historie.",
+        "En Chow-test besvarer et bestemt spørgsmål: *er der et brud på den dato, jeg har valgt?* Den besvarer ikke *hvor bruddet er stærkest*. To test gør: QLR sup-Wald-testen, der søger alle kandidatår, og Bai-Perrons sekventielle procedure, der også afgør, hvor mange brud der er. Vi kørte begge.",
+        "De er enige med hinanden og uenige med os. QLR placerer bruddet i **1995** for alle fire hovedindeks med sup-F-værdier fra 10,9 til 16,1 mod en 5 %-kritisk værdi på 8,68. Bai-Perron vælger 1995 for syv ud af ni indeks, hvert med ét brud. Det stærkeste brud af alle er handelsglobalisering med 13,21 — bemærkelsesværdigt, fordi handel ligger inde i det økonomiske indeks, som ellers aldrig bliver signifikant nogen steder i opgaven.",
+        "Den umiddelbare reaktion er, at 2008 var forkert. Det er værd at se på F-statistikkens forløb, før man konkluderer det. Kurven topper i 1995, falder klart under den kritiske værdi gennem begyndelsen af 2000’erne og stiger så til en **anden top omkring 2008-09, som også passerer 5 %-linjen**. Begge datoer er reelle brud. 1995 er blot det største.",
+        "Vores læsning: ustabiliteten byggede sig op fra midten af 1990’ernes globaliseringsacceleration — Uruguay-runden, WTO’s oprettelse — og finanskrisen **forstærkede et skift, der allerede var i gang**, snarere end at sætte det i gang. Vores Chow-test fandt noget ægte. Den fandt bare det næststørste brud, fordi vi fortalte den, hvor den skulle lede.",
+        "Hvilket er en passende måde for projektet at slutte på. Opgavens bidrag er ikke en koefficient. Det er iagttagelsen, at denne litteratur har skændtes om værdien af en parameter, der ikke ligger stille — og den lille, en anelse ubehagelige demonstration af, at når man holder op med at påtvinge data sine antagelser, fortæller de gerne, at man valgte den forkerte."
+    ]
+}

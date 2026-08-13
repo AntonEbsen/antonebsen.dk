@@ -89,7 +89,7 @@ const t = isDa ? content.da : content.en;
         <p class="text-xl text-dim leading-relaxed mb-4">
           {t.heroText}
         </p>
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-white/40 uppercase tracking-widest font-mono">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-muted uppercase tracking-widest font-mono">
            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
            {t.lastUpdated}
         </div>
@@ -100,7 +100,7 @@ const t = isDa ? content.da : content.en;
     <div class="space-y-24">
       {t.sections.map((section, sIdx) => (
         <Section class={`animate-on-scroll delay-${(sIdx + 1) * 100}`}>
-          <SectionHeading class="mb-10 text-accent/80">{section.title}</SectionHeading>
+          <SectionHeading class="mb-10 text-accent">{section.title}</SectionHeading>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             {section.items.map(item => (
               <div class="relative group">

@@ -5,6 +5,7 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import { getEntry } from 'astro:content';
+import { assetExists } from '@lib/public-asset';
 
 interface Props {
   lang: 'da' | 'en';
@@ -18,6 +19,12 @@ if (!entry) {
 }
 
 const content: any = entry.data;
+
+// All four entries here are sample1.jpg … sample4.jpg, placeholders from the
+// original scaffold that were never replaced with real photographs — so the grid
+// rendered four broken images. Show only the ones whose file is really in public/,
+// and say the gallery is empty when none are.
+const items = (content.items ?? []).filter((item: any) => assetExists(item.src));
 ---
 
 <Layout 
@@ -240,7 +247,7 @@ const content: any = entry.data;
             <Button href={lang === 'en' ? "/en/contact" : "/contact"} variant="ghost">{content.hero.btnPropose}</Button>
           </div>
           
-          <p class="text-xs text-dim mt-4 opacity-50" set:html={content.hero.tip} />
+          <p class="text-xs text-muted mt-4" set:html={content.hero.tip} />
         </Card>
 
         <div class="hidden md:block">
@@ -275,8 +282,18 @@ const content: any = entry.data;
     </Section>
 
     <!-- GRID -->
+    {items.length === 0 && (
+      <Card variant="glass" class="p-10 text-center">
+        <p class="text-sm text-dim m-0">
+          {lang === 'da'
+            ? 'Der er endnu ingen billeder i galleriet.'
+            : 'There are no photographs in the gallery yet.'}
+        </p>
+      </Card>
+    )}
+
     <div id="grid" class="gallery-grid" aria-label="Gallery">
-      {content.items.map((item: any) => (
+      {items.map((item: any) => (
           <figure class="g-card" data-tags={item.tags ? item.tags.join(' ') : ''} data-caption={item.caption}>
             <button class="g-btn" type="button"
               data-src={item.src}

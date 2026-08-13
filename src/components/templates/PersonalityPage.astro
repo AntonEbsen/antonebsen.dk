@@ -156,7 +156,7 @@ const t = isDa ? content.da : content.en;
           <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter">
             {t.heroTitle}<span class="text-accent">.</span>
           </h1>
-          <div class="text-3xl font-mono text-white/40 mb-8">{t.heroType}</div>
+          <div class="text-3xl font-mono text-muted mb-8">{t.heroType}</div>
           <p class="text-xl text-dim leading-relaxed max-w-xl">
              {t.heroText}
           </p>
@@ -196,7 +196,7 @@ const t = isDa ? content.da : content.en;
                     <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
                        <div class="h-full bg-accent rounded-full transition-all duration-1000 ease-out" style={`width: ${trait.value}%`}></div>
                     </div>
-                    <p class="text-[10px] text-dim mt-2 opacity-60 italic">{trait.desc}</p>
+                    <p class="text-[10px] text-muted mt-2 italic">{trait.desc}</p>
                   </div>
                 ))}
               </div>
@@ -223,7 +223,7 @@ const t = isDa ? content.da : content.en;
              <p class="text-lg text-white/80 leading-relaxed mb-4 max-w-2xl">
                 {t.tt38.desc}
              </p>
-             <p class="text-sm text-accent/70 italic mb-10">
+             <p class="text-sm text-accent italic mb-10">
                 {t.tt38.topNote}
              </p>
 
@@ -250,7 +250,7 @@ const t = isDa ? content.da : content.en;
                         <div class={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-black text-lg ${
                           talent.rank <= 3 
                             ? 'bg-accent/20 text-accent border border-accent/30' 
-                            : 'bg-white/5 text-white/40 border border-white/10'
+                            : 'bg-white/5 text-muted border border-white/10'
                         }`}>
                            #{talent.rank}
                         </div>
@@ -278,7 +278,7 @@ const t = isDa ? content.da : content.en;
              </div>
 
              <!-- Source -->
-             <p class="mt-10 text-[10px] text-white/20 uppercase tracking-widest">
+             <p class="mt-10 text-[10px] text-muted uppercase tracking-widest">
                 {isDa ? 'Kilde: TalentUnlimited (TT38 Gratistest)' : 'Source: TalentUnlimited (TT38 Free Test)'}
              </p>
           </div>
@@ -386,7 +386,7 @@ const t = isDa ? content.da : content.en;
 
     <!-- Source Link -->
     <Section class="text-center animate-on-scroll">
-       <p class="text-xs text-dim opacity-40">
+       <p class="text-xs text-muted">
           {isDa ? 'Inspireret af 16personalities.com profilen.' : 'Inspired by the 16personalities.com profile.'}
        </p>
     </Section>

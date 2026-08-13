@@ -82,6 +82,24 @@ const lang = getLangFromUrl(Astro.url);
       --glass-border: rgba(232, 228, 220, 0.10);
       --glass-border-hover: rgba(212, 121, 79, 0.5);
 
+      /* CHANNEL FORMS — the same colours as bare R G B values.
+         Tailwind cannot apply an opacity modifier to a colour it receives as the
+         string `var(--accent)`: it has no channels to inject the alpha into, so
+         `bg-accent/20` silently produced no CSS at all. There are ~414 such classes
+         in the markup — bg-accent/10, border-accent/30, text-dim/70 and friends —
+         and none of them has ever rendered. tailwind.config.mjs reads these instead,
+         as `rgb(var(--accent-rgb) / <alpha-value>)`.
+
+         Keep each pair in step with the hex token directly above it. */
+      --bg-rgb: 23 25 26;
+      --card-rgb: 30 33 34;
+      --text-rgb: 232 228 220;
+      --text-dim-rgb: 184 188 181;
+      --text-muted-rgb: 142 147 139;
+      --accent-rgb: 212 121 79;
+      --accent-light-rgb: 227 144 104;
+      --accent-2-rgb: 111 158 123;
+
       --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
       --radius: 16px;
       

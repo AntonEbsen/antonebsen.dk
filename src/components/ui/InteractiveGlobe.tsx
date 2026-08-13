@@ -57,7 +57,7 @@ export default function InteractiveGlobe() {
                 style={{ width: 600, height: 600, maxWidth: '100%', aspectRatio: '1' }}
                 className="opacity-80 hover:opacity-100 transition-opacity duration-500"
             />
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-dim/50 uppercase tracking-widest pointer-events-none">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted uppercase tracking-widest pointer-events-none">
                 Drag to rotate
             </div>
         </div>

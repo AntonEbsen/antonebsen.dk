@@ -1,0 +1,4610 @@
+{
+  "KOFGI": [
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.022,
+      "lower_ci": -0.0931,
+      "upper_ci": 0.049,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 1
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": -0.0199,
+      "lower_ci": -0.0857,
+      "upper_ci": 0.0459,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 2
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0133,
+      "lower_ci": -0.0761,
+      "upper_ci": 0.0496,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 3
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0126,
+      "lower_ci": -0.0923,
+      "upper_ci": 0.0672,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 4
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0069,
+      "lower_ci": -0.0807,
+      "upper_ci": 0.067,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 5
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0065,
+      "lower_ci": -0.0712,
+      "upper_ci": 0.0582,
+      "significant": false,
+      "controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 6
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0032,
+      "lower_ci": -0.0819,
+      "upper_ci": 0.0756,
+      "significant": false,
+      "controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 7
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0028,
+      "lower_ci": -0.0729,
+      "upper_ci": 0.0673,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 8
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.002,
+      "lower_ci": -0.0791,
+      "upper_ci": 0.075,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 9
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0002,
+      "lower_ci": -0.0719,
+      "upper_ci": 0.0722,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 10
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0091,
+      "lower_ci": -0.0581,
+      "upper_ci": 0.0763,
+      "significant": false,
+      "controls": [
+        "debt"
+      ],
+      "included_controls": [
+        "debt"
+      ],
+      "rank": 11
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0103,
+      "lower_ci": -0.0501,
+      "upper_ci": 0.0707,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 12
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0108,
+      "lower_ci": -0.0609,
+      "upper_ci": 0.0825,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 13
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0109,
+      "lower_ci": -0.0588,
+      "upper_ci": 0.0806,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 14
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0118,
+      "lower_ci": -0.0636,
+      "upper_ci": 0.0872,
+      "significant": false,
+      "controls": [
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population"
+      ],
+      "rank": 15
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0241,
+      "lower_ci": -0.04,
+      "upper_ci": 0.0882,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt"
+      ],
+      "rank": 16
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0435,
+      "lower_ci": -0.0419,
+      "upper_ci": 0.1289,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 17
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0547,
+      "lower_ci": -0.0203,
+      "upper_ci": 0.1297,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 18
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0565,
+      "lower_ci": -0.0162,
+      "upper_ci": 0.1292,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 19
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0598,
+      "lower_ci": -0.0138,
+      "upper_ci": 0.1333,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 20
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0604,
+      "lower_ci": -0.0289,
+      "upper_ci": 0.1497,
+      "significant": false,
+      "controls": [
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "dependency_ratio"
+      ],
+      "rank": 21
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0631,
+      "lower_ci": -0.0108,
+      "upper_ci": 0.137,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 22
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0833,
+      "lower_ci": -0.0039,
+      "upper_ci": 0.1705,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 23
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0859,
+      "lower_ci": 0.0101,
+      "upper_ci": 0.1617,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 24
+    },
+    {
+      "name": "Subset (6 controls)",
+      "coefficient": 0.0882,
+      "lower_ci": 0.0247,
+      "upper_ci": 0.1517,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 25
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0929,
+      "lower_ci": 0.0023,
+      "upper_ci": 0.1835,
+      "significant": true,
+      "controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 26
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0962,
+      "lower_ci": 0.0358,
+      "upper_ci": 0.1565,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 27
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0964,
+      "lower_ci": 0.0223,
+      "upper_ci": 0.1704,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 28
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1002,
+      "lower_ci": -0.0147,
+      "upper_ci": 0.215,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 29
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1012,
+      "lower_ci": -0.0114,
+      "upper_ci": 0.2138,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 30
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1092,
+      "lower_ci": 0.0367,
+      "upper_ci": 0.1816,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 31
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1092,
+      "lower_ci": 0.0344,
+      "upper_ci": 0.1839,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 32
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1138,
+      "lower_ci": -0.0026,
+      "upper_ci": 0.2302,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 33
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1165,
+      "lower_ci": 0.0504,
+      "upper_ci": 0.1826,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 34
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.1174,
+      "lower_ci": 0.0066,
+      "upper_ci": 0.2281,
+      "significant": true,
+      "controls": [
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_population"
+      ],
+      "rank": 35
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1185,
+      "lower_ci": 0.053,
+      "upper_ci": 0.184,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 36
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1236,
+      "lower_ci": 0.0525,
+      "upper_ci": 0.1947,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 37
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1242,
+      "lower_ci": 0.0547,
+      "upper_ci": 0.1937,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 38
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1259,
+      "lower_ci": 0.0089,
+      "upper_ci": 0.2429,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 39
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.128,
+      "lower_ci": 0.0638,
+      "upper_ci": 0.1922,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 40
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.1301,
+      "lower_ci": 0.0171,
+      "upper_ci": 0.2431,
+      "significant": true,
+      "controls": [
+        "deficit"
+      ],
+      "included_controls": [
+        "deficit"
+      ],
+      "rank": 41
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1314,
+      "lower_ci": 0.058,
+      "upper_ci": 0.2047,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 42
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1349,
+      "lower_ci": 0.0732,
+      "upper_ci": 0.1966,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "rank": 43
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1365,
+      "lower_ci": 0.0727,
+      "upper_ci": 0.2004,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 44
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.1376,
+      "lower_ci": 0.0083,
+      "upper_ci": 0.2669,
+      "significant": true,
+      "controls": [
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "inflation_cpi"
+      ],
+      "rank": 45
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1446,
+      "lower_ci": 0.0776,
+      "upper_ci": 0.2117,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 46
+    },
+    {
+      "name": "Subset (0 controls)",
+      "coefficient": 0.1457,
+      "lower_ci": 0.0243,
+      "upper_ci": 0.2671,
+      "significant": true,
+      "controls": [],
+      "included_controls": [],
+      "rank": 47
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1505,
+      "lower_ci": 0.0908,
+      "upper_ci": 0.2103,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "rank": 48
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1731,
+      "lower_ci": 0.1015,
+      "upper_ci": 0.2448,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 49
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1776,
+      "lower_ci": 0.1044,
+      "upper_ci": 0.2508,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 50
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.197,
+      "lower_ci": 0.1144,
+      "upper_ci": 0.2796,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 51
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2074,
+      "lower_ci": 0.1183,
+      "upper_ci": 0.2964,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 52
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.2172,
+      "lower_ci": 0.1389,
+      "upper_ci": 0.2956,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 53
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2195,
+      "lower_ci": 0.1381,
+      "upper_ci": 0.3008,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 54
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2215,
+      "lower_ci": 0.1435,
+      "upper_ci": 0.2996,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 55
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.223,
+      "lower_ci": 0.1416,
+      "upper_ci": 0.3045,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 56
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2327,
+      "lower_ci": 0.1502,
+      "upper_ci": 0.3152,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 57
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2334,
+      "lower_ci": 0.1474,
+      "upper_ci": 0.3194,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "rank": 58
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2432,
+      "lower_ci": 0.1607,
+      "upper_ci": 0.3257,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 59
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2509,
+      "lower_ci": 0.1685,
+      "upper_ci": 0.3334,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "rank": 60
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2573,
+      "lower_ci": 0.1781,
+      "upper_ci": 0.3365,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 61
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2649,
+      "lower_ci": 0.1864,
+      "upper_ci": 0.3434,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "rank": 62
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2835,
+      "lower_ci": 0.2011,
+      "upper_ci": 0.3659,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "rank": 63
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.2945,
+      "lower_ci": 0.2127,
+      "upper_ci": 0.3763,
+      "significant": true,
+      "controls": [
+        "ln_gdppc"
+      ],
+      "included_controls": [
+        "ln_gdppc"
+      ],
+      "rank": 64
+    }
+  ],
+  "KOFEcGI": [
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0657,
+      "lower_ci": -0.1032,
+      "upper_ci": -0.0282,
+      "significant": true,
+      "controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 1
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0638,
+      "lower_ci": -0.1014,
+      "upper_ci": -0.0262,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 2
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0548,
+      "lower_ci": -0.0907,
+      "upper_ci": -0.0188,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 3
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0506,
+      "lower_ci": -0.0853,
+      "upper_ci": -0.0158,
+      "significant": true,
+      "controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 4
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0476,
+      "lower_ci": -0.0834,
+      "upper_ci": -0.0117,
+      "significant": true,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 5
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": -0.0468,
+      "lower_ci": -0.0834,
+      "upper_ci": -0.0101,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 6
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.046,
+      "lower_ci": -0.0847,
+      "upper_ci": -0.0073,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 7
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": -0.0426,
+      "lower_ci": -0.0819,
+      "upper_ci": -0.0033,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 8
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0302,
+      "lower_ci": -0.0714,
+      "upper_ci": 0.0111,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 9
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0258,
+      "lower_ci": -0.064,
+      "upper_ci": 0.0124,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 10
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": -0.0221,
+      "lower_ci": -0.061,
+      "upper_ci": 0.0168,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 11
+    },
+    {
+      "name": "Subset (6 controls)",
+      "coefficient": -0.0199,
+      "lower_ci": -0.06,
+      "upper_ci": 0.0201,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 12
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0184,
+      "lower_ci": -0.0606,
+      "upper_ci": 0.0237,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 13
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0182,
+      "lower_ci": -0.0592,
+      "upper_ci": 0.0227,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 14
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0139,
+      "lower_ci": -0.0727,
+      "upper_ci": 0.0449,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 15
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0124,
+      "lower_ci": -0.0763,
+      "upper_ci": 0.0516,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 16
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0098,
+      "lower_ci": -0.076,
+      "upper_ci": 0.0563,
+      "significant": false,
+      "controls": [
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population"
+      ],
+      "rank": 17
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": -0.0088,
+      "lower_ci": -0.0667,
+      "upper_ci": 0.0491,
+      "significant": false,
+      "controls": [
+        "debt"
+      ],
+      "included_controls": [
+        "debt"
+      ],
+      "rank": 18
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0009,
+      "lower_ci": -0.0537,
+      "upper_ci": 0.0518,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 19
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0011,
+      "lower_ci": -0.0581,
+      "upper_ci": 0.0604,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 20
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0035,
+      "lower_ci": -0.0494,
+      "upper_ci": 0.0564,
+      "significant": false,
+      "controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 21
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0037,
+      "lower_ci": -0.0564,
+      "upper_ci": 0.0638,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 22
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0044,
+      "lower_ci": -0.0488,
+      "upper_ci": 0.0575,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 23
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0065,
+      "lower_ci": -0.0518,
+      "upper_ci": 0.0648,
+      "significant": false,
+      "controls": [
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "dependency_ratio"
+      ],
+      "rank": 24
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.007,
+      "lower_ci": -0.0489,
+      "upper_ci": 0.0628,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 25
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0096,
+      "lower_ci": -0.0364,
+      "upper_ci": 0.0555,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 26
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0106,
+      "lower_ci": -0.0331,
+      "upper_ci": 0.0544,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 27
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0118,
+      "lower_ci": -0.0421,
+      "upper_ci": 0.0657,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt"
+      ],
+      "rank": 28
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0147,
+      "lower_ci": -0.0249,
+      "upper_ci": 0.0542,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 29
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0151,
+      "lower_ci": -0.0476,
+      "upper_ci": 0.0778,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 30
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0152,
+      "lower_ci": -0.0249,
+      "upper_ci": 0.0554,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 31
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0159,
+      "lower_ci": -0.0495,
+      "upper_ci": 0.0814,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 32
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0176,
+      "lower_ci": -0.0262,
+      "upper_ci": 0.0614,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 33
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0202,
+      "lower_ci": -0.0251,
+      "upper_ci": 0.0656,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 34
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0217,
+      "lower_ci": -0.022,
+      "upper_ci": 0.0653,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 35
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.024,
+      "lower_ci": -0.0326,
+      "upper_ci": 0.0806,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 36
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0262,
+      "lower_ci": -0.0198,
+      "upper_ci": 0.0722,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 37
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0268,
+      "lower_ci": -0.0309,
+      "upper_ci": 0.0845,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "rank": 38
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0297,
+      "lower_ci": -0.0055,
+      "upper_ci": 0.0648,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 39
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0312,
+      "lower_ci": -0.0244,
+      "upper_ci": 0.0868,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 40
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0316,
+      "lower_ci": -0.0047,
+      "upper_ci": 0.0679,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 41
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0323,
+      "lower_ci": -0.0248,
+      "upper_ci": 0.0894,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 42
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.045,
+      "lower_ci": -0.0066,
+      "upper_ci": 0.0965,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 43
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.048,
+      "lower_ci": -0.0036,
+      "upper_ci": 0.0996,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "rank": 44
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0516,
+      "lower_ci": -0.0016,
+      "upper_ci": 0.1047,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 45
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0533,
+      "lower_ci": -0.0011,
+      "upper_ci": 0.1076,
+      "significant": false,
+      "controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "rank": 46
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0721,
+      "lower_ci": -0.011,
+      "upper_ci": 0.1551,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 47
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0721,
+      "lower_ci": 0.022,
+      "upper_ci": 0.1222,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 48
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0737,
+      "lower_ci": 0.0229,
+      "upper_ci": 0.1245,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 49
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0741,
+      "lower_ci": -0.008,
+      "upper_ci": 0.1562,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 50
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0883,
+      "lower_ci": 0.0225,
+      "upper_ci": 0.1541,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 51
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0887,
+      "lower_ci": 0.0232,
+      "upper_ci": 0.1541,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 52
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0889,
+      "lower_ci": 0.005,
+      "upper_ci": 0.1729,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 53
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0897,
+      "lower_ci": -0.023,
+      "upper_ci": 0.2023,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 54
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0915,
+      "lower_ci": -0.0207,
+      "upper_ci": 0.2036,
+      "significant": false,
+      "controls": [
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_population"
+      ],
+      "rank": 55
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0929,
+      "lower_ci": 0.0104,
+      "upper_ci": 0.1755,
+      "significant": true,
+      "controls": [
+        "deficit"
+      ],
+      "included_controls": [
+        "deficit"
+      ],
+      "rank": 56
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.1041,
+      "lower_ci": -0.0115,
+      "upper_ci": 0.2196,
+      "significant": false,
+      "controls": [
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "inflation_cpi"
+      ],
+      "rank": 57
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1064,
+      "lower_ci": 0.0148,
+      "upper_ci": 0.198,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "rank": 58
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1067,
+      "lower_ci": 0.0165,
+      "upper_ci": 0.1968,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 59
+    },
+    {
+      "name": "Subset (0 controls)",
+      "coefficient": 0.1096,
+      "lower_ci": -0.0039,
+      "upper_ci": 0.2231,
+      "significant": false,
+      "controls": [],
+      "included_controls": [],
+      "rank": 60
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1216,
+      "lower_ci": 0.0581,
+      "upper_ci": 0.1852,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 61
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1242,
+      "lower_ci": 0.0605,
+      "upper_ci": 0.1878,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "rank": 62
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1405,
+      "lower_ci": 0.0543,
+      "upper_ci": 0.2267,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "rank": 63
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.144,
+      "lower_ci": 0.0566,
+      "upper_ci": 0.2313,
+      "significant": true,
+      "controls": [
+        "ln_gdppc"
+      ],
+      "included_controls": [
+        "ln_gdppc"
+      ],
+      "rank": 64
+    }
+  ],
+  "KOFSoGI": [
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0323,
+      "lower_ci": -0.026,
+      "upper_ci": 0.0906,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 1
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0367,
+      "lower_ci": -0.0283,
+      "upper_ci": 0.1017,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 2
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0383,
+      "lower_ci": -0.0225,
+      "upper_ci": 0.0991,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 3
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0453,
+      "lower_ci": -0.0102,
+      "upper_ci": 0.1007,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 4
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0496,
+      "lower_ci": -0.0154,
+      "upper_ci": 0.1146,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 5
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0533,
+      "lower_ci": -0.0009,
+      "upper_ci": 0.1075,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt"
+      ],
+      "rank": 6
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0548,
+      "lower_ci": -0.0044,
+      "upper_ci": 0.114,
+      "significant": false,
+      "controls": [
+        "debt"
+      ],
+      "included_controls": [
+        "debt"
+      ],
+      "rank": 7
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0557,
+      "lower_ci": -0.0091,
+      "upper_ci": 0.1204,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 8
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0564,
+      "lower_ci": -0.0131,
+      "upper_ci": 0.1258,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 9
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0571,
+      "lower_ci": -0.0318,
+      "upper_ci": 0.1461,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 10
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0601,
+      "lower_ci": -0.0248,
+      "upper_ci": 0.1451,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 11
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0664,
+      "lower_ci": 0.003,
+      "upper_ci": 0.1297,
+      "significant": true,
+      "controls": [
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population"
+      ],
+      "rank": 12
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0671,
+      "lower_ci": 0.0139,
+      "upper_ci": 0.1202,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 13
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0684,
+      "lower_ci": 0.0093,
+      "upper_ci": 0.1275,
+      "significant": true,
+      "controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 14
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0699,
+      "lower_ci": -0.0184,
+      "upper_ci": 0.1581,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 15
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0718,
+      "lower_ci": 0.007,
+      "upper_ci": 0.1365,
+      "significant": true,
+      "controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 16
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.075,
+      "lower_ci": -0.0114,
+      "upper_ci": 0.1613,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 17
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0764,
+      "lower_ci": -0.008,
+      "upper_ci": 0.1608,
+      "significant": false,
+      "controls": [
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_population"
+      ],
+      "rank": 18
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0764,
+      "lower_ci": 0.0213,
+      "upper_ci": 0.1315,
+      "significant": true,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 19
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0797,
+      "lower_ci": -0.0162,
+      "upper_ci": 0.1757,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 20
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0803,
+      "lower_ci": -0.0031,
+      "upper_ci": 0.1637,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 21
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0842,
+      "lower_ci": -0.0006,
+      "upper_ci": 0.169,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 22
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0867,
+      "lower_ci": 0.0033,
+      "upper_ci": 0.1702,
+      "significant": true,
+      "controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 23
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.09,
+      "lower_ci": -0.0054,
+      "upper_ci": 0.1854,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 24
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0954,
+      "lower_ci": -0.0044,
+      "upper_ci": 0.1952,
+      "significant": false,
+      "controls": [
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "dependency_ratio"
+      ],
+      "rank": 25
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0956,
+      "lower_ci": 0.0392,
+      "upper_ci": 0.1521,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 26
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0967,
+      "lower_ci": 0.005,
+      "upper_ci": 0.1883,
+      "significant": true,
+      "controls": [
+        "deficit"
+      ],
+      "included_controls": [
+        "deficit"
+      ],
+      "rank": 27
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.1024,
+      "lower_ci": 0.0054,
+      "upper_ci": 0.1995,
+      "significant": true,
+      "controls": [
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "inflation_cpi"
+      ],
+      "rank": 28
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1084,
+      "lower_ci": 0.0486,
+      "upper_ci": 0.1682,
+      "significant": true,
+      "controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 29
+    },
+    {
+      "name": "Subset (0 controls)",
+      "coefficient": 0.1146,
+      "lower_ci": 0.0196,
+      "upper_ci": 0.2096,
+      "significant": true,
+      "controls": [],
+      "included_controls": [],
+      "rank": 30
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1195,
+      "lower_ci": 0.0291,
+      "upper_ci": 0.2099,
+      "significant": true,
+      "controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 31
+    },
+    {
+      "name": "Subset (6 controls)",
+      "coefficient": 0.1288,
+      "lower_ci": 0.0714,
+      "upper_ci": 0.1861,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 32
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1303,
+      "lower_ci": 0.036,
+      "upper_ci": 0.2246,
+      "significant": true,
+      "controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 33
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1376,
+      "lower_ci": 0.0766,
+      "upper_ci": 0.1987,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 34
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1419,
+      "lower_ci": 0.0963,
+      "upper_ci": 0.1875,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 35
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1547,
+      "lower_ci": 0.1073,
+      "upper_ci": 0.202,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 36
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1559,
+      "lower_ci": 0.1021,
+      "upper_ci": 0.2098,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 37
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1593,
+      "lower_ci": 0.1143,
+      "upper_ci": 0.2044,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 38
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1594,
+      "lower_ci": 0.1043,
+      "upper_ci": 0.2144,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 39
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.1613,
+      "lower_ci": 0.0724,
+      "upper_ci": 0.2503,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 40
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1614,
+      "lower_ci": 0.1213,
+      "upper_ci": 0.2015,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 41
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1662,
+      "lower_ci": 0.1284,
+      "upper_ci": 0.204,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 42
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1666,
+      "lower_ci": 0.1185,
+      "upper_ci": 0.2147,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 43
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1673,
+      "lower_ci": 0.0764,
+      "upper_ci": 0.2581,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 44
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1683,
+      "lower_ci": 0.1085,
+      "upper_ci": 0.2281,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 45
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1721,
+      "lower_ci": 0.1132,
+      "upper_ci": 0.231,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 46
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1758,
+      "lower_ci": 0.1269,
+      "upper_ci": 0.2248,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 47
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1766,
+      "lower_ci": 0.1334,
+      "upper_ci": 0.2197,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "rank": 48
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1816,
+      "lower_ci": 0.1283,
+      "upper_ci": 0.2348,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 49
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1843,
+      "lower_ci": 0.1418,
+      "upper_ci": 0.2267,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "rank": 50
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.1967,
+      "lower_ci": 0.1087,
+      "upper_ci": 0.2847,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 51
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2049,
+      "lower_ci": 0.1124,
+      "upper_ci": 0.2975,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 52
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.2053,
+      "lower_ci": 0.1324,
+      "upper_ci": 0.2781,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 53
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.2063,
+      "lower_ci": 0.111,
+      "upper_ci": 0.3016,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 54
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2111,
+      "lower_ci": 0.1371,
+      "upper_ci": 0.2851,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 55
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2166,
+      "lower_ci": 0.1182,
+      "upper_ci": 0.315,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 56
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2195,
+      "lower_ci": 0.1282,
+      "upper_ci": 0.3108,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 57
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2312,
+      "lower_ci": 0.1345,
+      "upper_ci": 0.328,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "rank": 58
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.2434,
+      "lower_ci": 0.1696,
+      "upper_ci": 0.3171,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 59
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.248,
+      "lower_ci": 0.1675,
+      "upper_ci": 0.3284,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 60
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2507,
+      "lower_ci": 0.1747,
+      "upper_ci": 0.3267,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "rank": 61
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2576,
+      "lower_ci": 0.1742,
+      "upper_ci": 0.341,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "rank": 62
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.2858,
+      "lower_ci": 0.2049,
+      "upper_ci": 0.3668,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "rank": 63
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.2977,
+      "lower_ci": 0.2117,
+      "upper_ci": 0.3837,
+      "significant": true,
+      "controls": [
+        "ln_gdppc"
+      ],
+      "included_controls": [
+        "ln_gdppc"
+      ],
+      "rank": 64
+    }
+  ],
+  "KOFPoGI": [
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0103,
+      "lower_ci": -0.0466,
+      "upper_ci": 0.0259,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 1
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.0092,
+      "lower_ci": -0.05,
+      "upper_ci": 0.0316,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 2
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0078,
+      "lower_ci": -0.0474,
+      "upper_ci": 0.0318,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 3
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0058,
+      "lower_ci": -0.0436,
+      "upper_ci": 0.032,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 4
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0052,
+      "lower_ci": -0.0398,
+      "upper_ci": 0.0294,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 5
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": -0.0042,
+      "lower_ci": -0.045,
+      "upper_ci": 0.0367,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 6
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": -0.0011,
+      "lower_ci": -0.0378,
+      "upper_ci": 0.0356,
+      "significant": false,
+      "controls": [
+        "debt"
+      ],
+      "included_controls": [
+        "debt"
+      ],
+      "rank": 7
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": -0.001,
+      "lower_ci": -0.0384,
+      "upper_ci": 0.0364,
+      "significant": false,
+      "controls": [
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population"
+      ],
+      "rank": 8
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": -0.0009,
+      "lower_ci": -0.0402,
+      "upper_ci": 0.0385,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 9
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": -0.0004,
+      "lower_ci": -0.0459,
+      "upper_ci": 0.0452,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 10
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0003,
+      "lower_ci": -0.0422,
+      "upper_ci": 0.0427,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 11
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0008,
+      "lower_ci": -0.0332,
+      "upper_ci": 0.0348,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt"
+      ],
+      "rank": 12
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0061,
+      "lower_ci": -0.0378,
+      "upper_ci": 0.0499,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 13
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0067,
+      "lower_ci": -0.0307,
+      "upper_ci": 0.0441,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 14
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0075,
+      "lower_ci": -0.033,
+      "upper_ci": 0.048,
+      "significant": false,
+      "controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 15
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.011,
+      "lower_ci": -0.0306,
+      "upper_ci": 0.0526,
+      "significant": false,
+      "controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 16
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.013,
+      "lower_ci": -0.0295,
+      "upper_ci": 0.0555,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 17
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0133,
+      "lower_ci": -0.0299,
+      "upper_ci": 0.0566,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 18
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0192,
+      "lower_ci": -0.0206,
+      "upper_ci": 0.059,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 19
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0219,
+      "lower_ci": -0.0154,
+      "upper_ci": 0.0593,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 20
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0258,
+      "lower_ci": -0.0185,
+      "upper_ci": 0.0701,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 21
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.03,
+      "lower_ci": -0.0111,
+      "upper_ci": 0.0711,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 22
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.031,
+      "lower_ci": -0.0216,
+      "upper_ci": 0.0836,
+      "significant": false,
+      "controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 23
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0311,
+      "lower_ci": -0.0067,
+      "upper_ci": 0.0688,
+      "significant": false,
+      "controls": [
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_population"
+      ],
+      "rank": 24
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0327,
+      "lower_ci": -0.0202,
+      "upper_ci": 0.0856,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 25
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0337,
+      "lower_ci": -0.0112,
+      "upper_ci": 0.0787,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 26
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0344,
+      "lower_ci": -0.0089,
+      "upper_ci": 0.0776,
+      "significant": false,
+      "controls": [
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "dependency_ratio"
+      ],
+      "rank": 27
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0383,
+      "lower_ci": -0.0055,
+      "upper_ci": 0.082,
+      "significant": false,
+      "controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 28
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0413,
+      "lower_ci": 0.0074,
+      "upper_ci": 0.0753,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 29
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0425,
+      "lower_ci": 0.0059,
+      "upper_ci": 0.0791,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 30
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.0447,
+      "lower_ci": 0.002,
+      "upper_ci": 0.0873,
+      "significant": true,
+      "controls": [
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "inflation_cpi"
+      ],
+      "rank": 31
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.045,
+      "lower_ci": 0.0083,
+      "upper_ci": 0.0816,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt"
+      ],
+      "rank": 32
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0457,
+      "lower_ci": 0.0103,
+      "upper_ci": 0.0811,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt"
+      ],
+      "rank": 33
+    },
+    {
+      "name": "Subset (6 controls)",
+      "coefficient": 0.0458,
+      "lower_ci": 0.0106,
+      "upper_ci": 0.0811,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 34
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.047,
+      "lower_ci": -0.0034,
+      "upper_ci": 0.0974,
+      "significant": false,
+      "controls": [
+        "deficit"
+      ],
+      "included_controls": [
+        "deficit"
+      ],
+      "rank": 35
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.047,
+      "lower_ci": -0.0055,
+      "upper_ci": 0.0994,
+      "significant": false,
+      "controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 36
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0472,
+      "lower_ci": 0.0151,
+      "upper_ci": 0.0794,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 37
+    },
+    {
+      "name": "Subset (0 controls)",
+      "coefficient": 0.0485,
+      "lower_ci": 0.0106,
+      "upper_ci": 0.0863,
+      "significant": true,
+      "controls": [],
+      "included_controls": [],
+      "rank": 38
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0498,
+      "lower_ci": 0.0157,
+      "upper_ci": 0.084,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population"
+      ],
+      "rank": 39
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0502,
+      "lower_ci": 0.0169,
+      "upper_ci": 0.0836,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 40
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0524,
+      "lower_ci": 0.0192,
+      "upper_ci": 0.0855,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt"
+      ],
+      "rank": 41
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0528,
+      "lower_ci": 0.0191,
+      "upper_ci": 0.0866,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt"
+      ],
+      "rank": 42
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0532,
+      "lower_ci": 0.015,
+      "upper_ci": 0.0915,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 43
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0548,
+      "lower_ci": 0.0169,
+      "upper_ci": 0.0927,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 44
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0582,
+      "lower_ci": 0.0188,
+      "upper_ci": 0.0976,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 45
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0592,
+      "lower_ci": 0.0238,
+      "upper_ci": 0.0945,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 46
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0606,
+      "lower_ci": 0.0252,
+      "upper_ci": 0.096,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 47
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0652,
+      "lower_ci": 0.0292,
+      "upper_ci": 0.1011,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "debt",
+        "dependency_ratio"
+      ],
+      "rank": 48
+    },
+    {
+      "name": "Subset (5 controls)",
+      "coefficient": 0.0744,
+      "lower_ci": 0.0379,
+      "upper_ci": 0.1109,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 49
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0761,
+      "lower_ci": 0.0408,
+      "upper_ci": 0.1113,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 50
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0909,
+      "lower_ci": 0.0574,
+      "upper_ci": 0.1245,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population"
+      ],
+      "rank": 51
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0921,
+      "lower_ci": 0.0541,
+      "upper_ci": 0.1301,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 52
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0925,
+      "lower_ci": 0.0515,
+      "upper_ci": 0.1334,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 53
+    },
+    {
+      "name": "Subset (4 controls)",
+      "coefficient": 0.0929,
+      "lower_ci": 0.053,
+      "upper_ci": 0.1329,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 54
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0938,
+      "lower_ci": 0.0538,
+      "upper_ci": 0.1339,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "ln_population"
+      ],
+      "rank": 55
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.095,
+      "lower_ci": 0.0583,
+      "upper_ci": 0.1317,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit",
+        "dependency_ratio"
+      ],
+      "rank": 56
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.0954,
+      "lower_ci": 0.0635,
+      "upper_ci": 0.1273,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population"
+      ],
+      "rank": 57
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.0984,
+      "lower_ci": 0.0593,
+      "upper_ci": 0.1375,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "ln_population",
+        "dependency_ratio"
+      ],
+      "rank": 58
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.104,
+      "lower_ci": 0.0643,
+      "upper_ci": 0.1438,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "dependency_ratio"
+      ],
+      "rank": 59
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1092,
+      "lower_ci": 0.075,
+      "upper_ci": 0.1435,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi"
+      ],
+      "rank": 60
+    },
+    {
+      "name": "Subset (3 controls)",
+      "coefficient": 0.1104,
+      "lower_ci": 0.0667,
+      "upper_ci": 0.1541,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "inflation_cpi",
+        "deficit"
+      ],
+      "rank": 61
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1105,
+      "lower_ci": 0.0713,
+      "upper_ci": 0.1498,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "dependency_ratio"
+      ],
+      "rank": 62
+    },
+    {
+      "name": "Subset (2 controls)",
+      "coefficient": 0.1129,
+      "lower_ci": 0.0704,
+      "upper_ci": 0.1555,
+      "significant": true,
+      "controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "included_controls": [
+        "ln_gdppc",
+        "deficit"
+      ],
+      "rank": 63
+    },
+    {
+      "name": "Subset (1 controls)",
+      "coefficient": 0.1153,
+      "lower_ci": 0.0825,
+      "upper_ci": 0.1481,
+      "significant": true,
+      "controls": [
+        "ln_gdppc"
+      ],
+      "included_controls": [
+        "ln_gdppc"
+      ],
+      "rank": 64
+    }
+  ]
+}

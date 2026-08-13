@@ -32,7 +32,7 @@ const t = {
             <div class="max-w-6xl mx-auto px-6">
                 <!-- Header -->
                 <div class="mb-16">
-                    <a href={lang === 'da' ? "/models" : "/en/models"} class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-accent transition-colors flex items-center gap-2 mb-8 group">
+                    <a href={lang === 'da' ? "/models" : "/en/models"} class="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-accent transition-colors flex items-center gap-2 mb-8 group">
                         <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i> {t.back}
                     </a>
                     
@@ -63,15 +63,17 @@ const t = {
                             </div>
                             <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Data</p>
-                                <p class="text-sm font-bold text-white">ECB/Eurostat</p>
+                                <p class="text-sm font-bold text-white">{lang === 'da' ? 'Illustrativ serie' : 'Illustrative series'}</p>
                             </div>
                             <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Software</p>
                                 <p class="text-sm font-bold text-white">React & Chart.js</p>
                             </div>
+                            {/* The underlying series is a stylised illustration, not the
+                                estimated series — saying "Empirical Match" overclaimed it. */}
                             <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Precision</p>
-                                <p class="text-sm font-bold text-white">Empirical Match</p>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{lang === 'da' ? 'Formål' : 'Purpose'}</p>
+                                <p class="text-sm font-bold text-white">{lang === 'da' ? 'Intuition, ikke estimat' : 'Intuition, not estimate'}</p>
                             </div>
                         </div>
                     </div>

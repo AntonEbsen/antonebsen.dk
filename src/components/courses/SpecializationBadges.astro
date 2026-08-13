@@ -85,7 +85,7 @@ const achievements = specializations.map(spec => {
       {/* Tooltip with ECTS progress */}
       <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none translate-y-2 group-hover:translate-y-0">
         <div class="bg-black/90 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-lg whitespace-nowrap">
-          <p class="text-[9px] font-bold text-white/50 uppercase tracking-tighter">
+          <p class="text-[9px] font-bold text-muted uppercase tracking-tighter">
             {isDa ? 'Kvalificeret via' : 'Qualified through'} <span class="text-white">{badge.earnedEcts} ECTS</span>
           </p>
         </div>

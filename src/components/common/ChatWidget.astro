@@ -128,7 +128,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           type="text" 
           id="chat-input"
           placeholder={t.placeholder}
-          class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-white/40"
+          class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-muted"
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
@@ -147,7 +147,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-1"></i><span id="filename"></span></span>
           <button type="button" id="remove-file" class="ml-2 hover:text-white"><i class="fa-solid fa-times"></i></button>
       </div>
-      <div class="text-[10px] text-center text-dim/30 mt-2">
+      <div class="text-[10px] text-center text-muted mt-2">
         {t.disclaimer}
       </div>
     </div>
@@ -176,11 +176,17 @@ const t = (t_obj as any)[lang] || t_obj.da;
       const toggle = document.getElementById('chat-toggle');
       const close = document.getElementById('close-chat');
       const form = document.getElementById('chat-form');
-      const input = document.getElementById('chat-input');
+      const input = document.querySelector<HTMLInputElement>('#chat-input');
       const messages = document.getElementById('chat-messages');
       const voiceBtn = document.getElementById('voice-btn');
       const voiceIndicator = document.getElementById('voice-indicator');
       const visualizerCanvas = document.getElementById('widget-visualizer');
+
+      // The server renders the placeholder from the frontmatter `t`, which this
+      // script cannot see — two voice handlers below assigned `t.placeholder` and
+      // threw "ReferenceError: t is not defined" when a recording was too short or
+      // the microphone was denied. Read back what the server already wrote.
+      const defaultPlaceholder = input?.placeholder ?? '';
 
       // Concierge Logic
       const currentLang = widget?.getAttribute('data-lang') || 'da';
@@ -479,7 +485,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   
                   if (audioBlob.size < 1000) {
                       alert("Kunne ikke høre noget (optagelse for kort). Prøv at tale højere/længere.");
-                      input.placeholder = t.placeholder;
+                      input.placeholder = defaultPlaceholder;
                       return;
                   }
                   
@@ -556,7 +562,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   msg = err.message || "Mikrofon fejl";
               }
               alert(`Kunne ikke starte mikrofon: ${msg}`);
-              input.placeholder = t.placeholder;
+              input.placeholder = defaultPlaceholder;
           }
       }
 
@@ -1028,7 +1034,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                 
                 <div class="flex gap-2 mt-2 ml-1">
                    ${text ? `
-                   <button class="text-xs text-dim hover:text-accent transition-colors flex items-center gap-1 opacity-50 hover:opacity-100" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText).then(() => alert('Copied!'))">
+                   <button class="text-xs text-muted hover:text-accent transition-colors flex items-center gap-1 hover:opacity-100" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText).then(() => alert('Copied!'))">
                       <i class="fa-regular fa-copy"></i>
                    </button>
                    ` : ''}

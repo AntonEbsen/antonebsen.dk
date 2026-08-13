@@ -194,7 +194,7 @@ const books = await getBooks();
                     
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-[10px] font-bold uppercase tracking-widest text-accent mb-1">{category}</span>
-                        <span class="text-[10px] bg-white/5 px-2 py-0.5 rounded text-white/40 border border-white/5">{book.status || 'Read'}</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-0.5 rounded text-muted border border-white/5">{book.status || 'Read'}</span>
                     </div>
 
                     <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors leading-tight">{book.title}</h3>
@@ -217,8 +217,8 @@ const books = await getBooks();
                     )}
                     
                     <div class="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
-                        <span class="text-gold-500/80 tracking-widest text-xs">{ratingStars}</span>
-                        <span class="text-[10px] font-mono text-white/30 uppercase">{new Date(book.created_at).getFullYear()} EDITION</span>
+                        <span class="text-gold-500 tracking-widest text-xs">{ratingStars}</span>
+                        <span class="text-[10px] font-mono text-muted uppercase">{new Date(book.created_at).getFullYear()} EDITION</span>
                     </div>
                  </div>
                 );

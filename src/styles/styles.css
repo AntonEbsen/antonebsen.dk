@@ -129,3 +129,15 @@ body.theme-valentine .card.valentine-badge::before {
   color: var(--accent-color, #fbbf24) !important;
   text-decoration: underline;
 }
+/*
+ * Decorative watermark numerals — the "01, 02, 03" behind research-question cards
+ * and the years behind the team timeline. They duplicate information the list
+ * order already carries, so they are pure decoration in the WCAG 1.4.3 sense and
+ * are exempt from the contrast minimum. aria-hidden alone does not satisfy axe,
+ * which measures any text a sighted user can see, so the glyph lives in a
+ * pseudo-element instead: same watermark, no text node to audit.
+ */
+.deco-numeral::before {
+    content: attr(data-numeral);
+    color: rgb(255 255 255 / 0.05);
+}

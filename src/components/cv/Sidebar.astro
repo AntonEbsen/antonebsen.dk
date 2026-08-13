@@ -1,6 +1,11 @@
 ---
-// Image imports removed to bypass Sharp on Windows
-const myImageSrc = "/assets/img/billede-af-mig.jpg";
+// This used to link /assets/img/billede-af-mig.jpg as a bare URL, with the note
+// "Image imports removed to bypass Sharp on Windows". That workaround is obsolete —
+// sharp runs fine here, and IndexPage has been importing the same photo through
+// astro:assets all along — but it meant /cv shipped the untouched 2362x3543,
+// 785 KB original for a slot that renders at 280px tall.
+import { Image } from 'astro:assets';
+import myImageSrc from '../../assets/img/billede-af-mig.jpg';
 
 interface Props {
   data: any; // Skills data
@@ -25,7 +30,14 @@ const emojiMap: Record<string, string> = {
 
 <aside class="cv-side">
   <div class="card profile-card">
-    <img src={myImageSrc} alt="Anton Meier Ebsen Jørgensen" class="profile-img" />
+    <Image
+      src={myImageSrc}
+      alt="Anton Meier Ebsen Jørgensen"
+      class="profile-img"
+      width={640}
+      height={560}
+      loading="eager"
+    />
 
     <div class="profile-head">
       <h1>Anton Meier Ebsen Jørgensen</h1>
@@ -64,9 +76,14 @@ const emojiMap: Record<string, string> = {
     </div>
 
     <div class="cta-row">
-      <a class="btn" href="/assets/Anton-CV.pdf" target="_blank" rel="noopener">
+      {/* This linked to /assets/Anton-CV.pdf, a file that has never existed — so the
+          one button on the CV page 404'd. There is already a print stylesheet
+          (@styles/print.css, imported by CVPage) that strips the chrome and lays the
+          page out for paper, so print-to-PDF genuinely produces the document the
+          label promises. No asset to keep in sync, and it is never out of date. */}
+      <button type="button" class="btn no-print" onclick="window.print()">
         <i class="fa-solid fa-download" aria-hidden="true"></i> {ui.downloadCV}
-      </a>
+      </button>
     </div>
   </div>
 

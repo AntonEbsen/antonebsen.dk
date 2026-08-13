@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import { noah, marius, peter, elias } from '@data/collaborators';
 export const prerender = true;
 
 const projectContent = {
@@ -85,10 +86,10 @@ const projectContent = {
     openScience: "Open Science"
   },
   collaborators: [
-    { name: "Noah Hjorth Berge", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
-    { name: "Marius Bruun Hansen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
-    { name: "Peter Frandsen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." },
-    { name: "Elias Walther Børresen", role: "Projektpartner", image: "/assets/collaborators/avatar.svg", description: "Medforfatter." }
+    { ...noah, role: "Projektpartner", description: "Medforfatter." },
+    { ...marius, role: "Projektpartner", description: "Medforfatter." },
+    { ...peter, role: "Projektpartner", description: "Medforfatter." },
+    { ...elias, role: "Projektpartner", description: "Medforfatter." }
   ],
   bibliography: [
     "McAleese, Dermot. (2000). The Celtic Tiger: Origins and Prospects. Trinity College Dublin.",

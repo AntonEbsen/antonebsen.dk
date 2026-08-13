@@ -4,6 +4,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Pill from '@components/ui/Pill.astro';
 import Button from '@components/ui/Button.astro';
+import { assetExists } from '@lib/public-asset';
 
 interface Publication {
     title: string;
@@ -32,7 +33,7 @@ const t = {
         typeBriefing: "Briefings",
         typeThesis: "Akademisk",
         download: "Download PDF",
-        readMore: "Læs mere &rarr;"
+        unpublished: "Endnu ikke offentliggjort"
     },
     en: {
         title: "Policy Archive — Anton Meier Ebsen Jørgensen",
@@ -43,11 +44,27 @@ const t = {
         typeBriefing: "Briefings",
         typeThesis: "Academic",
         download: "Download PDF",
-        readMore: "Read Details &rarr;"
+        unpublished: "Not yet published"
     }
 }[lang];
 
 const publications: Publication[] = [
+    {
+        title: "Globalization and the Welfare State",
+        subtitle: lang === 'da'
+            ? "Seminaropgave v. Københavns Universitet"
+            : "Seminar Paper @ University of Copenhagen",
+        date: "2026",
+        type: "Thesis",
+        category: "Political Economy",
+        vanguardSignal: lang === 'da'
+            ? "Parameterustabilitet & strukturelt brud i 2008"
+            : "Parameter Instability & a Structural Break at 2008",
+        pdfUrl: "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf",
+        description: lang === 'da'
+            ? "Paneldataanalyse af 32 OECD-lande 1980–2023. Ingen robust sammenhæng mellem globalisering og sociale overførsler — men rullende regressioner viser, at relationen skifter fortegn omkring finanskrisen."
+            : "Panel data analysis of 32 OECD countries, 1980–2023. No robust relationship between globalization and social security transfers — but rolling regressions show the relationship changing sign around the financial crisis."
+    },
     {
         title: lang === 'da' ? "Global Financial Cycle & Spillovers" : "The Global Financial Cycle & Spillovers",
         subtitle: lang === 'da' ? "Bachelorafhandling v. Københavns Universitet" : "Bachelor Thesis @ University of Copenhagen",
@@ -135,13 +152,13 @@ const publications: Publication[] = [
                         
                         <div class="flex items-start justify-between mb-8 relative z-10">
                             <div class="flex flex-col gap-2">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-accent/80 flex items-center gap-2">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-accent flex items-center gap-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
                                     {pub.type}
                                 </span>
-                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{pub.category}</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{pub.category}</span>
                             </div>
-                            <span class="text-xs font-bold text-slate-600 font-mono">{pub.date} EDITION</span>
+                            <span class="text-xs font-bold text-slate-400 font-mono">{pub.date} EDITION</span>
                         </div>
 
                         <div class="mb-auto relative z-10">
@@ -162,13 +179,20 @@ const publications: Publication[] = [
                                 <p class="text-xs text-accent/90 font-bold">{pub.vanguardSignal}</p>
                             </div>
 
+                            {/* Four of the five PDFs listed here have never been written, and the
+                                "read details" link stripped the .pdf extension to reach a route that
+                                exists for none of them. Offer the download only when the file is
+                                really in public/; otherwise say so plainly. */}
                             <div class="flex items-center gap-4">
-                                <Button href={pub.pdfUrl} class="flex-grow shadow-lg shadow-accent/10" target="_blank">
-                                    <i class="fa-solid fa-file-pdf mr-2"></i> {t.download}
-                                </Button>
-                                <a href={pub.pdfUrl.replace('.pdf', '')} class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors">
-                                    {t.readMore}
-                                </a>
+                                {assetExists(pub.pdfUrl) ? (
+                                    <Button href={pub.pdfUrl} class="flex-grow shadow-lg shadow-accent/10" target="_blank">
+                                        <i class="fa-solid fa-file-pdf mr-2"></i> {t.download}
+                                    </Button>
+                                ) : (
+                                    <span class="flex-grow text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                                        <i class="fa-solid fa-clock" aria-hidden="true"></i> {t.unpublished}
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>

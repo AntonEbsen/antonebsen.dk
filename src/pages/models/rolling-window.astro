@@ -1,0 +1,104 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import RollingWindowForge from '@components/project/RollingWindowForge';
+import { getLangFromUrl } from '@i18n/utils';
+
+export const prerender = true;
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = {
+    da: {
+        title: "The Model Forge | Rullende vinduer",
+        eyebrow: "Interactive Laboratory",
+        back: "Tilbage til biblioteket",
+        heading: "Hvornår måler du?",
+        lead: "Den samme model, de samme 32 lande — men estimeret på forskellige perioder. Træk i vinduet og se koefficienten skifte fortegn.",
+        infoTitle: "Hvorfor det betyder noget",
+        infoText: "Litteraturen om globalisering og velfærdsstaten afgør typisk spørgsmålet med ét langsigtet estimat. Vores rullende regressioner viser, at det tal er ustabilt: koefficienten er svag eller negativ i vinduer, der slutter før 2015, og bliver positiv og signifikant, når vinduet domineres af observationer efter finanskrisen. En Chow-test afviser parameterstabilitet i 2008 for alle fire indeks.",
+        projectCta: "Læs hele opgaven",
+        method: "Metode",
+        methodValue: "Paneldata FE",
+        data: "Data",
+        dataValue: "32 OECD-lande, 1980–2023",
+        source: "Kilde",
+        sourceValue: "Tabel 5.5",
+        errors: "Standardfejl",
+        errorsValue: "Klynget på land"
+    },
+    en: {
+        title: "The Model Forge | Rolling Windows",
+        eyebrow: "Interactive Laboratory",
+        back: "Back to Library",
+        heading: "When you measure changes what you find",
+        lead: "The same model, the same 32 countries — estimated on different periods. Drag the window and watch the coefficient change sign.",
+        infoTitle: "Why it matters",
+        infoText: "The literature on globalization and the welfare state usually settles the question with a single long-run estimate. Our rolling regressions show that number is unstable: the coefficient is weak or negative in windows ending before 2015, and turns positive and significant once the window is dominated by post-crisis observations. A Chow test rejects parameter stability at 2008 for all four indices.",
+        projectCta: "Read the full paper",
+        method: "Method",
+        methodValue: "Panel data FE",
+        data: "Data",
+        dataValue: "32 OECD countries, 1980–2023",
+        source: "Source",
+        sourceValue: "Table 5.5",
+        errors: "Std. errors",
+        errorsValue: "Clustered by country"
+    }
+}[lang as 'da' | 'en'];
+
+const projectHref = lang === 'da' ? '/projects/welfare-state-seminar' : '/en/projects/welfare-state-seminar';
+---
+
+<Layout title={t.title} description={t.lead} bodyClass="model-forge-page">
+    <main class="min-h-screen bg-depth-bg pt-24 pb-32">
+        <Section>
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="mb-16">
+                    <a href={lang === 'da' ? "/models" : "/en/models"} class="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-accent transition-colors flex items-center gap-2 mb-8 group">
+                        <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i> {t.back}
+                    </a>
+
+                    <p class="text-xs font-black uppercase tracking-[0.3em] text-accent mb-4">{t.eyebrow}</p>
+                    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6">
+                        {t.heading}
+                    </h1>
+                    <p class="text-lg text-slate-400 max-w-2xl leading-relaxed font-serif italic">{t.lead}</p>
+                </div>
+
+                <RollingWindowForge client:visible lang={lang as 'da' | 'en'} />
+
+                <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <Card variant="glass" class="p-8">
+                        <h3 class="text-xl font-bold text-white mb-4">{t.infoTitle}</h3>
+                        <p class="text-slate-400 leading-relaxed text-[15px] mb-6">{t.infoText}</p>
+                        <a href={projectHref} class="text-xs font-bold uppercase tracking-widest text-accent hover:underline">
+                            {t.projectCta} &rarr;
+                        </a>
+                    </Card>
+                    <div class="flex flex-col justify-center">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.method}</p>
+                                <p class="text-sm font-bold text-white">{t.methodValue}</p>
+                            </div>
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.data}</p>
+                                <p class="text-sm font-bold text-white">{t.dataValue}</p>
+                            </div>
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.source}</p>
+                                <p class="text-sm font-bold text-white">{t.sourceValue}</p>
+                            </div>
+                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.errors}</p>
+                                <p class="text-sm font-bold text-white">{t.errorsValue}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Section>
+    </main>
+</Layout>

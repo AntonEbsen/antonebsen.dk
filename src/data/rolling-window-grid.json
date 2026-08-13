@@ -1,0 +1,55 @@
+{
+    "_comment": "Rolling-window estimates of the globalization coefficient on social security transfers, from 'Globalization and the Welfare State' (Nielsen, Chen & Jorgensen, 2026). Values are transcribed verbatim from Table 5.5 of the paper (verified against outputs/tables/gfc/rolling_snapshots.tex in the replication repo). The simulator offers whichever window lengths are present here.",
+    "_source": "Table 5.5, p. 19. 10-year window, country-clustered standard errors.",
+    "_reproducibility_note": "Do not regenerate this file without reading the note in scripts/generate-rolling-grid.py. As of commit 2218d27 of AntonEbsen/economics-of-the-welfare-state, running the repo's own rolling_ols_coefficients() on its own master_dataset.csv does NOT reproduce these published figures (e.g. overall/2023: paper 0.1831 (0.0679) vs code 0.1867 (0.0671); overall/2018: paper 0.1856 vs code 0.2776). The qualitative finding is unaffected — the coefficient still rises from roughly zero pre-2010 to strongly positive and significant post-2018 — but the exact numbers differ, so the published table is what ships here.",
+    "indices": {
+        "overall": "Overall globalization",
+        "economic": "Economic globalization",
+        "social": "Social globalization",
+        "political": "Political globalization"
+    },
+    "windows": {
+        "10": {
+            "overall": [
+                { "end": 1995, "coef": -0.0335, "se": 0.0922 },
+                { "end": 2000, "coef": 0.0184, "se": 0.0538 },
+                { "end": 2007, "coef": 0.0972, "se": 0.0507 },
+                { "end": 2008, "coef": 0.0921, "se": 0.0557 },
+                { "end": 2015, "coef": 0.0923, "se": 0.0503 },
+                { "end": 2018, "coef": 0.1856, "se": 0.0606 },
+                { "end": 2020, "coef": 0.1714, "se": 0.0654 },
+                { "end": 2023, "coef": 0.1831, "se": 0.0679 }
+            ],
+            "economic": [
+                { "end": 1995, "coef": -0.1493, "se": 0.0806 },
+                { "end": 2000, "coef": -0.0379, "se": 0.0369 },
+                { "end": 2007, "coef": 0.0190, "se": 0.0341 },
+                { "end": 2008, "coef": 0.0149, "se": 0.0359 },
+                { "end": 2015, "coef": 0.0276, "se": 0.0459 },
+                { "end": 2018, "coef": 0.0521, "se": 0.0498 },
+                { "end": 2020, "coef": 0.0404, "se": 0.0510 },
+                { "end": 2023, "coef": 0.0765, "se": 0.0522 }
+            ],
+            "social": [
+                { "end": 1995, "coef": 0.0650, "se": 0.0936 },
+                { "end": 2000, "coef": 0.0931, "se": 0.0621 },
+                { "end": 2007, "coef": 0.0884, "se": 0.0447 },
+                { "end": 2008, "coef": 0.0854, "se": 0.0380 },
+                { "end": 2015, "coef": 0.0360, "se": 0.0356 },
+                { "end": 2018, "coef": 0.0742, "se": 0.0419 },
+                { "end": 2020, "coef": 0.1034, "se": 0.0471 },
+                { "end": 2023, "coef": 0.1213, "se": 0.0415 }
+            ],
+            "political": [
+                { "end": 1995, "coef": 0.0372, "se": 0.0316 },
+                { "end": 2000, "coef": 0.0261, "se": 0.0311 },
+                { "end": 2007, "coef": 0.0509, "se": 0.0434 },
+                { "end": 2008, "coef": 0.0402, "se": 0.0520 },
+                { "end": 2015, "coef": 0.0792, "se": 0.0419 },
+                { "end": 2018, "coef": 0.1254, "se": 0.0394 },
+                { "end": 2020, "coef": 0.1020, "se": 0.0423 },
+                { "end": 2023, "coef": 0.0735, "se": 0.0528 }
+            ]
+        }
+    }
+}

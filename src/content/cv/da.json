@@ -73,7 +73,7 @@
                 "German",
                 "Logistics"
             ],
-            "logo": "/assets/img/logos/hwk-luebeck.png",
+            "logo": "/assets/img/logos/hwk-lubeck.png",
             "links": [
                 {
                     "text": "Kontakt",
@@ -337,9 +337,16 @@
             "title": "Seminar - Economics of the Welfare State",
             "tag": "Seminar",
             "institution": "KU",
-            "description": "Økonomisk analyse af velfærdsstatens indretning og udfordringer.",
+            "description": "Økonomisk analyse af velfærdsstatens indretning og udfordringer. Afsluttet med seminaropgaven \"Globalization and the Welfare State\" — en paneldataanalyse af 32 OECD-lande fra 1980 til 2023, der finder relationen mellem globalisering og sociale overførsler historisk betinget snarere end stabil.",
             "level": "master",
-            "grade": "10"
+            "grade": "10",
+            "relatedProjects": [
+                {
+                    "title": "Globalization and the Welfare State",
+                    "href": "/projects/welfare-state-seminar",
+                    "previewImage": "/assets/projects/welfare-state-seminar/fig-rolling.png"
+                }
+            ]
         },
         {
             "title": "Stikprøveteori",
@@ -800,7 +807,7 @@
     "projects": [
         {
             "title": "Monetary Policy & Economic Relations",
-            "description": "Kandidatspeciale (Sept 2026 - Jan 2027). En omfattende empirisk analyse af pengepolitikkens rolle i en post-COVID verden. Dette 'levende' projekt dokumenterer processen fra idé til forsvar.",
+            "description": "Kandidatspeciale (aug. 2026 - jan. 2027). En omfattende empirisk analyse af pengepolitikkens rolle i en post-COVID verden. Dette 'levende' projekt dokumenterer processen fra idé til forsvar.",
             "technologies": [
                 "Python",
                 "Stata",
@@ -814,6 +821,38 @@
                     "text": "Se Projekt",
                     "href": "/projects/master-thesis",
                     "icon": "arrow-right"
+                }
+            ]
+        },
+        {
+            "title": "Globalization and the Welfare State",
+            "url": "/projects/welfare-state-seminar",
+            "tag": "Seminar",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Python",
+                "Paneldata",
+                "Økonometri"
+            ],
+            "highlights": [
+                {
+                    "label": "Karakter",
+                    "value": "10"
+                },
+                {
+                    "label": "Data",
+                    "value": "32 lande, N=996"
+                }
+            ],
+            "meta": "Vejleder: Amalie Sofie Jensen · KU, juni 2026",
+            "description": "Seminaropgave med Jonas Skov Nielsen og Sheng Ye Michael Chen. Paneldataanalyse med faste effekter af 32 OECD-lande, 1980–2023: ingen robust sammenhæng mellem globalisering og sociale overførsler — men rullende regressioner afslører et strukturelt brud i 2008 og en relation, der skifter fortegn over tid.",
+            "links": [
+                {
+                    "text": "PDF",
+                    "href": "/assets/docs/Nielsen_Chen_Jorgensen_2026_Globalization_and_the_Welfare_State.pdf"
                 }
             ]
         },
@@ -1020,27 +1059,6 @@
                 {
                     "text": "Se foreløbig side",
                     "href": "/projects/demography-project"
-                }
-            ]
-        },
-        {
-            "title": "Seminar: Economics of the Welfare State (TBD)",
-            "url": "/projects/welfare-state-seminar",
-            "tag": "Kommende",
-            "categories": [
-                "tech",
-                "core"
-            ],
-            "technologies": [
-                "Økonomi",
-                "Public Policy"
-            ],
-            "meta": "Status: Planlagt",
-            "description": "Kommende seminarprojekt i velfærdsstatsøkonomi. Udarbejdes i samarbejde med Sheng og Jonas.",
-            "links": [
-                {
-                    "text": "Se foreløbig side",
-                    "href": "/projects/welfare-state-seminar"
                 }
             ]
         }
