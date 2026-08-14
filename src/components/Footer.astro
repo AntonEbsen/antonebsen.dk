@@ -23,8 +23,8 @@ const year = new Date().getFullYear();
         </p>
 
         <div class="flex flex-wrap gap-2.5 mt-3">
-          <a class="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/15 font-bold no-underline text-text hover:bg-white/20 hover:no-underline" href={isEn ? "/en/cv" : "/cv"}>
-            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> {isEn ? "CV" : "CV"}
+          <a class="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/15 font-bold no-underline text-text hover:bg-white/20 hover:no-underline" href={isEn ? "/en/cv" : isDe ? "/de/cv" : "/cv"}>
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i> CV
           </a>
           {/* A "Download PDF" button pointing at /assets/Anton-CV.pdf sat here in the
               footer of every page on the site, and that file has never existed. The CV
@@ -47,10 +47,15 @@ const year = new Date().getFullYear();
         <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.selected')}</h3>
         <ul class="list-none m-0 p-0">
             <li class="my-2"><a href={notesUrl} class="text-accent no-underline hover:underline font-semibold">{isEn ? "Personal Notes →" : isDe ? "Persönliche Notizen →" : "Personlige noter →"}</a></li>
-            <li class="my-2"><a href={isEn ? "/en/team" : "/team"} class="text-text no-underline hover:underline">{isEn ? "Research Group" : isDe ? "Forschungsgruppe" : "Forskningsteamet"}</a></li>
+            {/* No /de/team, so German goes to English rather than to the Danish
+                page it used to land on under a German label. */}
+            <li class="my-2"><a href={isEn || isDe ? "/en/team" : "/team"} class="text-text no-underline hover:underline">{isEn ? "Research Group" : isDe ? "Forschungsgruppe" : "Forskningsteamet"}</a></li>
             <li class="my-2"><a href={isEn ? "/en/resources" : isDe ? "/de/resources" : "/resources"} class="text-text no-underline hover:underline">Downloads</a></li>
             <li class="my-2"><a href={isEn ? "/en/timeline" : isDe ? "/de/timeline" : "/timeline"} class="text-text no-underline hover:underline">{isEn ? "Milestones" : isDe ? "Meilensteine" : "Milepæle"}</a></li>
-            <li class="my-2"><a href="/changelog" class="text-text no-underline hover:underline">{isEn ? "Changelog" : isDe ? "Änderungsprotokoll" : "Versionshistorik"} 📜</a></li>
+            {/* Was hardcoded Danish for everyone, though /en/changelog exists and
+                was linked from nowhere. */}
+            <li class="my-2"><a href={isEn || isDe ? "/en/changelog" : "/changelog"} class="text-text no-underline hover:underline">{isEn ? "Changelog" : isDe ? "Änderungsprotokoll" : "Versionshistorik"} 📜</a></li>
+            <li class="my-2"><a href={isEn ? "/en/ledger" : isDe ? "/de/ledger" : "/ledger"} class="text-text no-underline hover:underline">{isEn ? "The Ledger" : isDe ? "Das Hauptbuch" : "Hovedbogen"}</a></li>
         </ul>
       </nav>
 

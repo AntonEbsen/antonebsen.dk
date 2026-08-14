@@ -311,7 +311,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
         });
     }
 
-    // Run on view transition or page load
+    // Every navigation is a full document load — there is no View Transitions
+    // router — so the 'astro:after-swap' registration that sat here never fired.
     setupTriggers();
-    document.addEventListener('astro:after-swap', setupTriggers);
 </script>

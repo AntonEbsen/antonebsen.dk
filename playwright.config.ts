@@ -37,6 +37,18 @@ export default defineConfig({
         {
             name: 'chromium',
             use: { ...devices['Desktop Chrome'] },
+            // The wide sweep visits every route on the site and takes minutes.
+            // It lives in its own project so `npm test` — and therefore the
+            // pre-push hook — stays the length it is today.
+            testIgnore: '**/a11y-wide.spec.ts',
+        },
+        {
+            // npm run test:a11y
+            name: 'a11y-wide',
+            use: { ...devices['Desktop Chrome'] },
+            testMatch: '**/a11y-wide.spec.ts',
+            // One long test; a retry would just double an already slow run.
+            retries: 0,
         },
     ],
     webServer: {

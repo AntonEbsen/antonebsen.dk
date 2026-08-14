@@ -114,6 +114,8 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
 </Layout>
 
 <script>
+    import { unlockAchievement } from '@lib/gamification';
+
     async function loadGuestbook() {
         const feed = document.getElementById('messages-feed');
         if (!feed) return;
@@ -181,18 +183,25 @@ const homeLink = lang === 'en' ? '/' : '/'; // Keeping simple
         const distraction = (document.getElementById('distraction') as HTMLInputElement).value;
 
         try {
-            await fetch('/api/guestbook', {
+            const res = await fetch('/api/guestbook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, message, distraction })
             });
-            
+
+            // fetch() resolves for 400/429/500 too, so without this the form
+            // reset itself and showed "thanks" for a signature the server had
+            // rejected — including anything the `distraction` honeypot caught.
+            if (!res.ok) throw new Error(`guestbook: ${res.status}`);
+
             f.reset();
             const feedback = document.getElementById('form-feedback');
             if(feedback) {
                 feedback.classList.remove('hidden');
                 setTimeout(() => feedback.classList.add('hidden'), 5000);
             }
+
+            unlockAchievement('attestation');
 
         } catch (err) {
             alert(errorText);

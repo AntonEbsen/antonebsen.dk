@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { unlockAchievement } from '@lib/gamification';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
@@ -26,6 +27,10 @@ export default function SmartFootnote() {
                     delay: [200, 300], // Wikipedia-style: slow show, slow hide
                     animation: 'shift-away',
                     touch: ['hold', 500],
+                    // Reference marks are scarce on the site today — only one
+                    // post carries them — so 'gloss' is also reachable from the
+                    // Ask-AI button on the CV timeline.
+                    onShow: () => { unlockAchievement('gloss'); },
                 });
             }
         });

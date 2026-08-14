@@ -17,6 +17,12 @@ const pages = [
     '/team',
     '/blog/welfare-part-1',
     '/models/rolling-window',
+    // The ledger. Its rows were previously only ever rendered inside a hidden
+    // modal, so the muted-on-muted locked state was never actually scanned.
+    '/ledger',
+    '/en/ledger',
+    // The German /now page, which the nav linked to for six months before it existed.
+    '/de/now',
 ];
 
 // The charts are React islands mounted with client:visible, so they hydrate only
@@ -103,6 +109,8 @@ test.describe('Accessibility at 375px', () => {
         '/team',
         '/blog/welfare-part-1',
         '/models/rolling-window',
+        // Four columns of ruled ledger at phone width.
+        '/en/ledger',
     ];
 
     for (const pagePath of mobilePages) {

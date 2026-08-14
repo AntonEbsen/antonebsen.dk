@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { unlockAchievement } from '@lib/gamification';
 
 interface CitationBoxProps {
     title: string;
@@ -32,10 +33,12 @@ export default function CitationBox({ title, author, url, date }: CitationBoxPro
         navigator.clipboard.writeText(bibtex);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+        unlockAchievement('colophon');
     };
 
     const copyAPA = () => {
         navigator.clipboard.writeText(apa);
+        unlockAchievement('colophon');
         // Simple visual feedback could be added here if needed, but keeping it concise
     };
 

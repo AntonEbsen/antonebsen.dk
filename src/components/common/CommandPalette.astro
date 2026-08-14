@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl } from '@i18n/utils';
+import { getLedgerCopy } from '@i18n/ledger';
 
 const lang = getLangFromUrl(Astro.url);
 
@@ -61,11 +62,22 @@ const t_obj = {
 type Strings = typeof t_obj.da;
 const t: Strings = t_obj[lang as keyof typeof t_obj] ?? t_obj.da;
 
-const quickActions = [
-  { label: lang === 'da' ? "Se mit CV" : (lang === 'de' ? "Lebenslauf ansehen" : "View my CV"), url: "/cv", icon: "fa-solid fa-file-pdf" },
-  { label: lang === 'da' ? "Projekter" : (lang === 'de' ? "Projekte" : "Projects"), url: "/portfolio", icon: "fa-solid fa-briefcase" },
-  { label: lang === 'da' ? "Kontakt mig" : (lang === 'de' ? "Kontaktieren Sie mich" : "Contact me"), url: "/contact", icon: "fa-solid fa-envelope" },
-  { label: lang === 'da' ? "Trophy Room" : (lang === 'de' ? "Trophäenraum" : "Trophy Room"), url: "#trophy-room", icon: "fa-solid fa-trophy" }
+// The URLs were unlocalized, so a German visitor was sent to the Danish /cv.
+const prefix = lang === 'da' ? '' : `/${lang}`;
+
+const { ui: ledgerUi } = getLedgerCopy(lang);
+
+// The ledger entry dispatches instead of navigating: /ledger is the real page
+// (linked in the nav, the footer and the search index), and the palette is where
+// you glance at the book without leaving the page you are on.
+const quickActions: { label: string; icon: string; url?: string; event?: string }[] = [
+  { label: lang === 'da' ? "Se mit CV" : (lang === 'de' ? "Lebenslauf ansehen" : "View my CV"), url: `${prefix}/cv`, icon: "fa-solid fa-file-pdf" },
+  { label: lang === 'da' ? "Projekter" : (lang === 'de' ? "Projekte" : "Projects"), url: `${prefix}/portfolio`, icon: "fa-solid fa-briefcase" },
+  { label: lang === 'da' ? "Kontakt mig" : (lang === 'de' ? "Kontaktieren Sie mich" : "Contact me"), url: `${prefix}/contact`, icon: "fa-solid fa-envelope" },
+  { label: lang === 'da' ? "Hovedbogen" : (lang === 'de' ? "Das Hauptbuch" : "The Ledger"), event: "toggle-ledger", icon: "fa-solid fa-book" },
+  // Sortes Virgilianae: opening a book at random for guidance. Also the only
+  // thing on the site that makes 200-odd routes discoverable.
+  { label: ledgerUi.sortes, event: "ledger:sortes", icon: "fa-solid fa-dice" }
 ];
 ---
 
@@ -100,14 +112,22 @@ const quickActions = [
       <div id="palette-default-state">
          <h3 class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-muted mb-1">{t.quickActions}</h3>
          <div class="grid grid-cols-2 gap-1 mb-4">
-           {quickActions.map(action => (
-             <a href={action.url} class="palette-item flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 group transition-all">
-               <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-bg transition-all">
-                 <i class={action.icon}></i>
-               </div>
-               <span class="text-sm font-medium text-dim group-hover:text-white transition-colors">{action.label}</span>
-             </a>
-           ))}
+           {quickActions.map(action => {
+             const Tag = action.event ? 'button' : 'a';
+             return (
+               <Tag
+                 href={action.url}
+                 type={action.event ? 'button' : undefined}
+                 data-event={action.event}
+                 class="palette-item flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 group transition-all w-full text-left"
+               >
+                 <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-bg transition-all">
+                   <i class={action.icon}></i>
+                 </div>
+                 <span class="text-sm font-medium text-dim group-hover:text-white transition-colors">{action.label}</span>
+               </Tag>
+             );
+           })}
          </div>
       </div>
 
@@ -364,6 +384,14 @@ const quickActions = [
           `;
       }
 
+      // The first row renders with `is-active` styling, but activeIndex stayed at
+      // -1 until an arrow key moved it — so the palette showed a highlighted result
+      // that the first Enter press refused to open. Sync the two.
+      //
+      // Only here, not at the declaration: on the quick-action state nothing is
+      // highlighted, and defaulting to 0 there would send a stray Enter to /cv.
+      activeIndex = results.length > 0 ? 0 : -1;
+
       // Results are focusable links, so the trap's list is stale until we re-read it.
       updateFocusable();
     }
@@ -431,7 +459,15 @@ const quickActions = [
       if (e.key === 'Escape') closePalette();
       trapFocus(e);
 
-      const items = palette.querySelectorAll<HTMLElement>('.palette-item');
+      // Only the items on screen. This used to collect every `.palette-item` in
+      // the palette, and the quick actions stay in the DOM behind a `hidden`
+      // class when results are showing — so activeIndex indexed into a mixed
+      // list and row 0 of the results was never items[0]. renderResults marks
+      // result 0 as active in its HTML, which pointed at a different element
+      // than Enter would open.
+      const items = palette.querySelectorAll<HTMLElement>(
+        '#palette-default-state:not(.hidden) .palette-item, #palette-results-list:not(.hidden) .palette-item'
+      );
 
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -450,16 +486,10 @@ const quickActions = [
         if (isAiMode) {
           askAi();
         } else {
-          const activeItem = items[activeIndex];
-          if (activeItem) {
-             const href = activeItem.getAttribute('href');
-             if (href === '#trophy-room') {
-                 window.dispatchEvent(new CustomEvent('toggle-trophy-room'));
-                 closePalette();
-             } else {
-                 activeItem.click();
-             }
-          }
+          // Quick actions that dispatch instead of navigating are <button>s, so
+          // .click() reaches the same delegated handler a mouse click does — one
+          // path for both, rather than a special case here.
+          items[activeIndex]?.click();
         }
       }
     }
@@ -563,6 +593,43 @@ const quickActions = [
     backdrop?.addEventListener('click', closePalette);
     input.addEventListener('input', handleSearch);
     aiToggle?.addEventListener('click', toggleAi);
+
+    // Quick actions that open something in place rather than navigating.
+    // Delegated so it also catches the synthetic .click() from the Enter key.
+    palette.addEventListener('click', (e) => {
+      const el = (e.target as HTMLElement).closest<HTMLElement>('.palette-item[data-event]');
+      if (!el) return;
+      window.dispatchEvent(new CustomEvent(el.dataset.event!));
+      closePalette();
+    });
+
+    /**
+     * Sortes — open the book at random.
+     *
+     * Uses the search index the palette already fetches, filtered to same-origin
+     * pages in the visitor's own language, so nobody gets thrown into a language
+     * they weren't reading. Excludes wherever they already are, or a shrug is a
+     * plausible outcome.
+     */
+    window.addEventListener('ledger:sortes', async () => {
+      if (searchIndex.length === 0) await loadIndex();
+
+      const here = location.pathname.replace(/\/+$/, '') || '/';
+      const candidates = searchIndex
+        .map((item) => item.url)
+        .filter((url) => typeof url === 'string' && url.startsWith('/'))
+        .map((url) => url.replace(/\/+$/, '') || '/')
+        .filter((url) => url !== here)
+        .filter((url) => {
+          const itemLang = url.startsWith('/en') ? 'en' : url.startsWith('/de') ? 'de' : 'da';
+          return itemLang === (document.documentElement.lang || 'da');
+        });
+
+      if (candidates.length === 0) return;
+
+      unlockAchievement('sortes');
+      location.href = candidates[Math.floor(Math.random() * candidates.length)];
+    });
 
   })();
 </script>

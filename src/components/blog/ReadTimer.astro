@@ -1,0 +1,56 @@
+---
+/**
+ * Counts time actually spent reading a post, for the 'scholar' ledger entry.
+ *
+ * The entry has always been described as "read a post for more than two minutes"
+ * and there was never a timer behind it — it could only be awarded by the AI chat.
+ *
+ * Renders no markup. Included only by the two blog detail routes so it stays off
+ * the other ~196 pages.
+ */
+---
+
+<script>
+  import { unlockAchievement } from '@lib/gamification';
+
+  const NEEDED_MS = 120_000;
+  const TICK_MS = 5_000;
+
+  let accumulated = 0;
+  let since = document.visibilityState === 'visible' ? Date.now() : 0;
+  let done = false;
+
+  /** Bank the time since the last checkpoint and stop the clock. */
+  function bank() {
+    if (since) {
+      accumulated += Date.now() - since;
+      since = 0;
+    }
+
+    if (!done && accumulated >= NEEDED_MS) {
+      done = true;
+      clearInterval(timer);
+      unlockAchievement('scholar');
+    }
+  }
+
+  // Ticking rather than one 120s timeout is what makes this blur-aware: a tab
+  // left open in the background overnight should not count as reading.
+  const timer = setInterval(() => {
+    bank();
+    if (!done) since = Date.now();
+  }, TICK_MS);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      since = Date.now();
+    } else {
+      bank();
+    }
+  });
+
+  // pagehide, not beforeunload — the latter disqualifies the page from the
+  // back/forward cache and is unreliable on mobile Safari. The unlock is a
+  // synchronous localStorage write, so this is enough.
+  window.addEventListener('pagehide', bank);
+</script>

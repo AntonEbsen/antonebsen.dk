@@ -1,0 +1,200 @@
+---
+import '@fontsource/unifrakturmaguntia';
+import { getLangFromUrl } from '@i18n/utils';
+import { getLedgerCopy } from '@i18n/ledger';
+
+/**
+ * Scriptorium mode — type `fraktur` anywhere to set the page as it would have
+ * been printed before about 1800.
+ *
+ * Two changes, both reversible: headings switch to a blackletter face, and
+ * lowercase s becomes the long s (ſ) in prose. Denmark set type in Fraktur into
+ * the 1870s and Germany until 1941, so for a site about economic history this is
+ * the letterform of the sources rather than a costume.
+ *
+ * The mode persists, because every navigation here is a full page load and a
+ * mode that died on the first click would be a joke nobody got to finish. That
+ * makes an obvious way out mandatory — hence the bar, which stays in Latin
+ * script and is never itself transformed.
+ *
+ * The font is self-hosted through @fontsource, so `font-src 'self'` already
+ * covers it and the CSP needs no change.
+ */
+
+const lang = getLangFromUrl(Astro.url);
+const { ui } = getLedgerCopy(lang);
+---
+
+<div
+  id="scriptorium-bar"
+  class="hidden"
+  data-scriptorium-exempt
+  role="status"
+>
+  <p>{ui.scriptoriumNote}</p>
+  <button type="button" data-scriptorium-off>{ui.scriptoriumExit}</button>
+</div>
+
+<script>
+  import { unlockAchievement } from '@lib/gamification';
+  import { toLongS, isProtected } from '@lib/longs';
+
+  const KEY = 'anton_scriptorium';
+  const WORD = 'fraktur';
+
+  const bar = document.getElementById('scriptorium-bar');
+
+  /**
+   * Originals keyed by the node itself, so switching off restores the exact
+   * text rather than trying to reverse the substitution — ſ is a real letter
+   * that could legitimately appear in the source.
+   */
+  const originals = new WeakMap<Text, string>();
+  let transformed: Text[] = [];
+
+  function collect(): Text[] {
+    const roots = document.querySelectorAll<HTMLElement>('main, article');
+    const found: Text[] = [];
+
+    for (const root of roots) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node = walker.nextNode() as Text | null;
+
+      while (node) {
+        if (node.nodeValue && node.nodeValue.trim() && !isProtected(node)) {
+          found.push(node);
+        }
+        node = walker.nextNode() as Text | null;
+      }
+    }
+
+    return found;
+  }
+
+  function apply() {
+    document.body.classList.add('scriptorium-active');
+    bar?.classList.remove('hidden');
+
+    transformed = collect();
+    for (const node of transformed) {
+      const before = node.nodeValue!;
+      const after = toLongS(before);
+      if (after === before) continue;
+      originals.set(node, before);
+      node.nodeValue = after;
+    }
+  }
+
+  function revert() {
+    document.body.classList.remove('scriptorium-active');
+    bar?.classList.add('hidden');
+
+    for (const node of transformed) {
+      const before = originals.get(node);
+      if (before !== undefined) node.nodeValue = before;
+    }
+    transformed = [];
+  }
+
+  function setMode(on: boolean) {
+    if (on) {
+      localStorage.setItem(KEY, '1');
+      apply();
+      unlockAchievement('sortetryk');
+    } else {
+      localStorage.removeItem(KEY);
+      revert();
+    }
+  }
+
+  bar?.querySelector('[data-scriptorium-off]')?.addEventListener('click', () => setMode(false));
+
+  // Restore on load, before anything else writes to the DOM.
+  try {
+    if (localStorage.getItem(KEY)) apply();
+  } catch {
+    /* private mode — the egg simply doesn't persist */
+  }
+
+  // The trigger. Ignores anything typed into a field, or the guestbook and the
+  // command palette would flip the whole site mid-sentence.
+  let cursor = 0;
+
+  document.addEventListener('keydown', (event) => {
+    const target = event.target as HTMLElement | null;
+    if (target) {
+      const tag = target.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select' || target.isContentEditable) {
+        cursor = 0;
+        return;
+      }
+    }
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+    if (event.key.toLowerCase() === WORD[cursor]) {
+      cursor++;
+      if (cursor === WORD.length) {
+        cursor = 0;
+        setMode(!document.body.classList.contains('scriptorium-active'));
+      }
+    } else {
+      cursor = 0;
+    }
+  });
+</script>
+
+<style is:global>
+  /*
+    Headings only. Body copy stays in Inter, so the page turns gothic without
+    turning illegible — blackletter at paragraph length is genuinely hard to
+    read, and this is a joke, not an endurance test.
+  */
+  body.scriptorium-active {
+    --font-display: 'UnifrakturMaguntia', 'Fraunces Variable', serif;
+  }
+
+  #scriptorium-bar {
+    position: fixed;
+    left: 50%;
+    bottom: 1.25rem;
+    transform: translateX(-50%);
+    z-index: 2100;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0.65rem 0.75rem 0.65rem 1.1rem;
+    border-radius: 999px;
+    background: rgb(var(--card-rgb));
+    border: 1px solid rgb(var(--accent-rgb) / 0.35);
+    box-shadow: var(--shadow);
+    /* Never transformed and never gothic: this is the way out. */
+    font-family: var(--font-main);
+  }
+
+  #scriptorium-bar.hidden { display: none; }
+
+  #scriptorium-bar p {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: rgb(var(--text-dim-rgb));
+  }
+
+  #scriptorium-bar button {
+    flex-shrink: 0;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgb(var(--accent-rgb) / 0.4);
+    background: rgb(var(--accent-rgb) / 0.12);
+    color: rgb(var(--accent-light-rgb));
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+
+  #scriptorium-bar button:hover {
+    background: rgb(var(--accent-rgb) / 0.2);
+  }
+</style>

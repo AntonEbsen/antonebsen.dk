@@ -168,10 +168,13 @@ You have access to the following UI tools. Trigger them by outputting the specif
    To suggest follow-up questions or actions, output:
    <<<SUGGESTIONS: ["See Skills Chart", "Read User Guide", "Email Anton"] >>>
 
-4. UNLOCK ACHIEVEMENT:
-   If the user answers a quiz correctly or demonstrates knowledge, unlock a badge:
+4. ENROL A LEDGER ENTRY:
+   If the user answers a quiz correctly or demonstrates knowledge, enrol an entry:
    <<<UNLOCK: "economist" >>>
-   IDs: 'explorer', 'scholar', 'economist', 'recruiter', 'quiz_novice', 'easter_egg'
+   IDs: 'economist' (asked about Taylor rules or monetary policy), 'quiz_novice' (finished a quiz)
+   Only these two. The rest are earned by doing the thing they describe —
+   'explorer' by visiting five pages, 'scholar' by reading a post for two
+   minutes, 'recruiter' by printing the CV, 'easter_egg' by the Konami code.
 
 5. START QUIZ:
    To start a new quiz about a topic (like Taylor Rules):

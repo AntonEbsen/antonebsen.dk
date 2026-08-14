@@ -1,0 +1,507 @@
+---
+import { ACHIEVEMENTS, RANK_THRESHOLDS } from '@lib/gamification';
+import { getLedgerCopy } from '@i18n/ledger';
+import { roman } from '@lib/roman';
+
+/**
+ * The ledger itself — summary head plus one ruled row per entry.
+ *
+ * Shared by the modal and the /ledger page so the copy, the rank arithmetic and
+ * the locked/enrolled logic exist once. Both instances can be on the page at the
+ * same time (BaseLayout mounts the modal everywhere, including /ledger), so
+ * every id is namespaced by `idPrefix` and the client script walks all roots
+ * rather than assuming there is one.
+ *
+ * Rows render enrolled-or-not server-side as "not enrolled" and are corrected by
+ * script. On the page that would be a visible flip for a returning visitor, so
+ * LedgerPage runs an is:inline pass before paint; the modal doesn't need it
+ * because it renders while still hidden.
+ */
+
+interface Props {
+  lang: string;
+  idPrefix: string;
+  /** `page` gives the rows room to breathe; `modal` tightens them up. */
+  variant?: 'page' | 'modal';
+}
+
+const { lang, idPrefix, variant = 'page' } = Astro.props;
+
+const copy = getLedgerCopy(lang);
+const { ui, ranks, entries } = copy;
+
+const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
+
+// Folio numbers and dates are Roman, sums are Arabic — see src/lib/roman.ts.
+---
+
+<div
+  class:list={['ledger', `ledger--${variant}`]}
+  data-ledger-root
+  data-ledger-ranks={JSON.stringify(ranks)}
+  data-ledger-copy={JSON.stringify(entries)}
+  data-ledger-ui={JSON.stringify({
+    enrolled: ui.enrolled,
+    notEnrolled: ui.notEnrolled,
+    blankFolio: ui.blankFolio,
+    topRank: ui.topRank,
+    nextRank: ui.nextRank,
+    marks: ui.marks,
+    entriesMade: ui.entriesMade
+  })}
+  data-ledger-thresholds={JSON.stringify(RANK_THRESHOLDS)}
+  data-ledger-lang={lang}
+>
+  <!-- Summary: rank, running total, progress to the next rank -->
+  <div class="ledger-head">
+    <div class="ledger-head__rank">
+      <span class="ledger-label">{ui.rank}</span>
+      <p class="ledger-rank-name" data-ledger-rank>{ranks[0]}</p>
+    </div>
+
+    {/*
+      Clicking the foot of the account enrols the apocryphon. Deliberately given
+      no affordance — no cursor change, no focus ring, nothing to advertise it.
+      The tally reading one higher than the folios on show is the whole clue, and
+      interrogating the sum that will not balance is the natural next move.
+
+      Pointer-only, like the Chameleon is URL-only and the Konami code is
+      keyboard-only. No functionality is lost by never finding it.
+    */}
+    <div class="ledger-head__sum" data-ledger-foot>
+      <span class="ledger-label">{ui.footOfAccount}</span>
+      <p class="ledger-total">
+        <span data-ledger-marks>0</span><span class="ledger-total__of"> / {total}</span>
+        <span class="ledger-unit">{ui.marks}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="ledger-progress">
+    <div
+      class="ledger-progress__bar"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax={total}
+      aria-valuenow="0"
+      aria-label={ui.footOfAccount}
+      data-ledger-progress
+    >
+      <span class="ledger-progress__fill" data-ledger-progress-fill style="width: 0%"></span>
+    </div>
+    <p class="ledger-progress__note" data-ledger-next>
+      <span data-ledger-count>0</span> / {ACHIEVEMENTS.length} {ui.entriesMade}
+    </p>
+  </div>
+
+  <!-- The account -->
+  <ol class="ledger-rows" role="list">
+    {ACHIEVEMENTS.map((achievement, index) => (
+      <li
+        class="ledger-row"
+        data-ledger-entry={achievement.id}
+        data-ledger-secret={achievement.hidden ? '' : undefined}
+        hidden={achievement.hidden === true}
+      >
+        <span class="ledger-folio" aria-hidden="true">{roman(index + 1)}</span>
+
+        <span class="ledger-seal" aria-hidden="true">
+          <i class={achievement.icon}></i>
+        </span>
+
+        <div class="ledger-body">
+          <h3 class="ledger-title" data-ledger-title>{entries[achievement.id].title}</h3>
+          <p class="ledger-desc" data-ledger-desc>{ui.blankFolio}</p>
+        </div>
+
+        <div class="ledger-sum">
+          <span class="ledger-status" data-ledger-status>{ui.notEnrolled}</span>
+
+          {/*
+            Rendered empty and always present, so filling it in after hydration
+            shifts nothing. Roman numerals are unreadable aloud and ambiguous on
+            the page (viii · xiii vs xiii · viii), so the visible form is hidden
+            from the accessibility tree and a real localised date sits beside it,
+            the same split .ledger-folio already uses.
+          */}
+          <span class="ledger-date">
+            <span data-ledger-date aria-hidden="true"></span>
+            <span class="sr-only" data-ledger-date-plain></span>
+          </span>
+
+          <span class="ledger-marks">
+            {achievement.xp}<span class="ledger-unit"> {ui.marks}</span>
+          </span>
+        </div>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<script>
+  import { GAME_EVENTS, getGameState, rankFor, unlockAchievement } from '@lib/gamification';
+  import { romanDate } from '@lib/roman';
+
+  type EntryCopy = { title: string; description: string };
+
+  function paint(root: HTMLElement) {
+    const state = getGameState();
+
+    const ranks: string[] = JSON.parse(root.dataset.ledgerRanks ?? '[]');
+    const copy: Record<string, EntryCopy> = JSON.parse(root.dataset.ledgerCopy ?? '{}');
+    const ui = JSON.parse(root.dataset.ledgerUi ?? '{}');
+    const thresholds: number[] = JSON.parse(root.dataset.ledgerThresholds ?? '[0]');
+    const lang = root.dataset.ledgerLang || 'da';
+
+    // Spelled out rather than numeric. The Roman form is day-month-year, and a
+    // numeric fallback would contradict it under 'en', which defaults to the US
+    // month-day order — 'xiii · viii' beside '8/13' is worse than no date.
+    const LOCALES: Record<string, string> = { da: 'da-DK', en: 'en-GB', de: 'de-DE' };
+    const dateFormat = new Intl.DateTimeFormat(LOCALES[lang] ?? 'da-DK', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    const rank = rankFor(state.xp);
+    const rankEl = root.querySelector('[data-ledger-rank]');
+    if (rankEl) rankEl.textContent = ranks[rank - 1] ?? ranks[0];
+
+    const marksEl = root.querySelector('[data-ledger-marks]');
+    if (marksEl) marksEl.textContent = String(state.xp);
+
+    // The bar tracks the whole book, not the gap between two ranks — on a page
+    // that shows the total anyway, a bar that resets on promotion reads as loss.
+    const rows = Array.from(root.querySelectorAll<HTMLElement>('[data-ledger-entry]'));
+    const totalMarks = Number(root.querySelector('[data-ledger-progress]')?.getAttribute('aria-valuemax') ?? 0);
+
+    const fill = root.querySelector<HTMLElement>('[data-ledger-progress-fill]');
+    if (fill && totalMarks > 0) fill.style.width = `${Math.min(100, (state.xp / totalMarks) * 100)}%`;
+
+    root.querySelector('[data-ledger-progress]')?.setAttribute('aria-valuenow', String(state.xp));
+
+    let enrolledCount = 0;
+
+    for (const row of rows) {
+      const id = row.dataset.ledgerEntry!;
+      const enrolled = state.unlockedAchievements.includes(id);
+      if (enrolled) enrolledCount++;
+
+      // A secret folio stays out of the book until it has been earned. It still
+      // counts above, so the tally reads one higher than the folios on show —
+      // which is the only clue that there is anything to find.
+      if (row.dataset.ledgerSecret !== undefined) {
+        row.hidden = !enrolled;
+        if (!enrolled) continue;
+      }
+
+      row.classList.toggle('is-enrolled', enrolled);
+
+      const desc = row.querySelector('[data-ledger-desc]');
+      if (desc) desc.textContent = enrolled ? (copy[id]?.description ?? '') : ui.blankFolio;
+
+      const status = row.querySelector('[data-ledger-status]');
+      if (status) status.textContent = enrolled ? ui.enrolled : ui.notEnrolled;
+
+      // Entries made before dates were recorded stay undated rather than being
+      // given an invented one — a plausible thing for an old ledger to look like.
+      const at = state.enrolledAt[id];
+      const dateEl = row.querySelector('[data-ledger-date]');
+      const plainEl = row.querySelector('[data-ledger-date-plain]');
+
+      if (dateEl && plainEl) {
+        if (enrolled && at) {
+          dateEl.textContent = romanDate(at);
+          plainEl.textContent = dateFormat.format(new Date(at));
+        } else {
+          dateEl.textContent = '';
+          plainEl.textContent = '';
+        }
+      }
+    }
+
+    const countEl = root.querySelector('[data-ledger-count]');
+    if (countEl) countEl.textContent = String(enrolledCount);
+
+    // Marks still owed before the next rank, or a closing line at the top.
+    const nextEl = root.querySelector<HTMLElement>('[data-ledger-next]');
+    if (nextEl) {
+      if (rank >= thresholds.length) {
+        nextEl.dataset.ledgerDone = 'true';
+        nextEl.setAttribute('title', ui.topRank);
+      } else {
+        delete nextEl.dataset.ledgerDone;
+        nextEl.setAttribute(
+          'title',
+          `${thresholds[rank] - state.xp} ${ui.marks} ${ui.nextRank} ${ranks[rank]}`
+        );
+      }
+    }
+  }
+
+  function paintAll() {
+    document.querySelectorAll<HTMLElement>('[data-ledger-root]').forEach(paint);
+  }
+
+  paintAll();
+  window.addEventListener(GAME_EVENTS.UNLOCK, paintAll);
+  window.addEventListener(GAME_EVENTS.XP_GAIN, paintAll);
+
+  // Interrogating the sum that will not balance turns up the missing folio.
+  document.addEventListener('click', (event) => {
+    const foot = (event.target as HTMLElement)?.closest?.('[data-ledger-foot]');
+    if (foot) unlockAchievement('apocryphon');
+  });
+  // The page paints once before hydration via an is:inline pass; this re-runs
+  // after so the two never disagree.
+  window.addEventListener('ledger:repaint', paintAll);
+</script>
+
+<style>
+  .ledger {
+    --rule: rgb(var(--text-rgb) / 0.08);
+    --rule-strong: rgb(var(--text-rgb) / 0.14);
+  }
+
+  /* ---- Summary head ---- */
+
+  .ledger-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--rule-strong);
+  }
+
+  .ledger-label {
+    display: block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(var(--accent-rgb));
+    margin-bottom: 0.35rem;
+  }
+
+  .ledger-rank-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.1;
+    color: rgb(var(--text-rgb));
+  }
+
+  .ledger-head__sum {
+    text-align: right;
+  }
+
+  .ledger-total {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    color: rgb(var(--text-rgb));
+  }
+
+  .ledger-total__of {
+    color: rgb(var(--text-muted-rgb));
+  }
+
+  .ledger-unit {
+    font-family: var(--font-main);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: rgb(var(--text-muted-rgb));
+  }
+
+  /* ---- Progress ---- */
+
+  .ledger-progress {
+    margin: 0.85rem 0 0.25rem;
+  }
+
+  .ledger-progress__bar {
+    height: 3px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+
+  .ledger-progress__fill {
+    display: block;
+    height: 100%;
+    background: rgb(var(--accent-rgb));
+    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ledger-progress__note {
+    margin-top: 0.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(var(--text-muted-rgb));
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Rows ---- */
+
+  .ledger-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /*
+    `display: grid` below outranks the UA stylesheet's `[hidden] { display: none }`,
+    which is a single attribute selector — so without this the secret folio was
+    marked hidden and rendered anyway. Any `display` on an element that can be
+    hidden needs this pairing.
+  */
+  .ledger-row[hidden] {
+    display: none;
+  }
+
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 1.75rem 2.5rem 1fr auto;
+    align-items: baseline;
+    gap: 0 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .ledger--modal .ledger-row {
+    padding: 0.7rem 0;
+  }
+
+  .ledger-folio {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    color: rgb(var(--text-muted-rgb));
+    text-align: right;
+    letter-spacing: 0.02em;
+  }
+
+  /* The seal: blank ring until the entry is made, filled wax once it is. */
+  .ledger-seal {
+    align-self: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8125rem;
+    border: 1px dashed var(--rule-strong);
+    color: rgb(var(--text-muted-rgb));
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .is-enrolled .ledger-seal {
+    border-style: solid;
+    border-color: rgb(var(--accent-rgb) / 0.45);
+    background: rgb(var(--accent-rgb) / 0.14);
+    color: rgb(var(--accent-light-rgb));
+  }
+
+  .ledger-title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.25;
+    color: rgb(var(--text-muted-rgb));
+    transition: color 0.4s ease;
+  }
+
+  .is-enrolled .ledger-title {
+    color: rgb(var(--text-rgb));
+  }
+
+  .ledger-desc {
+    margin-top: 0.15rem;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: rgb(var(--text-muted-rgb));
+  }
+
+  .is-enrolled .ledger-desc {
+    color: rgb(var(--text-dim-rgb));
+  }
+
+  .ledger-sum {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .ledger-status {
+    display: block;
+    font-size: 0.5625rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(var(--text-muted-rgb));
+    margin-bottom: 0.2rem;
+  }
+
+  /*
+    Reserved whether or not there is a date to show, so the line that arrives
+    after hydration doesn't push the marks down.
+  */
+  .ledger-date {
+    display: block;
+    min-height: 1.1em;
+    margin-bottom: 0.15rem;
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: rgb(var(--text-muted-rgb));
+  }
+
+  .is-enrolled .ledger-status {
+    color: rgb(var(--accent-rgb));
+  }
+
+  .ledger-marks {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    color: rgb(var(--text-muted-rgb));
+  }
+
+  .is-enrolled .ledger-marks {
+    color: rgb(var(--text-dim-rgb));
+  }
+
+  /* Narrow: fold the sum under the entry rather than squeezing four columns. */
+  @media (max-width: 30rem) {
+    .ledger-row {
+      grid-template-columns: 1.5rem 2rem 1fr;
+      row-gap: 0.4rem;
+    }
+
+    .ledger-sum {
+      grid-column: 2 / -1;
+      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.15rem 0.6rem;
+    }
+
+    .ledger-status {
+      margin-bottom: 0;
+    }
+
+    /* Inline with the status here, so it needs no reserved line of its own. */
+    .ledger-date {
+      display: inline;
+      min-height: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ledger-progress__fill,
+    .ledger-seal,
+    .ledger-title {
+      transition: none;
+    }
+  }
+</style>

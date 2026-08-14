@@ -1,7 +1,13 @@
 ---
 import { getLangFromUrl } from '@i18n/utils';
+import { switchTo } from '@lib/routes';
+
 const lang = getLangFromUrl(Astro.url);
 const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog');
+
+// These three were hardcoded '/', '/en' and '/de', so switching language from
+// anywhere threw away the page you were reading and dumped you on a homepage.
+const path = Astro.url.pathname;
 ---
 <div class="nav-item has-dropdown lang-switch">
   <button 
@@ -16,15 +22,15 @@ const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog')
   </button>
 
   <div id="lang-dropdown" class="dropdown" role="menu" aria-label="Sprogvalg">
-    <a href="/" role="menuitem" class="lang-link">
+    <a href={switchTo(path, 'da')} role="menuitem" class="lang-link" aria-current={lang === 'da' ? 'true' : undefined}>
       <span class="lang-text">Dansk</span>
     </a>
 
-    <a href="/en" role="menuitem" class="lang-link">
+    <a href={switchTo(path, 'en')} role="menuitem" class="lang-link" aria-current={lang === 'en' ? 'true' : undefined}>
       <span class="lang-text">English</span>
     </a>
 
-    <a href="/de" role="menuitem" class="lang-link">
+    <a href={switchTo(path, 'de')} role="menuitem" class="lang-link" aria-current={lang === 'de' ? 'true' : undefined}>
       <span class="lang-text">Deutsch</span>
     </a>
   </div>

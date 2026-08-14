@@ -1,0 +1,168 @@
+---
+import { getLangFromUrl } from '@i18n/utils';
+import { getLedgerCopy } from '@i18n/ledger';
+
+/**
+ * Margin marks (☞).
+ *
+ * The manicule is the pointing hand early-modern readers drew in the margin
+ * beside a passage worth coming back to — the ancestor of a highlight. This puts
+ * one next to any paragraph of a post, kept in localStorage per slug.
+ *
+ * Renders no markup of its own: the buttons are injected beside each paragraph
+ * once, on load. They are real <button>s with accessible names rather than a
+ * bare click-zone in the margin, because a margin strip is unreachable by
+ * keyboard and this is a feature, not only a joke — it is the one easter egg
+ * here that a reader might actually want to use twice.
+ */
+
+const lang = getLangFromUrl(Astro.url);
+const { ui } = getLedgerCopy(lang);
+---
+
+<div
+  id="manicule-config"
+  hidden
+  data-scriptorium-exempt
+  data-mark={ui.markPassage}
+  data-unmark={ui.unmarkPassage}
+></div>
+
+<script>
+  import { unlockAchievement } from '@lib/gamification';
+
+  const config = document.getElementById('manicule-config');
+  const article = document.querySelector('article');
+
+  if (config && article) {
+    const KEY = 'anton_manicules';
+    const slug = location.pathname.replace(/\/+$/, '');
+    const labelMark = config.dataset.mark || 'Mark this passage';
+    const labelUnmark = config.dataset.unmark || 'Remove mark';
+
+    function read(): Record<string, number[]> {
+      try {
+        const raw = JSON.parse(localStorage.getItem(KEY) || '{}');
+        return raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function write(all: Record<string, number[]>) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(all));
+      } catch {
+        /* private mode — marks just don't persist */
+      }
+    }
+
+    // Only the prose. Paragraphs inside the footnote list or a pull-out would
+    // give the margin a ragged second column.
+    const paragraphs = Array.from(article.querySelectorAll<HTMLElement>(':scope > div > p, :scope > p'));
+    const marked = new Set(read()[slug] ?? []);
+
+    paragraphs.forEach((p, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'manicule';
+      button.dataset.maniculeIndex = String(index);
+      button.textContent = '☞';
+
+      const sync = () => {
+        const on = marked.has(index);
+        button.classList.toggle('is-marked', on);
+        button.setAttribute('aria-pressed', String(on));
+        // Names the paragraph, so a screen reader hears which one it toggles.
+        button.setAttribute('aria-label', `${on ? labelUnmark : labelMark} (${index + 1})`);
+      };
+
+      button.addEventListener('click', () => {
+        if (marked.has(index)) marked.delete(index);
+        else {
+          marked.add(index);
+          unlockAchievement('manicule');
+        }
+
+        const all = read();
+        if (marked.size) all[slug] = [...marked].sort((a, b) => a - b);
+        else delete all[slug];
+        write(all);
+
+        sync();
+      });
+
+      sync();
+
+      // The paragraph becomes the positioning context for the margin button.
+      p.classList.add('has-manicule');
+      p.prepend(button);
+    });
+  }
+</script>
+
+<style is:global>
+  .has-manicule {
+    position: relative;
+  }
+
+  .manicule {
+    position: absolute;
+    top: 0.1em;
+    right: 100%;
+    margin-right: 0.4rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 0.35rem;
+    background: transparent;
+    color: rgb(var(--text-muted-rgb));
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    /*
+      The button sits inside the paragraph, so without this the ☞ is part of the
+      prose as far as a text selection is concerned — quoting a passage would
+      carry a hand glyph into the clipboard with it.
+    */
+    user-select: none;
+    -webkit-user-select: none;
+    /* Out of the way until wanted, but never invisible to focus. */
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease;
+  }
+
+  .has-manicule:hover .manicule,
+  .manicule:focus-visible,
+  .manicule.is-marked {
+    opacity: 1;
+  }
+
+  .manicule:focus-visible {
+    outline: 2px solid rgb(var(--accent-rgb));
+    outline-offset: 2px;
+  }
+
+  .manicule.is-marked {
+    color: rgb(var(--accent-light-rgb));
+  }
+
+  /*
+    No room for a margin column on a phone, so the hand sits inline above the
+    paragraph rather than overlapping the text.
+  */
+  @media (max-width: 60rem) {
+    .manicule {
+      position: static;
+      margin: 0 0 0.25rem;
+      opacity: 0.5;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .manicule { transition: none; }
+  }
+</style>

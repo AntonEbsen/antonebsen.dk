@@ -1,0 +1,169 @@
+---
+import { getLangFromUrl } from '@i18n/utils';
+import { getLedgerCopy } from '@i18n/ledger';
+import { ACHIEVEMENTS } from '@lib/gamification';
+
+/**
+ * The seal — shown when an entry is made in the ledger.
+ *
+ * The unlock event carries only {id, icon, xp}; the wording is looked up here
+ * from a dictionary rendered for the current language. That is the whole reason
+ * copy was moved out of gamification.ts: previously every toast was in English
+ * regardless of the page it appeared on.
+ *
+ * Plain Astro rather than a React island — this renders nothing until an event
+ * fires, so mounting React on all ~196 pages to wait for it was pure overhead.
+ * Behaviour is unchanged: a queue, one at a time, dismissed after 4 seconds.
+ */
+
+const lang = getLangFromUrl(Astro.url);
+const { ui, entries } = getLedgerCopy(lang);
+
+// Only what the toast needs, keyed by id.
+const dict = Object.fromEntries(
+  ACHIEVEMENTS.map(({ id }) => [id, entries[id]])
+);
+---
+
+<div
+  id="ledger-toast"
+  class="fixed top-24 right-4 z-[100] hidden max-w-[calc(100vw-2rem)]"
+  role="status"
+  aria-live="polite"
+  data-toast-copy={JSON.stringify(dict)}
+  data-toast-unit={ui.marks}
+>
+  <div class="toast-card relative flex items-center gap-4 w-[22rem] max-w-full p-4 pr-5 rounded-xl bg-card/95 border border-accent/40 shadow-[var(--shadow)] backdrop-blur-md pointer-events-none select-none">
+
+    <!-- The wax seal: pressed, not polished. -->
+    <span class="toast-seal shrink-0" aria-hidden="true">
+      <i data-toast-icon></i>
+    </span>
+
+    <div class="min-w-0">
+      <p class="text-accent text-[10px] font-bold uppercase tracking-[0.16em] mb-0.5">{ui.toastEyebrow}</p>
+      <h4 class="font-serif text-[1.0625rem] leading-tight text-white truncate" data-toast-title></h4>
+      <p class="text-dim text-xs mt-0.5 leading-snug" data-toast-description></p>
+    </div>
+
+    <span
+      class="absolute top-2 right-2 text-[10px] font-medium tabular-nums text-muted"
+      data-toast-marks
+    ></span>
+  </div>
+</div>
+
+<script>
+  import { GAME_EVENTS, type Achievement } from '@lib/gamification';
+
+  const root = document.getElementById('ledger-toast');
+
+  if (root) {
+    const iconEl = root.querySelector('[data-toast-icon]') as HTMLElement;
+    const titleEl = root.querySelector('[data-toast-title]') as HTMLElement;
+    const descEl = root.querySelector('[data-toast-description]') as HTMLElement;
+    const marksEl = root.querySelector('[data-toast-marks]') as HTMLElement;
+    const card = root.querySelector('.toast-card') as HTMLElement;
+    const seal = root.querySelector('.toast-seal') as HTMLElement;
+
+    const copy: Record<string, { title: string; description: string }> =
+      JSON.parse(root.dataset.toastCopy ?? '{}');
+    const unit = root.dataset.toastUnit ?? '';
+
+    const queue: Achievement[] = [];
+    let showing = false;
+
+    const HOLD_MS = 4000;
+
+    function next() {
+      const achievement = queue.shift();
+      if (!achievement) {
+        showing = false;
+        return;
+      }
+
+      showing = true;
+
+      const text = copy[achievement.id];
+      iconEl.className = achievement.icon;
+      titleEl.textContent = text.title;
+      descEl.textContent = text.description;
+      marksEl.textContent = `${achievement.xp} ${unit}`;
+
+      root!.classList.remove('hidden');
+      // Restart both animations each time rather than only on first show.
+      card.classList.remove('is-entering');
+      seal.classList.remove('is-pressing');
+      void card.offsetWidth;
+      card.classList.add('is-entering');
+      seal.classList.add('is-pressing');
+
+      setTimeout(() => {
+        root!.classList.add('hidden');
+        setTimeout(next, 200);
+      }, HOLD_MS);
+    }
+
+    window.addEventListener(GAME_EVENTS.UNLOCK, (event) => {
+      const achievement = (event as CustomEvent).detail as Achievement;
+      // The AI chat can emit an arbitrary id via its <<<UNLOCK>>> directive, and
+      // unlockAchievement only guards against ids missing from ACHIEVEMENTS —
+      // not against copy that was never written.
+      if (!achievement?.id || !copy[achievement.id]) return;
+
+      queue.push(achievement);
+      if (!showing) next();
+    });
+  }
+</script>
+
+<style>
+  .toast-seal {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.0625rem;
+    color: rgb(var(--bg-rgb));
+    background: radial-gradient(
+      circle at 35% 30%,
+      rgb(var(--accent-light-rgb)) 0%,
+      rgb(var(--accent-rgb)) 55%,
+      rgb(var(--accent-rgb) / 0.85) 100%
+    );
+    /* The raised-and-pressed edge of wax, not a glow. */
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 0.35),
+      inset 0 -2px 3px rgb(0 0 0 / 0.25);
+  }
+
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(2rem); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* A seal is struck: it comes down large and slightly turned, then settles. */
+  @keyframes seal-press {
+    0%   { transform: scale(1.6) rotate(-12deg); opacity: 0; }
+    45%  { transform: scale(0.94) rotate(2deg);  opacity: 1; }
+    70%  { transform: scale(1.03) rotate(-1deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  .is-entering {
+    animation: slide-in-right 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .is-pressing {
+    animation: seal-press 0.5s cubic-bezier(0.34, 1.4, 0.5, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .is-entering,
+    .is-pressing {
+      animation: none;
+    }
+  }
+</style>

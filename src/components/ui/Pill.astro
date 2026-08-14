@@ -13,12 +13,18 @@ const { variant = 'default', class: className } = Astro.props;
 
 const baseStyles = "px-3.5 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider border";
 
-// Contrast measured against --bg, not eyeballed: accent 4.57:1 and moss 4.62:1
-// on their own soft tints, both above the 4.5 needed at this size.
+// The soft tints are translucent (15% alpha), so the colour actually behind the
+// text depends on what the pill sits on — the earlier 4.57:1 here was measured
+// against --bg, but inside a glass card the backdrop composites lighter and the
+// accent variant measured 4.26:1, which axe caught on /de/now. --accent-light
+// carries the text instead: 5.7:1 against that same composited backdrop, and
+// more headroom on any lighter surface a pill lands on later.
+//
+// The border stays --accent so the pill keeps its shape and weight.
 const variants = {
   default: "bg-[var(--glass)] border-[var(--glass-border)] text-[var(--text-dim)]",
-  accent: "bg-[var(--accent-soft)] border-[var(--accent)] text-[var(--accent)]",
-  moss: "bg-[var(--accent-2-soft)] border-[var(--accent-2)] text-[var(--accent-2)]"
+  accent: "bg-[var(--accent-soft)] border-[var(--accent)] text-[var(--accent-light)]",
+  moss: "bg-[var(--accent-2-soft)] border-[var(--accent-2)] text-[var(--accent-2-light)]"
 };
 ---
 

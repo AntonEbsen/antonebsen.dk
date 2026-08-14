@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CHANNEL_URL } from '@lib/youtube';
+import { unlockAchievement } from '@lib/gamification';
 
 interface VideoLink {
     label: string;
@@ -106,7 +107,13 @@ export const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da'
                 {items.map((item, i) => (
                     <div key={i} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
                         <button
-                            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                            onClick={() => {
+                                // Opening is the thing worth recording; this
+                                // button also closes.
+                                const willOpen = openIndex !== i;
+                                setOpenIndex(willOpen ? i : null);
+                                if (willOpen) unlockAchievement('visitation');
+                            }}
                             className="w-full text-left p-5 flex items-center justify-between group"
                         >
                             <span className="flex items-center gap-4">

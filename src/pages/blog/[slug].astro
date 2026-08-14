@@ -3,6 +3,8 @@ import Layout from '../../layouts/BaseLayout.astro';
 
 import ViewCounter from '../../components/blog/ViewCounter.tsx';
 import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
+import ReadTimer from '../../components/blog/ReadTimer.astro';
+import Manicule from '../../components/blog/Manicule.astro';
 import CitationBox from '../../components/blog/CitationBox.tsx';
 import TaylorRuleChart from '../../components/blog/charts/TaylorRuleChart.tsx';
 import RelatedGraph from '../../components/blog/RelatedGraph.tsx';
@@ -43,6 +45,8 @@ const showTaylorChart = slug === 'ai-monetary-policy';
 
 <Layout title={displayTitle} description={displayDesc} article={true}>
   <ReadingProgress client:load />
+  <ReadTimer />
+  <Manicule />
 
   <main class="max-w-6xl mx-auto px-6 py-24 relative">
     <div class="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-16 items-start">
@@ -92,29 +96,28 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                     </div>
                 )}
 
-                {/* Footnotes Section */}
-                <div class="mt-12 pt-6 border-t border-white/10 text-sm text-dim opacity-80">
-                    <h3 class="text-xs uppercase tracking-widest font-bold mb-4 text-white">Footnotes</h3>
-                    <ol class="list-decimal pl-4 space-y-2">
-                        {post.data.footnotes ? (
-                            post.data.footnotes.map((fn: any) => (
+                {/*
+                    Only rendered when the post actually has notes.
+
+                    This block used to be emitted unconditionally, with a
+                    hardcoded "Fallback for AI Post (Legacy)" branch that printed
+                    two invented references — Bernanke (2025) and Lagarde (2024) —
+                    on every post without a `footnotes` array. That was 13 of 16
+                    posts carrying fabricated citations, with ↩ links pointing at
+                    #ref-1 / #ref-2 anchors that existed nowhere on the page.
+                */}
+                {post.data.footnotes && post.data.footnotes.length > 0 && (
+                    <div class="mt-12 pt-6 border-t border-white/10 text-sm text-dim opacity-80">
+                        <h3 class="text-xs uppercase tracking-widest font-bold mb-4 text-white">Noter</h3>
+                        <ol class="list-decimal pl-4 space-y-2">
+                            {post.data.footnotes.map((fn: any) => (
                                 <li id={`fn-${fn.id}`}>
                                     <span set:html={fn.content} /> <a href={`#ref-${fn.id}`} class="text-accent underline underline-offset-2">↩</a>
                                 </li>
-                            ))
-                        ) : (
-                            /* Fallback for AI Post (Legacy) */
-                            <>
-                                <li id="fn-1">
-                                    Bernanke, B. (2025). <em>Artificial Intelligence and the Future of Central Banking</em>. Journal of Monetary Economics. <a href="#ref-1" class="text-accent underline underline-offset-2">↩</a>
-                                </li>
-                                <li id="fn-2">
-                                    Lagarde, C. (2024). <em>Speech at the ECB Forum on Central Banking</em>. Sintra. <a href="#ref-2" class="text-accent underline underline-offset-2">↩</a>
-                                </li>
-                            </>
-                        )}
-                    </ol>
-                </div>
+                            ))}
+                        </ol>
+                    </div>
+                )}
             </article>
 
             {/* Any published video whose JSON names this article. */}

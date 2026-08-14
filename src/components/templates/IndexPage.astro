@@ -202,27 +202,16 @@ const skillsData = {
       </div>
     </Section>
 
-    <!-- Script to hydrate live skills if available -->
-    <script>
-      // Fetch fresh skills data from Supabase via partial
-      document.addEventListener('astro:page-load', async () => {
-        try {
-          const container = document.getElementById('skills-live-container');
-          if (!container) return;
+    {/*
+      A script here fetched /partials/skills and swapped it into
+      #skills-live-container. It was wrapped in an 'astro:page-load' listener,
+      which never fires on this site — there is no View Transitions router — so
+      it never ran once, and every visitor has always seen the static content
+      above. Retired rather than restored: it would add a Supabase-backed
+      request to every homepage load to replace markup nobody has missed.
 
-          const res = await fetch('/partials/skills');
-          if (res.ok) {
-            const html = await res.text();
-            // Only replace if meaningful content returned
-            if (html.includes('skills-container-inner')) {
-                container.innerHTML = html;
-            }
-          }
-        } catch (e) {
-          console.warn('Live skills fetch failed, using static fallback');
-        }
-      });
-    </script>
+      src/pages/partials/skills.astro now has no caller.
+    */}
 
     <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10 animate-on-scroll delay-200">
       <h2 class="text-3xl font-bold mb-6">{content.cta.title}</h2>

@@ -1049,7 +1049,8 @@ const scholarlyJsonLd = {
                     <p class="text-base text-slate-400 leading-relaxed font-serif">
                         {t.liveDataDesc}
                     </p>
-                    <DataPlayground client:only="react" dataUrl={dataLinks.find(l => l.label.includes('csv'))?.url || ''} />
+                    {/* undefined, not '' — see the probe in DataPlayground. */}
+                    <DataPlayground client:only="react" dataUrl={dataLinks.find(l => l.label.includes('csv'))?.url} />
                 </div>
             </div>
         </section>
@@ -1150,18 +1151,21 @@ const scholarlyJsonLd = {
 
   <script is:inline>
     // Lab Modal Logic
-    document.addEventListener('astro:page-load', () => {
-        const labBtn = document.getElementById('open-lab-btn');
-        if (labBtn) {
-            labBtn.addEventListener('click', () => {
-                // We use a custom event or direct state manipulation if using a persistent state manager
-                // But for simplicity in this Astro context, let's use a standard DOM event that the React component listens for
-                window.dispatchEvent(new CustomEvent('open-lab-modal'));
-            });
-        }
-    });
-
-    // We'll update the LabModal to listen for this event since we're using client:only
+    //
+    // This was wrapped in an 'astro:page-load' listener, which never fires —
+    // the View Transitions router is not installed anywhere on the site. That
+    // made the "Execute Lab" button inert on every project detail page, even
+    // though the button renders and LabModal listens for the event. The same
+    // modal opened fine from /courses, because CourseCard wires it directly.
+    //
+    // This script sits at the end of <body>, so the button is already parsed.
+    var labBtn = document.getElementById('open-lab-btn');
+    if (labBtn) {
+        labBtn.addEventListener('click', function () {
+            // LabModal is client:only, so a DOM event is the bridge to it.
+            window.dispatchEvent(new CustomEvent('open-lab-modal'));
+        });
+    }
   </script>
 
   <!-- Citation Modal -->
@@ -1173,8 +1177,8 @@ const scholarlyJsonLd = {
               <label class="text-xs font-bold uppercase text-slate-400 mb-2 block">BibTeX</label>
               <div class="relative">
                   <pre class="bg-black/30 p-4 rounded-lg text-xs text-slate-300 overflow-x-auto font-mono custom-scrollbar">{bibtexEntry}</pre>
-                  <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded"
-                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText.trim())">
+                  <button type="button" data-cite-copy
+                          class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded">
                       {t.copy}
                   </button>
               </div>
@@ -1186,8 +1190,8 @@ const scholarlyJsonLd = {
                   <div class="bg-black/30 p-4 rounded-lg text-sm text-slate-300">
                       {project.citation.text}
                   </div>
-                   <button class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded"
-                          onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText.trim())">
+                   <button type="button" data-cite-copy
+                          class="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded">
                       {t.copy}
                   </button>
               </div>
@@ -1205,6 +1209,22 @@ const scholarlyJsonLd = {
 
 <script>
     import Chart from 'chart.js/auto';
+    import { unlockAchievement } from '@lib/gamification';
+
+    // Copy buttons in the citation dialog. These were inline onclick attributes
+    // reaching for `this.previousElementSibling`, which silently broke if the
+    // markup around them ever changed and could not import anything.
+    document.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLElement>('[data-cite-copy]');
+        if (!button) return;
+
+        const source = button.parentElement?.querySelector('pre, div');
+        const text = source?.textContent?.trim();
+        if (!text) return;
+
+        navigator.clipboard.writeText(text);
+        unlockAchievement('colophon');
+    });
 
     // @ts-ignore
     const chartData = window.PROJECT_CHART_DATA;

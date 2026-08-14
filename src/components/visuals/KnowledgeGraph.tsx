@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import SpriteText from 'three-spritetext';
+import { unlockAchievement } from '@lib/gamification';
 
 // Lazy load ForceGraph3D because it relies on window/document (client-only)
 const ForceGraph3D = React.lazy(() => import('react-force-graph-3d'));
@@ -17,6 +18,8 @@ const KnowledgeGraph: React.FC = () => {
     }, []);
 
     const handleClick = (node: any) => {
+        unlockAchievement('stemma');
+
         // Aim at node from outside it
         const distance = 60;
         const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);

@@ -88,5 +88,24 @@ export function availableAlternates(path: string): Partial<Record<Lang, string>>
     return Object.keys(found).length > 1 ? found : {};
 }
 
+/**
+ * Where the language switcher should send someone standing on `path`.
+ *
+ * Not just `localizedPath`: that assumes a prefix-only convention, and a handful
+ * of sections have translated slugs (/videoer ↔ /en/videos, /traeningsprogram,
+ * /stoicisme). Sending a visitor to /en/videoer would swap a working link for a
+ * 404, so anything that doesn't resolve falls back to that language's home.
+ *
+ * Consequence worth knowing: on those sections this disagrees with the hreflang
+ * tags, which do know the translated slug because the page passes `alternates`
+ * explicitly. Fixing that properly means moving the alias table in
+ * src/lib/video-feed.ts into this file so both read from one source.
+ */
+export function switchTo(path: string, lang: Lang): string {
+    const target = localizedPath(path, lang);
+    if (routeExists(target)) return target;
+    return lang === 'da' ? '/' : `/${lang}`;
+}
+
 /** Exposed for tests and diagnostics. */
 export const _routes = { staticRoutes, dynamicRoutes };

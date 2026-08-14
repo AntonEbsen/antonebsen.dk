@@ -4,9 +4,11 @@ import Footer from '@components/Footer.astro';
 import SEO from '@components/SEO.astro';
 import ChatWidget from '../components/common/ChatWidget.astro';
 import CommandPalette from '@components/common/CommandPalette.astro';
-import AchievementToast from '../components/game/AchievementToast.astro';
-import TrophyRoom from '../components/game/TrophyRoom.astro';
+import LedgerToast from '../components/game/LedgerToast.astro';
+import LedgerModal from '../components/game/LedgerModal.astro';
 import Chameleon from '@components/core/Chameleon.astro';
+import Scriptorium from '@components/core/Scriptorium.astro';
+import Anathema from '@components/core/Anathema.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
 import SpeedInsights from "@vercel/speed-insights/astro"
@@ -71,6 +73,7 @@ const lang = getLangFromUrl(Astro.url);
 
       /* SECONDARY: MOSS — the Camino green, promoted to a real token */
       --accent-2: #6F9E7B;      /*  5.8:1 on --bg */
+      --accent-2-light: #8FBC9B;
       --accent-2-soft: rgba(111, 158, 123, 0.15);
 
       /* COMPONENTS */
@@ -218,8 +221,10 @@ const lang = getLangFromUrl(Astro.url);
   
   {showChatWidget && <ChatWidget />}
   <CommandPalette />
-  <AchievementToast />
-  <TrophyRoom />
+  <LedgerToast />
+  <LedgerModal />
+  <Scriptorium />
+  <Anathema />
 
   <script>
     // Premium reveal observer
@@ -256,20 +261,22 @@ const lang = getLangFromUrl(Astro.url);
 
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
+  {/*
+    A script here forced .animate-on-scroll elements visible. It was doubly
+    inert: wrapped in 'astro:page-load', which never fires without the View
+    Transitions router, and redundant anyway — animations.css already sets
+    `opacity: 1 !important; transform: none !important` on that class
+    unconditionally. It also assigned .style on an Element from
+    querySelectorAll, which cost two entries on the type-error ratchet.
+  */}
   <script>
-    // Disable scroll animations - instant appearance for fast site
-    document.addEventListener('astro:page-load', () => {
-      const elements = document.querySelectorAll('.animate-on-scroll');
-      elements.forEach(el => {
-        // Make all content visible immediately, no animations
-        el.classList.add('in-view');
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-      });
-    });
-  </script>
-  <script>
-    import { unlockAchievement, checkPolyglotAchievement } from '../lib/gamification';
+    import { unlockAchievement, checkPolyglotAchievement, checkPageVisitAchievement } from '../lib/gamification';
+
+    // Counts this page towards 'explorer'. The function has existed since the
+    // system was written and was never called anywhere, so that entry could only
+    // ever be awarded by the AI chat deciding to hand it out.
+    // Not deferred: a visitor who bounces on their fifth page still walked it.
+    checkPageVisitAchievement();
 
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     let cursor = 0;

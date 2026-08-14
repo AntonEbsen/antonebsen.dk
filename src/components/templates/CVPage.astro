@@ -286,10 +286,12 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
     const items = document.querySelectorAll('.cv-item');
     const wrap = document.querySelector('.cv-wrap');
 
-    // Gamification Hook for Print
+    // Printing the CV is the closest thing to taking a copy away, which is what
+    // 'recruiter' describes. This fired 'economist' — "put a question to the
+    // exchequer about Taylor rules" — for opening the print dialog.
     window.matchMedia('print').addEventListener('change', (mql) => {
         if (mql.matches) {
-            unlockAchievement('economist'); // "Headhunter" / Economist badge logic
+            unlockAchievement('recruiter');
         }
     });
 

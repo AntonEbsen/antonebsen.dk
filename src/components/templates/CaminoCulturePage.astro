@@ -124,10 +124,16 @@ const t = caminoContent[lang];
             </div>
           </section>
 
-          <!-- Badges / Milestones -->
+          <!--
+            Anton's training stages. Cards used to carry an `unlocked`/`locked`
+            class and a checkmark driven by `badge.unlocked`, which was hardcoded
+            false on every one — so the whole grid rendered permanently "locked"
+            against copy inviting the reader to earn them. The state is gone
+            rather than faked; the distance is the information.
+          -->
           <section id="badges" class="camino-section card-glass">
             <div class="section-header">
-              <div class="icon-box"><i class="fa-solid fa-trophy"></i></div>
+              <div class="icon-box"><i class="fa-solid fa-route"></i></div>
               <div class="title-meta">
                 <h2>{t.badgesTitle}</h2>
                 <p>{t.badgesSubtitle}</p>
@@ -135,13 +141,13 @@ const t = caminoContent[lang];
             </div>
             <div class="badges-grid">
               {t.badges.map((badge: any) => (
-                <div class={`badge-card ${badge.unlocked ? 'unlocked' : 'locked'}`}>
+                <div class="badge-card">
                   <div class="badge-icon">{badge.icon}</div>
                   <div class="badge-info">
                     <h3>{badge.title}</h3>
                     <p>{badge.desc}</p>
                   </div>
-                  {badge.unlocked && <span class="unlocked-tag"><i class="fa-solid fa-check"></i></span>}
+                  <span class="badge-km">{badge.km} km</span>
                 </div>
               ))}
             </div>
@@ -199,12 +205,13 @@ const t = caminoContent[lang];
     /* Badges */
     .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
     .badge-card { background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 24px; display: flex; align-items: center; gap: 1.5rem; position: relative; border: 1px solid rgba(255,255,255,0.05); }
-    .badge-icon { font-size: 2.5rem; filter: grayscale(1); opacity: 0.3; }
-    .badge-card.unlocked .badge-icon { filter: none; opacity: 1; }
-    .badge-card.locked { opacity: 0.6; }
+    /* Was grayscale(1) at 0.3 opacity unless .unlocked — a class nothing ever
+       set, so every icon rendered washed out. The stages are a plan, not a
+       locked collection, so they render plainly. */
+    .badge-icon { font-size: 2.5rem; }
     .badge-card h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
     .badge-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0; }
-    .unlocked-tag { position: absolute; top: 1rem; right: 1rem; color: var(--accent); font-size: 0.8rem; }
+    .badge-km { position: absolute; top: 1rem; right: 1.25rem; color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; }
 
     /* Sidebar */
     .sticky-nav { position: sticky; top: 100px; padding: 2rem; border-radius: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }

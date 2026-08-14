@@ -279,6 +279,10 @@ END:VCARD`;
         voiceBtn.innerHTML = '<i class="fa-solid fa-circle text-red-500 animate-pulse"></i> Listening...';
         voiceBtn.classList.add('border-red-500', 'text-white');
 
+        // onend fires whether or not anything was said, so it can't tell on its
+        // own whether the entry has been earned.
+        let heardSomething = false;
+
         recognition.onresult = (event) => {
              let interimTranscript = '';
              let finalTranscript = '';
@@ -291,6 +295,7 @@ END:VCARD`;
                 }
             }
             if (finalTranscript) {
+                 heardSomething = true;
                  const currentVal = messageInput.value;
                  messageInput.value = currentVal ? currentVal + ' ' + finalTranscript : finalTranscript;
             }
@@ -299,7 +304,12 @@ END:VCARD`;
         recognition.onend = () => {
              voiceBtn.innerHTML = originalBtnText;
              voiceBtn.classList.remove('border-red-500', 'text-white');
-             unlockAchievement('quiz_novice'); // Maybe add a 'speaker' achievement later
+             // The 'speaker' entry this always wanted now exists. Gated on actually
+             // having said something: onend also fires when the mic is opened and
+             // closed again, and on error.
+             if (heardSomething) {
+                 unlockAchievement('speaker');
+             }
         };
 
         recognition.start();
