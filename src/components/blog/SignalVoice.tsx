@@ -15,8 +15,18 @@ export default function SignalVoice({ url, lang = 'da' }: SignalVoiceProps) {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const t = {
-        da: { label: "Lyt til resuméet", error: "Kunne ikke indlæse lyd" },
-        en: { label: "Listen to summary", error: "Could not load audio" }
+        da: {
+            label: "Lyt til resuméet",
+            error: "Kunne ikke indlæse lyd",
+            play: "Afspil resuméet",
+            pause: "Sæt resuméet på pause"
+        },
+        en: {
+            label: "Listen to summary",
+            error: "Could not load audio",
+            play: "Play summary",
+            pause: "Pause summary"
+        }
     };
 
     const labels = t[lang] || t.da;
@@ -92,12 +102,14 @@ export default function SignalVoice({ url, lang = 'da' }: SignalVoiceProps) {
 
             <button
                 onClick={togglePlay}
+                aria-label={isPlaying ? labels.pause : labels.play}
                 className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-black hover:scale-105 transition-transform shadow-[0_0_15px_rgba(212,121,79,0.3)]"
             >
                 <AnimatePresence mode="wait">
                     {isPlaying ? (
                         <motion.i
                             key="pause"
+                            aria-hidden="true"
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.5 }}
@@ -106,6 +118,7 @@ export default function SignalVoice({ url, lang = 'da' }: SignalVoiceProps) {
                     ) : (
                         <motion.i
                             key="play"
+                            aria-hidden="true"
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.5 }}
