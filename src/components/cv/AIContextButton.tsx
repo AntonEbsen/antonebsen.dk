@@ -1,4 +1,5 @@
 import React from 'react';
+import { unlockAchievement } from '@lib/gamification';
 
 interface Props {
     prompt: string;
@@ -10,6 +11,9 @@ interface Props {
 export default function AIContextButton({ prompt, persona = 'recruiter', label = "Ask AI", className = "" }: Props) {
 
     const handleClick = () => {
+        // Asking for an explanation of one line of the record is a gloss.
+        unlockAchievement('gloss');
+
         // Dispatch custom event that ChatWidget listens to
         window.dispatchEvent(new CustomEvent('anton:chat-open', {
             detail: {

@@ -128,6 +128,8 @@ if (error) questions = [];
   </main>
 
 <script>
+    import { unlockAchievement } from '@lib/gamification';
+
     const form = document.getElementById('qa-public-form');
     if (form) {
         form.addEventListener('submit', async (e) => {
@@ -148,16 +150,23 @@ if (error) questions = [];
             const asker_name = (document.getElementById('qa-name') as HTMLInputElement).value;
 
             try {
-                await fetch('/api/qa', {
+                const res = await fetch('/api/qa', {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ question, asker_name })
                 });
-                
+
+                // fetch() resolves for 400/429/500, so the success message and
+                // the form reset both fired on a rejected question.
+                if (!res.ok) throw new Error(`qa: ${res.status}`);
+
                 (e.target as HTMLFormElement).reset();
                 successMsg.classList.remove('hidden');
                 setTimeout(() => {
                     successMsg.classList.add('hidden');
                 }, 5000);
+
+                unlockAchievement('petition');
             } catch (err) {
                 console.error(err);
                 errorMsg.classList.remove('hidden');

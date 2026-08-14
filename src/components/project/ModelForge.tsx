@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { unlockAchievement } from '@lib/gamification';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -34,6 +35,9 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
     const [alphaY, setAlphaY] = useState(0.5);   // Output gap weight (Standard Taylor: 0.5)
     const [rStar, setRStar] = useState(1.0);     // Equilibrium real rate (Natural rate)
     const [piTarget, setPiTarget] = useState(2.0); // Inflation target (ECB: 2%)
+
+    // Any of the three sliders counts as setting the rate.
+    const setTheRate = () => unlockAchievement('assize');
 
     // --- UI STRINGS ---
     const t = {
@@ -205,7 +209,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                                 type="range"
                                 min="0" max="4" step="0.1"
                                 value={alphaPi}
-                                onChange={(e) => setAlphaPi(parseFloat(e.target.value))}
+                                onChange={(e) => { setAlphaPi(parseFloat(e.target.value)); setTheRate(); }}
                                 className="w-full accent-accent h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
                             />
                         </div>
@@ -220,7 +224,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                                 type="range"
                                 min="0" max="2" step="0.1"
                                 value={alphaY}
-                                onChange={(e) => setAlphaY(parseFloat(e.target.value))}
+                                onChange={(e) => { setAlphaY(parseFloat(e.target.value)); setTheRate(); }}
                                 className="w-full accent-accent h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
                             />
                         </div>
@@ -235,7 +239,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                                 type="range"
                                 min="-2" max="5" step="0.5"
                                 value={rStar}
-                                onChange={(e) => setRStar(parseFloat(e.target.value))}
+                                onChange={(e) => { setRStar(parseFloat(e.target.value)); setTheRate(); }}
                                 className="w-full accent-accent h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
                             />
                         </div>

@@ -1,0 +1,114 @@
+---
+import LedgerGrid from './LedgerGrid.astro';
+import { getLangFromUrl } from '@i18n/utils';
+import { getLedgerCopy } from '@i18n/ledger';
+
+/**
+ * The Ledger, as a quick view.
+ *
+ * /ledger is the canonical page; this is what Cmd+K opens so you can glance at
+ * the book without leaving whatever you were reading. Both render the same
+ * LedgerGrid, so there is one copy of the entries and one copy of the state
+ * logic.
+ *
+ * Plain Astro rather than a React island: the entry list is a static export, so
+ * the whole thing renders server-side and the client script only toggles the
+ * dialog. The React version it replaced called useEffect after an early
+ * `return null` (hook-count mismatch on open) and listened for event names that
+ * gamification.ts never dispatched, so it never live-updated.
+ *
+ * Its ids are namespaced `ledger-modal-*` because BaseLayout mounts this on
+ * /ledger too — sharing ids with the page would be a duplicate-id violation and
+ * would make every unscoped test selector ambiguous.
+ */
+
+const lang = getLangFromUrl(Astro.url);
+const { ui } = getLedgerCopy(lang);
+---
+
+<div
+  id="ledger-modal"
+  class="fixed inset-0 z-[2000] hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="ledger-modal-title"
+>
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" data-ledger-close></div>
+
+  <div class="ledger-modal__panel relative w-full max-w-3xl bg-card border border-accent/20 rounded-2xl shadow-[var(--shadow)] overflow-hidden flex flex-col max-h-[85vh]">
+
+    <div class="flex items-start justify-between gap-4 p-6 pb-4 border-b border-white/5">
+      <div>
+        <span class="block text-[10px] font-bold uppercase tracking-[0.18em] text-accent mb-1">{ui.eyebrow}</span>
+        <h2 id="ledger-modal-title" class="font-serif text-2xl text-white leading-none">{ui.title}</h2>
+      </div>
+      <button
+        type="button"
+        data-ledger-close
+        aria-label={ui.close}
+        class="w-8 h-8 shrink-0 rounded-full bg-white/5 flex items-center justify-center text-dim hover:bg-white/10 hover:text-white transition-colors"
+      >
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+      <LedgerGrid lang={lang} idPrefix="ledger-modal" variant="modal" />
+      <p class="mt-5 text-[11px] leading-relaxed text-muted">{ui.storageNote}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.getElementById('ledger-modal');
+
+  if (root) {
+    const panel = root.querySelector<HTMLElement>('.ledger-modal__panel');
+    let lastFocused: HTMLElement | null = null;
+
+    const isOpen = () => !root.classList.contains('hidden');
+
+    function open() {
+      lastFocused = document.activeElement as HTMLElement;
+      root!.classList.remove('hidden');
+      root!.classList.add('flex');
+      // LedgerGrid paints on load and on every unlock; nudge it in case the
+      // modal was opened after a change it could not see.
+      window.dispatchEvent(new CustomEvent('ledger:repaint'));
+      panel?.classList.remove('is-entering');
+      void panel?.offsetWidth;
+      panel?.classList.add('is-entering');
+      root!.querySelector<HTMLElement>('[data-ledger-close]:not(div)')?.focus();
+    }
+
+    function close() {
+      root!.classList.add('hidden');
+      root!.classList.remove('flex');
+      lastFocused?.focus();
+      lastFocused = null;
+    }
+
+    window.addEventListener('toggle-ledger', () => (isOpen() ? close() : open()));
+
+    root.querySelectorAll('[data-ledger-close]').forEach((el) => el.addEventListener('click', close));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) close();
+    });
+  }
+</script>
+
+<style>
+  @keyframes ledger-open {
+    from { opacity: 0; transform: translateY(0.75rem); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .is-entering {
+    animation: ledger-open 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .is-entering { animation: none; }
+  }
+</style>

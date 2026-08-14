@@ -4,7 +4,13 @@
 <script>
     // The Chameleon: Dynamic Content Personalization
     // Usage: ?company=Lego in URL -> Changes text with class 'chameleon-target'
-    
+
+    // Imported rather than read off window: this component renders at
+    // BaseLayout:206 and window.unlockAchievement is assigned at :304. Processed
+    // Astro scripts are type="module" and run in document order, so initChameleon()
+    // executes first and the global would still be undefined.
+    import { unlockAchievement } from '@lib/gamification';
+
     function initChameleon() {
         const urlParams = new URLSearchParams(window.location.search);
         const company = urlParams.get('company');
@@ -20,6 +26,10 @@
                 <span class="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">${company}</span>
             `;
             document.body.prepend(banner);
+
+            // Nothing on the site links to ?company=, which is what makes it
+            // worth an entry — you only find it by going looking.
+            unlockAchievement('watermark');
 
             // 2. Inject Company Name into placeholders
             document.querySelectorAll('.company-name-placeholder').forEach(el => {
@@ -40,9 +50,8 @@
         }
     }
 
-    // Run on load
     initChameleon();
-    
-    // Run on view transitions
-    document.addEventListener('astro:page-load', initChameleon);
+    // A second 'astro:page-load' registration sat here. The View Transitions
+    // router is not installed, so it never fired — and the call above already
+    // covers every navigation, since each one is a full document load.
 </script>

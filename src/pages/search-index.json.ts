@@ -31,9 +31,13 @@ export async function GET() {
         { title: "Research Lab", url: "/research", type: "page", icon: "fa-solid fa-flask-vial", tags: ["akademisk", "phd", "forskning"], lang: "da" },
         { title: "Cliometrics", url: "/cliometrics", type: "page", icon: "fa-solid fa-chart-line", tags: ["økonomisk historie", "cliometri", "data"], lang: "da" },
         { title: "Backup Data", url: "/api/backup", type: "command", icon: "fa-solid fa-download", tags: ["admin"], lang: "en" },
-        { title: "Trophy Room", url: "#trophy-room", type: "command", icon: "fa-solid fa-trophy", tags: ["game"], lang: "en" },
-        { title: "Trophäenraum", url: "#trophy-room", type: "command", icon: "fa-solid fa-trophy", tags: ["game"], lang: "de" },
-        { title: "Trophy Room", url: "#trophy-room", type: "command", icon: "fa-solid fa-trophy", tags: ["spil"], lang: "da" },
+        // These were `#trophy-room`, a fragment pointing at a display:none element.
+        // Four separate consumers render these rows as real <a href> — the command
+        // palette, the navbar dropdown, /search and public/assets/js/search.js — so
+        // all four were silently dead. A real route fixes every one of them.
+        { title: "The Ledger", url: "/en/ledger", type: "page", icon: "fa-solid fa-book", tags: ["ledger", "achievements", "record"], lang: "en" },
+        { title: "Das Hauptbuch", url: "/de/ledger", type: "page", icon: "fa-solid fa-book", tags: ["hauptbuch", "aufzeichnung"], lang: "de" },
+        { title: "Hovedbogen", url: "/ledger", type: "page", icon: "fa-solid fa-book", tags: ["hovedbog", "protokol"], lang: "da" },
         { title: "CV", url: "/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["resume"], lang: "en" },
         { title: "CV", url: "/da/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["cv"], lang: "da" },
         { title: "Lebenslauf", url: "/de/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["lebenslauf"], lang: "de" }

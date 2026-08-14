@@ -25,6 +25,38 @@ test.describe('UI Stability & Navigation', () => {
         await expect(projekterLink).toBeVisible();
     });
 
+    test('the language switcher keeps you on the same page', async ({ page }) => {
+        // The three links were hardcoded '/', '/en' and '/de', so switching
+        // language threw away whatever you were reading.
+        await page.goto('/en/about');
+
+        await expect(page.locator('.lang-link').nth(0)).toHaveAttribute('href', '/about');
+        await expect(page.locator('.lang-link').nth(1)).toHaveAttribute('href', '/en/about');
+        await expect(page.locator('.lang-link').nth(2)).toHaveAttribute('href', '/de/about');
+
+        // The current language is marked, which it never was before.
+        await expect(page.locator('.lang-link').nth(1)).toHaveAttribute('aria-current', 'true');
+    });
+
+    test('the language switcher never offers a link that 404s', async ({ page, request }) => {
+        // localizedPath alone is prefix-only, so /videoer would become
+        // /en/videoer — a route that does not exist. Anything unresolvable has
+        // to fall back to that language's home rather than break.
+        for (const path of ['/videoer', '/cliometrics', '/en/about', '/ledger']) {
+            await page.goto(path);
+
+            const hrefs = await page.locator('.lang-link').evaluateAll(
+                (els) => els.map((el) => el.getAttribute('href')!)
+            );
+            expect(hrefs, `${path} should offer three languages`).toHaveLength(3);
+
+            for (const href of hrefs) {
+                const res = await request.get(href);
+                expect(res.status(), `${path}: switcher offered ${href}`).toBe(200);
+            }
+        }
+    });
+
     test('CV Page Rendering', async ({ page }) => {
         await page.goto('/cv'); 
         await page.waitForLoadState('networkidle');

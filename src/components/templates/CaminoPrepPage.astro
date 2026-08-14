@@ -328,6 +328,11 @@ const t = caminoContent[lang];
       const weightFill = document.getElementById('weight-fill');
       const weightAdvice = document.getElementById('weight-advice');
 
+      // updateWeight() also runs once on load, and an empty rucksack weighs
+      // nothing and so clears any limit — without this, every visitor would
+      // enrol "the pilgrim's burden" just by opening the page.
+      let userTouched = false;
+
       function updateWeight() {
         let totalGrams = 0;
         weightCheckboxes.forEach(cb => {
@@ -358,11 +363,23 @@ const t = caminoContent[lang];
           weightFill.style.background = 'var(--accent)';
           weightAdvice.textContent = "🟢 Perfekt! Din oppakning er inden for den anbefalede vægtgrænse.";
           weightAdvice.style.color = 'var(--accent)';
+
+          // is:inline can't import, so this reads the global BaseLayout exposes.
+          // Safe here: we are inside DOMContentLoaded, which fires after the
+          // module scripts that assign it.
+          if (userTouched && totalGrams > 0 && window.unlockAchievement) {
+            window.unlockAchievement('pilgrims_burden');
+          }
         }
       }
 
-      weightCheckboxes.forEach(cb => cb.addEventListener('change', updateWeight));
-      bodyWeightIn?.addEventListener('input', updateWeight);
+      function packChanged() {
+        userTouched = true;
+        updateWeight();
+      }
+
+      weightCheckboxes.forEach(cb => cb.addEventListener('change', packChanged));
+      bodyWeightIn?.addEventListener('input', packChanged);
       updateWeight();
 
       // Budget Logic

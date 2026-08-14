@@ -86,7 +86,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Milepæle', url: '/timeline' },
                 { label: 'Arv (Legacy)', url: '/legacy' },
                 { label: 'Soundtrack', url: '/soundtrack' },
-                { label: 'Hvad laver jeg nu?', url: '/now' }
+                { label: 'Hvad laver jeg nu?', url: '/now' },
+                { label: 'Hovedbogen', url: '/ledger' }
             ]
         },
         {
@@ -130,7 +131,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Milestones', url: '/en/timeline' },
                 { label: 'Legacy', url: '/en/legacy' },
                 { label: 'Soundtrack', url: '/en/soundtrack' },
-                { label: 'What I\'m doing now', url: '/en/now' }
+                { label: 'What I\'m doing now', url: '/en/now' },
+                { label: 'The Ledger', url: '/en/ledger' }
             ]
         },
         {
@@ -172,7 +174,8 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'Bildung', url: '/de/education' },
                 { label: 'Kompetenzen', url: '/de/skills' },
                 { label: 'Meilensteine', url: '/de/timeline' },
-                { label: 'Was ich gerade mache', url: '/de/now' }
+                { label: 'Was ich gerade mache', url: '/de/now' },
+                { label: 'Das Hauptbuch', url: '/de/ledger' }
             ]
         },
         {
@@ -190,7 +193,10 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        { label: 'Cliometrics', url: '/de/cliometrics' },
+        // No German cliometrics page: the content is a 150-line translation and
+        // tests/hreflang.spec.ts asserts this page has no German version. Points
+        // at English, like Model Library, Speaking and Zusammenarbeit above.
+        { label: 'Cliometrics', url: '/en/cliometrics' },
         { label: 'Blog', url: '/de/blog' },
         { label: 'Zusammenarbeit', url: '/en/services' },
         {

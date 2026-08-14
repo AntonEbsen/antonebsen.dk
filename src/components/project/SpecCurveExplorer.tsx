@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { unlockAchievement } from '@lib/gamification';
 import type { ChartData, ChartOptions } from 'chart.js';
 import {
     Chart as ChartJS,
@@ -196,7 +197,11 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
     const options: ChartOptions<'bar' | 'line'> = {
         responsive: true,
         maintainAspectRatio: false,
-        onClick: (_e, els) => { if (els.length) setSelected(els[0].index); },
+        onClick: (_e, els) => {
+            if (!els.length) return;
+            setSelected(els[0].index);
+            unlockAchievement('variorum');
+        },
         scales: {
             x: {
                 grid: { display: false },

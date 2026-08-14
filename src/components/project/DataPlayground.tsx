@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { unlockAchievement } from '@lib/gamification';
 import * as duckdb from '@duckdb/duckdb-wasm';
 import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import duckdb_wasm_next from '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url';
@@ -6,7 +7,8 @@ import worker_url from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?ur
 import worker_next_url from '@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url';
 
 interface DataPlaygroundProps {
-    dataUrl: string;
+    /** Omitted when the project has no published replication CSV. */
+    dataUrl?: string;
 }
 
 export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
@@ -92,9 +94,19 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
         // to replication data that hasn't been published yet; without this the user
         // downloads a 70MB engine only to get a raw SQL error.
         let cancelled = false;
-        fetch(dataUrl, { method: 'HEAD' })
-            .then(res => { if (!cancelled) setDataAvailable(res.ok); })
-            .catch(() => { if (!cancelled) setDataAvailable(false); });
+
+        if (!dataUrl) {
+            // No URL means no dataset, and probing for it is worse than useless:
+            // the caller used to pass '', and fetch('') resolves against the
+            // *current page* with a 200 — so the check passed on every project
+            // and the query box appeared even where there was nothing to query.
+            // Every query then ran against HTML and failed.
+            setDataAvailable(false);
+        } else {
+            fetch(dataUrl, { method: 'HEAD' })
+                .then(res => { if (!cancelled) setDataAvailable(res.ok); })
+                .catch(() => { if (!cancelled) setDataAvailable(false); });
+        }
 
         // Allow the Project Bot to push generated SQL into the editor.
         const handleBotSQL = (e: CustomEvent) => setQuery(e.detail);
@@ -112,6 +124,8 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
             const conn = await ensureDb();
             const result = await conn.query(query);
             setResults(result.toArray().map((row: any) => row.toJSON()));
+            // Only a query that actually returned counts.
+            unlockAchievement('reckoning');
         } catch (err: any) {
             setError(err.message);
         }

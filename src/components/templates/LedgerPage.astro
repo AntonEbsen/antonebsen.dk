@@ -1,0 +1,180 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import LedgerGrid from '@components/game/LedgerGrid.astro';
+import { getLedgerCopy } from '@i18n/ledger';
+
+/**
+ * /ledger — the canonical page.
+ *
+ * Replaces the old "Trophy Room", which had no route at all: it existed only as
+ * a modal reachable by Cmd+K → four arrow presses → Enter, and even then the
+ * first Enter was swallowed. This is a real page so it can be linked, shared,
+ * bookmarked and crawled; the modal stays as the quick view.
+ *
+ * The framing is bookkeeping rather than arcade because that is the subject
+ * matter — the entries, ranks and vocabulary come from guild, chancery and
+ * exchequer practice. Same house rule as ElevationRule and ContourField:
+ * ornament should mean something.
+ */
+
+interface Props {
+  lang: 'da' | 'en' | 'de';
+}
+
+const { lang } = Astro.props;
+const { ui } = getLedgerCopy(lang);
+---
+
+<Layout
+  title={`${ui.title} | Anton Meier Ebsen Jørgensen`}
+  description={ui.metaDescription}
+  bodyClass="ledger-theme-active"
+>
+  <div class="ledger-page">
+    <div class="parchment-overlay" aria-hidden="true"></div>
+
+    <main class="container mx-auto px-4 py-20 md:py-28 relative z-[2]">
+      <div class="max-w-3xl mx-auto">
+
+        <header class="mb-12">
+          <span class="block text-[11px] font-bold uppercase tracking-[0.2em] text-accent mb-3">
+            {ui.eyebrow}
+          </span>
+          <h1 class="font-serif text-[clamp(2.75rem,7vw,4.5rem)] leading-[0.95] tracking-[-0.02em] text-white mb-6">
+            {ui.title}
+          </h1>
+          <p class="text-lg text-dim leading-relaxed max-w-2xl">
+            {ui.intro}
+          </p>
+        </header>
+
+        <div id="ledger-page-book" class="ledger-book">
+          <LedgerGrid lang={lang} idPrefix="ledger-page" variant="page" />
+        </div>
+
+        <p class="mt-8 text-xs text-muted leading-relaxed">
+          {ui.storageNote}
+        </p>
+
+      </div>
+    </main>
+  </div>
+
+  {/*
+    Applied before paint. The grid is static HTML, so every entry renders as
+    "not enrolled" and the module script corrects it after hydration — on a
+    modal that is invisible (it paints while still hidden), but on a full page a
+    returning visitor would watch their rank and total flip up from zero.
+
+    is:inline cannot import, so the storage key is spelled out here. It is the
+    only other place it appears; the source of truth is STORAGE_KEY in
+    src/lib/gamification.ts. Kept deliberately minimal — this only removes the
+    flash, and LedgerGrid's own script does the full pass immediately after.
+  */}
+  <script is:inline>
+    (function () {
+      var root = document.querySelector('#ledger-page-book [data-ledger-root]');
+      if (!root) return;
+
+      var state;
+      try {
+        state = JSON.parse(localStorage.getItem('anton_gamification_state') || '{}');
+      } catch (e) {
+        return;
+      }
+
+      var unlocked = Array.isArray(state.unlockedAchievements) ? state.unlockedAchievements : [];
+      if (!unlocked.length) return;
+
+      var xp = Number(state.xp);
+      if (!isFinite(xp)) xp = 0;
+
+      var copy = JSON.parse(root.dataset.ledgerCopy || '{}');
+      var ui = JSON.parse(root.dataset.ledgerUi || '{}');
+      var ranks = JSON.parse(root.dataset.ledgerRanks || '[]');
+      var thresholds = JSON.parse(root.dataset.ledgerThresholds || '[0]');
+
+      var rank = 1;
+      for (var i = 0; i < thresholds.length; i++) {
+        if (xp >= thresholds[i]) rank = i + 1;
+      }
+
+      var rankEl = root.querySelector('[data-ledger-rank]');
+      if (rankEl) rankEl.textContent = ranks[rank - 1] || ranks[0];
+
+      var marksEl = root.querySelector('[data-ledger-marks]');
+      if (marksEl) marksEl.textContent = String(xp);
+
+      var bar = root.querySelector('[data-ledger-progress]');
+      var fill = root.querySelector('[data-ledger-progress-fill]');
+      var total = bar ? Number(bar.getAttribute('aria-valuemax')) : 0;
+      if (fill && total > 0) fill.style.width = Math.min(100, (xp / total) * 100) + '%';
+      if (bar) bar.setAttribute('aria-valuenow', String(xp));
+
+      var count = 0;
+      for (var j = 0; j < unlocked.length; j++) {
+        var row = root.querySelector('[data-ledger-entry="' + unlocked[j] + '"]');
+        if (!row) continue;
+        count++;
+        row.classList.add('is-enrolled');
+        // A secret folio ships hidden; unhide it here so an owner does not watch
+        // it pop into the book after hydration.
+        row.hidden = false;
+
+        var desc = row.querySelector('[data-ledger-desc]');
+        if (desc && copy[unlocked[j]]) desc.textContent = copy[unlocked[j]].description;
+
+        var status = row.querySelector('[data-ledger-status]');
+        if (status) status.textContent = ui.enrolled;
+      }
+
+      var countEl = root.querySelector('[data-ledger-count]');
+      if (countEl) countEl.textContent = String(count);
+    })();
+  </script>
+</Layout>
+
+<style is:global>
+  /*
+    Scoped theme, following the CaminoLayout pattern: override the tokens at body
+    scope rather than touching :root, so nothing leaks to the rest of the site.
+  */
+  body.ledger-theme-active {
+    --glass-border: rgb(212 121 79 / 0.14);
+  }
+
+  /*
+    The warm ground goes on this wrapper rather than on a token. Both BaseLayout
+    and reset.css set `background: var(--depth-bg)` on <body>, but a later
+    `html, body { background: #17191A }` overrides both — so --depth-bg renders
+    nowhere on the site and overriding it here would be dead code. (CaminoLayout
+    sets --bg-gradient, which nothing reads at all, and has the same problem.)
+
+    Lamplight on paper, held back deliberately: at the lightest point of the
+    gradient, muted text still measures 5.22:1 and the accent 5.18:1.
+  */
+  .ledger-page {
+    position: relative;
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% -15%, #241F17 0%, #16181A 55%);
+  }
+
+  /* Same texture the Camino section uses — an old survey map, barely there. */
+  .ledger-page .parchment-overlay {
+    position: fixed;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  /*
+    Wide content scrolls inside its own container. tests/accessibility.spec.ts
+    asserts the body itself never scrolls sideways at 375px.
+  */
+  .ledger-book {
+    overflow-x: auto;
+  }
+</style>

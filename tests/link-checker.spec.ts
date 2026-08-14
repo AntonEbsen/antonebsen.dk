@@ -17,6 +17,10 @@ const PAGES = [
     '/about',
     '/blog',
     '/exercises',
+    '/ledger',
+    '/en/ledger',
+    '/de/ledger',
+    '/de/now',
 
     // Research work — the pages a PhD admissions reader would open
     '/projects/welfare-state-seminar',
@@ -89,6 +93,87 @@ test.describe('Site health', () => {
             expect(broken, `${path} references files that do not resolve`).toEqual([]);
         });
     }
+
+    /**
+     * The nav and footer, which the asset test above cannot see: it collects
+     * only img/source/link and a[href^="/assets"], so an ordinary <a> was
+     * structurally invisible to it. That is why /de/now sat broken for six
+     * months and /de/cliometrics for four — neither was ever requested by any
+     * test, and the PAGES list above contains no German routes at all.
+     *
+     * Seeded from one page per language rather than all 31: the nav and footer
+     * are identical everywhere, so crawling more pages just repeats the same
+     * link set. Seeding from /de is the part that matters — a crawl from / alone
+     * would have missed both of the bugs this is here to prevent.
+     */
+    const NAV_SEEDS = ['/', '/en', '/de'];
+
+    test('every link in the nav and footer resolves', async ({ page, request }) => {
+        const found = new Map<string, string>(); // href -> the page it was found on
+
+        for (const seed of NAV_SEEDS) {
+            const response = await page.goto(seed);
+            expect(response?.status(), `${seed} should return 200`).toBe(200);
+
+            const hrefs = await page.evaluate(() => {
+                const urls = new Set<string>();
+
+                for (const el of document.querySelectorAll<HTMLAnchorElement>('nav a[href], footer a[href]')) {
+                    const raw = el.getAttribute('href');
+                    if (!raw) continue;
+
+                    // Resolving against the document handles protocol-relative and
+                    // absolute-same-origin hrefs that a startsWith('/') check would
+                    // misclassify. External hosts are skipped: GitHub and LinkedIn
+                    // answer CI runners with 999/403 and would only add flake.
+                    let url: URL;
+                    try {
+                        url = new URL(raw, location.href);
+                    } catch {
+                        continue;
+                    }
+
+                    if (url.origin !== location.origin) continue;
+                    if (!['http:', 'https:'].includes(url.protocol)) continue; // mailto:, tel:, javascript:
+                    if (!url.pathname || url.pathname === '/') continue;
+
+                    urls.add(url.pathname.replace(/\/+$/, '') || '/');
+                }
+
+                return [...urls];
+            });
+
+            for (const href of hrefs) {
+                if (!found.has(href)) found.set(href, seed);
+            }
+        }
+
+        // The mobile nav re-emits every child link, so this is well above the
+        // number of distinct destinations — a low count means the selector broke.
+        expect(found.size, 'should have found the nav and footer links').toBeGreaterThan(20);
+
+        // Chunked rather than one request at a time: CI runs with workers: 1, and
+        // ~60 serial round-trips against the dev server is needlessly slow.
+        const entries = [...found.entries()];
+        const broken: string[] = [];
+
+        for (let i = 0; i < entries.length; i += 8) {
+            const chunk = entries.slice(i, i + 8);
+            const results = await Promise.all(
+                chunk.map(async ([href, foundOn]) => ({
+                    href,
+                    foundOn,
+                    status: (await request.get(href)).status()
+                }))
+            );
+
+            for (const r of results) {
+                if (r.status !== 200) broken.push(`${r.href} -> ${r.status} (linked from ${r.foundOn})`);
+            }
+        }
+
+        expect(broken, 'nav or footer links that do not resolve').toEqual([]);
+    });
 
     test('exercise detail routes resolve from the listing', async ({ page }) => {
         await page.goto('/exercises');
