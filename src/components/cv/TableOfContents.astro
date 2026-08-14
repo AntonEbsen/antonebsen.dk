@@ -87,8 +87,10 @@ const t = labels[lang];
         localStorage.setItem("tocCollapsed", nowCollapsed ? "1" : "0");
     });
 
+    // Processed Astro scripts are type="module", so this registers before
+    // DOMContentLoaded fires. (A note here suggested also hooking
+    // astro:page-load "if using View Transitions" — the site doesn't.)
     document.addEventListener("DOMContentLoaded", applyFromStorage);
-    // Also run on astro:page-load if using View Transitions, though basic script handles it for traditional loads
   })();
 </script>
 

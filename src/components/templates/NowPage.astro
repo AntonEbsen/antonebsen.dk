@@ -4,14 +4,19 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Pill from '@components/ui/Pill.astro';
+import { localizedPath } from '@lib/routes';
 
 interface Props {
-  lang: 'da' | 'en';
+  lang: 'da' | 'en' | 'de';
 }
 
 const { lang } = Astro.props;
-const isDa = lang === 'da';
 
+/**
+ * `highlight` rather than matching on the status word: the variant used to be
+ * chosen by comparing against 'Active' || 'Aktiv' || 'Building' || 'Bygger',
+ * which silently stops working the moment a language adds a word.
+ */
 const content = {
   da: {
     title: "Hvad jeg laver nu | Anton Meier Ebsen Jørgensen",
@@ -22,14 +27,14 @@ const content = {
       {
         title: "Studie & Akademisk",
         items: [
-          { title: "Kandidat i Økonomi", status: "Aktiv", desc: "Dykker ned i avancerede økonometriske modeller og makroøkonomi." },
+          { title: "Kandidat i Økonomi", status: "Aktiv", highlight: true, desc: "Dykker ned i avancerede økonometriske modeller og makroøkonomi." },
           { title: "Specialeforberedelse", status: "Planlægning", desc: "Afdækker potentielle emner inden for finansiel stabilitet." }
         ]
       },
       {
         title: "Projekter & Kode",
         items: [
-          { title: "antonebsen.dk", status: "Bygger", desc: "Udvidet mit personlige operativsystem med flere interaktive sider og bedre i18n." },
+          { title: "antonebsen.dk", status: "Bygger", highlight: true, desc: "Udvidet mit personlige operativsystem med flere interaktive sider og bedre i18n." },
           { title: "AI Integration", status: "Eksperiment", desc: "Tester nye måder at bruge RAG (Retrieval Augmented Generation) på personlige dokumenter." }
         ]
       },
@@ -41,7 +46,9 @@ const content = {
         ]
       }
     ],
-    lastUpdated: "Sidst opdateret: Januar 2026"
+    lastUpdated: "Sidst opdateret: Januar 2026",
+    quote: '"Fokus er nøglen til at mestre komplekse emner."',
+    cta: "Lad os netværke →"
   },
   en: {
     title: "What I'm doing now | Anton Meier Ebsen Jørgensen",
@@ -52,14 +59,14 @@ const content = {
       {
         title: "Study & Academic",
         items: [
-          { title: "Master's in Economics", status: "Active", desc: "Diving into advanced econometric models and macroeconomics." },
+          { title: "Master's in Economics", status: "Active", highlight: true, desc: "Diving into advanced econometric models and macroeconomics." },
           { title: "Thesis Prep", status: "Planning", desc: "Exploring potential topics within financial stability." }
         ]
       },
       {
         title: "Projects & Code",
         items: [
-          { title: "antonebsen.dk", status: "Building", desc: "Expanding my personal OS with more interactive pages and better i18n." },
+          { title: "antonebsen.dk", status: "Building", highlight: true, desc: "Expanding my personal OS with more interactive pages and better i18n." },
           { title: "AI Integration", status: "Experiment", desc: "Testing new ways to apply RAG (Retrieval Augmented Generation) to personal documents." }
         ]
       },
@@ -71,11 +78,45 @@ const content = {
         ]
       }
     ],
-    lastUpdated: "Last updated: January 2026"
+    lastUpdated: "Last updated: January 2026",
+    quote: '"Focus is the key to mastering complex topics."',
+    cta: "Let's connect →"
+  },
+  de: {
+    title: "Was ich gerade mache | Anton Meier Ebsen Jørgensen",
+    description: "Eine Seite nach dem 'Now'-Prinzip. Hier steht, worauf ich mich im Moment konzentriere.",
+    heroTitle: "Gerade jetzt",
+    heroText: "Angelehnt an Derek Sivers' 'Now'-Prinzip. Eine Momentaufnahme dessen, was meine Zeit derzeit in Anspruch nimmt.",
+    sections: [
+      {
+        title: "Studium & Wissenschaft",
+        items: [
+          { title: "Master in Volkswirtschaftslehre", status: "Aktiv", highlight: true, desc: "Vertiefung in fortgeschrittene ökonometrische Modelle und Makroökonomie." },
+          { title: "Vorbereitung der Masterarbeit", status: "In Planung", desc: "Sondierung möglicher Themen im Bereich Finanzstabilität." }
+        ]
+      },
+      {
+        title: "Projekte & Code",
+        items: [
+          { title: "antonebsen.dk", status: "Im Aufbau", highlight: true, desc: "Ausbau meines persönlichen Betriebssystems um weitere interaktive Seiten und bessere i18n." },
+          { title: "KI-Integration", status: "Experiment", desc: "Erprobung neuer Wege, RAG (Retrieval Augmented Generation) auf persönliche Dokumente anzuwenden." }
+        ]
+      },
+      {
+        title: "Lektüre & Lernen",
+        items: [
+          { title: "Deep Work von Cal Newport", status: "Lektüre", desc: "Erneute Lektüre dieses Klassikers, um meine Arbeitsgewohnheiten zu schärfen." },
+          { title: "Fortgeschrittenes TypeScript", status: "Lernen", desc: "Ausbau meiner Kenntnisse in typsicherer Webentwicklung." }
+        ]
+      }
+    ],
+    lastUpdated: "Zuletzt aktualisiert: Januar 2026",
+    quote: '"Konzentration ist der Schlüssel zu komplexen Themen."',
+    cta: "Lassen Sie uns vernetzen →"
   }
 };
 
-const t = isDa ? content.da : content.en;
+const t = content[lang] ?? content.da;
 ---
 
 <Layout title={t.title} description={t.description}>
@@ -108,7 +149,7 @@ const t = isDa ? content.da : content.en;
                 <Card variant="glass" class="relative p-8 h-full">
                   <div class="flex justify-between items-start mb-4">
                     <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors">{item.title}</h3>
-                    <Pill variant={item.status === 'Active' || item.status === 'Aktiv' || item.status === 'Building' || item.status === 'Bygger' ? 'accent' : 'default'}>
+                    <Pill variant={item.highlight ? 'accent' : 'default'}>
                       {item.status}
                     </Pill>
                   </div>
@@ -127,10 +168,11 @@ const t = isDa ? content.da : content.en;
     <Section class="mt-32 text-center animate-on-scroll">
        <div class="max-w-xl mx-auto border-t border-white/5 pt-12">
           <p class="text-sm text-dim italic mb-6">
-            {isDa ? '"Fokus er nøglen til at mestre komplekse emner."' : '"Focus is the key to mastering complex topics."'}
+            {t.quote}
           </p>
-          <a href="/contact" class="text-accent font-bold hover:underline decoration-accent/30 underline-offset-8 transition-all">
-            {isDa ? 'Lad os netværke →' : 'Let\'s connect →'}
+          {/* Was hardcoded /contact, so English visitors were sent to the Danish page. */}
+          <a href={localizedPath('/contact', lang)} class="text-accent font-bold hover:underline decoration-accent/30 underline-offset-8 transition-all">
+            {t.cta}
           </a>
        </div>
     </Section>

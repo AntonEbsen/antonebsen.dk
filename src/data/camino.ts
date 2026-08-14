@@ -270,16 +270,21 @@ export const caminoContent: any = {
             { km: 153, elev: 390 }, { km: 282, elev: 860 }, { km: 468, elev: 830 }, { km: 540, elev: 1505 },
             { km: 603, elev: 1300 }, { km: 651, elev: 450 }, { km: 800, elev: 260 }
         ],
-        badgesTitle: "Milestones",
-        badgesSubtitle: "Optjen badges på din forberedelsesrejse",
+        // Anton's own training plan, in stages. This was written in the second
+        // person — "Optjen badges på din forberedelsesrejse", "Gå din første
+        // 10 km" — as though the reader earned them, while `unlocked` was
+        // hardcoded false on all seven and nothing ever flipped it. So it
+        // promised something that could not happen. Now stated as what it is.
+        badgesTitle: "Træningsplan",
+        badgesSubtitle: "Vejen til 500 km, i etaper",
         badges: [
-            { icon: "🥾", title: "Første skridt", desc: "Gå din første 10 km træningstur", km: 10, unlocked: false },
-            { icon: "🏔️", title: "Halvt hundrede", desc: "50 km samlet træning", km: 50, unlocked: false },
-            { icon: "💯", title: "100 km klubben", desc: "Nå 100 km i forberedelse", km: 100, unlocked: false },
-            { icon: "👢", title: "Støvlerne indgået", desc: "200 km med dine vandrestøvler", km: 200, unlocked: false },
-            { icon: "⭐", title: "Halvvejs!", desc: "250 km af 500 km mål", km: 250, unlocked: false },
-            { icon: "🔥", title: "Meseta-klar", desc: "Gå 30 km på én dag", km: 350, unlocked: false },
-            { icon: "🏆", title: "Pilgrimsklar", desc: "500 km! Du er klar til Caminoen", km: 500, unlocked: false }
+            { icon: "🥾", title: "Første skridt", desc: "Den første træningstur på 10 km", km: 10 },
+            { icon: "🏔️", title: "Halvt hundrede", desc: "50 km samlet træning", km: 50 },
+            { icon: "💯", title: "100 km", desc: "100 km i forberedelse", km: 100 },
+            { icon: "👢", title: "Støvlerne indgået", desc: "200 km i vandrestøvlerne", km: 200 },
+            { icon: "⭐", title: "Halvvejs", desc: "250 km af målet på 500", km: 250 },
+            { icon: "🔥", title: "Meseta-klar", desc: "30 km på én dag", km: 350 },
+            { icon: "🏆", title: "Pilgrimsklar", desc: "500 km — klar til Caminoen", km: 500 }
         ],
         stagesTitle: "Etapeplan (33 dage)",
         stagesSubtitle: "Dag-for-dag plan for Camino Francés – ca. 24 km/dag",
@@ -402,7 +407,7 @@ export const caminoContent: any = {
             { id: "elevation", label: "Højdeprofil", icon: "fa-chart-area" },
             { id: "food", label: "Mad", icon: "fa-utensils" },
             { id: "glossary", label: "Ordliste", icon: "fa-book-bookmark" },
-            { id: "badges", label: "Badges", icon: "fa-trophy" },
+            { id: "badges", label: "Træningsplan", icon: "fa-route" },
             { id: "stages", label: "Etaper", icon: "fa-list-check" },
             { id: "playlist", label: "Musik", icon: "fa-music" },
             { id: "injury", label: "Skader", icon: "fa-kit-medical" },
@@ -735,16 +740,18 @@ export const caminoContent: any = {
             { km: 153, elev: 390 }, { km: 282, elev: 860 }, { km: 468, elev: 830 }, { km: 540, elev: 1505 },
             { km: 603, elev: 1300 }, { km: 651, elev: 450 }, { km: 800, elev: 260 }
         ],
-        badgesTitle: "Milestones",
-        badgesSubtitle: "Earn badges on your preparation journey",
+        // See the Danish block: this was second-person copy for a state that
+        // never changed. Stated as the training plan it actually is.
+        badgesTitle: "Training plan",
+        badgesSubtitle: "The road to 500 km, in stages",
         badges: [
-            { icon: "🥾", title: "First Steps", desc: "Walk your first 10 km training hike", km: 10, unlocked: false },
-            { icon: "🏔️", title: "Half Century", desc: "50 km total training", km: 50, unlocked: false },
-            { icon: "💯", title: "100 km Club", desc: "Reach 100 km in preparation", km: 100, unlocked: false },
-            { icon: "👢", title: "Boots Broken In", desc: "200 km with your hiking boots", km: 200, unlocked: false },
-            { icon: "⭐", title: "Halfway!", desc: "250 km of 500 km goal", km: 250, unlocked: false },
-            { icon: "🔥", title: "Meseta Ready", desc: "Walk 30 km in a single day", km: 350, unlocked: false },
-            { icon: "🏆", title: "Pilgrim Ready", desc: "500 km! You're ready for the Camino", km: 500, unlocked: false }
+            { icon: "🥾", title: "First Steps", desc: "The first 10 km training hike", km: 10 },
+            { icon: "🏔️", title: "Half Century", desc: "50 km of training in total", km: 50 },
+            { icon: "💯", title: "100 km", desc: "100 km of preparation", km: 100 },
+            { icon: "👢", title: "Boots Broken In", desc: "200 km in the hiking boots", km: 200 },
+            { icon: "⭐", title: "Halfway", desc: "250 km of the 500 km goal", km: 250 },
+            { icon: "🔥", title: "Meseta Ready", desc: "30 km in a single day", km: 350 },
+            { icon: "🏆", title: "Pilgrim Ready", desc: "500 km — ready for the Camino", km: 500 }
         ],
         stagesTitle: "Stage Plan (33 Days)",
         stagesSubtitle: "Day-by-day plan for the Camino Francés – approx. 24 km/day",
@@ -867,7 +874,7 @@ export const caminoContent: any = {
             { id: "elevation", label: "Elevation", icon: "fa-chart-area" },
             { id: "food", label: "Food", icon: "fa-utensils" },
             { id: "glossary", label: "Glossary", icon: "fa-book-bookmark" },
-            { id: "badges", label: "Badges", icon: "fa-trophy" },
+            { id: "badges", label: "Training plan", icon: "fa-route" },
             { id: "stages", label: "Stages", icon: "fa-list-check" },
             { id: "playlist", label: "Music", icon: "fa-music" },
             { id: "injury", label: "Injury", icon: "fa-kit-medical" },

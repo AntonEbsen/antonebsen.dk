@@ -525,9 +525,9 @@ const others = cv.courses?.filter(c => !c.level) || [];
     }
   }
 
-  // Initialize on load and on view transitions
+  // No View Transitions router on this site, so the 'astro:after-swap'
+  // registrations that sat beside these calls never fired.
     setupFilters();
-    document.addEventListener('astro:after-swap', setupFilters);
 
     function setupTimelineReveal() {
         const steps = document.querySelectorAll('.timeline-step');
@@ -543,7 +543,6 @@ const others = cv.courses?.filter(c => !c.level) || [];
     }
 
     setupTimelineReveal();
-    document.addEventListener('astro:after-swap', setupTimelineReveal);
    // 4. Skill-Linked Navigation Logic
    const skillTags = document.querySelectorAll('.skill-tag');
    let activeSkill = null;

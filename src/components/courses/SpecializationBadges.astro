@@ -68,7 +68,16 @@ const achievements = specializations.map(spec => {
 }).filter(a => a.isUnlocked); // Only show unlocked badges
 ---
 
-<div class="flex flex-wrap gap-3 mt-6">
+{/*
+  The pills used to float bare under the hero paragraph, which made them read as
+  achievements. They are neither earned nor earnable — each is a fact derived
+  from the ECTS already on the transcript — so the group says what it is.
+*/}
+<h3 class="mt-6 mb-3 text-[10px] font-bold uppercase tracking-[0.18em] text-muted">
+  {isDa ? 'Specialiseringer, efter ECTS' : 'Specialisations, by ECTS'}
+</h3>
+
+<div class="flex flex-wrap gap-3">
   {achievements.map((badge, index) => (
     <div 
       class="badge-container group relative"
