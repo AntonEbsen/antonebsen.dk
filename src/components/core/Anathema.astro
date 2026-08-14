@@ -1,0 +1,116 @@
+---
+import { getLangFromUrl } from '@i18n/utils';
+import { getLedgerCopy } from '@i18n/ledger';
+
+/**
+ * The book curse.
+ *
+ * Manuscripts were expensive and portable, so scribes wrote anathemas against
+ * thieves into the front of them. Copy a decent chunk of text from this site and
+ * you get one.
+ *
+ * It does not block the copy, and it is not attributed to anyone. The famous
+ * "let it change into a serpent in his hand" curse is of disputed provenance,
+ * and this site has just had two invented footnote citations removed from it —
+ * putting an unsourceable quotation with a specific monastery and date back on
+ * would be a poor trade for a gag. The curse is written in the site's own voice
+ * and claims no author, which costs the joke nothing.
+ */
+
+const lang = getLangFromUrl(Astro.url);
+const { ui } = getLedgerCopy(lang);
+---
+
+<div id="anathema" class="hidden" role="status" aria-live="polite" data-scriptorium-exempt>
+  <div class="anathema__card">
+    <span class="anathema__rule" aria-hidden="true"></span>
+    <p class="anathema__curse">{ui.curse}</p>
+    <p class="anathema__footer">{ui.curseFooter}</p>
+    <span class="anathema__rule" aria-hidden="true"></span>
+  </div>
+</div>
+
+<script>
+  import { unlockAchievement } from '@lib/gamification';
+
+  const root = document.getElementById('anathema');
+
+  if (root) {
+    // Enough text that it reads as taking a passage, not checking a spelling.
+    const THRESHOLD = 200;
+    const HOLD_MS = 7000;
+    let timer: number | undefined;
+
+    document.addEventListener('copy', () => {
+      const selection = document.getSelection()?.toString() ?? '';
+      if (selection.trim().length < THRESHOLD) return;
+
+      // Deliberately does not touch the clipboard or preventDefault — the copy
+      // goes through untouched. This is a joke, not a lock.
+      root.classList.remove('hidden');
+      unlockAchievement('anathema');
+
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => root.classList.add('hidden'), HOLD_MS);
+    });
+
+    root.addEventListener('click', () => root.classList.add('hidden'));
+  }
+</script>
+
+<style>
+  #anathema {
+    position: fixed;
+    inset: 0;
+    z-index: 2200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(2px);
+  }
+
+  #anathema.hidden { display: none; }
+
+  .anathema__card {
+    max-width: 34rem;
+    padding: 2.25rem 2rem;
+    text-align: center;
+    background: rgb(var(--card-rgb));
+    border: 1px solid rgb(var(--accent-rgb) / 0.35);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    animation: anathema-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .anathema__rule {
+    display: block;
+    height: 1px;
+    background: rgb(var(--accent-rgb) / 0.4);
+  }
+
+  .anathema__curse {
+    margin: 1.25rem 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgb(var(--text-rgb));
+  }
+
+  .anathema__footer {
+    margin: 0 0 1.25rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: rgb(var(--text-muted-rgb));
+  }
+
+  @keyframes anathema-in {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anathema__card { animation: none; }
+  }
+</style>
