@@ -123,10 +123,10 @@ const publications: Publication[] = [
                 <p class="text-xs font-black uppercase tracking-[0.3em] text-accent mb-6 animate-in fade-in slide-in-from-bottom-2 duration-700">
                     {t.eyebrow}
                 </p>
-                <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+                <h1 class="text-5xl md:text-7xl font-bold mb-8 tracking-tighter animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
                     {t.heroTitle}
                 </h1>
-                <p class="text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+                <p class="text-xl text-muted leading-relaxed max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
                     {t.heroText}
                 </p>
             </div>
@@ -156,19 +156,19 @@ const publications: Publication[] = [
                                     <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
                                     {pub.type}
                                 </span>
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{pub.category}</span>
+                                <span class="text-[10px] font-bold text-muted uppercase tracking-widest">{pub.category}</span>
                             </div>
-                            <span class="text-xs font-bold text-slate-400 font-mono">{pub.date} EDITION</span>
+                            <span class="text-xs font-bold text-muted font-mono">{pub.date} EDITION</span>
                         </div>
 
                         <div class="mb-auto relative z-10">
-                            <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-accent transition-colors leading-tight">
+                            <h2 class="text-2xl font-bold text-text mb-3 group-hover:text-accent transition-colors leading-tight">
                                 {pub.title}
                             </h2>
-                            <p class="text-sm text-slate-400 font-serif italic mb-6">
+                            <p class="text-sm text-muted font-serif italic mb-6">
                                 {pub.subtitle}
                             </p>
-                            <p class="text-slate-300 text-[15px] leading-relaxed mb-8 line-clamp-3">
+                            <p class="text-dim text-[15px] leading-relaxed mb-8 line-clamp-3">
                                 {pub.description}
                             </p>
                         </div>
@@ -189,7 +189,7 @@ const publications: Publication[] = [
                                         <i class="fa-solid fa-file-pdf mr-2"></i> {t.download}
                                     </Button>
                                 ) : (
-                                    <span class="flex-grow text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                                    <span class="flex-grow text-xs font-bold uppercase tracking-widest text-muted flex items-center gap-2">
                                         <i class="fa-solid fa-clock" aria-hidden="true"></i> {t.unpublished}
                                     </span>
                                 )}

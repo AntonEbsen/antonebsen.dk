@@ -305,7 +305,7 @@ const homeUrl = lang === 'da' ? '/' : `/${lang}`;
 
     {t.categories.map(category => (
       <Section class="mb-8">
-        <h2 class="text-lg font-bold text-white mb-4">{category.title}</h2>
+        <h2 class="text-lg font-bold text-text mb-4">{category.title}</h2>
         <div class="category-grid">
           {category.items.map(item => (
             <a href={item.url} class="item-card">

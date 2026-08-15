@@ -62,7 +62,7 @@ const badges = [
         backdrop-filter: blur(10px);
         border-radius: 12px;
         padding: 12px;
-        border: 1px solid rgba(255,215,0,0.1);
+        border: 1px solid rgba(212, 121, 79,0.1);
         margin-bottom: 24px;
     }
 
@@ -176,7 +176,7 @@ const badges = [
     <!-- CONTROLS -->
     <div class="controls-sticky flex flex-col md:flex-row gap-4 justify-between items-center transition-all" id="controls">
         <div class="flex flex-wrap gap-2" id="filter-btns">
-            <button class="filter-btn active px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-yellow-500 text-black shadow-[0_0_10px_rgba(255,215,0,0.3)] hover:scale-105" data-filter="all">All</button>
+            <button class="filter-btn active px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-yellow-500 text-black shadow-[0_0_10px_rgba(212,121,79,0.3)] hover:scale-105" data-filter="all">All</button>
             <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="Python">Python</button>
             <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="MATLAB">MATLAB</button>
             <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white" data-filter="SAS">SAS</button>
@@ -296,11 +296,11 @@ const badges = [
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => {
-                b.classList.remove('bg-yellow-500', 'text-black', 'active', 'shadow-[0_0_10px_rgba(255,215,0,0.3)]');
+                b.classList.remove('bg-yellow-500', 'text-black', 'active', 'shadow-[0_0_10px_rgba(212,121,79,0.3)]');
                 b.classList.add('bg-gray-800', 'text-gray-400');
             });
             btn.classList.remove('bg-gray-800', 'text-gray-400');
-            btn.classList.add('bg-yellow-500', 'text-black', 'active', 'shadow-[0_0_10px_rgba(255,215,0,0.3)]');
+            btn.classList.add('bg-yellow-500', 'text-black', 'active', 'shadow-[0_0_10px_rgba(212,121,79,0.3)]');
             
             currentFilter = btn.getAttribute('data-filter') || 'all';
             filterItems();

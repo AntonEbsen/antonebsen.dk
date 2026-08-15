@@ -45,7 +45,7 @@ if (error) questions = [];
   <main class="max-w-4xl mx-auto px-4 py-12">
      <Section>
         <div class="text-center mb-16">
-            <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+            <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(212,121,79,0.3)]">
                 {content.hero.title}
             </h1>
             <p class="text-dim text-lg">
@@ -58,7 +58,7 @@ if (error) questions = [];
             <!-- LEFT COLUMN: WRITE -->
             <div>
                 <div class="sticky top-24">
-                    <div class="bg-gray-900/40 p-6 rounded-lg border border-gold-500/20 shadow-[0_0_20px_rgba(255,215,0,0.05)]">
+                    <div class="bg-gray-900/40 p-6 rounded-lg border border-gold-500/20 shadow-[0_0_20px_rgba(212,121,79,0.05)]">
                         <SectionHeading>{content.write.title}</SectionHeading>
                         <p class="text-sm text-dim mb-6">{content.write.text}</p>
                         
@@ -91,7 +91,7 @@ if (error) questions = [];
                     <div class="space-y-6">
                         {qaStatic.items.map(item => (
                             <div class="opacity-80 hover:opacity-100 transition-opacity">
-                                <h4 class="font-bold text-white mb-1"><i class="fa-solid fa-thumbtack text-gold-500 mr-2 text-xs"></i>{item.question}</h4>
+                                <h4 class="font-bold text-text mb-1"><i class="fa-solid fa-thumbtack text-gold-500 mr-2 text-xs"></i>{item.question}</h4>
                                 <p class="text-dim text-sm leading-relaxed pl-5 border-l-2 border-gray-800">{item.answer}</p>
                             </div>
                         ))}
@@ -104,7 +104,7 @@ if (error) questions = [];
                     <div class="space-y-8">
                         {questions?.map(q => (
                             <div class="group">
-                                <h4 class="font-bold text-white mb-2 text-lg">{q.question}</h4>
+                                <h4 class="font-bold text-text mb-2 text-lg">{q.question}</h4>
                                 <div class="flex items-center gap-2 mb-3 text-xs text-muted">
                                     <span class="bg-gray-800 px-1.5 rounded">{q.asker_name || content.read.anonymous}</span>
                                     <span>”¢</span>

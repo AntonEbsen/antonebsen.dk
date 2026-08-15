@@ -17,14 +17,14 @@ const isLoggedIn = verifySession(Astro.cookies.get("auth_token")?.value);
         <!-- LOGIN GATE -->
         { !isLoggedIn && (
         <div id="login-gate" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-4">
-             <div class="border border-yellow-500/30 bg-gray-900/90 p-8 rounded-lg shadow-[0_0_30px_rgba(255,215,0,0.1)] max-w-md w-full text-center">
+             <div class="border border-yellow-500/30 bg-gray-900/90 p-8 rounded-lg shadow-[0_0_30px_rgba(212,121,79,0.1)] max-w-md w-full text-center">
                 <h1 class="text-2xl font-bold mb-2 text-yellow-400">System Access</h1>
                 <p class="text-sm text-gray-400 mb-6">Restricted Area. Authorized Personnel Only.</p>
                 
                 <input type="password" id="password-input" placeholder="Enter Access Code" 
                     class="w-full bg-black border border-gray-700 rounded p-3 text-yellow-100 focus:border-yellow-500 focus:outline-none mb-4 transition-colors" />
                 
-                <button id="login-btn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 rounded transition-all hover:shadow-[0_0_15px_rgba(255,215,0,0.4)]">
+                <button id="login-btn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 rounded transition-all hover:shadow-[0_0_15px_rgba(212,121,79,0.4)]">
                     Unlock Dashboard
                 </button>
                 <p id="error-msg" class="text-red-500 text-xs mt-3 hidden">Access Denied.</p>

@@ -3,19 +3,19 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="The Reviewer | Documentation" description="Documentation for the AI Project Reviewer">
-    <main class="min-h-screen bg-slate-950 text-slate-200 selection:bg-accent/30 selection:text-white pt-24 pb-24">
+    <main class="min-h-screen bg-sunken text-text selection:bg-accent/30 selection:text-white pt-24 pb-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6">
             
             {/* Hero */}
             <div class="text-center mb-24">
-                <div class="w-20 h-20 bg-slate-900 rounded-3xl mx-auto mb-8 flex items-center justify-center border border-slate-800 shadow-2xl relative">
+                <div class="w-20 h-20 bg-bg rounded-3xl mx-auto mb-8 flex items-center justify-center border border-card shadow-2xl relative">
                     <div class="absolute inset-0 bg-green-500/10 blur-xl rounded-full animate-pulse"></div>
                     <i class="fa-solid fa-robot text-4xl text-green-400 relative z-10"></i>
                 </div>
-                <h1 class="text-4xl sm:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-500 mb-6 tracking-tight">
+                <h1 class="text-4xl sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-white via-text to-muted mb-6 tracking-tight">
                     Meet <span class="text-green-400">The Reviewer 3.0</span>
                 </h1>
-                <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                <p class="text-lg text-muted max-w-2xl mx-auto leading-relaxed">
                     A context-aware AI agent designed to defend, analyze, and explain the projects in this portfolio. It doesn't just chat—it interacts with the code, data, and visualizations.
                 </p>
             </div>
@@ -26,23 +26,23 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                 {/* Feature 1: Neural Link */}
                 <div class="group relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <div class="relative bg-slate-900/50 border border-slate-800 rounded-[32px] p-8 md:p-12 overflow-hidden">
+                    <div class="relative bg-bg/50 border border-card rounded-[32px] p-8 md:p-12 overflow-hidden">
                         <div class="flex flex-col md:flex-row gap-8 items-center">
                             <div class="flex-1 space-y-4">
                                 <div class="flex items-center gap-3 text-blue-400 mb-2">
                                     <i class="fa-solid fa-circle-nodes"></i>
                                     <span class="text-xs font-bold tracking-wider uppercase">Integration</span>
                                 </div>
-                                <h2 class="text-3xl font-bold text-white">The Neural Link</h2>
-                                <p class="text-slate-400 leading-relaxed">
+                                <h2 class="text-3xl font-bold text-text">The Neural Link</h2>
+                                <p class="text-muted leading-relaxed">
                                     The Reviewer is connected to the Knowledge Graph. When it explains a core concept, it can 
                                     <span class="text-blue-400 font-bold"> highlight and zoom</span> into relevant nodes in the visualization, showing you exactly how concepts connect.
                                 </p>
-                                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm font-mono text-slate-300 mt-4">
-                                    "Show me the core theory." <span class="text-slate-400">-> Highlights nodes</span>
+                                <div class="bg-sunken rounded-xl p-4 border border-card text-sm font-mono text-dim mt-4">
+                                    "Show me the core theory." <span class="text-muted">-> Highlights nodes</span>
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/2 aspect-video bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center relative overflow-hidden">
+                            <div class="w-full md:w-1/2 aspect-video bg-sunken rounded-2xl border border-card flex items-center justify-center relative overflow-hidden">
                                 <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
                                 <div class="w-32 h-32 rounded-full border border-blue-500/30 flex items-center justify-center relative">
                                     <div class="absolute inset-0 border border-blue-500/20 rounded-full animate-ping"></div>
@@ -56,26 +56,26 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                 {/* Feature 2: The Architect */}
                 <div class="group relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <div class="relative bg-slate-900/50 border border-slate-800 rounded-[32px] p-8 md:p-12 overflow-hidden">
+                    <div class="relative bg-bg/50 border border-card rounded-[32px] p-8 md:p-12 overflow-hidden">
                         <div class="flex flex-col md:flex-row-reverse gap-8 items-center">
                             <div class="flex-1 space-y-4">
                                 <div class="flex items-center gap-3 text-yellow-400 mb-2">
                                     <i class="fa-solid fa-code"></i>
                                     <span class="text-xs font-bold tracking-wider uppercase">Code Vault</span>
                                 </div>
-                                <h2 class="text-3xl font-bold text-white">The Architect</h2>
-                                <p class="text-slate-400 leading-relaxed">
+                                <h2 class="text-3xl font-bold text-text">The Architect</h2>
+                                <p class="text-muted leading-relaxed">
                                     Static code blocks are dead. Select any line of code in the 
                                     <span class="text-yellow-400 font-bold"> Interactive Code Vault</span>, 
                                     and the Reviewer will explain the logic, syntax, and architectural decisions behind it.
                                 </p>
-                                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm font-mono text-slate-300 mt-4">
+                                <div class="bg-sunken rounded-xl p-4 border border-card text-sm font-mono text-dim mt-4">
                                     Select code -> Click "Explain" -> Bot analyzes
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/2 aspect-video bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center p-8">
+                            <div class="w-full md:w-1/2 aspect-video bg-sunken rounded-2xl border border-card flex items-center justify-center p-8">
                                 <div class="w-full space-y-2 font-mono text-xs">
-                                    <div class="text-slate-400">// Select me</div>
+                                    <div class="text-muted">// Select me</div>
                                     <div class="bg-yellow-500/20 text-yellow-200 px-1 rounded w-fit">const magic = true;</div>
                                     <div class="text-purple-400">function <span class="text-blue-400">init</span>() {'{'}...{'}'}</div>
                                 </div>
@@ -87,23 +87,23 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                 {/* Feature 3: Critique Protocol */}
                 <div class="group relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-red-500/10 to-pink-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <div class="relative bg-slate-900/50 border border-slate-800 rounded-[32px] p-8 md:p-12 overflow-hidden">
+                    <div class="relative bg-bg/50 border border-card rounded-[32px] p-8 md:p-12 overflow-hidden">
                         <div class="flex flex-col md:flex-row gap-8 items-center">
                             <div class="flex-1 space-y-4">
                                 <div class="flex items-center gap-3 text-red-400 mb-2">
                                     <i class="fa-solid fa-gavel"></i>
                                     <span class="text-xs font-bold tracking-wider uppercase">Simulation</span>
                                 </div>
-                                <h2 class="text-3xl font-bold text-white">Critique Protocol</h2>
-                                <p class="text-slate-400 leading-relaxed">
+                                <h2 class="text-3xl font-bold text-text">Critique Protocol</h2>
+                                <p class="text-muted leading-relaxed">
                                     Most portfolio bots are too nice. Toggle <span class="text-red-400 font-bold">Critique Mode</span> 
                                     to simulate a rigorous academic defense. The bot will challenge methodologies, point out limitations, and demand proof.
                                 </p>
-                                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm font-mono text-slate-300 mt-4 border-l-4 border-l-red-500">
+                                <div class="bg-sunken rounded-xl p-4 border border-card text-sm font-mono text-dim mt-4 border-l-4 border-l-red-500">
                                     "Your assumption in eq. 3 is fragile because..."
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/2 aspect-video bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center relative">
+                            <div class="w-full md:w-1/2 aspect-video bg-sunken rounded-2xl border border-card flex items-center justify-center relative">
                                 <div class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center animate-pulse">
                                     <i class="fa-solid fa-shield-halved text-3xl text-red-500"></i>
                                 </div>
@@ -115,23 +115,23 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                  {/* Feature 4: The Bridge */}
                  <div class="group relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <div class="relative bg-slate-900/50 border border-slate-800 rounded-[32px] p-8 md:p-12 overflow-hidden">
+                    <div class="relative bg-bg/50 border border-card rounded-[32px] p-8 md:p-12 overflow-hidden">
                         <div class="flex flex-col md:flex-row-reverse gap-8 items-center">
                             <div class="flex-1 space-y-4">
                                 <div class="flex items-center gap-3 text-emerald-400 mb-2">
                                     <i class="fa-solid fa-database"></i>
                                     <span class="text-xs font-bold tracking-wider uppercase">DuckDB Bridge</span>
                                 </div>
-                                <h2 class="text-3xl font-bold text-white">The Bridge</h2>
-                                <p class="text-slate-400 leading-relaxed">
+                                <h2 class="text-3xl font-bold text-text">The Bridge</h2>
+                                <p class="text-muted leading-relaxed">
                                     Don't trust the text? Ask for data. The Reviewer writes <span class="text-emerald-400 font-bold">Live SQL</span> 
                                     queries to the in-browser DuckDB instance, verifying its claims with raw numbers in the Data Playground.
                                 </p>
-                                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm font-mono text-slate-300 mt-4">
+                                <div class="bg-sunken rounded-xl p-4 border border-card text-sm font-mono text-dim mt-4">
                                     "SELECT * FROM main_data LIMIT 5"
                                 </div>
                             </div>
-                             <div class="w-full md:w-1/2 aspect-video bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center relative">
+                             <div class="w-full md:w-1/2 aspect-video bg-sunken rounded-2xl border border-card flex items-center justify-center relative">
                                 <div class="grid grid-cols-3 gap-2 opacity-50">
                                     <div class="w-8 h-8 border border-emerald-500/30 rounded"></div>
                                     <div class="w-8 h-8 border border-emerald-500/30 rounded"></div>
@@ -147,23 +147,23 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 
                 {/* Feature 5: The Simulator & Orator */}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-slate-900/50 border border-slate-800 rounded-[32px] p-8">
+                    <div class="bg-bg/50 border border-card rounded-[32px] p-8">
                         <div class="flex items-center gap-3 text-purple-400 mb-4">
                             <i class="fa-solid fa-dice"></i>
                             <span class="text-xs font-bold tracking-wider uppercase">The Simulator</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">"What If?" Analysis</h3>
-                        <p class="text-slate-400 text-sm">
+                        <h3 class="text-xl font-bold text-text mb-2">"What If?" Analysis</h3>
+                        <p class="text-muted text-sm">
                             Ask hypothetical questions like "What if interest rates doubled?". The bot generates SQL <span class="text-purple-400 font-mono">UPDATE</span> statements to modify the simulation data in real-time.
                         </p>
                     </div>
-                     <div class="bg-slate-900/50 border border-slate-800 rounded-[32px] p-8">
+                     <div class="bg-bg/50 border border-card rounded-[32px] p-8">
                         <div class="flex items-center gap-3 text-pink-400 mb-4">
                             <i class="fa-solid fa-microphone-lines"></i>
                             <span class="text-xs font-bold tracking-wider uppercase">The Orator</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Voice Interface</h3>
-                        <p class="text-slate-400 text-sm">
+                        <h3 class="text-xl font-bold text-text mb-2">Voice Interface</h3>
+                        <p class="text-muted text-sm">
                             Experience a natural conversation. Use the <span class="text-pink-400 font-bold">Microphone</span> to ask questions verbally, and the bot responds with voice output.
                         </p>
                     </div>
@@ -172,23 +172,23 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                 {/* Feature 6: Career Intelligence */}
                  <div class="group relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-teal-500/10 to-cyan-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <div class="relative bg-slate-900/50 border border-slate-800 rounded-[32px] p-8 md:p-12 overflow-hidden">
+                    <div class="relative bg-bg/50 border border-card rounded-[32px] p-8 md:p-12 overflow-hidden">
                         <div class="flex flex-col md:flex-row gap-8 items-center">
                             <div class="flex-1 space-y-4">
                                 <div class="flex items-center gap-3 text-teal-400 mb-2">
                                     <i class="fa-solid fa-briefcase"></i>
                                     <span class="text-xs font-bold tracking-wider uppercase">The Recruiter</span>
                                 </div>
-                                <h2 class="text-3xl font-bold text-white">Career Intelligence</h2>
-                                <p class="text-slate-400 leading-relaxed">
+                                <h2 class="text-3xl font-bold text-text">Career Intelligence</h2>
+                                <p class="text-muted leading-relaxed">
                                     Paste a <strong>Job Description</strong>, and the Recruiter Agent will analyze the gap between your requirements and this portfolio to generate a custom pitch.
                                     Need a diagram? Just ask "The Artist" to <span class="text-teal-400 font-bold">draw the architecture</span>.
                                 </p>
-                                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm font-mono text-slate-300 mt-4">
+                                <div class="bg-sunken rounded-xl p-4 border border-card text-sm font-mono text-dim mt-4">
                                     "Draw the system logic" -> Renders Mermaid Diagram
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/2 aspect-video bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-center relative">
+                            <div class="w-full md:w-1/2 aspect-video bg-sunken rounded-2xl border border-card flex items-center justify-center relative">
                                 <div class="w-16 h-16 bg-teal-500/10 rounded-full flex items-center justify-center animate-bounce">
                                     <i class="fa-solid fa-wand-magic-sparkles text-2xl text-teal-500"></i>
                                 </div>
@@ -201,7 +201,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 
             {/* Footer */}
             <div class="mt-24 text-center">
-                <a href="/projects" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+                <a href="/projects" class="inline-flex items-center gap-2 text-muted hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-left"></i>
                     Back to Projects
                 </a>

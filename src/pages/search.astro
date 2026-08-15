@@ -44,7 +44,7 @@ const t = {
     <div class="container mx-auto px-6 relative z-10 max-w-4xl">
       <!-- Header -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">{t.title}</h1>
+        <h1 class="text-4xl md:text-5xl mb-4 tracking-tight">{t.title}</h1>
         <p class="text-lg text-dim">{t.subtitle}</p>
       </div>
 
@@ -177,7 +177,7 @@ const t = {
                                 ${(r.tags || []).slice(0, 3).map(t => `<span class="px-2 py-0.5 rounded-full text-[10px] bg-white/5 text-dim border border-white/5">#${t}</span>`).join('')}
                              </div>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors">${r.title}</h3>
+                        <h3 class="text-xl font-bold text-text mb-2 group-hover:text-gold-400 transition-colors">${r.title}</h3>
                         <p class="text-dim/80 leading-relaxed font-light">${r.content ? r.content.substring(0, 200) + '...' : ''}</p>
                     </div>
                     <div class="hidden md:flex self-center w-10 h-10 rounded-full bg-white/5 items-center justify-center text-muted group-hover:bg-gold-500 group-hover:text-black transition-all transform group-hover:translate-x-2">

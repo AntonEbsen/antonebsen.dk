@@ -77,14 +77,14 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
         if (node.group === 1) return '#D4794F'; // Gold (Thesis/Project)
         if (node.group === 2) return '#60a5fa'; // Blue (Primary Sources)
         if (node.group === 3) return '#10b981'; // Green (Secondary/Method)
-        return '#94a3b8'; // Slate (Context)
+        return '#8E938B'; // Stone (context nodes)
     };
 
     return (
         <div ref={containerRef} className="relative w-full h-full bg-black overflow-hidden rounded-3xl border border-white/10 shadow-2xl" style={{ minHeight: height }}>
             <div className="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur px-4 py-2 rounded-lg border border-white/10 pointer-events-none">
                 <h3 className="text-amber-400 font-bold text-xs uppercase tracking-widest">Citation Galaxy</h3>
-                <p className="text-[10px] text-slate-400">Interactive 3D Network</p>
+                <p className="text-[10px] text-muted">Interactive 3D Network</p>
             </div>
 
             {isMounted && (

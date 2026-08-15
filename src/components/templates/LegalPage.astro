@@ -46,7 +46,7 @@ const {
   <main class="max-w-[1100px] mx-auto px-5 pt-32 pb-24">
     <header class="mb-10">
       <p class="text-accent text-[11px] font-extrabold uppercase tracking-[0.2em] mb-3">{eyebrow}</p>
-      <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">{heading}</h1>
+      <h1 class="text-4xl md:text-5xl tracking-tight mb-4">{heading}</h1>
       <p class="text-dim text-lg max-w-2xl leading-relaxed">{lead}</p>
       <p class="text-sm text-dim/70 mt-4">{updated}</p>
     </header>
@@ -56,7 +56,7 @@ const {
         class="lg:sticky lg:top-28 bg-[var(--glass)] border border-[var(--glass-border)] rounded-2xl p-5"
         aria-label={tocLabel}
       >
-        <h2 class="text-[11px] uppercase tracking-[0.2em] font-extrabold text-accent mb-3">{tocLabel}</h2>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] text-accent mb-3">{tocLabel}</h2>
         <nav class="flex flex-col gap-2 text-sm">
           {sections.map((s) => (
             <a href={`#${s.id}`} class="text-dim hover:text-white transition-colors">{s.heading}</a>
@@ -75,7 +75,7 @@ const {
 
         {related.length > 0 && (
           <div class="mt-10 pt-6 border-t border-[var(--glass-border)]">
-            {relatedLabel && <h2 class="text-sm uppercase tracking-widest font-extrabold text-accent mb-4">{relatedLabel}</h2>}
+            {relatedLabel && <h2 class="text-sm uppercase tracking-widest text-accent mb-4">{relatedLabel}</h2>}
             <div class="flex flex-wrap gap-3">
               {related.map((r) => (
                 <a
