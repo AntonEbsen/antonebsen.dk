@@ -17,6 +17,23 @@ const { title, description, lang } = Astro.props;
     <slot />
   </div>
 
+  {/*
+    The Compostela is only issued once the whole way has been walked, so the
+    stage is registered here rather than in each of the four page templates —
+    all of them come through this layout, in both languages.
+  */}
+  <script>
+    import { checkCompostelaAchievement } from '@lib/gamification';
+
+    const STAGES = ['way', 'route', 'prep', 'culture'];
+
+    // Strip the language prefix: /en/camino/prep and /camino/prep are one stage.
+    const path = location.pathname.replace(/^\/(en|de)(?=\/|$)/, '').replace(/\/$/, '');
+    const stage = path === '/camino' ? 'way' : path.slice('/camino/'.length);
+
+    if (STAGES.includes(stage)) checkCompostelaAchievement(stage);
+  </script>
+
   <style is:global>
     /* Premium Camino Theme Overrides */
     :root {

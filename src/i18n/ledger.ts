@@ -70,13 +70,23 @@ export interface LedgerCopy {
 
         /** Sortes: the random-page action in the command palette. */
         sortes: string;
+
+        /**
+         * Discharging the account — the one control here that destroys data, so
+         * the prompt names what is lost rather than being coy about it.
+         * `dischargePrompt` carries {entries} and {marks} placeholders.
+         */
+        discharge: string;
+        dischargePrompt: string;
+        dischargeConfirm: string;
+        dischargeCancel: string;
     };
     /**
-     * Craft-guild progression topped by two crown offices, lowest first.
-     * Index = rank - 1. A fixed tuple so a missing rank is a compile error;
-     * ledger.test.ts separately checks the length against RANK_THRESHOLDS.
+     * Craft-guild progression topped by two crown offices and the historiographer,
+     * lowest first. Index = rank - 1. A fixed tuple so a missing rank is a compile
+     * error; ledger.test.ts separately checks the length against RANK_THRESHOLDS.
      */
-    ranks: readonly [string, string, string, string, string, string, string, string];
+    ranks: readonly [string, string, string, string, string, string, string, string, string];
     entries: Record<string, LedgerEntryCopy>;
 }
 
@@ -105,11 +115,17 @@ export const ledgerCopy: Record<LedgerLang, LedgerCopy> = {
             scriptoriumExit: 'Tilbage til latinsk skrift',
             markPassage: 'Sæt en hånd i marginen her',
             unmarkPassage: 'Fjern hånden i marginen',
-            sortes: 'Slå op på må og få'
+            sortes: 'Slå op på må og få',
+            discharge: 'Kvittér regnskabet',
+            dischargePrompt: 'Dette sletter {entries} indførsler og {marks} mark. Bogen kan ikke føres tilbage.',
+            dischargeConfirm: 'Ja, luk bogen',
+            dischargeCancel: 'Fortryd'
         },
         // Lærling → Svend → Mester → Oldermand is the actual laugsvæsen ladder;
-        // Rentemester and Rigshofmester were real Danish crown offices.
-        ranks: ['Lærling', 'Svend', 'Mester', 'Oldermand', 'Møntmester', 'Rentemester', 'Rigshofmester', 'Rigsarkivar'],
+        // Rentemester og Rigshofmester were real Danish crown offices, and
+        // Kongelig Historiograf was a real royal appointment — the one who wrote
+        // the history the archive was kept for.
+        ranks: ['Lærling', 'Svend', 'Mester', 'Oldermand', 'Møntmester', 'Rentemester', 'Rigshofmester', 'Rigsarkivar', 'Kongelig Historiograf'],
         entries: {
             explorer:         { title: 'Skelgangen',              description: 'Gik skellet af: fem sider af godset opmålt.' },
             scholar:          { title: 'Lectio',                  description: 'Sad med én post i to minutter. Læste, ikke skimmede.' },
@@ -135,18 +151,30 @@ export const ledgerCopy: Record<LedgerLang, LedgerCopy> = {
             gloss:            { title: 'Glossen',                 description: 'Bad om en note til en enkelt linje i protokollen.' },
             visitation:       { title: 'Visitatsen',              description: 'Åbnede robusthedsprøven. Efterså regnskabet.' },
             explicit:         { title: 'Explicit',                description: 'Læste et stykke til sidste linje. Det ord skrev skriverne til slut.' },
+            quire:            { title: 'Lægget',                  description: 'Læste et værk igennem i alle dets dele. Et læg er, hvad de foldede blade udgør, før de bindes ind.' },
+            collatio:         { title: 'Kollationen',             description: 'Lagde to afskrifter af samme tekst ved siden af hinanden, som en korrektor gør.' },
+            auscultatio:      { title: 'Auskultationen',          description: 'Fik teksten læst højt og prøvede den med øret, som en kancelliskriver ville.' },
+            vacat:            { title: 'Vacat',                   description: 'Læste de folier, der er streget ud. De hører også med til regnskabet.' },
             assize:           { title: 'Taksten',                 description: 'Satte satsen og så, hvad den kostede.' },
             variorum:         { title: 'Variorum',                description: 'Valgte én specifikation ud af fireogtres.' },
             stemma:           { title: 'Stemmaet',                description: 'Fulgte én tråd i vævet tilbage til dens udspring.' },
+            contra:           { title: 'Modposten',               description: 'Fandt den samme koefficient på begge sider af nul. Samme model, samme lande — kun perioden er en anden.' },
             attestation:      { title: 'Vitterligheden',          description: 'Satte sin hånd på brevet. Et brev er kun så godt som sine vidner.' },
             petition:         { title: 'Bønskriftet',             description: 'Stillede et spørgsmål i åbenhed og afventede svar.' },
             watermark:        { title: 'Vandmærket',              description: 'Holdt siden op mod lyset og fandt mærket.' },
             pilgrims_burden:  { title: 'Pilgrimsbyrden',          description: 'Fik oppakningen under en tiendedel af sin egen vægt.' },
+            compostela:       { title: 'Compostelaen',            description: 'Gik alle fire etaper af vejen. Beviset gives først til sidst.' },
 
             sortetryk:        { title: 'Sortetrykket',            description: 'Satte siden med fraktur, som danske bogtrykkere gjorde til op i 1870erne.' },
             anathema:         { title: 'Anathema',                description: 'Bar ordene bort uden deres kilde, og blev forbandet for det.' },
             manicule:         { title: 'Håndviseren',             description: 'Satte en hånd i marginen ud for et sted, der var værd at vende tilbage til.' },
             sortes:           { title: 'Sortes',                  description: 'Slog bogen op på må og få og læste, hvad der stod.' },
+            quietus:          { title: 'Quietus',                 description: 'Lukkede regnskabet og fik det kvitteret. Bogen begynder forfra med én linje allerede skrevet.' },
+
+            lectio_difficilior: { title: 'Lectio difficilior',    description: 'Læste et stykke til ende i fraktur. Den vanskeligere læsemåde er den rigtigste.' },
+            absolutio:        { title: 'Absolutionen',            description: 'Blev forbandet for at bære ordene bort, og kom tilbage efter henvisningen.' },
+            brought_forward:  { title: 'Overførslen',             description: 'Vendte tilbage til bogen efter en uge. Saldoen føres videre.' },
+
             apocryphon:       { title: 'Apokryfen',               description: 'Lagde mærke til, at regnskabet ikke gik op, og fandt det folio, bogen ikke ville vedkende sig.' }
         }
     },
@@ -175,9 +203,13 @@ export const ledgerCopy: Record<LedgerLang, LedgerCopy> = {
             scriptoriumExit: 'Back to Latin script',
             markPassage: 'Put a hand in the margin here',
             unmarkPassage: 'Remove the hand from the margin',
-            sortes: 'Open the book at random'
+            sortes: 'Open the book at random',
+            discharge: 'Discharge the account',
+            dischargePrompt: 'This erases {entries} entries and {marks} marks. The book cannot be written back.',
+            dischargeConfirm: 'Yes, close the book',
+            dischargeCancel: 'Cancel'
         },
-        ranks: ['Apprentice', 'Journeyman', 'Master', 'Alderman', 'Master of the Mint', 'Lord Treasurer', 'Chancellor of the Exchequer', 'Master of the Rolls'],
+        ranks: ['Apprentice', 'Journeyman', 'Master', 'Alderman', 'Master of the Mint', 'Lord Treasurer', 'Chancellor of the Exchequer', 'Master of the Rolls', 'Historiographer Royal'],
         entries: {
             explorer:         { title: 'The Perambulation',        description: 'Walked the bounds: five pages of the estate surveyed.' },
             scholar:          { title: 'Lectio',                   description: 'Sat with one entry for two minutes. Reading, not skimming.' },
@@ -203,18 +235,30 @@ export const ledgerCopy: Record<LedgerLang, LedgerCopy> = {
             gloss:            { title: 'The Gloss',                description: 'Asked for a note on a single line of the record.' },
             visitation:       { title: 'The Visitation',           description: 'Opened the robustness check. Inspected the accounts.' },
             explicit:         { title: 'The Explicit',             description: 'Read a piece to its last line. Scribes wrote that word at the end.' },
+            quire:            { title: 'The Quire',                description: 'Read a work through in all its parts. A quire is what the folded leaves make before they are bound.' },
+            collatio:         { title: 'The Collation',            description: 'Set two copies of one text side by side, as a corrector does.' },
+            auscultatio:      { title: 'Auscultation',             description: 'Had the text read aloud and checked it by ear, as a chancery clerk would.' },
+            vacat:            { title: 'Vacat',                    description: 'Read the folios marked void. They are part of the account too.' },
             assize:           { title: 'The Assize',               description: 'Set the rate and watched what it cost.' },
             variorum:         { title: 'The Variorum',             description: 'Picked one specification out of sixty-four.' },
             stemma:           { title: 'The Stemma',               description: 'Traced one thread of the web back to its source.' },
+            contra:           { title: 'The Contra Entry',         description: 'Found the same coefficient on both sides of zero. Same model, same countries; only the period differs.' },
             attestation:      { title: 'The Attestation',          description: 'Set a hand to the charter. A charter is only as good as its witnesses.' },
             petition:         { title: 'The Petition',             description: 'Put a question in the open, and waited on an answer.' },
             watermark:        { title: 'The Watermark',            description: 'Held the page to the light and found the mark.' },
             pilgrims_burden:  { title: "The Pilgrim's Burden",     description: 'Got the pack under a tenth of your own weight.' },
+            compostela:       { title: 'The Compostela',           description: 'Walked all four stages of the way. The certificate is only given at the end.' },
 
             sortetryk:        { title: 'The Black Letter',         description: 'Set the page in Fraktur, as Danish printers did into the 1870s.' },
             anathema:         { title: 'Anathema',                 description: 'Carried the words away without their source, and was cursed for it.' },
             manicule:         { title: 'The Manicule',             description: 'Put a hand in the margin beside something worth returning to.' },
             sortes:           { title: 'Sortes',                   description: 'Opened the book at random and read whatever was there.' },
+            quietus:          { title: 'Quietus Est',              description: 'Closed the account and had it discharged. The book begins again with one line already in it.' },
+
+            lectio_difficilior: { title: 'Lectio Difficilior',     description: 'Read a piece to its end in blackletter. The harder reading is the truer one.' },
+            absolutio:        { title: 'The Absolution',           description: 'Was cursed for carrying the words off, and came back for the reference.' },
+            brought_forward:  { title: 'Brought Forward',          description: 'Came back to the book after a week away. The balance carries over.' },
+
             apocryphon:       { title: 'The Apocryphon',           description: 'Noticed the account did not balance, and found the folio the book would not admit to.' }
         }
     },
@@ -243,11 +287,16 @@ export const ledgerCopy: Record<LedgerLang, LedgerCopy> = {
             scriptoriumExit: 'Zurück zur lateinischen Schrift',
             markPassage: 'Eine Hand an den Rand setzen',
             unmarkPassage: 'Die Hand vom Rand entfernen',
-            sortes: 'Das Buch aufs Geratewohl aufschlagen'
+            sortes: 'Das Buch aufs Geratewohl aufschlagen',
+            discharge: 'Die Rechnung quittieren',
+            dischargePrompt: 'Dies löscht {entries} Einträge und {marks} Mark. Das Buch lässt sich nicht zurückschreiben.',
+            dischargeConfirm: 'Ja, das Buch schließen',
+            dischargeCancel: 'Abbrechen'
         },
         // Reichsschatzmeister rather than Reichshofmeister: a treasury office,
-        // parallel to the English, not a court one.
-        ranks: ['Lehrling', 'Geselle', 'Meister', 'Ältermann', 'Münzmeister', 'Rentmeister', 'Reichsschatzmeister', 'Reichsarchivar'],
+        // parallel to the English, not a court one. Hofhistoriograph was a real
+        // appointment at the imperial court, and closes the ladder the same way.
+        ranks: ['Lehrling', 'Geselle', 'Meister', 'Ältermann', 'Münzmeister', 'Rentmeister', 'Reichsschatzmeister', 'Reichsarchivar', 'Hofhistoriograph'],
         entries: {
             explorer:         { title: 'Der Grenzumgang',           description: 'Ging die Grenze ab: fünf Seiten des Guts vermessen.' },
             scholar:          { title: 'Lectio',                    description: 'Zwei Minuten bei einem Eintrag geblieben. Gelesen, nicht überflogen.' },
@@ -273,18 +322,30 @@ export const ledgerCopy: Record<LedgerLang, LedgerCopy> = {
             gloss:            { title: 'Die Glosse',               description: 'Um eine Anmerkung zu einer einzelnen Zeile gebeten.' },
             visitation:       { title: 'Die Visitation',           description: 'Die Robustheitsprüfung geöffnet. Die Rechnung nachgesehen.' },
             explicit:         { title: 'Explicit',                 description: 'Ein Stück bis zur letzten Zeile gelesen. Das Wort schrieben Schreiber ans Ende.' },
+            quire:            { title: 'Die Lage',                 description: 'Ein Werk in allen seinen Teilen durchgelesen. Eine Lage ist, was die gefalteten Blätter ergeben, bevor sie gebunden werden.' },
+            collatio:         { title: 'Die Kollation',            description: 'Zwei Abschriften desselben Textes nebeneinandergelegt, wie es ein Korrektor tut.' },
+            auscultatio:      { title: 'Die Auskultation',         description: 'Den Text vorlesen lassen und ihn nach Gehör geprüft, wie es ein Kanzleischreiber täte.' },
+            vacat:            { title: 'Vacat',                    description: 'Die gestrichenen Folien gelesen. Auch sie gehören zur Rechnung.' },
             assize:           { title: 'Die Taxe',                 description: 'Den Satz festgelegt und gesehen, was er kostet.' },
             variorum:         { title: 'Das Variorum',             description: 'Eine Spezifikation aus vierundsechzig ausgewählt.' },
             stemma:           { title: 'Das Stemma',               description: 'Einen Faden des Netzes bis zu seinem Ursprung verfolgt.' },
+            contra:           { title: 'Die Gegenbuchung',         description: 'Denselben Koeffizienten auf beiden Seiten der Null gefunden. Dasselbe Modell, dieselben Länder — nur der Zeitraum ist ein anderer.' },
             attestation:      { title: 'Die Zeugenschaft',         description: 'Die Hand an die Urkunde gelegt. Eine Urkunde taugt nur so viel wie ihre Zeugen.' },
             petition:         { title: 'Die Bittschrift',          description: 'Eine Frage öffentlich gestellt und auf Antwort gewartet.' },
             watermark:        { title: 'Das Wasserzeichen',        description: 'Die Seite gegen das Licht gehalten und das Zeichen gefunden.' },
             pilgrims_burden:  { title: 'Die Pilgerlast',           description: 'Das Gepäck unter ein Zehntel des eigenen Gewichts gebracht.' },
+            compostela:       { title: 'Die Compostela',           description: 'Alle vier Etappen des Weges gegangen. Die Urkunde gibt es erst am Ende.' },
 
             sortetryk:        { title: 'Der Fraktursatz',          description: 'Die Seite in Fraktur gesetzt, wie es dänische Drucker bis in die 1870er taten.' },
             anathema:         { title: 'Anathema',                 description: 'Die Worte ohne ihre Quelle davongetragen und dafür verflucht worden.' },
             manicule:         { title: 'Die Hand',                 description: 'Eine Hand an den Rand gesetzt, neben eine Stelle, die eine Rückkehr wert ist.' },
             sortes:           { title: 'Sortes',                   description: 'Das Buch aufs Geratewohl aufgeschlagen und gelesen, was dort stand.' },
+            quietus:          { title: 'Quietus',                  description: 'Die Rechnung geschlossen und quittieren lassen. Das Buch beginnt von neuem, mit einer Zeile bereits darin.' },
+
+            lectio_difficilior: { title: 'Lectio difficilior',     description: 'Ein Stück in Fraktur zu Ende gelesen. Die schwierigere Lesart ist die richtigere.' },
+            absolutio:        { title: 'Die Absolution',           description: 'Wurde verflucht, weil er die Worte davontrug, und kam für den Nachweis zurück.' },
+            brought_forward:  { title: 'Der Übertrag',             description: 'Nach einer Woche zum Buch zurückgekehrt. Der Saldo wird übertragen.' },
+
             apocryphon:       { title: 'Das Apokryphon',           description: 'Bemerkt, dass die Rechnung nicht aufging, und das Folio gefunden, zu dem sich das Buch nicht bekannte.' }
         }
     }
