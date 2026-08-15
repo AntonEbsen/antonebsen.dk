@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 import { CHANNEL_URL } from '@lib/youtube';
 import { unlockAchievement } from '@lib/gamification';
 

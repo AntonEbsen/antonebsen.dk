@@ -29,7 +29,10 @@ const rings: string[] = [];
 for (let i = 0; i < RINGS; i++) {
   const base = 40 + i * 34;
   const pts: string[] = [];
-  const steps = 12;
+  // Was 12. The rings are drawn as straight segments between these points, so at
+  // 12 they are visibly heptagonal — fine behind a corner mask at 0.09 opacity,
+  // obvious once a field is anchored centre and scaled across a whole panel.
+  const steps = 48;
 
   for (let s = 0; s < steps; s++) {
     const angle = (s / steps) * Math.PI * 2;

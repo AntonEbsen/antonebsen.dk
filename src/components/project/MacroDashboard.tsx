@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 import {
     Chart as ChartJS,
     CategoryScale,

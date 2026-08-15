@@ -1,29 +1,55 @@
 ---
+/**
+ * The surface everything on this site sits on.
+ *
+ * Previously every card carried one shadow and one 16px radius, which is the
+ * main reason the page read as a single flat sheet — nothing was ever nearer or
+ * further away than anything else. Elevation and radius are choices now.
+ */
 interface Props {
   variant?: 'default' | 'glass' | 'gradient' | 'bordered';
+  /** 0 sits flat on the page, 1 rests on it, 2 lifts off it. */
+  elevation?: 0 | 1 | 2;
+  radius?: 'plate' | 'card' | 'panel';
+  /** Set false for cards that are not links or buttons — nothing that cannot be
+      activated should move under the cursor. */
+  interactive?: boolean;
   class?: string;
   [key: string]: any; // Accept arbitrary props styling
 }
 
-const { variant = 'default', class: className, ...rest } = Astro.props;
+const {
+  variant = 'default',
+  elevation = 1,
+  radius = 'card',
+  interactive = true,
+  class: className,
+  ...rest
+} = Astro.props;
 
 const variants = {
-  default: 'bg-[var(--card)]',
+  default: 'bg-[var(--card)] border border-rule',
   glass: 'bg-[var(--glass)] backdrop-blur-md border border-[var(--glass-border)]',
-  gradient: 'bg-[var(--depth-bg)]',
-  bordered: 'border border-[var(--glass-border)] bg-[rgba(17,24,39,0.02)]'
+  gradient: 'bg-[var(--depth-bg)] border border-rule',
+  // Was bg-[rgba(17,24,39,0.02)] — a near-black tint left over from when this
+  // site had a light theme. On a dark background it did nothing but sit there.
+  bordered: 'bg-transparent border border-rule',
 };
 
-const baseStyles = "rounded-[var(--radius)] p-6 shadow-[var(--shadow)] transition-transform duration-300 ease-out hover:-translate-y-1 hover:border-[var(--accent-soft)]";
+const elevations = ['shadow-none', 'shadow-1', 'shadow-2'];
+const radii = { plate: 'rounded-plate', card: 'rounded-card', panel: 'rounded-panel' };
+
+const base = 'p-6 transition-[transform,border-color,box-shadow] duration-300 ease-out';
+// Every variant carries a border now, so the accent hover finally has something
+// to change. It used to be set on all four while only two had a border to change.
+const hover = interactive
+  ? 'hover:-translate-y-0.5 hover:border-[var(--glass-border-hover)] hover:shadow-2'
+  : '';
 ---
 
-<div class:list={[baseStyles, variants[variant], className]} {...rest}>
+<div
+  class:list={[base, radii[radius], elevations[elevation], variants[variant], hover, className]}
+  {...rest}
+>
   <slot />
 </div>
-
-<style>
-  div {
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-  }
-</style>
-

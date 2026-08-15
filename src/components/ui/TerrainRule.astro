@@ -1,0 +1,109 @@
+---
+import type { ElevationSample } from '@lib/gpx';
+import { seedFrom } from '@lib/seed';
+
+/**
+ * A section divider drawn as an elevation profile.
+ *
+ * This began as ElevationRule: ornament made of Anton's own data, where the line
+ * between two sections of a hiking page is the shape of that hike. Nobody else
+ * can copy it, because it is the walk itself. That idea was too good to be
+ * stranded on three pages — which is where it stayed, because the component
+ * returned nothing at all without a GPX file, and almost nothing on the site has
+ * one.
+ *
+ * So: a real profile is still drawn when there is one, and a procedural ridge
+ * seeded from the caller's own string stands in when there is not. Deterministic
+ * sums of sines, no RNG — the same section gets the same ridge on every build.
+ */
+interface Props {
+  /** A real elevation profile. Preferred whenever the page has one. */
+  profile?: ElevationSample[];
+  /** Seeds the procedural fallback. Give it something page-specific. */
+  seed?: string;
+  class?: string;
+}
+
+const { profile, seed = 'terrain', class: className = '' } = Astro.props;
+
+const W = 1000;
+const H = 40;
+
+const real = profile && profile.length > 1;
+
+let points: { km: number; ele: number }[];
+
+if (real) {
+  points = profile!;
+} else {
+  // A ridge line: three sines at different frequencies, so it reads as terrain
+  // rather than as a wave. The seed shifts every phase, so two rules on one page
+  // are visibly different ranges.
+  const phase = seedFrom(seed);
+  const SAMPLES = 64;
+  points = Array.from({ length: SAMPLES }, (_, i) => {
+    const t = i / (SAMPLES - 1);
+    const ele =
+      Math.sin(t * Math.PI * 2 + phase) * 34 +
+      Math.sin(t * Math.PI * 5.3 + phase * 1.7) * 15 +
+      Math.sin(t * Math.PI * 11.1 + phase * 2.3) * 6;
+    return { km: t, ele };
+  });
+}
+
+const maxKm = points[points.length - 1].km || 1;
+const elevations = points.map((p) => p.ele);
+const min = Math.min(...elevations);
+const max = Math.max(...elevations);
+const span = max - min || 1;
+
+const pts = points.map((p) => {
+  const x = (p.km / maxKm) * W;
+  // Invert: higher ground sits higher on screen.
+  const y = H - ((p.ele - min) / span) * (H - 4) - 2;
+  return `${x.toFixed(1)},${y.toFixed(1)}`;
+});
+
+const path = `M${pts.join(' L')}`;
+const area = `${path} L${W},${H} L0,${H} Z`;
+
+// Two rules on one page must not share a gradient id.
+const gradientId = `terrain-rule-${Math.abs(Math.round(seedFrom(seed) * 1e6))}`;
+---
+
+<div class:list={['terrain-rule', className]} aria-hidden="true">
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" fill="none">
+    <defs>
+      <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--accent-2)" stop-opacity="0.22" />
+        <stop offset="100%" stop-color="var(--accent-2)" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <path d={area} fill={`url(#${gradientId})`} />
+    <path
+      d={path}
+      stroke="var(--accent-2)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+      vector-effect="non-scaling-stroke"
+      opacity="0.55"
+    />
+  </svg>
+</div>
+
+<style>
+  .terrain-rule {
+    width: 100%;
+    height: 40px;
+    margin: var(--space-lg) 0;
+    pointer-events: none;
+    /* Fade both ends so it reads as a rule across the page, not a chart. */
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .terrain-rule svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>

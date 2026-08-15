@@ -40,28 +40,49 @@
     }
 }
 
+/* === SCROLL REVEAL ===
+   This block used to read `opacity: 1 !important; transform: none !important`
+   under a comment saying DISABLED, while roughly every section of every
+   template carried .animate-on-scroll and a .delay-* class. The markup was
+   there the whole time with nothing behind it.
 
+   Deliberately small: 8px and 500ms. The point is that the page settles as you
+   arrive at it, not that anything flies in. BaseLayout observes these and adds
+   .in-view.
 
-/* Scroll Animation Utilities - DISABLED */
-.animate-on-scroll {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
+   The `.js-reveal` gate matters more than it looks. Hiding content by default
+   means every failure of the reveal script — JS disabled, a bundle error, an
+   environment where IntersectionObserver never fires because the page is not
+   compositing — leaves the entire page blank. Nothing is hidden until a script
+   in <head> has run and taken responsibility for showing it again. */
+.js-reveal .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+        opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
 }
 
-.animate-on-scroll.animate-ready {
-    opacity: 1 !important;
-    transform: none !important;
+.js-reveal .animate-on-scroll.in-view {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
 }
 
-.animate-on-scroll.in-view {
-    opacity: 1 !important;
-    transform: none !important;
-}
+.js-reveal .delay-100 { transition-delay: 80ms; }
+.js-reveal .delay-200 { transition-delay: 160ms; }
+.js-reveal .delay-300 { transition-delay: 240ms; }
 
-/* Stagger delays - disabled */
-.delay-100,
-.delay-200,
-.delay-300 {
-    transition-delay: 0ms !important;
+/* reset.css flattens every duration under prefers-reduced-motion, which would
+   leave these stranded at opacity 0 — the transition ends before it starts.
+   Show them outright instead. */
+@media (prefers-reduced-motion: reduce) {
+
+    .js-reveal .animate-on-scroll,
+    .js-reveal .animate-on-scroll.in-view {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }

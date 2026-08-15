@@ -1,21 +1,35 @@
 ---
+/**
+ * A page section, and the unit of vertical rhythm.
+ *
+ * This used to set `mb-14` in the class list AND `margin-bottom: 3.5rem` in a
+ * scoped <style>. Astro scoped styles compile to `section[data-astro-cid-…]`,
+ * which outranks a plain `.mb-24` utility — so every `mb-20` and `mb-24` passed
+ * in by a caller lost silently and every section on the site was 56px apart
+ * whatever the markup asked for. That is a good part of why the page reads as
+ * one undifferentiated scroll.
+ *
+ * Rhythm is now a prop with real steps, and a caller's own margin class still
+ * wins because nothing here has inflated specificity.
+ */
 interface Props {
+  /** Vertical space after the section. `none` hands spacing back to the caller. */
+  rhythm?: 'none' | 'tight' | 'default' | 'loose';
   class?: string;
   id?: string;
   [key: string]: any;
 }
 
-const { class: className, id, ...rest } = Astro.props;
+const { rhythm = 'default', class: className, id, ...rest } = Astro.props;
+
+const rhythms = {
+  none: '',
+  tight: 'mb-lg',
+  default: 'mb-2xl',
+  loose: 'mb-3xl',
+};
 ---
 
-<section id={id} class:list={["mb-14", className]} {...rest}>
+<section id={id} class:list={[rhythms[rhythm], className]} {...rest}>
   <slot />
 </section>
-
-<style>
-  section {
-    /* Ensure consistent vertical rhythm */
-    margin-bottom: 3.5rem; /* 56px */
-  }
-</style>
-

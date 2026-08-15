@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import createGlobe from "cobe";
 import { motion, AnimatePresence } from "framer-motion";
+import '@lib/reduced-motion';
 
 interface TravelNode {
   city: string;

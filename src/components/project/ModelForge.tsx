@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { motion } from 'framer-motion';
+import '@lib/reduced-motion';
 
 ChartJS.register(
     CategoryScale,

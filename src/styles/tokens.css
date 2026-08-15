@@ -1,0 +1,186 @@
+/* Terrain and archive.
+   Stone underfoot, paper for the record, terracotta for waymarks and clay,
+   moss for the Camino.
+
+   THIS IS THE ONLY DEFINITION OF THESE TOKENS.
+
+   BaseLayout.astro used to keep a hand-maintained copy of this block inline for
+   first paint, under a comment asking future editors to "keep the two in step".
+   They did not stay in step — --font-main had already diverged between them.
+   BaseLayout now inlines this exact file with `?raw`, so a copy cannot drift
+   from the original again.
+
+   Every colour pairing below is verified against WCAG AA (4.5:1). The first
+   terracotta tried, #C2673F, measured 4.46:1 and was rejected — close enough to
+   look fine and still fail. */
+:root {
+  /* ---- BACKGROUNDS ---------------------------------------------------- */
+  --bg: #17191A;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #23201D 0%, #17191A 60%);
+  --depth-bg: radial-gradient(circle at 60% -20%, #26221E 0%, #17191A 50%);
+  --card: #1E2122;
+  /* Ground below the page — the footer's floor. Was hardcoded as #101213 in
+     Footer.astro, which meant the darkest surface on the site was the one
+     colour no token knew about. */
+  --bg-sunken: #101213;
+
+  /* ---- TEXT ----------------------------------------------------------- */
+  --text: #E8E4DC;
+  /* Paper white — warm, not clinical. 13.9:1 on --bg */
+  --text-dim: #B8BCB5;
+  /* 9.2:1 on --bg, and still 5.1:1 at opacity-70 */
+  --text-muted: #8E938B;
+  /* 5.0:1 — reach for this instead of stacking opacity on --text-dim.
+     Compositing a dim colour against the background is what produced the
+     contrast failures the accessibility pass caught. */
+  --muted: rgba(184, 188, 181, 0.4);
+
+  /* ---- ACCENT: TERRACOTTA --------------------------------------------- */
+  --accent: #D4794F;
+  /* 5.6:1 on --bg, 5.1:1 on --card */
+  --accent-light: #E39068;
+  --accent-soft: rgba(212, 121, 79, 0.15);
+  --accent-glow: 0 0 25px rgba(212, 121, 79, 0.28);
+  /* Button.astro's primary hover has asked for --glow on every page of the site
+     since it was written, and nothing ever defined it, so the main call to
+     action had a dead hover state. Nine legacy stylesheets ask for it too. */
+  --glow: var(--accent-glow);
+
+  /* ---- SECONDARY: MOSS ------------------------------------------------ */
+  --accent-2: #6F9E7B;
+  /* 5.8:1 on --bg */
+  --accent-2-light: #8FBC9B;
+  --accent-2-soft: rgba(111, 158, 123, 0.15);
+
+  /* ---- COMPONENTS ----------------------------------------------------- */
+  --nav: rgba(23, 25, 26, 0.85);
+  --navHover: rgba(232, 228, 220, 0.06);
+
+  /* ---- GLASS / BORDERS ------------------------------------------------ */
+  --glass: rgba(30, 33, 34, 0.7);
+  --glass-border: rgba(232, 228, 220, 0.10);
+  --glass-border-hover: rgba(212, 121, 79, 0.5);
+
+  /* ---- RULES ----------------------------------------------------------
+     Hairlines. A survey map is mostly ruled lines, and the archival half of
+     this palette needs something finer than a card border to draw with. */
+  --rule: rgba(232, 228, 220, 0.08);
+  --rule-strong: rgba(232, 228, 220, 0.16);
+  --rule-accent: rgba(212, 121, 79, 0.32);
+
+  /* ---- CHANNEL FORMS --------------------------------------------------
+     The same colours as bare R G B values. Tailwind cannot apply an opacity
+     modifier to a colour it receives as the string `var(--accent)`: it has no
+     channels to inject the alpha into, so `bg-accent/20` silently produced no
+     CSS at all. There are ~414 such classes in the markup — bg-accent/10,
+     border-accent/30, text-dim/70 and friends — and none of them rendered
+     until this changed. tailwind.config.mjs reads these instead, as
+     `rgb(var(--accent-rgb) / <alpha-value>)`.
+
+     Keep each pair in step with the hex token above it. */
+  --bg-rgb: 23 25 26;
+  --bg-sunken-rgb: 16 18 19;
+  --card-rgb: 30 33 34;
+  --text-rgb: 232 228 220;
+  --text-dim-rgb: 184 188 181;
+  --text-muted-rgb: 142 147 139;
+  --accent-rgb: 212 121 79;
+  --accent-light-rgb: 227 144 104;
+  --accent-2-rgb: 111 158 123;
+  --accent-2-light-rgb: 143 188 155;
+
+  /* ---- ELEVATION ------------------------------------------------------
+     Three steps, not one. A single shadow on every surface is what made the
+     page read as one flat sheet with nowhere for the eye to rest. */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.30), 0 2px 8px -4px rgba(0, 0, 0, 0.36);
+  --shadow-2: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+  --shadow-3: 0 24px 70px -18px rgba(0, 0, 0, 0.72);
+  /* The original single token, preserved so existing shadow-[var(--shadow)]
+     usages keep rendering exactly what they rendered before. */
+  --shadow: var(--shadow-2);
+
+  /* ---- SHAPE ----------------------------------------------------------
+     Everything on the site was 16px. Corner radius is hierarchy too: small
+     controls want less, full-bleed panels want more. */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+  --radius: var(--radius-lg);
+
+  /* ---- SPACING --------------------------------------------------------
+     A 4px grid. There was no spacing scale at all before, which is why
+     section rhythm ran mb-14 / mb-20 / mb-24 with nothing choosing between
+     them. */
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 72px;
+  --space-3xl: 112px;
+
+  /* ---- MEASURE / CONTAINERS -------------------------------------------
+     Replaces fifteen different hand-picked max-widths (1300, 1200, 1100,
+     1024, 1000, 968, 950, 900, 868, 850, 800, 768, 720, 640) that had no
+     relationship to one another. */
+  --width-prose: 68ch;
+  --width-content: 1100px;
+  --width-wide: 1300px;
+
+  /* ---- LAYERS ---------------------------------------------------------
+     Was raw z-[1000] and z-[9999] in markup, competing by guesswork. */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-nav: 100;
+  --z-dropdown: 200;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+  --z-grain: 800;
+  --z-skip: 900;
+
+  /* ---- TYPOGRAPHY -----------------------------------------------------
+     'Inter Variable' and 'Fraunces Variable' are the family names fontsource
+     actually registers. The token used to say "Inter", which matches nothing
+     the browser was given, so the site downloaded the whole Inter variable
+     font on every page load and then rendered the system stack instead.
+     Naming the real family is what finally turns Inter on. */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --font-main: 'Inter Variable', var(--font-system);
+  /* Display face. Georgia leads the fallback because it is the metric-closest
+     serif already on most machines, which keeps the swap from shifting layout. */
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Fluid type scale. --h1-size and --h2-size are kept as aliases so the
+     existing reset.css rules and any markup referencing them are untouched. */
+  --step--1: clamp(13px, 0.35vw + 12px, 14px);
+  --step-0: clamp(16px, 0.25vw + 15px, 17px);
+  --step-1: clamp(18px, 0.5vw + 16px, 20px);
+  --step-2: clamp(21px, 0.9vw + 18px, 24px);
+  --step-3: clamp(24px, 1.6vw + 19px, 30px);
+  --step-4: clamp(28px, 4vw, 42px);
+  --step-5: clamp(34px, 5vw, 56px);
+  --step-6: clamp(48px, 6vw, 76px);
+  --h1-size: var(--step-6);
+  --h2-size: var(--step-4);
+
+  --body-size: 16px;
+  /* Long-form runs a step larger than UI text: 16px is thin for an essay. */
+  --reading-size: var(--step-0);
+  --lh-body: 1.7;
+  --lh-reading: 1.75;
+  /* reset.css has asked for --lh-heading since it was written; it was never
+     defined, so every heading inherited the 1.7 body leading. */
+  --lh-heading: 1.12;
+  --ls-heading: -0.02em;
+  /* Display type is set in Fraunces, which is narrower and more tightly fitted
+     than Inter — it wants less negative tracking, not more. */
+  --ls-display: -0.015em;
+  --ls-eyebrow: 0.14em;
+}

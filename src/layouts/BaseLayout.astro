@@ -11,11 +11,19 @@ import Scriptorium from '@components/core/Scriptorium.astro';
 import Anathema from '@components/core/Anathema.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import '@styles/styles.css';
+// After styles.css, not inside it. styles.css pulls in Tailwind's Preflight,
+// which resets headings to `font-size: inherit; font-weight: inherit`; anything
+// @imported into that file sits above Preflight in the cascade and loses.
+import '@styles/reset.css';
 import SpeedInsights from "@vercel/speed-insights/astro"
 // The /astro entry, not /react: the React one mounted a client:load island that
 // dragged React onto all ~196 pages (only ~10 have a genuine React island).
 import Analytics from "@vercel/analytics/astro"
-import '@fontsource-variable/inter';
+// Weight axis only, matching Fraunces below. The bare entry point also pulls the
+// optical-size axis and both italic families; nothing on the site varies Inter's
+// opsz, so that was download with no render.
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/inter/wght-italic.css';
 // Fraunces for display. 80 font-serif usages previously fell through to Tailwind's
 // default ui-serif stack and rendered as whatever Georgia/Times the OS supplied.
 // Weight axis only: SOFT/WONK/opsz would cost 264 KB across both styles against
@@ -23,6 +31,10 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/fraunces/wght.css';
 import '@fontsource-variable/fraunces/wght-italic.css';
 import 'katex/dist/katex.min.css';
+// Inlined verbatim below for first paint. Imported as a string rather than
+// retyped, because the hand-copied version that used to live in this file had
+// already drifted from the original.
+import tokens from '@styles/tokens.css?raw';
 
 interface Props {
   title: string;
@@ -44,101 +56,26 @@ const lang = getLangFromUrl(Astro.url);
 <html lang={lang}>
 <head>
   <!-- 1. CRITICAL CSS: Inline everything needed for first paint -->
+  <style is:inline set:html={tokens}></style>
   <style is:inline>
-    /* === CSS VARIABLES ===
-       Palette: terrain and archive. Stone underfoot, paper for the record,
-       terracotta for waymarks and clay, moss for the Camino.
-       Every pairing below is verified against WCAG AA (4.5:1) — the first
-       terracotta tried, #C2673F, measured 4.46:1 and was rejected. */
-    :root {
-      /* BACKGROUNDS — stone, not the boutique black this used to be */
-      --bg: #17191A;
-      --bg-gradient: radial-gradient(circle at 50% 0%, #23201D 0%, #17191A 60%);
-      --depth-bg: radial-gradient(circle at 60% -20%, #26221E 0%, #17191A 50%);
-      --card: #1E2122;
-
-      /* TEXT — paper white, warm rather than clinical */
-      --text: #E8E4DC;          /* 13.9:1 on --bg */
-      --text-dim: #B8BCB5;      /*  9.2:1 on --bg, still 5.1:1 at opacity-70 */
-      --text-muted: #8E938B;    /*  5.0:1 on --bg — use this instead of stacking
-                                    opacity on --text-dim, which is what caused
-                                    the contrast failures found in the a11y pass */
-      --muted: rgba(184, 188, 181, 0.4);
-
-      /* ACCENT: TERRACOTTA */
-      --accent: #D4794F;        /*  5.6:1 on --bg, 5.1:1 on --card */
-      --accent-light: #E39068;
-      --accent-soft: rgba(212, 121, 79, 0.15);
-      --accent-glow: 0 0 25px rgba(212, 121, 79, 0.28);
-
-      /* SECONDARY: MOSS — the Camino green, promoted to a real token */
-      --accent-2: #6F9E7B;      /*  5.8:1 on --bg */
-      --accent-2-light: #8FBC9B;
-      --accent-2-soft: rgba(111, 158, 123, 0.15);
-
-      /* COMPONENTS */
-      --nav: rgba(23, 25, 26, 0.85);
-      --navHover: rgba(232, 228, 220, 0.06);
-
-      /* GLASS / BORDERS */
-      --glass: rgba(30, 33, 34, 0.7);
-      --glass-border: rgba(232, 228, 220, 0.10);
-      --glass-border-hover: rgba(212, 121, 79, 0.5);
-
-      /* CHANNEL FORMS — the same colours as bare R G B values.
-         Tailwind cannot apply an opacity modifier to a colour it receives as the
-         string `var(--accent)`: it has no channels to inject the alpha into, so
-         `bg-accent/20` silently produced no CSS at all. There are ~414 such classes
-         in the markup — bg-accent/10, border-accent/30, text-dim/70 and friends —
-         and none of them has ever rendered. tailwind.config.mjs reads these instead,
-         as `rgb(var(--accent-rgb) / <alpha-value>)`.
-
-         Keep each pair in step with the hex token directly above it. */
-      --bg-rgb: 23 25 26;
-      --card-rgb: 30 33 34;
-      --text-rgb: 232 228 220;
-      --text-dim-rgb: 184 188 181;
-      --text-muted-rgb: 142 147 139;
-      --accent-rgb: 212 121 79;
-      --accent-light-rgb: 227 144 104;
-      --accent-2-rgb: 111 158 123;
-
-      --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
-      --radius: 16px;
-      
-      /* TYPOGRAPHY - System font stack for instant render, Inter loads progressively */
-      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-      /* Display face. Georgia leads the fallback because it is the metric-closest
-         serif already on most machines, which keeps the swap from shifting layout. */
-      --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
-      --h1-size: clamp(48px, 6vw, 76px);
-      --h2-size: clamp(28px, 4vw, 42px);
-      --body-size: 16px;
-      --lh-body: 1.7;
-      --ls-heading: -0.02em;
-    }
-    
-    /* Progressive enhancement: Use Inter when it loads */
-    body {
-      font-family: 'Inter', var(--font-main);
-    }
-    
-    /* === RESET & BASE STYLES === */
+    /* === RESET & BASE ===
+       First-paint subset only. src/styles/reset.css is the full version and
+       must agree with what is here, or type reflows when it arrives. */
     * { box-sizing: border-box; }
-    
+
     html, body {
       margin: 0;
       padding: 0;
       overflow-x: hidden;
     }
-    
+
     html {
       background-color: var(--bg);
       color: var(--text);
       font-family: var(--font-main);
       transition: none !important;
     }
-    
+
     body {
       font-family: var(--font-main);
       font-size: var(--body-size);
@@ -151,25 +88,34 @@ const lang = getLangFromUrl(Astro.url);
       min-height: 100vh;
       position: relative;
     }
-    
+
     a {
       color: var(--accent);
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: color 0.25s ease, opacity 0.25s ease;
     }
-    
+
     img {
       max-width: 100%;
       height: auto;
       display: block;
     }
-    
+
+    /* Display type is Fraunces. It was loaded on every page and used on none of
+       the pages people actually visit — the homepage set every heading in the
+       UI face at weight 800. */
     h1, h2, h3 {
       color: var(--text);
       margin: 0 0 0.5em;
-      font-weight: 800;
+      font-family: var(--font-display);
+      line-height: var(--lh-heading);
+      letter-spacing: var(--ls-display);
     }
-    
+
+    h1 { font-size: var(--h1-size); font-weight: 700; }
+    h2 { font-size: var(--h2-size); font-weight: 650; }
+    h3 { font-size: var(--step-3); font-weight: 600; }
+
     /* === MATH / KATEX === */
     .katex-display {
       overflow-x: auto;
@@ -194,16 +140,22 @@ const lang = getLangFromUrl(Astro.url);
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
 
-  <slot name="head" />
-  
-  <!-- Add grain texture after page loads for smoother first paint -->
   <script is:inline>
-    window.addEventListener('DOMContentLoaded', function() {
-      const grain = document.createElement('div');
-      grain.style.cssText = 'content:"";position:fixed;inset:0;background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbikiLz48L3N2Zz4=");opacity:0.03;pointer-events:none;z-index:1000;';
-      document.body.insertBefore(grain, document.body.firstChild);
-    });
+    /* Arms the scroll reveal. animations.css hides .animate-on-scroll only under
+       .js-reveal, so if this line never runs — JS off, script error — the page
+       simply renders with no animation instead of rendering blank. Inline and in
+       <head> so it lands before first paint and nothing flashes. */
+    document.documentElement.classList.add('js-reveal');
   </script>
+
+  <slot name="head" />
+  {/*
+    A script here injected a second grain overlay on DOMContentLoaded. The site
+    already had one — body::before in reset.css — at the same 0.03 opacity and
+    the same z-index, so the texture was being applied twice. reset.css now
+    carries the single overlay, with this block's inlined noise rather than the
+    third-party SVG it used to fetch.
+  */}
 </head>
 <body class={bodyClass}>
   <Chameleon />
@@ -227,39 +179,52 @@ const lang = getLangFromUrl(Astro.url);
   <Anathema />
 
   <script>
-    // Premium reveal observer
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          // Optionally unobserve after revealing
-          // revealObserver.unobserve(entry.target);
+    /*
+      Scroll reveal.
+
+      What was here before observed `.reveal` — a class with no CSS rule
+      anywhere in the repo — and backed it with a MutationObserver watching the
+      whole body, childList + subtree, for the lifetime of every page. It cost
+      work on every DOM change and could not produce a visible effect.
+
+      The class the markup actually carries is `.animate-on-scroll`, on roughly
+      every section of every template, with `.delay-100|200|300` for stagger.
+      animations.css had been overriding all of it to
+      `opacity: 1 !important; transform: none !important`, so the markup was
+      inert too. It is styled now, and this is what turns it on.
+    */
+    const targets = document.querySelectorAll('.animate-on-scroll');
+    const show = (el: Element) => el.classList.add('in-view');
+
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(show);
+    } else {
+      const reveal = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          show(entry.target);
+          reveal.unobserve(entry.target);
         }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-    });
+      targets.forEach((el) => reveal.observe(el));
 
-    // Handle dynamic content (like search results or filtered CV items)
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node instanceof HTMLElement && node.classList.contains('reveal')) {
-            revealObserver.observe(node);
-          }
-          if (node instanceof HTMLElement) {
-             node.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-          }
-        });
-      });
-    });
+      /*
+        Safety net. IntersectionObserver only delivers entries while the page is
+        compositing, so a tab that is throttled, prerendered, or driven by a
+        headless viewport that never paints can leave every observed element
+        stranded at opacity 0 — the whole page invisible, with no error. Anything
+        still unrevealed shortly after load gets shown outright.
+      */
+      const sweep = () => window.setTimeout(() => {
+        for (const el of targets) {
+          if (!el.classList.contains('in-view')) show(el);
+        }
+      }, 1200);
 
-    observer.observe(document.body, { childList: true, subtree: true });
+      if (document.readyState === 'complete') sweep();
+      else window.addEventListener('load', sweep, { once: true });
+    }
   </script>
   {/*
     A script here forced .animate-on-scroll elements visible. It was doubly
@@ -270,7 +235,7 @@ const lang = getLangFromUrl(Astro.url);
     querySelectorAll, which cost two entries on the type-error ratchet.
   */}
   <script>
-    import { unlockAchievement, checkPolyglotAchievement, checkPageVisitAchievement } from '../lib/gamification';
+    import { unlockAchievement, checkPolyglotAchievement, checkPageVisitAchievement, checkBroughtForwardAchievement, checkCompoundAchievements } from '../lib/gamification';
 
     // Counts this page towards 'explorer'. The function has existed since the
     // system was written and was never called anywhere, so that entry could only
@@ -307,6 +272,11 @@ const lang = getLangFromUrl(Astro.url);
     // Run delayed checks
     setTimeout(() => {
         checkPolyglotAchievement();
+        // Reads the timestamps already in the book, so it costs no new storage.
+        // Delayed with the rest: coming back after a week is not urgent news.
+        checkBroughtForwardAchievement();
+        // Settles compounds whose halves were both earned before they existed.
+        checkCompoundAchievements();
     }, 1000);
 
     // --- META ACHIEVEMENTS TRIGGERS ---

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface ProjectLink {
     title: string;

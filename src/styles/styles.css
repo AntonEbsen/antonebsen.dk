@@ -1,99 +1,203 @@
-@import "./variables.css";
+@import "./tokens.css";
 @import "./animations.css";
-@import "./reset.css";
 
-
+/* reset.css is deliberately NOT imported here.
+   `@tailwind base` expands to Preflight, which sets
+   `h1..h6 { font-size: inherit; font-weight: inherit }`. CSS @import must come
+   first in a file, so anything imported here lands ABOVE Preflight and loses to
+   it — which is why every heading rule in reset.css was dead and headings only
+   ever took the weight of whatever font-bold/font-extrabold class the markup
+   happened to carry. BaseLayout.astro imports reset.css after this file. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Legacy themes can stay here for now or be moved later */
-/* =========================
-   Holiday themes (body class)
-   ========================= */
+@layer components {
 
-/* Example: Christmas */
-body.theme-christmas {
-  background: linear-gradient(180deg, #f6f7fb, #fff);
+  /* The small uppercase label above a heading.
+     It needs saying once, in one place, because reset.css now sets the display
+     face on h1–h4 — and several eyebrows are marked up as headings, so they
+     were coming out as 13px letterspaced Fraunces. A serif is the wrong tool
+     at that size: tight tracking and optical flare are exactly what uppercase
+     labels do not want. Eyebrows stay in the UI face. */
+  .eyebrow {
+    font-family: var(--font-main);
+    font-size: var(--step--1);
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--accent);
+  }
+
+  /* === LONG-FORM ===
+     The article body on every blog post carried
+     `prose prose-invert prose-lg prose-headings:… prose-p:… prose-blockquote:…`
+     — and @tailwindcss/typography is not installed. None of those classes has
+     ever emitted a single declaration, so the writing, which is the substance
+     of this site, has been rendering with browser defaults and whatever
+     reset.css said about <p>.
+
+     Written by hand rather than by installing the plugin: its defaults are
+     built for a generic light-theme document and would have to be fought back
+     out of the archival voice this site wants. */
+  .prose-archive {
+    max-width: var(--width-prose);
+    font-size: var(--reading-size);
+    line-height: var(--lh-reading);
+    color: var(--text-dim);
+  }
+
+  .prose-archive> :first-child {
+    margin-top: 0;
+  }
+
+  .prose-archive p {
+    margin: 0 0 1.4em;
+  }
+
+  /* The lede. An essay wants a way in. */
+  .prose-archive> :first-child p:first-child,
+  .prose-archive>p:first-of-type {
+    font-size: var(--step-1);
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .prose-archive h2,
+  .prose-archive h3,
+  .prose-archive h4 {
+    color: var(--text);
+    margin: 2em 0 0.6em;
+  }
+
+  .prose-archive h2 {
+    font-size: var(--step-3);
+  }
+
+  .prose-archive h3 {
+    font-size: var(--step-2);
+  }
+
+  .prose-archive a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--accent-rgb) / 0.4);
+    text-underline-offset: 3px;
+  }
+
+  .prose-archive a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  .prose-archive strong {
+    color: var(--text);
+    font-weight: 650;
+  }
+
+  /* A quotation is not a callout box. It was styled as one — accent border plus
+     a white/5 fill plus a rounded right edge — which reads as a UI panel
+     dropped into an essay. A rule in the margin is how a book does it. */
+  .prose-archive blockquote {
+    margin: 1.8em 0;
+    padding: 0 0 0 1.4em;
+    border-left: 2px solid rgb(var(--accent-rgb) / 0.5);
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  .prose-archive blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose-archive ul,
+  .prose-archive ol {
+    margin: 0 0 1.4em;
+    padding-left: 1.3em;
+  }
+
+  .prose-archive li {
+    margin-bottom: 0.45em;
+  }
+
+  .prose-archive li::marker {
+    color: var(--accent);
+  }
+
+  .prose-archive code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--text-rgb) / 0.06);
+    color: var(--text);
+  }
+
+  .prose-archive pre {
+    margin: 1.6em 0;
+    padding: var(--space-md);
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+
+  .prose-archive pre code {
+    padding: 0;
+    background: none;
+  }
+
+  /* An economics post is mostly numbers in columns. */
+  .prose-archive table {
+    width: 100%;
+    margin: 1.6em 0;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose-archive th,
+  .prose-archive td {
+    padding: 0.55em 0.75em;
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .prose-archive th {
+    color: var(--text);
+    font-weight: 650;
+    border-bottom-color: var(--rule-strong);
+  }
+
+  .prose-archive hr {
+    margin: 2.4em 0;
+    border: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .prose-archive img {
+    margin: 1.8em 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--rule);
+  }
+
+  .prose-archive figcaption {
+    margin-top: 0.6em;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
 }
 
-body.theme-christmas .navbar {
-  background: #0b3d2e;
-}
-
-body.theme-christmas .navbar a:hover,
-body.theme-christmas .navbar .nav-link:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-body.theme-christmas .pill {
-  border-color: rgba(220, 38, 38, 0.25);
-}
-
-body.theme-christmas .card {
-  position: relative;
-  overflow: hidden;
-}
-
-body.theme-christmas .card::before {
-  content: "";
-  position: absolute;
-  inset: -40px;
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 2px) 0 0/28px 28px;
-  opacity: 0.18;
-  pointer-events: none;
-}
-
-/* Valentine */
-body.theme-valentine {
-  background: linear-gradient(180deg, #f6f7fb 0%, #fff 55%, #fdf2f4 100%);
-}
-
-body.theme-valentine .navbar {
-  background: #4a1020;
-}
-
-body.theme-valentine .navbar a:hover,
-body.theme-valentine .navbar .nav-link:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-body.theme-valentine .navbar a.active {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-body.theme-valentine .btn {
-  background: #4a1020;
-}
-
-body.theme-valentine .btn.ghost {
-  border-color: rgba(74, 16, 32, 0.25);
-  color: #4a1020;
-}
-
-body.theme-valentine .pill {
-  background: rgba(74, 16, 32, 0.06);
-  border-color: rgba(74, 16, 32, 0.18);
-}
-
-body.theme-valentine .card {
-  position: relative;
-}
-
-body.theme-valentine .card.valentine-badge::before {
-  content: "Sankt Valentin · 14/2";
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(74, 16, 32, 0.10);
-  border: 1px solid rgba(74, 16, 32, 0.18);
-  color: #4a1020;
-}
+/*
+  The holiday themes that used to live here — body.theme-christmas and
+  body.theme-valentine, both with light backgrounds — are gone. Nothing has
+  applied either class since the liturgical theme engine was removed, and
+  tests/theme.spec.ts actively asserts no theme-* class is ever set. They were
+  the last light-theme code still being shipped to every visitor.
+*/
 
 /* =========================
    Tippy.js Platinum Theme

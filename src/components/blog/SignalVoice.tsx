@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
+import { unlockAchievement } from '@lib/gamification';
 
 interface SignalVoiceProps {
     url: string;
@@ -74,6 +76,11 @@ export default function SignalVoice({ url, lang = 'da' }: SignalVoiceProps) {
                 audioRef.current.pause();
             } else {
                 audioRef.current.play();
+                // Auscultation: a chancery clerk checked a copy by having it
+                // read aloud. Granted on starting, not on finishing — the
+                // 'ended' handler never fires if the reader stops halfway,
+                // and listening at all is the thing being noticed.
+                unlockAchievement('auscultatio');
             }
             setIsPlaying(!isPlaying);
         }

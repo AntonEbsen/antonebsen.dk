@@ -83,7 +83,7 @@ export const trackColorVar = (track: Track) =>
 /**
  * Literal hex, for the places CSS variables cannot reach — three.js in the
  * Knowledge Web, Chart.js canvases, Satori OG images. Keep in step with
- * --accent-2 / --accent in BaseLayout.astro and variables.css.
+ * --accent-2 / --accent in src/styles/tokens.css.
  */
 export const TRACK_HEX: Record<Track, string> = {
     hiking: '#6F9E7B',

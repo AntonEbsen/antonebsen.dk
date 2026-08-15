@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface MasteryModalProps {
     isOpen: boolean;

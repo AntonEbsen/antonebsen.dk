@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 
 const ForceGraph2D = React.lazy(() => import('react-force-graph-2d'));
 
