@@ -63,10 +63,9 @@ const emphasis = hashString(seed) % LINES;
   <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" fill="none">
     {paths.map((d, i) => (
       <path
+        class:list={['plate-line', i === emphasis && 'plate-line--ridge']}
         d={d}
         stroke={stroke}
-        stroke-width={i === emphasis ? 1.8 : 0.8}
-        opacity={i === emphasis ? 0.65 : 0.28}
         vector-effect="non-scaling-stroke"
       />
     ))}
@@ -92,6 +91,37 @@ const emphasis = hashString(seed) % LINES;
     display: block;
     /* Fade toward the bottom so the card's text has quiet ground to sit on. */
     mask-image: linear-gradient(to bottom, black 40%, rgba(0, 0, 0, 0.25) 100%);
+  }
+
+  /* Stroke weight and opacity were baked onto each path as attributes, which
+     left nothing for hover to change. As CSS they can respond — the card lifts
+     and the survey under it comes up with it. */
+  .plate-line {
+    stroke-width: 0.8;
+    opacity: 0.28;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      stroke-width var(--dur-base) var(--ease-out);
+  }
+
+  .plate-line--ridge {
+    stroke-width: 1.8;
+    opacity: 0.65;
+  }
+
+  :global(.group:hover) .plate-line {
+    opacity: 0.42;
+  }
+
+  :global(.group:hover) .plate-line--ridge {
+    stroke-width: 2.4;
+    opacity: 0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plate-line {
+      transition: none;
+    }
   }
 
   .plate-numeral {

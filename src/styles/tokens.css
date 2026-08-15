@@ -183,4 +183,27 @@
      than Inter — it wants less negative tracking, not more. */
   --ls-display: -0.015em;
   --ls-eyebrow: 0.14em;
+
+  /* ---- MOTION ---------------------------------------------------------
+     The last scale that was missing. Every duration and easing curve on the
+     site was a hardcoded literal, so nothing could be consistent by default.
+
+     The curves are not invented — --ease-entrance is what LedgerToast and
+     LedgerGrid already reach for, and --ease-overshoot is Button's. Naming
+     them is most of the work.
+
+     The house style is drawn rather than animated: a line strokes itself in
+     because that is what a plotted contour does. --dur-draw is deliberately
+     long enough to read as inscription rather than as a transition. */
+  --dur-quick: 150ms;
+  /* hover, focus, and other state changes */
+  --dur-base: 300ms;
+  --dur-slow: 500ms;
+  /* reveals */
+  --dur-draw: 1100ms;
+  /* a line inscribing itself */
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
 }

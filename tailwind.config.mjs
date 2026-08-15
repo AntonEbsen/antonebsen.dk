@@ -118,6 +118,17 @@ export default {
                 grain: 'var(--z-grain)',
                 skip: 'var(--z-skip)',
             },
+            transitionDuration: {
+                quick: 'var(--dur-quick)',
+                base: 'var(--dur-base)',
+                slow: 'var(--dur-slow)',
+                draw: 'var(--dur-draw)',
+            },
+            transitionTimingFunction: {
+                out: 'var(--ease-out)',
+                entrance: 'var(--ease-entrance)',
+                overshoot: 'var(--ease-overshoot)',
+            },
             screens: {
                 // ~20 hand-written media queries in src/styles/*.css break at 980px,
                 // which matched no Tailwind breakpoint. Naming it lets the two
