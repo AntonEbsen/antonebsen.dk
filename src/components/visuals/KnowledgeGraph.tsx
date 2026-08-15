@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import Skeleton from '@components/ui/Skeleton';
 import SpriteText from 'three-spritetext';
 import { unlockAchievement } from '@lib/gamification';
 
@@ -36,7 +37,7 @@ const KnowledgeGraph: React.FC = () => {
     return (
         <div className="w-full h-full">
             {isMounted && (
-                <React.Suspense fallback={<div className="flex items-center justify-center h-full text-muted">Loading Knowledge Web...</div>}>
+                <React.Suspense fallback={<Skeleton className="w-full h-full !rounded-none" label="Indlæser vidensnettet" />}>
                     <ForceGraph3D
                         ref={fgRef}
                         graphData={graphData}

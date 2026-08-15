@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import EmptyState from '@components/ui/EmptyState.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
@@ -137,7 +138,7 @@ const contactLink = isDa ? '/contact' : '/en/contact';
               technologies={role.technologies}
             />
           ))}
-          {experience.length === 0 && <p class="text-dim">{content.roles.empty}</p>}
+          {experience.length === 0 && <EmptyState message={content.roles.empty} icon="fa-solid fa-briefcase" />}
         </div>
       </Card>
     </Section>

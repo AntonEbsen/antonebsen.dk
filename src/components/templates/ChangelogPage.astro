@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import EmptyState from '@components/ui/EmptyState.astro';
 import Section from '@components/ui/Section.astro';
 import { supabase } from '@lib/supabase';
 
@@ -114,7 +115,7 @@ function getTypeIcon(type: string) {
             ))}
             
             {logs?.length === 0 && (
-                <p class="text-center text-dim py-12">{content.empty}</p>
+                <EmptyState message={content.empty} icon="fa-solid fa-clock-rotate-left" />
             )}
         </div>
 

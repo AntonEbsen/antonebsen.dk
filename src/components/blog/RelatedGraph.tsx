@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, Suspense } from 'react';
+import Skeleton from '@components/ui/Skeleton';
 
 // Dynamic import to prevent SSR issues with window/canvas
 const ForceGraph2D = React.lazy(() => import('react-force-graph-2d'));
@@ -59,7 +60,14 @@ export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
         return () => resizeObserver.disconnect();
     }, []);
 
-    if (!isMounted) return <div className="w-full h-[300px] bg-[#17191A] border border-white/10 rounded-xl" />;
+    // Was an empty grey box, indistinguishable from a component that had failed.
+    if (!isMounted) {
+        return (
+            <div className="w-full h-[300px] rounded-card overflow-hidden border border-rule">
+                <Skeleton className="w-full h-full !rounded-none" label="Indlæser videnskort" />
+            </div>
+        );
+    }
 
     return (
         <div ref={containerRef} className="w-full h-[300px] bg-[#17191A] border border-white/10 rounded-xl overflow-hidden relative group">
@@ -71,7 +79,7 @@ export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
             </div>
 
             {data && (
-                <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-dim">Loading Graph...</div>}>
+                <Suspense fallback={<Skeleton className="w-full h-full !rounded-none" label="Indlæser videnskort" />}>
                     <ForceGraph2D
                         ref={fgRef}
                         width={dimensions.width}

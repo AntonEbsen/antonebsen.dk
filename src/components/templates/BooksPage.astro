@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import EmptyState from '@components/ui/EmptyState.astro';
 import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
@@ -183,7 +184,7 @@ const books = await getBooks();
 
         <div class="books-grid" id="books-grid">
            {books.length === 0 ? (
-               <p class="text-dim col-span-full text-center py-12">{content.empty}</p>
+               <div class="col-span-full"><EmptyState message={content.empty} icon="fa-solid fa-book-open" /></div>
            ) : (
              books.map((book: any, bIdx: number) => {
                  const r = Math.min(Math.max(book.rating || 0, 0), 5);

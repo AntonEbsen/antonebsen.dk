@@ -43,14 +43,33 @@ export default function ReadingProgress() {
             }
         };
 
-        window.addEventListener('scroll', updateProgress);
-        return () => window.removeEventListener('scroll', updateProgress);
+        /*
+          Coalesced to one read per frame. The handler was unthrottled and does
+          a layout read (scrollHeight) on every event, so a fast scroll forced
+          a synchronous reflow dozens of times per frame for a bar that can
+          only be painted once.
+        */
+        let queued = false;
+        const onScroll = () => {
+            if (queued) return;
+            queued = true;
+            window.requestAnimationFrame(() => {
+                queued = false;
+                updateProgress();
+            });
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     return (
-        <div className="fixed top-0 left-0 w-full h-[3px] z-[1001] pointer-events-none">
+        <div className="fixed top-0 left-0 w-full h-[3px] z-toast pointer-events-none">
+            {/* gold-600/gold-400 are the compatibility shim for markup written
+                against the palette this site replaced; both already resolve to
+                the accent. Named directly now. */}
             <div
-                className="h-full bg-gradient-to-r from-gold-600 to-gold-400 transition-all duration-100 ease-out"
+                className="h-full bg-gradient-to-r from-accent to-accent-light transition-all duration-100 ease-out"
                 style={{ width: `${progress}%` }}
             />
         </div>
