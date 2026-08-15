@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
@@ -155,11 +156,12 @@ const teachingStats = [
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-6">
-          <p class="text-xs font-extrabold uppercase tracking-wider text-dim mb-3">{isDa ? 'Uddannelse' : 'Education'}</p>
-          <h1 class="text-4xl leading-tight mb-4 font-bold">{content.hero.title}</h1>
-          <p class="text-lg leading-relaxed text-dim mb-6">
-            {content.hero.text}
-          </p>
+          <PageHeader
+            variant="plain"
+            eyebrow={isDa ? 'Uddannelse' : 'Education'}
+            title={content.hero.title}
+            lead={content.hero.text}
+          />
   
           <div class="flex flex-wrap gap-3 mb-6">
             <Button href="#timeline">{isDa ? 'Tidslinje' : 'Timeline'}</Button>

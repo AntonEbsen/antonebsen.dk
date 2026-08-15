@@ -4,7 +4,8 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
-import SectionHeading from '@components/ui/SectionHeading.astro';
+import SectionTitle from '@components/ui/SectionTitle.astro';
+import ContourField from '@components/ui/ContourField.astro';
 import FeatureCard from '@components/ui/FeatureCard.astro';
 import TechStack from '@components/ui/TechStack.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
@@ -81,19 +82,23 @@ const skillsData = {
   title={content.title}
   description={content.description}
 >
-  <main class="container mx-auto px-4 py-12">
-    <Section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20 animate-on-scroll">
+  <main class="mx-auto max-w-content px-md py-xl">
+    <Section rhythm="loose" class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center animate-on-scroll">
       <div>
-        <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
-          Anton Meier <span class="text-accent underline decoration-4 underline-offset-8">Ebsen</span> Jørgensen
+        {/* font-extrabold was overriding the display face back to a slab. The
+            heading is Fraunces at 700 now, which is where its character is. */}
+        {/* display-lg tops out at 76px, which broke the name across three lines
+            in a half-width hero column. This step down keeps it to two. */}
+        <h1 class="font-serif text-display-sm">
+          Anton Meier <span class="text-accent underline decoration-2 underline-offset-[10px] decoration-accent/60">Ebsen</span> Jørgensen
         </h1>
-        <p class="text-2xl md:text-3xl font-bold text-accent mt-3 mb-4">
+        <p class="eyebrow mt-md mb-sm !text-lead">
           {content.hero.tag}
         </p>
-        <p class="text-xl text-dim leading-relaxed max-w-lg">
+        <p class="text-lead text-dim leading-relaxed max-w-prose">
           {content.hero.text}
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+        <div class="flex flex-col sm:flex-row gap-sm pt-md">
           <Button href={portLink} size="lg">{content.hero.btnPort}</Button>
           <Button href={cvLink} variant="ghost" size="lg">{content.hero.btnCV}</Button>
         </div>
@@ -101,8 +106,10 @@ const skillsData = {
       </div>
       
       <a href={isDa ? '/about' : '/en/about'} class="relative group block">
-        <div class="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
-        <div class="relative aspect-square overflow-hidden rounded-2xl border-2 border-accent/30 shadow-2xl group-hover:border-accent/60 transition-all duration-300">
+        {/* Was accent -> purple-500. The palette is terracotta and moss; purple
+            was the only place that gradient appeared on the whole site. */}
+        <div class="absolute -inset-4 bg-gradient-to-br from-accent/25 to-accent-2/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
+        <div class="relative aspect-square overflow-hidden rounded-panel border border-accent/30 shadow-2 group-hover:border-accent/60 transition-all duration-300">
           <Image 
             src={myImageSrc} 
             alt="Anton Meier Ebsen Jørgensen" 
@@ -111,47 +118,49 @@ const skillsData = {
             width={600}
             height={600}
           />
-          <div class="absolute top-4 right-4 px-3 py-1.5 bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1.5">
-            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+          {/* Moss, not Tailwind's green-500 — the site already has a green and
+              this was not it. Text is --bg rather than white so the pill still
+              clears AA against the lighter moss. */}
+          <div class="absolute top-4 right-4 px-3 py-1.5 bg-accent-2 backdrop-blur-sm text-[var(--bg)] text-xs font-bold rounded-full shadow-1 flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-[var(--bg)] rounded-full animate-pulse"></span>
             {isDa ? 'Tilgaengelig' : 'Available'}
           </div>
         </div>
       </a>
     </Section>
 
-    <Section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 animate-on-scroll delay-100">
-      <Card variant="glass" class="p-8 hover-glow group">
-        <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-          <i class="fa-solid fa-code text-accent text-xl"></i>
-        </div>
-        <h2 class="text-xl font-bold mb-3">{content.cards.model.title}</h2>
-        <p class="text-dim text-sm leading-relaxed">
-          {content.cards.model.text}
-        </p>
-      </Card>
-      
-      <Card variant="glass" class="p-8 hover-glow group">
-        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
-          <i class="fa-solid fa-graduation-cap text-blue-400 text-xl"></i>
-        </div>
-        <h2 class="text-xl font-bold mb-3">{content.cards.focus.title}</h2>
-        <p class="text-dim text-sm leading-relaxed">
-          {content.cards.focus.text}
-        </p>
-      </Card>
-      
-      <Card variant="glass" class="p-8 hover-glow group">
-        <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
-          <i class="fa-solid fa-chalkboard-user text-purple-400 text-xl"></i>
-        </div>
-        <h2 class="text-xl font-bold mb-3">{content.cards.teach.title}</h2>
-        <p class="text-dim text-sm leading-relaxed">
-          {content.cards.teach.text}
-        </p>
-      </Card>
+    {/*
+      These three tiles were accent / blue-500 / purple-500 — two thirds of the
+      first thing a visitor sees was off-palette, which is most of why the page
+      did not look like it belonged to its own design system. They are the two
+      real accents plus a neutral stone tile now, and the numerals give the row
+      an order to read in.
+    */}
+    <Section class="grid grid-cols-1 md:grid-cols-3 gap-md mb-2xl animate-on-scroll delay-100">
+      {[
+        { n: '01', icon: 'fa-solid fa-code', tint: 'bg-accent/10 group-hover:bg-accent/20', fg: 'text-accent', c: content.cards.model },
+        { n: '02', icon: 'fa-solid fa-graduation-cap', tint: 'bg-accent-2/10 group-hover:bg-accent-2/20', fg: 'text-accent-2', c: content.cards.focus },
+        { n: '03', icon: 'fa-solid fa-chalkboard-user', tint: 'bg-text/[0.06] group-hover:bg-text/10', fg: 'text-dim', c: content.cards.teach },
+      ].map((card) => (
+        <Card variant="glass" elevation={1} class="p-8 group">
+          <div class="flex items-center justify-between mb-6">
+            <div class:list={['w-12 h-12 rounded-plate flex items-center justify-center transition-colors', card.tint]}>
+              <i class:list={[card.icon, card.fg, 'text-xl']}></i>
+            </div>
+            {/* .deco-numeral, not a text node. axe measures any text a sighted
+                user can see, so a 1.3:1 watermark fails contrast even though it
+                is pure decoration — the list order already carries the number.
+                The existing utility in styles.css puts the glyph in a
+                pseudo-element, which is the exempt form. */}
+            <span class="deco-numeral font-serif text-title-md tabular" data-numeral={card.n}></span>
+          </div>
+          <h2 class="text-title-sm mb-3">{card.c.title}</h2>
+          <p class="text-dim text-sm leading-relaxed">{card.c.text}</p>
+        </Card>
+      ))}
     </Section>
 
-    <Section class="mb-24 animate-on-scroll delay-200">
+    <Section class="animate-on-scroll delay-200">
       <FeatureCard
         badge={content.feature.badge}
         title={content.feature.title}
@@ -162,7 +171,7 @@ const skillsData = {
     </Section>
 
     {featuredVideo && (
-      <Section class="mb-24 animate-on-scroll delay-200">
+      <Section class="animate-on-scroll delay-200">
         <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-10 items-center">
           <YouTubeEmbed
             youtubeId={featuredVideo.youtubeId}
@@ -171,11 +180,13 @@ const skillsData = {
             class={featuredVideo.orientation === 'portrait' ? 'max-w-[280px] mx-auto md:mx-0' : ''}
           />
           <div>
-            <SectionHeading class="mb-4">{videoStrings.eyebrow}</SectionHeading>
-            <h2 class="text-3xl font-bold text-white mb-4">
+            <SectionTitle eyebrow={videoStrings.eyebrow}>
               {(isDa && featuredVideo.title_da) || featuredVideo.title}
-            </h2>
-            <p class="text-dim opacity-70 mb-8 leading-relaxed">
+            </SectionTitle>
+            {/* text-dim at opacity-70 composites to about 5.1:1 — right at the
+                line. The solid muted token is the contrast-checked way to say
+                the same thing. */}
+            <p class="text-muted mt-sm mb-lg leading-relaxed">
               {(isDa && featuredVideo.description_da) || featuredVideo.description}
             </p>
             <Button href={videosLink}>{videoStrings.cta}</Button>
@@ -184,10 +195,13 @@ const skillsData = {
       </Section>
     )}
 
-    <Section class="mb-24 animate-on-scroll delay-300">
-      <div class="text-center max-w-4xl mx-auto mb-16">
-        <SectionHeading class="text-3xl font-bold mb-8">{content.skills.title}</SectionHeading>
-        
+    <Section class="animate-on-scroll delay-300">
+      <div class="text-center max-w-content mx-auto mb-xl">
+        {/* Was SectionHeading — an eyebrow component — fought back to title size
+            with `text-3xl font-bold`. Whichever of the two font-size classes
+            Tailwind happened to emit later won. */}
+        <SectionTitle align="center" class="mb-lg">{content.skills.title}</SectionTitle>
+
         <!-- Live Skills Container -->
         <div id="skills-live-container">
           <!-- Static Fallback Content -->
@@ -213,12 +227,15 @@ const skillsData = {
       src/pages/partials/skills.astro now has no caller.
     */}
 
-    <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10 animate-on-scroll delay-200">
-      <h2 class="text-3xl font-bold mb-6">{content.cta.title}</h2>
-      <p class="text-xl text-dim mb-10 max-w-xl mx-auto">
-        {content.cta.text}
-      </p>
-      <Button href={contactLink}>{content.cta.btn}</Button>
+    <Section rhythm="none" class="relative isolate overflow-hidden text-center py-2xl px-md bg-accent/5 rounded-panel border border-accent/10 animate-on-scroll delay-200">
+      <ContourField seed={2.4} anchor="center" />
+      <div class="relative z-raised">
+        <h2 class="font-serif text-title-lg mb-md">{content.cta.title}</h2>
+        <p class="text-lead text-dim mb-xl max-w-prose mx-auto">
+          {content.cta.text}
+        </p>
+        <Button href={contactLink} size="lg">{content.cta.btn}</Button>
+      </div>
     </Section>
   </main>
 </Layout>

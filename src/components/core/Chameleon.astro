@@ -20,10 +20,12 @@
             
             // 1. Show Welcome Banner
             const banner = document.createElement('div');
-            banner.className = 'fixed top-0 left-0 w-full bg-slate-900 border-b border-slate-800 text-center py-2 z-[100] transform transition-transform duration-500 translate-y-0';
+            // Was bg-slate-900 with a blue-to-purple gradient on the name — a
+            // whole second palette, on a banner that renders above everything.
+            banner.className = 'fixed top-0 left-0 w-full bg-sunken border-b border-rule text-center py-2 z-nav transform transition-transform duration-500 translate-y-0';
             banner.innerHTML = `
-                <span class="text-xs font-mono text-slate-400 uppercase tracking-widest mr-2">Personalized For</span>
-                <span class="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">${company}</span>
+                <span class="text-xs font-mono text-muted uppercase tracking-widest mr-2">Personalized For</span>
+                <span class="text-sm font-bold text-accent">${company}</span>
             `;
             document.body.prepend(banner);
 
@@ -34,7 +36,7 @@
             // 2. Inject Company Name into placeholders
             document.querySelectorAll('.company-name-placeholder').forEach(el => {
                 el.textContent = company;
-                el.classList.add('text-blue-400', 'font-bold');
+                el.classList.add('text-accent', 'font-bold');
             });
 
             // 3. Highlight relevant skills (Simple keyword matching based on company industry)
@@ -43,7 +45,7 @@
                  document.querySelectorAll('.tech-badge').forEach(el => {
                      // Generic highlight effect
                      if (el.textContent.includes('Python') || el.textContent.includes('Data')) {
-                         el.classList.add('ring-2', 'ring-blue-500', 'shadow-[0_0_15px_rgba(59,130,246,0.5)]');
+                         el.classList.add('ring-2', 'ring-accent', 'shadow-glow');
                      }
                  });
             }

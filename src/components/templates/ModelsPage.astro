@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -19,14 +20,6 @@ const { lang, content } = Astro.props;
       max-width: 1200px;
       margin: 24px auto;
       padding: 0 16px 48px;
-    }
-    .hero-card {
-        padding: 48px;
-        margin-bottom: 32px;
-        background: radial-gradient(circle at top right, rgba(204, 243, 129, 0.05) 0%, transparent 50%), rgba(10, 15, 25, 0.8) !important;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        position: relative;
-        overflow: hidden;
     }
     .hero-card::before {
         content: '';
@@ -70,17 +63,16 @@ const { lang, content } = Astro.props;
         letter-spacing: 0.05em;
     }
     @media (max-width: 768px) {
-      .hero-card { padding: 32px 24px; }
     }
   </style>
 
   <main class="models-wrap">
     <Section>
-      <Card variant="glass" class="hero-card">
-        <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{content.hero.eyebrow}</p>
-        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
-        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
-      </Card>
+      <PageHeader
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        lead={content.hero.text}
+      />
     </Section>
 
     <MacroDashboard client:visible lang={lang === 'de' ? 'en' : lang as 'da' | 'en'} />

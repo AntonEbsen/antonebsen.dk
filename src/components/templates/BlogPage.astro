@@ -3,7 +3,7 @@ import Layout from '@layouts/BaseLayout.astro';
 import Button from '@components/ui/Button.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
-import SectionHeading from '@components/ui/SectionHeading.astro';
+import SectionTitle from '@components/ui/SectionTitle.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 
 interface Props {
@@ -279,7 +279,7 @@ const posts = standalonePosts;  // "Latest" now only shows standalone posts
     <!-- FEATURED POSTS -->
     <!-- ===================== -->
     <Section id="featured">
-      <SectionHeading class="mb-4 text-xl font-bold">{content.featuredTitle}</SectionHeading>
+      <SectionTitle class="mb-sm">{content.featuredTitle}</SectionTitle>
       <div class="posts-grid mb-12">
         {content.featured.map(feat => (
             <BlogCard 
@@ -296,20 +296,24 @@ const posts = standalonePosts;  // "Latest" now only shows standalone posts
     <!-- SERIES -->
     {Object.entries(seriesGroups).map(([seriesName, seriesPosts]) => (
         <Section class="mb-12">
-            <SectionHeading class="mb-4 text-xl font-bold flex items-center gap-2">
+            <SectionTitle as="h3" class="mb-sm flex items-center gap-2">
                 <i class="fa-solid fa-layer-group text-accent"></i>
                 {/* opacity-50 on inherited accent gave 2.33:1; text-muted is 5.63:1. */}
-                {seriesName} <span class="text-xs font-normal text-muted ml-2">({seriesPosts.length} Parts)</span>
-            </SectionHeading>
+                {seriesName} <span class="text-meta font-normal text-muted ml-2">({seriesPosts.length} Parts)</span>
+            </SectionTitle>
+            {/* Cover contours are seeded on the slug, not the title, so retitling a
+                post keeps its cover; the part number is set large behind them. */}
             <div class="posts-grid items-stretch">
                 {seriesPosts.map(p => (
                     <div class="post-wrapper" data-category={p.category}>
-                        <BlogCard 
+                        <BlogCard
                             title={p.title}
                             tag={`Part ${p.seriesOrder}`}
                             meta={new Date(p.created_at).toLocaleDateString(isDa ? 'da-DK' : 'en-US')}
                             readingTime={p.readingTime}
                             description={p.excerpt || ""}
+                            seed={p.slug}
+                            numeral={p.seriesOrder ? String(p.seriesOrder).padStart(2, '0') : undefined}
                             links={[{ label: content.readMore, url: isDa ? `/blog/${p.slug}` : `/en/blog/${p.slug}`, icon: 'arrow-right' }]}
                         />
                     </div>

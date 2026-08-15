@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
@@ -71,11 +72,12 @@ const portfolioLink = lang === 'en' ? '/en/portfolio' : '/portfolio';
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{content.hero.title}</h1>
-          <p class="text-lg text-dim mb-6">
-            {content.hero.text}
-          </p>
+          <PageHeader
+            variant="plain"
+            eyebrow={content.hero.eyebrow}
+            title={content.hero.title}
+            lead={content.hero.text}
+          />
 
           <div class="flex flex-wrap gap-3 mb-6">
             <Button href={contactLink}>{content.hero.cta.contact}</Button>

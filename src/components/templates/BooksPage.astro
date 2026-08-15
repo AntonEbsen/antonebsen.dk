@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -120,11 +121,12 @@ const books = await getBooks();
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">{content.eyebrow}</p>
-          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">{content.heroTitle}</h1>
-          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
-            {content.heroText}
-          </p>
+          <PageHeader
+            variant="plain"
+            eyebrow={content.eyebrow}
+            title={content.heroTitle}
+            lead={content.heroText}
+          />
   
           <div class="flex flex-wrap gap-2 mb-8" aria-label="Categories">
             {content.categories.map(cat => <Pill variant="accent">{cat}</Pill>)}

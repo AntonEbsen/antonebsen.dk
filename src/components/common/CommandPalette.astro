@@ -404,12 +404,18 @@ const quickActions: { label: string; icon: string; url?: string; event?: string 
       return div.innerHTML;
     }
 
+    /*
+      Four result types, previously coloured purple / blue / emerald / yellow —
+      a full second palette living inside the one piece of UI that opens on top
+      of every page. The types still need telling apart, so they are separated
+      by the two real accents plus tint depth rather than by hue.
+    */
     function getIconStyle(r: SearchItem): string {
-      if (r.type === 'command') return 'bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.1)]';
-      if (r.type === 'project') return 'bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.1)]';
-      if (r.type === 'blog') return 'bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.1)]';
-      if (r.type === 'game') return 'bg-yellow-500/10 text-yellow-400 group-hover:bg-yellow-500/20 group-hover:text-yellow-300 shadow-[0_0_15px_rgba(234,179,8,0.1)]';
-      return 'bg-white/5 text-muted group-hover:bg-white/10 group-hover:text-white';
+      if (r.type === 'command') return 'bg-accent/20 text-accent group-hover:bg-accent/30';
+      if (r.type === 'project') return 'bg-accent/10 text-accent-light group-hover:bg-accent/20';
+      if (r.type === 'blog') return 'bg-accent-2/10 text-accent-2 group-hover:bg-accent-2/20';
+      if (r.type === 'game') return 'bg-accent-2/20 text-accent-2-light group-hover:bg-accent-2/30';
+      return 'bg-white/5 text-muted group-hover:bg-white/10 group-hover:text-text';
     }
 
     function getIcon(tags?: string[]): string {
