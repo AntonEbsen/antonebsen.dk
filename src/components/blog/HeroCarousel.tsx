@@ -83,7 +83,7 @@ export default function HeroCarousel({ items, lang }: Props) {
                         <span className="text-xs text-muted font-medium">{item.meta}</span>
                     </div>
 
-                    <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight tracking-tight text-white drop-shadow-sm">
+                    <h2 className="text-3xl md:text-4xl mb-4 leading-tight tracking-tight text-text drop-shadow-sm">
                         {item.title}
                     </h2>
 

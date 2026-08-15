@@ -53,7 +53,7 @@ const t = {
 {matches.length > 0 && (
   <section class:list={['related-videos my-16', className]}>
     <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-3">{t.eyebrow}</p>
-    <h2 class="text-2xl font-serif text-white mb-8">{t.heading}</h2>
+    <h2 class="text-2xl font-serif text-text mb-8">{t.heading}</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       {matches.map((video) => (
@@ -75,7 +75,7 @@ const t = {
               </Pill>
             </div>
 
-            <h3 class="text-lg font-bold text-white leading-snug mb-2">
+            <h3 class="text-lg font-bold text-text leading-snug mb-2">
               <a href={videoPath(video.slug, lang)} class="no-underline text-inherit hover:text-accent transition-colors">
                 {videoTitle(video, lang)}
               </a>

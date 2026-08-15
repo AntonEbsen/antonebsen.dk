@@ -75,7 +75,7 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                                     {course.institution} • {course.ects} ECTS
                                 </span>
                             </div>
-                            <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight pr-12">
+                            <h2 className="text-2xl sm:text-3xl text-text leading-tight pr-12">
                                 {course.title}
                             </h2>
                         </div>
@@ -93,7 +93,7 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                                 {/* Syllabus */}
                                 {course.syllabus && course.syllabus.length > 0 && (
                                     <section>
-                                        <h3 className="text-accent text-[12px] font-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <h3 className="text-accent text-[12px] uppercase tracking-widest mb-4 flex items-center gap-2">
                                             <i className="fa-solid fa-layer-group opacity-50"></i>
                                             {isDa ? 'Pensum & Teknikker' : 'Syllabus & Techniques'}
                                         </h3>
@@ -111,7 +111,7 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                                 {/* Learning Outcomes */}
                                 {course.learningOutcomes && course.learningOutcomes.length > 0 && (
                                     <section>
-                                        <h3 className="text-accent text-[12px] font-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <h3 className="text-accent text-[12px] uppercase tracking-widest mb-4 flex items-center gap-2">
                                             <i className="fa-solid fa-bullseye opacity-50"></i>
                                             {isDa ? 'Læringsmål (Knowledge)' : 'Learning Outcomes'}
                                         </h3>
@@ -129,7 +129,7 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                                 {/* Competencies */}
                                 {course.competencies && course.competencies.length > 0 && (
                                     <section>
-                                        <h3 className="text-accent text-[12px] font-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <h3 className="text-accent text-[12px] uppercase tracking-widest mb-4 flex items-center gap-2">
                                             <i className="fa-solid fa-graduation-cap opacity-50"></i>
                                             {isDa ? 'Kompetencer (Applied Skills)' : 'Competencies'}
                                         </h3>

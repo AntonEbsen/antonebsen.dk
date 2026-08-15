@@ -18,36 +18,36 @@ const progress = Math.min(Math.round((pageCount / targetPages) * 100), 100);
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
   <!-- Countdown -->
-  <div class="bg-slate-900/50 border border-white/10 p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden group hover:border-blue-500/30 transition-colors">
+  <div class="bg-bg/50 border border-white/10 p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden group hover:border-blue-500/30 transition-colors">
     <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
     <div class="relative z-10">
       <div class="flex items-center gap-3 mb-2">
         <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
           <i class="fa-regular fa-clock"></i>
         </div>
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Time Remaining</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-muted">Time Remaining</span>
       </div>
       <div class="flex items-baseline gap-2">
         <span class="text-4xl font-black text-white">{daysLeft}</span>
-        <span class="text-sm font-bold text-slate-400">Days</span>
+        <span class="text-sm font-bold text-muted">Days</span>
       </div>
-      <p class="text-xs text-slate-400 mt-2">Deadline: {deadlineDate.toLocaleDateString('da-DK', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <p class="text-xs text-muted mt-2">Deadline: {deadlineDate.toLocaleDateString('da-DK', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
     </div>
   </div>
 
   <!-- Progress -->
-  <div class="bg-slate-900/50 border border-white/10 p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden group hover:border-green-500/30 transition-colors">
+  <div class="bg-bg/50 border border-white/10 p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden group hover:border-green-500/30 transition-colors">
     <div class="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
     <div class="relative z-10">
       <div class="flex items-center gap-3 mb-2">
         <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
           <i class="fa-solid fa-file-lines"></i>
         </div>
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Draft Status</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-muted">Draft Status</span>
       </div>
       <div class="flex items-baseline gap-2">
         <span class="text-4xl font-black text-white">{pageCount}</span>
-        <span class="text-sm font-bold text-slate-400">/ {targetPages} Pages</span>
+        <span class="text-sm font-bold text-muted">/ {targetPages} Pages</span>
       </div>
       
       <!-- Progress Bar -->
@@ -60,20 +60,20 @@ const progress = Math.min(Math.round((pageCount / targetPages) * 100), 100);
   </div>
 
   <!-- Coffee & Caffeine (Fun Metric) -->
-  <div class="bg-slate-900/50 border border-white/10 p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden group hover:border-amber-500/30 transition-colors">
+  <div class="bg-bg/50 border border-white/10 p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden group hover:border-amber-500/30 transition-colors">
     <div class="absolute inset-0 bg-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
     <div class="relative z-10">
       <div class="flex items-center gap-3 mb-2">
         <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400">
           <i class="fa-solid fa-mug-hot"></i>
         </div>
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Fuel Consumed</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-muted">Fuel Consumed</span>
       </div>
       <div class="flex items-baseline gap-2">
         <span class="text-4xl font-black text-white">{coffeeCount}</span>
-        <span class="text-sm font-bold text-slate-400">Cups</span>
+        <span class="text-sm font-bold text-muted">Cups</span>
       </div>
-      <p class="text-xs text-slate-400 mt-2">Correlation with output: <span class="text-green-400 font-bold">High (r=0.85)</span></p>
+      <p class="text-xs text-muted mt-2">Correlation with output: <span class="text-green-400 font-bold">High (r=0.85)</span></p>
     </div>
   </div>
 </div>

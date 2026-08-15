@@ -131,10 +131,10 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
     }, [specs]);
 
     if (failed) {
-        return <div className="bg-slate-900 border border-white/10 rounded-3xl p-8 text-sm text-slate-400">{t.failed}</div>;
+        return <div className="bg-bg border border-white/10 rounded-3xl p-8 text-sm text-muted">{t.failed}</div>;
     }
     if (!curves || !stats) {
-        return <div className="bg-slate-900 border border-white/10 rounded-3xl p-8 text-sm text-slate-400">{t.loading}</div>;
+        return <div className="bg-bg border border-white/10 rounded-3xl p-8 text-sm text-muted">{t.loading}</div>;
     }
 
     // Read out to a screen reader in place of the canvas. The counts are the point
@@ -184,7 +184,7 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
                 pointStyle: 'circle' as const,
                 // Filled for significant, hollow ring for the rest.
                 pointBackgroundColor: specs.map(s =>
-                    s.significant ? 'rgb(59, 130, 246)' : 'rgba(15, 23, 42, 1)'
+                    s.significant ? 'rgb(59, 130, 246)' : 'rgba(30, 33, 34, 1)'
                 ),
                 pointBorderColor: 'rgb(59, 130, 246)',
                 pointBorderWidth: 1.5,
@@ -206,18 +206,18 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
             x: {
                 grid: { display: false },
                 ticks: { display: false },
-                title: { display: true, text: t.xAxis, color: '#64748b', font: { size: 10 } },
+                title: { display: true, text: t.xAxis, color: '#8E938B', font: { size: 10 } },
             },
             y: {
                 grid: { color: 'rgba(255,255,255,0.05)' },
-                ticks: { color: '#64748b', font: { size: 10 } },
-                title: { display: true, text: t.yAxis, color: '#64748b', font: { size: 10 } },
+                ticks: { color: '#8E938B', font: { size: 10 } },
+                title: { display: true, text: t.yAxis, color: '#8E938B', font: { size: 10 } },
             },
         },
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: 'rgba(15,23,42,0.95)',
+                backgroundColor: 'rgba(30, 33, 34, 0.95)',
                 borderColor: 'rgba(255,255,255,0.1)',
                 borderWidth: 1,
                 displayColors: false,
@@ -240,10 +240,10 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
     const chosen = specs[selected ?? specs.length - 1];
 
     return (
-        <div className="bg-slate-900 border border-white/10 rounded-3xl p-6 md:p-8">
+        <div className="bg-bg border border-white/10 rounded-3xl p-6 md:p-8">
             <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
                 <div>
-                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">{t.index}</label>
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-muted mb-2">{t.index}</label>
                     <div className="flex flex-wrap gap-2">
                         {ORDER.map(k => (
                             <button
@@ -252,7 +252,7 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
                                     index === k
                                         ? 'bg-white/10 text-white border-accent'
-                                        : 'bg-transparent text-slate-400 border-white/5 hover:text-slate-300'
+                                        : 'bg-transparent text-muted border-white/5 hover:text-dim'
                                 }`}
                             >
                                 {t.indices[k]}
@@ -262,20 +262,20 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
                 </div>
                 <div className="flex gap-6 text-right">
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-400">{t.positive}</span>
+                        <span className="block text-[10px] uppercase text-muted">{t.positive}</span>
                         <span className={`text-xl font-bold tabular-nums ${stats.positive === 64 ? 'text-emerald-400' : 'text-white'}`}>
-                            {stats.positive}<span className="text-xs text-slate-400 font-normal"> {t.ofN}</span>
+                            {stats.positive}<span className="text-xs text-muted font-normal"> {t.ofN}</span>
                         </span>
                     </div>
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-400">{t.significant}</span>
+                        <span className="block text-[10px] uppercase text-muted">{t.significant}</span>
                         <span className="text-xl font-bold text-white tabular-nums">
-                            {stats.significant}<span className="text-xs text-slate-400 font-normal"> {t.ofN}</span>
+                            {stats.significant}<span className="text-xs text-muted font-normal"> {t.ofN}</span>
                         </span>
                     </div>
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-400">{t.range}</span>
-                        <span className="text-sm font-bold text-slate-300 tabular-nums">
+                        <span className="block text-[10px] uppercase text-muted">{t.range}</span>
+                        <span className="text-sm font-bold text-dim tabular-nums">
                             {stats.min.toFixed(3)} … {stats.max.toFixed(3)}
                         </span>
                     </div>
@@ -288,7 +288,7 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
 
             {/* Spells out the two encodings, so the distinction does not depend on
                 telling green from grey. */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-4 text-[11px] text-slate-400">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-4 text-[11px] text-muted">
                 <span className="inline-flex items-center gap-2">
                     <span
                         className="inline-block w-3 h-3 rounded-sm bg-emerald-500/55 border-[1.5px] border-emerald-500"
@@ -298,7 +298,7 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
                 </span>
                 <span className="inline-flex items-center gap-2">
                     <span
-                        className="inline-block w-3 h-3 rounded-sm bg-slate-400/30"
+                        className="inline-block w-3 h-3 rounded-sm bg-muted/30"
                         aria-hidden="true"
                     ></span>
                     {t.legendNotSig}
@@ -312,25 +312,25 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
                 </span>
                 <span className="inline-flex items-center gap-2">
                     <span
-                        className="inline-block w-2.5 h-2.5 rounded-full bg-slate-900 border-[1.5px] border-blue-500"
+                        className="inline-block w-2.5 h-2.5 rounded-full bg-bg border-[1.5px] border-blue-500"
                         aria-hidden="true"
                     ></span>
                     {t.legendHollow}
                 </span>
             </div>
 
-            <p className="text-[11px] text-slate-400 mb-6">{t.hint}</p>
+            <p className="text-[11px] text-muted mb-6">{t.hint}</p>
 
             <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-4">
-                <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-3">{t.readout}</p>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-muted mb-3">{t.readout}</p>
                 <div className="flex flex-wrap gap-x-8 gap-y-3 items-baseline mb-4">
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-400">{t.coefficient}</span>
+                        <span className="block text-[10px] uppercase text-muted">{t.coefficient}</span>
                         <span className="text-2xl font-bold text-white tabular-nums">{chosen.coefficient.toFixed(4)}</span>
                     </div>
                     <div>
-                        <span className="block text-[10px] uppercase text-slate-400">{t.ci}</span>
-                        <span className="text-sm font-bold text-slate-300 tabular-nums">
+                        <span className="block text-[10px] uppercase text-muted">{t.ci}</span>
+                        <span className="text-sm font-bold text-dim tabular-nums">
                             {chosen.lower_ci.toFixed(4)} … {chosen.upper_ci.toFixed(4)}
                         </span>
                     </div>
@@ -338,19 +338,19 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
                         className={`text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border ${
                             chosen.significant
                                 ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                                : 'text-slate-400 border-white/10 bg-white/5'
+                                : 'text-muted border-white/10 bg-white/5'
                         }`}
                     >
                         {chosen.significant ? t.sig : t.notSig}
                     </span>
                 </div>
-                <span className="block text-[10px] uppercase text-slate-400 mb-2">{t.controlsIn}</span>
+                <span className="block text-[10px] uppercase text-muted mb-2">{t.controlsIn}</span>
                 {chosen.controls.length === 0 ? (
-                    <span className="text-xs text-slate-400 italic">{t.noControls}</span>
+                    <span className="text-xs text-muted italic">{t.noControls}</span>
                 ) : (
                     <div className="flex flex-wrap gap-2">
                         {chosen.controls.map(c => (
-                            <span key={c} className="text-[11px] px-2 py-1 rounded bg-white/5 border border-white/10 text-slate-300">
+                            <span key={c} className="text-[11px] px-2 py-1 rounded bg-white/5 border border-white/10 text-dim">
                                 {CONTROL_LABELS[c]?.[lang] ?? c}
                             </span>
                         ))}
@@ -361,7 +361,7 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
             {index === 'KOFSoGI' && (
                 <p className="text-xs text-emerald-400/90 leading-relaxed mb-3">{t.allPositive}</p>
             )}
-            <p className="text-[11px] text-slate-400 leading-relaxed">{t.caption}</p>
+            <p className="text-[11px] text-muted leading-relaxed">{t.caption}</p>
         </div>
     );
 }

@@ -91,19 +91,19 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                     className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex flex-col"
                 >
                     {/* Header */}
-                    <div className="bg-slate-900/50 border-b border-white/10 p-4 flex items-center justify-between px-8">
+                    <div className="bg-bg/50 border-b border-white/10 p-4 flex items-center justify-between px-8">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-xl bg-accent text-black flex items-center justify-center text-lg font-black">
                                 <i className="fa-brands fa-python"></i>
                             </div>
                             <div>
-                                <h2 className="text-white font-bold leading-none">{t.title}</h2>
-                                <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">{t.subtitle}</p>
+                                <h2 className="text-text font-bold leading-none">{t.title}</h2>
+                                <p className="text-[10px] text-muted uppercase tracking-widest mt-1">{t.subtitle}</p>
                             </div>
                         </div>
 
                         <div className="hidden md:block bg-white/5 px-4 py-2 rounded-lg border border-white/5 max-w-md">
-                            <p className="text-[10px] text-slate-400 font-serif italic leading-tight">
+                            <p className="text-[10px] text-muted font-serif italic leading-tight">
                                 {t.hint}
                             </p>
                         </div>
@@ -113,7 +113,7 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                                 href={labUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-2"
+                                className="text-xs text-muted hover:text-white transition-colors flex items-center gap-2"
                             >
                                 {t.external} <i className="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                             </a>
@@ -129,9 +129,9 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                     {/* Iframe Area */}
                     <div className="flex-grow relative bg-[#1e1e1e]">
                         {loading && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 z-10">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-bg z-10">
                                 <div className="w-16 h-16 border-4 border-accent/20 border-t-accent rounded-full animate-spin mb-4"></div>
-                                <p className="text-slate-400 font-mono text-sm animate-pulse">{t.loading}</p>
+                                <p className="text-muted font-mono text-sm animate-pulse">{t.loading}</p>
                             </div>
                         )}
                         <iframe

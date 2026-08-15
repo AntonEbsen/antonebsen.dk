@@ -121,7 +121,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                 <i className="fa-solid fa-user-secret text-xl"></i>
                             </div>
                             <div>
-                                <h3 className="font-bold text-white text-sm">The Reviewer</h3>
+                                <h3 className="font-bold text-text text-sm">The Reviewer</h3>
                                 <p className="text-[10px] text-muted uppercase tracking-widest">Constructive Critic</p>
                             </div>
                         </div>

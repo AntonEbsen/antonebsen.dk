@@ -14,6 +14,33 @@
 
 @layer components {
 
+  /* === LINKS INSIDE RUNNING TEXT ===
+     A link in a paragraph must be distinguishable from the text around it by
+     something other than colour (WCAG 1.4.1), or by 3:1 against it — and on
+     this palette the second is not reachable: accent-light against text-muted
+     is 1.26:1, terracotta against it barely better.
+
+     axe's `link-in-text-block` is quiet while a link and its surrounding text
+     are the *same* colour, because then colour is not the differentiator and
+     there is nothing to be insufficient. Recolouring the neutrals nudged
+     several links from identical to merely-similar, which is what turned the
+     rule on across /team and the seminar pages.
+
+     .prose-archive already underlines its links; this is the same rule for
+     prose written outside the blog. Excludes anything shaped like a button —
+     those carry their own affordance. */
+  p a:not([class*="btn"]):not([class*="rounded-full"]),
+  li a:not([class*="btn"]):not([class*="rounded-full"]) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgb(var(--accent-rgb) / 0.4);
+  }
+
+  p a:hover,
+  li a:hover {
+    text-decoration-color: var(--accent);
+  }
+
   /* The small uppercase label above a heading.
      It needs saying once, in one place, because reset.css now sets the display
      face on h1–h4 — and several eyebrows are marked up as headings, so they

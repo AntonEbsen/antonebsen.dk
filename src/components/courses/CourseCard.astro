@@ -67,7 +67,7 @@ const getFreshness = (period?: string) => {
     if (year === 24) {
         return { label: 'Stable', class: 'bg-blue-500 shadow-blue-500/50', icon: 'fa-anchor' };
     }
-    return { label: 'Deep Rooted', class: 'bg-slate-500 shadow-slate-500/50', icon: 'fa-tree' };
+    return { label: 'Deep Rooted', class: 'bg-muted shadow-muted/50', icon: 'fa-tree' };
 };
 
 const freshness = getFreshness(period);
@@ -128,7 +128,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
                                 </span>
                             )}
                         </div>
-                        <h3 class="font-bold text-lg leading-tight text-white mb-1 group-hover/details:text-accent transition-colors">{title}</h3>
+                        <h3 class="font-bold text-lg leading-tight text-text mb-1 group-hover/details:text-accent transition-colors">{title}</h3>
                         <p class="text-xs text-dim font-mono">{institution}</p>
                     </div>
                 </div>

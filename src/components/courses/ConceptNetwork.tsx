@@ -214,7 +214,7 @@ const ConceptNetwork: React.FC<ConceptNetworkProps> = ({ courses, lang }) => {
 
                 {/* Legend/Info Overlay */}
                 <div className="absolute bottom-4 left-4 flex flex-col gap-1">
-                    <h3 className="text-accent text-[12px] font-black uppercase tracking-widest flex items-center gap-2">
+                    <h3 className="text-accent text-[12px] uppercase tracking-widest flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                         Den Røde Tråd
                     </h3>

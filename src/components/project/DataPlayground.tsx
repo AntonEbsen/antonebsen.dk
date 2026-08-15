@@ -162,13 +162,13 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
     };
 
     return (
-        <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="bg-slate-50 border-b border-slate-200 px-4 py-2 flex justify-between items-center">
-                <span className="font-mono text-xs font-bold text-slate-600 flex items-center gap-2">
+        <div className="rounded-xl border border-rule bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-card border-b border-rule px-4 py-2 flex justify-between items-center">
+                <span className="font-mono text-xs font-bold text-muted flex items-center gap-2">
                     <i className="fa-solid fa-database text-blue-500"></i>
                     Data Playground (DuckDB)
                 </span>
-                <span className="text-[10px] text-slate-600">
+                <span className="text-[10px] text-muted">
                     {dataAvailable === false
                         ? 'Dataset not published yet'
                         : initializing ? 'Starting engine…' : ready ? 'Ready' : 'Idle — run a query to start'}
@@ -177,22 +177,22 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
 
             {dataAvailable === false && (
                 <div className="p-6 text-center">
-                    <i className="fa-solid fa-database text-slate-300 text-2xl mb-3"></i>
-                    <p className="text-sm font-bold text-slate-600 mb-1">The replication data isn't published yet</p>
-                    <p className="text-xs text-slate-600 max-w-md mx-auto">
+                    <i className="fa-solid fa-database text-dim text-2xl mb-3"></i>
+                    <p className="text-sm font-bold text-muted mb-1">The replication data isn't published yet</p>
+                    <p className="text-xs text-muted max-w-md mx-auto">
                         This playground runs SQL against the project's own dataset in your browser.
-                        It will light up as soon as <code className="font-mono text-slate-600">{dataUrl.split('/').pop()}</code> is available.
+                        It will light up as soon as <code className="font-mono text-muted">{dataUrl.split('/').pop()}</code> is available.
                     </p>
                 </div>
             )}
 
             {/* AI Natural Language Input */}
-            <div className="p-4 bg-slate-900 border-b border-slate-700" hidden={dataAvailable === false}>
+            <div className="p-4 bg-bg border-b border-rule-strong" hidden={dataAvailable === false}>
                 <div className="flex gap-2">
                     <input
                         type="text"
                         placeholder="✨ Ask the data in plain English…"
-                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                        className="flex-1 bg-card border border-rule-strong rounded-lg px-3 py-1.5 text-xs text-text placeholder-muted focus:outline-none focus:border-blue-500 transition-colors"
                         value={nlQuery}
                         onChange={(e) => setNlQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && generateSql()}
@@ -212,7 +212,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
 
             <div className="p-0" hidden={dataAvailable === false}>
                 <textarea
-                    className="w-full h-24 p-4 font-mono text-sm bg-slate-950 text-green-400 focus:outline-none resize-none"
+                    className="w-full h-24 p-4 font-mono text-sm bg-sunken text-green-400 focus:outline-none resize-none"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     spellCheck={false}
@@ -220,7 +220,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 />
             </div>
 
-            <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex justify-end" hidden={dataAvailable === false}>
+            <div className="px-4 py-2 bg-card border-t border-rule flex justify-end" hidden={dataAvailable === false}>
                 <button
                     onClick={runQuery}
                     disabled={initializing}
@@ -239,20 +239,20 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
             )}
 
             {results.length > 0 && (
-                <div className="overflow-x-auto max-h-60 border-t border-slate-100">
+                <div className="overflow-x-auto max-h-60 border-t border-rule">
                     <table className="w-full text-xs text-left">
-                        <thead className="bg-slate-50 text-slate-600 font-bold sticky top-0">
+                        <thead className="bg-card text-muted font-bold sticky top-0">
                             <tr>
                                 {Object.keys(results[0]).map(key => (
-                                    <th key={key} className="px-4 py-2 border-b border-slate-200 whitespace-nowrap">{key}</th>
+                                    <th key={key} className="px-4 py-2 border-b border-rule whitespace-nowrap">{key}</th>
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-text">
                             {results.map((row, i) => (
-                                <tr key={i} className="hover:bg-slate-50">
+                                <tr key={i} className="hover:bg-card">
                                     {Object.values(row).map((val: any, j) => (
-                                        <td key={j} className="px-4 py-2 whitespace-nowrap font-mono text-slate-600">{String(val)}</td>
+                                        <td key={j} className="px-4 py-2 whitespace-nowrap font-mono text-muted">{String(val)}</td>
                                     ))}
                                 </tr>
                             ))}

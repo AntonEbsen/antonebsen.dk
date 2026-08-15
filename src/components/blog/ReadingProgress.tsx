@@ -27,6 +27,19 @@ export default function ReadingProgress() {
             if (!reachedEnd && scrolled >= 95) {
                 reachedEnd = true;
                 unlockAchievement('explicit');
+
+                // Lectio difficilior: read through with the page still set in
+                // blackletter. The class is owned by core/Scriptorium.astro.
+                if (document.body.classList.contains('scriptorium-active')) {
+                    unlockAchievement('lectio_difficilior');
+                }
+
+                // Reaching the end is a repeatable fact about this page load,
+                // where 'explicit' is a one-off fact about the visitor. The
+                // Quire needs the former — it has to count a third post read
+                // long after 'explicit' stopped firing — so it gets its own
+                // signal rather than listening for the unlock event.
+                window.dispatchEvent(new CustomEvent('blog:reached-end'));
             }
         };
 

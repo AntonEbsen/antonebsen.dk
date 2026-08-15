@@ -66,7 +66,7 @@ export default function EcosystemGraph() {
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2 block">
                     Interactive Map
                 </span>
-                <h2 className="text-2xl font-black text-white mb-2">Explore the Ecosystem</h2>
+                <h2 className="text-2xl text-text mb-2">Explore the Ecosystem</h2>
                 <div className="flex gap-4 mt-4">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />

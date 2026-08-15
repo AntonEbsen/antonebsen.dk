@@ -17,7 +17,7 @@ export default function TaylorRuleChart() {
             {/* Header */}
             <div className="flex justify-between items-start mb-6 px-2">
                 <div>
-                    <h3 className="text-white font-bold">Taylor Rule vs. Actual Rate</h3>
+                    <h3 className="text-text font-bold">Taylor Rule vs. Actual Rate</h3>
                     <p className="text-xs text-dim mt-1">Estimating optimal policy interest rates based on Inflation & Output Gap.</p>
                 </div>
                 <div className="flex gap-4 text-xs">

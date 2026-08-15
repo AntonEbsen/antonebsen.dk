@@ -53,7 +53,7 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
             {
                 label: isDa ? 'Storbritannien' : 'United Kingdom',
                 data: [2600, 3200, 4500, 6800, 7500, 8200, 11500, 21000, 29000, 42000],
-                borderColor: '#94a3b8', // Silver/Slate
+                borderColor: '#8E938B', // Stone
                 backgroundColor: 'rgba(148, 163, 184, 0.1)',
                 fill: true,
                 tension: 0.4
@@ -104,7 +104,7 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 my-16">
             <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.subtitle}>
                 <div className="mb-6">
-                    <h3 className="text-xl font-black text-white uppercase italic tracking-tight mb-1">{t.title}</h3>
+                    <h3 className="text-xl text-text uppercase italic tracking-tight mb-1">{t.title}</h3>
                     <p className="text-[10px] uppercase font-bold text-accent tracking-[0.2em]">{t.subtitle}</p>
                 </div>
                 <div className="h-[300px]">
@@ -115,7 +115,7 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
 
             <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.tfrSubtitle}>
                 <div className="mb-6">
-                    <h3 className="text-xl font-black text-white uppercase italic tracking-tight mb-1">{t.tfrTitle}</h3>
+                    <h3 className="text-xl text-text uppercase italic tracking-tight mb-1">{t.tfrTitle}</h3>
                     <p className="text-[10px] uppercase font-bold text-accent tracking-[0.2em]">{t.tfrSubtitle}</p>
                 </div>
                 <div className="h-[300px]">
