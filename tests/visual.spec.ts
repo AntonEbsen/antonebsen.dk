@@ -24,6 +24,31 @@ async function settleReveals(page: Page) {
         window.scrollTo(0, 0);
         await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     });
+
+    await settleOrnaments(page);
+}
+
+/**
+ * Put the drawn ornaments in their finished state.
+ *
+ * toHaveScreenshot disables animations, which finishes CSS *animations* — but
+ * TerrainRule draws via a scripted stroke-dashoffset and a class the observer
+ * adds on approach, and ContourField staggers its rings by index. Both settle
+ * on their own; forcing them removes the timing race that made the homepage
+ * shot flaky rather than failing.
+ */
+async function settleOrnaments(page: Page) {
+    await page.evaluate(() => {
+        for (const rule of document.querySelectorAll('.terrain-rule')) {
+            rule.classList.add('is-drawn');
+            const line = rule.querySelector<SVGPathElement>('.terrain-rule__line');
+            if (line) line.style.strokeDashoffset = '0';
+        }
+        for (const ring of document.querySelectorAll<SVGPathElement>('.contour-field path')) {
+            ring.style.animation = 'none';
+            ring.style.opacity = '1';
+        }
+    });
 }
 
 test.describe('Visual Regression', () => {

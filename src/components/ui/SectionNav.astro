@@ -1,0 +1,193 @@
+---
+/**
+ * A sticky section index that knows where you are.
+ *
+ * Three Camino pages each carried a hand-copied `.sticky-nav` block — same CSS,
+ * same markup, no active-section tracking in any of them — and the longest page
+ * on the site, ProjectDetailPage at 1409 lines with fifteen headings, had no
+ * index at all. A list of anchors that cannot tell you which one you are
+ * currently reading is a table of contents with the useful half missing.
+ *
+ * The active marker is a rule in the margin rather than a filled pill: on a
+ * survey sheet the thing that marks your position is a line, not a badge.
+ */
+interface Item {
+  /** The id of the section this points at, without the '#'. */
+  id: string;
+  label: string;
+  /** Optional Font Awesome class, matching the Camino pages' existing style. */
+  icon?: string;
+}
+
+interface Props {
+  title: string;
+  items: Item[];
+  /**
+   * `panel` draws its own glass card, as the Camino sidebars did. `bare` sits
+   * the list directly in a sidebar that already has surfaces of its own —
+   * ProjectDetailPage stacks it above a status card, and two panels in a column
+   * read as a mistake.
+   */
+  variant?: 'panel' | 'bare';
+  class?: string;
+}
+
+const { title, items, variant = 'panel', class: className = '' } = Astro.props;
+---
+
+<nav class:list={['section-nav', `section-nav--${variant}`, className]} aria-label={title}>
+  <h2 class="eyebrow section-nav__title">{title}</h2>
+  <ul class="section-nav__list" role="list">
+    {items.map((item) => (
+      <li>
+        <a href={`#${item.id}`} data-section-link={item.id}>
+          {item.icon && <i class={item.icon} aria-hidden="true"></i>}
+          <span>{item.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  /*
+    One observer for every nav on the page.
+
+    The rootMargin is the whole trick. With a symmetric root, the section
+    entering from the bottom competes with the one you are actually reading, and
+    the marker flickers between them. Collapsing the viewport to a band near the
+    top means only the heading you have reached is ever intersecting.
+  */
+  const navs = document.querySelectorAll<HTMLElement>('.section-nav');
+
+  for (const nav of navs) {
+    const links = Array.from(
+      nav.querySelectorAll<HTMLAnchorElement>('[data-section-link]')
+    );
+
+    const sections = links
+      .map((link) => document.getElementById(link.dataset.sectionLink!))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length < 2) continue;
+
+    const setActive = (id: string) => {
+      for (const link of links) {
+        const on = link.dataset.sectionLink === id;
+        link.classList.toggle('is-current', on);
+        // aria-current tells a screen reader the same thing the rule tells a
+        // sighted reader. 'location' is the value for "where you are in a set",
+        // as opposed to 'page' for the current page in a site nav.
+        if (on) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      }
+    };
+
+    const seen = new Map<string, boolean>();
+
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) seen.set(entry.target.id, entry.isIntersecting);
+
+        // Document order, so scrolling up lands on the right one rather than
+        // whichever entry the callback happened to report last.
+        const current = sections.find((s) => seen.get(s.id));
+        if (current) setActive(current.id);
+      },
+      { rootMargin: '0px 0px -70% 0px', threshold: 0 }
+    );
+
+    for (const section of sections) spy.observe(section);
+
+    // Before the first scroll nothing has intersected, and an index with no
+    // position marked looks broken rather than merely unscrolled.
+    setActive(sections[0].id);
+  }
+</script>
+
+<style>
+  .section-nav {
+    position: sticky;
+    /* Clears the sticky navbar rather than sliding under it. */
+    top: 6.25rem;
+  }
+
+  .section-nav--panel {
+    padding: var(--space-md);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-xl);
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Bare still needs the spine the markers hang off, or the active rule looks
+     like it is floating unattached. */
+  .section-nav--bare .section-nav__list {
+    border-left: 1px solid var(--rule);
+  }
+
+  .section-nav--bare a {
+    margin-left: -1px;
+  }
+
+  .section-nav__title {
+    margin: 0 0 var(--space-sm);
+  }
+
+  .section-nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .section-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0 0.6rem 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: var(--step--1);
+    line-height: 1.35;
+    /* The marker lives here, transparent until the section is the current one,
+       so nothing shifts sideways when it appears. */
+    border-left: 2px solid transparent;
+    transition:
+      color var(--dur-quick) var(--ease-out),
+      border-color var(--dur-quick) var(--ease-out);
+  }
+
+  .section-nav a:hover {
+    color: var(--text);
+  }
+
+  .section-nav a.is-current {
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+
+  .section-nav i {
+    width: 1rem;
+    text-align: center;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  .section-nav a.is-current i {
+    opacity: 1;
+  }
+
+  /* Below the breakpoint the sidebar stacks above the content, where a sticky
+     index would just be a list in the way. The headings are right there. */
+  @media (max-width: 980px) {
+    .section-nav {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-nav a {
+      transition: none;
+    }
+  }
+</style>

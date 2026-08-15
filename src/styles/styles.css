@@ -14,6 +14,29 @@
 
 @layer components {
 
+  /* === FOCUS ===
+     Six focus-visible rules existed across the whole site, so almost every
+     interactive element fell back to the user agent's own outline — a thin
+     ring tuned for white backgrounds, drawn against #17191A. Keyboard
+     navigation here was close to invisible.
+
+     :focus-visible rather than :focus, so a mouse click does not leave a ring
+     behind. The offset matters as much as the colour: drawn tight against a
+     dark control the outline reads as a border rather than as focus. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Inputs already carry their own shape, so a rounded ring around a square
+     field looks like a mistake. Let them keep their radius. */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    border-radius: inherit;
+  }
+
   /* === LINKS INSIDE RUNNING TEXT ===
      A link in a paragraph must be distinguishable from the text around it by
      something other than colour (WCAG 1.4.1), or by 3:1 against it — and on

@@ -15,12 +15,20 @@
 interface Props {
   /** Vertical space after the section. `none` hands spacing back to the caller. */
   rhythm?: 'none' | 'tight' | 'default' | 'loose';
+  /**
+   * Settle into view on scroll. On by default — 58 of 79 templates had no
+   * motion at all, and opting in one file at a time is what left it that way.
+   * Turn it off for a section that must be painted immediately: anything
+   * inside a modal, a dialog, or a container that is display:none at load,
+   * where the observer may never fire.
+   */
+  reveal?: boolean;
   class?: string;
   id?: string;
   [key: string]: any;
 }
 
-const { rhythm = 'default', class: className, id, ...rest } = Astro.props;
+const { rhythm = 'default', reveal = true, class: className, id, ...rest } = Astro.props;
 
 const rhythms = {
   none: '',
@@ -30,6 +38,10 @@ const rhythms = {
 };
 ---
 
-<section id={id} class:list={[rhythms[rhythm], className]} {...rest}>
+<section
+  id={id}
+  class:list={[rhythms[rhythm], reveal && 'animate-on-scroll', className]}
+  {...rest}
+>
   <slot />
 </section>

@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
+import SectionNav from '@components/ui/SectionNav.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Pill from '@components/ui/Pill.astro';
@@ -455,6 +456,25 @@ const scholarlyJsonLd = {
     ...(project.bibliography?.length ? { citation: project.bibliography } : {}),
     ...(project.techStack?.length ? { keywords: project.techStack.map(tech => tech.name).join(', ') } : {})
 };
+
+/*
+  The contents list, built here rather than inline so the conditional entries
+  stay readable and SectionNav can spy on exactly the sections that exist. The
+  markup version had the same conditions spread across eight lines of nested
+  ternaries inside <li> tags.
+*/
+const tocItems = [
+    { id: 'executive-summary', label: project.ui.execSummary },
+    { id: 'methodology', label: project.ui.methodology },
+    { id: 'key-findings', label: project.ui.findings },
+    ...(project.robustness && !project.videoSeries
+        ? [{ id: 'robustness', label: lang === 'da' ? 'Robusthed' : 'Robustness' }] : []),
+    ...(project.videoSeries ? [{ id: 'video-series', label: 'Video Masterclass' }] : []),
+    ...(project.videoUrl ? [{ id: 'video-abstract', label: t.videoAbstract }] : []),
+    ...(gallery && gallery.length > 0 ? [{ id: 'gallery', label: t.gallery }] : []),
+    ...(project.extraToc?.map(entry => ({ id: entry.href.replace(/^#/, ''), label: entry.label })) ?? []),
+    { id: 'downloads', label: t.downloadsData },
+];
 ---
 
 <Layout 
@@ -572,22 +592,7 @@ const scholarlyJsonLd = {
       <!-- LEFT: Floating TOC -->
       <aside class="hidden lg:block w-64 shrink-0 relative academic-section transition-opacity duration-500">
           <div class="sticky top-24 space-y-8">
-              <nav class="toc-nav">
-                  <h3 class="text-xs font-bold uppercase tracking-widest text-muted mb-4 pl-4 border-l-2 border-transparent">{t.contents}</h3>
-                  <ul class="space-y-1 text-sm border-l-2 border-white/5">
-                      <li><a href="#executive-summary" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.execSummary}</a></li>
-                      <li><a href="#methodology" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.methodology}</a></li>
-                      <li><a href="#key-findings" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{project.ui.findings}</a></li>
-                      {project.robustness && !project.videoSeries && <li><a href="#robustness" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{lang === 'da' ? 'Robusthed' : 'Robustness'}</a></li>}
-                      {project.videoSeries && <li><a href="#video-series" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{lang === 'da' ? 'Video Masterclass' : 'Video Masterclass'}</a></li>}
-                      {project.videoUrl && <li><a href="#video-abstract" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.videoAbstract}</a></li>}
-                      {gallery && gallery.length > 0 && <li><a href="#gallery" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.gallery}</a></li>}
-                      {project.extraToc?.map(entry => (
-                          <li><a href={entry.href} class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{entry.label}</a></li>
-                      ))}
-                      <li><a href="#downloads" class="block pl-4 py-1 text-muted hover:text-accent hover:border-l-2 hover:border-accent -ml-[2px] transition-all">{t.downloadsData}</a></li>
-                  </ul>
-              </nav>
+              <SectionNav title={t.contents} items={tocItems} variant="bare" class="!static" />
               
               <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-sm">
                   <p class="text-xs text-muted uppercase font-bold mb-2">{t.projectStatus}</p>
