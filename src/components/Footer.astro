@@ -11,13 +11,13 @@ const notesUrl = isEn ? '/en/notes' : isDe ? '/de/notes' : '/notes';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-[#101213] border-t border-glass-border text-muted mt-20 relative pb-5 before:content-[''] before:absolute before:-top-px before:left-[20%] before:right-[20%] before:h-px before:bg-[radial-gradient(circle,var(--accent)_0%,transparent_100%)] before:" role="contentinfo">
+<footer class="bg-sunken border-t border-glass-border text-muted mt-20 relative pb-5 before:content-[''] before:absolute before:-top-px before:left-[20%] before:right-[20%] before:h-px before:bg-[radial-gradient(circle,var(--accent)_0%,transparent_100%)] before:" role="contentinfo">
   <div class="max-w-[1200px] mx-auto px-5 py-7">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.15fr] gap-6 items-start pb-5 border-b border-glass-border">
       <!-- Brand / kort pitch -->
       <section class="flex flex-col" aria-label="Om siden">
-        <h2 class="text-lg m-0 mb-2 leading-tight font-bold text-white">{t('footer.brand.title')}</h2>
+        <h2 class="text-lg m-0 mb-2 leading-tight font-bold text-text">{t('footer.brand.title')}</h2>
         <p class="m-0 text-white/80 text-[14px] leading-relaxed">
           {t('footer.brand.text')}
         </p>
@@ -34,7 +34,7 @@ const year = new Date().getFullYear();
 
       <!-- Navigation -->
       <nav class="flex flex-col" aria-label="Footer navigation">
-        <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.links')}</h3>
+        <h3 class="text-[13px] tracking-widest uppercase mb-4 text-accent">{t('footer.col.links')}</h3>
         <ul class="list-none m-0 p-0">
           {navItems.map(item => (
             <li class="my-2"><a href={item.url} class="text-text no-underline hover:underline">{item.label}</a></li>
@@ -44,7 +44,7 @@ const year = new Date().getFullYear();
 
       <!-- Udvalgte sider -->
       <nav class="flex flex-col" aria-label="Udvalgte sider">
-        <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.selected')}</h3>
+        <h3 class="text-[13px] tracking-widest uppercase mb-4 text-accent">{t('footer.col.selected')}</h3>
         <ul class="list-none m-0 p-0">
             <li class="my-2"><a href={notesUrl} class="text-accent no-underline hover:underline font-semibold">{isEn ? "Personal Notes →" : isDe ? "Persönliche Notizen →" : "Personlige noter →"}</a></li>
             {/* No /de/team, so German goes to English rather than to the Danish
@@ -61,7 +61,7 @@ const year = new Date().getFullYear();
 
       <!-- Kontakt + SoMe -->
       <section class="flex flex-col" aria-label="Kontakt og profiler">
-        <h3 class="text-[13px] tracking-widest uppercase mb-4 font-extrabold text-accent">{t('footer.col.contact')}</h3>
+        <h3 class="text-[13px] tracking-widest uppercase mb-4 text-accent">{t('footer.col.contact')}</h3>
 
         <address class="not-italic text-[14px] text-white/90">
           <div class="mt-2.5 first:mt-0">

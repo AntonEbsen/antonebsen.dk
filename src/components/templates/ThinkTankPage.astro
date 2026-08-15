@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -19,10 +20,6 @@ const { lang, content } = Astro.props;
       margin: 24px auto;
       padding: 0 16px 32px;
     }
-    .hero-card {
-        padding: 48px;
-        margin-bottom: 32px;
-    }
     .system-section {
         margin-bottom: 48px;
     }
@@ -38,17 +35,16 @@ const { lang, content } = Astro.props;
         opacity: 0.9;
     }
     @media (max-width: 768px) {
-      .hero-card { padding: 32px 24px; }
     }
   </style>
 
   <main class="think-tank-wrap">
     <Section>
-      <Card variant="glass" class="hero-card">
-        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
-        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
-        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
-      </Card>
+      <PageHeader
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        lead={content.hero.text}
+      />
     </Section>
 
     {content.sections.map((section: any) => (

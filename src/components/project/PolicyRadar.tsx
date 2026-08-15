@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface RadarData {
     area: string;
@@ -139,7 +140,7 @@ const PolicyRadar: React.FC<Props> = ({ data, lang }) => {
                                 x={x}
                                 y={y}
                                 textAnchor="middle"
-                                className="fill-slate-400 text-[10px] font-bold uppercase tracking-wider font-sans"
+                                className="fill-muted text-[10px] font-bold uppercase tracking-wider font-sans"
                                 dominantBaseline="middle"
                             >
                                 {item.area}
@@ -166,7 +167,7 @@ const PolicyRadar: React.FC<Props> = ({ data, lang }) => {
             </div>
 
             <div className="absolute bottom-6 right-8 text-right">
-                <p className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-1">
+                <p className="text-[8px] uppercase tracking-widest text-muted font-bold mb-1">
                     {lang === 'da' ? 'Analytisk overførselsscore' : 'Analytical Transfer Score'}
                 </p>
                 <div className="flex justify-end gap-1">

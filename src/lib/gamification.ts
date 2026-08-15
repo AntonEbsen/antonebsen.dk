@@ -56,11 +56,16 @@ export const ACHIEVEMENTS: Achievement[] = [
     { id: 'gloss',            icon: 'fa-solid fa-note-sticky',       xp: 75  },
     { id: 'visitation',       icon: 'fa-solid fa-clipboard-check',   xp: 150 },
     { id: 'explicit',         icon: 'fa-solid fa-bookmark',          xp: 150 },
+    { id: 'quire',            icon: 'fa-solid fa-layer-group',       xp: 250 },
+    { id: 'collatio',         icon: 'fa-solid fa-table-columns',     xp: 150 },
+    { id: 'auscultatio',      icon: 'fa-solid fa-headphones',        xp: 100 },
+    { id: 'vacat',            icon: 'fa-solid fa-strikethrough',     xp: 150 },
 
     // The models — changing an assumption and watching the answer move.
     { id: 'assize',           icon: 'fa-solid fa-sliders',           xp: 150 },
     { id: 'variorum',         icon: 'fa-solid fa-chart-simple',      xp: 200 },
     { id: 'stemma',           icon: 'fa-solid fa-diagram-project',   xp: 100 },
+    { id: 'contra',           icon: 'fa-solid fa-right-left',        xp: 250 },
 
     // Leaving a trace in the record.
     { id: 'attestation',      icon: 'fa-solid fa-signature',         xp: 250 },
@@ -69,38 +74,60 @@ export const ACHIEVEMENTS: Achievement[] = [
     // Hidden, and the pilgrimage.
     { id: 'watermark',        icon: 'fa-solid fa-droplet',           xp: 500 },
     { id: 'pilgrims_burden',  icon: 'fa-solid fa-weight-hanging',    xp: 200 },
+    { id: 'compostela',       icon: 'fa-solid fa-person-hiking',     xp: 200 },
 
     // Things built to be found, rather than hooks onto what already existed.
     { id: 'sortetryk',        icon: 'fa-solid fa-stamp',             xp: 300 },
     { id: 'anathema',         icon: 'fa-solid fa-hand-fist',         xp: 300 },
     { id: 'manicule',         icon: 'fa-solid fa-hand-point-right',  xp: 150 },
     { id: 'sortes',           icon: 'fa-solid fa-dice',              xp: 150 },
+    { id: 'quietus',          icon: 'fa-solid fa-file-circle-check', xp: 300 },
+
+    // Compounds. These have no trigger of their own — they are earned by doing
+    // two things the book already records, and are resolved from stored state by
+    // `checkCompoundAchievements` below. Nothing new had to be built for them.
+    { id: 'lectio_difficilior', icon: 'fa-solid fa-glasses',         xp: 300 },
+    { id: 'absolutio',        icon: 'fa-solid fa-hands-praying',     xp: 250 },
+    { id: 'brought_forward',  icon: 'fa-solid fa-angles-right',      xp: 200 },
 
     // Not rendered until earned — see `hidden` above.
     { id: 'apocryphon',       icon: 'fa-solid fa-key',               xp: 500, hidden: true }
 ];
 
 /**
- * Marks required for each guild rank (Apprentice … Chancellor of the Exchequer).
+ * There is deliberately no entry anywhere near /modgang-og-maalrettethed.
  *
- * Explicit rather than a divisor. The whole ledger is worth 7,091 marks, so the
+ * That page is an account of childhood epilepsy, brain damage and dyslexia. A
+ * wax seal sliding in over it, congratulating the reader for having finished,
+ * would be the one place on this site where the joke is actively wrong. Leave
+ * it unhooked.
+ */
+
+/**
+ * Marks required for each guild rank (Apprentice … Historiographer Royal).
+ *
+ * Explicit rather than a divisor. The whole ledger is worth 9,241 marks, so the
  * original `Math.floor(xp / 1000) + 1` topped out well below the end of the list
  * and the last rank was unreachable — nobody could ever see it.
  *
  * `void_walker` alone is 666 of those marks and requires finding a 404, so the
- * ceiling for a visitor who never does is 6,425: the second-highest rank is
+ * ceiling for a visitor who never does is 8,575: the second-highest rank is
  * attainable without it, the highest deliberately is not. That invariant is
  * asserted in src/i18n/ledger.test.ts, and it constrains the top threshold to
- * the range (6425, 7091] — re-check it if any entry's marks change.
+ * the range (8575, 9241] — re-check it if any entry's marks change.
  *
  * Thresholds are only ever appended to. Raising an existing one would demote
  * returning visitors, since `getGameState` recomputes rank from stored marks —
  * which is why adding entries adds a rank rather than restretching the ladder.
+ * The ninth was appended for exactly that reason: the ten entries added 2,150
+ * marks, which pushed the no-404 ceiling past the old top threshold of 6,600
+ * and would otherwise have handed the final rank out for free.
  *
  * The ladder turns at the end: apprentice through the guild, then the treasury,
- * and finally the keeper of the records — which is what a ledger is for.
+ * then the keeper of the records — which is what a ledger is for — and last the
+ * one who writes history out of it, which is what the rest of the site is.
  */
-export const RANK_THRESHOLDS = [0, 400, 1000, 1900, 2800, 3900, 5200, 6600];
+export const RANK_THRESHOLDS = [0, 400, 1000, 1900, 2800, 3900, 5200, 6600, 8800];
 
 /** 1-based rank for a given mark total, clamped to the table. */
 export function rankFor(xp: number): number {
@@ -201,6 +228,27 @@ export function getGameState(): GameState {
     }
 }
 
+/**
+ * Discharge the account.
+ *
+ * Exported rather than letting the ledger component reach for the key itself:
+ * STORAGE_KEY appears in exactly one other place (the is:inline pre-paint pass,
+ * which cannot import), and a third copy is how they drift apart.
+ *
+ * The companion keys are left alone on purpose. `anton_scriptorium`,
+ * `anton_manicules`, `anton_collatio`, `anton_quires`, `camino_stages` and
+ * `visited_langs` are not the account — settling the account should not turn off
+ * a reading mode the visitor switched on, or throw away their margin marks.
+ */
+export function clearGameState() {
+    if (typeof localStorage === 'undefined') return;
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch {
+        // Private mode. Nothing was persisted to begin with.
+    }
+}
+
 export function saveGameState(state: GameState) {
     if (typeof localStorage === 'undefined') return;
     try {
@@ -233,6 +281,130 @@ export function unlockAchievement(id: string) {
         window.dispatchEvent(new CustomEvent(GAME_EVENTS.XP_GAIN, {
             detail: { amount: achievement.xp, total: state.xp }
         }));
+    }
+
+    // Last, so a compound's toast queues behind the entry that completed it.
+    checkCompoundAchievements();
+}
+
+/**
+ * Entries earned by holding two others, resolved from stored state.
+ *
+ * Called at the end of `unlockAchievement`, which makes this re-entrant — but
+ * only to depth two: the recursive call lands on the `includes` guard at the top
+ * of `unlockAchievement` the moment the compound is already held, and a compound
+ * is never itself a precondition of another compound.
+ *
+ * Also called on page load from BaseLayout, so a visitor who already held both
+ * halves when this shipped is not made to earn something unrelated first.
+ */
+export function checkCompoundAchievements() {
+    const { unlockedAchievements: held, enrolledAt } = getGameState();
+
+    // The Absolution: cursed for copying without the source, then came back for
+    // the citation. Order is the joke, so it is checked — but only when both
+    // dates exist. Saves written before `enrolledAt` have no timestamps at all,
+    // and a visitor who earned both last year should not be locked out for it.
+    if (held.includes('anathema') && held.includes('colophon')) {
+        const cursed = enrolledAt.anathema;
+        const cited = enrolledAt.colophon;
+        const inOrder = cursed === undefined || cited === undefined || cursed < cited;
+        if (inOrder) unlockAchievement('absolutio');
+    }
+}
+
+/**
+ * Came back to the book after a week away.
+ *
+ * Measured from the earliest entry rather than a new "first seen" key: the
+ * timestamps are already in `enrolledAt`, and a visitor who has never earned
+ * anything has no book to come back to.
+ */
+export function checkBroughtForwardAchievement() {
+    const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+    const stamps = Object.values(getGameState().enrolledAt);
+    if (!stamps.length) return;
+
+    if (Date.now() - Math.min(...stamps) >= WEEK_MS) {
+        unlockAchievement('brought_forward');
+    }
+}
+
+/** All four stages of the Camino section. Mirrors checkPolyglotAchievement. */
+export function checkCompostelaAchievement(stage: string) {
+    if (typeof localStorage === 'undefined') return;
+
+    try {
+        let stages = JSON.parse(localStorage.getItem('camino_stages') || '[]');
+        if (!Array.isArray(stages)) stages = [];
+
+        if (!stages.includes(stage)) {
+            stages.push(stage);
+            localStorage.setItem('camino_stages', JSON.stringify(stages));
+        }
+
+        if (['way', 'route', 'prep', 'culture'].every(s => stages.includes(s))) {
+            unlockAchievement('compostela');
+        }
+    } catch {
+        // localStorage unavailable or corrupt — skip silently.
+    }
+}
+
+/**
+ * The Collation: one piece read in two tongues.
+ *
+ * Keyed by slug rather than by path, because the same post lives at /blog/x,
+ * /en/blog/x and /de/blog/x — the whole point is recognising them as one text.
+ */
+export function checkCollatioAchievement(slug: string, lang: string) {
+    if (typeof localStorage === 'undefined' || !slug) return;
+
+    try {
+        const raw = JSON.parse(localStorage.getItem('anton_collatio') || '{}');
+        const seen: Record<string, string[]> =
+            raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+
+        const langs = Array.isArray(seen[slug]) ? seen[slug] : [];
+        if (!langs.includes(lang)) {
+            langs.push(lang);
+            seen[slug] = langs;
+            localStorage.setItem('anton_collatio', JSON.stringify(seen));
+        }
+
+        if (langs.length >= 2) unlockAchievement('collatio');
+    } catch {
+        // localStorage unavailable or corrupt — skip silently.
+    }
+}
+
+/**
+ * The Quire: every part of one series read to the end.
+ *
+ * `total` comes from the page rather than from a count here, because the blog
+ * lives in a content collection this module cannot reach from a client bundle.
+ * Counting finished slugs rather than comparing seriesOrder values also means a
+ * wrong order field cannot make a series unfinishable.
+ */
+export function checkQuireAchievement(series: string, total: number, slug: string) {
+    if (typeof localStorage === 'undefined' || !series || !slug) return;
+    if (!Number.isFinite(total) || total < 1) return;
+
+    try {
+        const raw = JSON.parse(localStorage.getItem('anton_quires') || '{}');
+        const read: Record<string, string[]> =
+            raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+
+        const slugs = Array.isArray(read[series]) ? read[series] : [];
+        if (!slugs.includes(slug)) {
+            slugs.push(slug);
+            read[series] = slugs;
+            localStorage.setItem('anton_quires', JSON.stringify(read));
+        }
+
+        if (slugs.length >= total) unlockAchievement('quire');
+    } catch {
+        // localStorage unavailable or corrupt — skip silently.
     }
 }
 

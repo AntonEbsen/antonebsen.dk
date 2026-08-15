@@ -6,7 +6,7 @@ interface Props {
 const { slides } = Astro.props;
 ---
 
-<div class="relative w-full aspect-video bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl group slider-container">
+<div class="relative w-full aspect-video bg-bg rounded-[32px] overflow-hidden shadow-2xl group slider-container">
   <div class="absolute inset-0 flex transition-transform duration-500 ease-in-out slider-track">
     {slides.map((slide, index) => (
       <div class="min-w-full h-full relative flex items-center justify-center bg-black">

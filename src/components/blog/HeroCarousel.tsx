@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface CarouselItem {
     title: string;
@@ -55,8 +56,10 @@ export default function HeroCarousel({ items, lang }: Props) {
 
     const item = items[index];
 
+    // The frame was slate-900 -> slate-950 -> black, which reads distinctly blue
+    // against this palette's warm stone. The depth gradient is the site's own.
     return (
-        <div className="relative w-full h-[320px] md:h-full min-h-[300px] overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-950 to-black p-1">
+        <div className="relative w-full h-[320px] md:h-full min-h-[300px] overflow-hidden rounded-panel border border-rule bg-[var(--depth-bg)] p-1">
             <div className="absolute inset-0 bg-[url('/assets/images/grid.svg')] opacity-10 pointer-events-none"></div>
 
             <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -80,7 +83,7 @@ export default function HeroCarousel({ items, lang }: Props) {
                         <span className="text-xs text-muted font-medium">{item.meta}</span>
                     </div>
 
-                    <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight tracking-tight text-white drop-shadow-sm">
+                    <h2 className="text-3xl md:text-4xl mb-4 leading-tight tracking-tight text-text drop-shadow-sm">
                         {item.title}
                     </h2>
 

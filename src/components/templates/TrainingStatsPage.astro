@@ -670,7 +670,7 @@ const homeLink = isDa ? '/' : '/en';
         const paths = document.querySelectorAll(`[id^="${muscleId}"]`);
         paths.forEach(p => {
             (p as SVGPathElement).style.fill = intensityScale(data.weeklySets);
-            (p as SVGPathElement).style.stroke = data.weeklySets > 0 ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 255, 255, 0.1)';
+            (p as SVGPathElement).style.stroke = data.weeklySets > 0 ? 'rgba(212, 121, 79, 0.4)' : 'rgba(255, 255, 255, 0.1)';
         });
       });
 

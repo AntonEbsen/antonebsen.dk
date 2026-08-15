@@ -1,0 +1,79 @@
+---
+import ContourPlate from './ContourPlate.astro';
+
+/**
+ * Nothing here yet, composed rather than apologised for.
+ *
+ * Most empty states on this site were a bare <p>. BlogPage had the one good
+ * version — icon, message, bordered panel — so this is that, lifted out and
+ * given the terrain treatment: a faint contour plate behind it, seeded from the
+ * message, so an empty shelf still looks like part of the site rather than a
+ * gap in it.
+ */
+interface Props {
+  /** The message. Also seeds the contours, so each empty state differs. */
+  message: string;
+  /** Font Awesome class. A feather by default, matching BlogPage's original. */
+  icon?: string;
+  /** Optional second line — what to do about it. */
+  hint?: string;
+  class?: string;
+}
+
+const { message, icon = 'fa-solid fa-feather', hint, class: className = '' } = Astro.props;
+---
+
+<div class:list={['empty-state', className]}>
+  <div class="empty-state__plate" aria-hidden="true">
+    <ContourPlate seed={message} />
+  </div>
+
+  <div class="empty-state__body">
+    <i class={`${icon} empty-state__icon`} aria-hidden="true"></i>
+    <p class="empty-state__message">{message}</p>
+    {hint && <p class="empty-state__hint">{hint}</p>}
+  </div>
+</div>
+
+<style>
+  .empty-state {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: var(--space-2xl) var(--space-md);
+    text-align: center;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-xl);
+    background: rgb(var(--text-rgb) / 0.02);
+  }
+
+  /* Far fainter than a blog card's cover — this is ground, not a subject. */
+  .empty-state__plate {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 10%, transparent 75%);
+  }
+
+  .empty-state__body {
+    position: relative;
+  }
+
+  .empty-state__icon {
+    font-size: 1.75rem;
+    color: var(--accent);
+    opacity: 0.55;
+  }
+
+  .empty-state__message {
+    margin: var(--space-sm) 0 0;
+    color: var(--text-dim);
+  }
+
+  .empty-state__hint {
+    margin: var(--space-2xs) 0 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+</style>

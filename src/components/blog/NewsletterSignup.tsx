@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface Props {
     lang: 'da' | 'en' | 'de';
@@ -77,7 +78,7 @@ export default function NewsletterSignup({ lang }: Props) {
 
     return (
         <div className="w-full relative py-12 px-4 md:px-0">
-            <div className="relative max-w-4xl mx-auto overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-slate-900 via-slate-950 to-black p-1 shadow-2xl">
+            <div className="relative max-w-4xl mx-auto overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-bg via-sunken to-black p-1 shadow-2xl">
                 <div className="absolute inset-0 bg-[url('/assets/images/grid.svg')] opacity-5 pointer-events-none"></div>
                 <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -91,7 +92,7 @@ export default function NewsletterSignup({ lang }: Props) {
                             </span>
                             <span className="text-[10px] font-black uppercase tracking-widest text-accent">LIVE FEED</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">
+                        <h2 className="text-3xl md:text-4xl text-text mb-4 tracking-tight">
                             {t.title}
                         </h2>
                         <p className="text-dim text-lg opacity-70 max-w-md mx-auto md:mx-0">
@@ -111,7 +112,7 @@ export default function NewsletterSignup({ lang }: Props) {
                                     <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-accent/20">
                                         <i className="fa-solid fa-check text-black"></i>
                                     </div>
-                                    <h3 className="text-white font-bold text-lg mb-1">{status === 'success' ? t.success : t.existing}</h3>
+                                    <h3 className="text-text font-bold text-lg mb-1">{status === 'success' ? t.success : t.existing}</h3>
                                 </motion.div>
                             ) : (
                                 <motion.form

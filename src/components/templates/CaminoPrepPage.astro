@@ -1,5 +1,6 @@
 ---
 import CaminoLayout from '../../layouts/CaminoLayout.astro';
+import SectionNav from '@components/ui/SectionNav.astro';
 import { caminoContent } from '../../data/camino';
 
 interface Props {
@@ -28,17 +29,17 @@ const t = caminoContent[lang];
     <div class="container main-content">
       <div class="content-grid">
         <aside class="sidebar">
-          <nav class="sticky-nav">
-            <h3>{t.navTitle}</h3>
-            <ul>
-              <li><a href="#packing"><i class="fa-solid fa-suitcase"></i> {t.packingTitle}</a></li>
-              <li><a href="#weight-tool"><i class="fa-solid fa-weight-scale"></i> {lang === 'da' ? 'Vægtsum' : 'Weight Calculator'}</a></li>
-              <li><a href="#gear"><i class="fa-solid fa-backpack"></i> {t.gearTitle}</a></li>
-              <li><a href="#training"><i class="fa-solid fa-chart-line"></i> {t.trainingTitle}</a></li>
-              <li><a href="#injury"><i class="fa-solid fa-kit-medical"></i> {t.injuryTitle}</a></li>
-              <li><a href="#budget"><i class="fa-solid fa-calculator"></i> {t.budgetTitle}</a></li>
-            </ul>
-          </nav>
+          <SectionNav
+            title={t.navTitle}
+            items={[
+              { id: 'packing', label: t.packingTitle, icon: 'fa-solid fa-suitcase' },
+              { id: 'weight-tool', label: lang === 'da' ? 'Vægtsum' : 'Weight Calculator', icon: 'fa-solid fa-weight-scale' },
+              { id: 'gear', label: t.gearTitle, icon: 'fa-solid fa-backpack' },
+              { id: 'training', label: t.trainingTitle, icon: 'fa-solid fa-chart-line' },
+              { id: 'injury', label: t.injuryTitle, icon: 'fa-solid fa-kit-medical' },
+              { id: 'budget', label: t.budgetTitle, icon: 'fa-solid fa-calculator' },
+            ]}
+          />
         </aside>
 
         <main class="sections">
@@ -284,13 +285,7 @@ const t = caminoContent[lang];
     .item-weight { font-size: 0.8rem; color: var(--text-dim); }
     .item-checkbox input:checked ~ .item-info .text { color: var(--muted); text-decoration: line-through; }
 
-    /* Sidebar and Common */
-    .sticky-nav { position: sticky; top: 100px; padding: 2rem; border-radius: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
-    .sticky-nav h3 { font-size: 0.8rem; text-transform: uppercase; color: var(--accent); letter-spacing: 0.15rem; margin-bottom: 1.5rem; }
-    .sticky-nav ul { list-style: none; padding: 0; }
-    .sticky-nav a { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; color: var(--text-dim); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid rgba(255,255,255,0.03); }
-    .sticky-nav a:hover { color: var(--accent); padding-left: 0.5rem; }
-
+    /* Sidebar and Common */
     /* Gear Cards */
     .gear-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
     .gear-card { background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); position: relative; }

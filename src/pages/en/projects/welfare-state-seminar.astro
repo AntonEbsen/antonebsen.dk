@@ -343,17 +343,17 @@ for end in range(1989, 2024):
       <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-accent">Beyond the paper</span>
       <div class="h-px flex-grow bg-accent/20"></div>
   </div>
-  <p class="text-sm text-slate-400 leading-relaxed mb-16 italic font-serif">
+  <p class="text-sm text-muted leading-relaxed mb-16 italic font-serif">
       Everything below was run after submission on 3 June 2026 and forms no part of the graded paper.
       The figures come from the replication package.
   </p>
 
   <!-- 1995 vs 2008 -->
   <section id="structural-break" class="mb-24 scroll-mt-24 academic-section">
-      <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">The break: 1995 or 2008?</h2>
+      <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-8">The break: 1995 or 2008?</h2>
 
       <div class="bg-white/5 border border-white/10 rounded-3xl p-8 mb-8">
-          <p class="text-slate-300 leading-relaxed font-serif mb-6">
+          <p class="text-dim leading-relaxed font-serif mb-6">
               The paper <em>imposes</em> 2008 and tests it with a Chow test, which rejects. That answers the question
               “is there a break right here?”. A different question is “where is the break strongest?” — and answering it
               requires tests that search across every candidate date. Two of them point to <strong class="text-white">1995</strong>.
@@ -361,9 +361,9 @@ for end in range(1989, 2024):
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="bg-black/20 border border-white/5 rounded-2xl p-5">
-                  <h3 class="text-sm font-bold text-white mb-1">QLR (sup-Wald)</h3>
-                  <p class="text-[11px] text-slate-400 mb-4">Unknown break date, 15% trimming. Critical values: 8.68 (5%) and 12.16 (1%).</p>
-                  <ul class="space-y-1.5 text-xs font-mono text-slate-300">
+                  <h3 class="text-sm font-bold text-text mb-1">QLR (sup-Wald)</h3>
+                  <p class="text-[11px] text-muted mb-4">Unknown break date, 15% trimming. Critical values: 8.68 (5%) and 12.16 (1%).</p>
+                  <ul class="space-y-1.5 text-xs font-mono text-dim">
                       <li class="flex justify-between"><span>Overall</span><span class="tabular-nums">12.895 → 1995</span></li>
                       <li class="flex justify-between"><span>Economic</span><span class="tabular-nums">16.080 → 1995</span></li>
                       <li class="flex justify-between"><span>Social</span><span class="tabular-nums">10.855 → 1995</span></li>
@@ -371,18 +371,18 @@ for end in range(1989, 2024):
                   </ul>
               </div>
               <div class="bg-black/20 border border-white/5 rounded-2xl p-5">
-                  <h3 class="text-sm font-bold text-white mb-1">Bai-Perron (sequential)</h3>
-                  <p class="text-[11px] text-slate-400 mb-4">Number of breaks chosen by BIC. Andrews 5% value: 8.68. N = 1,026.</p>
-                  <ul class="space-y-1.5 text-xs font-mono text-slate-300">
+                  <h3 class="text-sm font-bold text-text mb-1">Bai-Perron (sequential)</h3>
+                  <p class="text-[11px] text-muted mb-4">Number of breaks chosen by BIC. Andrews 5% value: 8.68. N = 1,026.</p>
+                  <ul class="space-y-1.5 text-xs font-mono text-dim">
                       <li class="flex justify-between"><span>Trade</span><span class="tabular-nums">13.21 → 1995</span></li>
                       <li class="flex justify-between"><span>Economic</span><span class="tabular-nums">12.69 → 1995</span></li>
                       <li class="flex justify-between"><span>Overall</span><span class="tabular-nums">10.40 → 1995</span></li>
-                      <li class="flex justify-between text-slate-400"><span>Cultural, political</span><span>no break</span></li>
+                      <li class="flex justify-between text-muted"><span>Cultural, political</span><span>no break</span></li>
                   </ul>
               </div>
           </div>
 
-          <p class="text-xs text-slate-400 leading-relaxed">
+          <p class="text-xs text-muted leading-relaxed">
               Bai-Perron selects 1995 for seven of nine indices, each with a single break. The two tests do not agree
               completely: QLR finds a break for political globalization (11.552 &gt; 8.68) where Bai-Perron's sequential
               procedure does not.
@@ -399,7 +399,7 @@ for end in range(1989, 2024):
           </div>
           <div class="flex gap-4 items-start pl-4">
               <div class="h-px bg-white/10 w-12 mt-3 shrink-0"></div>
-              <p class="text-xs text-slate-400 italic font-serif">
+              <p class="text-xs text-muted italic font-serif">
                   The F-statistic at each candidate break year. The global maximum sits in 1995 and clears the 1% value.
                   But note the second peak around 2008–09, also above the 5% value: 2008 <em>is</em> a genuine break
                   year — just not the strongest one.
@@ -411,7 +411,7 @@ for end in range(1989, 2024):
           <h3 class="text-accent font-bold mb-3 flex items-center gap-2">
               <i class="fa-solid fa-lightbulb"></i> What it means
           </h3>
-          <p class="text-slate-200 leading-relaxed font-serif">
+          <p class="text-text leading-relaxed font-serif">
               The two results do not contradict each other. The paper's Chow test is right: there <em>is</em> a break at
               2008, and the figure shows it plainly as the second peak. But the parameter instability starts earlier —
               around the close of the Uruguay Round and the founding of the WTO in 1995. The financial crisis
@@ -423,8 +423,8 @@ for end in range(1989, 2024):
 
   <!-- Specification curve -->
   <section id="spec-curve" class="mb-24 scroll-mt-24">
-      <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-4">Specification curve</h2>
-      <p class="text-sm text-slate-400 leading-relaxed mb-8">
+      <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-4">Specification curve</h2>
+      <p class="text-sm text-muted leading-relaxed mb-8">
           A single estimate can always be a lucky choice of controls. Here are all 64 combinations of the six
           controls — the complete power set — each estimated separately, so you can see how far the coefficient
           actually moves.
@@ -434,9 +434,9 @@ for end in range(1989, 2024):
 
   <!-- Nine indices -->
   <section id="subindices" class="mb-24 scroll-mt-24 academic-section">
-      <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-8">Nine indices, not four</h2>
+      <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-8">Nine indices, not four</h2>
       <div class="bg-white/5 border border-white/10 rounded-3xl p-8">
-          <p class="text-slate-300 leading-relaxed font-serif mb-6">
+          <p class="text-dim leading-relaxed font-serif mb-6">
               The paper's main text uses four KOF indices. The analysis behind it covers nine: economic globalization
               splits into <strong class="text-white">trade</strong> and <strong class="text-white">financial</strong>, and social
               globalization into <strong class="text-white">interpersonal</strong>, <strong class="text-white">informational</strong>
@@ -445,7 +445,7 @@ for end in range(1989, 2024):
           <ul class="space-y-4">
               <li class="flex gap-4">
                   <span class="text-accent mt-1"><i class="fa-solid fa-arrow-right text-xs"></i></span>
-                  <p class="text-sm text-slate-300 leading-relaxed">
+                  <p class="text-sm text-dim leading-relaxed">
                       <strong class="text-white">Trade globalization has the strongest break of all nine indices</strong>
                       (sup-F 13.21 at 1995) — notable because the economic index that contains it is precisely the one
                       that never reaches significance in the main analysis.
@@ -453,10 +453,10 @@ for end in range(1989, 2024):
               </li>
               <li class="flex gap-4">
                   <span class="text-accent mt-1"><i class="fa-solid fa-arrow-right text-xs"></i></span>
-                  <p class="text-sm text-slate-300 leading-relaxed">
+                  <p class="text-sm text-dim leading-relaxed">
                       <strong class="text-white">Cultural globalization is the only index to change sign across the financial crisis</strong>
                       — from +0.0482 before to −0.0238 after.
-                      <span class="text-slate-400">With the caveat that settles it: the stars hold only under
+                      <span class="text-muted">With the caveat that settles it: the stars hold only under
                       Driscoll-Kraay standard errors. Under the country-clustered errors the paper prefers, both are
                       insignificant (p = 0.374 and p = 0.394). This is a hint under one error structure, not a finding.</span>
                   </p>
@@ -464,20 +464,20 @@ for end in range(1989, 2024):
           </ul>
       </div>
 
-      <h3 class="text-xs uppercase tracking-widest font-bold text-slate-400 mt-12 mb-6">The 32 countries by welfare regime</h3>
+      <h3 class="text-xs uppercase tracking-widest font-bold text-muted mt-12 mb-6">The 32 countries by welfare regime</h3>
       <div class="space-y-3">
           {regimes.map(r => (
               <div class="bg-white/5 border border-white/5 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3">
                   <div class="sm:w-52 shrink-0 flex items-center gap-3">
                       <span class={`w-2.5 h-2.5 rounded-full shrink-0 ${r.dot}`}></span>
-                      <span class="text-sm font-bold text-slate-200">{r.name}</span>
-                      <span class="text-[10px] text-slate-400 tabular-nums">({r.n})</span>
+                      <span class="text-sm font-bold text-text">{r.name}</span>
+                      <span class="text-[10px] text-muted tabular-nums">({r.n})</span>
                   </div>
-                  <span class="text-xs font-mono text-slate-400 leading-relaxed">{r.countries}</span>
+                  <span class="text-xs font-mono text-muted leading-relaxed">{r.countries}</span>
               </div>
           ))}
       </div>
-      <p class="text-[11px] text-slate-400 mt-4">
+      <p class="text-[11px] text-muted mt-4">
           The classification follows Table A.4 of the paper (Esping-Andersen 1990; Ferrera 1996). The social democratic
           regime is the reference category in the interaction regressions.
       </p>

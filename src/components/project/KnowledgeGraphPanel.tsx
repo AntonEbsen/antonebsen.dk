@@ -48,7 +48,7 @@ export default function KnowledgeGraphPanel({ nodes, links, height = 500, lang =
         return (
             <Suspense
                 fallback={
-                    <div className="flex items-center justify-center text-sm text-slate-400" style={{ height }}>
+                    <div className="flex items-center justify-center text-sm text-muted" style={{ height }}>
                         <i className="fa-solid fa-circle-notch fa-spin mr-3"></i> {t.loading}
                     </div>
                 }
@@ -72,12 +72,12 @@ export default function KnowledgeGraphPanel({ nodes, links, height = 500, lang =
                 <div className="flex items-baseline justify-center gap-6 mb-6">
                     <div>
                         <span className="block text-3xl font-bold text-white tabular-nums">{nodes.length}</span>
-                        <span className="text-[10px] uppercase tracking-widest text-slate-400">{t.works}</span>
+                        <span className="text-[10px] uppercase tracking-widest text-muted">{t.works}</span>
                     </div>
-                    <span className="text-slate-700">·</span>
+                    <span className="text-muted">·</span>
                     <div>
                         <span className="block text-3xl font-bold text-white tabular-nums">{links.length}</span>
-                        <span className="text-[10px] uppercase tracking-widest text-slate-400">{t.connections}</span>
+                        <span className="text-[10px] uppercase tracking-widest text-muted">{t.connections}</span>
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@ export default function KnowledgeGraphPanel({ nodes, links, height = 500, lang =
                     <i className="fa-solid fa-circle-nodes"></i> {t.show}
                 </button>
 
-                <p className="text-[10px] text-slate-400 mt-5 max-w-xs mx-auto leading-relaxed">{t.note}</p>
+                <p className="text-[10px] text-muted mt-5 max-w-xs mx-auto leading-relaxed">{t.note}</p>
             </div>
         </div>
     );

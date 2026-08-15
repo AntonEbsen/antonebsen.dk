@@ -16,7 +16,7 @@ import { test, expect } from '@playwright/test';
 const STORAGE_KEY = 'anton_gamification_state';
 
 /** Entries currently defined in src/lib/gamification.ts. */
-const ENTRY_COUNT = 35;
+const ENTRY_COUNT = 45;
 /** Of those, one is a secret folio that isn't listed until it is earned. */
 const HIDDEN_COUNT = 1;
 
@@ -285,7 +285,8 @@ test.describe('Guild ranks', () => {
         [2800, 'Master of the Mint'],
         [3900, 'Lord Treasurer'],
         [5200, 'Chancellor of the Exchequer'],
-        [6600, 'Master of the Rolls']
+        [6600, 'Master of the Rolls'],
+        [8800, 'Historiographer Royal']
     ] as const;
 
     for (const [marks, rank] of LADDER) {
@@ -307,7 +308,7 @@ test.describe('Guild ranks', () => {
 
         await seed(page, totalMarks, []);
         await page.goto('/en/ledger');
-        await expect(page.locator('#ledger-page-book [data-ledger-rank]')).toHaveText('Master of the Rolls');
+        await expect(page.locator('#ledger-page-book [data-ledger-rank]')).toHaveText('Historiographer Royal');
     });
 
     test('corrupt saved state does not break the page', async ({ page }) => {

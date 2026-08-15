@@ -29,7 +29,10 @@ const rings: string[] = [];
 for (let i = 0; i < RINGS; i++) {
   const base = 40 + i * 34;
   const pts: string[] = [];
-  const steps = 12;
+  // Was 12. The rings are drawn as straight segments between these points, so at
+  // 12 they are visibly heptagonal — fine behind a corner mask at 0.09 opacity,
+  // obvious once a field is anchored centre and scaled across a whole panel.
+  const steps = 48;
 
   for (let s = 0; s < steps; s++) {
     const angle = (s / steps) * Math.PI * 2;
@@ -59,6 +62,7 @@ for (let i = 0; i < RINGS; i++) {
         stroke="var(--text)"
         stroke-width={i % 3 === 0 ? 1.4 : 0.7}
         vector-effect="non-scaling-stroke"
+        style={`--ring: ${i}`}
       />
     ))}
   </svg>
@@ -80,6 +84,23 @@ for (let i = 0; i < RINGS; i++) {
     width: 100%;
     height: 100%;
     display: block;
+  }
+
+  /* The rings resolve from the inside out, the way contours get added to a
+     survey — order of appearance only, no movement. Gated on .js-reveal for
+     the same reason the scroll reveal is: if the flag never lands, nothing was
+     ever hidden. animation rather than transition, because nothing here toggles
+     a class — it runs once on load and stays put (`both` holds the end state). */
+  .js-reveal .contour-field path {
+    opacity: 0;
+    animation: contour-plot var(--dur-slow) var(--ease-out) both;
+    animation-delay: calc(var(--ring, 0) * 90ms);
+  }
+
+  @keyframes contour-plot {
+    to {
+      opacity: 1;
+    }
   }
 
   .contour-corner {
@@ -110,10 +131,17 @@ for (let i = 0; i < RINGS; i++) {
   }
 
   /* Decorative texture is exactly the kind of thing to drop when the viewer has
-     asked for less. */
+     asked for less. The rings must also arrive already plotted — an animation
+     flattened to 0.01ms by the global rule would otherwise leave them at the
+     `from` opacity of 0. */
   @media (prefers-reduced-motion: reduce) {
     .contour-field {
       opacity: 0.03;
+    }
+
+    .js-reveal .contour-field path {
+      animation: none;
+      opacity: 1;
     }
   }
 </style>

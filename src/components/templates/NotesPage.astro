@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import { getLangFromUrl } from '@i18n/utils';
@@ -293,17 +294,18 @@ const homeUrl = lang === 'da' ? '/' : `/${lang}`;
 
     <Section class="mb-8">
       <Card variant="glass" class="p-8">
-        <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
-        <h1 class="text-4xl font-bold leading-tight mb-4">{t.heroTitle}</h1>
-        <p class="text-lg text-dim max-w-2xl">
-          {t.heroText}
-        </p>
+        <PageHeader
+          variant="plain"
+          eyebrow={t.eyebrow}
+          title={t.heroTitle}
+          lead={t.heroText}
+        />
       </Card>
     </Section>
 
     {t.categories.map(category => (
       <Section class="mb-8">
-        <h2 class="text-lg font-bold text-white mb-4">{category.title}</h2>
+        <h2 class="text-lg font-bold text-text mb-4">{category.title}</h2>
         <div class="category-grid">
           {category.items.map(item => (
             <a href={item.url} class="item-card">

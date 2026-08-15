@@ -1,24 +1,75 @@
 ---
+/**
+ * The site's call to action.
+ *
+ * Two things were quietly broken here. The class string carried a bare
+ * `cubic-bezier(0.34, 1.56, 0.64, 1)` as if it were a utility — Tailwind cannot
+ * parse that, so it emitted a junk class and the easing never applied. And
+ * `size` was passed by IndexPage on both hero buttons without ever being
+ * declared, so it fell through `...rest` onto the DOM as `<a size="lg">`.
+ *
+ * The primary hover also asked for `var(--glow)`, which nothing defined until
+ * tokens.css did. On every page of the site, the main button's hover did
+ * nothing at all.
+ */
 interface Props {
   href: string;
   variant?: 'primary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
   class?: string;
   target?: string;
   rel?: string;
   download?: boolean | string;
 }
 
-const { href, variant = 'primary', class: className, target, rel, download, ...rest } = Astro.props;
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className,
+  target,
+  rel,
+  download,
+  ...rest
+} = Astro.props;
 
-const baseStyles = "inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-[14.5px] transition-all duration-300 cubic-bezier(0.34, 1.56, 0.64, 1) no-underline cursor-pointer";
+const sizes = {
+  sm: 'px-4 py-2 text-[13px]',
+  md: 'px-6 py-3 text-[14.5px]',
+  lg: 'px-8 py-3.5 text-[15.5px]',
+};
+
+const base =
+  'btn-base inline-flex items-center justify-center gap-2 rounded-full font-semibold no-underline cursor-pointer';
 
 const variants = {
-  primary: "bg-[var(--accent)] text-[#17191A] hover:-translate-y-0.5 hover:shadow-[var(--glow)] hover:opacity-90",
-  ghost: "bg-transparent border border-[var(--glass-border)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:-translate-y-0.5"
+  primary:
+    'bg-[var(--accent)] text-[var(--bg)] hover:-translate-y-0.5 hover:bg-[var(--accent-light)] hover:shadow-[var(--glow)]',
+  ghost:
+    'bg-transparent border border-[var(--glass-border)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:-translate-y-0.5',
 };
 ---
 
-<a href={href} class:list={[baseStyles, variants[variant], className]} target={target} rel={rel} download={download} {...rest}>
+<a
+  href={href}
+  class:list={[base, sizes[size], variants[variant], className]}
+  target={target}
+  rel={rel}
+  download={download}
+  {...rest}
+>
   <slot />
 </a>
 
+<style>
+  /* The overshoot easing the class string was reaching for, somewhere it can
+     actually take effect. */
+  .btn-base {
+    transition:
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+</style>

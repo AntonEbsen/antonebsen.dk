@@ -16,14 +16,14 @@ const { item } = Astro.props;
             <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
             <i class="fa-solid fa-person-running text-4xl"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">{item.title}</h3>
+            <h3 class="text-xl font-bold mb-2 text-text">{item.title}</h3>
             <p class="text-dim text-sm mb-4">{item.description}</p>
             {item.image_url && <img src={item.image_url} class="w-full h-32 object-cover rounded opacity-80" alt={item.title} />}
     </Card>
 )}
 
 {item.status === 'done' && (
-    <Card variant="default" class="p-6 border border-gold-500/30 bg-gold-900/10 relative overflow-hidden group hover:shadow-[0_0_20px_rgba(255,215,0,0.2)] transition-all">
+    <Card variant="default" class="p-6 border border-gold-500/30 bg-gold-900/10 relative overflow-hidden group hover:shadow-[0_0_20px_rgba(212,121,79,0.2)] transition-all">
             <div class="absolute top-2 right-3 text-gold-500">
             <i class="fa-solid fa-check-circle"></i>
             </div>

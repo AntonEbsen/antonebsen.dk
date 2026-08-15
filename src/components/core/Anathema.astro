@@ -47,14 +47,37 @@ const { ui } = getLedgerCopy(lang);
 
       // Deliberately does not touch the clipboard or preventDefault — the copy
       // goes through untouched. This is a joke, not a lock.
-      root.classList.remove('hidden');
+      root.classList.remove('hidden', 'is-leaving');
       unlockAchievement('anathema');
 
       window.clearTimeout(timer);
-      timer = window.setTimeout(() => root.classList.add('hidden'), HOLD_MS);
+      timer = window.setTimeout(dismiss, HOLD_MS);
     });
 
-    root.addEventListener('click', () => root.classList.add('hidden'));
+    /*
+      It faded in and then vanished on a hard `display: none`, which read as the
+      curse being cut off rather than lifting. Marking it leaving lets the exit
+      play, then hiding for real once it has — `animationend` rather than a
+      second timeout, so the two cannot drift apart.
+    */
+    function dismiss() {
+      if (!root || root.classList.contains('hidden')) return;
+      window.clearTimeout(timer);
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        root.classList.add('hidden');
+        return;
+      }
+
+      root.classList.add('is-leaving');
+      root.addEventListener('animationend', () => {
+        root.classList.add('hidden');
+        root.classList.remove('is-leaving');
+      }, { once: true });
+    }
+
+    root.addEventListener('click', dismiss);
   }
 </script>
 
@@ -81,7 +104,15 @@ const { ui } = getLedgerCopy(lang);
     border: 1px solid rgb(var(--accent-rgb) / 0.35);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    animation: anathema-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: anathema-in var(--dur-base) var(--ease-entrance) both;
+  }
+
+  #anathema.is-leaving .anathema__card {
+    animation: anathema-out var(--dur-base) var(--ease-out) both;
+  }
+
+  #anathema.is-leaving {
+    animation: anathema-fade var(--dur-base) var(--ease-out) both;
   }
 
   .anathema__rule {
@@ -110,7 +141,23 @@ const { ui } = getLedgerCopy(lang);
     to   { opacity: 1; transform: scale(1); }
   }
 
+  /* Lifts rather than being cut off: it recedes slightly instead of mirroring
+     the entrance exactly, so dismissal reads as the page returning. */
+  @keyframes anathema-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.985); }
+  }
+
+  @keyframes anathema-fade {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .anathema__card { animation: none; }
+    .anathema__card,
+    #anathema.is-leaving,
+    #anathema.is-leaving .anathema__card {
+      animation: none;
+    }
   }
 </style>

@@ -47,7 +47,8 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
     topRank: ui.topRank,
     nextRank: ui.nextRank,
     marks: ui.marks,
-    entriesMade: ui.entriesMade
+    entriesMade: ui.entriesMade,
+    dischargePrompt: ui.dischargePrompt
   })}
   data-ledger-thresholds={JSON.stringify(RANK_THRESHOLDS)}
   data-ledger-lang={lang}
@@ -102,6 +103,7 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
         data-ledger-entry={achievement.id}
         data-ledger-secret={achievement.hidden ? '' : undefined}
         hidden={achievement.hidden === true}
+        style={`--folio: ${index}`}
       >
         <span class="ledger-folio" aria-hidden="true">{roman(index + 1)}</span>
 
@@ -136,10 +138,44 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
       </li>
     ))}
   </ol>
+
+  {/*
+    Discharging the account — the opposite of the apocryphon in every way.
+
+    That one is hidden, pointer-only and advertises nothing. This is a real
+    button with a real focus ring, because it is a privacy control first and a
+    joke second: the page promises the book is kept in your browser and nowhere
+    else, and a promise like that wants a way to act on it.
+
+    Two steps, and the prompt names what is lost. Losing a full ledger to a
+    mis-click is exactly the kind of thing tests/eggs.spec.ts calls "a bug with
+    a nicer name". Focus lands on Cancel, not on the confirm.
+  */}
+  {variant === 'page' && (
+    <div class="ledger-discharge" data-ledger-discharge>
+      <button type="button" class="ledger-discharge__open" data-discharge-open>
+        {ui.discharge}
+      </button>
+
+      <div
+        class="ledger-discharge__confirm"
+        role="group"
+        aria-labelledby={`${idPrefix}-discharge-prompt`}
+        data-discharge-confirm
+        hidden
+      >
+        <p class="ledger-discharge__prompt" id={`${idPrefix}-discharge-prompt`} data-discharge-prompt></p>
+        <div class="ledger-discharge__actions">
+          <button type="button" class="ledger-discharge__no" data-discharge-no>{ui.dischargeCancel}</button>
+          <button type="button" class="ledger-discharge__yes" data-discharge-yes>{ui.dischargeConfirm}</button>
+        </div>
+      </div>
+    </div>
+  )}
 </div>
 
 <script>
-  import { GAME_EVENTS, getGameState, rankFor, unlockAchievement } from '@lib/gamification';
+  import { GAME_EVENTS, clearGameState, getGameState, rankFor, unlockAchievement } from '@lib/gamification';
   import { romanDate } from '@lib/roman';
 
   type EntryCopy = { title: string; description: string };
@@ -250,6 +286,61 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
     const foot = (event.target as HTMLElement)?.closest?.('[data-ledger-foot]');
     if (foot) unlockAchievement('apocryphon');
   });
+
+  // ---- Discharging the account ----
+  const discharge = document.querySelector<HTMLElement>('[data-ledger-discharge]');
+
+  if (discharge) {
+    const openBtn = discharge.querySelector<HTMLButtonElement>('[data-discharge-open]');
+    const panel = discharge.querySelector<HTMLElement>('[data-discharge-confirm]');
+    const promptEl = discharge.querySelector<HTMLElement>('[data-discharge-prompt]');
+    const yesBtn = discharge.querySelector<HTMLButtonElement>('[data-discharge-yes]');
+    const noBtn = discharge.querySelector<HTMLButtonElement>('[data-discharge-no]');
+
+    // The control only renders inside the page variant, so its root is the one
+    // that carries the copy.
+    const root = discharge.closest<HTMLElement>('[data-ledger-root]');
+    const ui = JSON.parse(root?.dataset.ledgerUi ?? '{}');
+
+    const close = (returnFocus: boolean) => {
+      if (panel) panel.hidden = true;
+      if (openBtn) {
+        openBtn.hidden = false;
+        if (returnFocus) openBtn.focus();
+      }
+    };
+
+    openBtn?.addEventListener('click', () => {
+      const state = getGameState();
+
+      // Filled at open rather than at render: the numbers move while the page
+      // is up, and a stale count is worse than no count on a prompt like this.
+      if (promptEl) {
+        promptEl.textContent = String(ui.dischargePrompt ?? '')
+          .replace('{entries}', String(state.unlockedAchievements.length))
+          .replace('{marks}', String(state.xp));
+      }
+
+      if (panel) panel.hidden = false;
+      openBtn.hidden = true;
+      noBtn?.focus();
+    });
+
+    noBtn?.addEventListener('click', () => close(true));
+
+    // Escape is the other way out of a confirm, and costs nothing.
+    panel?.addEventListener('keydown', (event) => {
+      if ((event as KeyboardEvent).key === 'Escape') close(true);
+    });
+
+    yesBtn?.addEventListener('click', () => {
+      clearGameState();
+      close(false);
+      // Repaints via the UNLOCK listener above, and raises the one line the
+      // discharged book begins again with.
+      unlockAchievement('quietus');
+    });
+  }
   // The page paints once before hydration via an is:inline pass; this re-runs
   // after so the two never disagree.
   window.addEventListener('ledger:repaint', paintAll);
@@ -392,7 +483,19 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
     font-size: 0.8125rem;
     border: 1px dashed var(--rule-strong);
     color: rgb(var(--text-muted-rgb));
-    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    /*
+      Staggered by folio number, so the book reads as being *posted* rather than
+      arriving all at once. The client script adds .is-enrolled to every earned
+      row in one pass; the delay is what turns that into a sequence.
+
+      Capped at 12 — a visitor with thirty entries should not wait through
+      thirty steps to see the last one settle.
+    */
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+    transition-delay: calc(min(var(--folio, 0), 12) * 55ms);
   }
 
   .is-enrolled .ledger-seal {
@@ -407,7 +510,8 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
     font-size: 1.0625rem;
     line-height: 1.25;
     color: rgb(var(--text-muted-rgb));
-    transition: color 0.4s ease;
+    transition: color var(--dur-base) var(--ease-out);
+    transition-delay: calc(min(var(--folio, 0), 12) * 55ms);
   }
 
   .is-enrolled .ledger-title {
@@ -497,11 +601,89 @@ const total = ACHIEVEMENTS.reduce((sum, a) => sum + a.xp, 0);
     }
   }
 
+  /* ---- Discharging the account ---- */
+
+  .ledger-discharge {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  /*
+    Quiet, but not hidden. It sits below the last folio, reads as an
+    administrative footnote rather than a call to action, and still takes a
+    focus ring like any other button.
+  */
+  .ledger-discharge__open {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: rgb(var(--text-muted-rgb));
+    font-family: var(--font-main);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    cursor: pointer;
+  }
+
+  .ledger-discharge__open:hover {
+    color: rgb(var(--text-dim-rgb));
+  }
+
+  .ledger-discharge__confirm[hidden] {
+    display: none;
+  }
+
+  .ledger-discharge__prompt {
+    margin: 0 0 0.85rem;
+    max-width: 42ch;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgb(var(--text-dim-rgb));
+  }
+
+  .ledger-discharge__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .ledger-discharge__actions button {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-family: var(--font-main);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+
+  /* Cancel is the weightier of the two on purpose. */
+  .ledger-discharge__no {
+    border: 1px solid rgb(var(--text-rgb) / 0.25);
+    background: rgb(var(--text-rgb) / 0.06);
+    color: rgb(var(--text-rgb));
+  }
+
+  .ledger-discharge__yes {
+    border: 1px solid rgb(var(--accent-rgb) / 0.4);
+    background: transparent;
+    color: rgb(var(--accent-light-rgb));
+  }
+
+  .ledger-discharge__yes:hover {
+    background: rgb(var(--accent-rgb) / 0.12);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ledger-progress__fill,
     .ledger-seal,
     .ledger-title {
       transition: none;
+      /* Without this the stagger survives as a delay on a zero-length
+         transition, so the book would still fill in one row at a time. */
+      transition-delay: 0ms;
     }
   }
 </style>

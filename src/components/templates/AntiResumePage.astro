@@ -71,7 +71,7 @@ const t = isDa ? content.da : content.en;
     <!-- Hero -->
     <Section class="mb-24 animate-on-scroll">
       <div class="max-w-3xl">
-        <h1 class="text-6xl md:text-8xl font-black mb-4 leading-none tracking-tighter uppercase">
+        <h1 class="text-6xl md:text-8xl mb-4 leading-none tracking-tighter uppercase">
           {t.heroTitle}<span class="text-accent">_</span>
         </h1>
         <p class="text-2xl font-mono text-accent mb-8">{t.heroSubtitle}</p>
@@ -98,7 +98,7 @@ const t = isDa ? content.da : content.en;
                           <Pill variant="default" class="mb-4 bg-white/5 border-white/10 text-dim">
                              {item.year}
                           </Pill>
-                          <h3 class="text-2xl font-bold text-white">{item.title}</h3>
+                          <h3 class="text-2xl font-bold text-text">{item.title}</h3>
                        </div>
                        
                        <div class="md:w-2/3 space-y-6">
@@ -140,4 +140,33 @@ const t = isDa ? content.da : content.en;
        </div>
     </Section>
   </main>
+
+  {/*
+    Vacat — read the cancelled folios through. Its own scroll check rather than
+    a ReadingProgress island: that one paints a progress bar this page has no
+    use for, and grants 'explicit', which belongs to the blog.
+  */}
+  <script>
+    import { unlockAchievement } from '@lib/gamification';
+
+    let done = false;
+
+    const check = () => {
+      if (done) return;
+
+      // A viewport taller than the page gives docHeight <= 0, and the division
+      // would then hand out the entry on load — the same trap as in
+      // ReadingProgress.tsx.
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+
+      if ((window.scrollY / docHeight) * 100 >= 95) {
+        done = true;
+        window.removeEventListener('scroll', check);
+        unlockAchievement('vacat');
+      }
+    };
+
+    window.addEventListener('scroll', check, { passive: true });
+  </script>
 </Layout>

@@ -8,43 +8,43 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Command Center" description="Restricted Access">
-    <main class="min-h-screen bg-slate-950 text-slate-200 pt-24 pb-24 font-mono">
+    <main class="min-h-screen bg-sunken text-text pt-24 pb-24 font-mono">
         <div class="max-w-6xl mx-auto px-4" id="admin-panel" style="display: none;">
             <div class="flex justify-between items-end mb-8">
                 <div>
-                    <h1 class="text-3xl font-bold text-white mb-2">Command Center <span class="text-green-500 animate-pulse">●</span></h1>
-                    <p class="text-slate-400">Live Neural Feed</p>
+                    <h1 class="text-3xl font-bold mb-2">Command Center <span class="text-green-500 animate-pulse">●</span></h1>
+                    <p class="text-muted">Live Neural Feed</p>
                 </div>
-                <button id="refresh-btn" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded transition-colors">
+                <button id="refresh-btn" class="text-xs bg-card hover:bg-rule-strong px-3 py-2 rounded transition-colors">
                     REFRESH FEED
                 </button>
             </div>
 
             {/* Metrics */}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Total Interactions</div>
+                <div class="bg-bg/50 border border-card p-6 rounded-xl">
+                    <div class="text-muted text-xs uppercase tracking-wider mb-1">Total Interactions</div>
                     <div class="text-2xl font-bold text-white" id="total-count">-</div>
                 </div>
-                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Active Projects</div>
+                <div class="bg-bg/50 border border-card p-6 rounded-xl">
+                    <div class="text-muted text-xs uppercase tracking-wider mb-1">Active Projects</div>
                     <div class="text-2xl font-bold text-blue-400" id="active-projects">-</div>
                 </div>
-                 <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Critique Mode</div>
+                 <div class="bg-bg/50 border border-card p-6 rounded-xl">
+                    <div class="text-muted text-xs uppercase tracking-wider mb-1">Critique Mode</div>
                     <div class="text-2xl font-bold text-red-400" id="critique-count">-</div>
                 </div>
-                <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                    <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">Recruiter Interest</div>
+                <div class="bg-bg/50 border border-card p-6 rounded-xl">
+                    <div class="text-muted text-xs uppercase tracking-wider mb-1">Recruiter Interest</div>
                     <div class="text-2xl font-bold text-purple-400" id="recruiter-count">-</div>
                 </div>
             </div>
 
             {/* Logs Table */}
-            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+            <div class="bg-bg border border-card rounded-xl overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-950 text-slate-400 uppercase text-xs">
+                        <thead class="bg-sunken text-muted uppercase text-xs">
                             <tr>
                                 <th class="px-6 py-4 font-normal">Time</th>
                                 <th class="px-6 py-4 font-normal">Project</th>
@@ -52,7 +52,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                                 <th class="px-6 py-4 font-normal">User Query</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-800 text-slate-300" id="logs-body">
+                        <tbody class="divide-y divide-card text-dim" id="logs-body">
                             {/* Injected via JS */}
                         </tbody>
                     </table>
@@ -61,10 +61,10 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         </div>
 
         {/* Login Modal */}
-        <div id="login-modal" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center">
+        <div id="login-modal" class="fixed inset-0 bg-sunken z-50 flex items-center justify-center">
             <div class="text-center space-y-4">
-                <i class="fa-solid fa-user-secret text-4xl text-slate-700"></i>
-                <input type="password" id="admin-pass" placeholder="Enter Access Code" class="bg-slate-900 border border-slate-800 px-4 py-2 rounded text-center focus:outline-none focus:border-green-500 transition-colors" />
+                <i class="fa-solid fa-user-secret text-4xl text-muted"></i>
+                <input type="password" id="admin-pass" placeholder="Enter Access Code" class="bg-bg border border-card px-4 py-2 rounded text-center focus:outline-none focus:border-green-500 transition-colors" />
             </div>
         </div>
     </main>
@@ -138,14 +138,14 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             const tbody = document.getElementById('logs-body');
             if(!tbody) return;
             tbody.innerHTML = logs.map(log => `
-                <tr class="hover:bg-slate-800/50 transition-colors">
-                    <td class="px-6 py-4 text-slate-400 font-mono text-xs whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>
+                <tr class="hover:bg-card/50 transition-colors">
+                    <td class="px-6 py-4 text-muted font-mono text-xs whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>
                     <td class="px-6 py-4 text-blue-400">${log.project}</td>
                     <td class="px-6 py-4">
                         <span class="px-2 py-1 rounded-full text-xs ${
                             log.bot_mode === 'Critique' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 
                             log.bot_mode === 'ELI5' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 
-                            'bg-slate-800 text-slate-400'
+                            'bg-card text-muted'
                         }">${log.bot_mode}</span>
                     </td>
                     <td class="px-6 py-4 max-w-md truncate" title="${log.user_message}">${log.user_message}</td>

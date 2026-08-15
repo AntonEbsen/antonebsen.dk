@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface ProjectLink {
     title: string;
@@ -117,7 +118,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
             </div>
 
             <div className="text-center mb-12 relative z-10">
-                <h3 className="text-2xl font-black text-white mb-2 tracking-tight">
+                <h3 className="text-2xl text-text mb-2 tracking-tight">
                     {lang === 'da' ? 'Synergi: Fra Teori til Praksis' : 'Synergy: Theory to Practice'}
                 </h3>
                 <p className="text-muted text-sm max-w-lg mx-auto leading-relaxed">
@@ -175,7 +176,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                                     <i className="fa-solid fa-graduation-cap text-accent text-xs"></i>
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-bold text-white line-clamp-1">{course.title}</h4>
+                                    <h4 className="text-sm font-bold text-text line-clamp-1">{course.title}</h4>
                                     <span className="text-[10px] font-mono text-muted uppercase tracking-widest">{course.tag}</span>
                                 </div>
                             </div>
@@ -210,7 +211,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                                         <i className="fa-solid fa-code-branch text-indigo-400 text-xs"></i>
                                     </div>
                                     <div>
-                                        <h4 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-1">{project.title}</h4>
+                                        <h4 className="text-sm font-bold text-text group-hover:text-indigo-300 transition-colors line-clamp-1">{project.title}</h4>
                                         <span className="text-[10px] font-mono text-muted uppercase tracking-widest">Applied Artifact</span>
                                     </div>
                                 </div>

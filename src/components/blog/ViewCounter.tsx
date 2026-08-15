@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Skeleton from '@components/ui/Skeleton';
 
 interface ViewCounterProps {
     slug: string;
@@ -30,7 +31,15 @@ export default function ViewCounter({ slug }: ViewCounterProps) {
         }
     }, [slug]);
 
-    if (views === null) return <span className="text-muted text-xs">...</span>;
+    // Was three literal dots. A bar the width the number will occupy keeps the
+    // meta line from reflowing when the count lands.
+    if (views === null) {
+        return (
+            <span className="inline-flex items-center">
+                <Skeleton className="h-3 w-10" label="Indlæser visninger" />
+            </span>
+        );
+    }
 
     return (
         <span className="flex items-center gap-1.5 text-xs font-mono text-dim opacity-80" title={`${views} views`}>

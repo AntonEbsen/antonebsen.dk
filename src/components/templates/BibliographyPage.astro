@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -20,10 +21,6 @@ const { lang, content } = Astro.props;
       margin: 24px auto;
       padding: 0 16px 32px;
     }
-    .hero-card {
-        padding: 48px;
-        margin-bottom: 32px;
-    }
     .paper-card {
         margin-bottom: 16px;
         transition: transform 0.2s ease;
@@ -38,17 +35,16 @@ const { lang, content } = Astro.props;
         margin-bottom: 4px;
     }
     @media (max-width: 768px) {
-      .hero-card { padding: 32px 24px; }
     }
   </style>
 
   <main class="biblio-wrap">
     <Section>
-      <Card variant="glass" class="hero-card">
-        <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{content.hero.eyebrow}</p>
-        <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
-        <p class="text-lg text-dim">{content.hero.text}</p>
-      </Card>
+      <PageHeader
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        lead={content.hero.text}
+      />
     </Section>
 
     <Section>

@@ -1,0 +1,137 @@
+---
+import { seedFrom, hashString } from '@lib/seed';
+
+/**
+ * A generated cover plate.
+ *
+ * BlogCard has no image slot, and the site has 8 image tags across 79
+ * templates with 49 referenced assets missing — so the blog index is a grid of
+ * grey text boxes. Rather than wait for photography that does not exist, the
+ * cover is drawn: a slice of contour lines seeded from the post's own slug,
+ * with a large numeral set in the display face.
+ *
+ * Same rules as the other ornaments here — deterministic, no RNG, aria-hidden,
+ * and it cannot 404.
+ */
+interface Props {
+  /** Seeds the contours. The post slug is the natural choice. */
+  seed: string;
+  /** Optional figure set large behind the lines — a series index, a year. */
+  numeral?: string;
+  /** Terracotta by default; moss for anything on the Camino side of the site. */
+  tone?: 'accent' | 'moss';
+  class?: string;
+}
+
+const { seed, numeral, tone = 'accent', class: className = '' } = Astro.props;
+
+const phase = seedFrom(seed);
+const stroke = tone === 'moss' ? 'var(--accent-2)' : 'var(--accent)';
+
+const W = 400;
+const H = 160;
+
+// Horizontal contour bands rather than the concentric rings of ContourField —
+// at this aspect ratio rings crop to meaningless arcs, but strata read as
+// terrain seen from the side.
+const LINES = 9;
+const paths: string[] = [];
+
+for (let i = 0; i < LINES; i++) {
+  const baseY = (H / (LINES - 1)) * i;
+  const pts: string[] = [];
+  const steps = 24;
+
+  for (let s = 0; s <= steps; s++) {
+    const t = s / steps;
+    const x = t * W;
+    const y =
+      baseY +
+      Math.sin(t * Math.PI * 2.2 + phase + i * 0.42) * 9 +
+      Math.sin(t * Math.PI * 5.7 - phase * 1.3 + i * 0.2) * 4;
+    pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+
+  paths.push(`M${pts.join(' L')}`);
+}
+
+// Which band reads as the ridge line, so the plate has a focal point.
+const emphasis = hashString(seed) % LINES;
+---
+
+<div class:list={['contour-plate relative overflow-hidden', className]} aria-hidden="true">
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" fill="none">
+    {paths.map((d, i) => (
+      <path
+        class:list={['plate-line', i === emphasis && 'plate-line--ridge']}
+        d={d}
+        stroke={stroke}
+        vector-effect="non-scaling-stroke"
+      />
+    ))}
+  </svg>
+
+  {/* Pseudo-element rather than a text node: axe measures anything a sighted
+      user can read, and a watermark this faint can never clear 3:1. The number
+      is decoration — the card states its part number in the pill. */}
+  {numeral && <span class="plate-numeral deco-numeral font-serif" data-numeral={numeral}></span>}
+</div>
+
+<style>
+  .contour-plate {
+    height: 100%;
+    min-height: 7rem;
+    background: var(--depth-bg);
+    display: block;
+  }
+
+  .contour-plate svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* Fade toward the bottom so the card's text has quiet ground to sit on. */
+    mask-image: linear-gradient(to bottom, black 40%, rgba(0, 0, 0, 0.25) 100%);
+  }
+
+  /* Stroke weight and opacity were baked onto each path as attributes, which
+     left nothing for hover to change. As CSS they can respond — the card lifts
+     and the survey under it comes up with it. */
+  .plate-line {
+    stroke-width: 0.8;
+    opacity: 0.28;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      stroke-width var(--dur-base) var(--ease-out);
+  }
+
+  .plate-line--ridge {
+    stroke-width: 1.8;
+    opacity: 0.65;
+  }
+
+  :global(.group:hover) .plate-line {
+    opacity: 0.42;
+  }
+
+  :global(.group:hover) .plate-line--ridge {
+    stroke-width: 2.4;
+    opacity: 0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plate-line {
+      transition: none;
+    }
+  }
+
+  .plate-numeral {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.25rem;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+</style>

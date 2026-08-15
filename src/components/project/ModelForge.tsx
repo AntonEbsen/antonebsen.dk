@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { motion } from 'framer-motion';
+import '@lib/reduced-motion';
 
 ChartJS.register(
     CategoryScale,
@@ -176,8 +177,8 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
 
                     <div className="flex justify-between items-start mb-6 relative z-10">
                         <div>
-                            <h3 className="text-xl font-bold text-white mb-1">{t.title}</h3>
-                            <p className="text-sm text-slate-400">{t.subtitle}</p>
+                            <h3 className="text-xl font-bold text-text mb-1">{t.title}</h3>
+                            <p className="text-sm text-muted">{t.subtitle}</p>
                         </div>
                         <div className="text-[10px] font-mono text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/20">
                             {t.formula}
@@ -196,13 +197,13 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
                                 <i className="fa-solid fa-sliders"></i>
                             </div>
-                            <h3 className="text-lg font-bold text-white">{t.controls}</h3>
+                            <h3 className="text-lg font-bold text-text">{t.controls}</h3>
                         </div>
 
                         {/* Alpha Pi Slider */}
                         <div className="space-y-3">
                             <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
-                                <span className="text-slate-400">{t.weightPi}</span>
+                                <span className="text-muted">{t.weightPi}</span>
                                 <span className="text-accent">{alphaPi.toFixed(2)}</span>
                             </div>
                             <input
@@ -217,7 +218,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                         {/* Alpha Y Slider */}
                         <div className="space-y-3">
                             <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
-                                <span className="text-slate-400">{t.weightY}</span>
+                                <span className="text-muted">{t.weightY}</span>
                                 <span className="text-accent">{alphaY.toFixed(2)}</span>
                             </div>
                             <input
@@ -232,7 +233,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                         {/* R Star Slider */}
                         <div className="space-y-3">
                             <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
-                                <span className="text-slate-400">{t.naturalRate}</span>
+                                <span className="text-muted">{t.naturalRate}</span>
                                 <span className="text-accent">{rStar.toFixed(2)}%</span>
                             </div>
                             <input
@@ -251,7 +252,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                                 <i className="fa-solid fa-lightbulb text-accent text-xs"></i>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-accent">{t.insight}</span>
                             </div>
-                            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                            <p className="text-xs text-dim leading-relaxed font-medium">
                                 {t.insightText}
                             </p>
                         </div>

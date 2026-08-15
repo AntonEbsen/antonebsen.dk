@@ -1,5 +1,6 @@
 ---
 import CaminoLayout from '../../layouts/CaminoLayout.astro';
+import SectionNav from '@components/ui/SectionNav.astro';
 import { caminoContent } from '../../data/camino';
 
 interface Props {
@@ -28,15 +29,15 @@ const t = caminoContent[lang];
     <div class="container main-content">
       <div class="content-grid">
         <aside class="sidebar">
-          <nav class="sticky-nav">
-            <h3>{t.navTitle}</h3>
-            <ul>
-              <li><a href="#food"><i class="fa-solid fa-utensils"></i> {t.foodTitle}</a></li>
-              <li><a href="#glossary"><i class="fa-solid fa-book-bookmark"></i> {t.glossaryTitle}</a></li>
-              <li><a href="#playlist"><i class="fa-solid fa-music"></i> {t.playlistTitle}</a></li>
-              <li><a href="#badges"><i class="fa-solid fa-trophy"></i> {t.badgesTitle}</a></li>
-            </ul>
-          </nav>
+          <SectionNav
+            title={t.navTitle}
+            items={[
+              { id: 'food', label: t.foodTitle, icon: 'fa-solid fa-utensils' },
+              { id: 'glossary', label: t.glossaryTitle, icon: 'fa-solid fa-book-bookmark' },
+              { id: 'playlist', label: t.playlistTitle, icon: 'fa-solid fa-music' },
+              { id: 'badges', label: t.badgesTitle, icon: 'fa-solid fa-trophy' },
+            ]}
+          />
         </aside>
 
         <main class="sections">
@@ -213,9 +214,5 @@ const t = caminoContent[lang];
     .badge-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0; }
     .badge-km { position: absolute; top: 1rem; right: 1.25rem; color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; }
 
-    /* Sidebar */
-    .sticky-nav { position: sticky; top: 100px; padding: 2rem; border-radius: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
-    .sticky-nav a { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; color: var(--text-dim); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid rgba(255,255,255,0.03); }
-    .sticky-nav a:hover { color: var(--accent); padding-left: 0.5rem; }
-  </style>
+    /* Sidebar */  </style>
 </CaminoLayout>

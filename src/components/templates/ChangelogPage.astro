@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import EmptyState from '@components/ui/EmptyState.astro';
 import Section from '@components/ui/Section.astro';
 import { supabase } from '@lib/supabase';
 
@@ -73,7 +74,7 @@ function getTypeIcon(type: string) {
   <main class="max-w-3xl mx-auto px-4 py-12">
      <Section>
         <div class="text-center mb-16">
-            <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+            <h1 class="text-4xl font-bold mb-4 text-gold-400 drop-shadow-[0_0_15px_rgba(212,121,79,0.3)]">
                 {content.heroTitle}
             </h1>
             <p class="text-dim text-lg">
@@ -100,7 +101,7 @@ function getTypeIcon(type: string) {
 
                     <div class="bg-gray-900/40 p-6 rounded-lg border border-white/5 hover:border-gold-500/20 transition-colors group">
                         <div class="flex items-start justify-between gap-4 mb-3">
-                            <h3 class="text-xl font-bold text-white group-hover:text-gold-200 transition-colors">{log.title}</h3>
+                            <h3 class="text-xl font-bold text-text group-hover:text-gold-200 transition-colors">{log.title}</h3>
                             <span class={`px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider border flex items-center gap-1.5 ${getTypeColor(log.type)}`}>
                                 <i class={`fa-solid ${getTypeIcon(log.type)}`}></i>
                                 {log.type}
@@ -114,7 +115,7 @@ function getTypeIcon(type: string) {
             ))}
             
             {logs?.length === 0 && (
-                <p class="text-center text-dim py-12">{content.empty}</p>
+                <EmptyState message={content.empty} icon="fa-solid fa-clock-rotate-left" />
             )}
         </div>
 

@@ -1,12 +1,24 @@
 ---
+/**
+ * The eyebrow above a section.
+ *
+ * Kept as an <h2> because ~40 templates rely on it as the section's accessible
+ * heading, and demoting it to a <p> would take those out of the document
+ * outline. It carries `.eyebrow` explicitly: reset.css now sets the display
+ * face on h1–h4, and Fraunces at 13px in letterspaced caps is the one place the
+ * serif is wrong.
+ *
+ * For an actual section title, use SectionTitle. Templates used to reach for
+ * this one and pass `class="text-3xl font-bold"` to beat the eyebrow styling
+ * back off, which made the same component render as two different things.
+ */
 interface Props {
   class?: string;
 }
 
-const { class: className = "" } = Astro.props;
+const { class: className = '' } = Astro.props;
 ---
 
-<h2 class:list={["text-xs font-bold uppercase tracking-wider text-accent mb-4", className]}>
+<h2 class:list={['eyebrow mb-sm', className]}>
   <slot />
 </h2>
-

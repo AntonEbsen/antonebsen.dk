@@ -1,0 +1,56 @@
+---
+/**
+ * Records what was read, for the two entries that span more than one page load.
+ *
+ * The Collation is settled on arrival: opening the same post in a second tongue
+ * *is* the act, and the language switcher at the top of every post is how it
+ * happens. The Quire waits for the end of the piece, because reading a series
+ * means reading it, not opening three tabs.
+ *
+ * Renders nothing. It exists because the blog page is the only place that knows
+ * a post's slug, language and series at once, and none of that can reach a
+ * client module any other way.
+ */
+
+interface Props {
+    slug: string;
+    lang: string;
+    series?: string;
+    /** How many posts carry this series, counted by the page from the collection. */
+    seriesTotal?: number;
+}
+
+const { slug, lang, series, seriesTotal } = Astro.props;
+---
+
+<div
+  data-reading-record
+  data-slug={slug}
+  data-lang={lang}
+  data-series={series ?? ''}
+  data-series-total={String(seriesTotal ?? 0)}
+  hidden
+></div>
+
+<script>
+  import { checkCollatioAchievement, checkQuireAchievement } from '@lib/gamification';
+
+  const el = document.querySelector<HTMLElement>('[data-reading-record]');
+
+  if (el) {
+    const slug = el.dataset.slug ?? '';
+    const lang = el.dataset.lang ?? '';
+    const series = el.dataset.series ?? '';
+    const seriesTotal = Number(el.dataset.seriesTotal ?? 0);
+
+    checkCollatioAchievement(slug, lang);
+
+    if (series && seriesTotal > 1) {
+      window.addEventListener(
+        'blog:reached-end',
+        () => checkQuireAchievement(series, seriesTotal, slug),
+        { once: true }
+      );
+    }
+  }
+</script>

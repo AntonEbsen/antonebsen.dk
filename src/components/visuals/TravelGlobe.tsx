@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import createGlobe from "cobe";
 import { motion, AnimatePresence } from "framer-motion";
+import '@lib/reduced-motion';
 
 interface TravelNode {
   city: string;
@@ -145,7 +146,7 @@ export default function TravelGlobe({ nodes, labels }: Props) {
                   <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4 block">
                     {activeNode.category}
                   </span>
-                  <h2 className="text-4xl md:text-6xl font-black text-white leading-tight mb-2">
+                  <h2 className="text-4xl md:text-6xl text-text leading-tight mb-2">
                     {activeNode.city}
                   </h2>
                   <p className="text-xl text-muted font-medium">{activeNode.country}</p>

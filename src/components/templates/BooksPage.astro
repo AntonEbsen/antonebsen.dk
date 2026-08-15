@@ -1,5 +1,7 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import EmptyState from '@components/ui/EmptyState.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -120,11 +122,12 @@ const books = await getBooks();
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3">{content.eyebrow}</p>
-          <h1 class="text-4xl leading-[1.15] mb-5 font-bold">{content.heroTitle}</h1>
-          <p class="text-[17px] leading-relaxed text-dim mb-6 opacity-90">
-            {content.heroText}
-          </p>
+          <PageHeader
+            variant="plain"
+            eyebrow={content.eyebrow}
+            title={content.heroTitle}
+            lead={content.heroText}
+          />
   
           <div class="flex flex-wrap gap-2 mb-8" aria-label="Categories">
             {content.categories.map(cat => <Pill variant="accent">{cat}</Pill>)}
@@ -181,7 +184,7 @@ const books = await getBooks();
 
         <div class="books-grid" id="books-grid">
            {books.length === 0 ? (
-               <p class="text-dim col-span-full text-center py-12">{content.empty}</p>
+               <div class="col-span-full"><EmptyState message={content.empty} icon="fa-solid fa-book-open" /></div>
            ) : (
              books.map((book: any, bIdx: number) => {
                  const r = Math.min(Math.max(book.rating || 0, 0), 5);
@@ -197,7 +200,7 @@ const books = await getBooks();
                         <span class="text-[10px] bg-white/5 px-2 py-0.5 rounded text-muted border border-white/5">{book.status || 'Read'}</span>
                     </div>
 
-                    <h3 class="text-xl font-bold text-white group-hover:text-accent transition-colors leading-tight">{book.title}</h3>
+                    <h3 class="text-xl font-bold text-text group-hover:text-accent transition-colors leading-tight">{book.title}</h3>
                     <p class="text-sm text-dim mb-4">{book.author || 'Unknown'}</p>
                     
                     {book.notes && (

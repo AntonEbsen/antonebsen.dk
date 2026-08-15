@@ -6,7 +6,7 @@ import Button from '@components/ui/Button.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import RouteMap from '@components/ui/RouteMap.astro';
 import StatTiles from '@components/ui/StatTiles.astro';
-import ElevationRule from '@components/ui/ElevationRule.astro';
+import TerrainRule from '@components/ui/TerrainRule.astro';
 import { CHANNEL_URL } from '@lib/youtube';
 import { resolveTrail } from '@lib/trail';
 import { resolveTranscript } from '@lib/video-transcript';
@@ -174,7 +174,7 @@ const jsonLd = {
         </time>
       </div>
 
-      <h1 class="text-4xl md:text-5xl font-black text-white leading-tight mb-5">{title}</h1>
+      <h1 class="text-4xl md:text-5xl leading-tight mb-5">{title}</h1>
       <p class="text-lg text-muted leading-relaxed max-w-3xl mb-8">{description}</p>
 
       {(trail.startPlace || trail.endPlace) && (
@@ -225,7 +225,7 @@ const jsonLd = {
 
     {/* The divider between sections is the shape of this walk. Renders nothing
         until a .gpx exists for the video. */}
-    <ElevationRule profile={trail.profile} />
+    <TerrainRule profile={trail.profile} />
 
     {video.chapters && video.chapters.length > 0 && (
       <Section>

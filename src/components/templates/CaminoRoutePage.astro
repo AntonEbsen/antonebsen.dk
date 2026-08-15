@@ -1,5 +1,6 @@
 ---
 import CaminoLayout from '../../layouts/CaminoLayout.astro';
+import SectionNav from '@components/ui/SectionNav.astro';
 import { caminoContent } from '../../data/camino';
 // Bundled from node_modules; the old unpkg tag was blocked by the site's CSP, and
 // the stylesheet was never loaded here at all so tiles would have been mispositioned.
@@ -35,18 +36,18 @@ const weatherCities = t.weatherCities;
     <div class="container main-content">
       <div class="content-grid">
         <aside class="sidebar">
-          <nav class="sticky-nav">
-            <h3>{t.navTitle}</h3>
-            <ul>
-              <li><a href="#map"><i class="fa-solid fa-map"></i> {t.mapTitle}</a></li>
-              <li><a href="#weather"><i class="fa-solid fa-cloud-sun"></i> {lang === 'da' ? 'Live Vejr' : 'Live Weather'}</a></li>
-              <li><a href="#elevation"><i class="fa-solid fa-chart-area"></i> {t.elevTitle}</a></li>
-              <li><a href="#timeline"><i class="fa-solid fa-route"></i> {lang === 'da' ? 'Rejsen' : 'The Journey'}</a></li>
-              <li><a href="#stages"><i class="fa-solid fa-list-check"></i> {t.stagesTitle}</a></li>
-              <li><a href="#sacred"><i class="fa-solid fa-church"></i> {t.churchesTitle}</a></li>
-              <li><a href="#prayer"><i class="fa-solid fa-hands-praying"></i> {t.prayerTitle}</a></li>
-            </ul>
-          </nav>
+          <SectionNav
+            title={t.navTitle}
+            items={[
+              { id: 'map', label: t.mapTitle, icon: 'fa-solid fa-map' },
+              { id: 'weather', label: lang === 'da' ? 'Live Vejr' : 'Live Weather', icon: 'fa-solid fa-cloud-sun' },
+              { id: 'elevation', label: t.elevTitle, icon: 'fa-solid fa-chart-area' },
+              { id: 'timeline', label: lang === 'da' ? 'Rejsen' : 'The Journey', icon: 'fa-solid fa-route' },
+              { id: 'stages', label: t.stagesTitle, icon: 'fa-solid fa-list-check' },
+              { id: 'sacred', label: t.churchesTitle, icon: 'fa-solid fa-church' },
+              { id: 'prayer', label: t.prayerTitle, icon: 'fa-solid fa-hands-praying' },
+            ]}
+          />
         </aside>
 
         <main class="sections">
@@ -245,11 +246,7 @@ const weatherCities = t.weatherCities;
     /* Map */
     .map-container { height: 500px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
 
-    /* Sidebar and Common */
-    .sticky-nav { position: sticky; top: 100px; padding: 2rem; border-radius: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
-    .sticky-nav a { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; color: var(--text-dim); text-decoration: none; transition: all 0.3s; border-bottom: 1px solid rgba(255,255,255,0.03); }
-    .sticky-nav a:hover { color: var(--accent); padding-left: 0.5rem; }
-
+    /* Sidebar and Common */
     /* Stages Grid */
     .stages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
     .stage-card { background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #444; }

@@ -5,6 +5,7 @@ import ViewCounter from '../../components/blog/ViewCounter.tsx';
 import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
 import ReadTimer from '../../components/blog/ReadTimer.astro';
 import Manicule from '../../components/blog/Manicule.astro';
+import ReadingRecord from '../../components/blog/ReadingRecord.astro';
 import CitationBox from '../../components/blog/CitationBox.tsx';
 import TaylorRuleChart from '../../components/blog/charts/TaylorRuleChart.tsx';
 import RelatedGraph from '../../components/blog/RelatedGraph.tsx';
@@ -40,32 +41,41 @@ const readTime = Math.ceil(words / 200);
 
 // Detect if this specific chart is needed (simple shortcode replacement for now)
 // In a real MDX setup this would be automatic, but for JSON content we check a flag or string.
-const showTaylorChart = slug === 'ai-monetary-policy'; 
+const showTaylorChart = slug === 'ai-monetary-policy';
+
+// Counted rather than read off seriesOrder, so a wrong order field cannot make
+// a series impossible to finish. See ReadingRecord.astro.
+const seriesTotal = post.data.series
+    ? posts.filter(p => p.data.series === post.data.series).length
+    : 0;
 ---
 
 <Layout title={displayTitle} description={displayDesc} article={true}>
   <ReadingProgress client:load />
   <ReadTimer />
   <Manicule />
+  <ReadingRecord slug={slug} lang={lang} series={post.data.series} seriesTotal={seriesTotal} />
 
-  <main class="max-w-6xl mx-auto px-6 py-24 relative">
-    <div class="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-16 items-start">
-        <div class="max-w-3xl mx-auto xl:mx-0">
-            <header class="mb-12 text-center xl:text-left">
-                <div class="flex items-center justify-center xl:justify-start gap-3 text-sm text-dim mb-4">
-                    <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 uppercase tracking-widest text-[10px] font-bold">
+  <main class="max-w-wide mx-auto px-md py-2xl relative">
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_280px] gap-2xl items-start justify-center">
+        <div class="w-full max-w-prose mx-auto xl:mx-0">
+            {/* Left-aligned throughout. Centred headers on a left-aligned essay
+                make the eye restart in a different place at the first paragraph. */}
+            <header class="mb-xl">
+                <div class="flex flex-wrap items-center gap-xs text-meta text-muted mb-md tabular">
+                    <span class="eyebrow !text-[10px] px-2 py-0.5 rounded-full border border-rule-accent">
                         {category}
                     </span>
-                    <span>•</span>
+                    <span aria-hidden="true">·</span>
                     <span>{meta}</span>
-                    <span>•</span>
+                    <span aria-hidden="true">·</span>
                     <span>{readTime} min læsning</span>
-                    <span>•</span>
+                    <span aria-hidden="true">·</span>
                     <ViewCounter client:load slug={slug} />
                 </div>
-                
-                <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{displayTitle}</h1>
-                <p class="text-xl text-dim leading-relaxed max-w-2xl mx-auto xl:mx-0">{displayDesc}</p>
+
+                <h1 class="font-serif text-display-sm mb-md">{displayTitle}</h1>
+                <p class="text-lead text-dim leading-relaxed">{displayDesc}</p>
             </header>
 
             {/* The Signal Brief */}
@@ -75,7 +85,13 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                 lang="da" 
             />
 
-            <article class="space-y-8 prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-p:text-dim prose-p:leading-loose prose-a:text-accent prose-blockquote:border-accent prose-blockquote:bg-white/5 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg">
+            {/*
+                Was `prose prose-invert prose-lg prose-headings:… prose-p:…`.
+                @tailwindcss/typography is not in package.json, so every one of
+                those classes emitted nothing and the article body has always
+                rendered unstyled. .prose-archive in styles.css is the real thing.
+            */}
+            <article class="prose-archive">
                 {/* Render content array as paragraphs if it exists */}
                 {displayContent && Array.isArray(displayContent) ? (
                     displayContent.map((paragraph: string, index: number) => {
@@ -107,9 +123,9 @@ const showTaylorChart = slug === 'ai-monetary-policy';
                     #ref-1 / #ref-2 anchors that existed nowhere on the page.
                 */}
                 {post.data.footnotes && post.data.footnotes.length > 0 && (
-                    <div class="mt-12 pt-6 border-t border-white/10 text-sm text-dim opacity-80">
-                        <h3 class="text-xs uppercase tracking-widest font-bold mb-4 text-white">Noter</h3>
-                        <ol class="list-decimal pl-4 space-y-2">
+                    <div class="mt-2xl pt-md border-t border-rule text-meta text-muted">
+                        <h2 class="eyebrow mb-sm">Noter</h2>
+                        <ol class="list-decimal pl-4 space-y-2xs">
                             {post.data.footnotes.map((fn: any) => (
                                 <li id={`fn-${fn.id}`}>
                                     <span set:html={fn.content} /> <a href={`#ref-${fn.id}`} class="text-accent underline underline-offset-2">↩</a>
@@ -138,8 +154,8 @@ const showTaylorChart = slug === 'ai-monetary-policy';
             </div>
 
             {/* Related Content Graph (The Laboratory) */}
-            <div class="my-12">
-                <h3 class="text-xs uppercase tracking-widest font-bold mb-4 text-white">Related Knowledge</h3>
+            <div class="my-2xl">
+                <h2 class="eyebrow mb-sm">Related Knowledge</h2>
                 <RelatedGraph client:visible currentSlug={slug} />
             </div>
 

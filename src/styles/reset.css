@@ -1,3 +1,7 @@
+/* The full reset. BaseLayout.astro inlines a first-paint subset of this — the
+   two must agree on anything affecting layout or type, or the page reflows when
+   this stylesheet arrives. */
+
 * {
     box-sizing: border-box;
 }
@@ -23,26 +27,31 @@ body {
     position: relative;
 }
 
-
+/* Film grain. There used to be two of these — this one, pulling an SVG from
+   grainy-gradients.vercel.app on every page load, plus a second div injected by
+   a script in BaseLayout. Both sat at z-index 1000. One is enough, and it should
+   not be a third-party request: the noise is inlined below. */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: url("https://grainy-gradients.vercel.app/noise.svg");
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjgiIG51bU9jdGF2ZXM9IjIiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbikiLz48L3N2Zz4=");
     opacity: 0.03;
     pointer-events: none;
-    z-index: 1000;
+    z-index: var(--z-grain);
 }
 
 a {
     color: var(--accent);
     text-decoration: none;
-    transition: all 0.3s ease;
+    /* `all` also transitioned transform, filter and box-shadow on every link on
+       the site, which is what made hover feel soft and made reduced-motion hard
+       to honour. Name the two properties that actually change. */
+    transition: color 0.25s ease, opacity 0.25s ease;
 }
 
 a:hover {
-    filter: brightness(1.2);
-    text-shadow: 0 0 10px rgba(212, 121, 79, 0.3);
+    color: var(--accent-light);
 }
 
 img {
@@ -58,23 +67,60 @@ li {
     color: var(--text-dim);
 }
 
+/* Display type is Fraunces, the face this site has been downloading on every
+   page load and using almost nowhere. Weights step down by level rather than
+   sitting at 800 across the board — at display sizes Fraunces reads as a slab
+   at 800, and its character is in the flare, not the mass. */
 h1,
 h2,
-h3 {
+h3,
+h4 {
     color: var(--text);
     margin: 0 0 0.5em;
+    font-family: var(--font-display);
     line-height: var(--lh-heading);
-    letter-spacing: var(--ls-heading);
-    font-weight: 800;
+    letter-spacing: var(--ls-display);
 }
 
 h1 {
     font-size: var(--h1-size);
-    color: var(--text);
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+    font-weight: 700;
 }
 
 h2 {
     font-size: var(--h2-size);
-    color: var(--text);
+    font-weight: 650;
+}
+
+h3 {
+    font-size: var(--step-3);
+    font-weight: 600;
+}
+
+h4 {
+    font-size: var(--step-2);
+    font-weight: 600;
+}
+
+/* Figures, tables and anything counting things. An economics site is mostly
+   numbers in columns; proportional digits make them fail to line up. */
+table,
+[data-numeric],
+.tabular {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Motion, honoured globally rather than in the seven components that happened
+   to remember. Everything below is decoration: reveals, hover lifts, the
+   pulsing halo on the homepage, the navbar scan bar, the badge pings. */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

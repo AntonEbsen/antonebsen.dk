@@ -67,7 +67,7 @@ export default function ResearchRadar({ labels, values, seriesLabel, max, unit =
                 angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
                 grid: { color: 'rgba(255, 255, 255, 0.1)' },
                 pointLabels: {
-                    color: '#94a3b8', // slate-400
+                    color: '#8E938B', // muted
                     font: { size: 12, family: 'Inter, sans-serif' },
                 },
                 ticks: {
@@ -75,7 +75,7 @@ export default function ResearchRadar({ labels, values, seriesLabel, max, unit =
                     // turns a countable fact into an unfalsifiable impression.
                     display: true,
                     stepSize: 1,
-                    color: '#64748b', // slate-500
+                    color: '#8E938B', // muted
                     backdropColor: 'transparent',
                     font: { size: 10 },
                 },
@@ -86,9 +86,9 @@ export default function ResearchRadar({ labels, values, seriesLabel, max, unit =
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: 'rgba(15, 23, 42, 0.9)', // slate-900/90
+                backgroundColor: 'rgba(30, 33, 34, 0.9)', // bg/90
                 titleColor: '#fff',
-                bodyColor: '#cbd5e1', // slate-300
+                bodyColor: '#B8BCB5', // dim
                 borderColor: 'rgba(255, 255, 255, 0.1)',
                 borderWidth: 1,
                 padding: 10,

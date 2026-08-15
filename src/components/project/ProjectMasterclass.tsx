@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 import { CHANNEL_URL } from '@lib/youtube';
 import { unlockAchievement } from '@lib/gamification';
 
@@ -79,9 +80,9 @@ const MethodologyTooltip: React.FC<{ term: string, lang: 'da' | 'en' }> = ({ ter
             <span className="text-accent border-b border-accent/30 cursor-help hover:text-white transition-colors underline decoration-accent/20 underline-offset-4">
                 {term}
             </span>
-            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 p-3 bg-slate-800 border border-white/10 rounded-xl shadow-2xl opacity-0 translate-y-2 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all z-50 pointer-events-none text-xs leading-relaxed text-slate-300 font-sans normal-case tracking-normal">
+            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 p-3 bg-card border border-white/10 rounded-xl shadow-2xl opacity-0 translate-y-2 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all z-50 pointer-events-none text-xs leading-relaxed text-dim font-sans normal-case tracking-normal">
                 {info[lang]}
-                <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-8 border-transparent border-t-slate-800"></span>
+                <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-8 border-transparent border-t-card"></span>
             </span>
         </span>
     );
@@ -100,8 +101,8 @@ export const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da'
     return (
         <div className="mt-16 pt-16 border-t border-white/10">
             <div className="mb-8">
-                <h3 className="text-2xl font-serif text-white mb-2">{labels.title}</h3>
-                <p className="text-slate-400 text-sm">{labels.sub}</p>
+                <h3 className="text-2xl font-serif text-text mb-2">{labels.title}</h3>
+                <p className="text-muted text-sm">{labels.sub}</p>
             </div>
             <div className="space-y-4">
                 {items.map((item, i) => (
@@ -120,9 +121,9 @@ export const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da'
                                 <span className={`w-2 h-2 rounded-full ${item.category === 'econometrics' ? 'bg-blue-400' :
                                     item.category === 'data' ? 'bg-green-400' : 'bg-accent'
                                     }`}></span>
-                                <span className="text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{item.question}</span>
+                                <span className="text-sm font-bold text-text group-hover:text-white transition-colors">{item.question}</span>
                             </span>
-                            <i className={`fa-solid fa-chevron-down text-xs text-slate-400 transition-transform ${openIndex === i ? 'rotate-180' : ''}`}></i>
+                            <i className={`fa-solid fa-chevron-down text-xs text-muted transition-transform ${openIndex === i ? 'rotate-180' : ''}`}></i>
                         </button>
                         <AnimatePresence>
                             {openIndex === i && (
@@ -132,7 +133,7 @@ export const RobustnessAccordion: React.FC<{ items: RobustnessItem[], lang: 'da'
                                     exit={{ height: 0, opacity: 0 }}
                                     className="px-5 pb-5"
                                 >
-                                    <p className="text-slate-400 text-sm leading-relaxed pl-6 border-l border-accent/20 py-1">
+                                    <p className="text-muted text-sm leading-relaxed pl-6 border-l border-accent/20 py-1">
                                         {item.answer}
                                     </p>
                                 </motion.div>
@@ -233,10 +234,10 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
     const progressPercent = (watched.length / series.length) * 100;
 
     return (
-        <section className="my-24 bg-slate-900 border border-white/10 rounded-[40px] overflow-hidden shadow-2xl relative group/masterclass">
+        <section className="my-24 bg-bg border border-white/10 rounded-[40px] overflow-hidden shadow-2xl relative group/masterclass">
             {/* Vanguard Series Badge - The "Perfectionist" Signal */}
             <div className="absolute top-0 left-0 z-20 pointer-events-none">
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 border-b border-r border-white/10 px-6 py-4 rounded-br-3xl shadow-2xl flex items-center gap-4 transition-transform group-hover/masterclass:scale-[1.02] duration-500 origin-top-left">
+                <div className="bg-gradient-to-br from-card to-bg border-b border-r border-white/10 px-6 py-4 rounded-br-3xl shadow-2xl flex items-center gap-4 transition-transform group-hover/masterclass:scale-[1.02] duration-500 origin-top-left">
                     <div className="relative">
                         <div className="w-10 h-10 border-2 border-accent/40 rounded-full flex items-center justify-center">
                             <i className="fa-solid fa-shield-halved text-accent text-sm"></i>
@@ -248,7 +249,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                             {lang === 'da' ? 'Vanguard Eksklusiv' : 'Vanguard Exclusive'}
                         </span>
                         <span className="text-sm font-serif text-white/90 font-bold tracking-tighter">
-                            Technical Series <span className="text-slate-400 font-sans font-light underline decoration-accent/30 underline-offset-4">№ 01</span>
+                            Technical Series <span className="text-muted font-sans font-light underline decoration-accent/30 underline-offset-4">№ 01</span>
                         </span>
                     </div>
                 </div>
@@ -263,10 +264,10 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                         <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-accent mb-4 block">
                             {t.masterclass}
                         </span>
-                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-4">
+                        <h2 className="text-3xl md:text-5xl font-serif text-text mb-4">
                             {title || (lang === 'da' ? 'Video-serien: Fra Intuition til Metode' : 'Video Series: From Intuition to Method')}
                         </h2>
-                        <p className="text-slate-400 max-w-2xl text-lg font-serif italic">
+                        <p className="text-muted max-w-2xl text-lg font-serif italic">
                             {description || (lang === 'da' ? 'En 7-delt serie der dissekerer de økonomiske mekanismer, SVAR-metodologi og resultaterne af min forskning.' : 'A 7-part series dissecting the economic mechanisms, SVAR methodology, and the results of my research.')}
                         </p>
                     </div>
@@ -286,10 +287,10 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                 {/* Overall Progress Bar */}
                 <div className="mb-12 bg-white/5 p-4 md:p-6 rounded-3xl border border-white/5 shadow-inner">
                     <div className="flex justify-between items-center mb-3">
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">{t.progress}</span>
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-muted">{t.progress}</span>
                         <span className="text-xs font-bold text-accent">{Math.round(progressPercent)}%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-card rounded-full overflow-hidden">
                         <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${progressPercent}%` }}
@@ -301,7 +302,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                     {/* Part List - Sidebar */}
                     <div className="lg:col-span-4 space-y-3 order-2 lg:order-1">
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6 pl-2">
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted mb-6 pl-2">
                             {t.explore}
                         </h3>
                         <div className="space-y-2">
@@ -317,7 +318,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                             }`}
                                     >
                                         <div className="flex flex-col items-center">
-                                            <span className={`text-sm font-bold mt-0.5 ${activeIndex === index ? 'text-accent' : 'text-slate-400'}`}>
+                                            <span className={`text-sm font-bold mt-0.5 ${activeIndex === index ? 'text-accent' : 'text-muted'}`}>
                                                 {video.part.toString().padStart(2, '0')}
                                             </span>
                                             {isWatched && (
@@ -325,7 +326,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                             )}
                                         </div>
                                         <div>
-                                            <h4 className={`text-sm font-bold transition-colors ${activeIndex === index ? 'text-white' : 'text-slate-400 group-hover:text-slate-300'}`}>
+                                            <h4 className={`text-sm font-bold transition-colors ${activeIndex === index ? 'text-text' : 'text-muted group-hover:text-dim'}`}>
                                                 {video.title}
                                             </h4>
                                             {activeIndex === index && (
@@ -362,19 +363,19 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                             allowFullScreen
                                         ></iframe>
                                     ) : (
-                                        <div className="w-full h-full flex flex-col items-center justify-center text-center px-8 bg-gradient-to-br from-slate-900 to-black">
+                                        <div className="w-full h-full flex flex-col items-center justify-center text-center px-8 bg-gradient-to-br from-bg to-black">
                                             <div className="w-14 h-14 rounded-full border border-accent/30 flex items-center justify-center mb-6">
                                                 <i className="fa-solid fa-clapperboard text-accent"></i>
                                             </div>
                                             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-3">
                                                 {t.comingSoon}
                                             </p>
-                                            <p className="text-slate-400 text-sm max-w-xs mb-6">{t.comingSoonSub}</p>
+                                            <p className="text-muted text-sm max-w-xs mb-6">{t.comingSoonSub}</p>
                                             <a
                                                 href={CHANNEL_URL}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-xs font-bold uppercase tracking-widest text-slate-300 hover:text-white border border-white/10 hover:border-white/25 rounded-full px-5 py-2 transition-colors"
+                                                className="text-xs font-bold uppercase tracking-widest text-dim hover:text-white border border-white/10 hover:border-white/25 rounded-full px-5 py-2 transition-colors"
                                             >
                                                 <i className="fa-brands fa-youtube mr-2"></i>{t.subscribe}
                                             </a>
@@ -404,10 +405,10 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                         </p>
                                     </div>
                                     <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                                        <h5 className="text-[10px] uppercase font-bold text-slate-400 mb-2 tracking-widest">
+                                        <h5 className="text-[10px] uppercase font-bold text-muted mb-2 tracking-widest">
                                             {t.content}
                                         </h5>
-                                        <div className="text-slate-300 text-sm leading-relaxed">
+                                        <div className="text-dim text-sm leading-relaxed">
                                             {parseDescription(activeVideo.description)}
                                         </div>
                                     </div>
@@ -415,7 +416,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
 
                                 {activeVideo.links && activeVideo.links.length > 0 && (
                                     <div className="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                                        <h5 className="text-[10px] uppercase font-bold text-slate-400 mb-4 tracking-widest flex items-center gap-2">
+                                        <h5 className="text-[10px] uppercase font-bold text-muted mb-4 tracking-widest flex items-center gap-2">
                                             <i className="fa-solid fa-link text-xs"></i>
                                             {t.resources}
                                         </h5>
@@ -424,7 +425,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                                 <a
                                                     key={i}
                                                     href={link.url}
-                                                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors border border-white/5 ${link.class ? link.class.replace('btn-accent', 'bg-accent text-black hover:bg-accent/80') : 'bg-slate-800 hover:bg-slate-700 text-slate-200'}`}
+                                                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors border border-white/5 ${link.class ? link.class.replace('btn-accent', 'bg-accent text-black hover:bg-accent/80') : 'bg-card hover:bg-rule-strong text-text'}`}
                                                 >
                                                     <i className={link.icon || "fa-solid fa-arrow-up-right-from-square"}></i>
                                                     {link.label}

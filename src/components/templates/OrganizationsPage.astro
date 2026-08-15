@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
@@ -61,11 +62,12 @@ const cv = cvEntry.data;
     <Section class="mb-12">
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{t.hero.title}</h1>
-          <p class="text-lg text-dim">
-            {t.hero.text}
-          </p>
+          <PageHeader
+            variant="plain"
+            eyebrow={t.eyebrow}
+            title={t.hero.title}
+            lead={t.hero.text}
+          />
         </Card>
       </div>
     </Section>

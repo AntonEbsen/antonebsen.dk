@@ -20,9 +20,9 @@ interface Props {
 const { nodes, links, height = 400 } = Astro.props;
 ---
 
-<div class="relative w-full rounded-[32px] overflow-hidden bg-slate-50 border border-slate-100 shadow-inner" style={`height: ${height}px`}>
+<div class="relative w-full rounded-[32px] overflow-hidden bg-card border border-rule shadow-inner" style={`height: ${height}px`}>
     <div id="knowledge-graph-container" class="absolute inset-0"></div>
-    <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-200 text-[10px] text-slate-400 font-mono">
+    <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur px-3 py-1.5 rounded-lg border border-rule text-[10px] text-muted font-mono">
         <i class="fa-solid fa-circle-nodes mr-1.5 text-accent"></i>
         Interactive Knowledge Graph
     </div>
@@ -83,7 +83,7 @@ const { nodes, links, height = 400 } = Astro.props;
 
             // Render elements
             const link = this.svg.append('g')
-                .attr('stroke', '#cbd5e1') // slate-300
+                .attr('stroke', '#B8BCB5') // dim
                 .attr('stroke-opacity', 0.6)
                 .selectAll('line')
                 .data(this.links)
@@ -110,7 +110,7 @@ const { nodes, links, height = 400 } = Astro.props;
                 .text(d => d.id)
                 .attr('font-family', 'sans-serif')
                 .attr('font-size', '10px')
-                .attr('fill', '#475569') // slate-600
+                .attr('fill', '#8E938B') // muted
                 .attr('font-weight', 'bold');
 
             // Add node hover tooltips
@@ -135,7 +135,7 @@ const { nodes, links, height = 400 } = Astro.props;
         }
 
         private getColor(group: number): string {
-            const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#64748b']; // Blue, Red, Green, Amber, Slate
+            const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8E938B']; // Categorical: distinct hues are the point here, so this scale stays multi-hue; only its grey moved onto stone.
             return colors[group % colors.length];
         }
 

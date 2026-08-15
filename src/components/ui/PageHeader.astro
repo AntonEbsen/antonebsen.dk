@@ -1,0 +1,62 @@
+---
+import ContourField from './ContourField.astro';
+import { seedFrom } from '@lib/seed';
+
+/**
+ * The top of a page.
+ *
+ * Roughly forty templates hand-rolled the same block — a `.hero-card` glass
+ * panel holding an uppercase eyebrow, an h1 and a lead paragraph — each with its
+ * own near-identical inline <style> declaring `.hero-card { padding: 48px }` and
+ * a 1200px wrapper. They were structurally the same page with different words,
+ * which is the single biggest reason the site feels repetitive.
+ *
+ * The contour field is what makes them stop looking alike. Its seed is derived
+ * from the page's own title, and ContourField's ring geometry is pure
+ * trigonometry over that seed with no RNG — so every page grows a different
+ * hill behind its heading, deterministically, and the same hill on every build.
+ * That is also the answer to having no photography: the texture is generated,
+ * so it costs nothing and cannot go missing.
+ */
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  /** Overrides the string the contour seed is derived from. Defaults to the title. */
+  seed?: string;
+  /**
+   * `panel` draws its own glass panel. `bare` sits the type directly on the
+   * page under a hairline. `plain` draws nothing at all — for the templates that
+   * already wrap their page top in a Card and only need the type and the
+   * contour, without a second panel inside the first.
+   */
+  variant?: 'panel' | 'bare' | 'plain';
+  class?: string;
+}
+
+const { title, eyebrow, lead, seed, variant = 'panel', class: className = '' } = Astro.props;
+const contourSeed = seedFrom(seed ?? title);
+---
+
+<header
+  class:list={[
+    'page-header relative isolate overflow-hidden',
+    variant === 'panel' &&
+      'rounded-panel border border-[var(--glass-border)] bg-[var(--glass)] backdrop-blur-md shadow-2 px-6 py-xl sm:px-xl',
+    variant === 'bare' && 'py-xl border-b border-rule',
+    className,
+  ]}
+  data-page-header={variant}
+>
+  <ContourField seed={contourSeed} anchor="corner" />
+
+  <div class="relative z-raised max-w-prose">
+    {eyebrow && <p class="eyebrow m-0 mb-xs">{eyebrow}</p>}
+
+    <h1 class="m-0 font-serif text-display-sm">{title}</h1>
+
+    {lead && <p class="mt-md mb-0 text-lead text-dim">{lead}</p>}
+
+    <slot />
+  </div>
+</header>

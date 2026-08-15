@@ -40,7 +40,7 @@ export default function CodeVault({ title, lang, code }: CodeVaultProps) {
     };
 
     return (
-        <div id="code-vault-wrapper" className="bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl text-white relative group" onMouseUp={handleMouseUp}>
+        <div id="code-vault-wrapper" className="bg-bg rounded-[32px] overflow-hidden shadow-2xl text-white relative group" onMouseUp={handleMouseUp}>
             {/* Header */}
             <div className="bg-white/5 p-4 flex items-center justify-between border-b border-white/10 select-none">
                 <div className="flex items-center gap-3">
@@ -49,15 +49,15 @@ export default function CodeVault({ title, lang, code }: CodeVaultProps) {
                         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
                         <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                     </div>
-                    <span className="text-xs font-mono text-slate-400 ml-2">{title}</span>
+                    <span className="text-xs font-mono text-muted ml-2">{title}</span>
                 </div>
                 <div className="flex items-center gap-4">
-                    <span className="text-[10px] text-slate-400 italic hidden group-hover:block transition-all animate-pulse">
+                    <span className="text-[10px] text-muted italic hidden group-hover:block transition-all animate-pulse">
                         Select text to explain
                     </span>
                     {/* Accent-on-accent/20 measured 3.75:1 — below AA for 10px text.
                         A neutral panel behind the same accent text clears it. */}
-                    <span className="text-[10px] bg-slate-950 text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider border border-accent/30">{lang}</span>
+                    <span className="text-[10px] bg-sunken text-accent px-2 py-0.5 rounded uppercase font-bold tracking-wider border border-accent/30">{lang}</span>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@ export default function CodeVault({ title, lang, code }: CodeVaultProps) {
                 role="region"
                 aria-label={`${lang} source`}
             >
-                <pre className="font-mono text-sm leading-relaxed text-slate-300"><code>{code}</code></pre>
+                <pre className="font-mono text-sm leading-relaxed text-dim"><code>{code}</code></pre>
             </div>
 
             {/* Tooltip */}
@@ -81,11 +81,11 @@ export default function CodeVault({ title, lang, code }: CodeVaultProps) {
                 >
                     <button
                         onClick={handleExplain}
-                        className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl hover:bg-black transition-all flex items-center gap-2 border border-slate-700 whitespace-nowrap"
+                        className="bg-card text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl hover:bg-black transition-all flex items-center gap-2 border border-rule-strong whitespace-nowrap"
                     >
                         <i className="fa-solid fa-robot text-accent"></i> Explain selection
                     </button>
-                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-800 mx-auto"></div>
+                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-card mx-auto"></div>
                 </div>
             )}
         </div>

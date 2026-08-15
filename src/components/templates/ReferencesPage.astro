@@ -1,5 +1,6 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/ui/PageHeader.astro';
 import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
@@ -99,11 +100,12 @@ if (error) references = [];
     <Section>
       <div class="hero-grid">
         <Card variant="glass" class="p-8">
-          <p class="text-xs font-bold uppercase tracking-widest text-dim mb-3">{isDa ? 'Anbefalinger' : 'Testimonials'}</p>
-          <h1 class="text-4xl font-bold leading-tight mb-4">{content.heroTitle}</h1>
-          <p class="text-lg text-dim mb-6">
-            {content.heroText}
-          </p>
+          <PageHeader
+            variant="plain"
+            eyebrow={isDa ? 'Anbefalinger' : 'Testimonials'}
+            title={content.heroTitle}
+            lead={content.heroText}
+          />
           <div class="flex flex-wrap gap-3">
             <Button href={contactLink}>{content.btns.contact}</Button>
             <Button href={cvLink} variant="ghost">{content.btns.cv}</Button>

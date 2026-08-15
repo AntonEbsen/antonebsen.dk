@@ -1,0 +1,29 @@
+---
+/**
+ * A section's actual title, in the display face.
+ *
+ * SectionHeading is an eyebrow — `text-xs uppercase tracking-wider`. Templates
+ * that wanted a real heading were passing `class="text-3xl font-bold"` into it
+ * to fight the eyebrow styling back off, which left the same component
+ * rendering as two different things depending on who called it and which
+ * Tailwind class happened to be emitted later in the stylesheet.
+ *
+ * This is the other half of that split. SectionHeading keeps its job.
+ */
+interface Props {
+  /** Optional eyebrow rendered above the title. */
+  eyebrow?: string;
+  as?: 'h2' | 'h3';
+  align?: 'start' | 'center';
+  class?: string;
+}
+
+const { eyebrow, as: Tag = 'h2', align = 'start', class: className = '' } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-2xs', align === 'center' && 'items-center text-center']}>
+  {eyebrow && <p class="eyebrow m-0">{eyebrow}</p>}
+  <Tag class:list={['m-0 font-serif', Tag === 'h2' ? 'text-title-lg' : 'text-title-md', className]}>
+    <slot />
+  </Tag>
+</div>

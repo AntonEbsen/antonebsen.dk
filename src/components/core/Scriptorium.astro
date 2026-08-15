@@ -96,14 +96,33 @@ const { ui } = getLedgerCopy(lang);
     transformed = [];
   }
 
+  /*
+    Rewriting every lowercase s to ſ across the page in one frame reads as a
+    glitch rather than as a page being reset. Dipping the content briefly and
+    doing the swap while it is down turns it into a change of setting.
+
+    Deliberately not used by the load-time restore below: on arrival the page is
+    already in blackletter, and there is nothing to transition from.
+  */
+  function withDip(mutate: () => void) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { mutate(); return; }
+
+    document.body.classList.add('scriptorium-settling');
+    window.setTimeout(() => {
+      mutate();
+      document.body.classList.remove('scriptorium-settling');
+    }, 150);
+  }
+
   function setMode(on: boolean) {
     if (on) {
       localStorage.setItem(KEY, '1');
-      apply();
+      withDip(apply);
       unlockAchievement('sortetryk');
     } else {
       localStorage.removeItem(KEY);
-      revert();
+      withDip(revert);
     }
   }
 
@@ -151,6 +170,31 @@ const { ui } = getLedgerCopy(lang);
   */
   body.scriptorium-active {
     --font-display: 'UnifrakturMaguntia', 'Fraunces Variable', serif;
+  }
+
+  /* The dip. One declaration on main/article so the fade is symmetric — put it
+     only on the .scriptorium-settling rule and the content would fade down and
+     then snap back. */
+  main,
+  article {
+    transition: opacity var(--dur-quick) var(--ease-out);
+  }
+
+  body.scriptorium-settling main,
+  body.scriptorium-settling article {
+    opacity: 0.32;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    main,
+    article {
+      transition: none;
+    }
+
+    body.scriptorium-settling main,
+    body.scriptorium-settling article {
+      opacity: 1;
+    }
   }
 
   #scriptorium-bar {

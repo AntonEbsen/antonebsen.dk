@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '@lib/reduced-motion';
 
 interface Collaborator {
     name: string;
@@ -27,7 +28,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
 
     return (
         <div className="flex flex-col items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200 relative z-20">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">{label}</span>
+            <span className="text-[10px] uppercase font-bold text-muted tracking-widest">{label}</span>
 
             <div className="flex flex-wrap justify-center gap-3">
                 {collaborators.map((collab) => (
@@ -47,8 +48,8 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                             w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border
                             transition-colors duration-300
                             ${selected?.name === collab.name
-                                ? 'bg-accent text-slate-900 border-accent'
-                                : 'bg-gradient-to-br from-slate-700 to-slate-600 text-white border-white/20 group-hover:border-white/40'
+                                ? 'bg-accent text-bg border-accent'
+                                : 'bg-gradient-to-br from-rule-strong to-muted text-white border-white/20 group-hover:border-white/40'
                             }
                         `}>
                             {collab.image ? (
@@ -59,7 +60,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                         </div>
 
                         <div className="text-left">
-                            <span className={`block text-xs font-bold transition-colors ${selected?.name === collab.name ? 'text-white' : 'text-slate-300'}`}>
+                            <span className={`block text-xs font-bold transition-colors ${selected?.name === collab.name ? 'text-white' : 'text-dim'}`}>
                                 {collab.name}
                                 {collab.status && (
                                     <span className="relative flex h-2 w-2 ml-2 inline-block">
@@ -77,7 +78,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                 )}
                             </span>
                             {collab.role && (
-                                <span className="block text-[10px] text-slate-400 uppercase tracking-wider">{collab.role}</span>
+                                <span className="block text-[10px] text-muted uppercase tracking-wider">{collab.role}</span>
                             )}
                         </div>
                     </button>
@@ -93,11 +94,11 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                         exit={{ opacity: 0, y: -10, height: 0 }}
                         className="overflow-hidden w-full max-w-md"
                     >
-                        <div className="mt-4 bg-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl relative">
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 w-4 h-4 bg-slate-900 border-t border-l border-white/10 rotate-45"></div>
+                        <div className="mt-4 bg-bg/80 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl relative">
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 w-4 h-4 bg-bg border-t border-l border-white/10 rotate-45"></div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-xl text-slate-400 shrink-0 border border-white/5">
+                                <div className="w-12 h-12 rounded-full bg-card flex items-center justify-center text-xl text-muted shrink-0 border border-white/5">
                                     {selected.image ? (
                                         <img src={selected.image} alt={selected.name} className="w-full h-full object-cover rounded-full" />
                                     ) : (
@@ -105,7 +106,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                     )}
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-bold text-lg">{selected.name}</h4>
+                                    <h4 className="text-text font-bold text-lg">{selected.name}</h4>
                                     <p className="text-accent text-xs uppercase tracking-wider mb-2">{selected.role}</p>
 
                                     {selected.status && (
@@ -123,7 +124,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                             {selected.status.text}
                                         </div>
                                     )}
-                                    <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                                    <p className="text-muted text-sm leading-relaxed mb-4">
                                         {selected.description || "Talented economist and data analyst. Contributed significantly to the research design and empirical strategy of this project."}
                                     </p>
 
