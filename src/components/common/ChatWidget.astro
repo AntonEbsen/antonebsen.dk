@@ -50,7 +50,9 @@ const t = (t_obj as any)[lang] || t_obj.da;
     }
 </script>
 
-<div id="chat-widget" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end pointer-events-none" data-lang={lang}>
+<!-- The client script cannot see the frontmatter `t`, so strings it needs at runtime
+     are handed over as data attributes (the same arrangement as CommandPalette). -->
+<div id="chat-widget" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end pointer-events-none" data-lang={lang} data-error={t.error}>
   
   <!-- Chat Window -->
   <div id="chat-window" class="w-[calc(100vw-2rem)] md:w-[350px] h-[500px] max-h-[75vh] mb-4 bg-glass border border-glass-border rounded-xl shadow-2xl flex flex-col transform translate-y-10 opacity-0 pointer-events-auto transition-all duration-300 origin-bottom-right hidden">
@@ -71,7 +73,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <div class="flex gap-2 items-center">
         <!-- Persona Selector -->
         <div class="relative group mr-1">
-            <select id="widget-persona-select" class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none">
+            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none">
                 <option value="default" class="bg-neutral-900 text-white">Standard</option>
                 <option value="recruiter" class="bg-neutral-900 text-white">💼 Recruiter</option>
                 <option value="tech" class="bg-neutral-900 text-white">💻 Tech Lead</option>
@@ -86,10 +88,10 @@ const t = (t_obj as any)[lang] || t_obj.da;
         <a href="/ai-project" class="text-dim hover:text-accent transition-colors p-1" title={lang==='da' ? "Om denne AI" : "About this AI"}>
           <i class="fa-solid fa-circle-info"></i>
         </a>
-        <button id="clear-widget-chat" class="text-dim hover:text-red-400 transition-colors p-1" title={lang==='da' ? "Slet historik" : "Clear history"}>
+        <button id="clear-widget-chat" aria-label={lang==="da" ? "Slet historik" : "Clear history"} class="text-dim hover:text-red-400 transition-colors p-1" title={lang==='da' ? "Slet historik" : "Clear history"}>
            <i class="fa-solid fa-trash"></i>
         </button>
-        <button id="close-chat" class="text-dim hover:text-white transition-colors p-1">
+        <button id="close-chat" aria-label={lang==="da" ? "Luk chat" : "Close chat"} class="text-dim hover:text-white transition-colors p-1">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -132,20 +134,20 @@ const t = (t_obj as any)[lang] || t_obj.da;
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
-        <button type="button" id="file-btn" class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group" title="Upload Document">
+        <button type="button" id="file-btn" aria-label={lang==="da" ? "Vedhæft dokument" : "Attach a document"} class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group" title="Upload Document">
             <i class="fa-solid fa-paperclip text-xs group-hover:scale-110 transition-transform"></i>
         </button>
-        <button type="button" id="voice-btn" class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group relative" title="Speak to Anton (Voice Mode)">
+        <button type="button" id="voice-btn" aria-label={lang==="da" ? "Tal til assistenten" : "Speak to the assistant"} class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group relative" title="Speak to Anton (Voice Mode)">
            <i class="fa-solid fa-microphone text-xs group-hover:scale-110 transition-transform"></i>
            <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="voice-indicator"></span>
         </button>
-        <button type="submit" class="bg-accent text-bg w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
+        <button type="submit" id="send-btn" data-label-send={lang==="da" ? "Send besked" : "Send message"} data-label-stop={lang==="da" ? "Stop svaret" : "Stop generating"} aria-label={lang==="da" ? "Send besked" : "Send message"} class="bg-accent text-bg w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
           <i class="fa-solid fa-paper-plane text-xs"></i>
         </button>
       </form>
       <div id="file-display" class="hidden mt-2 px-2 py-1 bg-accent/10 border border-accent/20 rounded flex items-center justify-between text-[10px] text-accent">
           <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-1"></i><span id="filename"></span></span>
-          <button type="button" id="remove-file" class="ml-2 hover:text-white"><i class="fa-solid fa-times"></i></button>
+          <button type="button" id="remove-file" class="ml-2 hover:text-white" aria-label={lang==="da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
       </div>
       <div class="text-[10px] text-center text-muted mt-2">
         {t.disclaimer}
@@ -167,6 +169,10 @@ const t = (t_obj as any)[lang] || t_obj.da;
 <script>
   import { AudioVisualizer } from '../../lib/audio-visualizer';
   import { unlockAchievement } from '../../lib/gamification';
+  import { isAllowedNavPath, renderModelText } from '../../lib/ai/safe-html';
+  import { readEventStream } from '../../lib/ai/protocol';
+  import { createChatRenderers } from '../../lib/ai/chat-ui';
+  import { createMessageActions } from '../../lib/ai/message-actions';
 
   try {
 
@@ -634,12 +640,16 @@ const t = (t_obj as any)[lang] || t_obj.da;
                    // We need to be careful not to double add
               }
               
+              activeRequest = new AbortController();
+              setStreaming(true);
+
               const res = await fetch('/api/chat', {
                 method: 'POST',
+                signal: activeRequest.signal,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    message: fullPayload, 
-                    lang: currentLang, 
+                body: JSON.stringify({
+                    message: fullPayload,
+                    lang: currentLang,
                     persona,
                     image: (currentFileContent && currentFileContent.type === 'image') ? { data: currentFileContent.data, mimeType: currentFileContent.mimeType } : undefined
                 })
@@ -665,59 +675,66 @@ const t = (t_obj as any)[lang] || t_obj.da;
                  return;
               }
 
-              // Handle Non-Streaming JSON (Legacy Fallback)
-              const contentType = res.headers.get('content-type');
-              if (contentType && contentType.includes('application/json')) {
-                  const data = await res.json();
-                  const finalMsg = data.message || data.error || "No response";
-                  
-                  if (data.error) {
-                      addMessage("⚠️ " + data.error, 'ai', false, persona);
-                  } else {
-                      const msgEl = addMessage(finalMsg, 'ai', true, persona);
-                      saveMessageToHistory(finalMsg, 'ai', persona);
-                      // Process tags
-                      if(msgEl) {
-                           const wrapper = msgEl.closest('.ai-content-wrapper');
-                           processSpecialTags(finalMsg, wrapper);
-                      }
+              // The body is NDJSON: one typed event per line. Prose arrives as `text`;
+              // charts, navigation and citations arrive as their own events rather than
+              // hidden inside the prose as `<<<TAG>>>` markers the client had to regex
+              // back out. Nothing the model writes can be mistaken for an instruction.
+              const messageContent = addMessage("", 'ai', true, persona);
+              const wrapper = messageContent ? messageContent.closest('.ai-content-wrapper') : null;
+              let streamFailed = false;
+
+              await readEventStream(res, (event) => {
+                  switch (event.type) {
+                      case 'text':
+                          accumulatedText += event.text;
+                          if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+                          break;
+                      case 'tool':
+                          handleToolEvent(event.name, event.input, wrapper);
+                          break;
+                      case 'citations':
+                          renderCitations(event.sources, wrapper);
+                          break;
+                      case 'error':
+                          streamFailed = true;
+                          if (messageContent) messageContent.textContent = "⚠️ " + event.message;
+                          break;
+                  }
+                  const msgs = document.getElementById('chat-messages');
+                  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+              }, activeRequest.signal);
+
+              if (streamFailed) return;
+
+              // A stream that ends with neither text nor an error event was cut short.
+              // Rendering that as a blank bubble makes a broken assistant look like a
+              // silent one — say it failed instead.
+              if (!accumulatedText.trim()) {
+                  if (messageContent) {
+                      const msg = widget?.getAttribute('data-error') || 'Sorry, I encountered an error.';
+                      messageContent.textContent = "⚠️ " + msg;
                   }
                   return;
               }
 
-              // Handle Streaming (If any)
-              const messageContent = addMessage("", 'ai', true, persona);
-              const reader = res.body?.getReader();
-              const decoder = new TextDecoder();
-
-
-              if (reader) {
-                  while (true) {
-                      const { done, value } = await reader.read();
-                      if (done) break;
-                      
-                      const chunk = decoder.decode(value, { stream: true });
-                      accumulatedText += chunk;
-                      
-                      if (messageContent) {
-                          messageContent.innerHTML = formatText(accumulatedText);
-                      }
-                      const msgs = document.getElementById('chat-messages');
-                      if(msgs) msgs.scrollTop = msgs.scrollHeight;
-                  }
-              }
-
               saveMessageToHistory(accumulatedText, 'ai', persona);
-
-              if (messageContent) {
-                   const wrapper = messageContent.closest('.ai-content-wrapper');
-                   processSpecialTags(accumulatedText, wrapper); 
-              }
 
             } catch (err) {
               removeTyping();
+              // A caught value is `unknown`; these are the only two fields read from it.
+              const failure = err as { name?: string; message?: string } | undefined;
+              // Pressing stop is a choice, not a failure. The partial answer stays on
+              // screen; it is deliberately not written to history, so a reload does not
+              // resurrect half a sentence as though the assistant had said it — and the
+              // return keeps the voice block below from reading half a sentence aloud.
+              if (failure?.name === 'AbortError') return;
               console.error(err);
-              addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai');
+              addMessage(`⚠️ Connection error: ${failure?.message || 'Unknown'}`, 'ai');
+            } finally {
+              // Runs on every exit — success, stop, error, and the early return above —
+              // so the control can never be left showing a stop icon with nothing running.
+              activeRequest = null;
+              setStreaming(false);
             }
 
             // --- VOICE RESPONSE (Level 3) ---
@@ -725,9 +742,10 @@ const t = (t_obj as any)[lang] || t_obj.da;
             
             if (wasVoiceInput) {
                 try {
+                     // accumulatedText is now prose only — charts and citations travel
+                     // as their own events — so there is no control syntax left to strip.
                      const speechText = accumulatedText
-                        .replace(/<<<.*?>>>/g, '')
-                        .replace(/<[^>]*>/g, '') 
+                        .replace(/<[^>]*>/g, '')
                         .replace(/\*/g, '')
                         .trim();
                      
@@ -832,146 +850,84 @@ const t = (t_obj as any)[lang] || t_obj.da;
         });
       }
 
-      // Helpers
-      function formatText(text) {
-          return text.replace(/<<<CHART[\s\S]*?CHART>>>/g, '')
-                     .replace(/<<<NAVIGATE:.*?>>>/gi, '')
-                     .replace(/<<<SUGGESTIONS:.*?>>>/g, '')
-                     .replace(/<<<UNLOCK:.*?>>>/g, '')
-                     .replace(/<<<QUIZ_START:.*?>>>/g, '')
-                     .replace(/<<<CITATION:(.*?)>>>/g, '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[10px] uppercase tracking-wider text-accent mx-1 select-none cursor-help" title="Source: Uploaded Document"><i class="fa-solid fa-file-pdf"></i> $1</span>')
-                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                     .replace(/\n/g, '<br/>');
+      /**
+       * The in-flight request, so it can be stopped.
+       *
+       * A visitor could not previously halt a long answer — there was no
+       * AbortController anywhere in the client, so the only way out of a rambling
+       * reply was to close the widget and lose the thread.
+       */
+      let activeRequest: AbortController | null = null;
+
+      function setStreaming(streaming: boolean) {
+          const btn = document.getElementById("send-btn");
+          if (!btn) return;
+          const icon = btn.querySelector("i");
+          if (icon) icon.className = streaming
+              ? "fa-solid fa-stop text-xs"
+              : "fa-solid fa-paper-plane text-xs";
+          // The same control sends and stops, so the accessible name has to follow it.
+          btn.setAttribute("aria-label", streaming
+              ? (btn.dataset.labelStop || "Stop generating")
+              : (btn.dataset.labelSend || "Send message"));
+          // Regenerate greys out for the duration rather than quietly ignoring clicks.
+          messageActions.refreshRegenerate();
       }
 
-      function processSpecialTags(text, containerDiv) {
-         if (!containerDiv) return;
+      function stopStreaming() {
+          if (activeRequest) activeRequest.abort();
+      }
 
-         // Chart
-         const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
-         if (chartMatch) {
-             const jsonStr = chartMatch[1];
-             try {
-                 const chartData = JSON.parse(jsonStr);
-                 const canvasId = 'chart-' + Date.now();
-                 const canvasContainer = document.createElement('div');
-                 canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
-                 canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
-                 
-                 const textDiv = containerDiv.querySelector('.message-bubble') || containerDiv;
-                 textDiv.appendChild(canvasContainer);
-                 const msgs = document.getElementById('chat-messages');
-                 if(msgs) msgs.scrollTop = msgs.scrollHeight;
+      // Clicking the control while a reply is streaming stops it rather than
+      // submitting an empty second message.
+      document.getElementById("send-btn")?.addEventListener("click", (e) => {
+          if (activeRequest) { e.preventDefault(); stopStreaming(); }
+      });
 
-                 import('chart.js/auto').then(({ default: Chart }) => {
-                     const ctx = document.getElementById(canvasId);
-                     if (ctx) {
-                         new Chart(ctx, {
-                             type: chartData.type,
-                             data: chartData.data,
-                             options: {
-                                 ...chartData.options,
-                                 color: 'rgba(255, 255, 255, 0.8)',
-                                 borderColor: 'rgba(255, 255, 255, 0.2)',
-                                 scale: {
-                                    ticks: { color: 'rgba(255, 255, 255, 0.6)' },
-                                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                                 },
-                                 plugins: {
-                                    legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
-                                 }
-                             }
-                         });
-                     }
-                 });
-
-             } catch (e) {
-                 console.error("Chart Render Error", e);
-             }
-         }
-         // Navigation
-         const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
-         if (navMatch) {
-             const rawPath = navMatch[1].trim();
-             const path = rawPath.replace(/\.$/, '');
-             const navDiv = document.createElement('div');
-             navDiv.className = "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse";
-             navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
-             const bubble = containerDiv.querySelector('.message-bubble');
-             if (bubble) bubble.appendChild(navDiv); 
-             else containerDiv.appendChild(navDiv);
-             const msgs = document.getElementById('chat-messages');
-             if(msgs) msgs.scrollTop = msgs.scrollHeight;
-
-             setTimeout(() => {
-                 window.location.href = path;
-             }, 500);
-         }
-
-         // Suggestions
-         const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
-         if (suggestMatch) {
-              const jsonStr = suggestMatch[1];
-              try {
-                  const suggestions = JSON.parse(jsonStr);
-                  const chipsContainer = document.createElement('div');
-                  chipsContainer.className = "flex flex-wrap gap-2 mt-4 w-full";
-                  
-                  suggestions.forEach(s => {
-                      const btn = document.createElement('button');
-                      btn.className = "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm";
-                      btn.innerText = s;
-                      btn.addEventListener('click', () => {
-                          const input = document.getElementById('chat-input'); // Fixed ID
-                          const form = document.getElementById('chat-form');   // Fixed ID
-                          if (input && form) {
-                              input.value = s;
-                              form.dispatchEvent(new Event('submit'));
-                              chipsContainer.remove();
-                          }
-                      });
-                      chipsContainer.appendChild(btn);
-                  });
-                  
-                  containerDiv.appendChild(chipsContainer);
-                  const msgs = document.getElementById('chat-messages');
-                  if(msgs) msgs.scrollTop = msgs.scrollHeight;
-
-              } catch (e) {
-                  console.error("Suggestion Parse Error", e);
-              }
-         }
-
-         // Gamification: Unlock
-         const unlockMatch = text.match(/<<<UNLOCK:\s*["'](.*?)["']\s*>>>/);
-         if (unlockMatch) {
-             const achievementId = unlockMatch[1];
-             console.log("🏆 AI Unlocking Achievement:", achievementId);
-             unlockAchievement(achievementId);
-         }
-
-         // Gamification: Quiz
-         const quizMatch = text.match(/<<<QUIZ_START:\s*({.*?})\s*>>>/);
-         if (quizMatch) {
-             try {
-                const quizdata = JSON.parse(quizMatch[1]);
-                const quizDiv = document.createElement('div');
-                quizDiv.className = "mt-4 p-4 bg-accent/10 border border-accent/30 rounded-xl animate-pulse";
-                quizDiv.innerHTML = `
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-graduation-cap text-accent text-xl"></i>
-                        <h4 class="font-bold text-accent">Quiz Mode Activated</h4>
-                    </div>
-                    <p class="text-sm text-dim-100">Topic: ${quizdata.topic}</p>
-                `;
-                containerDiv.appendChild(quizDiv);
-                const msgs = document.getElementById('chat-messages');
-                if(msgs) msgs.scrollTop = msgs.scrollHeight;
-             } catch(e) { console.error("Quiz Parse Error", e); }
-         }
+      // Helpers
+      // Prose rendering is security-critical and used to live in triplicate, once per
+      // chat client. renderModelText() is the single tested implementation: escape
+      // first, add markup second. Everything that is not prose arrives as a typed
+      // stream event and is rendered by the shared module below.
+      function formatText(text) {
+          return renderModelText(text, { lineBreak: '<br/>' });
       }
 
       const STORAGE_KEY = 'anton_ai_chat_history';
+
+      // Copy, read-aloud and regenerate under each answer. `isBusy` is what keeps a
+      // regenerate from being fired into a reply that is still streaming.
+      const messageActions = createMessageActions({
+          inputId: 'chat-input',
+          formId: 'chat-form',
+          messagesId: 'chat-messages',
+          storageKey: STORAGE_KEY,
+          isBusy: () => activeRequest !== null,
+          lang: widget?.dataset.lang,
+          classes: {
+              row: "flex justify-end items-center gap-1 mt-2",
+              button: "pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10",
+          },
+      });
+
+      const { handleToolEvent, renderCitations } = createChatRenderers({
+          inputId: 'chat-input',
+          formId: 'chat-form',
+          messagesId: 'chat-messages',
+          onLedgerEntry: unlockAchievement,
+          classes: {
+              chartBox: "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]",
+              chartCaption: "text-xs text-dim mb-2 font-medium",
+              nav: "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse",
+              chip: "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm",
+              quizBox: "mt-4 p-4 bg-accent/10 border border-accent/30 rounded-xl text-accent",
+              quizTitle: "font-bold text-accent",
+              quizBody: "text-sm text-dim-100",
+              citationRow: "flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-white/10",
+              citationLabel: "text-[10px] uppercase tracking-wider text-dim",
+              citationPill: "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[11px] text-accent hover:bg-accent hover:text-bg transition-colors",
+          },
+      });
 
       function loadHistory() {
           const stored = localStorage.getItem(STORAGE_KEY);
@@ -1005,6 +961,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
         if (!skipSave) saveMessageToHistory(text, role, persona);
         const div = document.createElement('div');
         div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
+        div.dataset.role = role;
+        if (role === 'user') div.dataset.text = text;
 
         let contentElement;
 
@@ -1031,41 +989,24 @@ const t = (t_obj as any)[lang] || t_obj.da;
                     ${formatText(text)}
                   </div>
                 </div>
-                
-                <div class="flex gap-2 mt-2 ml-1">
-                   ${text ? `
-                   <button class="text-xs text-muted hover:text-accent transition-colors flex items-center gap-1 hover:opacity-100" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText).then(() => alert('Copied!'))">
-                      <i class="fa-regular fa-copy"></i>
-                   </button>
-                   ` : ''}
-                </div>
             </div>
           `;
           contentElement = div.querySelector('.prose');
           if (text) contentElement.innerHTML = formatText(text);
 
-          const actionsDiv = document.createElement('div');
-          actionsDiv.className = "flex justify-end mt-2 gap-2";
-          
-          const safeText = encodeURIComponent(text);
-          actionsDiv.innerHTML = `
-             <button class="speak-btn pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10" aria-label="Læs højt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
-                <i class="fa-solid fa-volume-high text-xs"></i>
-             </button>
-          `;
-          div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
-          
-          if (text) {
-               const wrapper = div.querySelector('.ai-content-wrapper');
-               processSpecialTags(text, wrapper); 
-          }
+          messageActions.attach(div.querySelector('.ai-content-wrapper'));
+
+          // Replayed history is prose only. Charts, citations and suggestion chips
+          // were live tool events; they are not re-rendered from a stored transcript.
 
         } else {
-          div.innerHTML = `
-            <div class="bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent">
-              <p class="text-neutral-950 font-semibold">${text}</p>
-            </div>
-          `;
+          const bubble = document.createElement('div');
+          bubble.className = "bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent";
+          const p = document.createElement('p');
+          p.className = "text-neutral-950 font-semibold";
+          p.textContent = text;
+          bubble.appendChild(p);
+          div.appendChild(bubble);
         }
 
         msgs.appendChild(div);

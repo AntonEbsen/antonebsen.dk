@@ -5,49 +5,22 @@
 
 console.log("🔊 Voice Widget Script Loaded");
 
-// Global Speech Synthesis Garbage Collection Fix
-// Global check to prevent duplicate listeners
-if (window.voiceWidgetInitialized) {
-    console.log("🔊 Voice Widget already initialized, skipping.");
-} else {
-    window.voiceWidgetInitialized = true;
-
-    function initVoiceWidget() {
-        console.log("🔊 Voice Widget Initialized");
-
-        // Global Event Delegation for ANY speak button on the page
-        document.body.addEventListener('click', (e) => {
-            // Handle shadow DOM or standard click
-            const path = e.composedPath ? e.composedPath() : [];
-            const btn = path.find(el => el.classList && el.classList.contains('speak-btn')) || e.target.closest('.speak-btn');
-
-            if (btn) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const text = btn.getAttribute('data-text');
-                if (text) {
-                    console.log("🔊 Button Clicked (Delegated)");
-                    try {
-                        const decoded = decodeURIComponent(text);
-                        speakMessage(decoded, btn);
-                    } catch (err) {
-                        console.error("Text Decode Error", err);
-                        speakMessage(text, btn);
-                    }
-                } else {
-                    console.warn("🔊 Speak button has no text");
-                }
-            }
-        }, { capture: true }); // Capture phase!
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initVoiceWidget);
-    } else {
-        initVoiceWidget();
-    }
-}
+/*
+ * There used to be a capture-phase click listener on document.body here that caught
+ * every `.speak-btn`, called stopPropagation, and read the text to speak out of a
+ * `data-text` attribute baked in when the button was built.
+ *
+ * It was removed because both halves of it had stopped being true. Every speak button
+ * on the site is now built by src/lib/ai/message-actions.ts, which attaches its own
+ * click handler and reads the answer's text at click time — a streamed answer is empty
+ * at the moment its bubble is created, so an attribute captured then is always empty
+ * too. And because the delegated listener ran in the capture phase on an ancestor, its
+ * stopPropagation fired *before* the button's own handler, so the button did nothing
+ * at all while the delegate quietly logged "Speak button has no text".
+ *
+ * speakMessage() and resetAllButtons() below are still the shared implementation; only
+ * the dispatch moved to the buttons themselves.
+ */
 
 function speakMessage(text, btn) {
     if (!window.speechSynthesis) {

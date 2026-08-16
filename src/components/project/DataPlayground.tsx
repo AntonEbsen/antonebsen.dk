@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { unlockAchievement } from '@lib/gamification';
 import * as duckdb from '@duckdb/duckdb-wasm';
+import { checkReadOnly } from '../../lib/ai/sql-guard';
+import { readEventStream } from '../../lib/ai/protocol';
 import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import duckdb_wasm_next from '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url';
 import worker_url from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?url';
@@ -33,12 +35,15 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
     // Lazily boot DuckDB (~70MB WASM) only when the user actually runs a query,
     // instead of on mount — so visiting a project page doesn't download the engine.
     const initDB = async (): Promise<duckdb.AsyncDuckDBConnection> => {
-        const MANUAL_BUNDLES: duckdb.DuckDBBundle[] = [
-            {
-                mvp: { mainModule: duckdb_wasm, mainWorker: worker_url },
-                eh: { mainModule: duckdb_wasm_next, mainWorker: worker_next_url },
-            },
-        ];
+        // selectBundle takes a DuckDBBundles object keyed by feature level, not an
+        // array of them. Wrapped in an array, `bundles.mvp` was undefined, selectBundle
+        // returned nothing, and the next line threw "Cannot read properties of
+        // undefined (reading 'mainModule')" — so the engine never booted at all. The
+        // wrong `DuckDBBundle[]` annotation is what made that typecheck.
+        const MANUAL_BUNDLES: duckdb.DuckDBBundles = {
+            mvp: { mainModule: duckdb_wasm, mainWorker: worker_url },
+            eh: { mainModule: duckdb_wasm_next, mainWorker: worker_next_url },
+        };
         const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);
         const worker = new Worker(bundle.mainWorker!);
         const logger = new duckdb.ConsoleLogger();
@@ -51,7 +56,10 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
         await db.registerFileURL('main_data.csv', dataUrl, duckdb.DuckDBDataProtocol.HTTP, false);
         await connection.insertCSVFromPath('main_data.csv', {
             name: 'main_data',
-            schema: 'auto',
+            // `schema` here is the *database* schema to create the table in, not a
+            // detection mode: passing 'auto' asked DuckDB for a schema named "auto"
+            // and failed with "Schema with name auto does not exist!". Omitting it
+            // uses the default. Column type detection is `detect` below.
             header: true,
             detect: true,
         });
@@ -133,30 +141,101 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
 
     const [nlQuery, setNlQuery] = useState('');
     const [generating, setGenerating] = useState(false);
+    const [answer, setAnswer] = useState<string | null>(null);
 
-    const generateSql = async () => {
-        if (!nlQuery.trim()) return;
+    /**
+     * Ask a question of the data and get an answer, not just a query.
+     *
+     * This used to stop after writing SQL into the editor and leave the visitor to
+     * press Run and read the table themselves — the model never saw its own results.
+     * Now the three steps run together: translate, execute locally in DuckDB, then
+     * hand the rows back for the model to interpret.
+     *
+     * The data never leaves the browser except as the handful of rows that go into
+     * the explanation prompt, and the SQL is checked before it reaches the engine.
+     */
+    const askData = async () => {
+        if (!nlQuery.trim() || generating) return;
         setGenerating(true);
         setError(null);
+        setAnswer(null);
 
         try {
+            const conn = await ensureDb();
+
+            // 1. Translate. The schema comes from DuckDB itself, so the model is told
+            //    the real columns rather than guessing at them.
             const res = await fetch('/api/text-to-sql', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     text: nlQuery,
-                    // Boot the engine first if needed, so the model is told the real columns.
-                    schema: schemaRef.current ?? (await ensureDb(), schemaRef.current) ?? 'Table: main_data.'
-                })
+                    schema: schemaRef.current ?? 'Table: main_data.',
+                }),
             });
 
             const data = await res.json();
-            if (data.error) throw new Error(data.error);
+            if (!res.ok) throw new Error(data.message || `Server error (${res.status})`);
 
-            setQuery(data.sql);
-            setGenerating(false);
+            // 2. Check before executing. The endpoint already rejects anything that is
+            //    not read-only; this is the same check at the point of execution, where
+            //    the consequences would actually land.
+            const check = checkReadOnly(data.sql);
+            if (!check.ok) throw new Error(check.reason);
+
+            setQuery(check.sql!);
+
+            // 3. Execute locally.
+            const result = await conn.query(check.sql!);
+            const rows = result.toArray().map((row: any) => row.toJSON());
+            setResults(rows);
+            unlockAchievement('reckoning');
+
+            // 4. Interpret. Only a sample goes to the model — enough to characterise
+            //    the answer, not the whole dataset.
+            //
+            //    DuckDB returns BIGINT columns as JS BigInt, which JSON.stringify
+            //    throws on ("Do not know how to serialize a BigInt"). Years and counts
+            //    are BIGINT here, so that is most result sets.
+            const sample = JSON.stringify(
+                rows.slice(0, 20),
+                (_key, value) => (typeof value === 'bigint' ? value.toString() : value),
+                1,
+            ).slice(0, 4000);
+            const explainRes = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    lang: document.documentElement.lang || 'en',
+                    message: [
+                        `A visitor asked this about a dataset on Anton's site: "${nlQuery}"`,
+                        '',
+                        'This query ran against it:',
+                        check.sql,
+                        '',
+                        `It returned ${rows.length} row(s). Up to the first 20:`,
+                        sample,
+                        '',
+                        'Answer their question from these results in two or three sentences.',
+                        'Give the actual numbers. If the results do not answer it, say so plainly.',
+                    ].join('\n'),
+                }),
+            });
+
+            if (explainRes.ok) {
+                let prose = '';
+                await readEventStream(explainRes, (event) => {
+                    if (event.type === 'text') {
+                        prose += event.text;
+                        setAnswer(prose);
+                    } else if (event.type === 'error') {
+                        setAnswer(null);
+                    }
+                });
+            }
         } catch (err: any) {
-            setError("AI Error: " + err.message);
+            setError(err.message);
+        } finally {
             setGenerating(false);
         }
     };
@@ -195,12 +274,12 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                         className="flex-1 bg-card border border-rule-strong rounded-lg px-3 py-1.5 text-xs text-text placeholder-muted focus:outline-none focus:border-blue-500 transition-colors"
                         value={nlQuery}
                         onChange={(e) => setNlQuery(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && generateSql()}
+                        onKeyDown={(e) => e.key === 'Enter' && askData()}
                     />
                     <button
-                        onClick={generateSql}
+                        onClick={askData}
                         disabled={generating}
-                        aria-label="Generate SQL from the question above"
+                        aria-label="Ask the data this question"
                         className="px-3 py-1.5 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg text-xs font-bold hover:bg-blue-600/30 transition-colors disabled:opacity-50"
                     >
                         {generating
@@ -235,6 +314,18 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
             {error && (
                 <div className="p-4 bg-red-50 text-red-600 text-xs font-mono border-t border-red-100">
                     {error}
+                </div>
+            )}
+
+            {answer && (
+                <div className="p-4 bg-blue-50 border-t border-blue-100" aria-live="polite">
+                    <p className="text-[10px] uppercase tracking-wider text-blue-500 font-bold mb-1">
+                        <i className="fa-solid fa-wand-magic-sparkles mr-1" aria-hidden="true"></i>
+                        Answer
+                    </p>
+                    {/* Plain text: the interpretation is prose, and rendering it as
+                        markup would put model output into the DOM as HTML. */}
+                    <p className="text-sm text-text leading-relaxed whitespace-pre-wrap">{answer}</p>
                 </div>
             )}
 

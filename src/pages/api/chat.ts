@@ -1,18 +1,23 @@
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { streamText, generateText } from 'ai';
-import { checkRateLimit } from '../../lib/ratelimit';
+import Anthropic from '@anthropic-ai/sdk';
 import { z } from 'zod';
-import { getCollection } from 'astro:content'; // Added for Blog Awareness
+import { checkRateLimit } from '../../lib/ratelimit';
+import { GEN, CHAT_MODEL } from '../../lib/ai/model';
+import { buildCorpus, type Lang } from '../../lib/ai/corpus';
+import { TOOLS, isServerResolved, resolveCitations } from '../../lib/ai/tools';
+import { encodeEvent, NDJSON_CONTENT_TYPE, type ChatEvent } from '../../lib/ai/protocol';
+import { createClient } from '../../lib/ai/client';
+import { checkBudget } from '../../lib/ai/budget';
+
+export const prerender = false;
 
 const ChatSchema = z.object({
    messages: z.array(z.object({
       role: z.enum(['user', 'assistant', 'system']),
       content: z.string()
    })).optional(),
-   message: z.string().optional(), // Legacy
-   // Vision Support: Accept base64 image
+   message: z.string().optional(), // Legacy single-turn callers
    image: z.object({
-      data: z.string(), // base64
+      data: z.string(), // base64, no data: prefix
       mimeType: z.string()
    }).optional(),
    context: z.object({
@@ -23,222 +28,237 @@ const ChatSchema = z.object({
    lang: z.enum(['en', 'da', 'de']).optional()
 });
 
-// Static RAG Data
-// @ts-ignore
-import cvEn from '../../content/cv/en.json';
-// @ts-ignore
-import skillsEn from '../../content/skills/en.json';
+const LANGUAGE_NAMES: Record<string, string> = {
+   da: 'Danish (Dansk)',
+   de: 'German (Deutsch)',
+   en: 'English',
+};
 
-// @ts-ignore
-import cvDa from '../../content/cv/da.json';
-// @ts-ignore
-import skillsDa from '../../content/skills/da.json';
+const PERSONA_NOTES: Record<string, string> = {
+   recruiter: 'This visitor is likely hiring. Lead with what Anton can do: analytical skills, teaching experience, and the tools he actually uses.',
+   tech: "This visitor is technical. Go deeper on the stack — Python, data science, econometric modelling — and don't over-explain the basics.",
+   eli5: 'Explain simply, as you would to someone with no economics background. Short sentences, no jargon without unpacking it.',
+};
 
-export const prerender = false;
+/** How many times the model may call tools before we stop looping. */
+const MAX_TOOL_TURNS = 4;
 
-async function getBioContext(lang: string) {
-   // Select content based on language
-   const cv = lang === 'da' ? cvDa : cvEn;
-   const skills = lang === 'da' ? skillsDa : skillsEn;
+function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextBlockParam[] {
+   const corpus = buildCorpus(lang).text;
 
-   const experiences = cv.experience.map((e: any) => `- ${e.title} at ${e.organization} (${e.period}): ${e.description.join('. ')}`).join('\n');
-   const education = cv.education.map((e: any) => `- ${e.degree} at ${e.institution}`).join('\n');
-   const proSkills = skills.professional.map((s: any) => s.name).join(', ');
-   const codeSkills = skills.programming.map((s: any) => `${s.name} (${s.level})`).join(', ');
-   const projects = cv.projects.map((p: any) => `- ${p.title}: ${p.description}`).join('\n');
+   const instructions = context?.type === 'project'
+      ? [
+         `You are 'The Reviewer', giving feedback on the project "${context?.data?.title || 'Unknown'}".`,
+         'Be concise, professional, and constructively critical — say what is weak, not only what is good.',
+         context?.data?.simple ? 'Explain simply, as to a beginner.' : '',
+         context?.data?.critique ? 'Be blunt about weaknesses.' : 'Stay constructive.',
+      ].filter(Boolean).join('\n')
+      : [
+         "You are the assistant on Anton's personal site. You answer questions about Anton.",
+         '',
+         `Answer in ${LANGUAGE_NAMES[lang] || LANGUAGE_NAMES.en}, whatever language the question is asked in.`,
+         'Everything you say about Anton must come from the facts above. If something is not there,',
+         "say you don't know rather than filling the gap — do not infer roles, employers or dates.",
+         'Keep answers short and readable: a few sentences unless the question genuinely needs more.',
+         '',
+         'When you draw on a specific source, call citeSources with its id. Never write an',
+         'id such as (influence:orwell) into your reply — those are for the tool only, and',
+         'a visitor reading them sees database keys instead of a link.',
+         '',
+         "You have Anton's essays in full, not just their summaries, so you can do something",
+         'a general assistant cannot: compare his arguments against each other. When a question',
+         'touches two pieces of his writing, say how they relate — where they reinforce each',
+         'other and where they sit in tension — and cite both.',
+         '',
+         'The facts above include how he thinks, not only what he has done: the thinkers who',
+         'shaped him, his family, the books and places that mattered, and his own essay on',
+         'adversity. Draw on those when someone asks about him as a person rather than as a CV.',
+         '',
+         'Use the other tools when they serve the visitor better than prose would.',
+         PERSONA_NOTES[persona] || '',
+      ].filter(Boolean).join('\n');
 
-   // --- BLOG CONTEXT INJECTION ---
-   // Fetch all blog posts to give the AI "awareness" of written content
-   let blogContext = "";
-   try {
-      const allPosts = await getCollection('blog');
-      const posts = allPosts.map(p => {
-         const title = lang === 'da' ? (p.data.title_da || p.data.title) : p.data.title;
-         const brief = lang === 'da' ? (p.data.brief_da || []) : (p.data.brief || []);
-         const description = lang === 'da' ? (p.data.description_da || p.data.description) : p.data.description;
-         return `- "${title}" (${p.data.category}): ${description}. ${brief.join(' ')}`;
-      }).join('\n');
-
-      blogContext = `
-[Authored Content / Blog Posts]
-Antons has written the following articles. Use this to recommend reading or summarize his thoughts:
-${posts}
-`;
-   } catch (e) {
-      console.error("Failed to load blog context", e);
-   }
-
-   return `
-FACTS ABOUT ANTON (SOURCE OF TRUTH):
-[Education]
-${education}
-
-[Work Experience]
-${experiences}
-
-[Technical Skills]
-- Programming: ${codeSkills}
-- Professional: ${proSkills}
-
-[Projects]
-${projects}
-
-[Languages]
-${skills.languages.map((l: any) => `- ${l.name}: ${l.level}`).join('\n')}
-
-${blogContext}
-`;
+   // The corpus is identical for every request in a language and goes first, so it
+   // forms a stable prefix. The cache breakpoint sits at the end of it: everything
+   // above is billed at cache-read rates on repeat requests, which is the difference
+   // between ~10k tokens at full price and at a tenth of it. The per-request tail
+   // (persona, project title) is deliberately in a second block, after the marker.
+   return [
+      { type: 'text', text: corpus, cache_control: { type: 'ephemeral' } },
+      { type: 'text', text: instructions },
+   ];
 }
 
-// Fix: Destructure 'request' from the Astro APIContext
-// Previous error "req.json is not a function" happened because the first arg is the context object, not the Request itself.
+/** Compose the conversation, attaching an uploaded image to the final user turn. */
+function buildMessages(
+   history: { role: string; content: string }[],
+   image?: { data: string; mimeType: string },
+): Anthropic.MessageParam[] {
+   const messages: Anthropic.MessageParam[] = history
+      // A 'system' role is not valid mid-conversation on Sonnet 5; drop stray ones.
+      .filter((m) => m.role === 'user' || m.role === 'assistant')
+      .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+
+   const last = messages[messages.length - 1];
+   if (image && last?.role === 'user' && typeof last.content === 'string') {
+      last.content = [
+         {
+            type: 'image',
+            source: {
+               type: 'base64',
+               media_type: image.mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
+               data: image.data,
+            },
+         },
+         { type: 'text', text: last.content },
+      ];
+   }
+   return messages;
+}
+
 export const POST = async ({ request }: { request: Request }) => {
+   let body: z.infer<typeof ChatSchema>;
+
    try {
-      const rawBody = await request.json();
-      const parseResult = ChatSchema.safeParse(rawBody);
-
-      if (!parseResult.success) {
-         return new Response(JSON.stringify({ message: "Invalid Input", errors: parseResult.error.format() }), { status: 400 });
+      const parsed = ChatSchema.safeParse(await request.json());
+      if (!parsed.success) {
+         return new Response(JSON.stringify({ message: 'Invalid Input', errors: parsed.error.format() }), { status: 400 });
       }
-
-      const body = parseResult.data;
-
-      // 1. Validate Environment
-      if (!process.env.GEMINI_API_KEY) {
-         console.error("CRITICAL: GEMINI_API_KEY is missing");
-         return new Response(JSON.stringify({ message: "Server Configuration Error: Missing API Key" }), { status: 500 });
-      }
-
-      // 1b. Rate Limit
-      const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
-      const limitResult = await checkRateLimit('chat', clientIP);
-      if (!limitResult.success) {
-         return new Response(JSON.stringify({ message: "Too many requests. Please wait a bit." }), { status: 429 });
-      }
-
-      // 2. Initialize Provider with Explicit Key
-      const google = createGoogleGenerativeAI({
-         apiKey: process.env.GEMINI_API_KEY
-      });
-
-      // 3. Normalize Input (Support Legacy Widget)
-      let messages = body.messages;
-      if (!messages || !Array.isArray(messages) || messages.length === 0) {
-         if (body.message) {
-            messages = [{ role: 'user', content: body.message }];
-         } else {
-            messages = [];
-         }
-      }
-
-      // 4. Unified Logic (Always Stream)
-      const { context, persona = 'default', lang = 'en', image } = body;
-      const bio = await getBioContext(lang || 'en');
-
-      let systemPrompt = "";
-
-      // --- TOOL INSTRUCTIONS ---
-      const toolInstructions = `
-[UI CAPABILITIES - USE THESE TOOLS PROACTIVELY]
-You have access to the following UI tools. Trigger them by outputting the specific syntax below.
-
-1. SHOW A CHART:
-   If the user asks for a visualization/graph/chart of data (like skills, experience timeline, or project stats), output this JSON block:
-   <<<CHART
-   {
-     "type": "bar", // 'bar', 'line', 'pie', 'doughnut', 'radar'
-     "data": {
-       "labels": ["Python", "JavaScript", "Economics", "Data Science"],
-       "datasets": [{ 
-          "label": "Proficiency", 
-          "data": [9, 8, 10, 9], 
-          "backgroundColor": ["rgba(255, 99, 132, 0.6)", "rgba(54, 162, 235, 0.6)", "rgba(255, 206, 86, 0.6)", "rgba(75, 192, 192, 0.6)"] 
-       }]
-     },
-     "options": { "responsive": true, "indexAxis": "y" }
+      body = parsed.data;
+   } catch {
+      return new Response(JSON.stringify({ message: 'Invalid Input' }), { status: 400 });
    }
-   CHART>>>
 
-2. NAVIGATE TO PAGE:
-   If the user asks to go to a specific page or if a page is highly relevant (e.g. "Show me the blog", "Go to CV"), output:
-   <<<NAVIGATE: /blog >>>
-   Valid paths: /, /blog, /portfolio, /cv, /about, /contact
-
-3. SUGGEST ACTIONS:
-   To suggest follow-up questions or actions, output:
-   <<<SUGGESTIONS: ["See Skills Chart", "Read User Guide", "Email Anton"] >>>
-
-4. ENROL A LEDGER ENTRY:
-   If the user answers a quiz correctly or demonstrates knowledge, enrol an entry:
-   <<<UNLOCK: "economist" >>>
-   IDs: 'economist' (asked about Taylor rules or monetary policy), 'quiz_novice' (finished a quiz)
-   Only these two. The rest are earned by doing the thing they describe —
-   'explorer' by visiting five pages, 'scholar' by reading a post for two
-   minutes, 'recruiter' by printing the CV, 'easter_egg' by the Konami code.
-
-5. START QUIZ:
-   To start a new quiz about a topic (like Taylor Rules):
-   <<<QUIZ_START: { "topic": "Taylor Rules" } >>>
-`;
-
-      if (context?.type === 'project') {
-         // --- PROJECT REVIEWER MODE ---
-         systemPrompt = `
-          You are 'The Reviewer', reviewing the project "${context.data?.title || 'Unknown'}".
-          ${bio}
-          
-          Style: Concise, professional, slightly cynical but constructive.
-          Modes: ${context.data?.simple ? 'ELI5' : 'Normal'}, ${context.data?.critique ? 'Ruthless' : 'Constructive'}.
-          ${context.data?.codeSnippet ? 'Has Code Context.' : ''}
-          `;
-      } else {
-         // --- GENERAL ASSISTANT MODE ---
-         const baseInstruction = `You are Anton's AI Assistant. You answer questions about Anton using ONLY the facts above.
-          CRITICAL RULES:
-          1. ALWAYS answer in the language: ${lang === 'da' ? 'Danish (Dansk)' : 'English'}.
-          2. Never hallucinate roles not listed in facts (e.g. Anton is NOT an engineering manager).
-          3. If the user asks about something not in the facts, politely say you don't know or relate it to his Economics background.
-          4. Keep it brief and professional.
-          ${toolInstructions}`;
-
-         const prompts: Record<string, string> = {
-            default: `${bio}\n${baseInstruction}`,
-            recruiter: `${bio}\n${baseInstruction}\nFocus on his employability: Analytical skills, teaching experience, and technical tools.`,
-            tech: `${bio}\n${baseInstruction}\nFocus on his technical stack: Python, Data Science, and Economic Modeling details.`,
-            eli5: `${bio}\n${baseInstruction}\nExplain simply like I am 5 years old.`
-         };
-
-         systemPrompt = prompts[persona] || prompts.default;
-      }
-
-      // --- VISION SUPPORT ---
-      // If an image is provided, we must construct the "user" message as a multi-modal content array.
-      // We only attach the image to the LAST user message.
-      let finalMessages: any[] = messages || [];
-
-      if (image && finalMessages.length > 0) {
-         const lastMsg = finalMessages[finalMessages.length - 1];
-         // Only attach if last message is from user
-         if (lastMsg.role === 'user') {
-            // Replace string content with array content for vision
-            lastMsg.content = [
-               { type: 'text', text: lastMsg.content },
-               { type: 'image', image: image.data } // @ai-sdk/google expects 'image' with base64
-            ];
-         }
-      }
-
-      const result = streamText({
-         model: google('gemini-2.0-flash'),
-         messages: finalMessages,
-         system: systemPrompt,
-      });
-
-      // Switch to Text Stream for maximum compatibility with client useChat
-      return result.toTextStreamResponse();
-
-   } catch (error: any) {
-      console.error("API Error:", error);
-      return new Response(JSON.stringify({ message: "AI Error: " + error.message }), { status: 500 });
+   const anthropic = createClient();
+   if (!anthropic) {
+      console.error('CRITICAL: ANTHROPIC_API_KEY is missing');
+      return new Response(JSON.stringify({ message: 'Server Configuration Error: Missing API Key' }), { status: 500 });
    }
+
+   const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
+   if (!(await checkRateLimit('chat', clientIP)).success) {
+      return new Response(JSON.stringify({ message: 'Too many requests. Please wait a bit.' }), { status: 429 });
+   }
+
+   // Checked before any model call, because this is the one that costs money.
+   const budget = await checkBudget(clientIP);
+   if (!budget.allowed) {
+      return new Response(JSON.stringify({ message: budget.message }), { status: 429 });
+   }
+
+   const lang = (body.lang || 'en') as Lang;
+   const persona = body.persona || 'default';
+   const history = body.messages?.length
+      ? body.messages
+      : body.message ? [{ role: 'user', content: body.message }] : [];
+
+   if (!history.length) {
+      return new Response(JSON.stringify({ message: 'Invalid Input' }), { status: 400 });
+   }
+
+   const system = buildSystem(lang, persona, body.context);
+   const messages = buildMessages(history, body.image);
+
+   const encoder = new TextEncoder();
+   const stream = new ReadableStream<Uint8Array>({
+      async start(controller) {
+         const send = (event: ChatEvent) => controller.enqueue(encoder.encode(encodeEvent(event)));
+
+         try {
+            // The model may call tools, read the results, and keep going. Each pass
+            // streams whatever prose it produces, then either finishes or hands back
+            // tool calls for us to answer.
+            for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
+               const messageStream = anthropic.messages.stream({
+                  ...GEN,
+                  system,
+                  tools: TOOLS,
+                  messages,
+               });
+
+               messageStream.on('text', (delta) => send({ type: 'text', text: delta }));
+
+               const message = await messageStream.finalMessage();
+
+               if (message.stop_reason !== 'tool_use') {
+                  // Sonnet 5 can decline a request outright; that arrives as a normal
+                  // response, not an error, so it needs saying rather than showing blank.
+                  if (message.stop_reason === 'refusal') {
+                     send({ type: 'error', message: "I can't help with that one." });
+                  }
+                  break;
+               }
+
+               const toolUses = message.content.filter(
+                  (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use',
+               );
+
+               messages.push({ role: 'assistant', content: message.content });
+
+               const results: Anthropic.ToolResultBlockParam[] = [];
+               for (const call of toolUses) {
+                  if (isServerResolved(call.name)) {
+                     const { sources } = resolveCitations(call.input, lang);
+                     if (sources.length) send({ type: 'citations', sources });
+                     results.push({
+                        type: 'tool_result',
+                        tool_use_id: call.id,
+                        content: sources.length
+                           ? `Cited ${sources.length} source(s).`
+                           : 'None of those ids exist. Cite only ids from the facts, or omit citations.',
+                     });
+                  } else {
+                     // Rendered by the browser. The schema already validated the input,
+                     // so forwarding it is safe; the client still treats it as data.
+                     send({ type: 'tool', name: call.name, input: call.input });
+                     results.push({ type: 'tool_result', tool_use_id: call.id, content: 'Shown to the visitor.' });
+                  }
+               }
+
+               // A `tool_use` stop with nothing to answer would push a user message
+               // whose content array is empty, and the API rejects that with a 400
+               // ("user messages must have non-empty content"). By then the response
+               // headers are long sent, so the visitor gets a generic failure instead
+               // of the answer the model was part-way through giving. There is nothing
+               // to send back, so the turn is simply over.
+               if (!results.length) {
+                  console.warn(
+                     `[chat] tool_use stop with no tool calls; blocks: ${
+                        message.content.map((b) => b.type).join(', ') || '(none)'
+                     }`,
+                  );
+                  break;
+               }
+
+               messages.push({ role: 'user', content: results });
+            }
+
+            send({ type: 'done' });
+         } catch (error: any) {
+            // Logged compactly: the SDK's error objects nest a full copy of the
+            // request and response per retry, which buries everything around them.
+            const status = error?.status ?? error?.error?.status;
+            const detail = String(error?.message ?? error).split('\n')[0];
+            console.error(`Chat stream failed${status ? ` (HTTP ${status})` : ''}: ${detail}`);
+
+            // Headers are long gone by now, so the failure has to travel as an event.
+            send({
+               type: 'error',
+               message: status === 429
+                  ? 'The assistant is busy right now. Try again in a moment.'
+                  : 'The assistant is unavailable right now.',
+            });
+         } finally {
+            controller.close();
+         }
+      },
+   });
+
+   return new Response(stream, {
+      headers: {
+         'Content-Type': NDJSON_CONTENT_TYPE,
+         'Cache-Control': 'no-store',
+         'X-Chat-Model': CHAT_MODEL,
+      },
+   });
 };

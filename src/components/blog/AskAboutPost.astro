@@ -1,0 +1,56 @@
+---
+import AIContextButton from '../cv/AIContextButton';
+
+/**
+ * Three ways into the assistant from the end of a post.
+ *
+ * The chat widget is a button in the corner: opening it means arriving with no context
+ * and having to type out which post you were reading. These land it already knowing,
+ * at the moment the reader has finished and might actually want to push on the
+ * argument. Same mechanism the CV timeline already uses — AIContextButton dispatches
+ * `anton:chat-open`, the widget picks it up.
+ *
+ * Persona is `default`, not the component's `recruiter` default: that voice is pitched
+ * at someone assessing a hire, which is the wrong register for a reader mid-essay.
+ */
+interface Props {
+    title: string;
+    lang?: 'da' | 'en' | 'de';
+}
+
+const { title, lang = 'da' } = Astro.props;
+
+const copy = {
+    da: {
+        heading: 'Spørg videre',
+        simple: 'Forklar det enkelt',
+        counter: 'Hvad er modargumentet?',
+        connect: 'Hvordan hænger det sammen?',
+        simplePrompt: `Forklar Antons indlæg "${title}" enkelt, som til en der ikke har læst økonomi.`,
+        counterPrompt: `Hvad er det stærkeste modargument mod Antons pointe i "${title}"?`,
+        connectPrompt: `Hvordan hænger Antons indlæg "${title}" sammen med hans andre tekster? Sammenlign dem.`,
+    },
+    en: {
+        heading: 'Ask more',
+        simple: 'Explain it simply',
+        counter: "What's the counterargument?",
+        connect: 'How does this connect?',
+        simplePrompt: `Explain Anton's post "${title}" simply, as if to someone who hasn't studied economics.`,
+        counterPrompt: `What is the strongest counterargument to Anton's point in "${title}"?`,
+        connectPrompt: `How does Anton's post "${title}" connect to his other writing? Compare them.`,
+    },
+} as const;
+
+const t = copy[lang === 'da' ? 'da' : 'en'];
+---
+
+<section class="mt-16 pt-8 border-t border-rule" aria-labelledby="ask-about-post">
+    <h2 id="ask-about-post" class="text-xs font-bold uppercase tracking-widest text-accent mb-4">
+        {t.heading}
+    </h2>
+    <div class="flex flex-wrap gap-2">
+        <AIContextButton client:visible prompt={t.simplePrompt} persona="default" label={t.simple} />
+        <AIContextButton client:visible prompt={t.counterPrompt} persona="default" label={t.counter} />
+        <AIContextButton client:visible prompt={t.connectPrompt} persona="default" label={t.connect} />
+    </div>
+</section>

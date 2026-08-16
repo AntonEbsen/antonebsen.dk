@@ -9,7 +9,10 @@ declare module "*.json" {
 interface ImportMetaEnv {
     readonly SUPABASE_URL: string;
     readonly SUPABASE_ANON_KEY: string;
-    readonly GEMINI_API_KEY: string;
+    /** Anthropic API key. Powers /api/chat and /api/text-to-sql. */
+    readonly ANTHROPIC_API_KEY: string;
+    /** ElevenLabs TTS/STT. Read by /api/speak and /api/stt, both public routes. */
+    readonly ELEVENLABS_API_KEY: string;
     readonly UPSTASH_REDIS_REST_URL?: string;
     readonly UPSTASH_REDIS_REST_TOKEN?: string;
     readonly ADMIN_SECRET?: string;

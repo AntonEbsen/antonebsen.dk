@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/BaseLayout.astro';
 import { getLangFromUrl } from '../i18n/utils';
+import { MODEL_LABEL } from '../lib/ai/model';
 
 const lang = getLangFromUrl(Astro.url);
 
@@ -10,7 +11,7 @@ const t = {
     desc: "Stil mig spørgsmål om Antons CV, projekter, blogindlæg og erfaring.",
     intro: "Hej! Jeg er den store udgave af Antons AI. Jeg kan analysere hele portfolioen og endda <strong>lave grafer</strong> over dataene. Prøv det!",
     placeholder: "Stil mig et spørgsmål...",
-    disclaimer: "Drevet af Google Gemini · Kan lave fejl",
+    disclaimer: `Drevet af ${MODEL_LABEL} · Kan lave fejl`,
     back: "Tilbage til forsiden",
     prompts: ["📊 Vis mig en graf over Antons skills", "💼 Opsummer Antons erfaring", "📋 Analysér Jobopslag"]
   },
@@ -19,7 +20,7 @@ const t = {
     desc: "Ask me questions about Anton's CV, projects, blog posts, and experience.",
     intro: "Hi! I'm the full-screen AI. I can analyze the portfolio and even <strong>generate charts</strong> from the data. Give it a try!",
     placeholder: "Try: 'Visualize your experience timeline'...",
-    disclaimer: "Powered by Google Gemini · May produce inaccuracies",
+    disclaimer: `Powered by ${MODEL_LABEL} · May produce inaccuracies`,
     back: "Back to Home",
     prompts: ["📊 Graph Anton's skills", "💼 Summarize Anton's experience", "📋 Analyze Job Match"]
   }
@@ -28,7 +29,7 @@ const t = {
     desc: "Ask me questions about Anton's CV, projects, blog posts, and experience.",
     intro: "Hi! I'm the full-screen AI. I can analyze the portfolio and even <strong>generate charts</strong> from the data. Give it a try!",
     placeholder: "Try: 'Visualize your experience timeline'...",
-    disclaimer: "Powered by Google Gemini · May produce inaccuracies",
+    disclaimer: `Powered by ${MODEL_LABEL} · May produce inaccuracies`,
     back: "Back to Home",
     prompts: ["📊 Graph Anton's skills", "💼 Summarize Anton's experience", "📋 Analyze Job Match"]
 };
@@ -150,7 +151,9 @@ const t = {
         align-items: center;
         font-family: 'Courier New', Courier, monospace;
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.4);
+        /* 0.4 alpha failed AA against this bar. 0.75 keeps the muted
+           terminal feel and passes. */
+        color: rgba(255, 255, 255, 0.75);
         text-transform: uppercase;
         letter-spacing: 1px;
     }
@@ -183,7 +186,7 @@ const t = {
         <h1 class="text-2xl font-bold flex items-center gap-2">
             <i class="fa-solid fa-layer-group text-purple-400"></i> {t.title}
         </h1>
-        <p class="text-xs text-gray-400 uppercase tracking-widest mt-1 opacity-70">
+        <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">
             {lang === 'da' ? 'AI Drevet Analyse' : 'AI Powered Analytics'}
         </p>
       </div>
@@ -204,12 +207,12 @@ const t = {
                 <span class="status-dot"></span>
                 <span class="hidden md:inline">ONLINE</span>
             </span>
-            <span class="opacity-50 hidden md:inline">|</span>
-            <span class="text-[10px] md:text-xs">MODEL: GEMINI 2.5 FLASH</span>
-            <span class="opacity-50 mx-2">|</span>
+            <span class="hidden md:inline" aria-hidden="true">|</span>
+            <span class="text-[10px] md:text-xs">MODEL: {MODEL_LABEL.toUpperCase()}</span>
+            <span class="mx-2" aria-hidden="true">|</span>
             <!-- Persona Selector -->
             <div class="relative group">
-                <select id="fp-persona-select" class="appearance-none bg-neutral-900 border border-purple-500/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none uppercase tracking-wide">
+                <select id="fp-persona-select" aria-label={lang === "da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-neutral-900 border border-purple-500/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none uppercase tracking-wide">
                     <option value="default" class="bg-neutral-900 text-white">STANDARD</option>
                     <option value="recruiter" class="bg-neutral-900 text-white">💼 RECRUITER</option>
                     <option value="tech" class="bg-neutral-900 text-white">💻 TECH LEAD</option>
@@ -220,9 +223,9 @@ const t = {
         </div>
         <div class="hidden md:flex items-center gap-3">
             <span>LATENCY: 24ms</span>
-            <span class="opacity-50">|</span>
+            <span aria-hidden="true">|</span>
             <span>SECURE CONN</span>
-            <button id="fp-clear-chat" class="ml-4 text-gray-400 hover:text-red-400 transition-colors" title="Clear History">
+            <button id="fp-clear-chat" class="ml-4 text-gray-400 hover:text-red-400 transition-colors" title="Clear History" aria-label={lang === "da" ? "Ryd samtalen" : "Clear conversation"}>
               <i class="fa-solid fa-trash"></i>
             </button>
         </div>
@@ -267,24 +270,24 @@ const t = {
 
           <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
           <!-- Button Spacing: Send(2) <-[8px]-> Voice(16) <-[8px]-> File(30) -->
-          <button type="button" id="fp-file-btn" class="absolute right-[7.5rem] top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
+          <button type="button" id="fp-file-btn" aria-label={lang === "da" ? "Vedhæft dokument" : "Attach a document"} class="absolute right-[7.5rem] top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
             <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
           </button>
-          <button type="button" id="fp-voice-btn" class="absolute right-16 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
+          <button type="button" id="fp-voice-btn" aria-label={lang === "da" ? "Tal til assistenten" : "Speak to the assistant"} class="absolute right-16 top-2 bottom-2 bg-[rgba(255,255,255,0.05)] text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.1)] w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
             <i class="fa-solid fa-microphone text-lg group-hover:scale-110 transition-transform"></i>
              <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="fp-voice-indicator"></span>
           </button>
-          <button type="submit" class="absolute right-2 top-2 bottom-2 bg-purple-600 text-white w-12 rounded-lg flex items-center justify-center hover:bg-white hover:text-black transition-all transform hover:scale-105 shadow-lg">
+          <button type="submit" id="fp-send-btn" data-label-send={lang === "da" ? "Send besked" : "Send message"} data-label-stop={lang === "da" ? "Stop svaret" : "Stop generating"} aria-label={lang === "da" ? "Send besked" : "Send message"} class="absolute right-2 top-2 bottom-2 bg-purple-600 text-white w-12 rounded-lg flex items-center justify-center hover:bg-white hover:text-black transition-all transform hover:scale-105 shadow-lg">
             <i class="fa-solid fa-paper-plane text-lg"></i>
           </button>
         </form>
-        <div class="text-center mt-3 text-xs text-gray-500 opacity-60">
+        <div class="text-center mt-3 text-xs text-gray-400">
           {t.disclaimer}
         </div>
       </div>
         <div id="fp-file-display" class="hidden mt-2 px-3 py-2 bg-purple-500/10 border border-purple-500/20 rounded-lg flex items-center justify-between text-xs text-purple-400">
             <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-2"></i><span id="fp-filename"></span></span>
-            <button type="button" id="fp-remove-file" class="ml-2 hover:text-white"><i class="fa-solid fa-times"></i></button>
+            <button type="button" id="fp-remove-file" class="ml-2 hover:text-white" aria-label={lang === "da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
         </div>
       </div>
 
@@ -293,6 +296,11 @@ const t = {
   </main>
 
   <script>
+    import { renderModelText } from '../lib/ai/safe-html';
+    import { readEventStream } from '../lib/ai/protocol';
+    import { createChatRenderers } from '../lib/ai/chat-ui';
+    import { createMessageActions } from '../lib/ai/message-actions';
+
     // Typed at the query rather than cast at each use: getElementById returns
     // HTMLElement, so every `input.value` and `form.reset()` below was an error the
     // checker reported and nobody could see among the other 600.
@@ -314,6 +322,38 @@ const t = {
     const defaultPlaceholder = input?.placeholder ?? '';
     const voiceBtn = document.querySelector<HTMLButtonElement>('#fp-voice-btn');
     const voiceIndicator = document.querySelector<HTMLElement>('#fp-voice-indicator');
+
+    /**
+     * The in-flight request, so a long answer can be stopped.
+     *
+     * The send control doubles as the stop control rather than appearing beside it:
+     * the mouse is already there, and a second button that only exists for two
+     * seconds is harder to hit than the one that has not moved.
+     */
+    const sendBtn = document.querySelector<HTMLButtonElement>('#fp-send-btn');
+    let activeRequest: AbortController | null = null;
+
+    function setStreaming(streaming: boolean) {
+        if (!sendBtn) return;
+        const icon = sendBtn.querySelector('i');
+        if (icon) icon.className = streaming
+            ? 'fa-solid fa-stop text-lg'
+            : 'fa-solid fa-paper-plane text-lg';
+        // The same control sends and stops, so the accessible name has to follow it.
+        sendBtn.setAttribute('aria-label', streaming
+            ? (sendBtn.dataset.labelStop || 'Stop generating')
+            : (sendBtn.dataset.labelSend || 'Send message'));
+        // Regenerate greys out for the duration rather than quietly ignoring clicks.
+        messageActions.refreshRegenerate();
+    }
+
+    // Clicking while a reply is streaming stops it rather than submitting a second,
+    // empty message — hence the preventDefault on what is still a submit button.
+    sendBtn?.addEventListener('click', (e) => {
+        if (!activeRequest) return;
+        e.preventDefault();
+        activeRequest.abort();
+    });
     
     // Handle URL Params (for Static Site)
     if (typeof window !== 'undefined') {
@@ -606,8 +646,12 @@ const t = {
       let accumulatedText = "";
 
         try {
+          activeRequest = new AbortController();
+          setStreaming(true);
+
           const res = await fetch('/api/chat', {
             method: 'POST',
+            signal: activeRequest.signal,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: fullPayload, lang: currentLang, persona, image: payload.image }) // Pass image if present
           });
@@ -628,42 +672,57 @@ const t = {
            return;
         }
 
-        // Create a placeholder message for the stream (Skip saving initially)
-        const messageContent = addMessage("", 'ai', true, persona);
-        const reader = res.body?.getReader();
-        const decoder = new TextDecoder();
+        // The body is NDJSON: one typed event per line. Prose arrives as `text`;
+        // charts, navigation and citations arrive as their own events instead of
+        // being smuggled through the prose as `<<<TAG>>>` markers.
+        const messageContent = addMessage('', 'ai', true, persona);
+        const wrapper = messageContent ? messageContent.closest('.ai-content-wrapper') : null;
+        let streamFailed = false;
 
-        if (reader) {
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                
-                const chunk = decoder.decode(value, { stream: true });
-                accumulatedText += chunk;
-                
-                // Update the UI
-                if (messageContent) {
-                    messageContent.innerHTML = formatText(accumulatedText);
-                }
-                messages.scrollTop = messages.scrollHeight;
+        await readEventStream(res, (event) => {
+            switch (event.type) {
+                case 'text':
+                    accumulatedText += event.text;
+                    if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+                    break;
+                case 'tool':
+                    handleToolEvent(event.name, event.input, wrapper);
+                    break;
+                case 'citations':
+                    renderCitations(event.sources, wrapper);
+                    break;
+                case 'error':
+                    streamFailed = true;
+                    if (messageContent) messageContent.textContent = "⚠️ " + event.message;
+                    break;
             }
+            messages.scrollTop = messages.scrollHeight;
+        }, activeRequest.signal);
+
+        if (streamFailed) return;
+
+        // A stream that ends with neither text nor an error event was cut short.
+        if (!accumulatedText.trim()) {
+            if (messageContent) messageContent.textContent = "⚠️ " + (t.error || "Sorry, I encountered an error.");
+            return;
         }
 
-        // Save complete message to history
         saveMessageToHistory(accumulatedText, 'ai', persona);
-
-        // Final processing for regex tags (Charts/Navigation) on the complete text
-        // Pass the container div (grandparent of the message content p tag)
-        if (messageContent) {
-             const wrapper = messageContent.closest('.ai-content-wrapper');
-             processSpecialTags(accumulatedText, wrapper); 
-        }
 
             } catch (err) {
               removeTyping();
+              // Pressing stop is a choice, not a failure. The partial answer stays on
+              // screen but is deliberately not saved to history, and the return keeps
+              // the voice block below from reading half a sentence aloud.
+              if (err?.name === 'AbortError') return;
               console.error(err);
               addMessage(`⚠️ Connection error: ${err.message || 'Unknown'}`, 'ai', false, persona);
               return; // Exit on error
+            } finally {
+              // Runs on every exit — success, stop, error and the early returns above —
+              // so the control can never be left showing a stop icon with nothing running.
+              activeRequest = null;
+              setStreaming(false);
             }
             
              // --- VOICE RESPONSE (Level 3) ---
@@ -768,138 +827,40 @@ const t = {
     // ... (Inside Voice Logic)
     // Update startRecording to set flag
 
-    function processSpecialTags(text, containerDiv) {
-       if (!containerDiv) return;
-
-       // Check for Chart Block
-       const chartMatch = text.match(/<<<CHART([\s\S]*?)CHART>>>/);
-       if (chartMatch) {
-           const jsonStr = chartMatch[1];
-           try {
-               const chartData = JSON.parse(jsonStr);
-               const canvasId = 'chart-' + Date.now();
-               const canvasContainer = document.createElement('div');
-               canvasContainer.className = "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]";
-               canvasContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
-               
-               const textDiv = containerDiv.querySelector('.message-bubble') || containerDiv;
-               textDiv.appendChild(canvasContainer);
-               messages.scrollTop = messages.scrollHeight;
-
-               // Render Chart
-               import('chart.js/auto').then(({ default: Chart }) => {
-                   const ctx = document.getElementById(canvasId);
-                   if (ctx) {
-                       new Chart(ctx, {
-                           type: chartData.type,
-                           data: chartData.data,
-                           options: {
-                               ...chartData.options,
-                               color: 'rgba(255, 255, 255, 0.8)',
-                               borderColor: 'rgba(255, 255, 255, 0.2)',
-                               scale: {
-                                  ticks: { color: 'rgba(255, 255, 255, 0.6)' },
-                                  grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                               },
-                               plugins: {
-                                  legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } }
-                               }
-                           }
-                       });
-                   }
-               });
-
-           } catch (e) {
-               console.error("Chart Render Error", e);
-           }
-       }
-       // Check for Navigation Block
-       const navMatch = text.match(/<<<NAVIGATE:\s*(.*?)\s*>>>/i);
-       if (navMatch) {
-           const rawPath = navMatch[1].trim();
-           const path = rawPath.replace(/\.$/, '');
-
-           // Show navigation indicator
-           const navDiv = document.createElement('div');
-           navDiv.className = "flex items-center gap-2 text-sm text-purple-400 mt-3 font-bold animate-pulse";
-           navDiv.innerHTML = `<i class="fa-solid fa-arrow-right-long"></i> Navigating to ${path}...`;
-           const bubble = containerDiv.querySelector('.message-bubble');
-           if (bubble) bubble.appendChild(navDiv); 
-           else containerDiv.appendChild(navDiv); // Fallback
-           messages.scrollTop = messages.scrollHeight;
-
-           console.log("Concierge navigating to:", path);
-
-           // Execute navigation faster
-           setTimeout(() => {
-               window.location.href = path;
-           }, 500);
-       }
-
-
-       // Scheduler
-       const schedulerMatch = text.match(/<<<ACTION: SCHEDULER>>>/);
-       if (schedulerMatch) {
-            const schedulerDiv = document.createElement('div');
-            schedulerDiv.className = 'mt-4 p-4 bg-purple-500/5 border border-purple-500/20 rounded-xl backdrop-blur-sm self-start max-w-sm';
-            schedulerDiv.innerHTML = `
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
-                        <i class="fa-solid fa-calendar-check text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-text text-sm">Let's Connect</h4>
-                        <p class="text-xs text-gray-400">Ready to discuss a project?</p>
-                    </div>
-                </div>
-                <a href="mailto:anton@antonebsen.dk?subject=Interview%20Request%20via%20AI%20Assistant" 
-                   class="block w-full py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-center rounded-lg transition-colors text-sm">
-                   <i class="fa-solid fa-envelope mr-2"></i> Send Email / Schedule
-                </a>
-            `;
-            // Append to the bubble container or create a new wrapper if needed
-            const bubble = containerDiv.querySelector('.message-bubble');
-            if (bubble) bubble.appendChild(schedulerDiv);
-            else containerDiv.appendChild(schedulerDiv);
-            
-            messages.scrollTop = messages.scrollHeight;
-       }
-
-       // Check for Suggestions Block
-       const suggestMatch = text.match(/<<<SUGGESTIONS:(.*?)>>>/);
-       if (suggestMatch) {
-            const jsonStr = suggestMatch[1];
-            try {
-                const suggestions = JSON.parse(jsonStr);
-                const chipsContainer = document.createElement('div');
-                chipsContainer.className = "flex flex-wrap gap-2 mt-4 w-full"; // Removed pl-14, added w-full
-                
-                suggestions.forEach(s => {
-                    const btn = document.createElement('button');
-                    btn.className = "text-sm bg-purple-500/10 hover:bg-purple-500 hover:text-white text-purple-400 border border-purple-500/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm";
-                    btn.innerText = s;
-                    btn.addEventListener('click', () => {
-                        const input = document.getElementById('fp-chat-input');
-                        const form = document.getElementById('fp-chat-form');
-                        if (input && form) {
-                            input.value = s;
-                            form.dispatchEvent(new Event('submit'));
-                            chipsContainer.remove();
-                        }
-                    });
-                    chipsContainer.appendChild(btn);
-                });
-                
-                containerDiv.appendChild(chipsContainer); // Append to the main flex container
-                messages.scrollTop = messages.scrollHeight;
-
-            } catch (e) {
-                console.error("Suggestion Parse Error", e);
-            }
-       }
-    }
-
     const STORAGE_KEY = 'anton_ai_chat_history';
+
+    // Copy, read-aloud and regenerate under each answer. `isBusy` is what keeps a
+    // regenerate from being fired into a reply that is still streaming.
+    const messageActions = createMessageActions({
+        inputId: 'fp-chat-input',
+        formId: 'fp-chat-form',
+        messagesId: 'fp-chat-messages',
+        storageKey: STORAGE_KEY,
+        isBusy: () => activeRequest !== null,
+        lang,
+        classes: {
+            row: 'flex justify-end items-center gap-1 mt-2',
+            button: 'pointer-events-auto text-gray-400 hover:text-purple-400 transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-purple-500/10',
+        },
+    });
+
+    const { handleToolEvent, renderCitations } = createChatRenderers({
+        inputId: 'fp-chat-input',
+        formId: 'fp-chat-form',
+        messagesId: 'fp-chat-messages',
+        classes: {
+            chartBox: "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]",
+            chartCaption: "text-xs text-gray-400 mb-2 font-medium",
+            nav: "flex items-center gap-2 text-sm text-purple-400 mt-3 font-bold animate-pulse",
+            chip: "text-sm bg-purple-500/10 hover:bg-purple-500 hover:text-white text-purple-400 border border-purple-500/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm",
+            quizBox: "mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl text-purple-400",
+            quizTitle: "font-bold text-purple-400",
+            quizBody: "text-sm text-gray-400",
+            citationRow: "flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-white/10",
+            citationLabel: "text-[10px] uppercase tracking-wider text-gray-400",
+            citationPill: "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-[11px] text-purple-400 hover:bg-purple-500 hover:text-white transition-colors",
+        },
+    });
 
     function loadHistory() {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -937,6 +898,8 @@ const t = {
       if (!skipSave) saveMessageToHistory(text, role, persona);
       const div = document.createElement('div');
       div.className = `flex gap-4 ${role === 'user' ? 'flex-row-reverse' : ''}`;
+      div.dataset.role = role;
+      if (role === 'user') div.dataset.text = text;
 
       let contentElement;
 
@@ -969,33 +932,19 @@ const t = {
         contentElement = div.querySelector('.prose');
         if (text) contentElement.innerHTML = formatText(text);
 
-        // Add Speak Button
-        const actionsDiv = document.createElement('div');
-        actionsDiv.className = "flex justify-end mt-2 gap-2";
-        
-        const safeText = encodeURIComponent(text);
-        actionsDiv.innerHTML = `
-           <button class="speak-btn pointer-events-auto text-gray-400 hover:text-purple-400 transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-purple-500/10" aria-label="Læs højt" data-text="${safeText}" onclick="window.speakMessage(this.dataset.text, this); event.stopPropagation();">
-              <i class="fa-solid fa-volume-high text-xs"></i>
-           </button>
-        `;
-        div.querySelector('.ai-content-wrapper').appendChild(actionsDiv);
-        
-        
-        // No inline onclick needed due to delegation script
+        messageActions.attach(div.querySelector('.ai-content-wrapper'));
 
-        // Process Tags (Charts, Suggestions) for restored history
-        if (text) {
-             const wrapper = div.querySelector('.ai-content-wrapper');
-             processSpecialTags(text, wrapper); 
-        }
+        // Replayed history is prose only. Charts, citations and suggestion chips were
+        // live tool events and are not reconstructed from a stored transcript.
 
       } else {
-        div.innerHTML = `
-          <div class="bg-purple-600 p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-purple-500 text-white">
-            <p class="text-white font-semibold">${text}</p>
-          </div>
-        `;
+        const bubble = document.createElement('div');
+        bubble.className = "bg-purple-600 p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-purple-500 text-white";
+        const p = document.createElement('p');
+        p.className = "text-white font-semibold";
+        p.textContent = text;
+        bubble.appendChild(p);
+        div.appendChild(bubble);
       }
 
       messages.appendChild(div);
@@ -1050,20 +999,17 @@ const t = {
 
 
 
-    // Simple markdown-ish formatter
+    // Rendering model output is security-critical and used to live in triplicate,
+    // once per chat client. renderModelText() is the single tested implementation:
+    // strip control tags, escape, then add markup. See src/lib/ai/safe-html.ts.
+    const CITATION_CLASS = "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-[10px] uppercase tracking-wider text-purple-400 mx-1 select-none cursor-help";
+
     function formatText(text) {
-      // Remove Chart JSON from text display
-      let t = text.replace(/<<<CHART([\s\S]*?)CHART>>>/g, '');
-      t = t.replace(/<<<NAVIGATE:.*?>>>/gi, '').replace(/<<<SUGGESTIONS:.*?>>>/g, '');
-      // Citation Badges
-      t = t.replace(/<<<CITATION:(.*?)>>>/g, '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-[10px] uppercase tracking-wider text-purple-400 mx-1 select-none cursor-help" title="Source: Uploaded Document"><i class="fa-solid fa-file-pdf"></i> $1</span>');
-      // Replace **text** with bold
-      t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      // Replace * items with bullets
-      t = t.replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc">$1</li>');
-      // Handling newlines
-      t = t.replace(/\n/g, '<br>');
-      return t;
+      return renderModelText(text, {
+        citationClass: CITATION_CLASS,
+        lineBreak: '<br>',
+        bullets: true,
+      });
     }
     
     // Init History

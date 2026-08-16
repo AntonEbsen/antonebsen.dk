@@ -31,10 +31,18 @@ import BlackHole from '../components/delight/BlackHole.tsx';
         </div>
 
         <!-- Technical Overlay -->
-        <div class="absolute bottom-8 right-8 font-mono text-xs text-dim opacity-30 select-none hidden md:block text-right">
-            <p>ANOMALY_DETECTED: E_404_NOT_FOUND</p>
-            <p>COORDINATES: UNKNOWN</p>
-            <p>GRAVITY: INFINITE</p>
+        <!-- `opacity-30` on the wrapper measured these lines at 1.97:1 against the
+             ground, where 12px text needs 4.5. The recession comes from the colour
+             now: muted is the palette's dimmest solid text token and clears at 5.6:1.
+
+             The class sits on each <p> rather than on the wrapper because reset.css
+             sets `p, li { color: var(--text-dim) }`, and an element rule beats an
+             inherited one — a colour on the wrapper never reaches them. That is why
+             the original dimmed with opacity, which does inherit, and why it failed. -->
+        <div class="absolute bottom-8 right-8 font-mono text-xs select-none hidden md:block text-right">
+            <p class="text-muted">ANOMALY_DETECTED: E_404_NOT_FOUND</p>
+            <p class="text-muted">COORDINATES: UNKNOWN</p>
+            <p class="text-muted">GRAVITY: INFINITE</p>
         </div>
 
     </main>

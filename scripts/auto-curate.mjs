@@ -1,10 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 import pdf from 'pdf-parse/lib/pdf-parse.js';
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { generateText } from 'ai';
+import Anthropic from '@anthropic-ai/sdk';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import { readChatModel } from './read-model.mjs';
 
 // Load env
 dotenv.config();
@@ -26,15 +26,11 @@ async function main() {
         const data = await pdf(dataBuffer);
         const text = data.text.slice(0, 30000); // Limit context window
 
-        console.log(`🧠 Analyzing content with Gemini...`);
+        console.log(`🧠 Analyzing content with Claude...`);
 
-        if (!process.env.GEMINI_API_KEY) {
-            throw new Error("Missing GEMINI_API_KEY");
+        if (!process.env.ANTHROPIC_API_KEY) {
+            throw new Error("Missing ANTHROPIC_API_KEY");
         }
-
-        const google = createGoogleGenerativeAI({
-            apiKey: process.env.GEMINI_API_KEY
-        });
 
         const prompt = `
             Analyze this research paper text and extract structured metadata for a portfolio entry.
@@ -58,10 +54,20 @@ async function main() {
             ${text}
         `;
 
-        const { text: jsonText } = await generateText({
-            model: google('gemini-2.0-flash'),
-            messages: [{ role: 'user', content: prompt }]
+        const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+        const message = await anthropic.messages.create({
+            model: readChatModel(),
+            max_tokens: 4096,
+            // Structured extraction with a right answer: no thinking, low effort.
+            thinking: { type: 'disabled' },
+            output_config: { effort: 'low' },
+            messages: [{ role: 'user', content: prompt }],
         });
+
+        const jsonText = message.content
+            .filter((b) => b.type === 'text')
+            .map((b) => b.text)
+            .join('');
 
         const cleanJson = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
         const metadata = JSON.parse(cleanJson);
@@ -81,7 +87,7 @@ const project = {
     language: "en",
     authors: ["${metadata.author}"],
     tags: ${JSON.stringify(metadata.techStack)},
-    techStack: ${JSON.stringify(metadata.techStack.map((t: string) => ({ name: t, icon: 'fa-solid fa-code' })))},
+    techStack: ${JSON.stringify(metadata.techStack.map((t) => ({ name: t, icon: 'fa-solid fa-code' })))},
     
     // Abstract
     summary: "${metadata.executiveSummary}",

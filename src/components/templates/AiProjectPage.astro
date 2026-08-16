@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/BaseLayout.astro';
+import { MODEL_LABEL } from '@lib/ai/model';
 
 interface Props {
   lang: 'da' | 'en';
@@ -10,7 +11,7 @@ const { lang } = Astro.props;
 const t = {
   da: {
     title: "Om Antons AI",
-    subtitle: "En eksperimentel AI-økonom bygget med RAG og Gemini",
+    subtitle: `En eksperimentel AI-økonom bygget med RAG og ${MODEL_LABEL}`,
     hero: {
       tag: "Projekt Showcase",
       heading: "Mød Antons AI Assistent",
@@ -72,7 +73,7 @@ const t = {
     tech: {
       title: "Teknologien Bag",
       stack: [
-        { name: "Google Gemini 2.0 Flash", desc: "Den underliggende LLM med 1M+ token context window." },
+        { name: MODEL_LABEL, desc: "Den underliggende LLM med et 1M token context window." },
         { name: "Astro & TypeScript", desc: "Lynhurtig frontend framework med type-sikker logik." },
         { name: "RAG / PDF.js", desc: "Client-side dokument parsing for maksimal privatliv og hastighed." },
         { name: "Vercel Edge", desc: "Serverless funktioner der sikrer hurtig responstid." }
@@ -82,7 +83,7 @@ const t = {
   },
   en: {
     title: "About Anton's AI",
-    subtitle: "An experimental AI Economist built with RAG and Gemini",
+    subtitle: `An experimental AI Economist built with RAG and ${MODEL_LABEL}`,
     hero: {
       tag: "Project Showcase",
       heading: "Meet Anton's AI Assistant",
@@ -143,7 +144,7 @@ const t = {
     tech: {
       title: "The Technology",
       stack: [
-        { name: "Google Gemini 2.0 Flash", desc: "The underlying LLM with a 1M+ token context window." },
+        { name: MODEL_LABEL, desc: "The underlying LLM, with a 1M token context window." },
         { name: "Astro & TypeScript", desc: "Blazing fast frontend framework with type-safe logic." },
         { name: "RAG / PDF.js", desc: "Client-side document parsing for maximum privacy and speed." },
         { name: "Vercel Edge", desc: "Serverless functions ensuring fast response times." }
@@ -154,7 +155,56 @@ const t = {
 };
 
 const content = t[lang];
-const chatLink = lang === 'da' ? '/chat' : '/en/chat';
+
+/**
+ * The last golden-set result, written by .github/workflows/eval.yml and committed back.
+ *
+ * Globbed rather than imported so the page still builds before the first run has
+ * produced a file — an absent status is a missing section, not a broken build.
+ *
+ * The scope matters and is shown. Six nights a week the workflow runs a three-case
+ * smoke subset; only Sunday runs the whole set. Printing "3/3" with no context would
+ * read as a far weaker claim than the weekly run, so a smoke result says what it is a
+ * sample of instead of pretending to be the full sweep.
+ */
+interface EvalStatus {
+    passed: number;
+    total: number;
+    scope: 'full' | 'smoke';
+    suiteTotal: number;
+    model: string;
+    modelLabel: string;
+    checkedAt: string;
+}
+
+const statusFiles = import.meta.glob<EvalStatus>('../../data/ai-eval-status.json', {
+    eager: true,
+    import: 'default',
+});
+const evalStatus = Object.values(statusFiles)[0] ?? null;
+
+const evalCopy = {
+    da: {
+        full: (s: EvalStatus) => `${s.passed}/${s.total} kontrolspørgsmål bestået`,
+        smoke: (s: EvalStatus) => `${s.passed}/${s.total} stikprøver bestået, ud af ${s.suiteTotal}`,
+        checked: 'kontrolleret',
+        failing: 'Nogle kontroller fejler lige nu.',
+        label: 'Automatisk kontrol',
+    },
+    en: {
+        full: (s: EvalStatus) => `${s.passed}/${s.total} golden questions passing`,
+        smoke: (s: EvalStatus) => `${s.passed}/${s.total} spot checks passing, out of ${s.suiteTotal}`,
+        checked: 'checked',
+        failing: 'Some checks are failing right now.',
+        label: 'Automated check',
+    },
+}[lang];
+
+const evalPassing = evalStatus ? evalStatus.passed === evalStatus.total : false;
+// Was '/chat' | '/en/chat'. Neither route exists — the ChatPage template they were
+// written for is not imported by any page — so this CTA 404'd in both languages.
+// /ai-chat is the real full-page assistant and picks its own language from the URL.
+const chatLink = '/ai-chat';
 ---
 
 <Layout title={content.title} description={content.subtitle}>
@@ -229,6 +279,26 @@ const chatLink = lang === 'da' ? '/chat' : '/en/chat';
              <i class="fa-solid fa-robot"></i> {content.cta}
            </a>
         </div>
+
+        {evalStatus && (
+          <p class="mt-8 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-dim">
+            <span class="sr-only">{evalCopy.label}:</span>
+            <i
+              class={evalPassing
+                ? 'fa-solid fa-circle-check text-accent'
+                : 'fa-solid fa-circle-exclamation text-accent'}
+              aria-hidden="true"
+            ></i>
+            <span class="font-medium text-text">
+              {evalStatus.scope === 'full' ? evalCopy.full(evalStatus) : evalCopy.smoke(evalStatus)}
+            </span>
+            <span aria-hidden="true">·</span>
+            <span>{evalStatus.modelLabel}</span>
+            <span aria-hidden="true">·</span>
+            <time datetime={evalStatus.checkedAt}>{evalCopy.checked} {evalStatus.checkedAt}</time>
+            {!evalPassing && <span class="w-full text-accent">{evalCopy.failing}</span>}
+          </p>
+        )}
       </div>
 
       <!-- Features Grid -->
