@@ -1,0 +1,130 @@
+/*
+ * Typography for the assistant's answers.
+ *
+ * Both chat clients wrapped the answer in `.prose prose-invert` and neither ever had
+ * it: `@tailwindcss/typography` is not installed and `tailwind.config.mjs` declares
+ * `plugins: []`, so those two classes emitted nothing at all. The most-read surface of
+ * the whole feature was styled by exactly one rule — `p, li { color: var(--text-dim) }`
+ * in reset.css — with headings, lists, bold and code all at the browser default.
+ *
+ * The plugin is still not the answer. It ships an opinionated scale of its own that
+ * would sit alongside `--step-*` in tokens.css disagreeing with it, on a site whose
+ * whole point is that two styling systems agree through tokens. This covers exactly
+ * what `renderModelText` can emit and nothing else, on the scale the rest of the site
+ * already uses.
+ */
+
+.chat-prose {
+    font-size: var(--step-0);
+    line-height: 1.65;
+    color: var(--text-dim);
+}
+
+/* The bubble supplies the outer spacing, so the first and last blocks sit flush. */
+.chat-prose > :first-child {
+    margin-top: 0;
+}
+.chat-prose > :last-child {
+    margin-bottom: 0;
+}
+
+.chat-prose p {
+    margin: 0 0 var(--space-xs);
+}
+
+/*
+ * Headings are Fraunces and full-strength text, so structure is legible as structure.
+ * They start at h3 because an answer sits inside a page that already owns h1 and h2 —
+ * renderModelText offsets the model's `#` accordingly.
+ */
+.chat-prose h3,
+.chat-prose h4,
+.chat-prose h5,
+.chat-prose h6 {
+    font-family: var(--font-display);
+    color: var(--text);
+    line-height: 1.25;
+    margin: var(--space-md) 0 var(--space-2xs);
+}
+
+.chat-prose h3 {
+    font-size: var(--step-2);
+}
+.chat-prose h4 {
+    font-size: var(--step-1);
+}
+/*
+ * Below h4 the size ramp runs out, so the level is carried by face and weight rather
+ * than by shrinking further. Going smaller here was a mistake worth recording: the
+ * model reaches for `###` freely, and at --step--1 those headings rendered *smaller and
+ * dimmer than the list beneath them*, which reads as a caption rather than a heading
+ * and inverts the hierarchy exactly where it matters most.
+ */
+.chat-prose h5,
+.chat-prose h6 {
+    font-size: var(--step-0);
+    font-weight: 600;
+}
+
+.chat-prose ul,
+.chat-prose ol {
+    margin: 0 0 var(--space-xs);
+    padding-left: var(--space-md);
+}
+
+.chat-prose ul {
+    list-style: disc;
+}
+.chat-prose ol {
+    list-style: decimal;
+}
+
+.chat-prose li {
+    margin-bottom: var(--space-2xs);
+    /* reset.css sets `p, li { color: var(--text-dim) }`; inherit instead so the
+       compact variant below can shift the whole block in one place. */
+    color: inherit;
+}
+.chat-prose li::marker {
+    color: var(--accent);
+}
+.chat-prose li:last-child {
+    margin-bottom: 0;
+}
+
+/* Bold was the one mark that already rendered, and it rendered dim-on-dim. Lifting it
+   to full-strength text is what makes emphasis read as emphasis. */
+.chat-prose strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.chat-prose code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent-light);
+    /* A long identifier must not push the bubble wider than its column. */
+    overflow-wrap: anywhere;
+}
+
+/*
+ * The widget is a 350px column, where the full scale runs out of horizontal room and
+ * headings start to look like shouting. One step down across the board.
+ */
+.chat-prose--compact {
+    font-size: var(--step--1);
+    line-height: 1.6;
+}
+.chat-prose--compact h3 {
+    font-size: var(--step-1);
+}
+.chat-prose--compact h4 {
+    font-size: var(--step-0);
+}
+.chat-prose--compact ul,
+.chat-prose--compact ol {
+    padding-left: var(--space-sm);
+}

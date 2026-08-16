@@ -923,13 +923,13 @@ const t = {
                     <span>${displayTitle}</span>
                     ${persona !== 'default' ? '<i class="fa-solid fa-check-circle opacity-50"></i>' : ''}
                 </p>
-                <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
+                <div class="chat-prose">
                   ${formatText(text)}
                 </div>
               </div>
           </div>
         `;
-        contentElement = div.querySelector('.prose');
+        contentElement = div.querySelector('.chat-prose');
         if (text) contentElement.innerHTML = formatText(text);
 
         messageActions.attach(div.querySelector('.ai-content-wrapper'));
@@ -1002,14 +1002,8 @@ const t = {
     // Rendering model output is security-critical and used to live in triplicate,
     // once per chat client. renderModelText() is the single tested implementation:
     // strip control tags, escape, then add markup. See src/lib/ai/safe-html.ts.
-    const CITATION_CLASS = "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-[10px] uppercase tracking-wider text-purple-400 mx-1 select-none cursor-help";
-
     function formatText(text) {
-      return renderModelText(text, {
-        citationClass: CITATION_CLASS,
-        lineBreak: '<br>',
-        bullets: true,
-      });
+      return renderModelText(text, { lineBreak: '<br>' });
     }
     
     // Init History

@@ -906,7 +906,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           lang: widget?.dataset.lang,
           classes: {
               row: "flex justify-end items-center gap-1 mt-2",
-              button: "pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10",
+              button: "pointer-events-auto text-muted hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10",
           },
       });
 
@@ -922,7 +922,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
               chip: "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm",
               quizBox: "mt-4 p-4 bg-accent/10 border border-accent/30 rounded-xl text-accent",
               quizTitle: "font-bold text-accent",
-              quizBody: "text-sm text-dim-100",
+              quizBody: "text-sm text-dim",
               citationRow: "flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-white/10",
               citationLabel: "text-[10px] uppercase tracking-wider text-dim",
               citationPill: "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[11px] text-accent hover:bg-accent hover:text-bg transition-colors",
@@ -980,18 +980,18 @@ const t = (t_obj as any)[lang] || t_obj.da;
               <i class="fa-solid fa-robot text-lg"></i>
             </div>
             <div class="flex flex-col max-w-[85%] ai-content-wrapper">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim-100 message-bubble shadow-lg">
+                <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim message-bubble shadow-lg">
                   <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide flex justify-between items-center">
                     <span>${displayTitle}</span>
                     ${persona !== 'default' ? '<i class="fa-solid fa-check-circle opacity-50"></i>' : ''}
                   </p>
-                  <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
+                  <div class="chat-prose chat-prose--compact">
                     ${formatText(text)}
                   </div>
                 </div>
             </div>
           `;
-          contentElement = div.querySelector('.prose');
+          contentElement = div.querySelector('.chat-prose');
           if (text) contentElement.innerHTML = formatText(text);
 
           messageActions.attach(div.querySelector('.ai-content-wrapper'));

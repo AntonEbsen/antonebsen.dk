@@ -55,10 +55,24 @@ export function isAllowedNavPath(path: unknown): path is string {
 }
 
 export interface RenderModelTextOptions {
-    /** `<br/>` or `<br>`, to preserve each caller's existing output byte-for-byte. */
+    /** `<br/>` or `<br>`, for soft breaks inside a paragraph. */
     lineBreak?: string;
-    /** Render `* item` lines as list items. */
-    bullets?: boolean;
+}
+
+/**
+ * Inline marks, applied to text that has already been escaped.
+ *
+ * Deliberately no link syntax. `[text](url)` would put an href under the model's
+ * control, which is the exact hole `citeSources` exists to avoid — it resolves ids to
+ * URLs server-side so a link can only ever point somewhere the corpus knows about. A
+ * markdown link in an answer stays visible as literal text, which is the safe failure.
+ */
+function inlineMarks(text: string): string {
+    return text
+        // Bold before anything else, so its inner asterisks are consumed here and
+        // cannot be re-read as emphasis or as a bullet.
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+?)`/g, '<code>$1</code>');
 }
 
 /**
@@ -69,16 +83,87 @@ export interface RenderModelTextOptions {
  * regex'd them back out. They are typed stream events now (see protocol.ts), so this
  * handles prose and nothing else — which is the point: text is text, and anything
  * that isn't text can no longer arrive disguised as it.
+ *
+ * It now renders blocks, not just bold. The model writes ordinary markdown — a long
+ * answer opens with `## Uddannelse` and lists with `- ` — and only `**bold**` was ever
+ * converted, so every heading and bullet reached the visitor as a literal `#` or `-`
+ * in the middle of the prose. Structure is also the thing that makes an answer
+ * skimmable, and the assistant was emitting it all along.
+ *
+ * The security property is unchanged and is the reason the order below matters:
+ * escaping happens once, first, against the raw string. Every transform after it wraps
+ * already-escaped text in tags this module authored, so no model byte can become
+ * markup. Nothing here re-introduces unescaped input.
  */
 export function renderModelText(raw: unknown, opts: RenderModelTextOptions = {}): string {
-    const { lineBreak = '<br/>', bullets = false } = opts;
+    const { lineBreak = '<br/>' } = opts;
 
     // Nothing below this line trusts the model.
-    let t = escapeHtml(raw);
+    const escaped = escapeHtml(raw);
 
-    t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    if (bullets) {
-        t = t.replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc">$1</li>');
+    const out: string[] = [];
+    let paragraph: string[] = [];
+    let list: { tag: 'ul' | 'ol'; items: string[] } | null = null;
+
+    const flushParagraph = () => {
+        if (!paragraph.length) return;
+        out.push(`<p>${inlineMarks(paragraph.join(lineBreak))}</p>`);
+        paragraph = [];
+    };
+    const flushList = () => {
+        if (!list) return;
+        const items = list.items.map((i) => `<li>${inlineMarks(i)}</li>`).join('');
+        out.push(`<${list.tag}>${items}</${list.tag}>`);
+        list = null;
+    };
+    const flush = () => {
+        flushParagraph();
+        flushList();
+    };
+
+    const openList = (tag: 'ul' | 'ol') => {
+        if (list?.tag !== tag) {
+            flushList();
+            list = { tag, items: [] };
+        }
+        return list!;
+    };
+
+    for (const line of escaped.split('\n')) {
+        const heading = /^(#{1,6})\s+(.*)$/.exec(line);
+        if (heading) {
+            flush();
+            // Offset by two: an answer sits inside a page that already owns h1 and h2,
+            // so the model's top-level `#` becomes an h3 rather than a second h1.
+            const level = Math.min(6, heading[1].length + 2);
+            out.push(`<h${level}>${inlineMarks(heading[2])}</h${level}>`);
+            continue;
+        }
+
+        const bullet = /^\s*[-*]\s+(.*)$/.exec(line);
+        if (bullet) {
+            flushParagraph();
+            openList('ul').items.push(bullet[1]);
+            continue;
+        }
+
+        const ordered = /^\s*\d+[.)]\s+(.*)$/.exec(line);
+        if (ordered) {
+            flushParagraph();
+            openList('ol').items.push(ordered[1]);
+            continue;
+        }
+
+        if (!line.trim()) {
+            flush();
+            continue;
+        }
+
+        // Prose after a list starts a new paragraph rather than joining the last item.
+        flushList();
+        paragraph.push(line);
     }
-    return t.replace(/\n/g, lineBreak);
+
+    flush();
+    return out.join('');
 }

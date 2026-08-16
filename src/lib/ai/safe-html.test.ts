@@ -96,16 +96,65 @@ describe('renderModelText', () => {
         expect(out).toContain('&lt;&lt;&lt;NAVIGATE');
     });
 
-    it('applies bold and honours the caller line break', () => {
+    it('applies bold and honours the caller line break inside a paragraph', () => {
         expect(renderModelText('**hi**\nthere', { lineBreak: '<br>' })).toBe(
-            '<strong>hi</strong><br>there',
+            '<p><strong>hi</strong><br>there</p>',
         );
-        expect(renderModelText('a\nb')).toBe('a<br/>b');
+        expect(renderModelText('a\nb')).toBe('<p>a<br/>b</p>');
     });
 
-    it('renders bullets only when asked', () => {
-        expect(renderModelText('* one', { bullets: true })).toContain('<li');
-        expect(renderModelText('* one')).not.toContain('<li');
+    it('renders headings offset below the page own h1 and h2', () => {
+        // A long answer opens with `## Uddannelse`. Emitting an h1 inside a page that
+        // already has one breaks the outline; `#` starts at h3.
+        expect(renderModelText('# Title')).toBe('<h3>Title</h3>');
+        expect(renderModelText('## Sub')).toBe('<h4>Sub</h4>');
+        // No space after the hashes is not a heading, so a lone `#` stays prose.
+        expect(renderModelText('#notaheading')).toBe('<p>#notaheading</p>');
+    });
+
+    it('renders both bullet styles and ordered lists', () => {
+        expect(renderModelText('- one\n- two')).toBe('<ul><li>one</li><li>two</li></ul>');
+        expect(renderModelText('* one')).toBe('<ul><li>one</li></ul>');
+        expect(renderModelText('1. one\n2. two')).toBe('<ol><li>one</li><li>two</li></ol>');
+    });
+
+    it('separates blocks rather than running them together', () => {
+        expect(renderModelText('Intro\n\n- a\n\nAfter')).toBe(
+            '<p>Intro</p><ul><li>a</li></ul><p>After</p>',
+        );
+        // Prose straight after a list starts a paragraph, not another item.
+        expect(renderModelText('- a\nAfter')).toBe('<ul><li>a</li></ul><p>After</p>');
+    });
+
+    it('renders inline code', () => {
+        expect(renderModelText('use `npm run dev`')).toBe(
+            '<p>use <code>npm run dev</code></p>',
+        );
+    });
+
+    it('leaves markdown links as text, never as an href', () => {
+        // The one markdown feature deliberately unsupported: a rendered link would put
+        // a destination under the model's control. citeSources resolves ids to URLs
+        // server-side precisely so that cannot happen.
+        const out = renderModelText('see [my site](https://evil.com)');
+        expect(out).not.toContain('<a');
+        expect(out).not.toContain('href');
+        expect(out).toContain('[my site]');
+    });
+
+    it('still escapes before any block or inline transform runs', () => {
+        // The ordering property, asserted through the new code paths rather than only
+        // the old one: a payload inside a heading, a list item and a bold run.
+        for (const input of [
+            '# <img src=x onerror=alert(1)>',
+            '- <script>alert(1)</script>',
+            '**<svg onload=alert(1)>**',
+            '`<iframe src=javascript:alert(1)>`',
+        ]) {
+            const out = renderModelText(input);
+            expect(out, input).not.toMatch(/<(img|script|svg|iframe)/);
+            expect(out, input).toContain('&lt;');
+        }
     });
 
     it('handles empty and nullish input', () => {
