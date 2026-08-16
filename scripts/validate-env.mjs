@@ -31,9 +31,22 @@ const requiredEnvVars = [
     // count, and src/lib/ai/budget.ts falls through to its "local dev" branch and
     // allows everything — which is exactly the configuration that must never reach
     // production, since the ceiling is the only thing between a bot loop and a bill.
-    'UPSTASH_REDIS_REST_URL',
-    'UPSTASH_REDIS_REST_TOKEN',
+    //
+    // An array means "any one of these" — the same Upstash database arrives under
+    // UPSTASH_REDIS_REST_* from Upstash's own dashboard and under KV_REST_API_* from
+    // Vercel's Marketplace integration, and src/lib/ratelimit.ts accepts either.
+    // Demanding the first pair failed a deploy where the second pair was present and
+    // the database was working perfectly well.
+    ['UPSTASH_REDIS_REST_URL', 'KV_REST_API_URL'],
+    ['UPSTASH_REDIS_REST_TOKEN', 'KV_REST_API_TOKEN'],
 ];
+
+/** Is this requirement satisfied? An array is satisfied by any one of its names. */
+const isSet = (entry) =>
+    Array.isArray(entry) ? entry.some((key) => process.env[key]) : Boolean(process.env[entry]);
+
+/** How to name a requirement in a message. */
+const label = (entry) => (Array.isArray(entry) ? entry.join(' or ') : entry);
 
 /**
  * Recommended: absence costs one optional path and nothing else. These warn.
@@ -53,8 +66,8 @@ const recommendedEnvVars = [
 
 console.log('🔍 Validating Environment Variables...');
 
-const missingRequired = requiredEnvVars.filter(key => !process.env[key]);
-const missingRecommended = recommendedEnvVars.filter(key => !process.env[key]);
+const missingRequired = requiredEnvVars.filter(entry => !isSet(entry)).map(label);
+const missingRecommended = recommendedEnvVars.filter(entry => !isSet(entry)).map(label);
 
 if (missingRecommended.length > 0) {
     console.warn(`ℹ️  Optional variables not set: ${missingRecommended.join(', ')}`);

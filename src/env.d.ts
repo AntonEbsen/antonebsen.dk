@@ -13,8 +13,15 @@ interface ImportMetaEnv {
     readonly ANTHROPIC_API_KEY: string;
     /** ElevenLabs TTS/STT. Read by /api/speak and /api/stt, both public routes. */
     readonly ELEVENLABS_API_KEY: string;
+    /**
+     * Upstash REST credentials, under both names they can arrive as: Upstash's own
+     * dashboard uses UPSTASH_REDIS_REST_*, while Vercel's Marketplace integration
+     * injects KV_REST_API_*. src/lib/ratelimit.ts reads either.
+     */
     readonly UPSTASH_REDIS_REST_URL?: string;
     readonly UPSTASH_REDIS_REST_TOKEN?: string;
+    readonly KV_REST_API_URL?: string;
+    readonly KV_REST_API_TOKEN?: string;
     readonly ADMIN_SECRET?: string;
     readonly CRON_SECRET?: string;
     /** Admin dashboard password. Required — login fails closed without it. */
