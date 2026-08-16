@@ -73,11 +73,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <div class="flex gap-2 items-center">
         <!-- Persona Selector -->
         <div class="relative group mr-1">
-            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-none">
-                <option value="default" class="bg-card text-white">Standard</option>
-                <option value="recruiter" class="bg-card text-white">💼 Recruiter</option>
-                <option value="tech" class="bg-card text-white">💻 Tech Lead</option>
-                <option value="eli5" class="bg-card text-white">👶 ELI5</option>
+            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-text text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-none">
+                <option value="default" class="bg-card text-text">Standard</option>
+                <option value="recruiter" class="bg-card text-text">💼 Recruiter</option>
+                <option value="tech" class="bg-card text-text">💻 Tech Lead</option>
+                <option value="eli5" class="bg-card text-text">👶 ELI5</option>
             </select>
             <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
         </div>
@@ -91,7 +91,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
         <button id="clear-widget-chat" aria-label={lang==="da" ? "Slet historik" : "Clear history"} class="text-dim hover:text-red-400 transition-colors p-1" title={lang==='da' ? "Slet historik" : "Clear history"}>
            <i class="fa-solid fa-trash"></i>
         </button>
-        <button id="close-chat" aria-label={lang==="da" ? "Luk chat" : "Close chat"} class="text-dim hover:text-white transition-colors p-1">
+        <button id="close-chat" aria-label={lang==="da" ? "Luk chat" : "Close chat"} class="text-dim hover:text-text transition-colors p-1">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -114,7 +114,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <!-- Quick Prompts -->
       <div class="grid grid-cols-1 gap-2 pl-12">
          {t.prompts.map(p => (
-           <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-2 text-dim hover:text-white quick-prompt-btn">
+           <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-2 text-dim hover:text-text quick-prompt-btn">
              {p}
            </button>
          ))}
@@ -130,14 +130,14 @@ const t = (t_obj as any)[lang] || t_obj.da;
           type="text" 
           id="chat-input"
           placeholder={t.placeholder}
-          class="flex-1 bg-card border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-muted"
+          class="chat-input flex-1 px-3 py-2 text-sm"
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
-        <button type="button" id="file-btn" aria-label={lang==="da" ? "Vedhæft dokument" : "Attach a document"} class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group" title="Upload Document">
+        <button type="button" id="file-btn" aria-label={lang==="da" ? "Vedhæft dokument" : "Attach a document"} class="chat-input-btn w-9 h-9 group" title="Upload Document">
             <i class="fa-solid fa-paperclip text-xs group-hover:scale-110 transition-transform"></i>
         </button>
-        <button type="button" id="voice-btn" aria-label={lang==="da" ? "Tal til assistenten" : "Speak to the assistant"} class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group relative" title="Speak to Anton (Voice Mode)">
+        <button type="button" id="voice-btn" aria-label={lang==="da" ? "Tal til assistenten" : "Speak to the assistant"} class="chat-input-btn w-9 h-9 group relative" title="Speak to Anton (Voice Mode)">
            <i class="fa-solid fa-microphone text-xs group-hover:scale-110 transition-transform"></i>
            <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="voice-indicator"></span>
         </button>
@@ -147,7 +147,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       </form>
       <div id="file-display" class="hidden mt-2 px-2 py-1 bg-accent/10 border border-accent/20 rounded flex items-center justify-between text-[10px] text-accent">
           <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-1"></i><span id="filename"></span></span>
-          <button type="button" id="remove-file" class="ml-2 hover:text-white" aria-label={lang==="da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
+          <button type="button" id="remove-file" class="ml-2 hover:text-text" aria-label={lang==="da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
       </div>
       <div class="text-[10px] text-center text-muted mt-2">
         {t.disclaimer}
@@ -681,6 +681,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
               // hidden inside the prose as `<<<TAG>>>` markers the client had to regex
               // back out. Nothing the model writes can be mistaken for an instruction.
               const messageContent = addMessage("", 'ai', true, persona);
+              messageContent?.classList.add('chat-prose--streaming');
               const wrapper = messageContent ? messageContent.closest('.ai-content-wrapper') : null;
               let streamFailed = false;
 
@@ -734,6 +735,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
             } finally {
               // Runs on every exit — success, stop, error, and the early return above —
               // so the control can never be left showing a stop icon with nothing running.
+              // The caret marks the writing position; the turn is over on every path out
+              // of here — finished, stopped or failed — so it comes off in the same place
+              // the stop button turns back into a send button.
+              document.querySelectorAll('.chat-prose--streaming')
+                  .forEach((el) => el.classList.remove('chat-prose--streaming'));
               activeRequest = null;
               setStreaming(false);
             }
@@ -913,6 +919,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           formId: 'chat-form',
           messagesId: 'chat-messages',
           onLedgerEntry: unlockAchievement,
+          lang: widget?.dataset.lang,
           classes: CHAT_THEME,
       });
 

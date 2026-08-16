@@ -20,14 +20,6 @@ export const CHAT_THEME = {
     quizBox: 'mt-4 p-4 bg-accent/10 border border-accent/30 rounded-plate',
     quizTitle: 'font-bold text-accent',
     quizBody: 'text-sm text-dim',
-    // The apparatus under an answer. Rule first, then a small-caps label, then the
-    // sources themselves — the register the rest of the site sets for anything
-    // citational.
-    citationRow: 'flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-rule',
-    citationLabel: 'text-[10px] uppercase tracking-[0.14em] text-muted',
-    citationPill:
-        'inline-flex items-center gap-1 px-2 py-0.5 rounded-control bg-accent/10 ' +
-        'border border-accent/20 text-[11px] text-accent hover:bg-accent hover:text-bg transition-colors',
 } as const;
 
 /** Classes handed to `createMessageActions`. */

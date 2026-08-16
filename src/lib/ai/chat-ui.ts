@@ -22,6 +22,8 @@ export interface ChatUIConfig {
     formId: string;
     /** id of the scrollable message list. */
     messagesId: string;
+    /** Page language, for the few strings this module owns. */
+    lang?: string;
     /** Called when the model awards a ledger entry. */
     onLedgerEntry?: (entry: string) => void;
     classes: {
@@ -32,9 +34,6 @@ export interface ChatUIConfig {
         quizBox: string;
         quizTitle: string;
         quizBody: string;
-        citationRow: string;
-        citationLabel: string;
-        citationPill: string;
     };
 }
 
@@ -42,8 +41,14 @@ export interface ChatUIConfig {
 // this module is imported before the stylesheet is guaranteed to have applied.
 const chartColours = () => readChartPalette();
 
+const CITATION_LABELS: Record<string, string> = {
+    da: 'Kilder',
+    en: 'Sources',
+    de: 'Quellen',
+};
+
 export function createChatRenderers(config: ChatUIConfig) {
-    const { classes } = config;
+    const { classes, lang = 'da' } = config;
 
     const scroll = () => {
         const msgs = document.getElementById(config.messagesId);
@@ -230,26 +235,37 @@ export function createChatRenderers(config: ChatUIConfig) {
     function renderCitations(sources: Source[] | unknown, container: Element): void {
         if (!Array.isArray(sources) || !sources.length) return;
 
-        const row = document.createElement('div');
-        row.className = classes.citationRow;
+        // An apparatus, not a row of tags: a rule, a small-caps heading, then a
+        // numbered list. This is the register the site already uses for anything
+        // citational, and on a page arguing that every claim is traceable, the
+        // sources should look like a bibliography rather than like filter chips.
+        const apparatus = document.createElement('div');
+        apparatus.className = 'citation-apparatus';
 
-        const label = document.createElement('span');
-        label.className = classes.citationLabel;
-        label.textContent = 'Sources';
-        row.appendChild(label);
+        const label = document.createElement('p');
+        label.className = 'citation-label';
+        // Was the literal string 'Sources' on a site whose default language is Danish.
+        label.textContent = CITATION_LABELS[lang] ?? CITATION_LABELS.da;
+        apparatus.appendChild(label);
+
+        const list = document.createElement('ol');
+        list.className = 'citation-list';
 
         for (const s of sources as Source[]) {
             if (!s || typeof s.title !== 'string') continue;
+            const item = document.createElement('li');
             // Defensive second check: only ever emit a site-relative link.
             const linkable = typeof s.url === 'string' && s.url.startsWith('/');
             const el = document.createElement(linkable ? 'a' : 'span');
-            el.className = classes.citationPill;
             if (linkable) el.setAttribute('href', s.url as string);
             el.textContent = s.title;
-            row.appendChild(el);
+            item.appendChild(el);
+            list.appendChild(item);
         }
 
-        bubbleOf(container).appendChild(row);
+        if (!list.childElementCount) return;
+        apparatus.appendChild(list);
+        bubbleOf(container).appendChild(apparatus);
         scroll();
     }
 

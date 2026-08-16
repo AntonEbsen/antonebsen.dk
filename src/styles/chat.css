@@ -139,6 +139,199 @@
 }
 
 /*
+ * The sources under an answer.
+ *
+ * These were pills in a row — the visual language of filter chips, which is what a
+ * reader reaches for to *narrow* something, not what a citation is. On a page whose
+ * argument is that every claim is traceable, they should read as an apparatus: a rule,
+ * a heading, then a numbered list. The numbers matter even without inline markers,
+ * because they make "three sources" countable at a glance.
+ */
+.citation-apparatus {
+    margin-top: var(--space-sm);
+    padding-top: var(--space-2xs);
+    border-top: 1px solid var(--rule);
+}
+
+.citation-label {
+    margin: 0 0 var(--space-3xs);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+}
+
+.citation-list {
+    margin: 0;
+    padding-left: var(--space-sm);
+    list-style: decimal;
+    font-size: var(--step--1);
+}
+
+.citation-list li {
+    margin: 0 0 var(--space-3xs);
+    color: var(--text-muted);
+}
+
+.citation-list li::marker {
+    color: var(--text-muted);
+}
+
+.citation-list a {
+    color: var(--text-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--rule-accent);
+    text-underline-offset: 0.2em;
+}
+
+.citation-list a:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+}
+
+/*
+ * The persona segmented control.
+ *
+ * The radio itself is not display:none — that would remove it from the tab order and
+ * take the keyboard behaviour with it, which is the entire reason for using radios
+ * rather than buttons. It is clipped instead, and the label beside it carries the
+ * appearance.
+ */
+.persona-group {
+    display: flex;
+    /* Four Danish labels come to ~396px, which overflowed a 375px bar and clipped the
+       last segment — reachable by neither thumb nor keyboard. Wrapping to two rows is
+       better than a horizontally scrolling control, which would only re-introduce the
+       scrollable-region-focusable problem this change already had to fix once. */
+    flex-wrap: wrap;
+    gap: 1px;
+    margin: 0;
+    padding: 1px;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    background: var(--rule);
+}
+
+.persona-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.persona-option input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    margin: 0;
+}
+
+.persona-option span {
+    display: block;
+    padding: 0.2em 0.7em;
+    border-radius: calc(var(--radius-sm) - 2px);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    transition: color var(--dur-base) var(--ease-out),
+                background-color var(--dur-base) var(--ease-out);
+}
+
+.persona-option:hover span {
+    color: var(--text-dim);
+}
+
+.persona-option input:checked + span {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+/* The ring has to follow the input's focus onto the label that stands in for it,
+   or a keyboard user moving through the group sees nothing move. */
+.persona-option input:focus-visible + span {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 1px;
+}
+
+/*
+ * The composer.
+ *
+ * The two clients described the same row differently — one on `bg-card` with a
+ * `glass-border`, the other on `var(--rule)` with `rule-strong`, and the widget still
+ * on plain white text. Same control, two vocabularies, which is the drift that put the
+ * full-page chat a whole palette behind in the first place. One definition, sized by
+ * the element it wraps.
+ */
+.chat-input {
+    width: 100%;
+    background: var(--rule);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    transition: border-color var(--dur-base) var(--ease-out),
+                background-color var(--dur-base) var(--ease-out);
+}
+
+.chat-input::placeholder {
+    color: var(--text-muted);
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--rule-strong);
+}
+
+/* Attach, microphone, send. Square, quiet until reached for. */
+.chat-input-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rule);
+    color: var(--text-dim);
+    border-radius: var(--radius-sm);
+    transition: color var(--dur-base) var(--ease-out),
+                background-color var(--dur-base) var(--ease-out);
+}
+
+.chat-input-btn:hover {
+    background: var(--rule-strong);
+    color: var(--text);
+}
+
+/*
+ * The caret that trails a streaming answer.
+ *
+ * The typing indicator is removed the moment the first token lands, so from then on
+ * there was nothing distinguishing an answer still being written from one that had
+ * finished — which matters now that stopping is possible: the stop button is only
+ * legible if you can see there is something to stop.
+ */
+.chat-prose--streaming > :last-child::after {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    height: 1em;
+    margin-left: 0.12em;
+    vertical-align: -0.15em;
+    background: var(--accent);
+    opacity: 0.85;
+    animation: chat-caret 1.1s steps(2, start) infinite;
+}
+
+@keyframes chat-caret {
+    50% { opacity: 0; }
+}
+
+/* An indefinite blink is exactly what this preference is about. The caret stays,
+   because its job is to mark the writing position, and only the blink stops. */
+@media (prefers-reduced-motion: reduce) {
+    .chat-prose--streaming > :last-child::after {
+        animation: none;
+    }
+}
+
+/*
  * The widget is a 350px column, where the full scale runs out of horizontal room and
  * headings start to look like shouting. One step down across the board.
  */

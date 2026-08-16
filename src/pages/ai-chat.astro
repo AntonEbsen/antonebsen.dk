@@ -123,7 +123,8 @@ const t = {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: var(--space-sm);
+        gap: var(--space-2xs) var(--space-sm);
+        flex-wrap: wrap;
         font-size: var(--step--1);
         color: var(--text-dim);
         text-transform: uppercase;
@@ -170,16 +171,30 @@ const t = {
             <span class="hidden md:inline" aria-hidden="true">|</span>
             <span class="text-[10px] md:text-xs">MODEL: {MODEL_LABEL.toUpperCase()}</span>
             <span class="mx-2" aria-hidden="true">|</span>
-            <!-- Persona Selector -->
-            <div class="relative group">
-                <select id="fp-persona-select" aria-label={lang === "da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-text text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-none uppercase tracking-wide">
-                    <option value="default" class="bg-card text-text">STANDARD</option>
-                    <option value="recruiter" class="bg-card text-text">💼 RECRUITER</option>
-                    <option value="tech" class="bg-card text-text">💻 TECH LEAD</option>
-                    <option value="eli5" class="bg-card text-text">👶 ELI5</option>
-                </select>
-                <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
-            </div>
+            <!--
+              The four styles, as a segmented control rather than a dropdown: with only
+              four options, hiding three of them behind a click cost more than it saved,
+              and a <select> cannot be styled to match anything around it.
+
+              Built on real radio inputs, not divs with ARIA. A radiogroup gets arrow-key
+              navigation, roving focus, the accessible name from the <legend> and form
+              semantics from the browser — all of which would otherwise be hand-written
+              JavaScript, and all of which are easy to write subtly wrong.
+            -->
+            <fieldset id="fp-persona-group" class="persona-group">
+                <legend class="sr-only">{lang === "da" ? "Vælg assistentens stil" : "Choose the assistant style"}</legend>
+                {[
+                    { value: 'default', da: 'Standard', en: 'Standard' },
+                    { value: 'recruiter', da: 'Rekruttering', en: 'Recruiter' },
+                    { value: 'tech', da: 'Teknisk', en: 'Tech lead' },
+                    { value: 'eli5', da: 'Enkelt', en: 'ELI5' },
+                ].map((p) => (
+                    <label class="persona-option">
+                        <input type="radio" name="fp-persona" value={p.value} checked={p.value === 'default'} />
+                        <span>{lang === 'da' ? p.da : p.en}</span>
+                    </label>
+                ))}
+            </fieldset>
         </div>
         <div class="flex items-center gap-3">
             <!-- `LATENCY: 24ms` and `SECURE CONN` stood here. Neither was measured:
@@ -225,17 +240,17 @@ const t = {
             type="text" 
             id="fp-chat-input"
             placeholder={t.placeholder}
-            class="flex-1 bg-[var(--rule)] border border-rule-strong rounded-xl px-5 pr-44 py-4 text-base focus:outline-none focus:border-accent/50 focus:bg-[var(--rule-strong)] transition-all placeholder:text-muted/40 text-text"
+            class="chat-input flex-1 px-5 pr-44 py-4 text-base"
             autocomplete="off"
             autofocus
           />
 
           <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
           <!-- Button Spacing: Send(2) <-[8px]-> Voice(16) <-[8px]-> File(30) -->
-          <button type="button" id="fp-file-btn" aria-label={lang === "da" ? "Vedhæft dokument" : "Attach a document"} class="absolute right-[7.5rem] top-2 bottom-2 bg-[var(--rule)] text-dim hover:text-text hover:bg-rule-strong w-12 rounded-lg flex items-center justify-center transition-all group" title="Upload Document (PDF/Text)">
+          <button type="button" id="fp-file-btn" aria-label={lang === "da" ? "Vedhæft dokument" : "Attach a document"} class="absolute right-[7.5rem] top-2 bottom-2 chat-input-btn w-12 group" title="Upload Document (PDF/Text)">
             <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
           </button>
-          <button type="button" id="fp-voice-btn" aria-label={lang === "da" ? "Tal til assistenten" : "Speak to the assistant"} class="absolute right-16 top-2 bottom-2 bg-[var(--rule)] text-dim hover:text-text hover:bg-rule-strong w-12 rounded-lg flex items-center justify-center transition-all group" title="Speak to Anton">
+          <button type="button" id="fp-voice-btn" aria-label={lang === "da" ? "Tal til assistenten" : "Speak to the assistant"} class="absolute right-16 top-2 bottom-2 chat-input-btn w-12 group" title="Speak to Anton">
             <i class="fa-solid fa-microphone text-lg group-hover:scale-110 transition-transform"></i>
              <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="fp-voice-indicator"></span>
           </button>
@@ -398,14 +413,27 @@ const t = {
     });
     
     // Persona Logic
-    const fpPersonaSelect = document.getElementById('fp-persona-select');
-    if (fpPersonaSelect) {
-        const savedPersona = localStorage.getItem('anton_ai_persona');
-        if (savedPersona) fpPersonaSelect.value = savedPersona;
-        
-        fpPersonaSelect.addEventListener('change', (e) => {
-            const val = e.target.value;
-            localStorage.setItem('anton_ai_persona', val);
+    //
+    // A radio group rather than a select, so restoring the saved choice means checking
+    // the matching input instead of assigning a value. `change` fires on the input that
+    // becomes checked, including when the browser moves the selection with an arrow
+    // key — which is why the group needed no keyboard handling of its own.
+    const fpPersonaGroup = document.querySelector<HTMLFieldSetElement>('#fp-persona-group');
+    if (fpPersonaGroup) {
+        const options = fpPersonaGroup.querySelectorAll<HTMLInputElement>('input[name="fp-persona"]');
+        const saved = localStorage.getItem('anton_ai_persona');
+        if (saved) {
+            // Guarded: a persona removed from the markup would otherwise leave the group
+            // with nothing checked and no way back to a valid one.
+            const match = [...options].find((o) => o.value === saved);
+            if (match) match.checked = true;
+        }
+
+        fpPersonaGroup.addEventListener('change', (e) => {
+            const target = e.target as HTMLInputElement | null;
+            if (target?.name === 'fp-persona') {
+                localStorage.setItem('anton_ai_persona', target.value);
+            }
         });
     }
 
@@ -639,6 +667,7 @@ const t = {
         // charts, navigation and citations arrive as their own events instead of
         // being smuggled through the prose as `<<<TAG>>>` markers.
         const messageContent = addMessage('', 'ai', true, persona);
+        messageContent?.classList.add('chat-prose--streaming');
         const wrapper = messageContent ? messageContent.closest('.ai-content-wrapper') : null;
         let streamFailed = false;
 
@@ -684,7 +713,12 @@ const t = {
             } finally {
               // Runs on every exit — success, stop, error and the early returns above —
               // so the control can never be left showing a stop icon with nothing running.
-              activeRequest = null;
+              // The caret marks the writing position; the turn is over on every path out
+        // of here — finished, stopped or failed — so it comes off in the same place
+        // the stop button turns back into a send button.
+        document.querySelectorAll('.chat-prose--streaming')
+            .forEach((el) => el.classList.remove('chat-prose--streaming'));
+        activeRequest = null;
               setStreaming(false);
             }
             
@@ -808,6 +842,7 @@ const t = {
         inputId: 'fp-chat-input',
         formId: 'fp-chat-form',
         messagesId: 'fp-chat-messages',
+        lang,
         classes: CHAT_THEME,
     });
 
