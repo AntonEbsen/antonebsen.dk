@@ -51,7 +51,34 @@ async function settleOrnaments(page: Page) {
     });
 }
 
+/** A valid 1×1 PNG. Stands in for every remote thumbnail, so the pixels are ours. */
+const STUB_PNG = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    'base64',
+);
+
 test.describe('Visual Regression', () => {
+
+    /**
+     * Take the network out of the picture, literally.
+     *
+     * YouTubeEmbed posters come from i.ytimg.com, and by its own comment
+     * maxresdefault 404s on some uploads, so there is an onerror handler that swaps in
+     * hqdefault at runtime. Inside a fullPage screenshot that is a race with no winner:
+     * whether the capture lands before or after the swap — or before the image arrives
+     * at all — decides what gets compared, and the homepage shot failed on exactly that
+     * while passing on retry.
+     *
+     * Serving a fixed image locally makes every run identical without masking anything,
+     * so the region stays covered rather than being excluded from comparison. That
+     * matters here specifically: the thresholds on these tests were tightened after a
+     * whole-site recolour slipped through, and a mask is how coverage quietly goes back.
+     */
+    test.beforeEach(async ({ page }) => {
+        await page.route('**://i.ytimg.com/**', (route) =>
+            route.fulfill({ status: 200, contentType: 'image/png', body: STUB_PNG }),
+        );
+    });
 
     // We mask dynamic elements (like timestamps or random quotes) to prevent false positives
     test('homepage matches snapshot', async ({ page }) => {
