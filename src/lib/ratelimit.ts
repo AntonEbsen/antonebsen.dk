@@ -1,15 +1,32 @@
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 
+/**
+ * The REST credentials, under either of the two names they arrive as.
+ *
+ * Upstash's own dashboard calls them UPSTASH_REDIS_REST_URL/_TOKEN. Vercel's
+ * Marketplace integration provisions the same database but injects KV_REST_API_URL
+ * and KV_REST_API_TOKEN, and that is what a deploy actually gets — so reading only
+ * the first pair means the limiter and the spend guard silently see no Redis on the
+ * one platform this site runs on, and both fall through to their "not configured"
+ * branch. Accepting both is what makes the integration work without copying secrets
+ * to second names, which would go stale the moment the integration rotates them.
+ *
+ * KV_URL and REDIS_URL are also injected, but they are redis:// TCP URLs — the wrong
+ * shape for the REST client, so they are deliberately not consulted.
+ */
+export const redisUrl =
+    import.meta.env.UPSTASH_REDIS_REST_URL || import.meta.env.KV_REST_API_URL;
+export const redisToken =
+    import.meta.env.UPSTASH_REDIS_REST_TOKEN || import.meta.env.KV_REST_API_TOKEN;
+
 // Allow bypassing in development if credentials are missing
-export const redisEnabled = Boolean(
-    import.meta.env.UPSTASH_REDIS_REST_URL && import.meta.env.UPSTASH_REDIS_REST_TOKEN,
-);
+export const redisEnabled = Boolean(redisUrl && redisToken);
 const enabled = redisEnabled;
 
 export const redis = enabled ? new Redis({
-    url: import.meta.env.UPSTASH_REDIS_REST_URL,
-    token: import.meta.env.UPSTASH_REDIS_REST_TOKEN,
+    url: redisUrl,
+    token: redisToken,
 }) : null;
 
 export const ratelimits = {
