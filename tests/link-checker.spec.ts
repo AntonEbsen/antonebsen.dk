@@ -109,6 +109,17 @@ test.describe('Site health', () => {
     const NAV_SEEDS = ['/', '/en', '/de'];
 
     test('every link in the nav and footer resolves', async ({ page, request }) => {
+        // Playwright's default 30s is a per-test default, not a budget anyone chose for
+        // this one. It visits three seeds and then requests every distinct nav and
+        // footer link, and the suite runs against `astro dev`, where each route pays a
+        // Vite compile on first hit — /de/videos alone can exceed 30s cold while the
+        // rest of the suite competes for the same server. The assertion here is that a
+        // link resolves, never that it resolves quickly, so a timeout failure says
+        // nothing true about the site: it passed in isolation and failed under load,
+        // twice, on a change that touched no route. Production is unaffected either
+        // way, since nothing there compiles on demand.
+        test.setTimeout(120_000);
+
         const found = new Map<string, string>(); // href -> the page it was found on
 
         for (const seed of NAV_SEEDS) {
