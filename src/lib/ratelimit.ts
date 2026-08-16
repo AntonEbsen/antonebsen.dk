@@ -2,9 +2,12 @@ import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 
 // Allow bypassing in development if credentials are missing
-const enabled = import.meta.env.UPSTASH_REDIS_REST_URL && import.meta.env.UPSTASH_REDIS_REST_TOKEN;
+export const redisEnabled = Boolean(
+    import.meta.env.UPSTASH_REDIS_REST_URL && import.meta.env.UPSTASH_REDIS_REST_TOKEN,
+);
+const enabled = redisEnabled;
 
-const redis = enabled ? new Redis({
+export const redis = enabled ? new Redis({
     url: import.meta.env.UPSTASH_REDIS_REST_URL,
     token: import.meta.env.UPSTASH_REDIS_REST_TOKEN,
 }) : null;
@@ -15,6 +18,14 @@ export const ratelimits = {
         limiter: Ratelimit.slidingWindow(10, '60 s'), // 10 requests per minute
         analytics: true,
         prefix: '@upstash/ratelimit/chat',
+    }) : null,
+    // Text-to-speech is the most expensive call on the site per request (ElevenLabs
+    // bills by character), so it is tighter than chat.
+    speak: enabled ? new Ratelimit({
+        redis: redis!,
+        limiter: Ratelimit.slidingWindow(10, '60 s'),
+        analytics: true,
+        prefix: '@upstash/ratelimit/speak',
     }) : null,
     guestbook: enabled ? new Ratelimit({
         redis: redis!,

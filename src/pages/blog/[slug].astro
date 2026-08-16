@@ -12,6 +12,7 @@ import RelatedGraph from '../../components/blog/RelatedGraph.tsx';
 import SmartFootnote from '../../components/blog/SmartFootnote.tsx';
 import ProjectSidebar from '../../components/blog/ProjectSidebar.astro';
 import ArticleReactions from '../../components/blog/ArticleReactions.tsx';
+import AskAboutPost from '../../components/blog/AskAboutPost.astro';
 import SignalBrief from '../../components/blog/SignalBrief.astro';
 import SmartSuggestions from '../../components/blog/SmartSuggestions.astro';
 import RelatedVideos from '../../components/ui/RelatedVideos.astro';
@@ -140,6 +141,8 @@ const seriesTotal = post.data.series
             <RelatedVideos lang="da" blogSlug={slug} />
 
             {/* Article Reactions */}
+            <AskAboutPost title={displayTitle} lang="da" />
+
             <ArticleReactions client:visible slug={slug} lang="da" />
 
             {/* Citation System */}

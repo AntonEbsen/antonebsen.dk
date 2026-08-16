@@ -12,7 +12,7 @@ Hjemmesiden fungerer som min digitale base, hvor besøgende kan interagere med m
 ## ✨ Features
 
 ### 1. Quantum Chatbot (AI) 🤖
-En integreret AI-assistent drevet af **Gemini Pro**, tunet til at agere på mine vegne.
+En integreret AI-assistent drevet af **Claude Sonnet 5**, forankret i mit CV, mine projekter og mine blogindlæg — med kildehenvisninger tilbage til siderne.
 *   **Personaer**: Kan skifte mellem "Professional Analyst" og "Casual Coder".
 *   **RAG (Retrieval-Augmented Generation)**: Har adgang til mit CV og dokumenter for at svare præcist.
 *   **Hukommelse**: Husker samtalen på tværs af sider.
@@ -43,7 +43,7 @@ En digital gæstebog (`/guestbook`) med Web 1.0 vibes.
 *   **Frontend**: [Astro](https://astro.build/) (Hurtig, statisk-først rendering).
 *   **Styling**: Tailwind CSS + Custom "Gold/Dark" Design System.
 *   **Backend / Database**: [Supabase](https://supabase.com/) (PostgreSQL).
-*   **AI**: Google Gemini Pro via Serverless Functions.
+*   **AI**: Anthropic Claude (Sonnet 5) via Serverless Functions, med prompt caching og værktøjskald.
 *   **Hosting**: Vercel / Netlify.
 
 ---
@@ -68,7 +68,7 @@ Opret en `.env` fil i roden med følgende:
 ```env
 PUBLIC_SUPABASE_URL=din_supabase_url
 PUBLIC_SUPABASE_ANON_KEY=din_supabase_key
-GEMINI_API_KEY=din_gemini_key
+ANTHROPIC_API_KEY=din_anthropic_key
 ```
 
 ### 4. Start serveren

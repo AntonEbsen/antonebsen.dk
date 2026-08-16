@@ -1,9 +1,16 @@
 
 import type { APIRoute } from "astro";
 import { ElevenLabsClient } from "elevenlabs";
+import { checkRateLimit } from "../../lib/ratelimit";
 
 export const POST: APIRoute = async ({ request }) => {
     try {
+        const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
+        const limitResult = await checkRateLimit('speak', clientIP);
+        if (!limitResult.success) {
+            return new Response(JSON.stringify({ error: "Too many requests. Please wait a bit." }), { status: 429 });
+        }
+
         const body = await request.json();
         const { text, voiceId } = body;
 
@@ -43,8 +50,10 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
     } catch (error: any) {
+        // Logged for Sentry, not returned: provider errors quote request details and
+        // occasionally key fragments, and this route is now reachable anonymously.
         console.error("❌ TTS Error:", error);
-        return new Response(JSON.stringify({ error: error.message || "Unknown Error" }), {
+        return new Response(JSON.stringify({ error: "Speech synthesis failed." }), {
             status: 500,
         });
     }

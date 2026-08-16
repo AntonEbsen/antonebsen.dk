@@ -1,27 +1,44 @@
-import React, { useEffect, useRef, useState, type ChangeEvent } from 'react';
-import { useChat } from '@ai-sdk/react';
+import React, { useEffect, useRef, useState, type FormEvent } from 'react';
 // mermaid is imported dynamically where it is used. As a top-level import it
 // pulled cytoscape and every diagram renderer — about 1.4 MB — into the eager
 // payload of every project page, for a widget most visitors never open.
+import { escapeHtml } from '../../lib/ai/safe-html';
+import { readEventStream } from '../../lib/ai/protocol';
+import { MODEL_LABEL } from '../../lib/ai/model';
 
 interface ProjectBotProps {
     projectTitle: string;
     codeSnippet?: { lang: string; code: string; title: string };
 }
 
+interface Turn {
+    id: string;
+    role: 'user' | 'assistant';
+    text: string;
+}
+
+/**
+ * Renders assistant prose. Escape first, then add the small set of markup this
+ * widget supports — so nothing the model writes can become a tag it did not intend.
+ * Mermaid is unaffected by escaping: it reads textContent, which the browser
+ * entity-decodes back to the original source.
+ */
+function renderReply(text: string): string {
+    return escapeHtml(text)
+        .replace(/```mermaid\n([\s\S]*?)\n```/g, '<div class="mermaid">$1</div>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1 rounded text-xs font-mono">$1</code>')
+        .replace(/\n/g, '<br/>');
+}
+
 export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [simpleMode, setSimpleMode] = useState(false);
     const [critiqueMode, setCritiqueMode] = useState(false);
+    const [input, setInput] = useState('');
+    const [messages, setMessages] = useState<Turn[]>([]);
+    const [isStreaming, setIsStreaming] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
-    // Initial message
-    const initialMessage = {
-        id: 'init',
-        role: 'system',
-        content: `Analyzing ${projectTitle}... Ready for review.`
-    };
-
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -31,36 +48,85 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
         if (isOpen) scrollToBottom();
     }, [isOpen]);
 
-    // We need append from useChat to support chips properly
-    const chatHelpers = useChat({
-        api: '/api/chat',
-        body: {
-            context: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet }
-        },
-        onError: (error: any) => {
-            console.error("Chat Error:", error);
-            alert("Connection to The Reviewer failed. Please try again. Code: " + error.message);
-        },
-        onFinish: (message: any) => {
-            // Detect SQL block
-            const sqlMatch = message.content.match(/```sql\n([\s\S]*?)\n```/);
+    /**
+     * This widget used to be built on the AI SDK's `useChat`, destructuring
+     * `input` / `handleInputChange` / `handleSubmit` / `isLoading` behind an `as any`.
+     * Those belong to `useCompletion`, not `useChat`, so every one of them was
+     * undefined: the submit guard was always falsy and the chips threw. It talks to
+     * the chat endpoint's NDJSON stream directly now.
+     */
+    async function send(text: string) {
+        const trimmed = text.trim();
+        if (!trimmed || isStreaming) return;
+
+        const userTurn: Turn = { id: `u-${Date.now()}`, role: 'user', text: trimmed };
+        const replyId = `a-${Date.now()}`;
+        const history = [...messages, userTurn];
+
+        setMessages([...history, { id: replyId, role: 'assistant', text: '' }]);
+        setInput('');
+        setIsStreaming(true);
+
+        const appendToReply = (chunk: string) =>
+            setMessages((prev) =>
+                prev.map((m) => (m.id === replyId ? { ...m, text: m.text + chunk } : m)),
+            );
+
+        let reply = '';
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: history.map(({ role, text: content }) => ({ role, content })),
+                    lang: document.documentElement.lang || 'en',
+                    context: {
+                        type: 'project',
+                        data: { title: projectTitle, simple: simpleMode, critique: critiqueMode, codeSnippet },
+                    },
+                }),
+            });
+
+            if (!res.ok) {
+                const detail = await res.json().catch(() => null);
+                throw new Error(detail?.message || `Server error (${res.status})`);
+            }
+
+            await readEventStream(res, (event) => {
+                if (event.type === 'text') {
+                    reply += event.text;
+                    appendToReply(event.text);
+                } else if (event.type === 'error') {
+                    reply += event.message;
+                    appendToReply(`⚠️ ${event.message}`);
+                }
+            });
+
+            if (!reply.trim()) {
+                appendToReply('⚠️ The reviewer is unavailable right now.');
+                return;
+            }
+
+            // The project page listens for these: a SQL block runs in the DuckDB
+            // playground, a [Node: id] highlights that node in the graph.
+            const sqlMatch = reply.match(/```sql\n([\s\S]*?)\n```/);
             if (sqlMatch) {
-                const query = sqlMatch[1].trim();
-                window.dispatchEvent(new CustomEvent('project-bot-sql', { detail: query }));
+                window.dispatchEvent(new CustomEvent('project-bot-sql', { detail: sqlMatch[1].trim() }));
             }
-
-            // Detect Graph Node: [Node: id]
-            const nodeMatch = message.content.match(/\[Node: (.*?)\]/);
+            const nodeMatch = reply.match(/\[Node: (.*?)\]/);
             if (nodeMatch) {
-                const nodeId = nodeMatch[1].trim();
-                window.dispatchEvent(new CustomEvent('project-bot-graph', { detail: nodeId }));
+                window.dispatchEvent(new CustomEvent('project-bot-graph', { detail: nodeMatch[1].trim() }));
             }
+        } catch (err: any) {
+            console.error('ProjectBot:', err);
+            appendToReply(`⚠️ ${err?.message || 'Connection failed.'}`);
+        } finally {
+            setIsStreaming(false);
         }
-    }) as any;
+    }
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, append, setInput } = chatHelpers;
-
-    // Run Mermaid on new messages. The engine is fetched on first use only —
+    // Run mermaid on new messages. The engine is fetched on first use only —
     // most conversations never contain a diagram, and it is ~1.4 MB.
     useEffect(() => {
         if (!isOpen) return;
@@ -80,20 +146,22 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
         return () => { cancelled = true; clearTimeout(timer); };
     }, [messages, isOpen]);
 
-
-    const handleFileAttach = (e: ChangeEvent<HTMLInputElement>) => {
-        // Placeholder for v4
-    };
-
+    // These are economics papers and models, not shipped software — the previous chips
+    // asked about "architecture", "code quality" and "how can I scale this?", which are
+    // the wrong questions for a seminar paper on globalisation and the welfare state.
+    // Project pages get their entry points here rather than the general context buttons
+    // used on blog posts: The Reviewer already owns this surface, and two assistants on
+    // one page is worse than one that asks the right things.
     const chips = [
-        "Explain this architecture",
-        "Critique the code quality",
-        "How can I scale this?",
-        "Show me a graph of this"
+        'What problem does this solve?',
+        'What are its limitations?',
+        'Critique the method',
+        'Show me a graph of this',
     ];
 
-    const handleChipClick = (chip: string) => {
-        append({ role: 'user', content: chip });
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        void send(input);
     };
 
     return (
@@ -158,7 +226,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                             </div>
                         </div>
 
-                        {messages.map(m => (
+                        {messages.map((m) => (
                             <div key={m.id} className={`flex gap-4 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
                                 <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mt-1 ${m.role === 'user' ? 'bg-blue-600/20 text-blue-500' : 'bg-white/10 text-white'}`}>
                                     <i className={`fa-solid ${m.role === 'user' ? 'fa-user' : 'fa-robot'} text-xs`}></i>
@@ -167,23 +235,13 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                     ? 'bg-blue-600/10 border border-blue-500/30 text-blue-100 rounded-tr-none'
                                     : 'bg-white/5 border border-white/10 text-gray-300 rounded-tl-none markdown-body'
                                     }`}>
-                                    {
-                                        m.role === 'ai'
-                                            ? <div dangerouslySetInnerHTML={{
-                                                __html:
-                                                    // Basic markdown parser for bold/code + mermaid
-                                                    m.content
-                                                        .replace(/```mermaid\n([\s\S]*?)\n```/g, '<div class="mermaid">$1</div>')
-                                                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                                        .replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1 rounded text-xs font-mono">$1</code>')
-                                                        .replace(/\n/g, '<br/>')
-                                            }} />
-                                            : m.content
-                                    }
+                                    {m.role === 'assistant'
+                                        ? <div dangerouslySetInnerHTML={{ __html: renderReply(m.text) }} />
+                                        : m.text}
                                 </div>
                             </div>
                         ))}
-                        {isLoading && (
+                        {isStreaming && (
                             <div className="flex gap-4">
                                 <div className="w-8 h-8 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center mt-1 animate-pulse">
                                     <i className="fa-solid fa-microchip text-xs text-white"></i>
@@ -197,12 +255,12 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                     </div>
 
                     {/* Chips - Context Aware */}
-                    {!isLoading && messages.length < 3 && (
+                    {!isStreaming && messages.length < 3 && (
                         <div className="px-4 pb-2 flex gap-2 overflow-x-auto scrollbar-hide">
                             {chips.map(chip => (
                                 <button
                                     key={chip}
-                                    onClick={() => handleChipClick(chip)}
+                                    onClick={() => void send(chip)}
                                     className="whitespace-nowrap px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 hover:bg-white hover:text-black hover:border-white transition-all"
                                 >
                                     {chip}
@@ -213,32 +271,23 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
 
                     {/* Input */}
                     <div className="p-3 bg-black/80 border-t border-white/10 backdrop-blur-md">
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                // Manually trigger handleSubmit from SDK if available, or just append user message
-                                if (input?.trim()) {
-                                    handleSubmit(e);
-                                }
-                            }}
-                            className="relative"
-                        >
+                        <form onSubmit={onSubmit} className="relative">
                             <input
                                 value={input}
-                                onChange={handleInputChange}
+                                onChange={(e) => setInput(e.target.value)}
                                 placeholder="Ask about the stack, scalability, or code..."
                                 className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-muted"
                             />
                             <button
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={isStreaming || !input.trim()}
                                 className="absolute right-2 top-1.5 w-9 h-9 bg-white text-black rounded-lg flex items-center justify-center hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-[100]"
                             >
                                 <i className="fa-solid fa-arrow-up text-sm"></i>
                             </button>
                         </form>
                         <div className="mt-2 flex justify-between items-center px-1">
-                            <span className="text-[10px] text-muted">Powered by Gemini 2.0 Flash</span>
+                            <span className="text-[10px] text-muted">Powered by {MODEL_LABEL}</span>
                             <div className="flex gap-2">
                                 <button className="text-muted hover:text-white transition-colors" title="Attach Code/File (Coming Soon)">
                                     <i className="fa-solid fa-paperclip text-xs"></i>

@@ -12,6 +12,7 @@ import RelatedGraph from '../../../components/blog/RelatedGraph.tsx';
 import 'katex/dist/katex.min.css';
 import ProjectSidebar from '../../../components/blog/ProjectSidebar.astro';
 import ArticleReactions from '../../../components/blog/ArticleReactions.tsx';
+import AskAboutPost from '../../../components/blog/AskAboutPost.astro';
 import SignalBrief from '../../../components/blog/SignalBrief.astro';
 import SmartSuggestions from '../../../components/blog/SmartSuggestions.astro';
 import SmartFootnote from '../../../components/blog/SmartFootnote.tsx';
@@ -134,6 +135,8 @@ const seriesTotal = post.data.series
             </article>
 
             {/* Article Reactions */}
+            <AskAboutPost title={title} lang="en" />
+
             <ArticleReactions client:visible slug={slug} lang="en" />
 
             {/* Citation System */}

@@ -49,6 +49,12 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
         "/api/stt",
         "/api/contact",
         "/api/subscribe",
+        // Both of these are called by widgets a logged-out visitor can see, and both
+        // were missing here — so the chat's speak button and the DataPlayground's
+        // "generate SQL" returned 401 to everyone except a signed-in Anton. They now
+        // carry their own rate limits, which the auth gate had been standing in for.
+        "/api/speak",
+        "/api/text-to-sql",
     ]);
     const normalizedPath = _context.url.pathname.replace(/\/$/, "") || "/";
     const isPublicPost = _context.request.method === "POST" && publicPostRoutes.has(normalizedPath);
