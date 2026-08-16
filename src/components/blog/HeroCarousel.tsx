@@ -16,9 +16,22 @@ interface Props {
     lang: 'da' | 'en' | 'de';
 }
 
+/**
+ * Names for the controls. The arrows are icon-only, so without these they reach a
+ * screen reader as "button, button" — which is what the accepted `/blog — button-name`
+ * entry in the a11y baseline was. `lang` was already a prop and previously unused, so
+ * the dots' slide labels move off English at the same time.
+ */
+const CONTROLS = {
+    da: { prev: 'Forrige', next: 'Næste', slide: (n: number) => `Gå til slide ${n}` },
+    en: { prev: 'Previous', next: 'Next', slide: (n: number) => `Go to slide ${n}` },
+    de: { prev: 'Zurück', next: 'Weiter', slide: (n: number) => `Zu Slide ${n}` },
+} as const;
+
 export default function HeroCarousel({ items, lang }: Props) {
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const t = CONTROLS[lang] ?? CONTROLS.da;
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -111,7 +124,8 @@ export default function HeroCarousel({ items, lang }: Props) {
                             setIndex(i);
                         }}
                         className={`w-2 h-2 rounded-full transition-all ${i === index ? 'bg-accent w-6' : 'bg-white/20 hover:bg-white/40'}`}
-                        aria-label={`Go to slide ${i + 1}`}
+                        aria-label={t.slide(i + 1)}
+                        aria-current={i === index ? 'true' : undefined}
                     />
                 ))}
             </div>
@@ -119,16 +133,22 @@ export default function HeroCarousel({ items, lang }: Props) {
             {/* Navigation Arrows */}
             <div className="absolute bottom-6 right-8 flex gap-2 z-20">
                 <button
+                    type="button"
                     onClick={handlePrev}
+                    aria-label={t.prev}
+                    title={t.prev}
                     className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-dim hover:bg-white/10 hover:text-white transition-all"
                 >
-                    <i className="fa-solid fa-chevron-left text-xs"></i>
+                    <i className="fa-solid fa-chevron-left text-xs" aria-hidden="true"></i>
                 </button>
                 <button
+                    type="button"
                     onClick={handleNext}
+                    aria-label={t.next}
+                    title={t.next}
                     className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-dim hover:bg-white/10 hover:text-white transition-all"
                 >
-                    <i className="fa-solid fa-chevron-right text-xs"></i>
+                    <i className="fa-solid fa-chevron-right text-xs" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
