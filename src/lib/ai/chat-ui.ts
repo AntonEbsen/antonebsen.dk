@@ -1,5 +1,6 @@
 import { isAllowedNavPath } from './safe-html';
 import type { Source } from './corpus';
+import { readChartChrome, readChartPalette } from './chat-theme';
 
 /**
  * Renderers for the assistant's tool calls, shared by the chat widget and the
@@ -21,6 +22,8 @@ export interface ChatUIConfig {
     formId: string;
     /** id of the scrollable message list. */
     messagesId: string;
+    /** Page language, for the few strings this module owns. */
+    lang?: string;
     /** Called when the model awards a ledger entry. */
     onLedgerEntry?: (entry: string) => void;
     classes: {
@@ -31,20 +34,21 @@ export interface ChatUIConfig {
         quizBox: string;
         quizTitle: string;
         quizBody: string;
-        citationRow: string;
-        citationLabel: string;
-        citationPill: string;
     };
 }
 
-const CHART_PALETTE = [
-    'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)',
-    'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)',
-    'rgba(40, 167, 69, 0.6)', 'rgba(201, 203, 207, 0.6)',
-];
+// Read per chart rather than once at module load: the tokens are on the document, and
+// this module is imported before the stylesheet is guaranteed to have applied.
+const chartColours = () => readChartPalette();
+
+const CITATION_LABELS: Record<string, string> = {
+    da: 'Kilder',
+    en: 'Sources',
+    de: 'Quellen',
+};
 
 export function createChatRenderers(config: ChatUIConfig) {
-    const { classes } = config;
+    const { classes, lang = 'da' } = config;
 
     const scroll = () => {
         const msgs = document.getElementById(config.messagesId);
@@ -74,6 +78,8 @@ export function createChatRenderers(config: ChatUIConfig) {
 
         const radial = spec.type === 'pie' || spec.type === 'doughnut' || spec.type === 'radar';
 
+        const chrome = readChartChrome();
+
         import('chart.js/auto').then(({ default: Chart }) => {
             const ctx = document.getElementById(canvasId);
             if (!ctx) return;
@@ -84,21 +90,24 @@ export function createChatRenderers(config: ChatUIConfig) {
                     datasets: [{
                         label: spec.datasetLabel || '',
                         data: spec.data,
-                        backgroundColor: (spec.labels || []).map(
-                            (_: unknown, i: number) => CHART_PALETTE[i % CHART_PALETTE.length],
-                        ),
+                        backgroundColor: (() => {
+                            const ramp = chartColours();
+                            return (spec.labels || []).map(
+                                (_: unknown, i: number) => ramp[i % ramp.length],
+                            );
+                        })(),
                     }],
                 },
                 options: {
                     responsive: true,
                     indexAxis: spec.type === 'bar' ? 'y' : 'x',
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    color: chrome.text,
+                    borderColor: chrome.grid,
                     scales: radial ? undefined : {
-                        x: { ticks: { color: 'rgba(255,255,255,0.6)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                        y: { ticks: { color: 'rgba(255,255,255,0.6)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { ticks: { color: chrome.text }, grid: { color: chrome.grid } },
+                        y: { ticks: { color: chrome.text }, grid: { color: chrome.grid } },
                     },
-                    plugins: { legend: { labels: { color: 'rgba(255, 255, 255, 0.9)' } } },
+                    plugins: { legend: { labels: { color: chrome.text } } },
                 } as any,
             });
         });
@@ -226,26 +235,37 @@ export function createChatRenderers(config: ChatUIConfig) {
     function renderCitations(sources: Source[] | unknown, container: Element): void {
         if (!Array.isArray(sources) || !sources.length) return;
 
-        const row = document.createElement('div');
-        row.className = classes.citationRow;
+        // An apparatus, not a row of tags: a rule, a small-caps heading, then a
+        // numbered list. This is the register the site already uses for anything
+        // citational, and on a page arguing that every claim is traceable, the
+        // sources should look like a bibliography rather than like filter chips.
+        const apparatus = document.createElement('div');
+        apparatus.className = 'citation-apparatus';
 
-        const label = document.createElement('span');
-        label.className = classes.citationLabel;
-        label.textContent = 'Sources';
-        row.appendChild(label);
+        const label = document.createElement('p');
+        label.className = 'citation-label';
+        // Was the literal string 'Sources' on a site whose default language is Danish.
+        label.textContent = CITATION_LABELS[lang] ?? CITATION_LABELS.da;
+        apparatus.appendChild(label);
+
+        const list = document.createElement('ol');
+        list.className = 'citation-list';
 
         for (const s of sources as Source[]) {
             if (!s || typeof s.title !== 'string') continue;
+            const item = document.createElement('li');
             // Defensive second check: only ever emit a site-relative link.
             const linkable = typeof s.url === 'string' && s.url.startsWith('/');
             const el = document.createElement(linkable ? 'a' : 'span');
-            el.className = classes.citationPill;
             if (linkable) el.setAttribute('href', s.url as string);
             el.textContent = s.title;
-            row.appendChild(el);
+            item.appendChild(el);
+            list.appendChild(item);
         }
 
-        bubbleOf(container).appendChild(row);
+        if (!list.childElementCount) return;
+        apparatus.appendChild(list);
+        bubbleOf(container).appendChild(apparatus);
         scroll();
     }
 

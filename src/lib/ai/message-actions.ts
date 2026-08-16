@@ -107,7 +107,7 @@ export function createMessageActions(config: MessageActionsConfig) {
 
     /** The answer's prose, without the "AI ANALYSIS" header or the source pills. */
     function proseOf(wrapper: Element): string {
-        const prose = wrapper.querySelector('.prose');
+        const prose = wrapper.querySelector('.chat-prose');
         return (prose instanceof HTMLElement ? prose.innerText : wrapper.textContent || '').trim();
     }
 

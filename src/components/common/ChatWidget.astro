@@ -73,11 +73,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <div class="flex gap-2 items-center">
         <!-- Persona Selector -->
         <div class="relative group mr-1">
-            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none">
-                <option value="default" class="bg-neutral-900 text-white">Standard</option>
-                <option value="recruiter" class="bg-neutral-900 text-white">💼 Recruiter</option>
-                <option value="tech" class="bg-neutral-900 text-white">💻 Tech Lead</option>
-                <option value="eli5" class="bg-neutral-900 text-white">👶 ELI5</option>
+            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-text text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-none">
+                <option value="default" class="bg-card text-text">Standard</option>
+                <option value="recruiter" class="bg-card text-text">💼 Recruiter</option>
+                <option value="tech" class="bg-card text-text">💻 Tech Lead</option>
+                <option value="eli5" class="bg-card text-text">👶 ELI5</option>
             </select>
             <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
         </div>
@@ -91,18 +91,18 @@ const t = (t_obj as any)[lang] || t_obj.da;
         <button id="clear-widget-chat" aria-label={lang==="da" ? "Slet historik" : "Clear history"} class="text-dim hover:text-red-400 transition-colors p-1" title={lang==='da' ? "Slet historik" : "Clear history"}>
            <i class="fa-solid fa-trash"></i>
         </button>
-        <button id="close-chat" aria-label={lang==="da" ? "Luk chat" : "Close chat"} class="text-dim hover:text-white transition-colors p-1">
+        <button id="close-chat" aria-label={lang==="da" ? "Luk chat" : "Close chat"} class="text-dim hover:text-text transition-colors p-1">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
     </div>
 
     <!-- Chat Area -->
-  <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent relative z-10">
+  <div id="chat-messages" tabindex="0" aria-label={lang === "da" ? "Samtale" : "Conversation"} class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent relative z-10">
     <!-- Visualizer Overlay -->
     <canvas id="widget-visualizer" class="absolute bottom-0 left-0 w-full h-32 pointer-events-none opacity-0 transition-opacity duration-300 z-0"></canvas>
     
-    <div class="flex gap-3 text-sm text-gray-400 border-b border-white/5 pb-4 mb-4">
+    <div class="flex gap-3 text-sm text-muted border-b border-white/5 pb-4 mb-4">
         <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
@@ -114,7 +114,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <!-- Quick Prompts -->
       <div class="grid grid-cols-1 gap-2 pl-12">
          {t.prompts.map(p => (
-           <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-2 text-dim hover:text-white quick-prompt-btn">
+           <button class="text-left text-xs bg-white/5 border border-white/10 hover:bg-white/10 hover:border-accent/50 transition-colors rounded-lg p-2 text-dim hover:text-text quick-prompt-btn">
              {p}
            </button>
          ))}
@@ -130,14 +130,14 @@ const t = (t_obj as any)[lang] || t_obj.da;
           type="text" 
           id="chat-input"
           placeholder={t.placeholder}
-          class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-muted"
+          class="chat-input flex-1 px-3 py-2 text-sm"
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
-        <button type="button" id="file-btn" aria-label={lang==="da" ? "Vedhæft dokument" : "Attach a document"} class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group" title="Upload Document">
+        <button type="button" id="file-btn" aria-label={lang==="da" ? "Vedhæft dokument" : "Attach a document"} class="chat-input-btn w-9 h-9 group" title="Upload Document">
             <i class="fa-solid fa-paperclip text-xs group-hover:scale-110 transition-transform"></i>
         </button>
-        <button type="button" id="voice-btn" aria-label={lang==="da" ? "Tal til assistenten" : "Speak to the assistant"} class="bg-glass/20 text-dim hover:text-white hover:bg-glass/40 w-9 h-9 rounded-lg flex items-center justify-center transition-all group relative" title="Speak to Anton (Voice Mode)">
+        <button type="button" id="voice-btn" aria-label={lang==="da" ? "Tal til assistenten" : "Speak to the assistant"} class="chat-input-btn w-9 h-9 group relative" title="Speak to Anton (Voice Mode)">
            <i class="fa-solid fa-microphone text-xs group-hover:scale-110 transition-transform"></i>
            <span class="absolute inset-0 rounded-lg border border-red-500 opacity-0 transition-opacity" id="voice-indicator"></span>
         </button>
@@ -147,7 +147,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       </form>
       <div id="file-display" class="hidden mt-2 px-2 py-1 bg-accent/10 border border-accent/20 rounded flex items-center justify-between text-[10px] text-accent">
           <span class="truncate flex-1 font-mono"><i class="fa-solid fa-file-pdf mr-1"></i><span id="filename"></span></span>
-          <button type="button" id="remove-file" class="ml-2 hover:text-white" aria-label={lang==="da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
+          <button type="button" id="remove-file" class="ml-2 hover:text-text" aria-label={lang==="da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
       </div>
       <div class="text-[10px] text-center text-muted mt-2">
         {t.disclaimer}
@@ -173,6 +173,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
   import { readEventStream } from '../../lib/ai/protocol';
   import { createChatRenderers } from '../../lib/ai/chat-ui';
   import { createMessageActions } from '../../lib/ai/message-actions';
+  import { CHAT_THEME, CHAT_ACTION_THEME } from '../../lib/ai/chat-theme';
 
   try {
 
@@ -680,6 +681,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
               // hidden inside the prose as `<<<TAG>>>` markers the client had to regex
               // back out. Nothing the model writes can be mistaken for an instruction.
               const messageContent = addMessage("", 'ai', true, persona);
+              messageContent?.classList.add('chat-prose--streaming');
               const wrapper = messageContent ? messageContent.closest('.ai-content-wrapper') : null;
               let streamFailed = false;
 
@@ -733,6 +735,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
             } finally {
               // Runs on every exit — success, stop, error, and the early return above —
               // so the control can never be left showing a stop icon with nothing running.
+              // The caret marks the writing position; the turn is over on every path out
+              // of here — finished, stopped or failed — so it comes off in the same place
+              // the stop button turns back into a send button.
+              document.querySelectorAll('.chat-prose--streaming')
+                  .forEach((el) => el.classList.remove('chat-prose--streaming'));
               activeRequest = null;
               setStreaming(false);
             }
@@ -795,7 +802,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
             
             // Visual Feedback
             const robotIcon = document.querySelector('#chat-window .fa-robot');
-            robotIcon?.classList.add('text-purple-400', 'animate-pulse');
+            robotIcon?.classList.add('text-accent', 'animate-pulse');
             
             // Show Visualizer
             if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
@@ -822,7 +829,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                 
                 currentAudio.onended = () => {
                    console.log("🔊 Playback ended");
-                   robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                   robotIcon?.classList.remove('text-accent', 'animate-pulse');
                    if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
                    if (visualizer) visualizer.stop();
                    // Reset flag so next text message doesn't speak unless voice was used again
@@ -835,7 +842,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
             } catch (e) {
                 console.error("TTS Playback Error", e);
-                robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                robotIcon?.classList.remove('text-accent', 'animate-pulse');
                 if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
             }
         }
@@ -904,10 +911,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           storageKey: STORAGE_KEY,
           isBusy: () => activeRequest !== null,
           lang: widget?.dataset.lang,
-          classes: {
-              row: "flex justify-end items-center gap-1 mt-2",
-              button: "pointer-events-auto text-dim-400 hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10",
-          },
+          classes: CHAT_ACTION_THEME,
       });
 
       const { handleToolEvent, renderCitations } = createChatRenderers({
@@ -915,18 +919,8 @@ const t = (t_obj as any)[lang] || t_obj.da;
           formId: 'chat-form',
           messagesId: 'chat-messages',
           onLedgerEntry: unlockAchievement,
-          classes: {
-              chartBox: "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]",
-              chartCaption: "text-xs text-dim mb-2 font-medium",
-              nav: "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse",
-              chip: "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm",
-              quizBox: "mt-4 p-4 bg-accent/10 border border-accent/30 rounded-xl text-accent",
-              quizTitle: "font-bold text-accent",
-              quizBody: "text-sm text-dim-100",
-              citationRow: "flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-white/10",
-              citationLabel: "text-[10px] uppercase tracking-wider text-dim",
-              citationPill: "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[11px] text-accent hover:bg-accent hover:text-bg transition-colors",
-          },
+          lang: widget?.dataset.lang,
+          classes: CHAT_THEME,
       });
 
       function loadHistory() {
@@ -980,18 +974,18 @@ const t = (t_obj as any)[lang] || t_obj.da;
               <i class="fa-solid fa-robot text-lg"></i>
             </div>
             <div class="flex flex-col max-w-[85%] ai-content-wrapper">
-                <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent leading-relaxed text-dim-100 message-bubble shadow-lg">
-                  <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide flex justify-between items-center">
+                <div class="message-bubble">
+                  <p class="message-rubric">
                     <span>${displayTitle}</span>
                     ${persona !== 'default' ? '<i class="fa-solid fa-check-circle opacity-50"></i>' : ''}
                   </p>
-                  <div class="prose prose-invert max-w-none text-sm md:text-base font-light">
+                  <div class="chat-prose chat-prose--compact">
                     ${formatText(text)}
                   </div>
                 </div>
             </div>
           `;
-          contentElement = div.querySelector('.prose');
+          contentElement = div.querySelector('.chat-prose');
           if (text) contentElement.innerHTML = formatText(text);
 
           messageActions.attach(div.querySelector('.ai-content-wrapper'));
@@ -1003,7 +997,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           const bubble = document.createElement('div');
           bubble.className = "bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent";
           const p = document.createElement('p');
-          p.className = "text-neutral-950 font-semibold";
+          p.className = "text-bg font-semibold";
           p.textContent = text;
           bubble.appendChild(p);
           div.appendChild(bubble);

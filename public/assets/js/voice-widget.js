@@ -22,6 +22,10 @@ console.log("🔊 Voice Widget Script Loaded");
  * the dispatch moved to the buttons themselves.
  */
 
+// The icon's resting colour is 'text-muted'. It was 'text-dim-400', which produced no
+// CSS at all — the Tailwind config defines "dim" with no numeric shades — so the reset
+// only appeared to work because removing 'text-accent' let the button's own colour show
+// through. See src/styles/chat.css for the same class of bug on the answer text.
 function speakMessage(text, btn) {
     if (!window.speechSynthesis) {
         alert("TTS not supported.");
@@ -49,7 +53,7 @@ function speakMessage(text, btn) {
 
     // 3. Set Active State
     if (icon) {
-        icon.classList.remove('text-dim-400', 'fa-volume-high');
+        icon.classList.remove('text-muted', 'fa-volume-high');
         icon.classList.add('text-accent', 'animate-pulse', 'fa-stop');
     }
 
@@ -92,7 +96,7 @@ function speakMessage(text, btn) {
 function resetAllButtons() {
     document.querySelectorAll('.speak-btn i').forEach(icon => {
         icon.classList.remove('text-accent', 'animate-pulse', 'fa-stop');
-        icon.classList.add('text-dim-400', 'fa-volume-high');
+        icon.classList.add('text-muted', 'fa-volume-high');
     });
 }
 
@@ -100,7 +104,7 @@ function resetBtn(btn) {
     const icon = btn.querySelector('i');
     if (icon) {
         icon.classList.remove('text-accent', 'animate-pulse', 'fa-stop');
-        icon.classList.add('text-dim-400', 'fa-volume-high');
+        icon.classList.add('text-muted', 'fa-volume-high');
     }
 }
 
