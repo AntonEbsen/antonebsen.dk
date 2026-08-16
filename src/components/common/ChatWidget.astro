@@ -73,11 +73,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <div class="flex gap-2 items-center">
         <!-- Persona Selector -->
         <div class="relative group mr-1">
-            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-neutral-900 border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-neutral-800 transition-colors focus:outline-none">
-                <option value="default" class="bg-neutral-900 text-white">Standard</option>
-                <option value="recruiter" class="bg-neutral-900 text-white">💼 Recruiter</option>
-                <option value="tech" class="bg-neutral-900 text-white">💻 Tech Lead</option>
-                <option value="eli5" class="bg-neutral-900 text-white">👶 ELI5</option>
+            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-white text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-none">
+                <option value="default" class="bg-card text-white">Standard</option>
+                <option value="recruiter" class="bg-card text-white">💼 Recruiter</option>
+                <option value="tech" class="bg-card text-white">💻 Tech Lead</option>
+                <option value="eli5" class="bg-card text-white">👶 ELI5</option>
             </select>
             <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[8px] text-accent pointer-events-none"></i>
         </div>
@@ -102,7 +102,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
     <!-- Visualizer Overlay -->
     <canvas id="widget-visualizer" class="absolute bottom-0 left-0 w-full h-32 pointer-events-none opacity-0 transition-opacity duration-300 z-0"></canvas>
     
-    <div class="flex gap-3 text-sm text-gray-400 border-b border-white/5 pb-4 mb-4">
+    <div class="flex gap-3 text-sm text-muted border-b border-white/5 pb-4 mb-4">
         <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
@@ -130,7 +130,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           type="text" 
           id="chat-input"
           placeholder={t.placeholder}
-          class="flex-1 bg-neutral-900 border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-muted"
+          class="flex-1 bg-card border border-glass-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors placeholder:text-muted"
           autocomplete="off"
         />
         <input type="file" id="chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
@@ -173,6 +173,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
   import { readEventStream } from '../../lib/ai/protocol';
   import { createChatRenderers } from '../../lib/ai/chat-ui';
   import { createMessageActions } from '../../lib/ai/message-actions';
+  import { CHAT_THEME, CHAT_ACTION_THEME } from '../../lib/ai/chat-theme';
 
   try {
 
@@ -795,7 +796,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
             
             // Visual Feedback
             const robotIcon = document.querySelector('#chat-window .fa-robot');
-            robotIcon?.classList.add('text-purple-400', 'animate-pulse');
+            robotIcon?.classList.add('text-accent', 'animate-pulse');
             
             // Show Visualizer
             if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
@@ -822,7 +823,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
                 
                 currentAudio.onended = () => {
                    console.log("🔊 Playback ended");
-                   robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                   robotIcon?.classList.remove('text-accent', 'animate-pulse');
                    if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
                    if (visualizer) visualizer.stop();
                    // Reset flag so next text message doesn't speak unless voice was used again
@@ -835,7 +836,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
             } catch (e) {
                 console.error("TTS Playback Error", e);
-                robotIcon?.classList.remove('text-purple-400', 'animate-pulse');
+                robotIcon?.classList.remove('text-accent', 'animate-pulse');
                 if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
             }
         }
@@ -904,10 +905,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           storageKey: STORAGE_KEY,
           isBusy: () => activeRequest !== null,
           lang: widget?.dataset.lang,
-          classes: {
-              row: "flex justify-end items-center gap-1 mt-2",
-              button: "pointer-events-auto text-muted hover:text-accent transition-all duration-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent/10",
-          },
+          classes: CHAT_ACTION_THEME,
       });
 
       const { handleToolEvent, renderCitations } = createChatRenderers({
@@ -915,18 +913,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           formId: 'chat-form',
           messagesId: 'chat-messages',
           onLedgerEntry: unlockAchievement,
-          classes: {
-              chartBox: "mt-4 p-4 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]",
-              chartCaption: "text-xs text-dim mb-2 font-medium",
-              nav: "flex items-center gap-2 text-sm text-accent mt-3 font-bold animate-pulse",
-              chip: "text-sm bg-accent/10 hover:bg-accent hover:text-bg text-accent border border-accent/20 rounded-xl px-4 py-2 transition-all duration-300 shadow-sm",
-              quizBox: "mt-4 p-4 bg-accent/10 border border-accent/30 rounded-xl text-accent",
-              quizTitle: "font-bold text-accent",
-              quizBody: "text-sm text-dim",
-              citationRow: "flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-white/10",
-              citationLabel: "text-[10px] uppercase tracking-wider text-dim",
-              citationPill: "inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20 text-[11px] text-accent hover:bg-accent hover:text-bg transition-colors",
-          },
+          classes: CHAT_THEME,
       });
 
       function loadHistory() {
@@ -1003,7 +990,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           const bubble = document.createElement('div');
           bubble.className = "bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent";
           const p = document.createElement('p');
-          p.className = "text-neutral-950 font-semibold";
+          p.className = "text-bg font-semibold";
           p.textContent = text;
           bubble.appendChild(p);
           div.appendChild(bubble);
