@@ -174,6 +174,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
   import { createChatRenderers } from '../../lib/ai/chat-ui';
   import { createMessageActions } from '../../lib/ai/message-actions';
   import { CHAT_THEME, CHAT_ACTION_THEME } from '../../lib/ai/chat-theme';
+  import { toApiMessages } from '../../lib/ai/history';
 
   try {
 
@@ -644,12 +645,21 @@ const t = (t_obj as any)[lang] || t_obj.da;
               activeRequest = new AbortController();
               setStreaming(true);
 
+              // The transcript already holds this question (addMessage saved it a moment
+              // ago), but it holds the typed text only — the request carries any attached
+              // document with it, so the final turn is swapped for the fuller payload.
+              const convo = toApiMessages(readStoredHistory());
+              if (convo.length && convo[convo.length - 1].role === 'user') {
+                  convo[convo.length - 1].content = fullPayload;
+              } else {
+                  convo.push({ role: 'user', content: fullPayload });
+              }
               const res = await fetch('/api/chat', {
                 method: 'POST',
                 signal: activeRequest.signal,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: fullPayload,
+                    messages: convo,
                     lang: currentLang,
                     persona,
                     image: (currentFileContent && currentFileContent.type === 'image') ? { data: currentFileContent.data, mimeType: currentFileContent.mimeType } : undefined
@@ -923,6 +933,16 @@ const t = (t_obj as any)[lang] || t_obj.da;
           classes: CHAT_THEME,
       });
 
+      /** The stored transcript, parsed. Shared by the replay and the request window. */
+      function readStoredHistory() {
+          try {
+              const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+              return Array.isArray(parsed) ? parsed : [];
+          } catch {
+              // A corrupt transcript costs the conversation its memory, not the reply.
+              return [];
+          }
+      }
       function loadHistory() {
           const stored = localStorage.getItem(STORAGE_KEY);
           if (stored) {
