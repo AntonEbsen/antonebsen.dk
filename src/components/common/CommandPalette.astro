@@ -543,7 +543,7 @@ const quickActions: { label: string; icon: string; url?: string; event?: string 
              <i class="fa-solid fa-microchip"></i>
              <span>${t.aiSearching ?? 'AI tænker...'}</span>
           </div>
-          <div id="palette-ai-text" class="p-4 bg-accent/5 border-l-2 border-accent text-dim text-sm leading-relaxed rounded-r-lg min-h-[60px]"></div>
+          <div id="palette-ai-text" class="chat-prose chat-prose--compact p-4 bg-accent/5 border-l-2 border-accent rounded-r-lg min-h-[60px]"></div>
         </div>
       `;
 
@@ -553,7 +553,15 @@ const quickActions: { label: string; icon: string; url?: string; event?: string 
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: q, lang: document.documentElement.lang })
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: q }],
+            lang: document.documentElement.lang,
+            // Declaring the surface is what makes the comment below true rather
+            // than a workaround: the server offers this caller no client-rendered
+            // tools, so there is nothing to drop and nothing the model is told it
+            // showed. citeSources still works — the server resolves that one.
+            surface: 'prose',
+          })
         });
 
         if (!res.ok) throw new Error("AI Fetch failed");

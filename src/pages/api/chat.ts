@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { checkRateLimit } from '../../lib/ratelimit';
 import { GEN, CHAT_MODEL } from '../../lib/ai/model';
 import { buildCorpus, type Lang } from '../../lib/ai/corpus';
-import { TOOLS, isServerResolved, resolveCitations } from '../../lib/ai/tools';
+import { toolsFor, isServerResolved, resolveCitations, type Surface } from '../../lib/ai/tools';
 import { encodeEvent, NDJSON_CONTENT_TYPE, type ChatEvent } from '../../lib/ai/protocol';
 import { createClient } from '../../lib/ai/client';
 import { checkBudget } from '../../lib/ai/budget';
@@ -24,6 +24,10 @@ const ChatSchema = z.object({
       type: z.enum(['project', 'general']).optional(),
       data: z.record(z.any()).optional()
    }).optional(),
+   // What the caller can render. A 'prose' surface — the command palette's compact
+   // preview — is offered no client-rendered tools, so the model is never told a
+   // chart was shown to someone who cannot see one.
+   surface: z.enum(['chat', 'prose']).optional(),
    persona: z.string().optional(),
    lang: z.enum(['en', 'da', 'de']).optional()
 });
@@ -61,6 +65,29 @@ function codeSnippetBlock(snippet: unknown): string {
       code,
       '```',
    ].join(String.fromCharCode(10));
+}
+
+/**
+ * What the turn actually cost, in tokens.
+ *
+ * Nothing measured this before, so the spend guard's conversion from requests to money
+ * rested entirely on an assumption: that the ~18k-token corpus is read from cache at
+ * roughly a tenth of the input price. If it is not, a request costs about ten times
+ * what the ceiling assumes and the guard cannot tell, because it counts requests.
+ *
+ * `cached` on the second and later requests within the TTL is the number that decides
+ * whether the ceiling needs recalibrating. `new` being large every time means the cache
+ * is being written and never read — the failure this is here to make visible.
+ */
+function logUsage(usage: Anthropic.Usage | null | undefined): void {
+   if (!usage) return;
+   const cached = usage.cache_read_input_tokens ?? 0;
+   const written = usage.cache_creation_input_tokens ?? 0;
+   const hit = cached + written > 0 ? Math.round((cached / (cached + written)) * 100) : 0;
+   console.log(
+      `[chat] tokens in=${usage.input_tokens} cached=${cached} new=${written} ` +
+      `out=${usage.output_tokens} cache-hit=${hit}%`,
+   );
 }
 
 function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextBlockParam[] {
@@ -114,7 +141,13 @@ function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextB
    // between ~10k tokens at full price and at a tenth of it. The per-request tail
    // (persona, project title) is deliberately in a second block, after the marker.
    return [
-      { type: 'text', text: corpus, cache_control: { type: 'ephemeral' } },
+      // The 1h TTL rather than the 5m default, and low traffic is exactly the reason.
+      // A 5-minute window almost never survives between two visitors to a site this
+      // quiet, so nearly every request paid full price for a corpus that was supposed
+      // to be cached — which is what the 450-requests-is-about-five-pounds ceiling
+      // assumes is not happening. A 1h write costs 2x base against 1.25x for 5m; one
+      // write an hour with cheap reads is the better trade until traffic says otherwise.
+      { type: 'text', text: corpus, cache_control: { type: 'ephemeral', ttl: '1h' } },
       { type: 'text', text: instructions },
    ];
 }
@@ -177,6 +210,7 @@ export const POST = async ({ request }: { request: Request }) => {
    }
 
    const lang = (body.lang || 'en') as Lang;
+   const tools = toolsFor((body.surface ?? 'chat') as Surface);
    const persona = body.persona || 'default';
    const history = body.messages?.length
       ? body.messages
@@ -202,13 +236,14 @@ export const POST = async ({ request }: { request: Request }) => {
                const messageStream = anthropic.messages.stream({
                   ...GEN,
                   system,
-                  tools: TOOLS,
+                  tools,
                   messages,
                });
 
                messageStream.on('text', (delta) => send({ type: 'text', text: delta }));
 
                const message = await messageStream.finalMessage();
+               logUsage(message.usage);
 
                if (message.stop_reason !== 'tool_use') {
                   // Sonnet 5 can decline a request outright; that arrives as a normal

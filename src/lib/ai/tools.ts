@@ -186,6 +186,26 @@ export const TOOLS: Anthropic.Tool[] = [
 /** Tools the server resolves itself. Everything else is forwarded to the browser. */
 const SERVER_RESOLVED = new Set<ToolName>(['citeSources']);
 
+/**
+ * What a given surface can actually render.
+ *
+ * The tool loop answers every client-rendered call with "Shown to the visitor." — and
+ * did so regardless of whether the client could show anything. The command palette
+ * consumes prose only, deliberately and correctly for a one-line preview, so a chart it
+ * "showed" was never drawn and the model carried on believing otherwise. The Reviewer
+ * had the same bug until it learned to render them.
+ *
+ * Telling the model about a tool the surface cannot render is the root of that, so a
+ * prose surface is simply not offered one. citeSources survives because the server
+ * resolves it: no client rendering is involved.
+ */
+export type Surface = 'chat' | 'prose';
+
+export function toolsFor(surface: Surface = 'chat'): Anthropic.Tool[] {
+    if (surface !== 'prose') return TOOLS;
+    return TOOLS.filter((t) => isServerResolved(t.name));
+}
+
 export function isServerResolved(name: string): boolean {
     return SERVER_RESOLVED.has(name as ToolName);
 }

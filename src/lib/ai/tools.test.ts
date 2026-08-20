@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { TOOLS, isServerResolved, resolveCitations, AWARDABLE_LEDGER_ENTRIES } from './tools';
+import { TOOLS, isServerResolved, resolveCitations, AWARDABLE_LEDGER_ENTRIES, toolsFor } from './tools';
 import { NAV_ALLOWLIST } from './safe-html';
 
 const byName = (n: string) => TOOLS.find((t) => t.name === n)!;
@@ -121,5 +121,35 @@ describe('askQuizQuestion', () => {
     it('replaced the startQuiz stub rather than sitting beside it', () => {
         // startQuiz rendered a panel saying 'Quiz Mode Activated' and did nothing else.
         expect(TOOLS.find((t) => t.name === 'startQuiz')).toBeUndefined();
+    });
+});
+
+describe('toolsFor', () => {
+    it('offers a chat surface everything', () => {
+        expect(toolsFor('chat')).toEqual(TOOLS);
+        // The default has to be the permissive one: every existing caller omits it.
+        expect(toolsFor()).toEqual(TOOLS);
+    });
+
+    it('offers a prose surface nothing the client would have to render', () => {
+        const names = toolsFor('prose').map((t) => t.name);
+        for (const clientRendered of ['showChart', 'navigateTo', 'suggestFollowUps', 'askQuizQuestion']) {
+            expect(names, `${clientRendered} needs a client to draw it`).not.toContain(clientRendered);
+        }
+    });
+
+    it('keeps citeSources on a prose surface', () => {
+        // The server resolves this one, so no client rendering is involved and a
+        // compact preview can still be grounded.
+        expect(toolsFor('prose').map((t) => t.name)).toContain('citeSources');
+    });
+
+    it('never offers a tool the loop would answer with a lie', () => {
+        // The loop replies "Shown to the visitor." to every client-rendered call. On a
+        // surface that renders none, that answer would be false — so the surface must
+        // only ever be offered tools the server resolves itself.
+        for (const tool of toolsFor('prose')) {
+            expect(isServerResolved(tool.name), `${tool.name} is not server-resolved`).toBe(true);
+        }
     });
 });
