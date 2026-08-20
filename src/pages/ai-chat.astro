@@ -278,6 +278,7 @@ const t = {
     import { createChatRenderers } from '../lib/ai/chat-ui';
     import { createMessageActions } from '../lib/ai/message-actions';
     import { CHAT_THEME, CHAT_ACTION_THEME } from '../lib/ai/chat-theme';
+    import { toApiMessages } from '../lib/ai/history';
 
     // Typed at the query rather than cast at each use: getElementById returns
     // HTMLElement, so every `input.value` and `form.reset()` below was an error the
@@ -636,6 +637,15 @@ const t = {
       const currentLang = document.getElementById('fp-chat-card')?.dataset.lang || 'da';
       let accumulatedText = "";
 
+        // The transcript already holds this question; it holds the typed text only,
+        // so the final turn is swapped for the payload that carries any attachment.
+        const convo = toApiMessages(readStoredHistory());
+        if (convo.length && convo[convo.length - 1].role === 'user') {
+            convo[convo.length - 1].content = fullPayload;
+        } else {
+            convo.push({ role: 'user', content: fullPayload });
+        }
+
         try {
           activeRequest = new AbortController();
           setStreaming(true);
@@ -644,7 +654,7 @@ const t = {
             method: 'POST',
             signal: activeRequest.signal,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: fullPayload, lang: currentLang, persona, image: payload.image }) // Pass image if present
+            body: JSON.stringify({ messages: convo, lang: currentLang, persona, image: payload.image })
           });
         
         removeTyping();
@@ -846,6 +856,16 @@ const t = {
         classes: CHAT_THEME,
     });
 
+    /** The stored transcript, parsed. Shared by the replay and the request window. */
+    function readStoredHistory() {
+        try {
+            const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            // A corrupt transcript costs the conversation its memory, not the reply.
+            return [];
+        }
+    }
     function loadHistory() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {

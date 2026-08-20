@@ -129,7 +129,46 @@ export function renderModelText(raw: unknown, opts: RenderModelTextOptions = {})
         return list!;
     };
 
+    /*
+     * A fence is consumed whole, before the line walker below ever sees its contents:
+     * code is not prose, and must not be read as headings, bullets or emphasis. Without
+     * this the assistant's code blocks arrived as literal fence lines with the code as
+     * paragraphs, and the Reviewer's mermaid diagrams could not survive the move to
+     * this renderer at all.
+     */
+    let fenceLang: string | null = null;
+    let fenceLines: string[] = [];
+
+    const closeFence = () => {
+        const body = fenceLines.join('\n');
+        fenceLines = [];
+        // mermaid reads textContent, which the browser entity-decodes back to the
+        // original source — so escaping upstream is safe and the diagram still parses.
+        if (fenceLang === 'mermaid') {
+            out.push(`<div class="mermaid">${body}</div>`);
+        } else {
+            const cls = fenceLang ? ` class="language-${fenceLang}"` : '';
+            out.push(`<pre><code${cls}>${body}</code></pre>`);
+        }
+        fenceLang = null;
+    };
+
     for (const line of escaped.split('\n')) {
+        const fenceEdge = /^\s*`{3,}\s*([A-Za-z0-9_+-]*)\s*$/.exec(line);
+        if (fenceEdge) {
+            if (fenceLang === null) {
+                flush();
+                fenceLang = fenceEdge[1] || '';
+            } else {
+                closeFence();
+            }
+            continue;
+        }
+        if (fenceLang !== null) {
+            fenceLines.push(line);
+            continue;
+        }
+
         const heading = /^(#{1,6})\s+(.*)$/.exec(line);
         if (heading) {
             flush();
@@ -164,6 +203,9 @@ export function renderModelText(raw: unknown, opts: RenderModelTextOptions = {})
         paragraph.push(line);
     }
 
+    // A fence left open by a stopped or truncated stream still renders, rather than
+    // silently swallowing every line that followed it.
+    if (fenceLang !== null) closeFence();
     flush();
     return out.join('');
 }

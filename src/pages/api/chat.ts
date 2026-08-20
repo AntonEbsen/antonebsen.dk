@@ -43,6 +43,26 @@ const PERSONA_NOTES: Record<string, string> = {
 /** How many times the model may call tools before we stop looping. */
 const MAX_TOOL_TURNS = 4;
 
+/**
+ * The code sample the project page shows, as prompt text.
+ *
+ * ProjectDetailPage collects it and ProjectBot sends it on every request; nothing here
+ * ever read it, so the Reviewer was asked to review code it had not been given. Capped
+ * because it travels uncached on every turn, unlike the corpus above it.
+ */
+function codeSnippetBlock(snippet: unknown): string {
+   const s = snippet as { lang?: string; code?: string; title?: string } | undefined;
+   if (!s?.code || typeof s.code !== 'string') return '';
+   const code = s.code.slice(0, 4000);
+   return [
+      '',
+      `The page shows this code sample${s.title ? ` (${s.title})` : ''}:`,
+      '```' + (s.lang || ''),
+      code,
+      '```',
+   ].join(String.fromCharCode(10));
+}
+
 function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextBlockParam[] {
    const corpus = buildCorpus(lang).text;
 
@@ -52,6 +72,16 @@ function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextB
          'Be concise, professional, and constructively critical — say what is weak, not only what is good.',
          context?.data?.simple ? 'Explain simply, as to a beginner.' : '',
          context?.data?.critique ? 'Be blunt about weaknesses.' : 'Stay constructive.',
+         '',
+         // The facts above are the whole corpus, not just this project. Saying so is the
+         // difference between a generic review bot and one that can place a piece of
+         // work in the context of everything else its author has written.
+         "The facts above cover all of Anton's work, not only this project. Where it",
+         'relates to his other projects or writing — the same method, a contradicting',
+         'result, an argument he made elsewhere — say so and cite it with citeSources.',
+         // Transmitted on every request from ProjectDetailPage and, until now, dropped
+         // here: the client collected a code sample the model was never shown.
+         codeSnippetBlock(context?.data?.codeSnippet),
       ].filter(Boolean).join('\n')
       : [
          "You are the assistant on Anton's personal site. You answer questions about Anton.",
