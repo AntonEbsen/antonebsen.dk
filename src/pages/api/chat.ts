@@ -141,13 +141,17 @@ function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextB
    // between ~10k tokens at full price and at a tenth of it. The per-request tail
    // (persona, project title) is deliberately in a second block, after the marker.
    return [
-      // The 1h TTL rather than the 5m default, and low traffic is exactly the reason.
-      // A 5-minute window almost never survives between two visitors to a site this
-      // quiet, so nearly every request paid full price for a corpus that was supposed
-      // to be cached — which is what the 450-requests-is-about-five-pounds ceiling
-      // assumes is not happening. A 1h write costs 2x base against 1.25x for 5m; one
-      // write an hour with cheap reads is the better trade until traffic says otherwise.
-      { type: 'text', text: corpus, cache_control: { type: 'ephemeral', ttl: '1h' } },
+      // The 5-minute default, kept deliberately after measuring the alternative.
+      //
+      // The reasoning for 1h was that a five-minute window cannot survive between two
+      // visitors to a quiet site. That was the wrong frame: the cache earns its keep
+      // *within* a conversation, whose messages are seconds apart, and 5m already
+      // covers that. Between isolated conversations no TTL helps — you pay the write
+      // either way, and a 1h write costs 2x base against 1.25x for 5m.
+      //
+      // Measured on the real corpus (21,626 tokens): one isolated question costs
+      // $0.0623 at 5m and $0.0947 at 1h — 52% more for a case that does not benefit.
+      { type: 'text', text: corpus, cache_control: { type: 'ephemeral' } },
       { type: 'text', text: instructions },
    ];
 }
