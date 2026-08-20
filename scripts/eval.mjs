@@ -8,7 +8,7 @@
  * hook, and these cases each cost a real API call. Run this by hand after touching
  * the prompt or the corpus, and on a schedule if you want drift caught early.
  *
- * COST: one full run is 16 requests. The Anthropic API is pay-as-you-go with no
+ * COST: one full run is 21 requests — 19 cases, two of which take two turns. The Anthropic API is pay-as-you-go with no
  * free tier, so a run costs real money — roughly a cent or two at Sonnet 5 prices
  * with the corpus cached. Use EVAL_ONLY to run a subset:
  *
@@ -29,6 +29,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { readChatModel, readModelLabel } from './read-model.mjs';
+
+const NEWLINE = String.fromCharCode(10);
 
 const BASE = process.env.CHAT_BASE_URL || 'http://localhost:4321';
 
@@ -136,6 +138,76 @@ const CASES = [
         must: [/doubt|adversit|purpose|struggl/i],
     },
     {
+        // The case that would have caught the whole memory defect. The second question
+        // is meaningless on its own; answering it requires the first turn.
+        name: 'memory — a follow-up that needs the previous turn',
+        turns: [
+            'Name one economist who shaped how Anton thinks. Just the one.',
+            'And what about the other one?',
+        ],
+        lang: 'en',
+        must: [/keynes|piketty|dostoevsky|orwell|tolstoy/i],
+        // A model with no history asks what "the other one" refers to.
+        mustNot: [/which (other|one)|could you clarify|not sure what you (mean|are referring)/i],
+    },
+    {
+        // The quiz is a round trip through the conversation, so it is only testable
+        // now that history travels. It was inert for as long as it was not.
+        name: 'quiz — asks, scores, and asks again',
+        turns: [
+            'Give me a quiz about monetary policy. Ask the first question.',
+            // Verbatim the shape chat-ui.ts sends when an option is clicked. It has to
+            // name the option: tool calls are not written back into the transcript, so
+            // on this turn the model cannot see the question it asked — only what the
+            // visitor says they picked. Phrasing this as a vague "was I right?" makes
+            // the model apologise for a question it cannot find, which is what the
+            // first draft of this case did, and it was the case that was wrong.
+            'I answered "Raise the interest rate" — correct. Next question please.',
+        ],
+        lang: 'en',
+        check: ({ tools }) => {
+            const asked = tools.filter((t) => t.name === 'askQuizQuestion');
+            const problems = [];
+            if (!asked.length) {
+                problems.push('no askQuizQuestion tool call — the quiz never started');
+                return problems;
+            }
+            for (const q of asked) {
+                const opts = q.input?.options;
+                if (!Array.isArray(opts) || opts.length < 2 || opts.length > 4) {
+                    problems.push(`options must be 2-4, got ${JSON.stringify(opts)}`);
+                }
+                const i = q.input?.correctIndex;
+                if (!Number.isInteger(i) || i < 0 || i >= (opts?.length ?? 0)) {
+                    problems.push(`correctIndex ${i} is out of range`);
+                }
+            }
+            // Two turns, so a working quiz asks twice: one on request, one after the
+            // answer comes back. Fewer means the round trip broke, which is what
+            // happened for as long as no history was sent at all.
+            if (asked.length < 2) problems.push(`expected a question on each turn, got ${asked.length}`);
+            return problems;
+        },
+    },
+    {
+        // Asserts the citation *resolved*, not that the prose mentioned a source.
+        // Model text never becomes a link, so a real URL here is the whole guarantee.
+        name: 'citations — resolve to real pages on this site',
+        q: 'What has Anton written about the Eurozone? Cite your sources.',
+        lang: 'en',
+        check: ({ citations }) => {
+            if (!citations.length) return ['no citations event — nothing was cited'];
+            return citations.flatMap((c) => {
+                const problems = [];
+                if (!c.title) problems.push(`source ${c.id} has no title`);
+                if (typeof c.url !== 'string' || !c.url.startsWith('/')) {
+                    problems.push(`source ${c.id} url is not site-relative: ${c.url}`);
+                }
+                return problems;
+            });
+        },
+    },
+    {
         name: 'persona — recruiter stays on the facts',
         q: 'Why should I hire Anton?',
         lang: 'en',
@@ -145,27 +217,43 @@ const CASES = [
     },
 ];
 
-async function ask({ q, lang, persona }) {
+/**
+ * One turn against the live endpoint.
+ *
+ * Takes the conversation so far and returns the prose plus everything the clients
+ * would have rendered. It used to post `{ message }` — the endpoint's legacy
+ * single-turn field — long after every client had moved to `messages[]`, so the
+ * nightly drift check was exercising a path nothing used. A memory regression would
+ * have left it green.
+ *
+ * Tool and citation events used to be discarded here too, which meant a case could
+ * assert what the model *said* but never what it *did*: no way to check that a
+ * citation resolved, or that a quiz question was actually asked.
+ */
+async function ask({ turns, lang, persona, context }) {
     const res = await fetch(`${BASE}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: q, lang, persona: persona ?? 'default' }),
+        body: JSON.stringify({ messages: turns, lang, persona: persona ?? 'default', context }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
 
-    // The body is NDJSON, one typed event per line. Assertions look at prose only:
-    // tool calls and citations are their own events and never pollute the text.
+    // The body is NDJSON, one typed event per line.
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
     let out = '';
     let failure = '';
+    const tools = [];
+    const citations = [];
 
     const consume = (line) => {
         if (!line.trim()) return;
         try {
             const event = JSON.parse(line);
             if (event.type === 'text') out += event.text;
+            else if (event.type === 'tool') tools.push(event);
+            else if (event.type === 'citations') citations.push(...(event.sources ?? []));
             else if (event.type === 'error') failure = event.message;
         } catch {
             // Truncated frame; the rest of the stream is still usable.
@@ -176,14 +264,45 @@ async function ask({ q, lang, persona }) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
+        const lines = buffer.split(NEWLINE);
         buffer = lines.pop() ?? '';
         lines.forEach(consume);
     }
     consume(buffer);
 
     if (failure) throw new Error(failure);
-    return out.trim();
+    return { answer: out.trim(), tools, citations };
+}
+
+/**
+ * Run a case's turns in order, feeding each answer back as the assistant's reply.
+ *
+ * A case with one question behaves exactly as before. A case with several is the only
+ * way to test anything conversational — which, until the clients started sending
+ * history, was untestable by construction.
+ */
+async function runCase(c) {
+    const script = c.turns ?? [c.q];
+    const turns = [];
+    let last = { answer: '', tools: [], citations: [] };
+    // Accumulated across the whole case, not just the final turn: a quiz asks one
+    // question per turn, so a check that only saw the last one could never tell a
+    // working round trip from a broken one.
+    const tools = [];
+    const citations = [];
+
+    for (const [i, prompt] of script.entries()) {
+        if (i > 0) await sleep(GAP_MS);
+        turns.push({ role: 'user', content: prompt });
+        last = await ask({ turns, lang: c.lang, persona: c.persona, context: c.context });
+        tools.push(...last.tools);
+        citations.push(...last.citations);
+        // Only the prose goes back. Tool calls are not part of the stored transcript,
+        // so the model cannot see a question it asked — which is why the client's
+        // answer message names the option the visitor picked.
+        turns.push({ role: 'assistant', content: last.answer });
+    }
+    return { answer: last.answer, tools, citations };
 }
 
 /**
@@ -209,7 +328,8 @@ const results = [];
 for (const [i, c] of selected.entries()) {
     if (i > 0) await sleep(GAP_MS);
     try {
-        const answer = await ask(c);
+        const result = await runCase(c);
+        const { answer, tools, citations } = result;
         const failures = [];
         // Checked before the assertions: a case with only `mustNot` rules passes
         // vacuously on an empty answer, which would quietly report a dead endpoint
@@ -223,6 +343,11 @@ for (const [i, c] of selected.entries()) {
             for (const re of c.mustNot ?? []) {
                 if (re.test(answer)) failures.push(`expected NOT to match ${re}`);
             }
+        }
+        // `check` sees what the clients would have rendered, not just the prose, so a
+        // case can assert that the model *did* something rather than said it would.
+        if (c.check) {
+            for (const problem of c.check(result) ?? []) failures.push(problem);
         }
         results.push({ name: c.name, failures, answer });
         process.stdout.write(failures.length ? '✗' : '·');
