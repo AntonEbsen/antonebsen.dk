@@ -163,3 +163,72 @@ describe('renderModelText', () => {
         expect(renderModelText(undefined)).toBe('');
     });
 });
+
+describe('renderModelText fenced blocks', () => {
+    const fence = '```';
+
+    it('renders a fenced block as pre/code with its language', () => {
+        const out = renderModelText(`${fence}ts\nconst a = 1;\n${fence}`);
+        expect(out).toBe('<pre><code class="language-ts">const a = 1;</code></pre>');
+    });
+
+    it('renders a fence with no language', () => {
+        expect(renderModelText(`${fence}\nplain\n${fence}`)).toBe('<pre><code>plain</code></pre>');
+    });
+
+    it('renders a mermaid fence as the div the diagram engine looks for', () => {
+        const out = renderModelText(`${fence}mermaid\ngraph TD;\nA-->B;\n${fence}`);
+        expect(out).toMatch(/^<div class="mermaid">/);
+
+        // The arrow is escaped in the markup — and must be, since this is the same
+        // string that would otherwise be a tag. What matters is what mermaid.run()
+        // reads, which is textContent, and the browser decodes entities on the way
+        // out. So assert the round trip rather than the literal markup.
+        const textContent = out
+            .replace(/<[^>]+>/g, '')
+            .replace(/&gt;/g, '>')
+            .replace(/&lt;/g, '<')
+            .replace(/&amp;/g, '&');
+        expect(textContent).toBe('graph TD;\nA-->B;');
+    });
+
+    it('does not read the block contents as prose', () => {
+        // A '#' or '- ' inside code is code, not a heading or a bullet.
+        const out = renderModelText(`${fence}sh\n# a comment\n- not a bullet\n**not bold**\n${fence}`);
+        expect(out).not.toContain('<h3');
+        expect(out).not.toContain('<li>');
+        expect(out).not.toContain('<strong>');
+        expect(out).toContain('# a comment');
+    });
+
+    it('still escapes a payload inside a fence', () => {
+        for (const lang of ['js', 'mermaid']) {
+            const out = renderModelText(`${fence}${lang}\n<img src=x onerror=alert(1)>\n${fence}`);
+            expect(out, lang).not.toContain('<img');
+            expect(out, lang).toContain('&lt;img');
+        }
+    });
+
+    it('renders an unterminated fence rather than swallowing the rest', () => {
+        // What a stopped stream leaves: an opening fence and no closer.
+        const out = renderModelText(`intro\n${fence}js\nconst a = 1;`);
+        expect(out).toContain('<p>intro</p>');
+        expect(out).toContain('const a = 1;');
+    });
+
+    it('keeps prose on both sides of a block', () => {
+        const out = renderModelText(`before\n\n${fence}\ncode\n${fence}\n\nafter`);
+        expect(out).toBe('<p>before</p><pre><code>code</code></pre><p>after</p>');
+    });
+
+    it('cannot carry a crafted language token into the class attribute', () => {
+        // The language is interpolated into an attribute, so its charset is restricted
+        // to word characters. A token with a quote in it is not a fence opener at all
+        // and falls through to prose — where the quote is escaped. The payload is still
+        // *visible*, as inert text; what must not happen is it becoming an attribute.
+        const out = renderModelText(`${fence}js" onload="alert(1)\ncode\n${fence}`);
+        expect(out).not.toMatch(/class="language-[^"]*"[^>]*onload/);
+        expect(out).not.toContain('onload="');
+        expect(out).toContain('&quot;');
+    });
+});

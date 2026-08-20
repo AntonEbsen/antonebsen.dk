@@ -139,6 +139,40 @@
 }
 
 /*
+ * Fenced blocks. The assistant writes real code — a SQL snippet, a shell line — and
+ * before fences were parsed it arrived as literal backtick lines with the code set as
+ * paragraphs. `pre` must scroll rather than widen: a long line in a 350px widget column
+ * would otherwise push the whole conversation sideways.
+ */
+.chat-prose pre {
+    margin: 0 0 var(--space-xs);
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+    overflow-x: auto;
+}
+
+.chat-prose pre code {
+    display: block;
+    padding: 0;
+    background: none;
+    color: var(--text-dim);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    /* Inline code wraps anywhere; a block keeps its own line breaks and scrolls. */
+    overflow-wrap: normal;
+    white-space: pre;
+}
+
+/* mermaid replaces the element's contents with an SVG, so it only needs room. */
+.chat-prose .mermaid,
+.mermaid {
+    margin: 0 0 var(--space-xs);
+    overflow-x: auto;
+}
+
+/*
  * The sources under an answer.
  *
  * These were pills in a row — the visual language of filter chips, which is what a
