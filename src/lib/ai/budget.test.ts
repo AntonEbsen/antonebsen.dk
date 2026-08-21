@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { evaluateBudget, monthKey, dayKey, DEFAULT_CAPS, type BudgetCaps } from './budget';
+import { evaluateBudget, monthKey, dayKey, DEFAULT_CAPS, type BudgetCaps, COST_PER_MESSAGE_USD, MONTHLY_BUDGET_USD } from './budget';
 
 const caps: BudgetCaps = { month: 450, day: 100, perIpDay: 30 };
 const under = { month: 1, day: 1, perIp: 1 };
@@ -91,5 +91,26 @@ describe('checkBudget without Redis configured', () => {
         // which is why validate-env.mjs requires the keys for a real deploy.
         const { checkBudget } = await import('./budget');
         expect(await checkBudget('127.0.0.1')).toEqual({ allowed: true });
+    });
+});
+
+describe('the caps follow the budget', () => {
+    it('never allows more than the stated budget at the measured cost', () => {
+        // The property the old numbers failed: 450 requests at $0.062 is ~$28, not $5.
+        const worstCase = DEFAULT_CAPS.month * COST_PER_MESSAGE_USD;
+        expect(worstCase).toBeLessThanOrEqual(MONTHLY_BUDGET_USD);
+    });
+
+    it('keeps a day and one visitor below the month', () => {
+        expect(DEFAULT_CAPS.day).toBeLessThan(DEFAULT_CAPS.month);
+        expect(DEFAULT_CAPS.perIpDay).toBeLessThan(DEFAULT_CAPS.day);
+    });
+
+    it('leaves every cap usable', () => {
+        // Deriving from a budget can round to zero if the cost estimate ever climbs;
+        // a cap of nought would refuse the first visitor of the month.
+        for (const [name, value] of Object.entries(DEFAULT_CAPS)) {
+            expect(value, name).toBeGreaterThan(0);
+        }
     });
 });

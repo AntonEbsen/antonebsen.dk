@@ -24,15 +24,42 @@ export interface BudgetCaps {
 }
 
 /**
- * Sized for roughly $5/month at Claude Sonnet 5 prices with the corpus cached
- * (~$0.011 per message). The monthly bucket is what makes this usable: a flat
- * 15-per-day would let one curious visitor exhaust an entire day in a single
- * conversation, while a month-long bucket lets a quiet week fund a busy afternoon.
+ * The budget, in money, and what a message actually costs.
+ *
+ * These used to be bare request counts justified by "~$0.011 per message with the
+ * corpus cached". That figure was never measured and was wrong by about 5.6x, for two
+ * reasons the guard could not see:
+ *
+ *  - **One visitor message is two model calls.** The tool loop runs again after a
+ *    citeSources call, and nearly every grounded answer makes one.
+ *  - **The cache write dominates an isolated question.** The corpus is 21,626 tokens;
+ *    writing it costs 1.25x input rate, reading it 0.1x. A conversation amortises that
+ *    over its messages, but a visitor who asks one question and leaves pays the write
+ *    on its own.
+ *
+ * Measured against the live API on 2026-08-20, at Sonnet 5 intro pricing: an isolated
+ * question is **$0.062**, and a five-message conversation is **$0.117** — about
+ * $0.023 a message once the write is shared. The isolated figure is the one to size
+ * against, because it is the pessimistic case and the one a bot loop would produce.
+ *
+ * At $0.062, the old cap of 450 would have allowed roughly **$28** of spend before
+ * refusing anything. Deriving the count from the budget keeps that honest: change
+ * MONTHLY_BUDGET_USD and the caps follow.
  */
+export const MONTHLY_BUDGET_USD = 5;
+
+/** Measured, not assumed. Re-derive from the `[chat] tokens` log if the corpus grows. */
+export const COST_PER_MESSAGE_USD = 0.062;
+
+const monthly = Math.floor(MONTHLY_BUDGET_USD / COST_PER_MESSAGE_USD);
+
 export const DEFAULT_CAPS: BudgetCaps = {
-    month: 450,
-    day: 100,
-    perIpDay: 30,
+    month: monthly,
+    // A quarter of the month in one day is enough for a genuine burst of interest and
+    // still leaves three quarters if that day turns out to be a scraper.
+    day: Math.max(1, Math.floor(monthly / 4)),
+    // One visitor should not be able to spend everyone else's share in an afternoon.
+    perIpDay: Math.max(1, Math.floor(monthly / 10)),
 };
 
 export type BudgetScope = 'month' | 'day' | 'ip' | 'unavailable';
