@@ -51,18 +51,12 @@ const label = (entry) => (Array.isArray(entry) ? entry.join(' or ') : entry);
 /**
  * Recommended: absence costs one optional path and nothing else. These warn.
  *
- * ELEVENLABS_API_KEY was briefly in the list above, on the reasoning that /api/speak
- * is reachable by logged-out visitors and 500s without it. That over-stated the
- * damage: the read-aloud button under each answer uses the browser's own
- * speechSynthesis, so it works regardless. /api/speak is reached only after *voice*
- * input, to read the reply back in a better voice, and the client already wraps that
- * call in a try/catch. So the cost of a missing key is that speaking to the assistant
- * gets a written answer instead of a spoken one — which is not worth refusing to
- * deploy the site over.
+ * Empty at present. ELEVENLABS_API_KEY lived here until /api/speak and /api/stt were
+ * deleted — voice runs in the browser now, so nothing at runtime reads it. The key is
+ * still needed by scripts/generate-audio.mjs, which is run by hand and loads .env
+ * itself, so it is not a deploy concern.
  */
-const recommendedEnvVars = [
-    'ELEVENLABS_API_KEY',
-];
+const recommendedEnvVars = [];
 
 console.log('🔍 Validating Environment Variables...');
 
