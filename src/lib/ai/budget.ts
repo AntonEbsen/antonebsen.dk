@@ -48,10 +48,54 @@ export interface BudgetCaps {
  */
 export const MONTHLY_BUDGET_USD = 5;
 
-/** Measured, not assumed. Re-derive from the `[chat] tokens` log if the corpus grows. */
-export const COST_PER_MESSAGE_USD = 0.062;
+/**
+ * The pieces a message is actually billed as, so the cap is arithmetic rather than a
+ * remembered number. Re-derive after a corpus change by reading one `[chat] tokens`
+ * line from the server log.
+ *
+ * Measured against the live API on 2026-08-20 at Sonnet 5 intro pricing.
+ */
+const PRICING = {
+    /** Tokens in the cached system prefix. The log calls this `cached` / `new`. */
+    corpusTokens: 21_626,
+    /** Per-token input rate. Sonnet 5 intro; $3/1M after 2026-08-31. */
+    inputRate: 2 / 1e6,
+    outputRate: 10 / 1e6,
+    /** Writing the cache costs 1.25x input at the 5m TTL; reading it costs 0.1x. */
+    cacheWriteMultiplier: 1.25,
+    cacheReadMultiplier: 0.1,
+    /** Uncached per-call input: the conversation window and the tool schemas. */
+    perCallInputTokens: 650,
+    perCallOutputTokens: 150,
+} as const;
 
-const monthly = Math.floor(MONTHLY_BUDGET_USD / COST_PER_MESSAGE_USD);
+/**
+ * The pessimistic cost of one visitor message.
+ *
+ * Two things the old flat $0.011 missed, and which this makes explicit:
+ *
+ *  - **A message is several model calls.** The tool loop runs again after each tool
+ *    call, and nearly every grounded answer makes one. Sizing against MAX_TOOL_TURNS
+ *    rather than the two typically observed is deliberate — the cap exists for the bad
+ *    case, and a tool-heavy message is about 26% dearer than a typical one.
+ *  - **The first call writes the cache.** That write is $0.054 of the total on its own.
+ *    A conversation amortises it; a visitor who asks one question and leaves does not.
+ */
+const MAX_TOOL_TURNS = 4;
+
+function worstCaseMessageCost(): number {
+    const { corpusTokens, inputRate, outputRate } = PRICING;
+    const write = corpusTokens * inputRate * PRICING.cacheWriteMultiplier;
+    const read = corpusTokens * inputRate * PRICING.cacheReadMultiplier;
+    const perCall = PRICING.perCallInputTokens * inputRate + PRICING.perCallOutputTokens * outputRate;
+
+    // First call writes the prefix; every later call in the loop reads it.
+    return write + perCall + (MAX_TOOL_TURNS - 1) * (read + perCall);
+}
+
+export const COST_PER_MESSAGE_USD = worstCaseMessageCost();
+
+const monthly = Math.max(1, Math.floor(MONTHLY_BUDGET_USD / COST_PER_MESSAGE_USD));
 
 export const DEFAULT_CAPS: BudgetCaps = {
     month: monthly,

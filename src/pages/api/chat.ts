@@ -7,6 +7,7 @@ import { toolsFor, isServerResolved, resolveCitations, type Surface } from '../.
 import { encodeEvent, NDJSON_CONTENT_TYPE, type ChatEvent } from '../../lib/ai/protocol';
 import { createClient } from '../../lib/ai/client';
 import { checkBudget } from '../../lib/ai/budget';
+import { budgetMessage } from '../../lib/ai/budget-copy';
 
 export const prerender = false;
 
@@ -210,7 +211,10 @@ export const POST = async ({ request }: { request: Request }) => {
    // Checked before any model call, because this is the one that costs money.
    const budget = await checkBudget(clientIP);
    if (!budget.allowed) {
-      return new Response(JSON.stringify({ message: budget.message }), { status: 429 });
+      return new Response(
+         JSON.stringify({ message: budgetMessage(budget.scope, body.lang, budget.message) }),
+         { status: 429 },
+      );
    }
 
    const lang = (body.lang || 'en') as Lang;

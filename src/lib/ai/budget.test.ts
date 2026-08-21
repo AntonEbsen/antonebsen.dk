@@ -106,6 +106,21 @@ describe('the caps follow the budget', () => {
         expect(DEFAULT_CAPS.perIpDay).toBeLessThan(DEFAULT_CAPS.day);
     });
 
+    it('prices a message as more than one model call', () => {
+        // The original $0.011 assumed a single call and a cached corpus. Both were
+        // wrong: the tool loop runs again after every tool call, and the first call
+        // writes the cache. A derivation that priced one cached call would land near
+        // $0.005 — an order out, and invisible to a guard that counts requests.
+        expect(COST_PER_MESSAGE_USD).toBeGreaterThan(0.05);
+    });
+
+    it('leaves the budget nearly spent rather than mostly unused', () => {
+        // A cap far below the budget is its own failure: it refuses visitors while the
+        // money sits there. Within one message of the ceiling is the target.
+        const spent = DEFAULT_CAPS.month * COST_PER_MESSAGE_USD;
+        expect(MONTHLY_BUDGET_USD - spent).toBeLessThan(COST_PER_MESSAGE_USD);
+    });
+
     it('leaves every cap usable', () => {
         // Deriving from a budget can round to zero if the cost estimate ever climbs;
         // a cap of nought would refuse the first visitor of the month.
