@@ -42,24 +42,20 @@ test.describe('API Security & Validation', () => {
         expect(body.message).toContain("Invalid Input");
     });
 
-    // The chat widget's speak button and the DataPlayground's "generate SQL" both POST
-    // from pages a logged-out visitor can open, but neither route was in the
-    // middleware's public-POST allowlist — so both answered 401 to everyone except a
-    // signed-in Anton, and the features looked broken to every actual user.
+    // The DataPlayground's "generate SQL" POSTs from a page a logged-out visitor can
+    // open, but the route was not in the middleware's public-POST allowlist — so it
+    // answered 401 to everyone except a signed-in Anton, and the feature looked broken
+    // to every actual user.
     //
-    // These assert "not 401" rather than a specific status: without an ElevenLabs key
-    // or a Gemini key the routes legitimately 500, and with a bad payload they 400.
-    // The only status that means the regression is back is 401.
-    // Both send a payload the handler rejects before it calls out to Gemini or
-    // ElevenLabs. That keeps the suite off the paid APIs — it runs on every push via
-    // the husky hook — while still proving the request got past the middleware, which
-    // is the only thing these two guard.
-    test('Speak: should not be auth-gated for anonymous visitors', async ({ request }) => {
-        const response = await request.post('/api/speak', { data: {} });
-        expect(response.status()).not.toBe(401);
-        expect(response.status()).toBe(400); // "No text provided", from the handler
-    });
-
+    // This asserts "not 401" rather than a specific status: without an API key the
+    // route legitimately 500s, and with a bad payload it 400s. The only status that
+    // means the regression is back is 401. The payload is one the handler rejects
+    // before any model round-trip, which keeps the suite off the paid API — it runs on
+    // every push via the husky hook — while still proving the request got past the
+    // middleware, which is the only thing this guards.
+    //
+    // /api/speak was covered here too until it was deleted: voice runs on the browser's
+    // own speechSynthesis now, so there is no endpoint left to be auth-gated.
     test('Text-to-SQL: should not be auth-gated for anonymous visitors', async ({ request }) => {
         const response = await request.post('/api/text-to-sql', { data: {} });
         expect(response.status()).not.toBe(401);

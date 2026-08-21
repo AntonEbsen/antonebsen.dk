@@ -41,6 +41,56 @@ export interface ChatUIConfig {
 // this module is imported before the stylesheet is guaranteed to have applied.
 const chartColours = () => readChartPalette();
 
+/**
+ * Per-message id -> ordinal, kept outside the DOM because the DOM does not survive.
+ *
+ * Both clients rebuild the whole answer with `innerHTML = format(accumulatedText)` on
+ * every text chunk, so any numbering written into a marker is destroyed by the next
+ * one. The map outlives that, and numbering is re-applied after each rebuild instead
+ * of once. Keyed on the message wrapper and weakly held, so clearing the transcript
+ * drops it.
+ */
+const citationIndex = new WeakMap<Element, Map<string, CitationEntry>>();
+
+interface CitationEntry {
+    ordinal: number;
+    /** Element id of this source's entry in the apparatus, for the marker to link to. */
+    anchor: string;
+}
+
+/** Honoured by the footnote jump, as Skeleton.tsx already does for its shimmer. */
+const reducedMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+
+/**
+ * What to do with one citation marker on one pass. Exported because this is the part
+ * where being wrong is not obviously wrong — the rest of numberCitations is DOM
+ * construction, which this project has no test environment for.
+ *
+ * The trap it exists to name: markers and the `citations` event arrive in either order,
+ * and the prose is rebuilt from scratch on every streamed chunk. So an unresolved
+ * marker must be *kept* mid-stream — the citeSources call may still be coming, and a
+ * pass that deleted it would leave an answer that cites at the very end with no markers
+ * at all, because no further text event would rebuild them. At the end of the turn the
+ * same marker must be *dropped*, because nothing will resolve it now and a numberless
+ * superscript points at nothing.
+ */
+export function citationAction(opts: {
+    /** Has this id resolved to a source yet? */
+    resolved: boolean;
+    /** Does the marker already carry its number, i.e. no rebuild since the last pass? */
+    alreadyNumbered: boolean;
+    /** Is this the final pass, after the last word has arrived? */
+    dropUnresolved: boolean;
+}): 'number' | 'remove' | 'skip' {
+    if (!opts.resolved) return opts.dropUnresolved ? 'remove' : 'skip';
+    return opts.alreadyNumbered ? 'skip' : 'number';
+}
+
+/** Distinguishes one answer's footnote anchors from the next one's in a transcript. */
+let apparatusSeq = 0;
+
 const CITATION_LABELS: Record<string, string> = {
     da: 'Kilder',
     en: 'Sources',
@@ -235,38 +285,134 @@ export function createChatRenderers(config: ChatUIConfig) {
     function renderCitations(sources: Source[] | unknown, container: Element): void {
         if (!Array.isArray(sources) || !sources.length) return;
 
+        const bubble = bubbleOf(container);
+
         // An apparatus, not a row of tags: a rule, a small-caps heading, then a
         // numbered list. This is the register the site already uses for anything
         // citational, and on a page arguing that every claim is traceable, the
         // sources should look like a bibliography rather than like filter chips.
-        const apparatus = document.createElement('div');
-        apparatus.className = 'citation-apparatus';
+        //
+        // A second citeSources call in the same answer extends this list rather than
+        // starting a rival one below it. Two blocks would each restart at 1, and the
+        // inline markers point at ordinals — so "see 2" would have had two answers.
+        let apparatus = bubble.querySelector('.citation-apparatus');
+        let list = apparatus ? apparatus.querySelector('ol.citation-list') : null;
 
-        const label = document.createElement('p');
-        label.className = 'citation-label';
-        // Was the literal string 'Sources' on a site whose default language is Danish.
-        label.textContent = CITATION_LABELS[lang] ?? CITATION_LABELS.da;
-        apparatus.appendChild(label);
+        if (!apparatus) {
+            apparatus = document.createElement('div');
+            apparatus.className = 'citation-apparatus';
 
-        const list = document.createElement('ol');
-        list.className = 'citation-list';
+            const label = document.createElement('p');
+            label.className = 'citation-label';
+            // Was the literal string 'Sources' on a site whose default language is Danish.
+            label.textContent = CITATION_LABELS[lang] ?? CITATION_LABELS.da;
+            apparatus.appendChild(label);
+
+            list = document.createElement('ol');
+            list.className = 'citation-list';
+        }
+
+        let index = citationIndex.get(container);
+        if (!index) {
+            index = new Map<string, CitationEntry>();
+            citationIndex.set(container, index);
+            apparatusSeq += 1;
+        }
+        const seq = apparatusSeq;
 
         for (const s of sources as Source[]) {
             if (!s || typeof s.title !== 'string') continue;
+            // The same source cited twice keeps one entry and one number, which is what
+            // a reader expects of a footnote and what makes the ordinal a stable
+            // reference rather than a running count of tool calls.
+            if (typeof s.id === 'string' && index.has(s.id)) continue;
+
+            const ordinal = index.size + 1;
             const item = document.createElement('li');
+            item.id = 'cite-' + seq + '-' + ordinal;
             // Defensive second check: only ever emit a site-relative link.
             const linkable = typeof s.url === 'string' && s.url.startsWith('/');
             const el = document.createElement(linkable ? 'a' : 'span');
             if (linkable) el.setAttribute('href', s.url as string);
             el.textContent = s.title;
             item.appendChild(el);
-            list.appendChild(item);
+            list!.appendChild(item);
+
+            if (typeof s.id === 'string') index.set(s.id, { ordinal, anchor: item.id });
         }
 
-        if (!list.childElementCount) return;
-        apparatus.appendChild(list);
-        bubbleOf(container).appendChild(apparatus);
+        if (!list!.childElementCount) return;
+        if (!apparatus.contains(list!)) apparatus.appendChild(list!);
+        if (!bubble.contains(apparatus)) bubble.appendChild(apparatus);
+
+        // The markers are usually already in the prose by now — the model writes them
+        // as it writes the sentence, and citeSources lands after. Number them here as
+        // well as on every text update, because an answer that ends on a citation gets
+        // no further text event to trigger the other path.
+        numberCitations(container);
         scroll();
+    }
+
+    /**
+     * Give every `[^id]` marker in the prose its number and a link to the entry below.
+     *
+     * Ordering is the whole difficulty. The `citations` event and the prose carrying
+     * the markers arrive in either order, and the prose is rebuilt from scratch on
+     * every chunk — so this runs after each text update *and* when citations arrive,
+     * rather than once.
+     *
+     * `dropUnresolved` is off during streaming and on at the end. A marker whose id has
+     * not resolved *yet* must survive the pass, or an answer that cites at the very end
+     * would have had its markers deleted by every pass before it; a marker whose id
+     * never resolves must not be left in the finished prose, where it would sit as a
+     * numberless superscript pointing at nothing. Removing it is safe precisely because
+     * the next rebuild re-creates every marker from the raw text.
+     */
+    function numberCitations(
+        container: Element | null,
+        { dropUnresolved = false }: { dropUnresolved?: boolean } = {},
+    ): void {
+        if (!container) return;
+        const index = citationIndex.get(container);
+
+        // The markers live in the prose; the caller's handle may be a sibling of it.
+        // Both astro clients pass the wrapper, which contains everything; the Reviewer
+        // passes the extras node React owns, which sits beside the prose inside the
+        // bubble. Widening to the bubble covers both without either caller having to
+        // know where the other keeps its nodes.
+        const scope = container.closest('.message-bubble') ?? container;
+
+        for (const marker of Array.from(scope.querySelectorAll('sup.citation-ref'))) {
+            const id = marker.getAttribute('data-source-id') ?? '';
+            const entry = index ? index.get(id) : undefined;
+
+            const action = citationAction({
+                resolved: Boolean(entry),
+                alreadyNumbered: Boolean(marker.firstChild),
+                dropUnresolved,
+            });
+            if (action === 'remove') marker.remove();
+            if (action !== 'number' || !entry) continue;
+
+            const link = document.createElement('a');
+            link.className = 'citation-ref-link';
+            link.href = '#' + entry.anchor;
+            link.textContent = String(entry.ordinal);
+            const label = CITATION_LABELS[lang] ?? CITATION_LABELS.da;
+            link.setAttribute('aria-label', label + ' ' + entry.ordinal);
+            // Jump inside the transcript instead of letting the hash move the page and
+            // stack a history entry per footnote. The flash is what tells the reader
+            // which line answered them when several sources sit together.
+            link.addEventListener('click', (e) => {
+                const target = document.getElementById(entry.anchor);
+                if (!target) return;
+                e.preventDefault();
+                target.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
+                target.classList.add('citation-target');
+                setTimeout(() => target.classList.remove('citation-target'), 1200);
+            });
+            marker.appendChild(link);
+        }
     }
 
     /**
@@ -289,5 +435,5 @@ export function createChatRenderers(config: ChatUIConfig) {
         }
     }
 
-    return { handleToolEvent, renderCitations };
+    return { handleToolEvent, renderCitations, numberCitations };
 }

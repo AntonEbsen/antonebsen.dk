@@ -45,6 +45,9 @@ const PERSONA_NOTES: Record<string, string> = {
    eli5: 'Explain simply, as you would to someone with no economics background. Short sentences, no jargon without unpacking it.',
 };
 
+/** Separates one turn's prose from the next. See the tool loop for why it is needed. */
+const PARAGRAPH_BREAK = String.fromCharCode(10, 10);
+
 /** How many times the model may call tools before we stop looping. */
 const MAX_TOOL_TURNS = 4;
 
@@ -106,7 +109,9 @@ function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextB
          // work in the context of everything else its author has written.
          "The facts above cover all of Anton's work, not only this project. Where it",
          'relates to his other projects or writing — the same method, a contradicting',
-         'result, an argument he made elsewhere — say so and cite it with citeSources.',
+         'result, an argument he made elsewhere — say so and cite it with citeSources,',
+         'and mark the sentence it supports by ending it with [^id]. The visitor sees a',
+         'footnote number, not the id.',
          // Transmitted on every request from ProjectDetailPage and, until now, dropped
          // here: the client collected a code sample the model was never shown.
          codeSnippetBlock(context?.data?.codeSnippet),
@@ -119,9 +124,13 @@ function buildSystem(lang: Lang, persona: string, context: any): Anthropic.TextB
          "say you don't know rather than filling the gap — do not infer roles, employers or dates.",
          'Keep answers short and readable: a few sentences unless the question genuinely needs more.',
          '',
-         'When you draw on a specific source, call citeSources with its id. Never write an',
-         'id such as (influence:orwell) into your reply — those are for the tool only, and',
-         'a visitor reading them sees database keys instead of a link.',
+         'When you draw on a specific source, call citeSources with its id, and mark the',
+         'sentence that rests on it by ending it with [^id] — the same id you pass to the',
+         'tool. The visitor sees a small numbered link, not the id: it is replaced with a',
+         'footnote number pointing at the source list. Mark the specific claim, not every',
+         'sentence in the paragraph.',
+         'Never write an id any other way. An id such as (influence:orwell) sitting in the',
+         'prose is a database key where a visitor expected a link.',
          '',
          "You have Anton's essays in full, not just their summaries, so you can do something",
          'a general assistant cannot: compare his arguments against each other. When a question',
@@ -240,6 +249,15 @@ export const POST = async ({ request }: { request: Request }) => {
             // The model may call tools, read the results, and keep going. Each pass
             // streams whatever prose it produces, then either finishes or hands back
             // tool calls for us to answer.
+
+            // Prose from one turn and the next are separate blocks of writing, and the
+            // client concatenates every text event into one string. Without a break
+            // between them the model's closing line lands welded to the previous
+            // sentence — "…og velfaerdsstaten.Sig til, hvis du vil…" — because a turn
+            // that ends on a full stop has no reason to also end on a newline.
+            let wroteText = false;
+            let endsClean = true;
+
             for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
                const messageStream = anthropic.messages.stream({
                   ...GEN,
@@ -248,7 +266,16 @@ export const POST = async ({ request }: { request: Request }) => {
                   messages,
                });
 
-               messageStream.on('text', (delta) => send({ type: 'text', text: delta }));
+               let first = true;
+               messageStream.on('text', (delta) => {
+                  if (first && wroteText && !endsClean) send({ type: 'text', text: PARAGRAPH_BREAK });
+                  first = false;
+                  wroteText = true;
+                  // Tracked across turns rather than at the end, because the last delta
+                  // is the only place the turn's final characters are visible.
+                  endsClean = /\n\s*$/.test(delta);
+                  send({ type: 'text', text: delta });
+               });
 
                const message = await messageStream.finalMessage();
                logUsage(message.usage);

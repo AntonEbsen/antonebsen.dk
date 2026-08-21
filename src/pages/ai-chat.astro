@@ -550,7 +550,10 @@ const t = {
             switch (event.type) {
                 case 'text':
                     accumulatedText += event.text;
+                    // The rebuild is wholesale, so every marker in the answer is new on
+                    // each chunk and has to be re-numbered rather than numbered once.
                     if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+                    numberCitations(wrapper);
                     break;
                 case 'tool':
                     handleToolEvent(event.name, event.input, wrapper);
@@ -573,6 +576,12 @@ const t = {
             if (messageContent) messageContent.textContent = "⚠️ " + (t.error || "Sorry, I encountered an error.");
             return;
         }
+
+        // One last rebuild, then number with removal on. The last word can arrive after
+        // the last citation, and a marker whose id never resolved must not be left in
+        // the finished answer as a superscript pointing at nothing.
+        if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+        numberCitations(wrapper, { dropUnresolved: true });
 
         saveMessageToHistory(accumulatedText, 'ai', persona);
 
@@ -683,7 +692,7 @@ const t = {
         classes: CHAT_ACTION_THEME,
     });
 
-    const { handleToolEvent, renderCitations } = createChatRenderers({
+    const { handleToolEvent, renderCitations, numberCitations } = createChatRenderers({
         inputId: 'fp-chat-input',
         formId: 'fp-chat-form',
         messagesId: 'fp-chat-messages',

@@ -557,7 +557,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   switch (event.type) {
                       case 'text':
                           accumulatedText += event.text;
+                          // The rebuild is wholesale, so every marker in the answer is
+                          // new on each chunk and has to be re-numbered rather than
+                          // numbered once.
                           if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+                          numberCitations(wrapper);
                           break;
                       case 'tool':
                           handleToolEvent(event.name, event.input, wrapper);
@@ -586,6 +590,12 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   }
                   return;
               }
+
+              // One last rebuild, then number with removal on. The last word can
+              // arrive after the last citation, and a marker whose id never resolved
+              // must not be left in the finished answer pointing at nothing.
+              if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+              numberCitations(wrapper, { dropUnresolved: true });
 
               saveMessageToHistory(accumulatedText, 'ai', persona);
 
@@ -756,7 +766,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           classes: CHAT_ACTION_THEME,
       });
 
-      const { handleToolEvent, renderCitations } = createChatRenderers({
+      const { handleToolEvent, renderCitations, numberCitations } = createChatRenderers({
           inputId: 'chat-input',
           formId: 'chat-form',
           messagesId: 'chat-messages',

@@ -83,6 +83,29 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
         });
     });
 
+    /**
+     * Citation markers are re-created by dangerouslySetInnerHTML on every render, so
+     * their numbers have to be re-applied every render too. This is the React
+     * equivalent of the astro clients numbering after each streamed chunk; no dep array,
+     * because any render at all can have replaced the prose.
+     */
+    useEffect(() => {
+        for (const el of extrasRefs.current.values()) {
+            renderers.current?.numberCitations(el);
+        }
+    });
+
+    /**
+     * The turn is over: the last word has arrived, so a marker still unresolved never
+     * will be, and must not be left in the prose pointing at nothing.
+     */
+    useEffect(() => {
+        if (streamingId) return;
+        for (const el of extrasRefs.current.values()) {
+            renderers.current?.numberCitations(el, { dropUnresolved: true });
+        }
+    }, [streamingId]);
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };

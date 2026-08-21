@@ -232,3 +232,65 @@ describe('renderModelText fenced blocks', () => {
         expect(out).toContain('&quot;');
     });
 });
+
+describe('renderModelText — citation markers', () => {
+    it('turns [^id] into an empty superscript carrying the id', () => {
+        const html = renderModelText('Han skrev om Taylor-reglen[^blog:taylor].');
+        expect(html).toContain('<sup class="citation-ref" data-source-id="blog:taylor"></sup>');
+    });
+
+    it('never emits an href from the marker', () => {
+        // The id is a lookup key. The whole reason citations resolve server-side is that
+        // no model-supplied string may become a URL, and a marker is model-supplied.
+        const html = renderModelText('x[^blog:taylor] y[^cv:experience:2]');
+        expect(html).not.toMatch(/href/i);
+    });
+
+    it('leaves a marker whose id contains markup characters as literal text', () => {
+        // The charset excludes everything escapeHtml rewrites, so this does not match the
+        // marker pattern at all — it stays escaped prose instead of being interpolated
+        // into an attribute where the quote could close it.
+        const html = renderModelText('claim[^a"onmouseover=alert(1) b]');
+        // It stays inert prose: no marker was produced, and the quote that would have
+        // closed the attribute is escaped, so the payload is text and not markup.
+        expect(html).not.toContain('citation-ref');
+        expect(html).not.toContain('data-source-id');
+        expect(html).toContain('&quot;');
+        expect(html).toBe('<p>claim[^a&quot;onmouseover=alert(1) b]</p>');
+    });
+
+    it('marks inside headings and list items, not only paragraphs', () => {
+        const html = renderModelText('## Uddannelse[^cv:education:0]\n- punkt[^blog:x]');
+        expect(html).toContain('<h4>');
+        expect(html.match(/citation-ref/g)?.length).toBe(2);
+    });
+
+    it('leaves a marker inside a fence alone', () => {
+        // A fence is consumed whole before inline marks run, so code showing the syntax
+        // is not silently turned into a footnote.
+        const html = renderModelText('```\nfoo[^bar:baz]\n```');
+        expect(html).toContain('foo[^bar:baz]');
+        expect(html).not.toContain('citation-ref');
+    });
+
+    it('strips markers for a surface that renders no apparatus', () => {
+        // The command palette shows prose only. A number there could never be filled in,
+        // and would be a footnote reference to a footnote that is not on the page.
+        const html = renderModelText('Han skrev om det[^blog:taylor].', { citations: 'strip' });
+        expect(html).not.toContain('citation-ref');
+        expect(html).not.toContain('blog:taylor');
+        expect(html).toContain('Han skrev om det.');
+    });
+
+    it('eats the space the model often leaves before the marker', () => {
+        // A footnote marker hugs the word it belongs to. The model writes both forms,
+        // and which one it picked should not decide the typography.
+        expect(renderModelText('systemer [^influence:piketty].'))
+            .toBe('<p>systemer<sup class="citation-ref" data-source-id="influence:piketty"></sup>.</p>');
+    });
+
+    it('does not mistake ordinary brackets for markers', () => {
+        const html = renderModelText('[se her] og [^ ikke et id]');
+        expect(html).not.toContain('citation-ref');
+    });
+});
