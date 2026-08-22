@@ -175,6 +175,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
   import { createMessageActions } from '../../lib/ai/message-actions';
   import { CHAT_THEME, CHAT_ACTION_THEME } from '../../lib/ai/chat-theme';
   import { toApiMessages } from '../../lib/ai/history';
+  import { createVoiceInput } from '../../lib/ai/voice-input';
 
   try {
 
@@ -439,158 +440,15 @@ const t = (t_obj as any)[lang] || t_obj.da;
          }
       }
 
-      // Voice Logic
-      let isRecording = false;
-      let isInitializing = false;
-      let mediaRecorder = null;
-      let audioChunks = [];
-
-      async function startRecording() {
-          if (isInitializing || isRecording) return;
-          
-          isInitializing = true;
-          // UI Feedback: Connecting
-          voiceBtn?.classList.add('animate-pulse', 'text-accent');
-          input.placeholder = "Connecting to ears...";
-
-          try {
-              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-              
-              // Connect Mic to Visualizer
-              if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
-              if (visualizer) visualizer.connectStream(stream);
-
-              const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
-                             ? 'audio/webm;codecs=opus' 
-                             : 'audio/webm';
-              
-              mediaRecorder = new MediaRecorder(stream, { mimeType });
-              audioChunks = [];
-
-              mediaRecorder.ondataavailable = (event) => {
-                  if (event.data.size > 0) {
-                      audioChunks.push(event.data);
-                  }
-              };
-
-              mediaRecorder.onstop = async () => {
-                  // UI Reset
-                  if(voiceIndicator) {
-                      voiceIndicator.classList.add('opacity-0');
-                      voiceIndicator.classList.remove('animate-pulse', 'border-red-500');
-                  }
-                  if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
-                  if (visualizer) visualizer.stop();
-
-                  voiceBtn?.classList.remove('text-red-400');
-                  isRecording = false;
-                  isInitializing = false;
-
-                  // Process Audio
-                  const audioBlob = new Blob(audioChunks, { type: mimeType });
-                  // Debug: Log blob size
-                  console.log(`🎤 Audio recorded: ${audioBlob.size} bytes`);
-                  
-                  if (audioBlob.size < 1000) {
-                      alert("Kunne ikke høre noget (optagelse for kort). Prøv at tale højere/længere.");
-                      input.placeholder = defaultPlaceholder;
-                      return;
-                  }
-                  
-                  wasVoiceInput = true; // Flag for TTS
-
-                  const formData = new FormData();
-                  formData.append('audio', audioBlob, 'recording.webm');
-
-                  // Show thinking state in input
-                  const originalPlaceholder = input.placeholder;
-                  input.placeholder = "🧠 Processing voice...";
-                  input.disabled = true;
-
-                  try {
-                      const response = await fetch('/api/stt', {
-                          method: 'POST',
-                          body: formData,
-                      });
-
-                      if (!response.ok) throw new Error(`STT failed: ${response.status}`);
-
-                      const data = await response.json();
-                      
-                      if (data.text) {
-                          input.value = (input.value ? input.value + " " : "") + data.text;
-                          input.focus();
-                      } else {
-                         if (data.error) {
-                             alert(`Fejl fra server: ${data.error}`);
-                         } else {
-                             input.placeholder = "Jeg hørte ikke noget...";
-                             setTimeout(() => input.placeholder = originalPlaceholder, 2000);
-                         }
-                      }
-                  } catch (err) {
-                      console.error("STT Error:", err);
-                      // Fallback or error indication
-                      input.placeholder = "Fejl ved tolkning...";
-                      // alert("Fejl ved tolkning af lyd: " + err.message);
-                  } finally {
-                      input.disabled = false;
-                      if (!input.placeholder.includes("Kunne")) {
-                           input.placeholder = originalPlaceholder;
-                      }
-                  }
-
-                  // Stop all tracks
-                  stream.getTracks().forEach(track => track.stop());
-              };
-
-              // Start recording
-              mediaRecorder.start();
-              isRecording = true;
-              isInitializing = false;
-              
-              // UI Update: Listening
-              input.placeholder = "Listening... (Tap mic to stop)";
-              if(voiceIndicator) {
-                  voiceIndicator.classList.remove('opacity-0');
-                  voiceIndicator.classList.add('animate-pulse', 'border-red-500');
-              }
-              voiceBtn?.classList.remove('animate-pulse', 'text-accent'); // Remove connecting state
-              voiceBtn?.classList.add('text-red-400');
-
-          } catch (err) {
-              console.error("Microphone Access Error:", err);
-              isInitializing = false;
-              voiceBtn?.classList.remove('animate-pulse', 'text-accent');
-              
-              let msg = "Ukendt fejl";
-              if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                  msg = "Adgang nægtet. Tjek låsen i adressebaren.";
-              } else {
-                  msg = err.message || "Mikrofon fejl";
-              }
-              alert(`Kunne ikke starte mikrofon: ${msg}`);
-              input.placeholder = defaultPlaceholder;
-          }
-      }
-
-      function stopRecording() {
-          if (mediaRecorder && isRecording) {
-              mediaRecorder.stop();
-              // State update happens in onstop
-          }
-      }
-
-      voiceBtn?.addEventListener('click', (e) => {
-          e.preventDefault(); // Prevent focus quirks
-          
-          if (isInitializing) return; // Ignore clicks while connecting
-
-          if (isRecording) {
-              stopRecording();
-          } else {
-              startRecording();
-          }
+      // Voice input, via the browser rather than a paid transcription service. The
+      // MediaRecorder and /api/stt round trip that stood here needed an ElevenLabs key
+      // that exists in no environment, so the microphone had never worked once.
+      createVoiceInput({
+          inputId: 'chat-input',
+          formId: 'chat-form',
+          buttonId: 'voice-btn',
+          lang: widget?.dataset.lang,
+          onResult: () => { wasVoiceInput = true; },
       });
 
       // Quick Prompts Logic
@@ -699,7 +557,11 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   switch (event.type) {
                       case 'text':
                           accumulatedText += event.text;
+                          // The rebuild is wholesale, so every marker in the answer is
+                          // new on each chunk and has to be re-numbered rather than
+                          // numbered once.
                           if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+                          numberCitations(wrapper);
                           break;
                       case 'tool':
                           handleToolEvent(event.name, event.input, wrapper);
@@ -728,6 +590,12 @@ const t = (t_obj as any)[lang] || t_obj.da;
                   }
                   return;
               }
+
+              // One last rebuild, then number with removal on. The last word can
+              // arrive after the last citation, and a marker whose id never resolved
+              // must not be left in the finished answer pointing at nothing.
+              if (messageContent) messageContent.innerHTML = formatText(accumulatedText);
+              numberCitations(wrapper, { dropUnresolved: true });
 
               saveMessageToHistory(accumulatedText, 'ai', persona);
 
@@ -803,58 +671,32 @@ const t = (t_obj as any)[lang] || t_obj.da;
          }
 
 
-        async function playTextToSpeech(text) {
-            console.log("🔊 playTextToSpeech called");
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio = null;
-            }
-            
-            // Visual Feedback
+        /**
+         * Read the reply aloud after a spoken question.
+         *
+         * This used to POST to /api/speak for ElevenLabs audio — a key that exists in no
+         * environment, so the one thing a voice conversation is for silently failed
+         * every time. The read-aloud button beside every answer already used the
+         * browser's speechSynthesis; there is no reason for two mechanisms, and only one
+         * of them works.
+         */
+        function playTextToSpeech(text) {
             const robotIcon = document.querySelector('#chat-window .fa-robot');
             robotIcon?.classList.add('text-accent', 'animate-pulse');
-            
-            // Show Visualizer
             if (visualizerCanvas) visualizerCanvas.classList.remove('opacity-0');
 
-            try {
-                console.log("🔊 Fetching TTS from /api/speak...");
-                const res = await fetch('/api/speak', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text })
-                });
-
-                if (!res.ok) {
-                    const err = await res.text();
-                    throw new Error(`TTS Failed (${res.status}): ${err}`);
-                }
-
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                currentAudio = new Audio(url);
-                
-                // Connect to Visualizer
-                if (visualizer) visualizer.connectElement(currentAudio);
-                
-                currentAudio.onended = () => {
-                   console.log("🔊 Playback ended");
-                   robotIcon?.classList.remove('text-accent', 'animate-pulse');
-                   if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
-                   if (visualizer) visualizer.stop();
-                   // Reset flag so next text message doesn't speak unless voice was used again
-                   wasVoiceInput = false; 
-                };
-                
-                console.log("🔊 Starting playback...");
-                await currentAudio.play();
-                if (visualizer) visualizer.start();
-
-            } catch (e) {
-                console.error("TTS Playback Error", e);
+            const done = () => {
                 robotIcon?.classList.remove('text-accent', 'animate-pulse');
-                if (visualizerCanvas) visualizerCanvas.classList.add('opacity-0');
-            }
+                visualizerCanvas?.classList.add('opacity-0');
+            };
+
+            if (!window.speechSynthesis) return done();
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text.replace(/[*#`]/g, ''));
+            utterance.lang = { da: 'da-DK', de: 'de-DE', en: 'en-GB' }[widget?.dataset.lang] || 'da-DK';
+            utterance.onend = done;
+            utterance.onerror = done;
+            window.speechSynthesis.speak(utterance);
         }
         
         // Reset flag on text submit
@@ -924,7 +766,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           classes: CHAT_ACTION_THEME,
       });
 
-      const { handleToolEvent, renderCitations } = createChatRenderers({
+      const { handleToolEvent, renderCitations, numberCitations } = createChatRenderers({
           inputId: 'chat-input',
           formId: 'chat-form',
           messagesId: 'chat-messages',

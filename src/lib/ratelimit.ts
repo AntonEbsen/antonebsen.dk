@@ -36,14 +36,6 @@ export const ratelimits = {
         analytics: true,
         prefix: '@upstash/ratelimit/chat',
     }) : null,
-    // Text-to-speech is the most expensive call on the site per request (ElevenLabs
-    // bills by character), so it is tighter than chat.
-    speak: enabled ? new Ratelimit({
-        redis: redis!,
-        limiter: Ratelimit.slidingWindow(10, '60 s'),
-        analytics: true,
-        prefix: '@upstash/ratelimit/speak',
-    }) : null,
     guestbook: enabled ? new Ratelimit({
         redis: redis!,
         limiter: Ratelimit.slidingWindow(5, '60 s'), // 5 requests per minute

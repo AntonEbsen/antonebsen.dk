@@ -11,8 +11,6 @@ interface ImportMetaEnv {
     readonly SUPABASE_ANON_KEY: string;
     /** Anthropic API key. Powers /api/chat and /api/text-to-sql. */
     readonly ANTHROPIC_API_KEY: string;
-    /** ElevenLabs TTS/STT. Read by /api/speak and /api/stt, both public routes. */
-    readonly ELEVENLABS_API_KEY: string;
     /**
      * Upstash REST credentials, under both names they can arrive as: Upstash's own
      * dashboard uses UPSTASH_REDIS_REST_*, while Vercel's Marketplace integration

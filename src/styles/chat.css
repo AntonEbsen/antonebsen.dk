@@ -224,6 +224,71 @@
 }
 
 /*
+ * The inline marker: a superscript number in the prose, pointing at the entry below.
+ *
+ * It is empty until the client numbers it, so `:empty` is the resting state and must
+ * take no room — during streaming a sentence carries markers whose citeSources call
+ * has not landed yet, and a reserved gap would make the line twitch as they fill.
+ *
+ * Sized in `em` rather than on the step scale so it tracks whatever it is set inside:
+ * a marker in a heading should be a heading-sized superscript.
+ */
+.citation-ref:empty {
+    display: none;
+}
+
+.citation-ref {
+    font-size: 0.72em;
+    line-height: 0;
+    vertical-align: super;
+    margin-left: 0.12em;
+}
+
+/*
+ * Two markers side by side are two numbers, not one: "1,2" rather than "12". Guarded on
+ * :not(:empty) so an unresolved marker mid-stream cannot put a comma before a number
+ * that has no partner.
+ */
+.citation-ref:not(:empty) + .citation-ref:not(:empty)::before {
+    content: ',';
+    color: var(--text-muted);
+}
+
+.citation-ref-link {
+    color: var(--accent);
+    text-decoration: none;
+    padding: 0 0.15em;
+    border-radius: 2px;
+}
+
+.citation-ref-link:hover,
+.citation-ref-link:focus-visible {
+    background: rgb(var(--accent-rgb) / 0.16);
+    text-decoration: underline;
+}
+
+/*
+ * Two sources in a bibliography look alike; the flash is what tells the reader which
+ * line their number landed on. Removed after ~1.2s by the click handler.
+ */
+.citation-target {
+    background: rgb(var(--accent-rgb) / 0.14);
+    border-radius: 2px;
+    transition: background 240ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .citation-target {
+        transition: none;
+    }
+}
+
+/* The cited entry is the one being pointed at, so give it a target to point at. */
+.citation-list li {
+    scroll-margin-block: var(--space-sm);
+}
+
+/*
  * The persona segmented control.
  *
  * The radio itself is not display:none — that would remove it from the tab order and

@@ -57,6 +57,15 @@ export function isAllowedNavPath(path: unknown): path is string {
 export interface RenderModelTextOptions {
     /** `<br/>` or `<br>`, for soft breaks inside a paragraph. */
     lineBreak?: string;
+    /**
+     * What to do with `[^id]` citation markers.
+     *
+     * `'mark'` emits a superscript for the client to number against the resolved
+     * sources. `'strip'` removes them, and is for a surface that renders no apparatus —
+     * the command palette shows prose only, so a marker there could never be given a
+     * number and would be a footnote reference to a footnote that is not on the page.
+     */
+    citations?: 'mark' | 'strip';
 }
 
 /**
@@ -67,13 +76,37 @@ export interface RenderModelTextOptions {
  * URLs server-side so a link can only ever point somewhere the corpus knows about. A
  * markdown link in an answer stays visible as literal text, which is the safe failure.
  */
-function inlineMarks(text: string): string {
+function inlineMarks(text: string, citations: 'mark' | 'strip'): string {
     return text
         // Bold before anything else, so its inner asterisks are consumed here and
         // cannot be re-read as emphasis or as a bullet.
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/`([^`]+?)`/g, '<code>$1</code>');
+        .replace(/`([^`]+?)`/g, '<code>$1</code>')
+        .replace(
+            CITATION_MARKER,
+            citations === 'strip' ? '' : '<sup class="citation-ref" data-source-id="$1"></sup>',
+        );
 }
+
+/**
+ * `[^blog:some-post]` — the model marking which source a claim rests on.
+ *
+ * The id, not a number. Asking the model to write `[1]` would require it to keep its
+ * own numbering in step with a `citeSources` call it makes later, which it will
+ * eventually get wrong; ids are stable and already the tool's vocabulary, so the
+ * ordinal is ours to assign. It is the same reasoning that keeps URLs server-resolved.
+ *
+ * Any space before it is eaten with it. A footnote marker hugs the word it belongs
+ * to; the model writes `systemer [^influence:piketty].` about as often as it writes
+ * the tight form, and which one it picked should not decide the typography.
+ *
+ * The charset is the one corpus ids actually use — `blog:slug`, `cv:experience:0`,
+ * `video:slug` — and deliberately excludes every character `escapeHtml` rewrites. So a
+ * marker containing a quote or an angle bracket does not match at all and survives as
+ * literal text, rather than matching and being interpolated into an attribute. The id
+ * is a lookup key on the client and never becomes an href.
+ */
+const CITATION_MARKER = /[ \t]*\[\^([A-Za-z0-9:@._-]+)\]/g;
 
 /**
  * Turn model prose into HTML that is safe to assign to innerHTML.
@@ -96,7 +129,8 @@ function inlineMarks(text: string): string {
  * markup. Nothing here re-introduces unescaped input.
  */
 export function renderModelText(raw: unknown, opts: RenderModelTextOptions = {}): string {
-    const { lineBreak = '<br/>' } = opts;
+    const { lineBreak = '<br/>', citations = 'mark' } = opts;
+    const marks = (t: string) => inlineMarks(t, citations);
 
     // Nothing below this line trusts the model.
     const escaped = escapeHtml(raw);
@@ -107,12 +141,12 @@ export function renderModelText(raw: unknown, opts: RenderModelTextOptions = {})
 
     const flushParagraph = () => {
         if (!paragraph.length) return;
-        out.push(`<p>${inlineMarks(paragraph.join(lineBreak))}</p>`);
+        out.push(`<p>${marks(paragraph.join(lineBreak))}</p>`);
         paragraph = [];
     };
     const flushList = () => {
         if (!list) return;
-        const items = list.items.map((i) => `<li>${inlineMarks(i)}</li>`).join('');
+        const items = list.items.map((i) => `<li>${marks(i)}</li>`).join('');
         out.push(`<${list.tag}>${items}</${list.tag}>`);
         list = null;
     };
@@ -175,7 +209,7 @@ export function renderModelText(raw: unknown, opts: RenderModelTextOptions = {})
             // Offset by two: an answer sits inside a page that already owns h1 and h2,
             // so the model's top-level `#` becomes an h3 rather than a second h1.
             const level = Math.min(6, heading[1].length + 2);
-            out.push(`<h${level}>${inlineMarks(heading[2])}</h${level}>`);
+            out.push(`<h${level}>${marks(heading[2])}</h${level}>`);
             continue;
         }
 

@@ -46,14 +46,14 @@ export async function onRequest(_context: APIContext, next: MiddlewareNext) {
     const publicPostRoutes = new Set([
         "/api/guestbook",
         "/api/chat",
-        "/api/stt",
         "/api/contact",
         "/api/subscribe",
-        // Both of these are called by widgets a logged-out visitor can see, and both
-        // were missing here — so the chat's speak button and the DataPlayground's
-        // "generate SQL" returned 401 to everyone except a signed-in Anton. They now
-        // carry their own rate limits, which the auth gate had been standing in for.
-        "/api/speak",
+        // Called by a widget a logged-out visitor can see, and it was missing here — so
+        // the DataPlayground's "generate SQL" returned 401 to everyone except a signed-in
+        // Anton. It carries its own rate limit, which the auth gate had stood in for.
+        //
+        // /api/speak and /api/stt were listed here too, until both were deleted: voice
+        // now runs entirely in the browser and needs no endpoint.
         "/api/text-to-sql",
     ]);
     const normalizedPath = _context.url.pathname.replace(/\/$/, "") || "/";

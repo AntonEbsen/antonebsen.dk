@@ -4,12 +4,13 @@ import { checkRateLimit } from '../../lib/ratelimit';
 import { CHAT_MODEL } from '../../lib/ai/model';
 import { checkReadOnly } from '../../lib/ai/sql-guard';
 import { checkBudget } from '../../lib/ai/budget';
+import { budgetMessage } from '../../lib/ai/budget-copy';
 
 export const prerender = false;
 
 export const POST = async ({ request }: { request: Request }) => {
     try {
-        const { text, schema } = await request.json();
+        const { text, schema, lang } = await request.json();
 
         const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
         // Shares the chat budget: same provider, same cost profile.
@@ -20,7 +21,10 @@ export const POST = async ({ request }: { request: Request }) => {
         // Shares the site's spend ceiling: same provider, same bill.
         const budget = await checkBudget(clientIP);
         if (!budget.allowed) {
-            return new Response(JSON.stringify({ message: budget.message }), { status: 429 });
+            return new Response(
+                JSON.stringify({ message: budgetMessage(budget.scope, lang, budget.message) }),
+                { status: 429 },
+            );
         }
 
         const anthropic = createClient();

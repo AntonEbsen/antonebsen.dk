@@ -574,7 +574,7 @@ const quickActions: { label: string; icon: string; url?: string; event?: string 
           if (event.type === 'text') {
             accumulatedText += event.text;
             if (textContainer) {
-              textContainer.innerHTML = renderModelText(accumulatedText, { lineBreak: '<br>' });
+              textContainer.innerHTML = renderModelText(accumulatedText, { lineBreak: '<br>', citations: 'strip' });
             }
           } else if (event.type === 'error') {
             accumulatedText = event.message;
