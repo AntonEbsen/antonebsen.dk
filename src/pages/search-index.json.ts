@@ -38,9 +38,22 @@ export async function GET() {
         { title: "The Ledger", url: "/en/ledger", type: "page", icon: "fa-solid fa-book", tags: ["ledger", "achievements", "record"], lang: "en" },
         { title: "Das Hauptbuch", url: "/de/ledger", type: "page", icon: "fa-solid fa-book", tags: ["hauptbuch", "aufzeichnung"], lang: "de" },
         { title: "Hovedbogen", url: "/ledger", type: "page", icon: "fa-solid fa-book", tags: ["hovedbog", "protokol"], lang: "da" },
-        { title: "CV", url: "/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["resume"], lang: "en" },
-        { title: "CV", url: "/da/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["cv"], lang: "da" },
-        { title: "Lebenslauf", url: "/de/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["lebenslauf"], lang: "de" }
+        // These two had their URLs crossed: Danish pointed at /da/cv, which 404s
+        // because Danish is served at the root, and English pointed at /cv, which is
+        // the Danish page. Four consumers render these rows as real links — the
+        // command palette, the navbar dropdown, /search and public/assets/js/search.js.
+        { title: "CV", url: "/en/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["resume"], lang: "en" },
+        { title: "CV", url: "/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["cv"], lang: "da" },
+        { title: "Lebenslauf", url: "/de/cv", type: "page", icon: "fa-solid fa-file-pdf", tags: ["lebenslauf"], lang: "de" },
+
+        // Someone searching for the iD should find it. These point at the CV rather
+        // than orcid.org: every URL in this index is site-relative, and the consumers
+        // above render them as plain anchors with no rel — a single external row
+        // would be the first to send a visitor off-site out of one. /cv displays the
+        // full iD, so this lands them one click away with that invariant intact.
+        { title: "ORCID iD", url: "/cv", type: "page", icon: "fa-brands fa-orcid", tags: ["orcid", "forskning", "publikationer", "verificer"], lang: "da" },
+        { title: "ORCID iD", url: "/en/cv", type: "page", icon: "fa-brands fa-orcid", tags: ["orcid", "research", "publications", "verify"], lang: "en" },
+        { title: "ORCID iD", url: "/de/cv", type: "page", icon: "fa-brands fa-orcid", tags: ["orcid", "forschung", "publikationen", "verifizieren"], lang: "de" }
     ];
     index.push(...commands);
 
