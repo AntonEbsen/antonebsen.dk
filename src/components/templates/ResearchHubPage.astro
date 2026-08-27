@@ -5,6 +5,8 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Pill from '@components/ui/Pill.astro';
 import StructuralTransformation from '@components/ui/StructuralTransformation.astro';
+import OrcidId from '@components/ui/OrcidId.astro';
+import { ORCID_URI, record as orcidRecord } from '@lib/orcid';
 
 interface Props {
   lang: 'da' | 'en';
@@ -12,6 +14,37 @@ interface Props {
 
 const { lang } = Astro.props;
 const isDa = lang === 'da';
+
+/**
+ * Publications, straight off the ORCID record.
+ *
+ * The record has no works on it today, so this renders nothing at all — no
+ * heading, no "coming soon", no empty state. An empty section announcing an empty
+ * section is worse than silence, and a publications list is the one thing on a
+ * research page that must never overstate itself.
+ *
+ * It is built now rather than later because the path to filling it runs entirely
+ * outside this repo: deposit something with Zenodo, get a DOI, and ORCID picks it
+ * up. After that `npm run sync:orcid` is the whole deployment.
+ */
+const works = orcidRecord.works;
+
+const worksJsonLd = works.map((w) => ({
+    '@context': 'https://schema.org',
+    '@type': 'ScholarlyArticle',
+    headline: w.title,
+    name: w.title,
+    inLanguage: lang,
+    ...(w.date ? { datePublished: w.date } : {}),
+    ...(w.doi ? { identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: w.doi } } : {}),
+    ...(w.url ? { url: w.url } : {}),
+    ...(w.journal ? { isPartOf: { '@type': 'Periodical', name: w.journal } } : {}),
+    author: [{
+        '@type': 'Person',
+        '@id': ORCID_URI,
+        name: 'Anton Meier Ebsen Jørgensen',
+    }],
+}));
 
 const content = {
     da: {
@@ -215,6 +248,38 @@ const t = content[lang];
                 ))}
             </div>
         </div>
+
+        {works.length > 0 && (
+          <div class="border-t border-white/5 pt-32">
+            <div class="flex flex-wrap items-baseline justify-between gap-4 mb-12">
+              <h2 class="text-3xl uppercase tracking-tight">{isDa ? 'Publikationer' : 'Publications'}</h2>
+              <OrcidId variant="full" />
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+              {works.map(w => (
+                <article class="p-6 bg-white/[0.01] border border-white/5 rounded-xl">
+                  <h3 class="text-lg font-bold mb-2">
+                    {w.url
+                      ? <a href={w.url} target="_blank" rel="noopener" class="hover:text-accent transition-colors">{w.title}</a>
+                      : w.title}
+                  </h3>
+                  <p class="text-xs text-dim uppercase tracking-wider">
+                    {[w.journal, w.date, w.type].filter(Boolean).join(' · ')}
+                  </p>
+                  {w.doi && (
+                    <a href={`https://doi.org/${w.doi}`} target="_blank" rel="noopener"
+                       class="text-xs text-accent font-mono mt-2 inline-block hover:underline">
+                      doi:{w.doi}
+                    </a>
+                  )}
+                </article>
+              ))}
+            </div>
+
+            <script type="application/ld+json" set:html={JSON.stringify(worksJsonLd)} />
+          </div>
+        )}
 
         <!-- Structural Transformation Section -->
         <div class="border-t border-white/5 pt-32">
