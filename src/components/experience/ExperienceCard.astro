@@ -1,6 +1,7 @@
 ---
 import Card from '@components/ui/Card.astro';
 import Pill from '@components/ui/Pill.astro';
+import OrcidId from '@components/ui/OrcidId.astro';
 
 interface Link {
   text: string;
@@ -24,6 +25,17 @@ interface Props {
   links?: Link[];
   logo?: string;
   technologies?: string[];
+  /**
+   * Set when this role's organisation appears on the public ORCID record.
+   *
+   * Nothing sets it today: the record's one employment is the master's position at
+   * the University of Copenhagen, which this site files under `cv.education`, while
+   * every entry in `cv.experience` is a role ORCID does not carry. It is wired the
+   * same way the publications renderer is — invisible until the record says
+   * otherwise, rather than needing a second pass then.
+   */
+  verifiedOnOrcid?: boolean;
+  lang?: 'da' | 'en' | 'de';
 }
 
 const { 
@@ -36,7 +48,9 @@ const {
   highlights, 
   links,
   logo,
-  technologies
+  technologies,
+  verifiedOnOrcid,
+  lang = 'da'
 } = Astro.props;
 ---
 
@@ -51,6 +65,11 @@ const {
         <div>
             <h3 class="text-base font-bold leading-tight m-0">{title} · {organization}</h3>
             <p class="text-[13px] text-dim mt-1 m-0">{location} · {period}</p>
+            {/* A div rather than a p, so the global `p a { underline }` prose rule
+                does not claim it — see EducationTimeline for the same note. */}
+            {verifiedOnOrcid && (
+                <div class="mt-1.5"><OrcidId variant="verified" lang={lang} /></div>
+            )}
         </div>
     </div>
     {type && <Pill variant="accent">{type}</Pill>}

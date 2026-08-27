@@ -1,7 +1,10 @@
 ---
 import Card from '@components/ui/Card.astro';
 import Pill from '@components/ui/Pill.astro';
+import OrcidId from '@components/ui/OrcidId.astro';
 
+// This interface was declared twice, identically — TypeScript merges the two, so it
+// compiled and nothing caught it. One copy.
 interface TimelineEvent {
   year: string;
   title: string;
@@ -9,23 +12,17 @@ interface TimelineEvent {
   description: string;
   type: 'degree' | 'milestone' | 'job';
   progress?: number; // 0-100 for degree completion
-}
-
-interface TimelineEvent {
-  year: string;
-  title: string;
-  institution?: string;
-  description: string;
-  type: 'degree' | 'milestone' | 'job';
-  progress?: number; 
+  /** Set when this row's institution appears on the public ORCID record. */
+  verifiedOnOrcid?: boolean;
 }
 
 interface Props {
     title?: string;
     events: TimelineEvent[];
+    lang?: 'da' | 'en' | 'de';
 }
 
-const { title = "Academic Journey", events } = Astro.props;
+const { title = "Academic Journey", events, lang = 'da' } = Astro.props;
 ---
 
 <div class="education-timeline">
@@ -62,6 +59,17 @@ const { title = "Academic Journey", events } = Astro.props;
                                     <span class="text-xs font-mono text-accent mb-1 block">{event.year}</span>
                                     <h4 class="text-lg font-bold">{event.title}</h4>
                                     {event.institution && <p class="text-sm text-dim">{event.institution}</p>}
+                                    {/* Sits under the institution because that is the
+                                        claim the record actually backs — not the degree
+                                        title, and not the completion figure. */}
+                                    {/* A div, not a p. The global prose rule
+                                        `p a:not(.btn)… { text-decoration: underline }`
+                                        outranks the component's own styling, and it is
+                                        meant for links inside body copy — this is
+                                        chrome annotating a row. */}
+                                    {event.verifiedOnOrcid && (
+                                        <div class="mt-1.5"><OrcidId variant="verified" lang={lang} /></div>
+                                    )}
                                 </div>
                                 {event.progress && <Pill variant="default" class="text-xs">{event.progress}%</Pill>}
                             </div>
