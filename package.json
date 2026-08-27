@@ -19,6 +19,7 @@
     "test:a11y:update": "node scripts/update-a11y-baseline.mjs",
     "check:ratchet": "node scripts/check-ratchet.mjs",
     "verify:model": "node scripts/verify-model.mjs",
+    "sync:orcid": "node scripts/sync-orcid.mjs",
     "eval": "node scripts/eval.mjs"
   },
   "dependencies": {

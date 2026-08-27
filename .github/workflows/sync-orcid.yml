@@ -1,0 +1,63 @@
+name: Sync ORCID record
+
+# Keeps src/data/orcid.json in step with the public record at
+# https://orcid.org/0009-0006-4129-8044.
+#
+# The site reads a committed snapshot rather than fetching at build time, so a
+# change made on orcid.org otherwise sits there until someone remembers to run
+# `npm run sync:orcid` by hand. The obvious failure is the one worth naming: a
+# publication is added to the record, and the publications section — which is built,
+# tested and gated on `works.length > 0` — stays empty because nothing pulled it.
+#
+# Weekly rather than nightly. The record changes a few times a year, and every run
+# that finds nothing is a workflow minute spent to write no diff.
+#
+# Needs no secrets: the ORCID public API is tokenless.
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Refresh the committed snapshot
+    runs-on: ubuntu-latest
+    # To commit src/data/orcid.json back. Nothing else in this job writes to the repo.
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch the record
+        run: npm run sync:orcid
+
+      # The parse and the CV conformance assertions run against whatever was just
+      # written, so a record that has drifted from the CV fails here rather than
+      # being committed and failing the next unrelated push.
+      - name: Check the snapshot against the CV
+        run: npx vitest run src/lib/orcid.test.ts
+
+      - name: Commit if the record changed
+        run: |
+          if git diff --quiet -- src/data/orcid.json; then
+            echo "record unchanged since the last run; nothing to commit"
+            exit 0
+          fi
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add src/data/orcid.json
+          # [skip ci] so committing the snapshot does not trigger other workflows.
+          git commit -m "chore(orcid): sync public record [skip ci]"
+          git push
