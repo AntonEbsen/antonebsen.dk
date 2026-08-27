@@ -11,6 +11,7 @@ import ContactCard from '@components/common/ContactCard.astro';
 import ExperienceCounter from '@components/experience/ExperienceCounter.astro';
 import LogoGrid from '@components/common/LogoGrid.astro';
 import { getEntry } from 'astro:content';
+import { orcidBacks } from '@lib/orcid';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -136,6 +137,8 @@ const contactLink = isDa ? '/contact' : '/en/contact';
               links={role.links}
               logo={role.logo}
               technologies={role.technologies}
+              verifiedOnOrcid={Boolean(orcidBacks(role.organization))}
+              lang={lang}
             />
           ))}
           {experience.length === 0 && <EmptyState message={content.roles.empty} icon="fa-solid fa-briefcase" />}

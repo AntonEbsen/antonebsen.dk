@@ -21,6 +21,7 @@
 
 import { resolveTranscript } from '../video-transcript';
 import { formatTimestamp } from '../transcript';
+import { ORCID_URI, record as orcidRecord } from '../orcid';
 
 export type Lang = 'en' | 'da' | 'de';
 
@@ -158,6 +159,24 @@ function blogUrl(slug: string, lang: Lang): string {
 function section(heading: string, lines: string[]): string {
     return lines.length ? `\n[${heading}]\n${lines.join('\n')}\n` : '';
 }
+
+/**
+ * Citable id for each ORCID affiliation, numbered within its kind so they read as
+ * `orcid:education:0` and `orcid:employment:0` rather than continuing one count
+ * across both. Numbering within the kind also means adding a degree does not
+ * renumber the jobs — worth having for an id the model is asked to reproduce
+ * exactly, and which a reader may have followed from an earlier answer.
+ *
+ * Computed once here rather than per call, since the record is a static import.
+ */
+const orcidIds: string[] = (() => {
+    const seen: Record<string, number> = {};
+    return orcidRecord.affiliations.map((a) => {
+        const n = seen[a.kind] ?? 0;
+        seen[a.kind] = n + 1;
+        return `orcid:${a.kind}:${n}`;
+    });
+})();
 
 export function buildCorpus(lang: Lang): Corpus {
     const cv = byLang(cvByLang, lang);
@@ -323,6 +342,36 @@ export function buildCorpus(lang: Lang): Corpus {
         return `- (${id}) ${item.year}: ${item.title}. ${item.description}`;
     });
 
+    // ── The public record ───────────────────────────────────────────────────────
+    // Every other source here is Anton writing about Anton, so a citation is only
+    // ever "he says so on his own site". ORCID is the one entry a reader can take
+    // to a third party and check, which makes it worth citing even though the
+    // affiliation facts are already in the CV above.
+    const orcid = [
+        `- (orcid:record) Anton's ORCID iD is ${orcidRecord.orcid}, at ${ORCID_URI}. `
+        + 'It is a public, independently held record of his academic affiliations. '
+        + 'Cite it when asked where he studied or works, or how a claim can be verified.',
+        ...orcidRecord.affiliations.map((a, i) => {
+            const period = `${a.start ?? '?'} to ${a.end ?? 'present'}`;
+            return `- (${orcidIds[i]}) ${a.role}, ${a.department ?? ''}, ${a.organization} (${period}). Confirmed on the ORCID record.`;
+        }),
+    ];
+
+    sources.push({ id: 'orcid:record', title: `ORCID iD ${orcidRecord.orcid}`, url: ORCID_URI });
+    orcidRecord.affiliations.forEach((a, i) => {
+        sources.push({
+            id: orcidIds[i],
+            title: `${a.role} — ${a.organization} (ORCID)`,
+            url: ORCID_URI,
+        });
+    });
+
+    // The record has no works yet. Saying so keeps the assistant from implying a
+    // publication list exists behind the link.
+    if (orcidRecord.works.length === 0) {
+        orcid.push('- The record lists no published works yet, so do not imply it does.');
+    }
+
     const resourcesDoc = byLang(resourcesByLang, lang);
     const resources = (resourcesDoc.items ?? []).map((item: Json, i: number) => {
         const id = `resource:${i}`;
@@ -336,6 +385,7 @@ export function buildCorpus(lang: Lang): Corpus {
         'Parenthesised ids such as (blog:ecb-part-1) identify a source you may cite.',
         section('Education', education),
         section('Work Experience', experience),
+        section('Public Record (ORCID) — verifiable by a third party', orcid),
         section('Technical Skills', skillLines),
         section('Coursework', courses),
         section('Credentials and Organisations', credentials),

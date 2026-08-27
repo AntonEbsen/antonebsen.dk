@@ -9,6 +9,7 @@ import SectionHeading from '@components/ui/SectionHeading.astro';
 import ContactCard from '@components/common/ContactCard.astro';
 import { getEntry } from 'astro:content';
 import { supabase } from '@lib/supabase';
+import { matchesUcph, orcidBacks } from '@lib/orcid';
 
 // New Components
 import EducationTimeline from '@components/education/EducationTimeline.astro';
@@ -34,8 +35,13 @@ const cv = cvEntry.data;
 
 // Data Fetching for Education (JSON)
 const experience = cv.education || [];
-// Matches based on keywords, could be improved with IDs in JSON
-const ku = experience.find(e => e.institution.includes("Copenhagen") || e.institution.includes("Københavns Universitet"));
+// This was `institution.includes("Copenhagen") || includes("Københavns Universitet")`,
+// which matched Danish and English and silently missed the German CV's "Universität
+// Kopenhagen" — so /de/education fell through to the hardcoded English defaults
+// below and showed "MSc Economics, University of Copenhagen" to German readers.
+// matchesUcph knows all three spellings and is the same matcher the ORCID
+// conformance test uses, so the two cannot drift apart.
+const ku = experience.find(e => matchesUcph(e.institution));
 const hhx = experience.find(e => e.degree.includes("HHX"));
 
 // Data Fetching for Projects (Supabase)
@@ -58,6 +64,12 @@ const certificationLink = isDa ? '/certifications' : '/en/certifications';
 const cvLink = isDa ? '/cv' : '/en/cv';
 
 // Data Construction for Timeline
+//
+// `verifiedOnOrcid` is set per row rather than for the page. Two of these four
+// institutions are on the public record and two are not, and that distinction is the
+// entire value of the marker — if it appeared on every row it would be decoration
+// rather than provenance. Djøf and the HHX stay unmarked until they are on the
+// record, at which point orcidBacks starts returning them and they mark themselves.
 const timelineEvents = [
     {
         year: '2021 – Present',
@@ -65,28 +77,35 @@ const timelineEvents = [
         institution: ku?.institution || 'University of Copenhagen',
         description: ku?.description || '',
         type: 'degree',
-        progress: 85
+        progress: 85,
+        verifiedOnOrcid: Boolean(orcidBacks(ku?.institution || 'University of Copenhagen'))
     },
     {
         year: '2023 – Present',
         title: isDa ? 'Studenterunderviser' : 'Teaching Assistant',
         institution: 'Djøf',
         description: isDa ? 'Undervisning i Excel & VBA.' : 'Teaching Excel & VBA.',
-        type: 'job'
+        type: 'job',
+        verifiedOnOrcid: Boolean(orcidBacks('Djøf'))
     },
     {
         year: '2021',
+        // The title is still English for German readers; there is no separate German
+        // BSc string in the CV, which combines the two degrees into one entry. The
+        // institution does not have to be: `ku` has it in the right language.
         title: isDa ? 'Bachelor i Økonomi' : 'BSc in Economics',
-        institution: 'University of Copenhagen',
+        institution: ku?.institution || 'University of Copenhagen',
         description: isDa ? 'Speciale i Global Financial Cycle.' : 'Thesis on Global Financial Cycle.',
-        type: 'degree'
+        type: 'degree',
+        verifiedOnOrcid: Boolean(orcidBacks(ku?.institution || 'University of Copenhagen'))
     },
     {
         year: '2018 – 2021',
         title: hhx?.degree || 'HHX',
         institution: hhx?.institution || 'Celf',
         description: hhx?.description || '',
-        type: 'degree'
+        type: 'degree',
+        verifiedOnOrcid: Boolean(orcidBacks(hhx?.institution || 'Celf'))
     }
 ];
 
@@ -189,9 +208,10 @@ const teachingStats = [
         <div class="flex flex-col gap-8">
             <!-- TIMELINE -->
             <Section id="timeline">
-                 <EducationTimeline 
-                    title={isDa ? "Min Akademiske Rejse" : "My Academic Journey"} 
+                 <EducationTimeline
+                    title={isDa ? "Min Akademiske Rejse" : "My Academic Journey"}
                     events={timelineEvents}
+                    lang={lang}
                  />
             </Section>
 

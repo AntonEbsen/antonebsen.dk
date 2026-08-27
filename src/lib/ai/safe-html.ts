@@ -54,6 +54,28 @@ export function isAllowedNavPath(path: unknown): path is string {
     return typeof path === 'string' && NAV_ALLOWLIST.includes(path);
 }
 
+/**
+ * External URLs a citation may link to.
+ *
+ * Citations were site-relative only, which was the right default and one source
+ * outgrew it: the ORCID record is the single thing the assistant can cite that is
+ * not Anton's own account of himself, and its whole value is that it lives
+ * somewhere else. Rendering it as unlinked text would have made the one verifiable
+ * footnote the only one a reader could not follow.
+ *
+ * Exact membership, like NAV_ALLOWLIST above — not a hostname or prefix test. A
+ * prefix check on `https://orcid.org/` would admit any path under that host, and
+ * `resolveSources` already guarantees these strings come from the corpus rather
+ * than the model, so there is nothing to gain by loosening it further.
+ */
+export const CITATION_URL_ALLOWLIST: readonly string[] = Object.freeze([
+    'https://orcid.org/0009-0006-4129-8044',
+]);
+
+export function isAllowedCitationUrl(url: unknown): url is string {
+    return typeof url === 'string' && CITATION_URL_ALLOWLIST.includes(url);
+}
+
 export interface RenderModelTextOptions {
     /** `<br/>` or `<br>`, for soft breaks inside a paragraph. */
     lineBreak?: string;

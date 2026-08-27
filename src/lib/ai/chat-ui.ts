@@ -1,4 +1,4 @@
-import { isAllowedNavPath } from './safe-html';
+import { isAllowedNavPath, isAllowedCitationUrl } from './safe-html';
 import type { Source } from './corpus';
 import { readChartChrome, readChartPalette } from './chat-theme';
 
@@ -12,7 +12,9 @@ import { readChartChrome, readChartPalette } from './chat-theme';
  *
  * Everything here builds nodes and sets `textContent`. No model-supplied string is
  * ever interpolated into markup, and the only href that can be produced is a
- * site-relative path that came from the corpus, not from the model.
+ * site-relative path, or one of the exact external URLs on
+ * CITATION_URL_ALLOWLIST — either way a string that came from the corpus rather
+ * than from the model.
  */
 
 export interface ChatUIConfig {
@@ -330,10 +332,16 @@ export function createChatRenderers(config: ChatUIConfig) {
             const ordinal = index.size + 1;
             const item = document.createElement('li');
             item.id = 'cite-' + seq + '-' + ordinal;
-            // Defensive second check: only ever emit a site-relative link.
-            const linkable = typeof s.url === 'string' && s.url.startsWith('/');
-            const el = document.createElement(linkable ? 'a' : 'span');
-            if (linkable) el.setAttribute('href', s.url as string);
+            // Defensive second check: a site-relative path, or one of the handful of
+            // external URLs on the citation allowlist.
+            const relative = typeof s.url === 'string' && s.url.startsWith('/');
+            const external = isAllowedCitationUrl(s.url);
+            const el = document.createElement(relative || external ? 'a' : 'span');
+            if (relative || external) el.setAttribute('href', s.url as string);
+            if (external) {
+                el.setAttribute('target', '_blank');
+                el.setAttribute('rel', 'noopener noreferrer');
+            }
             el.textContent = s.title;
             item.appendChild(el);
             list!.appendChild(item);

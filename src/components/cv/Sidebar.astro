@@ -6,6 +6,7 @@
 // 785 KB original for a slot that renders at 280px tall.
 import { Image } from 'astro:assets';
 import myImageSrc from '../../assets/img/billede-af-mig.jpg';
+import OrcidId from '@components/ui/OrcidId.astro';
 
 interface Props {
   data: any; // Skills data
@@ -72,6 +73,14 @@ const emojiMap: Record<string, string> = {
             <i class="fa-brands fa-github" aria-hidden="true"></i>
           </a>
         </span>
+      </div>
+
+      {/* Its own row rather than another profile icon: on a CV the iD is the one
+          line a reader can take to a third party and check, which is a different
+          kind of thing from a link to more of Anton's own writing. */}
+      <div class="meta-row">
+        <span class="meta-label">ORCID</span>
+        <span class="meta-value"><OrcidId variant="full" /></span>
       </div>
     </div>
 
