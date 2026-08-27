@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
+import OrcidId from '@components/ui/OrcidId.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -87,6 +88,7 @@ const year = new Date().getFullYear();
           <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
             <i class="fa-brands fa-github" aria-hidden="true"></i>
           </a>
+          <OrcidId variant="compact" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20" />
         </div>
       </section>
     </div>

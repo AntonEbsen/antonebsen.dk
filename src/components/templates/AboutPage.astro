@@ -1,6 +1,7 @@
 ﻿---
 import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
+import OrcidId from '@components/ui/OrcidId.astro';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -128,6 +129,12 @@ try {
     .btn:hover { transform: translateY(-2px); }
     .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
 
+    .orcid-fact {
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .section-title {
       font-size: 1.5rem;
       font-weight: 700;
@@ -230,6 +237,11 @@ try {
                 {data?.hero?.quickFacts?.facts?.map((fact: any) => (
                     <div class="fact"><i class={fact.icon}></i><span>{fact.text}</span></div>
                 ))}
+            </div>
+            {/* The facts above are Anton's own account of himself. This one is the
+                only line in the box that a reader can go and verify. */}
+            <div class="orcid-fact">
+              <OrcidId variant="full" />
             </div>
           </div>
 

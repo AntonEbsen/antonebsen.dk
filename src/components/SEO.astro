@@ -1,5 +1,6 @@
 ---
 import { availableAlternates } from '@lib/routes';
+import { ORCID_URI, UCPH_ROR, sameAsProfiles, record as orcidRecord } from '@lib/orcid';
 
 export interface Props {
   title: string;
@@ -133,10 +134,23 @@ const hreflangs = [
   "@graph": [
     {
       "@type": "Person",
+      // The ORCID URI as @id, which is what ORCID itself publishes as the identity
+      // of this person (curl -H "Accept: application/ld+json" https://orcid.org/…).
+      // ORCID has linked to antonebsen.dk since the record was created; until now
+      // nothing here pointed back, so there was no way for a crawler to join the
+      // two. This is the half that was missing.
+      "@id": ORCID_URI,
       "name": "Anton Meier Ebsen Jørgensen",
       "url": "https://antonebsen.dk",
       "image": socialImageURL,
       "jobTitle": "Economist",
+      // @id alone is not read by much. identifier is, so the iD is stated twice
+      // on purpose, in the two forms consumers actually look for.
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "ORCID",
+        "value": ORCID_URI
+      },
       "description": "Economist and quantitative researcher specializing in macroeconomics, monetary policy and cliometrics.",
       "knowsAbout": [
         "Macroeconomics",
@@ -146,20 +160,38 @@ const hreflangs = [
         "Economic modeling",
         "Data analysis"
       ],
+      // The ROR id is what actually disambiguates the university — "University of
+      // Copenhagen" is a string that several institutions could plausibly match,
+      // and ORCID's own JSON-LD identifies it exactly this way.
       "alumniOf": {
         "@type": "CollegeOrUniversity",
-        "name": "University of Copenhagen"
+        "name": "University of Copenhagen",
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "ROR",
+          "value": UCPH_ROR
+        }
+      },
+      "affiliation": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Copenhagen",
+        "department": "Department of Economics",
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "ROR",
+          "value": UCPH_ROR
+        }
       },
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Copenhagen",
         "addressCountry": "DK"
       },
-      "sameAs": [
-        "https://www.linkedin.com/in/antonebsen/",
-        "https://github.com/AntonEbsen",
-        "https://x.com/antonebsen"
-      ]
+      // Derived from the ORCID record rather than hand-kept, so adding a profile
+      // there is enough to have it appear here. X is passed in because it is on the
+      // site but not on the record; the tracking query string ORCID holds on the
+      // ResearchGate link is stripped on the way through.
+      "sameAs": sameAsProfiles(orcidRecord, ["https://x.com/antonebsen"])
     },
     {
       "@type": "WebSite",

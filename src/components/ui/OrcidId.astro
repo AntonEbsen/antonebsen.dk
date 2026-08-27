@@ -1,0 +1,156 @@
+---
+/**
+ * An ORCID iD, displayed to ORCID's own guidelines.
+ *
+ * Two variants, because the guidelines ask for different things in different
+ * places. `full` is their preferred form — the mark followed by the complete URI,
+ * scheme included — and belongs where a reader is weighing credentials. `compact`
+ * is the mark alone, for a row of profile icons where a bare URL would be the odd
+ * one out.
+ *
+ * The mark comes from Font Awesome rather than ORCID's brand library. Every other
+ * brand icon on this site is an FA glyph, the CDN stylesheet is already loaded in
+ * BaseLayout, and it means no trademarked asset gets vendored into a public repo.
+ *
+ * This is the *unauthenticated* display: nobody has signed in through ORCID to
+ * prove they hold this iD, so it uses the plain green mark and not the
+ * authenticated-iD variant, which would be a claim we have not earned.
+ *
+ * `verified` is the third: the mark plus a short label, for marking which CV rows
+ * the record independently backs. It is the only variant carrying words, and so the
+ * only one that takes a `lang`.
+ */
+import { ORCID_ID, ORCID_URI } from '@lib/orcid';
+
+interface Props {
+  variant?: 'full' | 'compact' | 'verified';
+  /** Only read by `verified`, the one variant with words in it. */
+  lang?: 'da' | 'en' | 'de';
+  class?: string;
+}
+
+const { variant = 'full', lang = 'da', class: className } = Astro.props;
+
+// ORCID green. Deliberately not a token in src/styles/tokens.css — that file is the
+// single definition of the site's palette and tests/theme.spec.ts asserts its hex
+// values exactly. A third party's brand colour is neither.
+const ORCID_GREEN = '#A6CE39';
+
+// Three words, used only here. A local table matches how chat-ui.ts keeps
+// CITATION_LABELS rather than reaching into src/i18n/ui.ts, which covers the nav
+// and footer and would grow a section for this one string.
+const VERIFIED_LABEL: Record<string, string> = {
+  da: 'Verificeret på ORCID',
+  en: 'Verified on ORCID',
+  de: 'Auf ORCID verifiziert',
+};
+
+const verifiedLabel = VERIFIED_LABEL[lang] ?? VERIFIED_LABEL.da;
+
+// The compact and full variants are a link to a record; the verified variant is a
+// claim about the row it sits on, so it says so before naming the destination.
+const ariaLabel = variant === 'verified'
+  ? `${verifiedLabel} - ${ORCID_ID}`
+  : `View ORCID record - ${ORCID_ID}`;
+
+const rootClass = { full: 'orcid-full', compact: 'orcid-compact', verified: 'orcid-verified' }[variant];
+---
+
+<a
+  href={ORCID_URI}
+  target="_blank"
+  rel="noopener"
+  aria-label={ariaLabel}
+  class:list={[rootClass, className]}
+>
+  <i class="fa-brands fa-orcid" aria-hidden="true" style={`color:${ORCID_GREEN}`}></i>
+  {/* The guidelines want the whole URI, https:// and all, not just the digits. */}
+  {variant === 'full' && <span class="orcid-uri">{ORCID_URI}</span>}
+  {variant === 'verified' && <span class="orcid-verified-label">{verifiedLabel}</span>}
+</a>
+
+<style>
+  .orcid-full {
+    display: inline-flex;
+    /* Not centred: in a narrow column the URI wraps to two lines, and a centred
+       mark floats between them instead of sitting beside the line it belongs to. */
+    align-items: flex-start;
+    gap: 0.5rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.875rem;
+    /* The iD is an identifier — a lining-figures, even-width rendering makes it
+       readable as one rather than as prose. */
+    font-variant-numeric: tabular-nums;
+    /* break-word rather than break-all: when it has to wrap it takes the hyphens
+       between the digit groups, instead of splitting a group down the middle and
+       making the iD harder to read back. */
+    overflow-wrap: break-word;
+  }
+
+  .orcid-full:hover .orcid-uri,
+  .orcid-full:focus-visible .orcid-uri {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  /* 24px is the size ORCID calls optimal; their floor is 16. */
+  .orcid-full i {
+    font-size: 24px;
+    flex: 0 0 auto;
+  }
+
+  .orcid-compact i {
+    font-size: 1.05rem;
+  }
+
+  /* Small and quiet on purpose. It annotates a row that is already there; if it
+     competed with the degree title it would read as a badge being awarded rather
+     than a source being named. */
+  .orcid-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .orcid-verified i {
+    font-size: 14px;
+  }
+
+  .orcid-verified:hover,
+  .orcid-verified:focus-visible {
+    color: var(--text-dim);
+  }
+
+  .orcid-verified:hover .orcid-verified-label,
+  .orcid-verified:focus-visible .orcid-verified-label {
+    text-decoration: underline;
+  }
+
+  @media print {
+    /* The mark is a web font that will not be there on paper, and a printed CV
+       still needs the iD to be readable. */
+    .orcid-full i {
+      display: none;
+    }
+    .orcid-full {
+      color: #000;
+    }
+
+    /* src/styles/print.css appends every external href in parentheses:
+         a[href^="http"]:after { content: " (" attr(href) ")" }
+       That is right for a link whose text is prose, and wrong for this one, whose
+       text is already the URI — the printed CV read the iD twice, in full, on one
+       line. The CV's "Download CV" button is window.print(), so this is the export
+       path rather than an edge case. */
+    .orcid-full::after {
+      content: none;
+    }
+  }
+</style>

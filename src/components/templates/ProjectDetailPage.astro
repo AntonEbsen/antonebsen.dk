@@ -18,6 +18,7 @@ import LabModal from '@components/project/LabModal';
 import RelatedVideos from '@components/ui/RelatedVideos.astro';
 import { getEntry } from 'astro:content';
 import { assetExists } from '@lib/public-asset';
+import { ORCID_URI, PUBLISHED_NAME } from '@lib/orcid';
 
 interface Props {
   lang: 'da' | 'en';
@@ -424,9 +425,13 @@ const firstSurname = (project.citation.authors ?? parseAuthors(project.citation.
     .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
 const citationKey = `${firstSurname}${citationYear ?? ''}`;
 
+// `orcid` is a convention rather than a standard BibTeX field — plain BibTeX ignores
+// unknown keys and most styles will not print it. It is here for the human reading
+// the .bib to tell this Anton Jørgensen from another one, not for the typesetter.
 const bibtexEntry = project.citation.bibtex ?? [
     `@misc{${citationKey},`,
     `  author = {${bibtexAuthors}},`,
+    `  orcid  = {${ORCID_URI}},`,
     `  title  = {${bibtexEscape(project.title)}},`,
     ...(citationYear ? [`  year   = {${citationYear}},`] : []),
     `  url    = {${canonicalUrl}}`,
@@ -446,10 +451,17 @@ const scholarlyJsonLd = {
     inLanguage: lang,
     ...(citationYear ? { datePublished: citationYear } : {}),
     url: canonicalUrl,
+    // `@id` is the ORCID URI, so every project resolves to the same person the
+    // homepage's Person node does. Without it these eleven pages each asserted an
+    // unconnected author by name alone — including the bachelor thesis, which is the
+    // most likely first work to appear on the record.
+    //
+    // Only Anton gets an `@id`. A collaborator's ORCID is theirs to publish, not
+    // ours to assert on their behalf, and guessing one wrong is worse than omitting it.
     author: (project.collaborators?.length
-        ? [{ '@type': 'Person', name: 'Anton Meier Ebsen Jørgensen' },
+        ? [{ '@type': 'Person', '@id': ORCID_URI, name: PUBLISHED_NAME },
            ...project.collaborators.map(c => ({ '@type': 'Person', name: c.name }))]
-        : [{ '@type': 'Person', name: 'Anton Meier Ebsen Jørgensen' }]),
+        : [{ '@type': 'Person', '@id': ORCID_URI, name: PUBLISHED_NAME }]),
     ...(hasPdf
         ? { encoding: { '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: `https://antonebsen.dk${project.citation.pdfUrl}` } }
         : {}),
