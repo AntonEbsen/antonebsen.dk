@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildCorpus, resolveSources, formatTranscript, type Lang } from './corpus';
+import { isAllowedCitationUrl } from './safe-html';
+import { ORCID_URI } from '../orcid';
 
 const LANGS: Lang[] = ['en', 'da', 'de'];
 
@@ -59,11 +61,26 @@ describe('buildCorpus — sources', () => {
         }
     });
 
-    it('only ever emits site-relative URLs', () => {
+    // This used to read "only ever emits site-relative URLs", which held until the
+    // ORCID record became citable — the one source whose value is that it is not
+    // hosted here. The guard is still the same guard: a URL leaves this file only
+    // if it is site-relative or named explicitly in the allowlist, so an arbitrary
+    // external link still cannot reach a citation.
+    it('emits site-relative URLs, or an explicitly allowlisted external one', () => {
         for (const lang of LANGS) {
             for (const s of buildCorpus(lang).sources) {
-                if (s.url) expect(s.url, s.id).toMatch(/^\//);
+                if (!s.url) continue;
+                const ok = s.url.startsWith('/') || isAllowedCitationUrl(s.url);
+                expect(ok, `${s.id} in ${lang}: ${s.url}`).toBe(true);
             }
+        }
+    });
+
+    it('cites the ORCID record, which is the only source not written by Anton', () => {
+        for (const lang of LANGS) {
+            const record = buildCorpus(lang).sources.find((s) => s.id === 'orcid:record');
+            expect(record?.url, lang).toBe(ORCID_URI);
+            expect(isAllowedCitationUrl(record?.url), lang).toBe(true);
         }
     });
 

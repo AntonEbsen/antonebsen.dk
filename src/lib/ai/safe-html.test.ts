@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { escapeHtml, isAllowedNavPath, NAV_ALLOWLIST, renderModelText } from './safe-html';
+import { escapeHtml, isAllowedNavPath, isAllowedCitationUrl, NAV_ALLOWLIST, CITATION_URL_ALLOWLIST, renderModelText } from './safe-html';
 
 describe('escapeHtml', () => {
     it('neutralises an event-handler injection', () => {
@@ -71,6 +71,46 @@ describe('isAllowedNavPath', () => {
         expect(isAllowedNavPath(undefined)).toBe(false);
         expect(isAllowedNavPath(null)).toBe(false);
         expect(isAllowedNavPath(['/blog'])).toBe(false);
+    });
+});
+
+describe('isAllowedCitationUrl', () => {
+    it('admits every URL on the list', () => {
+        for (const url of CITATION_URL_ALLOWLIST) {
+            expect(isAllowedCitationUrl(url)).toBe(true);
+        }
+    });
+
+    it('admits the ORCID record, which is why the list exists', () => {
+        expect(isAllowedCitationUrl('https://orcid.org/0009-0006-4129-8044')).toBe(true);
+    });
+
+    it('rejects anything else on the same host', () => {
+        // The point of exact membership over a prefix or hostname test: a citation
+        // may link to this one record, not to orcid.org generally.
+        expect(isAllowedCitationUrl('https://orcid.org/0000-0002-0000-0000')).toBe(false);
+        expect(isAllowedCitationUrl('https://orcid.org/')).toBe(false);
+        expect(isAllowedCitationUrl('https://orcid.org/0009-0006-4129-8044/print')).toBe(false);
+    });
+
+    it('rejects a lookalike host', () => {
+        expect(isAllowedCitationUrl('https://orcid.org.evil.com/0009-0006-4129-8044')).toBe(false);
+        expect(isAllowedCitationUrl('https://evil.com/https://orcid.org/0009-0006-4129-8044')).toBe(false);
+    });
+
+    it('rejects a downgraded scheme and a query string', () => {
+        expect(isAllowedCitationUrl('http://orcid.org/0009-0006-4129-8044')).toBe(false);
+        expect(isAllowedCitationUrl('https://orcid.org/0009-0006-4129-8044?x=1')).toBe(false);
+    });
+
+    it('rejects script URLs and non-strings', () => {
+        expect(isAllowedCitationUrl('javascript:alert(1)')).toBe(false);
+        expect(isAllowedCitationUrl(undefined)).toBe(false);
+        expect(isAllowedCitationUrl(null)).toBe(false);
+    });
+
+    it('admits no site-relative path, which takes the other branch at the call site', () => {
+        expect(isAllowedCitationUrl('/cv')).toBe(false);
     });
 });
 
