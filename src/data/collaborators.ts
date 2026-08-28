@@ -18,10 +18,23 @@
  * paper's citation string keeps that form.
  */
 
+import { RESEARCHGATE_PROFILE, GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '../lib/profiles';
+
 export interface PersonLinks {
     linkedin?: string;
     github?: string;
     website?: string;
+    /**
+     * The three academic profiles, optional and left unset for everyone but Anton on
+     * purpose. None of these URLs is derivable from a name — ResearchGate assigns a
+     * slug, Google Scholar an opaque `user=` id, Academia.edu a subdomain per
+     * institution — so guessing produces a link that 404s, which is worse than no
+     * link at all. Fill them in as people supply them.
+     */
+    researchgate?: string;
+    scholar?: string;
+    academia?: string;
+    ssrn?: string;
 }
 
 export interface Person {
@@ -43,7 +56,11 @@ export const anton: Omit<Person, 'image'> = {
     name: "Anton M. E. Jørgensen",
     links: {
         linkedin: "https://linkedin.com/in/antonebsen",
-        github: "https://github.com/AntonEbsen"
+        github: "https://github.com/AntonEbsen",
+        researchgate: RESEARCHGATE_PROFILE,
+        scholar: GOOGLE_SCHOLAR_PROFILE,
+        academia: ACADEMIA_PROFILE,
+        ssrn: SSRN_PROFILE
     }
 };
 

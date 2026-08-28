@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '@lib/reduced-motion';
+import type { PersonLinks } from '@data/collaborators';
 
 interface Collaborator {
     name: string;
     role?: string;
     description?: string;
     image?: string;
-    links?: {
-        linkedin?: string;
-        github?: string;
-        website?: string;
-    };
+    /**
+     * Imported rather than redeclared. This was a second copy of the same shape, so
+     * adding `researchgate` to @data/collaborators left the component unable to see
+     * it — the drift showed up as a type error the first time the two disagreed,
+     * which is the best case; the version where they quietly diverge is worse.
+     */
+    links?: PersonLinks;
     status?: {
         text: string;
         color: "green" | "red" | "blue" | "yellow";
@@ -137,6 +140,29 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                                         {selected.links?.github && (
                                             <a href={selected.links.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 text-white hover:bg-white/10 transition-colors text-xs font-bold border border-white/10">
                                                 <i className="fa-brands fa-github"></i> GitHub
+                                            </a>
+                                        )}
+                                        {selected.links?.researchgate && (
+                                            <a href={selected.links.researchgate} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#00CCBB]/10 text-[#00CCBB] hover:bg-[#00CCBB]/20 transition-colors text-xs font-bold border border-[#00CCBB]/20">
+                                                <i className="fa-brands fa-researchgate"></i> ResearchGate
+                                            </a>
+                                        )}
+                                        {selected.links?.scholar && (
+                                            <a href={selected.links.scholar} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#8AB4F8]/10 text-[#8AB4F8] hover:bg-[#8AB4F8]/20 transition-colors text-xs font-bold border border-[#8AB4F8]/20">
+                                                <i className="fa-brands fa-google-scholar"></i> Scholar
+                                            </a>
+                                        )}
+                                        {selected.links?.academia && (
+                                            /* No Academia.edu mark in Font Awesome. Not a mortarboard
+                                               either: Google Scholar's logo is one, and these two
+                                               chips sit together. */
+                                            <a href={selected.links.academia} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors text-xs font-bold border border-accent/20">
+                                                <i className="fa-solid fa-landmark"></i> Academia
+                                            </a>
+                                        )}
+                                        {selected.links?.ssrn && (
+                                            <a href={selected.links.ssrn} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent-2/10 text-accent-2 hover:bg-accent-2/20 transition-colors text-xs font-bold border border-accent-2/20">
+                                                <i className="fa-solid fa-scroll"></i> SSRN
                                             </a>
                                         )}
                                         {selected.links?.website && (

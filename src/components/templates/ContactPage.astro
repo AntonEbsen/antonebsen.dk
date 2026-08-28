@@ -6,6 +6,7 @@ import Button from '@components/ui/Button.astro';
 import AvailabilityStatus from '@components/ui/AvailabilityStatus';
 import InteractiveGlobe from '@components/ui/InteractiveGlobe';
 import { getEntry } from 'astro:content';
+import { RESEARCHGATE_PROFILE, GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '@lib/profiles';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -24,6 +25,12 @@ const content: any = entry.data;
 const socials = [
   { name: 'LinkedIn', icon: 'fa-brands fa-linkedin', url: 'https://www.linkedin.com/in/antonebsen/', id: 'linkedin-link' },
   { name: 'GitHub', icon: 'fa-brands fa-github', url: 'https://github.com/AntonEbsen', id: 'github-link' },
+  { name: 'ResearchGate', icon: 'fa-brands fa-researchgate', url: RESEARCHGATE_PROFILE, id: 'researchgate-link' },
+  { name: 'Google Scholar', icon: 'fa-brands fa-google-scholar', url: GOOGLE_SCHOLAR_PROFILE, id: 'scholar-link' },
+  // No Academia.edu mark in Font Awesome, and deliberately not a mortarboard —
+  // Google Scholar's logo is one, and the two would sit side by side here.
+  { name: 'Academia.edu', icon: 'fa-solid fa-landmark', url: ACADEMIA_PROFILE, id: 'academia-link' },
+  { name: 'SSRN', icon: 'fa-solid fa-scroll', url: SSRN_PROFILE, id: 'ssrn-link' },
   { name: 'X / Twitter', icon: 'fa-brands fa-x-twitter', url: 'https://x.com/antonebsen', id: 'twitter-link' }
 ];
 
