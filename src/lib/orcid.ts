@@ -219,16 +219,47 @@ export const record: OrcidRecord = RecordSchema.parse(snapshot);
 // --- Profile links ---
 
 /**
+ * Query keys that describe a *visit* rather than the profile being visited.
+ *
+ * `ev` and `_tp` are ResearchGate's; the record's link to it was pasted out of a
+ * browser and still carries `?ev=hdr_xprf&_tp=<base64 session blob>`. `hl` and `oi`
+ * are Google's interface language and origin indicator. Anything `utm_*` is campaign
+ * tagging. None of them identify anyone.
+ */
+const TRACKING_PARAMS = new Set(['ev', '_tp', 'hl', 'oi', 'gmla', 'sxsrf', 'ved']);
+
+/**
  * A researcher URL as it should appear in `sameAs`.
  *
- * The ResearchGate link on the record was pasted straight out of a browser and
- * still carries `?ev=hdr_xprf&_tp=<base64 session blob>`. schema.org `sameAs` is a
- * claim that two URLs identify the same entity, so it wants the canonical profile,
- * not one visit to it — and republishing someone's navigation trail on every page
- * of the site is a poor idea regardless.
+ * schema.org `sameAs` claims two URLs identify the same entity, so it wants the
+ * canonical profile rather than one visit to it — and republishing someone's
+ * navigation trail on every page of the site is poor practice regardless.
+ *
+ * This used to be `url.split(/[?#]/)[0]`, which was right for every profile the site
+ * had and wrong in general: it assumed identity always lives in the path. Google
+ * Scholar puts it in the query string — `…/citations?user=B4krJWsAAAAJ` — so the old
+ * rule would have published `https://scholar.google.com/citations`, a page belonging
+ * to nobody, the moment a Scholar link reached the record. Drop the parameters that
+ * track, keep the ones that identify.
  */
 export function profileUrl(url: string): string {
-    return url.split(/[?#]/)[0].replace(/\/$/, '');
+    let parsed: URL;
+    try {
+        parsed = new URL(url);
+    } catch {
+        // Not absolute, so there is no query string to reason about.
+        return url.split(/[?#]/)[0].replace(/\/$/, '');
+    }
+
+    for (const key of [...parsed.searchParams.keys()]) {
+        if (TRACKING_PARAMS.has(key) || key.startsWith('utm_')) parsed.searchParams.delete(key);
+    }
+
+    // Rebuilt by hand rather than via toString(), which re-adds a trailing slash for
+    // a root path and a bare "?" once every parameter has been removed. The trailing
+    // slash matters: it would make one profile look like two entries in `sameAs`.
+    const query = parsed.searchParams.toString();
+    return parsed.origin + parsed.pathname.replace(/\/+$/, '') + (query ? `?${query}` : '');
 }
 
 /**
