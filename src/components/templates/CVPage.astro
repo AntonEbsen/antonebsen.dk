@@ -196,8 +196,21 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
               {cvData.organizations?.map((org: any) => (
                 <article class="item border-none pt-0 pb-4">
                   <div class="item-head">
-                    <h3 class="text-[18px] font-bold m-0 mb-1">{org.role} · {org.name}</h3>
-                    <span class="text-[13px] text-dim">{org.period}</span>
+                    <h3 class="text-[18px] font-bold m-0 mb-1">
+                      {org.role} · {org.url && org.url !== '#'
+                        ? <a href={org.url} target="_blank" rel="noopener" class="text-text hover:text-accent">{org.name}</a>
+                        : org.name}
+                    </h3>
+                    {/* `period` is optional since the learned societies arrived: a
+                        membership year nobody recorded is left out rather than made up. */}
+                    <span class="text-[13px] text-dim">
+                      {org.period}
+                      {org.status === 'joining' && (
+                        <span class="ml-2 uppercase tracking-wider text-[11px] text-muted">
+                          ({lang === 'da' ? 'på vej' : lang === 'de' ? 'in Kürze' : 'joining'})
+                        </span>
+                      )}
+                    </span>
                   </div>
                   <p class="text-[14px] text-dim mt-2 opacity-80">{org.description}</p>
                 </article>

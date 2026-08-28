@@ -1,6 +1,8 @@
 ---
 import { availableAlternates } from '@lib/routes';
+import { getEntry } from 'astro:content';
 import { ORCID_URI, UCPH_ROR, sameAsProfiles, record as orcidRecord } from '@lib/orcid';
+import { GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '@lib/profiles';
 
 export interface Props {
   title: string;
@@ -23,6 +25,21 @@ const {
   article = false,
   alternates
 } = Astro.props;
+
+/**
+ * Learned societies, for the Person node's `memberOf`.
+ *
+ * Read from the English CV because this is one JSON-LD block shared by every page —
+ * the graph describes the same person whichever language is being served, and the
+ * society names are proper nouns in all three files anyway.
+ *
+ * `status: 'joining'` is excluded. Nothing else filters these; the day EH.net's
+ * status changes to 'member' it appears here with no code change.
+ */
+const cvForSocieties = await getEntry('cv', 'en');
+const societies = (cvForSocieties?.data.organizations ?? [])
+  .filter((org: any) => org.url && org.url !== '#' && org.status !== 'joining')
+  .map((org: any) => ({ "@type": "Organization", name: org.name, url: org.url }));
 
 const siteTitle = "Anton Meier Ebsen Jørgensen";
 const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
@@ -191,7 +208,25 @@ const hreflangs = [
       // there is enough to have it appear here. X is passed in because it is on the
       // site but not on the record; the tracking query string ORCID holds on the
       // ResearchGate link is stripped on the way through.
-      "sameAs": sameAsProfiles(orcidRecord, ["https://x.com/antonebsen"])
+      //
+      // Scholar and Academia are passed in the same way for now. Adding them as
+      // researcher URLs on the ORCID record would make them arrive by themselves,
+      // and sameAsProfiles de-duplicates, so doing both is safe and this list can
+      // shrink later without anything breaking.
+      "sameAs": sameAsProfiles(orcidRecord, [
+        "https://x.com/antonebsen",
+        GOOGLE_SCHOLAR_PROFILE,
+        ACADEMIA_PROFILE,
+        SSRN_PROFILE,
+      ]),
+      // A different claim from sameAs, and the reason the learned societies are not
+      // in that list: sameAs says two URLs are the same entity, and a society is not
+      // Anton. He is a member of it.
+      //
+      // Filtered on status. EH.net is on the /organizations page as an intention and
+      // must not appear here, because a reader can see the word "joining" and a
+      // crawler cannot. That split is the whole purpose of the status field.
+      ...(societies.length ? { "memberOf": societies } : {})
     },
     {
       "@type": "WebSite",

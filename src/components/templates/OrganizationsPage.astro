@@ -22,6 +22,10 @@ const t = pageEntry.data;
 const cvEntry = await getEntry('cv', lang);
 if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
 const cv = cvEntry.data;
+
+// One word, used once. A local map rather than a section in src/i18n/ui.ts, matching
+// how OrcidId.astro handles its own label.
+const joiningLabel = lang === 'da' ? 'På vej' : 'Joining';
 ---
 
 <Layout 
@@ -78,8 +82,25 @@ const cv = cvEntry.data;
         <div class="orgs-grid">
           {cv.organizations.map((org: any) => (
             <Card variant="glass" class="p-6">
-               <h3 class="font-bold mb-2">{org.name}</h3>
-               <p class="text-xs text-accent font-bold mb-3">{org.role} Â· {org.period}</p>
+               {/* `url: "#"` has sat on the one existing entry since it was written and
+                   never rendered, because neither this page nor the CV linked the name
+                   at all. Now that the learned societies carry real URLs, "#" is
+                   excluded explicitly rather than shipped as a link to nowhere. */}
+               <h3 class="font-bold mb-2">
+                 {org.url && org.url !== '#'
+                   ? <a href={org.url} target="_blank" rel="noopener" class="text-text hover:text-accent">{org.name}</a>
+                   : org.name}
+               </h3>
+               {/* This separator was "Â·" — a UTF-8 middot read as Latin-1, so the page
+                   rendered "Forperson Â· 2024 – nu" to every visitor. */}
+               <p class="text-xs text-accent font-bold mb-3">
+                 {org.role}{org.period ? ` · ${org.period}` : ''}
+                 {org.status === 'joining' && (
+                   <span class="ml-2 px-2 py-0.5 rounded-full bg-white/10 text-dim font-bold uppercase tracking-wider text-[10px]">
+                     {joiningLabel}
+                   </span>
+                 )}
+               </p>
                <p class="text-sm text-dim">{org.description}</p>
             </Card>
           ))}
