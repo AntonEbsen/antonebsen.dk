@@ -7,6 +7,7 @@
 import { Image } from 'astro:assets';
 import myImageSrc from '../../assets/img/billede-af-mig.jpg';
 import OrcidId from '@components/ui/OrcidId.astro';
+import { RESEARCHGATE_PROFILE, GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '@lib/profiles';
 
 interface Props {
   data: any; // Skills data
@@ -71,6 +72,21 @@ const emojiMap: Record<string, string> = {
           </a>
           <a class="icon-link" href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub">
             <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+          {/* Here with the profile links rather than in a meta-row of its own. That
+              treatment belongs to the ORCID iD below, which is a record a reader can
+              check; a ResearchGate profile is written by its owner. */}
+          <a class="icon-link" href={RESEARCHGATE_PROFILE} target="_blank" rel="noopener" aria-label="ResearchGate">
+            <i class="fa-brands fa-researchgate" aria-hidden="true"></i>
+          </a>
+          <a class="icon-link" href={GOOGLE_SCHOLAR_PROFILE} target="_blank" rel="noopener" aria-label="Google Scholar">
+            <i class="fa-brands fa-google-scholar" aria-hidden="true"></i>
+          </a>
+          <a class="icon-link" href={ACADEMIA_PROFILE} target="_blank" rel="noopener" aria-label="Academia.edu">
+            <i class="fa-solid fa-landmark" aria-hidden="true"></i>
+          </a>
+          <a class="icon-link" href={SSRN_PROFILE} target="_blank" rel="noopener" aria-label="SSRN">
+            <i class="fa-solid fa-scroll" aria-hidden="true"></i>
           </a>
         </span>
       </div>

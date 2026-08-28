@@ -129,6 +129,32 @@ describe('profileUrl', () => {
     it('strips a trailing slash so the same profile is not listed twice', () => {
         expect(profileUrl('https://antonebsen.dk/')).toBe('https://antonebsen.dk');
     });
+
+    it('keeps a query parameter that identifies rather than tracks', () => {
+        // The regression this function was rewritten for. Google Scholar puts the
+        // profile id in the query string, so stripping it wholesale published
+        // https://scholar.google.com/citations — a page belonging to nobody.
+        expect(profileUrl('https://scholar.google.com/citations?user=B4krJWsAAAAJ&hl=da&oi=sra'))
+            .toBe('https://scholar.google.com/citations?user=B4krJWsAAAAJ');
+    });
+
+    it('drops campaign tagging wherever it appears', () => {
+        expect(profileUrl('https://example.org/p?utm_source=x&utm_medium=y&id=7'))
+            .toBe('https://example.org/p?id=7');
+    });
+
+    it('leaves no bare question mark when every parameter was tracking', () => {
+        expect(profileUrl('https://www.researchgate.net/profile/X?ev=hdr_xprf'))
+            .toBe('https://www.researchgate.net/profile/X');
+    });
+
+    it('drops the fragment, which is a position on a page rather than an identity', () => {
+        expect(profileUrl('https://example.org/p#about')).toBe('https://example.org/p');
+    });
+
+    it('survives a string that is not a URL', () => {
+        expect(profileUrl('not-a-url?x=1')).toBe('not-a-url');
+    });
 });
 
 describe('sameAsProfiles', () => {

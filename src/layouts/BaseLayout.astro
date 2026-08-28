@@ -130,6 +130,20 @@ const lang = getLangFromUrl(Astro.url);
 
   <!-- 2. SEO and other metadata -->
   <SEO title={title} description={description} image={image} article={article} alternates={alternates} />
+
+  {/*
+    Here rather than at the end of <head>, where it used to sit, because the Vercel
+    adapter injects <vercel-speed-insights> and <vercel-analytics> just below this
+    point. Those are unknown elements, and the HTML parser closes <head> the moment
+    it meets one — so anything emitted after them lands in <body> no matter what the
+    source says. The raw markup looked correct and the DOM disagreed.
+
+    That is fatal for what uses this slot: Google Scholar's citation_* meta tags are
+    only read from <head>, so ProjectDetailPage's tags were being served where no
+    crawler would look for them. Keep this above the adapter's injection.
+  */}
+  <slot name="head" />
+
   <meta name="design-version" content="terrain-v1" />
   <SpeedInsights />
   <Analytics />
@@ -151,7 +165,6 @@ const lang = getLangFromUrl(Astro.url);
     document.documentElement.classList.add('js-reveal');
   </script>
 
-  <slot name="head" />
   {/*
     A script here injected a second grain overlay on DOMContentLoaded. The site
     already had one — body::before in reset.css — at the same 0.03 opacity and

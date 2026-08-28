@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
 import OrcidId from '@components/ui/OrcidId.astro';
+import { RESEARCHGATE_PROFILE, GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '@lib/profiles';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -87,6 +88,24 @@ const year = new Date().getFullYear();
           </a>
           <a href="https://github.com/AntonEbsen" target="_blank" rel="noopener" aria-label="GitHub" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
             <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+          <a href={RESEARCHGATE_PROFILE} target="_blank" rel="noopener" aria-label="ResearchGate" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
+            <i class="fa-brands fa-researchgate" aria-hidden="true"></i>
+          </a>
+          <a href={GOOGLE_SCHOLAR_PROFILE} target="_blank" rel="noopener" aria-label="Google Scholar" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
+            <i class="fa-brands fa-google-scholar" aria-hidden="true"></i>
+          </a>
+          {/* Font Awesome carries no Academia.edu mark. Deliberately not a
+              mortarboard either: Google Scholar's own logo is one, and the two
+              sat adjacent here as near-identical caps. A landmark reads as
+              "institution" and is distinguishable at 40px. */}
+          <a href={ACADEMIA_PROFILE} target="_blank" rel="noopener" aria-label="Academia.edu" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
+            <i class="fa-solid fa-landmark" aria-hidden="true"></i>
+          </a>
+          {/* No SSRN mark in Font Awesome either. A scroll is the one place in this
+              row it does not read as a cliché — SSRN is a working-paper archive. */}
+          <a href={SSRN_PROFILE} target="_blank" rel="noopener" aria-label="SSRN" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20">
+            <i class="fa-solid fa-scroll" aria-hidden="true"></i>
           </a>
           <OrcidId variant="compact" class="w-10 h-10 rounded-xl grid place-items-center bg-white/10 text-white no-underline hover:bg-white/20" />
         </div>

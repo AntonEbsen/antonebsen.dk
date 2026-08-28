@@ -353,9 +353,18 @@ export const collections = {
             organizations: z.array(z.object({
                 name: z.string(),
                 role: z.string(),
-                period: z.string(),
+                // Optional since the learned societies were added: a membership year
+                // that nobody recorded is better left out than guessed at.
+                period: z.string().optional(),
                 description: z.string(),
-                url: z.string().optional()
+                url: z.string().optional(),
+                /**
+                 * `joining` means exactly that — intended, not yet held. The pages
+                 * show it as such; SEO.astro filters it out of the Person node's
+                 * `memberOf`, because a plan is not a membership and structured data
+                 * is where that distinction stops being visible to a reader.
+                 */
+                status: z.enum(['member', 'joining']).optional()
             })).optional()
         })
     }),

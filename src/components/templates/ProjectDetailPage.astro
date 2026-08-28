@@ -438,6 +438,41 @@ const bibtexEntry = project.citation.bibtex ?? [
     `}`
 ].join('\n');
 
+// --- Google Scholar ---------------------------------------------------------
+//
+// Scholar does not read JSON-LD. It reads Highwire Press `citation_*` meta tags, so
+// the ScholarlyArticle node below — the richest description of these papers on the
+// site — is invisible to the one crawler it would help most.
+//
+// This is not hypothetical. Scholar has already indexed the welfare seminar paper
+// and shows it with no year and no venue, because its guidelines say a PDF "will be
+// processed as if [it] had no meta tags" unless an HTML page points at it with
+// citation_pdf_url. It found the file, had nothing to read it with, and guessed.
+//
+// Gated on hasPdf, which already checks the file exists: eleven of the twelve
+// projects declare a pdfUrl for a file that has never been produced, and offering
+// Scholar an abstract page plus a dead link is worse than offering it nothing.
+//
+// Deliberately absent: citation_journal_title and citation_conference_title. These
+// are student seminar papers, and those tags would present coursework as
+// peer-reviewed output. citation_technical_report_institution is the honest field;
+// citation_dissertation_institution belongs to the master's thesis once it exists.
+const scholarAuthors = project.citation.authors ?? parseAuthors(project.citation.text) ?? [];
+
+const scholarTags: { name: string; content: string }[] = hasPdf && citationYear && scholarAuthors.length
+    ? [
+        { name: 'citation_title', content: project.title },
+        // One tag per author. Comma-joining them into a single tag makes Scholar
+        // read the whole list as one person's name.
+        ...scholarAuthors.map(author => ({ name: 'citation_author', content: author })),
+        { name: 'citation_publication_date', content: citationYear },
+        { name: 'citation_pdf_url', content: `https://antonebsen.dk${project.citation.pdfUrl}` },
+        { name: 'citation_abstract_html_url', content: canonicalUrl },
+        { name: 'citation_technical_report_institution', content: 'University of Copenhagen, Department of Economics' },
+        { name: 'citation_language', content: lang === 'da' ? 'da' : 'en' },
+    ]
+    : [];
+
 // --- Structured data --------------------------------------------------------
 // Follows the pattern already used by VideoDetailPage: build the object here,
 // emit one <script type="application/ld+json"> inside the layout slot.
@@ -493,8 +528,14 @@ const tocItems = [
     title={project.title} 
     description={project.executiveSummary} 
     showChatWidget={false}
-    image={socialImage} 
+    image={socialImage}
 >
+  {/* Scholar reads meta tags from <head>, which BaseLayout exposes through this
+      slot. Empty for every project without a PDF on disk — see the note above. */}
+  <Fragment slot="head">
+    {scholarTags.map(tag => <meta name={tag.name} content={tag.content} />)}
+  </Fragment>
+
   <main class="bg-sunken min-h-screen text-text pb-32 selection:bg-accent/20">
     
     <!-- IMMERSIVE HERO -->
