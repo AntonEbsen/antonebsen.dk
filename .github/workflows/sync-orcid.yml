@@ -43,21 +43,27 @@ jobs:
       - name: Fetch the record
         run: npm run sync:orcid
 
+      # The group's shared Zotero library, on the same cadence and in the same job
+      # rather than a workflow of its own — both are "refresh a committed snapshot
+      # from a public API", and one place to look beats two.
+      - name: Fetch the shared Zotero library
+        run: npm run sync:zotero
+
       # The parse and the CV conformance assertions run against whatever was just
       # written, so a record that has drifted from the CV fails here rather than
       # being committed and failing the next unrelated push.
-      - name: Check the snapshot against the CV
-        run: npx vitest run src/lib/orcid.test.ts
+      - name: Check the snapshots
+        run: npx vitest run src/lib/orcid.test.ts src/lib/zotero.test.ts
 
-      - name: Commit if the record changed
+      - name: Commit whichever snapshot changed
         run: |
-          if git diff --quiet -- src/data/orcid.json; then
-            echo "record unchanged since the last run; nothing to commit"
+          if git diff --quiet -- src/data/orcid.json src/data/zotero.json; then
+            echo "both snapshots unchanged since the last run; nothing to commit"
             exit 0
           fi
           git config user.name  'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add src/data/orcid.json
+          git add src/data/orcid.json src/data/zotero.json
           # [skip ci] so committing the snapshot does not trigger other workflows.
-          git commit -m "chore(orcid): sync public record [skip ci]"
+          git commit -m "chore(sync): refresh ORCID record and Zotero library [skip ci]"
           git push

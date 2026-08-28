@@ -3,6 +3,9 @@ import Layout from '@layouts/BaseLayout.astro';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
 import ResearchRadar from '@components/project/ResearchRadar';
 import { anton, sheng, jonas } from '@data/collaborators';
+import { RESEARCHGATE_LAB, LAB_NAME } from '@lib/profiles';
+import { library, itemYear, ZOTERO_GROUP_URL } from '@lib/zotero';
+import { ORCID_URI, PUBLISHED_NAME } from '@lib/orcid';
 import { getImage } from 'astro:assets';
 import portraitSrc from '../assets/img/billede-af-mig.jpg';
 
@@ -69,16 +72,13 @@ const thesis_phases = [
     { label: "Skrivefase", note: "Nov 2026–jan 2027" }
 ];
 
-const citations = [
-    "Gabaix, X. & Maggiori, M. (2015). International Liquidity and Exchange Rate Dynamics. QJE.",
-    "Rey, H. (2015). Dilemma not Trilemma: The Global Financial Cycle and Monetary Policy Independence. NBER.",
-    "Miranda-Agrippino, S. & Rey, H. (2020). U.S. Monetary Policy and the Global Financial Cycle. RES.",
-    "Bruno, V. & Shin, H. S. (2015). Cross-Border Banking and Global Liquidity. RES.",
-    "Rodrik, D. (1998). Why Do More Open Economies Have Bigger Governments? JPE.",
-    "Esping-Andersen, G. (1990). The Three Worlds of Welfare Capitalism. Princeton University Press.",
-    "Yay, G. G. & Aksoy, T. (2018). Globalization and the welfare state. Quality & Quantity.",
-    "Agersnap, O., Jensen, A. & Kleven, H. (2020). The Welfare Magnet Hypothesis. AER: Insights."
-];
+// The reading list used to be eight strings typed here by hand. It is now the
+// group's shared Zotero library, which all three of them already maintain as they
+// work — the two overlapped (Yay & Aksoy, Rodrik, Esping-Andersen), and the typed
+// copy was the one that would drift.
+//
+// Read from the committed snapshot, refreshed by `npm run sync:zotero`. Nothing on
+// this site talks to api.zotero.org at request time.
 
 const tools = [
     { tool: "Stata", packages: ["reghdfe", "ivreg2", "gmm", "estout"], icon: "fa-layer-group", color: "text-blue-400" },
@@ -141,6 +141,44 @@ const curriculum = [
     { course: "Advanced Macroeconomics – Business Cycles", ects: "7.5", grade: "10", desc: "Konjunkturteori, DSGE-modeller og makroøkonomiske fluktuationer." },
     { course: "Anvendt økonomisk modellering", ects: "7.5", grade: "10", desc: "Kalibrering, SAM, stød og baseline-checks. Værktøj: GAMS." }
 ];
+
+/**
+ * The group, as structured data.
+ *
+ * This page describes a real research group — three named members, four joint
+ * projects, a timeline from 2020 — and emitted nothing machine-readable saying the
+ * group exists. Only SEO.astro's default Person/WebSite/BreadcrumbList reached it,
+ * so every crawler saw a page about one person.
+ *
+ * Three things are deliberately *not* claimed here:
+ *
+ *  - `Organization`, not `ResearchOrganization`. The latter is a real schema.org
+ *    type but sits in its "new" area with limited adoption, and every other type on
+ *    this site is long-established.
+ *  - No `parentOrganization`. Naming the University of Copenhagen there would assert
+ *    this is a UCPH unit. It is a group that met at UCPH, which is a different claim.
+ *  - Only Anton's member node carries an `@id`. A collaborator's ORCID is theirs to
+ *    publish, the same rule ProjectDetailPage applies to ScholarlyArticle.author.
+ *    Their names are already on this page, so `member` discloses nothing new.
+ *
+ * `alternateName` is what lets a machine match "Forskningsteamet" to the lab's
+ * formal name on ResearchGate without the page having to adopt a title that reads
+ * badly in three languages.
+ */
+const groupJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Forskningsteamet',
+    alternateName: LAB_NAME,
+    url: 'https://antonebsen.dk/team',
+    description: 'Et samarbejde om makroøkonomiske dynamikker gennem rigoristisk dataanalyse og økonomisk teori.',
+    sameAs: [RESEARCHGATE_LAB],
+    member: [
+        { '@type': 'Person', '@id': ORCID_URI, name: PUBLISHED_NAME },
+        { '@type': 'Person', name: sheng.name },
+        { '@type': 'Person', name: jonas.name },
+    ],
+};
 ---
 
 <Layout title="Forskningsteamet | Anton Ebsen" description="Forskningsteamet bag projekterne." currentPath="/team">
@@ -160,6 +198,18 @@ const curriculum = [
                     <p class="text-lg md:text-xl text-muted font-serif italic max-w-2xl mx-auto leading-relaxed">
                         Et samarbejde om at fremme forståelsen af makroøkonomiske dynamikker gennem rigoristisk dataanalyse og økonomisk teori.
                     </p>
+                    {/* The group's formal name lives on ResearchGate; this page keeps
+                        the Danish one. Naming both here is what makes the link read as
+                        the same group rather than a second one. */}
+                    <a
+                        href={RESEARCHGATE_LAB}
+                        target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center gap-2 mt-8 px-4 py-2 rounded-full border border-[#00CCBB]/25 bg-[#00CCBB]/10 text-[#00CCBB] text-xs font-bold no-underline hover:bg-[#00CCBB]/20 transition-colors"
+                    >
+                        <i class="fa-brands fa-researchgate" aria-hidden="true"></i>
+                        {LAB_NAME}
+                    </a>
                  </div>
              </div>
         </div>
@@ -360,14 +410,29 @@ const curriculum = [
              </div>
         </section>
 
-        {/* 4. The Library (Citations) */}
+        {/* 4. The Library — synced from the group's shared Zotero library */}
         <section class="container mx-auto max-w-4xl px-4 py-16">
-            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-muted mb-12">Vidensbanken</h2>
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-muted mb-3">Vidensbanken</h2>
+            <p class="text-center text-xs text-muted mb-12">
+                {library.items.length} værker ·
+                <a href={ZOTERO_GROUP_URL} target="_blank" rel="noopener" class="text-accent hover:underline ml-1">
+                    delt Zotero-bibliotek
+                </a>
+            </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {citations.map(cite => (
+                {library.items.map(item => (
                     <div class="bg-bg border border-white/5 p-4 rounded-lg flex items-start gap-3 hover:border-white/20 transition-colors">
                         <i class="fa-solid fa-quote-left text-muted mt-1"></i>
-                        <p class="text-sm text-dim font-serif italic">{cite}</p>
+                        <div>
+                            <p class="text-sm text-dim font-serif italic mb-1">{item.title}</p>
+                            <p class="text-[11px] text-muted">
+                                {item.creators.join(', ')}{itemYear(item.date) ? ` (${itemYear(item.date)})` : ''}
+                                {item.publication ? ` · ${item.publication}` : ''}
+                                {item.doi && (
+                                    <a href={`https://doi.org/${item.doi}`} target="_blank" rel="noopener" class="text-accent hover:underline ml-2">DOI</a>
+                                )}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -573,4 +638,6 @@ spec = <span class="text-green-400">"sstran ~ 1 + KOFGI_lag1 + ln_gdppc_lag1 + i
              </div>
         </section>
     </main>
+
+    <script type="application/ld+json" set:html={JSON.stringify(groupJsonLd)} />
 </Layout>

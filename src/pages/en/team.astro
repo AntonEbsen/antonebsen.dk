@@ -3,6 +3,9 @@ import Layout from '@layouts/BaseLayout.astro';
 import CollaboratorSpotlight from '@components/project/CollaboratorSpotlight';
 import ResearchRadar from '@components/project/ResearchRadar';
 import { anton, sheng, jonas } from '@data/collaborators';
+import { RESEARCHGATE_LAB, LAB_NAME } from '@lib/profiles';
+import { library, itemYear, ZOTERO_GROUP_URL } from '@lib/zotero';
+import { ORCID_URI, PUBLISHED_NAME } from '@lib/orcid';
 import { getImage } from 'astro:assets';
 import portraitSrc from '../../assets/img/billede-af-mig.jpg';
 
@@ -89,6 +92,23 @@ const timeline = [
     { year: "2026", title: "Globalization and the Welfare State", desc: "Seminar paper submitted June 2026. Panel data analysis of 32 OECD countries 1980–2023; rolling regressions uncover a structural break at 2008.", href: "/en/projects/welfare-state-seminar" },
     { year: "2026", title: "Master's Thesis", desc: "Monetary Policy & Economic Relations. Starts 20 August 2026, focusing on monetary policy in a post-COVID world.", href: null },
 ];
+
+// The English twin of the Organization node on the Danish team page. See the note
+// there for what is deliberately not claimed; only `name` and `url` differ.
+const groupJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Research Group',
+    alternateName: LAB_NAME,
+    url: 'https://antonebsen.dk/en/team',
+    description: 'A collaborative effort to advance the understanding of macroeconomic dynamics through rigorous data analysis and economic theory.',
+    sameAs: [RESEARCHGATE_LAB],
+    member: [
+        { '@type': 'Person', '@id': ORCID_URI, name: PUBLISHED_NAME },
+        { '@type': 'Person', name: sheng.name },
+        { '@type': 'Person', name: jonas.name },
+    ],
+};
 ---
 
 <Layout title="Research Group | Anton Ebsen" description="The academic team behind the projects." currentPath="/en/team">
@@ -108,6 +128,17 @@ const timeline = [
                     <p class="text-lg md:text-xl text-muted font-serif italic max-w-2xl mx-auto leading-relaxed">
                         A collaborative effort to advance the understanding of macroeconomic dynamics through rigorous data analysis and economic theory.
                     </p>
+                    {/* The group is also on ResearchGate, under its formal name.
+                        Naming both is what makes the link read as the same group. */}
+                    <a
+                        href={RESEARCHGATE_LAB}
+                        target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center gap-2 mt-8 px-4 py-2 rounded-full border border-[#00CCBB]/25 bg-[#00CCBB]/10 text-[#00CCBB] text-xs font-bold no-underline hover:bg-[#00CCBB]/20 transition-colors"
+                    >
+                        <i class="fa-brands fa-researchgate" aria-hidden="true"></i>
+                        {LAB_NAME}
+                    </a>
                  </div>
              </div>
         </div>
@@ -321,23 +352,32 @@ const timeline = [
              </div>
         </section>
 
-        {/* 4. The Library (Citations) */}
+        {/* 4. The Library — synced from the group's shared Zotero library.
+               The same eight references were inlined here and named as a const on
+               the Danish page: two hand-typed copies of a list the three of them
+               already maintain together in Zotero. */}
         <section class="container mx-auto max-w-4xl px-4 py-16">
-            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-muted mb-12">The Knowledge Bank</h2>
+            <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-muted mb-3">The Knowledge Bank</h2>
+            <p class="text-center text-xs text-muted mb-12">
+                {library.items.length} works ·
+                <a href={ZOTERO_GROUP_URL} target="_blank" rel="noopener" class="text-accent hover:underline ml-1">
+                    shared Zotero library
+                </a>
+            </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                    "Gabaix, X. & Maggiori, M. (2015). International Liquidity and Exchange Rate Dynamics. QJE.",
-                    "Rey, H. (2015). Dilemma not Trilemma: The Global Financial Cycle and Monetary Policy Independence. NBER.",
-                    "Miranda-Agrippino, S. & Rey, H. (2020). U.S. Monetary Policy and the Global Financial Cycle. RES.",
-                    "Bruno, V. & Shin, H. S. (2015). Cross-Border Banking and Global Liquidity. RES.",
-                    "Rodrik, D. (1998). Why Do More Open Economies Have Bigger Governments? JPE.",
-                    "Esping-Andersen, G. (1990). The Three Worlds of Welfare Capitalism. Princeton University Press.",
-                    "Yay, G. G. & Aksoy, T. (2018). Globalization and the welfare state. Quality & Quantity.",
-                    "Agersnap, O., Jensen, A. & Kleven, H. (2020). The Welfare Magnet Hypothesis. AER: Insights."
-                ].map(cite => (
+                {library.items.map(item => (
                     <div class="bg-bg border border-white/5 p-4 rounded-lg flex items-start gap-3 hover:border-white/20 transition-colors">
                         <i class="fa-solid fa-quote-left text-muted mt-1"></i>
-                        <p class="text-sm text-dim font-serif italic">{cite}</p>
+                        <div>
+                            <p class="text-sm text-dim font-serif italic mb-1">{item.title}</p>
+                            <p class="text-[11px] text-muted">
+                                {item.creators.join(', ')}{itemYear(item.date) ? ` (${itemYear(item.date)})` : ''}
+                                {item.publication ? ` · ${item.publication}` : ''}
+                                {item.doi && (
+                                    <a href={`https://doi.org/${item.doi}`} target="_blank" rel="noopener" class="text-accent hover:underline ml-2">DOI</a>
+                                )}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -559,4 +599,6 @@ spec = <span class="text-green-400">"sstran ~ 1 + KOFGI_lag1 + ln_gdppc_lag1 + i
              </div>
         </section>
     </main>
+
+    <script type="application/ld+json" set:html={JSON.stringify(groupJsonLd)} />
 </Layout>
