@@ -1,4 +1,16 @@
 {
+    "rewrites": [
+        {
+            "source": "/((?!api/|assets/|_astro/|research/).*)",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "(www\\.)?antonebsen\\.com"
+                }
+            ],
+            "destination": "/en/$1"
+        }
+    ],
     "headers": [
         {
             "source": "/(.*)",
