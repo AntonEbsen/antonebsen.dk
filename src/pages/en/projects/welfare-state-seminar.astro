@@ -2,6 +2,8 @@
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
 import SpecCurveExplorer from '@components/project/SpecCurveExplorer';
 import { sheng, jonas } from '@data/collaborators';
+import { Image } from 'astro:assets';
+import figQlrPathSrc from '../../../assets/projects/welfare-state-seminar/fig-qlr-path.png';
 export const prerender = true;
 
 // Welfare regimes as classified in Table A.4 of the paper, checked against the
@@ -391,8 +393,8 @@ for end in range(1989, 2024):
 
       <div class="group mb-8">
           <div class="rounded-3xl overflow-hidden border border-white/10 shadow-lg mb-4 bg-white p-2">
-              <img
-                  src="/assets/projects/welfare-state-seminar/fig-qlr-path.png"
+              <Image
+                  src={figQlrPathSrc}
                   alt="The Chow F-statistic computed at every candidate break year from 1992 to 2017. The curve peaks in 1995 above the 1% critical value, falls to a trough around 2001, and rises to a second peak around 2009 that exceeds the 5% critical value."
                   class="w-full h-auto"
               />

@@ -6,8 +6,10 @@ import { anton, sheng, jonas } from '@data/collaborators';
 import { RESEARCHGATE_LAB, LAB_NAME } from '@lib/profiles';
 import { library, itemYear, ZOTERO_GROUP_URL } from '@lib/zotero';
 import { ORCID_URI, PUBLISHED_NAME } from '@lib/orcid';
-import { getImage } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import portraitSrc from '../../assets/img/billede-af-mig.jpg';
+import figKofSrc from '../../assets/projects/welfare-state-seminar/fig-kof.png';
+import figRollingSrc from '../../assets/projects/welfare-state-seminar/fig-rolling.png';
 
 // See the note in the Danish team page: the island needs a URL string, and the raw
 // public path meant shipping the 785 KB original for an avatar.
@@ -21,19 +23,19 @@ const team = [
         role: "Lead Author & Developer",
         image: portrait.src,
         description: "Specializes in macroeconomic modeling, web development, and bridging the gap between economic theory and data science.",
-        status: { text: "Starting thesis", color: "yellow" }
+        status: { text: "Starting thesis", color: "yellow" as const }
     },
     {
         ...sheng,
         role: "Co-Author & Data Scientist",
         description: "Expertise in high-dimensional data handling, Stata programming, and rigorous econometric implementation (GMM).",
-        status: { text: "Coding Stata", color: "blue" }
+        status: { text: "Coding Stata", color: "blue" as const }
     },
     {
         ...jonas,
         role: "Co-Author & Theorist",
         description: "Focus on monetary policy transmission mechanisms, game theory, and structural break analysis in time-series data.",
-        status: { text: "Reviewing Theory", color: "green" }
+        status: { text: "Reviewing Theory", color: "green" as const }
     }
 ];
 
@@ -390,10 +392,10 @@ const groupJsonLd = {
                  these are white matplotlib plots, and cover would crop the axes off. */}
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                  <a href="/en/projects/welfare-state-seminar" class="aspect-square bg-white rounded-2xl overflow-hidden relative group block">
-                     <img src="/assets/projects/welfare-state-seminar/fig-kof.png" alt="The KOF globalization indices for 32 OECD countries, 1980–2023. All four indices trend upwards over the period." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                     <Image src={figKofSrc} alt="The KOF globalization indices for 32 OECD countries, 1980–2023. All four indices trend upwards over the period." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                  </a>
                   <a href="/en/projects/welfare-state-seminar" class="aspect-square bg-white rounded-2xl overflow-hidden relative group md:col-span-2 block">
-                     <img src="/assets/projects/welfare-state-seminar/fig-rolling.png" alt="Rolling OLS coefficients over 10-year windows with 95% confidence bands, for each of the four globalization indices." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                     <Image src={figRollingSrc} alt="Rolling OLS coefficients over 10-year windows with 95% confidence bands, for each of the four globalization indices." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                  </a>
              </div>
         </section>

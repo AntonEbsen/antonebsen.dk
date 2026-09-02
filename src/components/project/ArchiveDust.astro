@@ -1,0 +1,67 @@
+---
+// src/components/project/ArchiveDust.astro
+---
+<canvas id="archive-dust-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60 mix-blend-screen transition-opacity duration-1000"></canvas>
+
+<script>
+    const canvas = document.getElementById('archive-dust-canvas') as HTMLCanvasElement;
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+            let particles: {x: number, y: number, r: number, vx: number, vy: number, alpha: number, maxAlpha: number}[] = [];
+            const particleCount = window.innerWidth < 768 ? 40 : 100;
+
+            const resize = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+            window.addEventListener('resize', resize);
+            resize();
+
+            for(let i=0; i<particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.2 - 0.1, // slight upwards bias
+                    alpha: Math.random() * 0.5,
+                    maxAlpha: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            const draw = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    // Reset if out of bounds (wrap around)
+                    if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+                    if (p.y > canvas.height + 10) { p.y = -10; p.x = Math.random() * canvas.width; }
+                    if (p.x < -10) { p.x = canvas.width + 10; p.y = Math.random() * canvas.height; }
+                    if (p.x > canvas.width + 10) { p.x = -10; p.y = Math.random() * canvas.height; }
+
+                    // Twinkle effect
+                    p.alpha += (Math.random() - 0.5) * 0.02;
+                    if (p.alpha > p.maxAlpha) p.alpha = p.maxAlpha;
+                    if (p.alpha < 0) p.alpha = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    
+                    // Glowing dust (using amber/gold hues)
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+                    gradient.addColorStop(0, `rgba(255, 230, 150, ${p.alpha})`);
+                    gradient.addColorStop(1, `rgba(245, 158, 11, 0)`);
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            };
+            draw();
+        }
+    }
+</script>

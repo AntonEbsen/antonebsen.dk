@@ -1,0 +1,55 @@
+---
+// src/components/project/ArtifactViewer.astro
+---
+
+<div class="w-full relative bg-[#0a0908] rounded-2xl overflow-hidden border border-amber-900/30 shadow-[0_20px_50px_-15px_rgba(245,158,11,0.15)] h-[450px] my-10 group">
+    <!-- Background styling -->
+    <div class="absolute inset-0 bg-[url('/assets/images/noise.png')] opacity-10 mix-blend-overlay pointer-events-none z-0"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-amber-900/10 pointer-events-none z-0"></div>
+    
+    <!-- Lighting accent -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-amber-500/5 blur-[80px] pointer-events-none z-0"></div>
+
+    <model-viewer 
+        src="https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/AntiqueCamera/glTF/AntiqueCamera.gltf" 
+        alt="3D Historical Artifact" 
+        auto-rotate 
+        camera-controls 
+        interaction-prompt="hover"
+        class="w-full h-full relative z-10"
+        shadow-intensity="1.5"
+        shadow-softness="1"
+        exposure="0.9"
+        environment-image="legacy"
+        camera-orbit="45deg 75deg 105%"
+    >
+        <div slot="poster" class="w-full h-full flex flex-col items-center justify-center text-amber-500/50">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i>
+            <span class="text-xs font-mono uppercase tracking-widest">Henter 3D Model...</span>
+        </div>
+    </model-viewer>
+
+    <!-- Overlay Info -->
+    <div class="absolute bottom-6 left-6 bg-black/80 backdrop-blur-md px-5 py-4 rounded-xl border border-amber-500/20 pointer-events-none z-20 shadow-lg transform transition-transform group-hover:scale-105">
+        <h4 class="text-amber-500 font-serif font-bold text-sm mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-cube"></i> Historisk Genstand
+        </h4>
+        <p class="text-[10px] text-muted font-mono">Drej, panorer og zoom for at undersøge objektet</p>
+    </div>
+    
+    <!-- Note to user -->
+    <div class="absolute top-4 right-4 bg-amber-900/30 text-amber-500/50 text-[10px] px-2 py-1 rounded font-mono border border-amber-900/50 pointer-events-none z-20">
+        Demo GLTF: Skift 'src' i ArtifactViewer.astro
+    </div>
+</div>
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+
+<style>
+    /* Styling the model-viewer web component inner elements */
+    model-viewer {
+        --poster-color: transparent;
+        --progress-bar-color: #f59e0b;
+        --progress-bar-height: 2px;
+    }
+</style>

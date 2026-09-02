@@ -1,0 +1,90 @@
+---
+// src/components/project/TriangleTradeMap.astro
+---
+
+<div class="relative w-full aspect-video bg-[#0f0e0d] border border-amber-900/30 rounded-xl overflow-hidden group shadow-2xl">
+    <!-- Map Background / SVG -->
+    <svg viewBox="0 0 1000 600" class="w-full h-full opacity-80" preserveAspectRatio="xMidYMid slice">
+        <defs>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+
+        <!-- Minimal geometric continents -->
+        <!-- Europe/Africa -->
+        <path d="M500,0 L600,0 L650,50 L650,200 L550,250 L580,350 L700,400 L800,300 L900,350 L950,500 L850,600 L500,600 L450,450 L450,300 L500,200 L450,150 L500,100 Z" fill="#1c1917" stroke="#451a03" stroke-width="1"/>
+        <!-- Americas -->
+        <path d="M0,0 L300,0 L350,100 L250,250 L300,300 L400,350 L450,500 L350,600 L0,600 Z" fill="#1c1917" stroke="#451a03" stroke-width="1"/>
+
+        <!-- Trade Routes (Animated) -->
+        <!-- CPH -> Gold Coast (Guns, Textiles) -->
+        <path d="M560,120 Q700,250 520,380" fill="none" stroke="#f59e0b" stroke-width="2" class="route-path" style="--anim-delay: 0s;" />
+        <!-- Gold Coast -> DWI (Enslaved People) -->
+        <path d="M520,380 Q400,450 310,320" fill="none" stroke="#ef4444" stroke-width="2.5" class="route-path" style="--anim-delay: 2s;" />
+        <!-- DWI -> CPH (Sugar, Rum) -->
+        <path d="M310,320 Q450,150 560,120" fill="none" stroke="#10b981" stroke-width="2" class="route-path" style="--anim-delay: 4s;" />
+
+        <!-- Nodes -->
+        <!-- Copenhagen -->
+        <g transform="translate(560, 120)">
+            <circle cx="0" cy="0" r="6" fill="#f59e0b" class="animate-pulse" filter="url(#glow)" />
+            <circle cx="0" cy="0" r="3" fill="#fff" />
+            <text x="15" y="4" fill="#fbbf24" font-family="serif" font-size="16" font-weight="bold">København</text>
+        </g>
+
+        <!-- Gold Coast -->
+        <g transform="translate(520, 380)">
+            <circle cx="0" cy="0" r="6" fill="#f59e0b" class="animate-pulse" style="animation-delay: 1s;" filter="url(#glow)" />
+            <circle cx="0" cy="0" r="3" fill="#fff" />
+            <text x="15" y="4" fill="#fbbf24" font-family="serif" font-size="16" font-weight="bold">Guldkysten</text>
+        </g>
+
+        <!-- Danish West Indies -->
+        <g transform="translate(310, 320)">
+            <circle cx="0" cy="0" r="6" fill="#f59e0b" class="animate-pulse" style="animation-delay: 2s;" filter="url(#glow)" />
+            <circle cx="0" cy="0" r="3" fill="#fff" />
+            <text x="-15" y="4" fill="#fbbf24" font-family="serif" font-size="16" font-weight="bold" text-anchor="end">Dansk Vestindien</text>
+        </g>
+    </svg>
+
+    <!-- Overlay Info -->
+    <div class="absolute bottom-6 left-6 bg-[#0f0e0d]/80 backdrop-blur-md border border-amber-500/20 p-5 rounded-xl shadow-lg">
+        <h4 class="text-amber-500 font-serif font-bold text-base mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-route"></i> Trekantshandlen
+        </h4>
+        <ul class="text-xs text-muted space-y-2 font-mono">
+            <li class="flex items-center gap-3">
+                <span class="w-3 h-0.5 bg-amber-500 block"></span> 
+                <span>Våben & Tekstiler <span class="opacity-50">(Europa -> Afrika)</span></span>
+            </li>
+            <li class="flex items-center gap-3">
+                <span class="w-3 h-0.5 bg-red-500 block"></span> 
+                <span class="text-white">Menneskehandel <span class="opacity-50">(Afrika -> Caribien)</span></span>
+            </li>
+            <li class="flex items-center gap-3">
+                <span class="w-3 h-0.5 bg-green-500 block"></span> 
+                <span>Sukker & Rom <span class="opacity-50">(Caribien -> Europa)</span></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    .route-path {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: drawRoute 9s infinite ease-in-out;
+        animation-delay: var(--anim-delay);
+    }
+    
+    @keyframes drawRoute {
+        0%, 5% { stroke-dashoffset: 1000; opacity: 0; }
+        25%, 85% { stroke-dashoffset: 0; opacity: 0.8; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+</style>

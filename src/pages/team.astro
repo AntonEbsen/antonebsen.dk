@@ -6,8 +6,10 @@ import { anton, sheng, jonas } from '@data/collaborators';
 import { RESEARCHGATE_LAB, LAB_NAME } from '@lib/profiles';
 import { library, itemYear, ZOTERO_GROUP_URL } from '@lib/zotero';
 import { ORCID_URI, PUBLISHED_NAME } from '@lib/orcid';
-import { getImage } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import portraitSrc from '../assets/img/billede-af-mig.jpg';
+import figKofSrc from '../assets/projects/welfare-state-seminar/fig-kof.png';
+import figRollingSrc from '../assets/projects/welfare-state-seminar/fig-rolling.png';
 
 // CollaboratorSpotlight is a React island and wants a plain URL, so getImage() is
 // the right tool rather than <Image>. Linking /assets/img/billede-af-mig.jpg
@@ -24,19 +26,19 @@ const team = [
         role: "Hovedforfatter & Udvikler",
         image: portrait.src,
         description: "Specialiseret i makroøkonomisk modellering, webudvikling og brobygning mellem økonomisk teori og data science.",
-        status: { text: "Starter speciale", color: "yellow" }
+        status: { text: "Starter speciale", color: "yellow" as const }
     },
     {
         ...sheng,
         role: "Medforfatter & Data Scientist",
         description: "Ekspertise i højdimensionel datahåndtering, Stata-programmering og rigoristisk økonometrisk implementering (GMM).",
-        status: { text: "Coding Stata", color: "blue" }
+        status: { text: "Coding Stata", color: "blue" as const }
     },
     {
         ...jonas,
         role: "Medforfatter & Teoretiker",
         description: "Fokus på pengepolitisk transmission, spilteori og strukturelle brud i tidsseriedata.",
-        status: { text: "Reviewing Theory", color: "green" }
+        status: { text: "Reviewing Theory", color: "green" as const }
     }
 ];
 
@@ -445,10 +447,10 @@ const groupJsonLd = {
                  hvide matplotlib-plots, og cover ville beskære akserne væk. */}
              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                  <a href="/projects/welfare-state-seminar" class="aspect-square bg-white rounded-2xl overflow-hidden relative group block">
-                     <img src="/assets/projects/welfare-state-seminar/fig-kof.png" alt="KOF-globaliseringsindeksene for 32 OECD-lande, 1980–2023. Alle fire indeks stiger over perioden." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                     <Image src={figKofSrc} alt="KOF-globaliseringsindeksene for 32 OECD-lande, 1980–2023. Alle fire indeks stiger over perioden." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                  </a>
                   <a href="/projects/welfare-state-seminar" class="aspect-square bg-white rounded-2xl overflow-hidden relative group md:col-span-2 block">
-                     <img src="/assets/projects/welfare-state-seminar/fig-rolling.png" alt="Rullende OLS-koefficienter over 10-årige vinduer med 95 %-konfidensbånd for hvert af de fire globaliseringsindeks." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                     <Image src={figRollingSrc} alt="Rullende OLS-koefficienter over 10-årige vinduer med 95 %-konfidensbånd for hvert af de fire globaliseringsindeks." class="w-full h-full object-contain p-3 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                  </a>
              </div>
         </section>

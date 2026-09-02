@@ -1,0 +1,44 @@
+---
+// src/components/project/DualTimeline.astro
+export interface TimelineEvent {
+    year: string;
+    title: string;
+    description: string;
+    side: 'left' | 'right'; // left = History, right = Project
+}
+const { events } = Astro.props as { events: TimelineEvent[] };
+---
+<div class="relative max-w-4xl mx-auto py-10 my-10 overflow-hidden">
+    <!-- Center Line -->
+    <div class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-700/50 to-transparent transform -translate-x-1/2"></div>
+    
+    <!-- Headers -->
+    <div class="flex justify-between mb-16 relative z-10 px-4 md:px-0">
+        <div class="w-1/2 pr-6 md:pr-12 text-right">
+            <h3 class="text-lg md:text-xl font-serif text-amber-500/70 uppercase tracking-widest">Fortid</h3>
+            <p class="text-[10px] text-muted uppercase font-mono mt-1">Dansk Vestindien</p>
+        </div>
+        <div class="w-1/2 pl-6 md:pl-12 text-left">
+            <h3 class="text-lg md:text-xl font-serif text-amber-500/70 uppercase tracking-widest">Nutid</h3>
+            <p class="text-[10px] text-muted uppercase font-mono mt-1">Specialeprojekt</p>
+        </div>
+    </div>
+
+    <div class="space-y-16">
+        {events.map((event, idx) => (
+            <div class={`flex w-full items-start md:items-center justify-between ${event.side === 'left' ? 'flex-row-reverse' : ''} group`}>
+                <div class="w-5/12 hidden md:block"></div>
+                
+                <div class="absolute md:relative left-4 md:left-auto w-2/12 flex justify-center z-10 -ml-[5px] md:ml-0 mt-1 md:mt-0">
+                    <div class="w-3 h-3 rounded-full bg-amber-500 ring-4 ring-[#0f0e0d] group-hover:scale-150 transition-transform duration-300 shadow-[0_0_15px_rgba(245,158,11,0.6)]"></div>
+                </div>
+                
+                <div class={`w-full md:w-5/12 pl-12 md:pl-0 ${event.side === 'left' ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} transition-all duration-300 group-hover:-translate-y-1`}>
+                    <span class="text-amber-500 font-mono text-sm font-bold block mb-2 opacity-80">{event.year}</span>
+                    <h4 class="text-lg font-serif text-white mb-2">{event.title}</h4>
+                    <p class="text-sm text-dim font-serif leading-relaxed bg-black/20 p-4 rounded-lg border border-amber-900/20">{event.description}</p>
+                </div>
+            </div>
+        ))}
+    </div>
+</div>

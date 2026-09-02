@@ -1,171 +1,403 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
 import ThesisDashboard from '@components/project/ThesisDashboard.astro';
+import KnowledgeGraphPanel from '@components/project/KnowledgeGraphPanel';
+import GithubPulse from '@components/project/GithubPulse';
+import TriangleTradeMap from '@components/project/TriangleTradeMap.astro';
+import Scrollytelling from '@components/project/Scrollytelling';
+import DualTimeline from '@components/project/DualTimeline.astro';
+import LogbookCarousel from '@components/project/LogbookCarousel';
+import DataPlayground from '@components/project/DataPlayground';
+import ArchiveDust from '@components/project/ArchiveDust.astro';
+import ArchiveParallaxHero from '@components/project/ArchiveParallaxHero.astro';
+import ArtifactViewer from '@components/project/ArtifactViewer.astro';
+import MagnifyingGlass from '@components/project/MagnifyingGlass';
 import { sheng, jonas } from '@data/collaborators';
+
 export const prerender = true;
 
 const dashboardData = {
     deadline: "2027-01-04",
-    pageCount: 12,
+    pageCount: 0,
     targetPages: 120,
-    coffeeCount: 42
+    coffeeCount: 15
 };
 
 import LiteratureStream from '@components/project/LiteratureStream.astro';
 const literatureData = {
-    currentRead: { title: "Monetary Policy", author: "Schnabel", type: "Paper", progress: 65 },
-    stack: [ { title: "Fiscal Theory", author: "Cochrane", status: "To Read" as const } ]
+    currentRead: { title: "Slave Society in the Danish West Indies", author: "Neville A.T. Hall", type: "Book", progress: 45 },
+    stack: [ 
+        { title: "Economic legacies of slavery", author: "Sharp et al.", status: "To Read" as const },
+        { title: "Colonial Trade Records", author: "Rigsarkivet", status: "To Read" as const }
+    ]
 };
 
-import AudioAbstract from '@components/project/AudioAbstract.astro';
+const graphNodes = [
+    { id: "Dansk Vestindien", group: 1, radius: 10 },
+    { id: "St. Croix", group: 1, radius: 6 },
+    { id: "St. Thomas", group: 1, radius: 5 },
+    { id: "St. Jan", group: 1, radius: 4 },
+    { id: "København", group: 2, radius: 8 },
+    { id: "Guldkysten", group: 2, radius: 6 },
+    { id: "Sukkerproduktion", group: 3, radius: 7 },
+    { id: "Trekantshandlen", group: 3, radius: 9 },
+    { id: "Slavegjorte", group: 4, radius: 10 },
+    { id: "Paul Sharp", group: 5, radius: 6 },
+    { id: "Økonomisk Historie", group: 5, radius: 8 }
+];
+
+const graphLinks = [
+    { source: "Dansk Vestindien", target: "St. Croix", value: 3 },
+    { source: "Dansk Vestindien", target: "St. Thomas", value: 2 },
+    { source: "Dansk Vestindien", target: "St. Jan", value: 2 },
+    { source: "Trekantshandlen", target: "Dansk Vestindien", value: 5 },
+    { source: "Trekantshandlen", target: "København", value: 5 },
+    { source: "Trekantshandlen", target: "Guldkysten", value: 4 },
+    { source: "St. Croix", target: "Sukkerproduktion", value: 4 },
+    { source: "Sukkerproduktion", target: "Slavegjorte", value: 6 },
+    { source: "Guldkysten", target: "Slavegjorte", value: 5 },
+    { source: "Økonomisk Historie", target: "Dansk Vestindien", value: 3 },
+    { source: "Paul Sharp", target: "Økonomisk Historie", value: 4 }
+];
+
+const scrollySections = [
+    {
+        id: "phase-1",
+        title: "Arkivstudier",
+        description: "Den primære data indsamles fra Rigsarkivet i København, hvor tusindvis af håndskrevne sider fra toldbøger, skibsjournaler og plantageregnskaber gennemgås for at kortlægge handelsvolumen og priser.",
+        icon: "fa-book-journal-whills",
+        iconColorClass: "text-amber-500 bg-amber-900/20 border-amber-500/30"
+    },
+    {
+        id: "phase-2",
+        title: "Digitalisering & Rensning",
+        description: "De historiske optegnelser oversættes til strukturerede datasæt (CSV/SQL). Python og Pandas benyttes til at rense mangelfulde data og standardisere gamle måleenheder som 'pund' og 'rigsdaler'.",
+        icon: "fa-database",
+        iconColorClass: "text-blue-400 bg-blue-900/20 border-blue-500/30"
+    },
+    {
+        id: "phase-3",
+        title: "Økonometrisk Analyse",
+        description: "Ved hjælp af R opstilles regressionsmodeller for at identificere de kausale effekter af kolonihandlen på den danske økonomiske vækst og omvendt.",
+        icon: "fa-chart-line",
+        iconColorClass: "text-green-400 bg-green-900/20 border-green-500/30"
+    },
+    {
+        id: "phase-4",
+        title: "Digital Formidling",
+        description: "Resultaterne og det rensede data kodes ind i en interaktiv web-platform (danishwestindies.org) bygget med Astro, React og Tailwind CSS, for at gøre forskningen åben og tilgængelig for alle.",
+        icon: "fa-code",
+        iconColorClass: "text-purple-400 bg-purple-900/20 border-purple-500/30"
+    }
+];
+
+const timelineEvents = [
+    { year: "1671", title: "Dansk Vestindisk-Guineisk Kompagni", description: "Kompagniet oprettes og Danmark etablerer sin første koloni på St. Thomas.", side: "left" as const },
+    { year: "Efterår 2026", title: "Projektstart", description: "De indledende hypoteser formes og domænet danishwestindies.org registreres.", side: "right" as const },
+    { year: "1733", title: "St. Jan Købes", description: "Danmark udvider med øen St. Jan, hvilket intensiverer sukkerproduktionen og slavehandlen.", side: "left" as const },
+    { year: "Vinter 2026", title: "Dataindsamling", description: "Rigsarkivets digitaliserede kilder skrapes for toldregnskaber fra 1700-tallet.", side: "right" as const },
+    { year: "1754", title: "Kronen Overtager", description: "Den danske stat overtager kolonierne fra Kompagniet. Fri handel indføres.", side: "left" as const },
+    { year: "Forår 2027", title: "Model Estimering", description: "De kausale effekter af statsovertagelsen i 1754 testes via økonometriske metoder.", side: "right" as const },
+    { year: "1848", title: "Slaveriets Ophævelse", description: "Peter von Scholten erklærer slaveriet for ophævet efter oprør på St. Croix.", side: "left" as const },
+    { year: "Sommer 2027", title: "Publicering", description: "Specialet afleveres og danishwestindies.org lanceres officielt med alle resultater.", side: "right" as const }
+];
+
+const logbookEntries = [
+    {
+        id: "log-1",
+        date: "12. Okt 2026",
+        title: "Første tur i arkivet",
+        description: "En gennemgang af Rigsarkivets Vestindiske toldbøger fra 1750'erne. Skriften er svær at tyde, men data er der!",
+        duration: "03:42",
+        type: "video" as const
+    },
+    {
+        id: "log-2",
+        date: "04. Nov 2026",
+        title: "Lancering af platformen",
+        description: "De første versioner af danishwestindies.org er nu live på GitHub Pages. Har implementeret den nye farvepalette.",
+        duration: "08:15",
+        type: "audio" as const
+    },
+    {
+        id: "log-3",
+        date: "15. Dec 2026",
+        title: "Problemer med manglende data",
+        description: "Vi har opdaget at årene 1756-1758 mangler flere skibsjournaler på grund af en brand i pakhuset. Hvordan håndterer vi dette i modellen?",
+        duration: "05:20",
+        type: "video" as const
+    }
+];
 
 const projectContent = {
-    title: "Monetary Policy & Economic Relations",
-    subtitle: "Master's Thesis in Economics (Cand.polit)",
-    executiveSummary: "Dette speciale undersøger transmissionsmekanismen for pengepolitik i en post-COVID verden. Ved at anvende højfrekvente finansielle data og lokal-projektion metoder, isolerer vi effekten af pengepolitiske chok på inflationsforventninger.",
+    title: "The Danish West Indies: An Economic History",
+    subtitle: "Master's Thesis in Economics & Public History Platform",
+    executiveSummary: "Dette speciale i økonomisk historie undersøger de økonomiske dynamikker i Dansk Vestindien. Projektet tjener et dobbelt formål: Dels er det en akademisk afhandling vejledt af Paul Sharp, og dels er det et offentligt formidlingsprojekt. Gennem platformen danishwestindies.org og vores åbne GitHub-repository ønsker vi at oplyse offentligheden, ære de slavegjorte og præsentere vores forskning tilgængeligt.",
     researchQuestions: [
-        "Hvordan reagerer inflationsforventninger på pengepolitiske chok?",
-        "Er der asymmetri mellem udbuds- og efterspørgselsdrevet inflation?",
-        "Hvilken rolle spiller kommunikation (Forward Guidance)?"
+        "Hvad var de primære økonomiske drivkræfter i den danske kolonitid?",
+        "Hvordan formede institutionen af slaveri koloniens økonomiske udvikling?",
+        "Hvad er de langsigtede økonomiske konsekvenser af det danske kolonistyre?"
     ],
     methodology: {
-        model: "Local Projections (Jorda, 2005)",
-        strategy: "Højfrekvent Identifikation (HFI)",
-        data: "Euro Area Yield Curves & Swaps",
-        estimation: "OLS med Newey-West Standardfejl"
+        model: "Økonomisk Historie & Arkivforskning",
+        strategy: "Digital Humanities & Kvantitativ Analyse",
+        data: "Kolonihistoriske Arkiver & Handelsstatistikker",
+        estimation: "Data-digitalisering og økonometrisk analyse"
     },
     keyFindings: [
-        "Rentehævelser reducerer langsigtede inflationsforventninger.",
-        "Effekten er stærkere når inflationen er efterspørgselsdrevet.",
-        "ECB's kommunikation har signifikant effekt på de korte renter."
+        "Forskningen er i gang. Se danishwestindies.org for løbende opdateringer.",
+        "Fokus på at digitalisere og tilgængeliggøre historiske data."
     ],
     policyRelevance: [
-        "Resultaterne bidrager til forståelsen af 'State-Dependent' pengepolitik.",
-        "Relevant for kalibrering af DSGE modeller.",
-        "Belyser samspillet mellem finanspolitik og pengepolitik."
+        "Bidrager til en mere nuanceret offentlig forståelse af Danmarks kolonifortid.",
+        "Kombinerer akademisk stringens med et stærkt etisk formål om at ære de slavegjorte.",
+        "Demonstrerer værdien af 'Digital Humanities' i moderne økonomisk historie."
     ],
     dataTools: {
-        sources: "ECB Statistical Data Warehouse, Bloomberg",
-        software: "Python (Pandas, Statsmodels), Stata"
+        sources: "Rigsarkivet, Historiske Databaser, danishwestindies.org",
+        software: "Python, R, Web-teknologier (Astro/GitHub)"
     },
     citation: {
-        text: "Jørgensen, Anton Meier Ebsen, Chen, Sheng Ye Michael & Nielsen, Jonas Amasa Skov (Coming 2027). Monetary Policy Transmission in a Fragmented Euro Area.",
-        pdfUrl: "#"
+        text: "Jørgensen, Anton Meier Ebsen, m.fl. (2027). The Economic History of the Danish West Indies. Vejledt af Paul Sharp.",
+        pdfUrl: "https://danishwestindies.org/"
     },
     ui: {
-        methodology: "Forventet Metodologi",
-        findings: "Hypoteser & Forventninger",
-        relevance: "Politisk Perspektiv",
+        methodology: "Metodologi",
+        findings: "Løbende Indsigter",
+        relevance: "Formål & Relevans",
         dataTools: "Værktøjskasse",
-        download: "Dokumentation",
-        citation: "Fremtidig Citering",
-        execSummary: "Projektoversigt (Pre-Analysis Plan)",
-        researchQuestions: "Foreløbige Forskningsspørgsmål",
+        download: "Besøg Platformen",
+        citation: "Projekt reference",
+        execSummary: "Projektoversigt",
+        researchQuestions: "Forskningsspørgsmål",
         limitations: "Begrænsninger",
         secondaryAnalysis: "Sekundær Analyse",
         gallery: "Koncept-Galleri",
-        codeVault: "Kode-Vault (TBD)",
-        videoAbstract: "Video Logbog",
+        codeVault: "GitHub Repo",
+        videoAbstract: "Formidling",
         techStack: "Teknologistak",
         timeline: "Projekt-tidslinje",
-        liveData: "Data Monitor",
+        liveData: "Platform Monitor",
         continuityTitle: "Continuity"
     },
     timeline: [
-        { date: "Sept 2026", title: "Projektstart", description: "Officiel startdato. Definition af endelig problemformulering." },
-        { date: "Okt 2026", title: "Data-indsamling", description: "Opbygning af datasæt og rensning af variable." },
-        { date: "Nov 2026", title: "Model-estimering", description: "Gennemførelse af de primære økonometriske analyser." },
-        { date: "Jan 2027", title: "Aflevering", description: "Indlevering af det endelige speciale (ca. 120 sider)." }
+        { date: "Efterår 2026", title: "Platform & Emnevalg", description: "Lancering af danishwestindies.org og indledende arkivstudier." },
+        { date: "Vinter 2026", title: "Data-indsamling", description: "Digitalisering af historiske optegnelser og handelsdata." },
+        { date: "Forår 2027", title: "Analyse", description: "Økonometrisk analyse af de indsamlede data." },
+        { date: "Sommer 2027", title: "Aflevering", description: "Indlevering af speciale og færdiggørelse af formidlingsplatformen." }
     ],
     techStack: [
         { name: "Python", icon: "fa-brands fa-python" },
-        { name: "Stata", icon: "fa-solid fa-table-cells" },
-        { name: "LaTeX", icon: "fa-solid fa-file-tex" },
+        { name: "R", icon: "fa-solid fa-chart-line" },
+        { name: "Astro", icon: "fa-solid fa-rocket" },
         { name: "GitHub", icon: "fa-brands fa-github" }
     ],
     highlights: [
-        { label: "Mål", value: "120 Sider" },
-        { label: "Type", value: "Empirisk" },
-        { label: "ECTS", value: "30" }
+        { label: "Vejleder", value: "Paul Sharp" },
+        { label: "Type", value: "Øko. Historie" },
+        { label: "Website", value: "Live" }
     ],
     collaborators: [
-     { ...sheng, role: "Medforfatter & Data Scientist" },
-     { ...jonas, role: "Medforfatter & Teoretiker" }
+     { ...sheng, role: "Medforfatter" },
+     { ...jonas, role: "Medforfatter" }
   ],
   codeSnippet: {
-        lang: "latex",
-        title: "Project Template (LaTeX)",
-        code: `\\documentclass[11pt, a4paper]{report}
-\\usepackage[utf8]{inputenc}
-\\usepackage{amsmath, amssymb, amsthm}
-\\usepackage{graphicx}
-\\usepackage{natbib}
-\\usepackage{hyperref}
-
-% --- Custom Macros for Local Projections ---
-\\newcommand{\\hfi}[1]{\\hat{\\beta}^{LP}_{#1}}
-
-\\title{Monetary Policy Transmission in a Fragmented Euro Area}
-\\author{Anton Meier Ebsen Jørgensen}
-\\date{\\today}
-
-\\begin{document}
-\\maketitle
-\\tableofcontents
-
-\\chapter{Introduction}
-This thesis investigates the state-dependent effects of monetary policy...
-
-\\chapter{Methodology}
-We employ the Local Projections method (Jordà, 2005)...
-
-\\bibliographystyle{aer}
-\\bibliography{references}
-\\end{document}`
+        lang: "html",
+        title: "danishwestindies.org (Link)",
+        code: `<!-- 
+  Udforsk vores dedikerede platform for specialet:
+  https://danishwestindies.org/
+  
+  Projektet kombinerer akademisk forskning 
+  med offentlig formidling.
+-->
+<a href="https://danishwestindies.org/" target="_blank">
+  Besøg vores formidlingsplatform
+</a>`
     },
     bibliography: [
-        "Jordà, Ò. (2005). Estimation and Inference of Impulse Responses by Local Projections. American Economic Review, 95(1), 161–182.",
-        "Woodford, M. (2003). Interest and Prices: Foundations of a Theory of Monetary Policy. Princeton University Press.",
-        "Schnabel, I. (2020). The ECB’s Monetary Policy Strategy Review. Speech at the ECB and Its Watchers XXI Conference.",
-        "Ramey, V. A. (2016). Macroeconomic Shocks and Their Propagation. Handbook of Macroeconomics, 2, 71–162."
+        "Hall, N. A. T. (1992). Slave Society in the Danish West Indies.",
+        "Sharp, P. (TBD). Udvalgt litteratur om økonomisk historie.",
+        "Rigsarkivet. (2026). Arkivalier fra Dansk Vestindien."
     ]
 };
 ---
 
 <ProjectDetailPage lang="da" project={projectContent}>
-    {/* --- JOURNAL SECTION (The Custom Slot) --- */}
-    <section class="max-w-4xl mx-auto px-4 mb-32 relative">
-        <div class="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent hidden md:block"></div>
+    <ArchiveDust />
+    <ArchiveParallaxHero />
+    
+    {/* --- JOURNAL SECTION --- */}
+    <section id="content" class="theme-historical max-w-5xl mx-auto px-4 mb-32 relative pt-20">
+        <div class="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-500/20 to-transparent hidden md:block"></div>
         
         {/* Entry 1: Project Initialization */}
-        <div class="mb-16 relative pl-0 md:pl-16 group">
-            <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-accent ring-4 ring-bg hidden md:block group-hover:scale-125 transition-transform"></div>
+        <div class="mb-24 relative pl-0 md:pl-16 group">
+            <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-bg hidden md:block shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
             
-            <span class="text-[10px] font-bold uppercase tracking-widest text-muted mb-2 block">4. Januar 2027</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-amber-500/70 mb-2 block">Løbende Opdateret</span>
             <h2 class="text-2xl font-serif font-bold text-text mb-6 flex items-center gap-3">
-                <span class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500"><i class="fa-solid fa-gauge-high"></i></span>
-                Mission Control
+                <span class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500"><i class="fa-solid fa-globe"></i></span>
+                Et Dobbelt Formål
             </h2>
-            <ThesisDashboard {...dashboardData} />
+            <div class="prose prose-invert prose-sm mb-8 max-w-3xl">
+                 <p class="text-dim leading-relaxed font-serif text-lg">
+                     Dette speciale er mere end blot en akademisk afhandling. Ved at bygge <a href="https://danishwestindies.org/" target="_blank" class="text-amber-400 underline decoration-amber-400/30 hover:decoration-amber-400">danishwestindies.org</a> ønsker vi at bringe økonomisk historie ud af universitetet. Vores mål er at ære de slavegjorte, hvis liv og arbejde var fundamentet for kolonitidens økonomi, og at oplyse offentligheden gennem et lettilgængeligt digitalt arkiv.
+                 </p>
+                 <div class="mt-6 flex flex-wrap gap-4">
+                     <a href="https://danishwestindies.org/" target="_blank" class="px-5 py-2.5 bg-amber-500 text-black rounded-md text-sm font-bold hover:bg-amber-400 transition-colors shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                         <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Besøg Platformen
+                     </a>
+                     <a href="https://github.com/AntonEbsen/Danish-West-Indies-Website" target="_blank" class="px-5 py-2.5 bg-white/5 text-text rounded-md text-sm font-bold hover:bg-white/10 transition-colors border border-white/10 hover:border-amber-500/30">
+                         <i class="fa-brands fa-github mr-2"></i> GitHub Repository
+                     </a>
+                 </div>
+             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <AudioAbstract text="This project investigates the transmission mechanism of monetary policy in a post-COVID world. Specifically, we look at how supply-driven inflation shocks respond differently to interest rate hikes compared to demand-driven shocks." />
+            {/* Digital Humanities Showcase */}
+            <div class="my-10 bg-black/40 border border-amber-900/30 rounded-xl overflow-hidden shadow-2xl max-w-4xl">
+                <div class="bg-[#2D2D2D] px-4 py-2 flex items-center gap-2 border-b border-black/50">
+                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    <div class="ml-4 bg-[#1C1C1C] text-[#888] text-[10px] px-3 py-1 rounded font-mono w-64 flex items-center">
+                        <i class="fa-solid fa-lock mr-2 text-green-500/70"></i> danishwestindies.org
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col items-center justify-center text-center bg-gradient-to-b from-[#1a1a1a] to-bg min-h-[350px] relative overflow-hidden group/showcase cursor-pointer" onclick="window.open('https://danishwestindies.org/', '_blank')">
+                    <div class="absolute inset-0 bg-[url('/assets/images/noise.png')] opacity-20 mix-blend-overlay"></div>
+                    <i class="fa-solid fa-ship text-7xl text-amber-500/20 mb-6 group-hover/showcase:scale-110 group-hover/showcase:text-amber-500/40 transition-all duration-700"></i>
+                    <h3 class="text-3xl font-serif text-white mb-3">Danish West Indies</h3>
+                    <p class="text-base text-dim max-w-lg font-serif">A digital humanities platform preserving and presenting the economic history of the Danish colonial era.</p>
+                    <div class="mt-8 px-6 py-2.5 border border-amber-500/30 text-amber-500/80 rounded-full text-xs font-mono uppercase tracking-widest group-hover/showcase:bg-amber-500/10 transition-colors">
+                        Explore Interactive Archive <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-4xl">
+                <GithubPulse client:load />
+                <ThesisDashboard {...dashboardData} />
+            </div>
+        </div>
+
+        {/* Entry 2: Det Historiske Datagrundlag */}
+        <div class="mb-24 relative pl-0 md:pl-16 group">
+            <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-bg hidden md:block shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+            
+            <span class="text-[10px] font-bold uppercase tracking-widest text-amber-500/70 mb-2 block">Datagrundlag</span>
+            <h2 class="text-2xl font-serif font-bold text-text mb-6 flex items-center gap-3">
+                <span class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500"><i class="fa-solid fa-map-location-dot"></i></span>
+                Trekantshandlen & Data
+            </h2>
+            
+            <div class="prose prose-invert prose-sm mb-10 max-w-3xl">
+                <p class="text-dim leading-relaxed font-serif">
+                    Grundlaget for den danske velstand i 1700-tallet byggede på trekantshandlen: våben og tekstiler fra København til Guldkysten, slavegjorte mennesker fra Afrika til Dansk Vestindien, og sukker og rom tilbage til København.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mb-12">
+                <TriangleTradeMap />
+            </div>
+
+            <div class="max-w-4xl mb-12">
+                <ArtifactViewer />
+            </div>
+
+            <div class="max-w-4xl">
+                <p class="text-dim leading-relaxed font-serif text-sm mb-6 max-w-2xl">
+                    For at forstå de økonomiske incitamenter digitaliserer vi toldoptegnelser fra denne periode. Prøv selv at analysere et uddrag af vores datasæt via nedenstående indbyggede SQL-playground (drevet af DuckDB).
+                </p>
+                <DataPlayground dataUrl="/research/dwi_trade_records.csv" client:visible />
+            </div>
+        </div>
+
+        {/* Entry 3: Metodologi & Scrollytelling */}
+        <div class="mb-24 relative pl-0 md:pl-16 group">
+            <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-bg hidden md:block shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+            
+            <span class="text-[10px] font-bold uppercase tracking-widest text-amber-500/70 mb-2 block">Proces</span>
+            <h2 class="text-2xl font-serif font-bold text-text mb-2 flex items-center gap-3">
+                <span class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500"><i class="fa-solid fa-layer-group"></i></span>
+                Fra Arkiv til Algoritme
+            </h2>
+            
+            <div class="max-w-4xl mb-12">
+                <MagnifyingGlass 
+                    client:visible 
+                    cursiveText="Denne Dag var Vinden god. Hafde Vægten af 1200 Pund Sukker fra St. Croix ombord." 
+                    cleanText="Denne dag var vinden god. Havde vægten af 1200 pund sukker fra St. Croix ombord." 
+                />
+            </div>
+
+            <div class="max-w-4xl">
+                <Scrollytelling client:visible sections={scrollySections} />
+            </div>
+        </div>
+
+        {/* Entry 4: Vidensnetværk & Tidslinje */}
+        <div class="mb-24 relative pl-0 md:pl-16 group">
+             <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-bg hidden md:block shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+             
+             <span class="text-[10px] font-bold uppercase tracking-widest text-amber-500/70 mb-2 block">Kontekst</span>
+             <h2 class="text-2xl font-serif font-bold text-text mb-4 flex items-center gap-3">
+                 <span class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500"><i class="fa-solid fa-project-diagram"></i></span>
+                 Netværk & Historie
+             </h2>
+             <div class="prose prose-invert prose-sm mb-10 max-w-3xl">
+                 <p class="text-dim leading-relaxed font-serif">
+                     Projektet skrives i økonomisk historie under kyndig vejledning af Paul Sharp. Nedenstående vidensgraf illustrerer de primære knudepunkter i vores forskning, og tidslinjen sætter vores moderne specialeskrivning i perspektiv overfor de faktiske historiske begivenheder i Dansk Vestindien.
+                 </p>
+             </div>
+             
+             <div class="max-w-4xl rounded-xl border border-amber-500/20 bg-black/20 overflow-hidden mb-16 shadow-lg">
+                 <div class="border-b border-amber-500/10 px-4 py-3 flex items-center justify-between bg-black/40">
+                     <span class="text-xs font-mono font-bold text-amber-500/70 uppercase tracking-widest">
+                         <i class="fa-solid fa-circle-nodes mr-2"></i> Konceptuel Graf
+                     </span>
+                 </div>
+                 <KnowledgeGraphPanel client:visible nodes={graphNodes} links={graphLinks} height={450} lang="da" />
+             </div>
+             
+             <div class="max-w-4xl bg-black/20 border border-amber-900/20 rounded-3xl p-4 md:p-8 shadow-inner">
+                 <DualTimeline events={timelineEvents} />
+             </div>
+        </div>
+        
+        {/* Entry 5: Logbog */}
+        <div class="mb-10 relative pl-0 md:pl-16 group">
+            <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-bg hidden md:block shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+            
+            <LogbookCarousel client:visible entries={logbookEntries} />
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 max-w-4xl">
                 <LiteratureStream {...literatureData} />
             </div>
         </div>
 
-        {/* Entry 2: Research Questions */}
-        <div class="mb-16 relative pl-0 md:pl-16 group">
-             <div class="absolute left-[31px] top-0 w-2 h-2 rounded-full bg-rule-strong ring-4 ring-bg hidden md:block group-hover:bg-accent transition-colors"></div>
-             
-             <span class="text-[10px] font-bold uppercase tracking-widest text-muted mb-2 block">Start-fase</span>
-             <h2 class="text-xl font-serif font-bold text-text mb-4">Problemformulering</h2>
-             <div class="prose prose-invert prose-sm">
-                 <p class="text-dim leading-relaxed font-serif">
-                     Den endelige problemformulering er under udarbejdelse. Fokus er på at identificere kausale effekter af pengepolitikken gennem højfrekvente data.
-                 </p>
-             </div>
-        </div>
-
     </section>
 </ProjectDetailPage>
+
+<style>
+    /* 
+      Thematic overrides specifically for the historical/archival feel of this page.
+    */
+    .theme-historical :global(.bg-accent) {
+        background-color: #f59e0b !important;
+    }
+    .theme-historical :global(.text-accent) {
+        color: #fbbf24 !important;
+    }
+    .theme-historical :global(.ring-accent) {
+        --tw-ring-color: #f59e0b !important;
+    }
+    .theme-historical :global(.border-accent) {
+        border-color: #f59e0b !important;
+    }
+    .theme-historical :global(h2), 
+    .theme-historical :global(h3), 
+    .theme-historical :global(h4) {
+        letter-spacing: 0.02em;
+    }
+</style>

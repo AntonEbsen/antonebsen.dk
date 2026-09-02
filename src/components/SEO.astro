@@ -41,9 +41,15 @@ const societies = (cvForSocieties?.data.organizations ?? [])
   .filter((org: any) => org.url && org.url !== '#' && org.status !== 'joining')
   .map((org: any) => ({ "@type": "Organization", name: org.name, url: org.url }));
 
+import { getLangFromUrl } from '@i18n/utils';
+
 const siteTitle = "Anton Meier Ebsen Jørgensen";
 const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://antonebsen.dk");
+
+const currentLang = getLangFromUrl(Astro.url);
+const canonicalURL = currentLang === 'en' 
+  ? new URL(Astro.url.pathname.replace(/^\/en/, ''), 'https://antonebsen.com')
+  : new URL(Astro.url.pathname, 'https://antonebsen.dk');
 
 // Image Logic: Use provided prop OR fallback to Dynamic OG
 let socialImageURL;
@@ -92,17 +98,21 @@ const breadcrumbItems = [
 //
 // availableAlternates consults the actual page files, so a language only appears
 // once its route exists, and adding one makes the alternate show up by itself.
-const SITE = 'https://antonebsen.dk';
+
+const hrefForLang = (lang: string, path: string) => {
+  if (lang === 'en') return 'https://antonebsen.com' + path.replace(/^\/en/, '');
+  return 'https://antonebsen.dk' + path;
+};
 
 const paths = alternates ?? availableAlternates(Astro.url.pathname);
 
 const hreflangs = [
   ...(['da', 'en', 'de'] as const)
     .filter((lang) => paths[lang])
-    .map((lang) => ({ lang, href: SITE + paths[lang]! })),
+    .map((lang) => ({ lang, href: hrefForLang(lang, paths[lang]!) })),
   // x-default goes to Danish when it exists, else whichever version does.
   ...(Object.keys(paths).length
-    ? [{ lang: 'x-default', href: SITE + (paths.da ?? paths.en ?? paths.de)! }]
+    ? [{ lang: 'x-default', href: paths.da ? hrefForLang('da', paths.da) : (paths.en ? hrefForLang('en', paths.en) : hrefForLang('de', paths.de!)) }]
     : [])
 ];
 ---

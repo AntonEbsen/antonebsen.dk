@@ -421,12 +421,18 @@
               },
               "url": {
                 "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "member",
+                  "joining"
+                ]
               }
             },
             "required": [
               "name",
               "role",
-              "period",
               "description"
             ],
             "additionalProperties": false

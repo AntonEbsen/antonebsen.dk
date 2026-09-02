@@ -13,6 +13,10 @@ export default defineConfig({
   trailingSlash: 'never',
 
   site: 'https://antonebsen.dk',
+  
+  image: {
+    domains: ['i.ytimg.com']
+  },
 
   markdown: {
     remarkPlugins: [remarkMath],
@@ -41,6 +45,12 @@ export default defineConfig({
         !page.includes('/debug') &&
         !page.includes('/api/') &&
         !/\/test-[^/]+\/?$/.test(page),
+      serialize(item) {
+        if (item.url.includes('antonebsen.dk/en/')) {
+          item.url = item.url.replace('antonebsen.dk/en/', 'antonebsen.com/');
+        }
+        return item;
+      }
     }),
     tailwind({
       applyBaseStyles: false,

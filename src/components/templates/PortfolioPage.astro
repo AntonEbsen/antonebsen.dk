@@ -1,4 +1,4 @@
-﻿---
+---
 import Layout from '@layouts/BaseLayout.astro';
 import Pill from '@components/ui/Pill.astro';
 import Section from '@components/ui/Section.astro';
@@ -11,6 +11,7 @@ import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 import { assetExists } from '@lib/public-asset';
 import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 export const prerender = true;
 
@@ -218,7 +219,7 @@ const t = uiStrings[lang] || uiStrings.en;
                                             <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
                                         </div>
                                     </div>
-                                    <img src={cvProjects[0].blueprint} alt="Architecture" class="w-full opacity-90" />
+                                    <Image src={cvProjects[0].blueprint} inferSize={true} alt="Architecture" class="w-full opacity-90" />
                                 </div>
                             </div>
                          )}
