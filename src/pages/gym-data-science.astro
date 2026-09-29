@@ -1,0 +1,389 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+export const prerender = true;
+---
+
+<Layout title="Anton Meier Ebsen's Gym Data Science | Anton Ebsen" description="Applying machine learning, predictive modeling, and descriptive statistics to my own 9 months of unstructured hypertrophy training data.">
+    
+    <main class="w-full min-h-screen bg-[#111] text-gray-300 font-sans selection:bg-accent selection:text-white pb-24">
+        
+        {/* Header Section */}
+        <header class="w-full pt-32 pb-16 px-6 md:px-12 lg:px-24 border-b border-white/10 bg-gradient-to-b from-[#1a1a1a] to-[#111]">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center gap-3 text-accent text-sm font-semibold tracking-widest uppercase mb-4">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <span>My Personal Training Data</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Optimizing My Hypertrophy Through Unsupervised Learning
+                </h1>
+                <p class="text-xl text-gray-400 mb-8 leading-relaxed">
+                    Over the last 9 months, I ran a grueling 6-day Push/Pull/Legs split and logged absolutely everything I did. I took my own unstructured training logs—1,170 sets of raw text—and ran them through a machine learning pipeline. Here is what happens when you apply K-Means clustering, OLS regression, and Markov Chains to my personal hypertrophic adaptations.
+                </p>
+                
+                {/* Personal Profile Badge */}
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 bg-white/5 border border-white/10 p-6 rounded-xl mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-black font-bold text-xl">
+                            AE
+                        </div>
+                        <div>
+                            <p class="text-white font-semibold">Anton Meier Ebsen</p>
+                            <p class="text-sm text-gray-400">Economist & Lifter</p>
+                        </div>
+                    </div>
+                    {/* CSV Download Button */}
+                    <a href="/assets/gym-data/anton_workout_data.csv" download="anton_workout_data.csv" class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors border border-white/10">
+                        <i class="fa-solid fa-download"></i>
+                        Download My Raw Dataset (CSV)
+                    </a>
+                </div>
+
+                <div class="flex gap-4 text-sm text-gray-500">
+                    <span><i class="fa-regular fa-calendar mr-2"></i> Sept 2025 - Jun 2026</span>
+                    <span><i class="fa-solid fa-code mr-2"></i> Python, Pandas, Scikit-Learn</span>
+                </div>
+            </div>
+        </header>
+
+        {/* Content Section */}
+        <article class="max-w-4xl mx-auto px-6 md:px-12 mt-8 space-y-24">
+            
+            {/* Video Game HUD: PRs */}
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+                <div class="bg-gradient-to-b from-gray-800 to-black p-4 rounded-xl border-t-4 border-accent shadow-[0_0_15px_rgba(212,175,55,0.2)] text-center transform hover:scale-105 transition-transform">
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Squat (1RM)</p>
+                    <p class="text-3xl font-black text-white font-mono">120<span class="text-sm text-accent">KG</span></p>
+                </div>
+                <div class="bg-gradient-to-b from-gray-800 to-black p-4 rounded-xl border-t-4 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)] text-center transform hover:scale-105 transition-transform">
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Chest Press</p>
+                    <p class="text-3xl font-black text-white font-mono">120<span class="text-sm text-blue-500">KG</span></p>
+                </div>
+                <div class="bg-gradient-to-b from-gray-800 to-black p-4 rounded-xl border-t-4 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)] text-center transform hover:scale-105 transition-transform">
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Leg Press</p>
+                    <p class="text-3xl font-black text-white font-mono">154<span class="text-sm text-red-500">KG</span></p>
+                </div>
+                <div class="bg-gradient-to-b from-gray-800 to-black p-4 rounded-xl border-t-4 border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.2)] text-center transform hover:scale-105 transition-transform">
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Total Sets</p>
+                    <p class="text-3xl font-black text-white font-mono">1170</p>
+                </div>
+            </section>
+
+            {/* Intro Stats */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">1. The "Tonnage" Discrepancy</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5 shadow-lg">
+                        <h3 class="text-accent font-mono text-sm mb-2">Longitudinal Volume Load</h3>
+                        <p class="text-sm text-gray-400 mb-4">Analyzing my systemic fatigue accumulation over time. Notice the stark volatility.</p>
+                        <img src="/assets/gym-data/total_volume.png" alt="Total Volume Over Time" class="w-full rounded-lg mix-blend-screen opacity-90 hover:opacity-100 transition-opacity border border-white/10" />
+                    </div>
+                    <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5 shadow-lg">
+                        <h3 class="text-accent font-mono text-sm mb-2">Lower vs Upper Body</h3>
+                        <p class="text-sm text-gray-400 mb-4">A standard Pull Day yielded ~34,500 kg of volume, whereas my Leg Days averaged <strong>77,200 kg</strong>.</p>
+                        <img src="/assets/gym-data/top_exercises.png" alt="Top Exercises" class="w-full rounded-lg mix-blend-screen opacity-90 hover:opacity-100 transition-opacity border border-white/10" />
+                    </div>
+                </div>
+            </section>
+
+            {/* Unsupervised Learning */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">2. Unsupervised PPL Recognition</h2>
+                <div class="bg-[#1a1a1a] p-8 rounded-xl border border-white/5 my-8 shadow-2xl">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-semibold text-white mb-4">Reverse-Engineering My Routine</h3>
+                            <p class="text-gray-400 mb-4">I fed my 5-dimensional feature space into a K-Means Clustering algorithm (<em>k=3</em>). The algorithm independently discovered my Push/Pull/Legs split.</p>
+                            <ul class="space-y-3 text-sm text-gray-400 list-disc list-inside">
+                                <li><strong>Cluster 0 (Pull):</strong> Posterior chain isolation.</li>
+                                <li><strong>Cluster 1 (Legs):</strong> Lower-body mechanical tension.</li>
+                                <li><strong>Cluster 2 (Push):</strong> Anterior pressing volume.</li>
+                            </ul>
+                        </div>
+                        <div class="flex-1">
+                            <img src="/assets/gym-data/4_kmeans_split.png" alt="K-Means Clustering" class="w-full rounded-lg shadow-inner border border-white/10" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* NEW: Marginal Utility & SVI */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">3. Diminishing Returns & Volatility</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-6 rounded-xl border border-white/5 shadow-2xl">
+                        <h3 class="text-xl font-semibold text-white mb-2">The Marginal Utility of a Set</h3>
+                        <p class="text-sm text-gray-400 mb-4">As muscular fatigue accumulates, reps decrease. This chart proves the economic law of diminishing marginal returns applies to hypertrophy "junk volume."</p>
+                        <div class="relative w-full h-[250px]"><canvas id="muChart"></canvas></div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-6 rounded-xl border border-white/5 shadow-2xl">
+                        <h3 class="text-xl font-semibold text-white mb-2">Strength Volatility Index (SVI)</h3>
+                        <p class="text-sm text-gray-400 mb-4">Which days are the most consistent? The SVI maps the coefficient of variation (variance) in my total volume across the week.</p>
+                        <div class="relative w-full h-[250px] flex justify-center"><canvas id="sviChart"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            {/* NEW: Gini Coefficient & Autocorrelation */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">4. Income Inequality... but for Muscles</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5 shadow-lg flex flex-col justify-center text-center">
+                        <h3 class="text-accent font-mono text-sm mb-4">The Gini Coefficient of Volume</h3>
+                        <p class="text-6xl font-black text-white font-mono mb-4" id="giniScore">0.00</p>
+                        <p class="text-sm text-gray-400">A Gini coefficient measures inequality (0 = perfect equality, 1 = maximum inequality). My muscle volume distribution shows heavy bias toward Leg volume, mirroring economic wealth disparity.</p>
+                    </div>
+                    <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5 shadow-lg">
+                        <h3 class="text-accent font-mono text-sm mb-2">Autocorrelation (Lag Analysis)</h3>
+                        <p class="text-sm text-gray-400 mb-4">Does a heavy Leg Day crash my volume 24 hours later? This chart shows the correlation of today's volume with previous days (Lag 1 to 7).</p>
+                        <div class="relative w-full h-[200px]"><canvas id="lagChart"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ARIMA Forecasting */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">5. ARIMA Time-Series Forecasting</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    Instead of a simple OLS trendline, what happens if we apply an <strong>ARIMA (Autoregressive Integrated Moving Average)</strong> model to my weekly training volume? Economists use this to forecast GDP and stock prices. Here is my projected workload 12 weeks into the future, complete with a 95% confidence interval.
+                </p>
+                <div class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-8 rounded-xl border border-white/5 my-8 shadow-2xl">
+                    <div class="relative w-full h-[400px] mb-6"><canvas id="arimaChart"></canvas></div>
+                </div>
+            </section>
+
+            {/* Efficient Frontier */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">6. The Efficient Frontier of Hypertrophy</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    In Modern Portfolio Theory, the "Efficient Frontier" plots the expected return of an asset against its standard deviation (risk). What if we apply that to exercises? Here, I mapped <strong>Mean Volume</strong> (Hypertrophic Return) against <strong>Volume Standard Deviation</strong> (Systemic Fatigue / Risk). The size of the bubble represents how often I did the exercise.
+                </p>
+                <div class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-8 rounded-xl border border-white/5 my-8 shadow-2xl">
+                    <div class="relative w-full h-[400px] mb-6"><canvas id="frontierChart"></canvas></div>
+                </div>
+            </section>
+
+            {/* 1RM Forecasting with Interactive Chart */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">7. Forecasting My Theoretical 1RM (OLS)</h2>
+                <div class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-8 rounded-xl border border-white/5 my-8 shadow-2xl">
+                    <div class="relative w-full h-[400px] mb-6"><canvas id="rmChart"></canvas></div>
+                </div>
+            </section>
+
+            {/* NEW: 3D Force Graph Markov Chain */}
+            <section>
+                <h2 class="text-3xl font-semibold text-white mb-6 border-l-4 border-accent pl-4">5. The 3D Exercise Transition Network</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    A Markov Chain transition matrix modeling the stochastic probability of my gym behavior, rendered as an interactive 3D force-directed graph.
+                </p>
+                <div class="bg-black p-2 rounded-xl my-8 border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.8)] relative overflow-hidden group">
+                    <div id="3d-graph" class="w-full h-[500px] rounded-lg cursor-move"></div>
+                    <div class="absolute bottom-4 left-4 text-xs text-white/50 pointer-events-none group-hover:text-white/80 transition-colors">
+                        <i class="fa-solid fa-mouse"></i> Click & drag to rotate. Scroll to zoom.
+                    </div>
+                </div>
+            </section>
+
+            {/* Conclusion */}
+            <section class="border-t border-white/10 pt-16 text-center">
+                <h2 class="text-2xl font-bold text-white mb-4">Conclusion</h2>
+                <p class="text-lg text-gray-400 leading-relaxed mb-8 max-w-3xl mx-auto">
+                    Data doesn't lie. Applying machine learning to my own personal training logs provided empirical proof of my progressive overload and structural consistency.
+                </p>
+                <a href="/" class="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition-colors duration-300 shadow-lg">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </section>
+
+        </article>
+    </main>
+</Layout>
+
+<!-- Load Chart.js and 3D Force Graph from CDN -->
+<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+<script is:inline src="https://unpkg.com/3d-force-graph"></script>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    // 1. Interactive 1RM Chart
+    try {
+        const res = await fetch('/assets/gym-data/1rm_data.json');
+        const data = await res.json();
+        const ctx = document.getElementById('rmChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [
+                    { label: 'Squat (Actual)', data: data.squat.actual, backgroundColor: '#ef4444' },
+                    { type: 'line', label: 'Squat (Trend)', data: data.squat.trend, borderColor: '#ef4444', borderDash: [5, 5], fill: false },
+                    { label: 'Chest Press (Actual)', data: data['chest press'].actual, backgroundColor: '#3b82f6' },
+                    { type: 'line', label: 'Chest Press (Trend)', data: data['chest press'].trend, borderColor: '#3b82f6', borderDash: [5, 5], fill: false }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { x: { type: 'time' } }
+            }
+        });
+    } catch (e) {}
+
+    // 2. Marginal Utility Chart
+    try {
+        const res = await fetch('/assets/gym-data/marginal_utility.json');
+        const muData = await res.json();
+        
+        const labels = ['Set 1', 'Set 2', 'Set 3', 'Set 4', 'Set 5'];
+        const datasets = Object.keys(muData).map((ex, idx) => {
+            const colors = ['#d4af37', '#ef4444', '#3b82f6', '#10b981'];
+            const dataPts = [1, 2, 3, 4, 5].map(s => muData[ex][s] || 0);
+            return { label: ex.toUpperCase(), data: dataPts, backgroundColor: colors[idx % colors.length] };
+        });
+
+        const ctx2 = document.getElementById('muChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: { labels, datasets },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff', boxWidth: 12 } } }, scales: { y: { title: { display: true, text: 'Avg Reps', color: '#9ca3af' }, ticks: { color: '#9ca3af' } }, x: { ticks: { color: '#9ca3af' } } } }
+        });
+    } catch (e) {}
+
+    // 3. Strength Volatility Index Chart (Radar)
+    try {
+        const res = await fetch('/assets/gym-data/svi_data.json');
+        const sviData = await res.json();
+        
+        const labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const dataPts = labels.map(day => sviData[day] || 0);
+
+        const ctx3 = document.getElementById('sviChart').getContext('2d');
+        new Chart(ctx3, {
+            type: 'polarArea',
+            data: {
+                labels,
+                datasets: [{ label: 'Volatility (CV %)', data: dataPts, backgroundColor: 'rgba(212,175,55,0.4)', borderColor: '#d4af37' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.1)' } } } }
+        });
+    } catch (e) {}
+
+    // 4. 3D Force Graph for Markov Chain
+    try {
+        const res = await fetch('/assets/gym-data/markov_data.json');
+        const markovData = await res.json();
+        
+        const nodes = [];
+        const links = [];
+        const nodeSet = new Set();
+        
+        for (const [from, targets] of Object.entries(markovData)) {
+            if (!nodeSet.has(from)) { nodes.push({ id: from, group: 1 }); nodeSet.add(from); }
+            for (const t of targets) {
+                if (!nodeSet.has(t.to)) { nodes.push({ id: t.to, group: 2 }); nodeSet.add(t.to); }
+                links.push({ source: from, target: t.to, value: t.prob * 10 });
+            }
+        }
+
+        const Graph = ForceGraph3D()
+          (document.getElementById('3d-graph'))
+            .graphData({ nodes, links })
+            .nodeLabel('id')
+            .nodeAutoColorBy('group')
+            .linkDirectionalParticles("value")
+            .linkDirectionalParticleSpeed(d => d.value * 0.001)
+            .backgroundColor('#000000');
+            
+    } catch (e) {}
+
+    // 5. Gini Coefficient
+    try {
+        const res = await fetch('/assets/gym-data/gini_data.json');
+        const giniData = await res.json();
+        document.getElementById('giniScore').textContent = giniData.gini.toFixed(2);
+    } catch (e) {}
+
+    // 6. Autocorrelation (Lag Chart)
+    try {
+        const res = await fetch('/assets/gym-data/autocorr_data.json');
+        const lagData = await res.json();
+        const ctx4 = document.getElementById('lagChart').getContext('2d');
+        new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(lagData),
+                datasets: [{ label: 'Correlation Coefficient', data: Object.values(lagData), backgroundColor: '#3b82f6' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: -1, max: 1, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } }, x: { ticks: { color: '#9ca3af' } } } }
+        });
+    } catch (e) {}
+
+    // 7. ARIMA Time-Series Forecast
+    try {
+        const res = await fetch('/assets/gym-data/arima_data.json');
+        const arimaData = await res.json();
+        if (!arimaData.error) {
+            const ctx5 = document.getElementById('arimaChart').getContext('2d');
+            new Chart(ctx5, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label: 'Historical Volume', data: arimaData.historical, borderColor: '#ef4444', backgroundColor: '#ef4444', fill: false, tension: 0.2 },
+                        { label: 'ARIMA Forecast', data: arimaData.forecast, borderColor: '#3b82f6', borderDash: [5, 5], fill: false, tension: 0.2 },
+                        { label: '95% Upper Bound', data: arimaData.upper_bound, borderColor: 'rgba(59,130,246,0.2)', backgroundColor: 'rgba(59,130,246,0.1)', fill: '+1', pointRadius: 0 },
+                        { label: '95% Lower Bound', data: arimaData.lower_bound, borderColor: 'rgba(59,130,246,0.2)', fill: false, pointRadius: 0 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { x: { type: 'time', time: { unit: 'week' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } }, y: { title: { display: true, text: 'Weekly Volume (kg)', color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } } },
+                    plugins: { legend: { labels: { color: '#fff' } } }
+                }
+            });
+        }
+    } catch (e) {}
+
+    // 8. Efficient Frontier (Bubble Chart)
+    try {
+        const res = await fetch('/assets/gym-data/efficient_frontier.json');
+        const frontierData = await res.json();
+        
+        const ctx6 = document.getElementById('frontierChart').getContext('2d');
+        new Chart(ctx6, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Exercises',
+                    data: frontierData,
+                    backgroundColor: 'rgba(212, 175, 55, 0.6)',
+                    borderColor: '#d4af37'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Risk (Std Dev of Volume)', color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } },
+                    y: { title: { display: true, text: 'Return (Mean Volume)', color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const data = context.raw;
+                                return `${data.label}: Risk ${data.x} | Return ${data.y}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } catch (e) {}
+});
+</script>
+
+
