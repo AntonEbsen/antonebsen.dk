@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { SkillSchema } from '../../lib/schemas';
 
 // GET: Fetch all skills
 export const GET: APIRoute = async () => {
@@ -17,9 +18,11 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
     try {
-        const body = await request.json();
-        // Ensure proficiency is integer
-        const { error } = await supabase.from('skills').insert([body]);
+        const parsed = SkillSchema.safeParse(await request.json());
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ error: parsed.error.flatten() }), { status: 400 });
+        }
+        const { error } = await supabase.from('skills').insert([parsed.data]);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }));
     } catch (e) {

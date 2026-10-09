@@ -64,3 +64,81 @@ export const PostSchema = z.object({
     published: z.boolean().optional(),
     tags: z.array(z.string()).optional()
 });
+
+// ── The write routes that had no schema at all ──────────────────────────────
+//
+// Nine routes inserted `await request.json()` straight into Supabase, so a caller
+// could set any column the table had. The shapes below follow src/types/database.ts;
+// Zod strips keys it does not name, which is the point. Lengths are generous — the
+// bound is there to stop a megabyte in a text column, not to second-guess Anton.
+
+export const MediaSchema = z.object({
+    title: z.string().min(1).max(200),
+    source: z.string().min(1).max(200),
+    date: z.string().max(40).optional(),
+    url: z.string().max(500).optional(),
+});
+
+/** The "now" status pill in the navbar. Table: status. */
+export const StatusSchema = z.object({
+    emoji: z.string().min(1).max(16),
+    status: z.string().min(1).max(280),
+});
+
+export const ReferenceSchema = z.object({
+    name: z.string().min(1).max(120),
+    role: z.string().min(1).max(120),
+    company: z.string().max(120).optional(),
+    relationship: z.string().max(120).optional(),
+    quote: z.string().min(1).max(2000),
+    linkedin_url: z.string().max(500).optional(),
+});
+
+export const BucketListStatus = z.enum(['todo', 'doing', 'done']);
+
+export const BucketListInputSchema = z.object({
+    title: z.string().min(1).max(200),
+    description: z.string().max(2000).optional(),
+    image_url: z.string().max(500).optional(),
+    status: BucketListStatus.default('todo'),
+});
+
+export const BucketListUpdateSchema = z.object({
+    id: z.coerce.number().int().positive(),
+    status: BucketListStatus,
+});
+
+export const CvEducationSchema = z.object({
+    institution: z.string().min(1).max(200),
+    degree: z.string().min(1).max(200),
+    period: z.string().max(60).optional(),
+    description: z.string().max(2000).optional(),
+    bullets: z.array(z.string().max(300)).max(20).optional(),
+    technologies: z.array(z.string().max(60)).max(30).optional(),
+});
+
+export const CvExperienceSchema = z.object({
+    title: z.string().min(1).max(200),
+    organization: z.string().min(1).max(200),
+    type: z.string().max(60).optional(),
+    location: z.string().max(120).optional(),
+    period: z.string().max(60).optional(),
+    description: z.array(z.string().max(300)).max(20).optional(),
+    highlights: z.array(z.object({
+        label: z.string().max(60),
+        value: z.string().max(200),
+    })).max(10).optional(),
+});
+
+/** Answering or hiding a visitor's question. Table: qa. */
+export const QaUpdateSchema = z.object({
+    id: z.coerce.number().int().positive(),
+    status: z.enum(['pending', 'answered', 'hidden']),
+    answer: z.string().max(4000).optional(),
+});
+
+/** A visitor's reaction on a post. The three types are the ones ArticleReactions offers. */
+export const ReactionSchema = z.object({
+    slug: z.string().min(1).max(120).regex(/^[a-z0-9-]+$/i),
+    reaction_type: z.enum(['insightful', 'strong-data', 'thought-provoking']),
+});

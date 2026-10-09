@@ -72,9 +72,13 @@ if (missingRequired.length > 0) {
     console.warn(`⚠️  Warning: The following environment variables are missing: ${missingRequired.join(', ')}`);
     console.warn('   The build will proceed locally, but features relying on them (e.g., Guestbook, Chat) may fail at runtime.');
 
-    // Fail the build in CI/CD environments to prevent broken deployments
-    if (process.env.CI || process.env.VERCEL) {
-        console.error('❌ Error: Missing environment variables in CI/Production environment.');
+    // Fail a *deploy* build: Vercel sets VERCEL, and REQUIRE_ENV is the explicit
+    // override for anywhere else. This used to fail on CI too, but GitHub Actions
+    // sets CI=true for a build that verifies the code, holds no production secrets
+    // and deploys nothing — so the Build step failed every time, and the tests queued
+    // behind it never ran at all.
+    if (process.env.VERCEL || process.env.REQUIRE_ENV) {
+        console.error('❌ Error: Missing environment variables in a production build.');
         process.exit(1);
     }
 } else {

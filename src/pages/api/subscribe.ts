@@ -39,7 +39,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             .single();
 
         if (existing) {
-            return new Response(JSON.stringify({ message: "Du er allerede tilmeldt!" }), { status: 200 });
+            // The same reply as a new signup. "Du er allerede tilmeldt!" told whoever
+            // typed an address whether it was on the list, which is a way to check
+            // addresses against it one at a time.
+            return new Response(JSON.stringify({ success: true, message: "Velkommen til Signalet!" }), { status: 200 });
         }
 
         const { error } = await (supabase as any)

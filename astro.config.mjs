@@ -14,6 +14,16 @@ export default defineConfig({
 
   site: 'https://antonebsen.dk',
 
+  // Off under CI. Playwright runs against `astro dev`, and the dev toolbar mounts
+  // its own headings ("Audit", "No islands detected.", "Settings") in an open
+  // shadow root that Playwright locators see through — so a plain `h1` locator
+  // resolved to five elements and the ledger tests failed, or passed, on the
+  // toolbar's timing. A developer's own preference (`astro preferences`) still
+  // decides locally.
+  devToolbar: {
+    enabled: !process.env.CI,
+  },
+
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex]

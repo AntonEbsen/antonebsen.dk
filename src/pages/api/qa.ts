@@ -1,15 +1,26 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { verifySession } from '../../lib/session';
+import { QaUpdateSchema } from '../../lib/schemas';
 
 // GET: Fetch questions
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, cookies }) => {
     if (!supabase) return new Response("[]");
 
-    // Admin request (see all) vs Public (only answered)
-    const isAdmin = url.searchParams.get('admin') === 'true';
+    // `?admin=true` also returns the pending and hidden questions — the moderation
+    // queue. It used to be a bare query flag that anyone could set: the middleware
+    // guards writes and the two GET routes it names, and this was not one of them.
+    const wantsAll = url.searchParams.get('admin') === 'true';
+    if (wantsAll && !verifySession(cookies.get('auth_token')?.value)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
     let query = supabase.from('qa').select('*').order('created_at', { ascending: false });
 
-    if (!isAdmin) {
+    if (!wantsAll) {
         query = query.eq('status', 'answered');
     }
 
@@ -21,8 +32,12 @@ export const GET: APIRoute = async ({ url }) => {
 export const PUT: APIRoute = async ({ request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
     try {
-        const { id, answer, status } = await request.json();
-        const update: any = { status };
+        const parsed = QaUpdateSchema.safeParse(await request.json());
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ error: parsed.error.flatten() }), { status: 400 });
+        }
+        const { id, answer, status } = parsed.data;
+        const update: { status: typeof status; answer?: string } = { status };
         if (answer) update.answer = answer;
 
         const { error } = await supabase.from('qa').update(update).eq('id', id);

@@ -1,15 +1,20 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-// Server-side: Fetch logs
-// Verify secret key simply via query param for this MVP or just relying on obfuscated URL if needed, 
-// but asking user to uncomment auth logic for real security.
-// For now, we will fetch client-side to allow "Login" via localstorage check as planned.
+import { verifySession } from '@lib/session';
 
+// Server-side gate, the same signed session the dashboard and the write routes use.
+// This page used to open on a client-side check: the access code was the literal
+// '42' in the script below, and "granted" in localStorage kept it open — which hid
+// the panel from nobody who read the source. Without a session there is nothing
+// to render; the dashboard shows the login form.
+if (!verifySession(Astro.cookies.get('auth_token')?.value)) {
+    return Astro.redirect('/dashboard');
+}
 ---
 
 <BaseLayout title="Command Center" description="Restricted Access">
     <main class="min-h-screen bg-sunken text-text pt-24 pb-24 font-mono">
-        <div class="max-w-6xl mx-auto px-4" id="admin-panel" style="display: none;">
+        <div class="max-w-6xl mx-auto px-4" id="admin-panel">
             <div class="flex justify-between items-end mb-8">
                 <div>
                     <h1 class="text-3xl font-bold mb-2">Command Center <span class="text-green-500 animate-pulse">●</span></h1>
@@ -59,14 +64,6 @@ import BaseLayout from '@layouts/BaseLayout.astro';
                 </div>
             </div>
         </div>
-
-        {/* Login Modal */}
-        <div id="login-modal" class="fixed inset-0 bg-sunken z-50 flex items-center justify-center">
-            <div class="text-center space-y-4">
-                <i class="fa-solid fa-user-secret text-4xl text-muted"></i>
-                <input type="password" id="admin-pass" placeholder="Enter Access Code" class="bg-bg border border-card px-4 py-2 rounded text-center focus:outline-none focus:border-green-500 transition-colors" />
-            </div>
-        </div>
     </main>
 
     <script>
@@ -77,32 +74,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         const supabaseKey = import.meta.env.PUBLIC_SUPABASE_KEY;
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        const modal = document.getElementById('login-modal') as HTMLElement;
-        const panel = document.getElementById('admin-panel') as HTMLElement;
-        const passInput = document.getElementById('admin-pass') as HTMLInputElement;
         const refreshBtn = document.getElementById('refresh-btn') as HTMLElement;
-
-        // Simple client-side gate (Not for real security, just to hide from public view)
-        // In a real app, use Middleware authentication.
-        const checkAuth = () => {
-             if (localStorage.getItem('admin_auth') === 'granted') {
-                modal.style.display = 'none';
-                panel.style.display = 'block';
-                fetchLogs();
-            }
-        };
-
-        passInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                // Hardcoded simple pass for the user
-                if (passInput.value === '42') {
-                    localStorage.setItem('admin_auth', 'granted');
-                    checkAuth();
-                } else {
-                    alert('Access Denied');
-                }
-            }
-        });
 
         async function fetchLogs() {
             const { data } = await supabase
@@ -154,7 +126,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         }
 
         refreshBtn.addEventListener('click', fetchLogs);
-        checkAuth();
+        fetchLogs();
 
     </script>
 </BaseLayout>

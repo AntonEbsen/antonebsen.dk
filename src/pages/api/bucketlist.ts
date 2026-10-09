@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { BucketListInputSchema, BucketListUpdateSchema } from '../../lib/schemas';
 
 // GET: Fetch goals
 export const GET: APIRoute = async () => {
@@ -12,9 +13,11 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
     try {
-        const body = await request.json();
-        if (!body.status) body.status = 'todo';
-        const { error } = await supabase.from('bucketlist').insert([body]);
+        const parsed = BucketListInputSchema.safeParse(await request.json());
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ error: parsed.error.flatten() }), { status: 400 });
+        }
+        const { error } = await supabase.from('bucketlist').insert([parsed.data]);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }));
     } catch (e) {
@@ -26,7 +29,11 @@ export const POST: APIRoute = async ({ request }) => {
 export const PUT: APIRoute = async ({ request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
     try {
-        const { id, status } = await request.json();
+        const parsed = BucketListUpdateSchema.safeParse(await request.json());
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ error: parsed.error.flatten() }), { status: 400 });
+        }
+        const { id, status } = parsed.data;
         const { error } = await supabase.from('bucketlist').update({ status }).eq('id', id);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }));

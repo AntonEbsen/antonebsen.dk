@@ -58,13 +58,27 @@ export const MONTHLY_BUDGET_USD = 5;
 const PRICING = {
     /** Tokens in the cached system prefix. The log calls this `cached` / `new`. */
     corpusTokens: 21_626,
-    /** Per-token input rate. Sonnet 5 intro; $3/1M after 2026-08-31. */
+    /**
+     * Per-token input rate. An earlier note here said the intro price would rise to
+     * $3/1M after 2026-08-31; checked against the published Sonnet 5 price on
+     * 2026-10-09, it is still $2/1M in and $10/1M out.
+     */
     inputRate: 2 / 1e6,
     outputRate: 10 / 1e6,
     /** Writing the cache costs 1.25x input at the 5m TTL; reading it costs 0.1x. */
     cacheWriteMultiplier: 1.25,
     cacheReadMultiplier: 0.1,
-    /** Uncached per-call input: the conversation window and the tool schemas. */
+    /**
+     * Uncached per-call input: the conversation window and the tool schemas.
+     *
+     * This is the measured typical, not the ceiling. The route now refuses a request
+     * over CHAT_LIMITS.totalChars (src/lib/ai/request.ts), about 8k tokens; before
+     * that bound existed the "per message" cost this figure stands for had no upper
+     * limit at all. A caller who fills every request to the bound costs roughly
+     * $0.13 a message against the $0.078 derived below — so the ceiling can be
+     * overshot, but by a factor well under two, not without limit. Sizing the caps on
+     * the bound instead would roughly halve what visitors get for the same budget.
+     */
     perCallInputTokens: 650,
     perCallOutputTokens: 150,
 } as const;

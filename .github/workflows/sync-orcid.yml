@@ -26,6 +26,10 @@ jobs:
     # To commit src/data/orcid.json back. Nothing else in this job writes to the repo.
     permissions:
       contents: write
+    env:
+      # See eval.yml: the husky hooks `npm ci` installs must not run on the bot's
+      # commit and push, or the first real diff this job finds will fail to land.
+      HUSKY: 0
 
     steps:
       - name: Checkout
@@ -34,7 +38,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install dependencies
