@@ -23,10 +23,16 @@
             // Was bg-slate-900 with a blue-to-purple gradient on the name — a
             // whole second palette, on a banner that renders above everything.
             banner.className = 'fixed top-0 left-0 w-full bg-sunken border-b border-rule text-center py-2 z-nav transform transition-transform duration-500 translate-y-0';
-            banner.innerHTML = `
-                <span class="text-xs font-mono text-muted uppercase tracking-widest mr-2">Personalized For</span>
-                <span class="text-sm font-bold text-accent">${company}</span>
-            `;
+            // Built with textContent, never innerHTML: `company` comes straight off
+            // the URL, and with 'unsafe-inline' in the CSP an interpolated
+            // `?company=<img src=x onerror=…>` executed as script.
+            const label = document.createElement('span');
+            label.className = 'text-xs font-mono text-muted uppercase tracking-widest mr-2';
+            label.textContent = 'Personalized For';
+            const name = document.createElement('span');
+            name.className = 'text-sm font-bold text-accent';
+            name.textContent = company;
+            banner.append(label, name);
             document.body.prepend(banner);
 
             // Nothing on the site links to ?company=, which is what makes it

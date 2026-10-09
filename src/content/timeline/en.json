@@ -2,28 +2,77 @@
     "title": "Timeline Data",
     "items": [
         {
+            "year": "2024 – now",
+            "title": "Chairman, Socio-Economic Society (Socialøkonomisk Samfund)",
+            "description": "Planning and coordinating the society's activities and events.",
+            "icon": "users",
+            "category": "fagligt",
+            "meta": "Student society",
+            "relatedProjects": [
+                {
+                    "title": "Organisations",
+                    "href": "/en/organizations"
+                }
+            ]
+        },
+        {
             "year": "2023 – now",
-            "title": "Student Lecturer: Excel/VBA – Ongoing Teaching",
-            "description": "Brief description of what you do + e.g., a result: evaluations, participant numbers, course development, etc.",
-            "icon": "chalkboard-user"
+            "title": "Student Lecturer in Excel and VBA",
+            "description": "Teaching Excel and VBA through practical cases and workflows, and developing and improving the course materials and exercises.",
+            "icon": "chalkboard-user",
+            "category": "undervisning",
+            "meta": "Djøf",
+            "relatedSkills": [
+                "Excel",
+                "VBA",
+                "Teaching"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Experience",
+                    "href": "/en/experience"
+                }
+            ]
         },
         {
-            "year": "(year)",
-            "title": "Project: (insert title) – Data/Model/Report",
-            "description": "What was the goal, what did you do, and what was the outcome (report, code, presentation)?",
-            "icon": "code"
+            "year": "2021 – now",
+            "title": "BSc / MSc in Economics (cand.polit.)",
+            "description": "Economics with a focus on macroeconomics, monetary policy, time series and modelling, with a strong emphasis on practical data work and programming.",
+            "icon": "graduation-cap",
+            "category": "fagligt",
+            "meta": "University of Copenhagen",
+            "relatedSkills": [
+                "Python",
+                "SAS",
+                "GAMS",
+                "Econometrics"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Education",
+                    "href": "/en/education"
+                }
+            ]
         },
         {
-            "year": "(year)",
-            "title": "Media Coverage",
-            "description": "Briefly: where and why. Link to the article (if permitted and still online).",
-            "icon": "newspaper"
+            "year": "2019",
+            "title": "Office Assistant",
+            "description": "Preparing guides and texts, handling practical operations and structuring information, working in German.",
+            "icon": "briefcase",
+            "category": "fagligt",
+            "meta": "Handwerkskammer Lübeck",
+            "relatedSkills": [
+                "German",
+                "Office 365"
+            ]
         },
         {
-            "year": "(date)",
-            "title": "Training: (e.g., new PR / new routine)",
-            "description": "Focus on discipline, structure, and progression.",
-            "icon": "dumbbell"
+            "year": "2018 – 2021",
+            "title": "HHX (Higher Commercial Examination)",
+            "description": "Focus on international economics and business economics.",
+            "icon": "school",
+            "category": "fagligt",
+            "meta": "Handelsgymnasiet Lolland-Falster"
         }
     ]
 }

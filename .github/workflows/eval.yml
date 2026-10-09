@@ -40,6 +40,11 @@ jobs:
       contents: write
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # `npm ci` runs the `prepare` script, which installs the husky hooks inside the
+      # runner. The publish step's `git push` then ran pre-push (`npm run test`), whose
+      # Playwright server collided with the eval's own dev server on :4321, and the
+      # push was refused — every night, for weeks. Hooks are for a developer's clone.
+      HUSKY: 0
 
     steps:
       - name: Checkout
@@ -48,7 +53,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install Dependencies

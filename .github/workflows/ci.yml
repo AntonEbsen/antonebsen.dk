@@ -6,11 +6,18 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  # `npm ci` runs the `prepare` script, which installs the husky hooks inside the
+  # runner. Nothing here commits, but the hooks are for a developer's clone, and the
+  # workflows that do commit (eval.yml, sync-orcid.yml) need them off. Same setting
+  # everywhere, so nobody has to remember which workflow is which.
+  HUSKY: 0
+
 jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,20 +25,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Security Audit
-        run: npm audit --audit-level=high
-
+      # No production secrets here, by design: scripts/validate-env.mjs warns about
+      # the missing variables and lets a verification build through. It fails only
+      # under VERCEL (a real deploy) or REQUIRE_ENV.
       - name: Build
         run: npm run build
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
 
       - name: Run Tests
         run: npm run test
@@ -43,3 +50,30 @@ jobs:
       # while letting the steps that catch real regressions actually run.
       - name: Type Check (ratchet)
         run: node scripts/check-ratchet.mjs
+
+  audit:
+    # Its own job, so a vulnerable dependency shows as a red "Audit" check next to
+    # a green build rather than cancelling the build. Before this split the audit
+    # was the first step of the one job, it had failed on every run since it was
+    # added, and nothing after it — Build, Tests, Typecheck — had ever executed.
+    #
+    # Dev-only packages are omitted: a vulnerability in the test runner or the
+    # type-checker never reaches a visitor, and it was those that kept the step red.
+    name: Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Security Audit (production dependencies)
+        run: npm audit --omit=dev --audit-level=high

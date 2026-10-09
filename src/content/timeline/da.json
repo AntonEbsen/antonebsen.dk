@@ -2,12 +2,26 @@
     "title": "Timeline Data",
     "items": [
         {
+            "year": "2024 – nu",
+            "title": "Forperson, Socialøkonomisk Samfund",
+            "description": "Planlægning og koordinering af foreningens aktiviteter og arrangementer.",
+            "icon": "users",
+            "category": "fagligt",
+            "meta": "Studenterforening",
+            "relatedProjects": [
+                {
+                    "title": "Organisationer",
+                    "href": "/organizations"
+                }
+            ]
+        },
+        {
             "year": "2023 – nu",
-            "title": "Studenterunderviser: Excel/VBA",
-            "description": "Ansvarlig for undervisning af 1. semester studerende i dataanalyse og automatisering. Udviklede nyt eksamensmateriale.",
+            "title": "Studenterunderviser i Excel og VBA",
+            "description": "Undervisning i Excel og VBA gennem praktiske cases og arbejdsgange samt udvikling og forbedring af kursusmateriale og øvelser.",
             "icon": "chalkboard-user",
             "category": "undervisning",
-            "meta": "AU BSS",
+            "meta": "Djøf",
             "relatedSkills": [
                 "Excel",
                 "VBA",
@@ -15,51 +29,50 @@
             ],
             "relatedProjects": [
                 {
-                    "title": "Kursus Materiale",
+                    "title": "Erfaring",
+                    "href": "/experience"
+                }
+            ]
+        },
+        {
+            "year": "2021 – nu",
+            "title": "ba.polit. / cand.polit.",
+            "description": "Økonomi med fokus på makroøkonomi, pengepolitik, tidsrækker og modellering, med stor vægt på praktisk dataarbejde og programmering.",
+            "icon": "graduation-cap",
+            "category": "fagligt",
+            "meta": "Københavns Universitet",
+            "relatedSkills": [
+                "Python",
+                "SAS",
+                "GAMS",
+                "Økonometri"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Uddannelse",
                     "href": "/education"
                 }
             ]
         },
         {
-            "year": "2022",
-            "title": "Kandidatafhandling: ESG & Returns",
-            "description": "Økonometrisk analyse af ESG-ratings' påvirkning af risikojusterede afkast i Europa.",
-            "icon": "graduation-cap",
+            "year": "2019",
+            "title": "Kontorassistent",
+            "description": "Udarbejdelse af guides og tekster, praktisk drift og strukturering af information – på tysk.",
+            "icon": "briefcase",
             "category": "fagligt",
-            "meta": "Msc. Finance",
+            "meta": "Handwerkskammer Lübeck",
             "relatedSkills": [
-                "R",
-                "Econometrics",
-                "Finance",
-                "LaTeX"
-            ],
-            "links": [
-                {
-                    "text": "Læs Thesis",
-                    "url": "/education#thesis"
-                }
+                "Tysk",
+                "Office 365"
             ]
         },
         {
-            "year": "2021",
-            "title": "Bachelorprojekt: M&A Performance",
-            "description": "Event study af aktiemarkedsreaktioner ved annoncering af fusioner i farmaceutisk industri.",
-            "icon": "chart-line",
+            "year": "2018 – 2021",
+            "title": "HHX",
+            "description": "Studieretning: Økonomi. Fokus på international økonomi og virksomhedsøkonomi.",
+            "icon": "school",
             "category": "fagligt",
-            "meta": "Bsc. Økonomi",
-            "relatedSkills": [
-                "Stata",
-                "Event Study",
-                "Corporate Finance"
-            ]
-        },
-        {
-            "year": "2020",
-            "title": "Omtale i Finans.dk",
-            "description": "Interview omkring investeringsstrategier for unge under COVID-19 pandemien.",
-            "icon": "newspaper",
-            "category": "omtale",
-            "meta": "Medie"
+            "meta": "Handelsgymnasiet Lolland-Falster"
         }
     ]
 }

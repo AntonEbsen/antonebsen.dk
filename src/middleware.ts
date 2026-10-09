@@ -1,85 +1,103 @@
-
 import type { APIContext, MiddlewareNext } from "astro";
 import { verifySession } from "./lib/session";
 
-export async function onRequest(_context: APIContext, next: MiddlewareNext) {
-    const response = await next();
+// Content Security Policy (CSP)
+// - script-src: 'unsafe-inline' allowed for Astro hydration/ViewTransitions. Restricted to trusted domains.
+// - connect-src: expanded for Supabase and FontAwesome.
+const CSP = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://va.vercel-scripts.com https://cdn.vercel-insights.com https://cdnjs.cloudflare.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+    "font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com",
+    "img-src 'self' data: https: blob:",
+    // api.open-meteo.com powers the weather cards on /camino/route.
+    "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io https://api.open-meteo.com",
+    "media-src 'self' https:",
+    "worker-src 'self' blob:",
+    // frame-src: third-party embeds. Without this, iframes fall back to default-src 'self'
+    // and are blocked outright (this silently broke the Spotify embeds on /soundtrack).
+    "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://open.spotify.com",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'"
+].join("; ");
+
+function withSecurityHeaders(response: Response): Response {
     const headers = response.headers;
-
-    // Content Security Policy (CSP)
-    // - script-src: 'unsafe-inline' allowed for Astro hydration/ViewTransitions. Restricted to trusted domains.
-    // - connect-src: expanded for Supabase and FontAwesome.
-    const csp = [
-        "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://va.vercel-scripts.com https://cdn.vercel-insights.com https://cdnjs.cloudflare.com",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
-        "font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com",
-        "img-src 'self' data: https: blob:",
-        // api.open-meteo.com powers the weather cards on /camino/route.
-        "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io https://api.open-meteo.com",
-        "media-src 'self' https:",
-        "worker-src 'self' blob:",
-        // frame-src: third-party embeds. Without this, iframes fall back to default-src 'self'
-        // and are blocked outright (this silently broke the Spotify embeds on /soundtrack).
-        "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://open.spotify.com",
-        "frame-ancestors 'none'",
-        "base-uri 'self'",
-        "form-action 'self'",
-        "object-src 'none'"
-    ].join("; ");
-
-    headers.set("Content-Security-Policy", csp);
+    headers.set("Content-Security-Policy", CSP);
     headers.set("X-Frame-Options", "DENY");
     headers.set("X-Content-Type-Options", "nosniff");
     headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
     headers.set("Permissions-Policy", "camera=(), microphone=(self), geolocation=()");
-
-    // ... (CSP headers above) ...
-
-    // Security: Protect API Routes from unauthorized mutations (POST, PUT, DELETE)
-    const protectedMethods = ["POST", "PUT", "DELETE"];
-    const isApiRequest = _context.url.pathname.startsWith("/api/");
-    const isAuthRoute = _context.url.pathname.startsWith("/api/auth/");
-
-    // Public POST endpoints: forms/widgets a visitor can submit without logging in.
-    // These have their own hardening (Zod validation, honeypot, rate limiting).
-    const publicPostRoutes = new Set([
-        "/api/guestbook",
-        "/api/chat",
-        "/api/contact",
-        "/api/subscribe",
-        // Called by a widget a logged-out visitor can see, and it was missing here — so
-        // the DataPlayground's "generate SQL" returned 401 to everyone except a signed-in
-        // Anton. It carries its own rate limit, which the auth gate had stood in for.
-        //
-        // /api/speak and /api/stt were listed here too, until both were deleted: voice
-        // now runs entirely in the browser and needs no endpoint.
-        "/api/text-to-sql",
-    ]);
-    const normalizedPath = _context.url.pathname.replace(/\/$/, "") || "/";
-    const isPublicPost = _context.request.method === "POST" && publicPostRoutes.has(normalizedPath);
-
-    // This compared the cookie against the constant "authorized_session" — a literal
-    // sitting in a public repo, so the check was forgeable with a plain header and
-    // every write route below it was effectively open. Sessions are now HMAC-signed
-    // and expiring; see src/lib/session.ts.
-    if (isApiRequest && protectedMethods.includes(_context.request.method) && !isAuthRoute && !isPublicPost) {
-        if (!verifySession(_context.cookies.get("auth_token")?.value)) {
-            // Block request
-            return new Response(JSON.stringify({ error: "Unauthorized" }), {
-                status: 401,
-                headers: { "Content-Type": "application/json" }
-            });
-        }
-    }
-
-    // Protect sensitive GET endpoints
-    const sensitiveGetRoutes = ["/api/contact", "/api/backup"];
-    if (sensitiveGetRoutes.includes(_context.url.pathname) && _context.request.method === "GET") {
-        if (!verifySession(_context.cookies.get("auth_token")?.value)) {
-            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-        }
-    }
-
     return response;
+}
+
+// Security: API routes that mutate need a session, unless listed as public below.
+// PATCH was missing from this set, so a handler that happened to export one was open.
+const PROTECTED_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
+// Public POST endpoints: forms/widgets a visitor can submit without logging in.
+// These have their own hardening (Zod validation, honeypot, rate limiting).
+const PUBLIC_POST_ROUTES = new Set([
+    "/api/guestbook",
+    "/api/chat",
+    "/api/contact",
+    "/api/subscribe",
+    // Called by a widget a logged-out visitor can see, and it was missing here — so
+    // the DataPlayground's "generate SQL" returned 401 to everyone except a signed-in
+    // Anton. It carries its own rate limit, which the auth gate had stood in for.
+    //
+    // /api/speak and /api/stt were listed here too, until both were deleted: voice
+    // now runs entirely in the browser and needs no endpoint.
+    "/api/text-to-sql",
+    // Article reactions are a visitor widget too. The route was not listed, and
+    // because the gate used to run *after* the handler (see onRequest) the row was
+    // inserted anyway while the visitor was shown a 401 — so the omission never
+    // surfaced. Now that the gate holds, the route has to be public to keep working.
+    "/api/reactions",
+]);
+// The blog view counter: POST /api/views/<slug>, same story as /api/reactions.
+const PUBLIC_POST_PREFIXES = ["/api/views/"];
+
+// GET endpoints that return private data.
+const SENSITIVE_GET_ROUTES = new Set(["/api/contact", "/api/backup"]);
+
+function unauthorized(): Response {
+    return withSecurityHeaders(
+        new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+        }),
+    );
+}
+
+export async function onRequest(context: APIContext, next: MiddlewareNext) {
+    // The gate runs *before* `next()`. It used to run after it: `await next()` was the
+    // first line of this function, so every protected handler — Supabase inserts and
+    // deletes included — had already executed by the time the session was checked,
+    // and the 401 merely replaced the response on its way out. The caller saw a
+    // refusal; the database saw a committed write.
+    const method = context.request.method;
+    // One normalised path for every check. The write check used to strip a trailing
+    // slash and the sensitive-GET check did not, so `/api/backup/` slipped past it.
+    const path = context.url.pathname.replace(/\/$/, "") || "/";
+
+    if (path.startsWith("/api/")) {
+        const isAuthRoute = path.startsWith("/api/auth/");
+        const isPublicPost =
+            method === "POST" &&
+            (PUBLIC_POST_ROUTES.has(path) || PUBLIC_POST_PREFIXES.some((prefix) => path.startsWith(prefix)));
+        const isProtectedWrite = PROTECTED_METHODS.has(method) && !isAuthRoute && !isPublicPost;
+        const isSensitiveRead = method === "GET" && SENSITIVE_GET_ROUTES.has(path);
+
+        // Sessions are HMAC-signed and expiring; see src/lib/session.ts. (The cookie
+        // was once compared against a constant string that sat in this public repo,
+        // which made every write route forgeable with one header.)
+        if ((isProtectedWrite || isSensitiveRead) && !verifySession(context.cookies.get("auth_token")?.value)) {
+            return unauthorized();
+        }
+    }
+
+    return withSecurityHeaders(await next());
 }

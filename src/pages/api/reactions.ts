@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { checkRateLimit } from '../../lib/ratelimit';
+import { ReactionSchema } from '../../lib/schemas';
 
 export const prerender = false;
 
@@ -38,18 +40,25 @@ export const GET: APIRoute = async ({ url }) => {
     }
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (!supabase) {
         return new Response(JSON.stringify({ error: 'Supabase client not initialized' }), { status: 500 });
     }
 
     try {
-        const body = await request.json();
-        const { slug, reaction_type } = body;
-
-        if (!slug || !reaction_type) {
-            return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 });
+        const parsed = ReactionSchema.safeParse(await request.json());
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ error: 'Invalid reaction' }), { status: 400 });
         }
+
+        // Anonymous by design — it is on the middleware's public list, as a visitor
+        // widget has to be — so it carries its own limit, like the guestbook does.
+        const clientIP = request.headers.get('x-forwarded-for') || clientAddress || 'unknown';
+        if (!(await checkRateLimit('write', clientIP)).success) {
+            return new Response(JSON.stringify({ error: 'Too many reactions. Please wait a bit.' }), { status: 429 });
+        }
+
+        const { slug, reaction_type } = parsed.data;
 
         const { error } = await (supabase
             .from('blog_reactions') as any)

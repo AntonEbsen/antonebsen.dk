@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
 import { CertificationSchema } from '../../lib/api';
+import { verifySession } from '../../lib/session';
 
 export const GET: APIRoute = async () => {
     if (!supabase) {
@@ -20,7 +21,9 @@ export const GET: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-    if (!cookies.has("auth_token")) {
+    // The middleware gates this route too; this is belt and braces. It used to be
+    // `cookies.has("auth_token")` — presence, not validity — so any value passed.
+    if (!verifySession(cookies.get("auth_token")?.value)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -60,7 +63,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 };
 
 export const DELETE: APIRoute = async ({ request, cookies }) => {
-    if (!cookies.has("auth_token")) {
+    // The middleware gates this route too; this is belt and braces. It used to be
+    // `cookies.has("auth_token")` — presence, not validity — so any value passed.
+    if (!verifySession(cookies.get("auth_token")?.value)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 

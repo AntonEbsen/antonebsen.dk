@@ -2,28 +2,71 @@
     "title": "Timeline Daten",
     "items": [
         {
+            "year": "2024 – heute",
+            "title": "Vorsitzender, Sozialökonomische Gesellschaft (Socialøkonomisk Samfund)",
+            "description": "Planung und Koordination der Aktivitäten und Veranstaltungen des Vereins.",
+            "icon": "users",
+            "category": "fagligt",
+            "meta": "Studentische Vereinigung"
+        },
+        {
             "year": "2023 – heute",
-            "title": "Studentischer Dozent: Excel/VBA – Laufende Lehre",
-            "description": "Kurze Beschreibung der Tätigkeit + z. B. ein Ergebnis: Evaluationen, Teilnehmerzahlen, Kursentwicklung etc.",
-            "icon": "chalkboard-user"
+            "title": "Studentischer Dozent für Excel und VBA",
+            "description": "Unterricht in Excel und VBA anhand praktischer Fallstudien und Workflows sowie Entwicklung und Verbesserung der Kursmaterialien und Übungen.",
+            "icon": "chalkboard-user",
+            "category": "undervisning",
+            "meta": "Djøf",
+            "relatedSkills": [
+                "Excel",
+                "VBA",
+                "Lehre"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Erfahrung",
+                    "href": "/de/experience"
+                }
+            ]
         },
         {
-            "year": "(Jahr)",
-            "title": "Projekt: (Titel einfügen) – Daten/Modell/Bericht",
-            "description": "Was war das Ziel, was wurde getan und was war das Ergebnis (Bericht, Code, Präsentation)?",
-            "icon": "code"
+            "year": "2021 – heute",
+            "title": "B.Sc. / M.Sc. in Wirtschaftswissenschaften (cand.polit.)",
+            "description": "Wirtschaftswissenschaften mit Schwerpunkt Makroökonomie, Geldpolitik, Zeitreihenanalyse und Modellierung, mit großem Fokus auf praktischer Datenarbeit und Programmierung.",
+            "icon": "graduation-cap",
+            "category": "fagligt",
+            "meta": "Universität Kopenhagen",
+            "relatedSkills": [
+                "Python",
+                "SAS",
+                "GAMS",
+                "Ökonometrie"
+            ],
+            "relatedProjects": [
+                {
+                    "title": "Ausbildung",
+                    "href": "/de/education"
+                }
+            ]
         },
         {
-            "year": "(Jahr)",
-            "title": "Medienberichterstattung",
-            "description": "Kurz: wo und warum. Link zum Artikel (falls erlaubt und noch online).",
-            "icon": "newspaper"
+            "year": "2019",
+            "title": "Büroassistent",
+            "description": "Erstellung von Leitfäden und Texten, praktischer Betrieb und Strukturierung von Informationen – auf Deutsch.",
+            "icon": "briefcase",
+            "category": "fagligt",
+            "meta": "Handwerkskammer Lübeck",
+            "relatedSkills": [
+                "Deutsch",
+                "Office 365"
+            ]
         },
         {
-            "year": "(Datum)",
-            "title": "Training: (z. B. neue Bestleistung / neue Routine)",
-            "description": "Fokus auf Disziplin, Struktur und Fortschritt.",
-            "icon": "dumbbell"
+            "year": "2018 – 2021",
+            "title": "HHX (Höheres kaufmännisches Examen)",
+            "description": "Fokus auf internationale Wirtschaft und Betriebswirtschaftslehre.",
+            "icon": "school",
+            "category": "fagligt",
+            "meta": "Handelsgymnasiet Lolland-Falster"
         }
     ]
 }

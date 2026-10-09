@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { PostSchema } from '../../lib/schemas';
 
 // GET: Fetch posts
 export const GET: APIRoute = async () => {
@@ -17,11 +18,19 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request }) => {
     if (!supabase) return new Response(JSON.stringify({ error: "No DB" }), { status: 500 });
     try {
-        const body = await request.json();
-        // Generate slug if missing
-        if (!body.slug) body.slug = body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const parsed = PostSchema.safeParse(await request.json());
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ error: parsed.error.flatten() }), { status: 400 });
+        }
+        const { tags: _tags, ...post } = parsed.data;
+        const row = {
+            ...post,
+            content: post.content ?? '',
+            // Generate slug if missing
+            slug: post.slug || post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        };
 
-        const { error } = await supabase.from('posts').insert([body]);
+        const { error } = await supabase.from('posts').insert([row]);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }));
     } catch (e) {

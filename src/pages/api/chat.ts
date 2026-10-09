@@ -1,5 +1,4 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { z } from 'zod';
 import { checkRateLimit } from '../../lib/ratelimit';
 import { GEN, CHAT_MODEL } from '../../lib/ai/model';
 import { buildCorpus, type Lang } from '../../lib/ai/corpus';
@@ -8,30 +7,11 @@ import { encodeEvent, NDJSON_CONTENT_TYPE, type ChatEvent } from '../../lib/ai/p
 import { createClient } from '../../lib/ai/client';
 import { checkBudget } from '../../lib/ai/budget';
 import { budgetMessage } from '../../lib/ai/budget-copy';
+// The schema lives in src/lib/ai/request.ts, with the size bounds and their reasons,
+// so it can be unit-tested without standing up the route.
+import { ChatRequestSchema, type ChatRequest } from '../../lib/ai/request';
 
 export const prerender = false;
-
-const ChatSchema = z.object({
-   messages: z.array(z.object({
-      role: z.enum(['user', 'assistant', 'system']),
-      content: z.string()
-   })).optional(),
-   message: z.string().optional(), // Legacy single-turn callers
-   image: z.object({
-      data: z.string(), // base64, no data: prefix
-      mimeType: z.string()
-   }).optional(),
-   context: z.object({
-      type: z.enum(['project', 'general']).optional(),
-      data: z.record(z.any()).optional()
-   }).optional(),
-   // What the caller can render. A 'prose' surface — the command palette's compact
-   // preview — is offered no client-rendered tools, so the model is never told a
-   // chart was shown to someone who cannot see one.
-   surface: z.enum(['chat', 'prose']).optional(),
-   persona: z.string().optional(),
-   lang: z.enum(['en', 'da', 'de']).optional()
-});
 
 const LANGUAGE_NAMES: Record<string, string> = {
    da: 'Danish (Dansk)',
@@ -194,10 +174,10 @@ function buildMessages(
 }
 
 export const POST = async ({ request }: { request: Request }) => {
-   let body: z.infer<typeof ChatSchema>;
+   let body: ChatRequest;
 
    try {
-      const parsed = ChatSchema.safeParse(await request.json());
+      const parsed = ChatRequestSchema.safeParse(await request.json());
       if (!parsed.success) {
          return new Response(JSON.stringify({ message: 'Invalid Input', errors: parsed.error.format() }), { status: 400 });
       }

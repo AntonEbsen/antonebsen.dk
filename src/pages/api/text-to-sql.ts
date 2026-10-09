@@ -5,12 +5,20 @@ import { CHAT_MODEL } from '../../lib/ai/model';
 import { checkReadOnly } from '../../lib/ai/sql-guard';
 import { checkBudget } from '../../lib/ai/budget';
 import { budgetMessage } from '../../lib/ai/budget-copy';
+import { TextToSqlSchema } from '../../lib/ai/request';
 
 export const prerender = false;
 
 export const POST = async ({ request }: { request: Request }) => {
     try {
-        const { text, schema, lang } = await request.json();
+        // Validated before the rate limit and the spend guard: both count the request,
+        // and a malformed one should cost nothing. `schema` goes into the system
+        // prompt, so it is bounded like everything else — see src/lib/ai/request.ts.
+        const parsed = TextToSqlSchema.safeParse(await request.json().catch(() => null));
+        if (!parsed.success) {
+            return new Response(JSON.stringify({ message: 'Invalid Input' }), { status: 400 });
+        }
+        const { text, schema, lang } = parsed.data;
 
         const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
         // Shares the chat budget: same provider, same cost profile.
@@ -30,10 +38,6 @@ export const POST = async ({ request }: { request: Request }) => {
         const anthropic = createClient();
         if (!anthropic) {
             return new Response(JSON.stringify({ message: 'Server Configuration Error' }), { status: 500 });
-        }
-
-        if (typeof text !== 'string' || !text.trim()) {
-            return new Response(JSON.stringify({ message: 'Invalid Input' }), { status: 400 });
         }
 
         const message = await anthropic.messages.create({
