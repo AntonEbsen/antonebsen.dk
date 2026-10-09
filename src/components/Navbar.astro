@@ -146,7 +146,9 @@ const linkClass = (active: boolean) =>
     max-height: calc(100vh - 5rem);
     overflow-y: auto;
     padding: 1rem;
-    background: rgba(23, 25, 26, 0.97);
+    /* Solid, not 97% — the drawer sits over the page, and in Chromium the hero
+       showed through a near-opaque panel far more than the alpha suggested. */
+    background: var(--bg, #17191A);
     border-bottom: 1px solid rgba(212, 121, 79, 0.15);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   }
