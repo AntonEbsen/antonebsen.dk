@@ -18,16 +18,21 @@ import SmartSuggestions from '../../components/blog/SmartSuggestions.astro';
 import RelatedVideos from '../../components/ui/RelatedVideos.astro';
 import { renderMarkdown } from '../../utils/markdown';
 import 'katex/dist/katex.min.css';
-import { getCollection } from 'astro:content';
-export const prerender = false; 
+import { publishedPosts, postJsonLd, type Post } from '../../lib/blog';
+
+// Built once, like the rest of the site. These pages were server-rendered on every
+// request — so they were missing from the sitemap, and a wrong slug answered with a
+// 302 to /404 instead of a 404. With getStaticPaths an unknown slug is simply not
+// a page, and Astro serves the real 404.
+export const prerender = true;
+export async function getStaticPaths() {
+  const posts = await publishedPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+
 const lang = 'da';
-const { slug } = Astro.params;
-if (!slug) return Astro.redirect('/404');
-
-const posts = await getCollection('blog');
-const post = posts.find(p => p.id === slug);
-
-if (!post) return Astro.redirect('/404');
+const { post, posts } = Astro.props as { post: Post; posts: Post[] };
+const slug = post.id;
 
 const { title, title_da, description, description_da, meta, category, content, content_da, relatedProjectId } = post.data;
 
@@ -52,6 +57,11 @@ const seriesTotal = post.data.series
 ---
 
 <Layout title={displayTitle} description={displayDesc} article={true}>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={post.data.date} />
+    <meta property="article:modified_time" content={post.data.updated ?? post.data.date} />
+    <script type="application/ld+json" set:html={JSON.stringify(postJsonLd(post, lang))} />
+  </Fragment>
   <ReadingProgress client:load />
   <ReadTimer />
   <Manicule />
@@ -152,7 +162,7 @@ const seriesTotal = post.data.series
                     title={title} 
                     author="Anton Meier Ebsen Jørgensen" 
                     url={`https://antonebsen.dk/blog/${slug}`} 
-                    date={new Date().toISOString()}
+                    date={post.data.date}
                 />
             </div>
 

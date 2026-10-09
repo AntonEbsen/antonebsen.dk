@@ -79,8 +79,16 @@ const BlackHole: React.FC = () => {
         window.addEventListener('mousemove', handleMouseMove);
 
         // 6. Animation Loop
+        //
+        // Under prefers-reduced-motion one frame is drawn and the loop never starts:
+        // the disk still reads as a disk, it just does not spin. The frame handle is
+        // kept so the cleanup below can cancel it — it was never cancelled, so a
+        // visitor leaving the 404 page took a WebGL render loop with them.
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let frame = 0;
+
         const animate = () => {
-            requestAnimationFrame(animate);
+            frame = requestAnimationFrame(animate);
 
             // Rotate Disk
             particlesMesh.rotation.y += 0.002;
@@ -93,7 +101,12 @@ const BlackHole: React.FC = () => {
             renderer.render(scene, camera);
         };
 
-        animate();
+        if (reducedMotion) {
+            camera.lookAt(scene.position);
+            renderer.render(scene, camera);
+        } else {
+            animate();
+        }
 
         // 7. Resize Handler
         const handleResize = () => {
@@ -105,6 +118,7 @@ const BlackHole: React.FC = () => {
 
         // Cleanup
         return () => {
+            cancelAnimationFrame(frame);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('resize', handleResize);
             if (mountRef.current && renderer.domElement) {

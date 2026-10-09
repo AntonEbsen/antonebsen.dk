@@ -1,6 +1,6 @@
 ---
 import Card from './Card.astro';
-import { assetExists } from '@lib/public-asset';
+import { Image } from 'astro:assets';
 
 interface Props {
   name: string;
@@ -13,12 +13,13 @@ interface Props {
 
 const { name, role, category, image, quote, impact } = Astro.props;
 
-// The fallback used to be /assets/img/placeholder-influence.jpg, which was never
-// added — so every card without its own portrait showed a broken image. None of
-// them have one. Fall back to the person's initials on a tinted panel instead:
-// deterministic, always renders, and reads as a deliberate design rather than a
-// missing file.
-const displayImage = assetExists(image) ? image : null;
+// The content files name portraits as "/src/assets/img/influences/<name>.png". That
+// is a source path, not a URL: the old `assetExists` check looked for it under
+// public/, never found it, and the portraits that do exist never rendered. The glob
+// is keyed by exactly those strings, so the JSON stays as it is and Astro turns the
+// 800 KB PNGs into sized WebP. Cards without a portrait keep the initials panel.
+const portraits = import.meta.glob<{ default: ImageMetadata }>('/src/assets/img/influences/*.{png,jpg,jpeg,webp}', { eager: true });
+const portrait = image ? portraits[image]?.default : undefined;
 const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 ---
 
@@ -28,10 +29,14 @@ const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).jo
     <!-- FRONT -->
     <div class="influence-front absolute inset-0 backface-hidden rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-      {displayImage ? (
-        <img
-          src={displayImage}
+      {portrait ? (
+        <Image
+          src={portrait}
           alt={name}
+          width={600}
+          height={750}
+          format="webp"
+          loading="lazy"
           class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
         />
       ) : (

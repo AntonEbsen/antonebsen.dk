@@ -36,13 +36,8 @@ const t = {
 };
 ---
 
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script is:inline>
-    // Initialize PDF.js worker
-    if (window.pdfjsLib) {
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
-</script>
+{/* pdf.js is fetched on demand by src/lib/pdfjs-loader.ts when a PDF is picked;
+    it used to be a blocking <script src> at the top of this page. */}
 
 <Layout 
   title={t.title} 
@@ -280,6 +275,7 @@ const t = {
     import { CHAT_THEME, CHAT_ACTION_THEME } from '../lib/ai/chat-theme';
     import { toApiMessages } from '../lib/ai/history';
     import { createVoiceInput } from '../lib/ai/voice-input';
+    import { extractPdfText } from '../lib/pdfjs-loader';
 
     // Typed at the query rather than cast at each use: getElementById returns
     // HTMLElement, so every `input.value` and `form.reset()` below was an error the
@@ -368,13 +364,7 @@ const t = {
         try {
             let text = "";
             if (file.type === 'application/pdf') {
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await (window as any).pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const content = await page.getTextContent();
-                    text += content.items.map((item: any) => item.str).join(' ') + "\n";
-                }
+                text = await extractPdfText(file);
                 currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
             
             } else if (file.type.startsWith('image/')) {

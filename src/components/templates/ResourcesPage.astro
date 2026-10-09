@@ -30,7 +30,6 @@ const resourcesData = resEntry.data.items;
 
 const contactLink = isDa ? '/contact' : '/en/contact';
 const servicesLink = isDa ? '/services' : '/en/services';
-const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
 ---
 
 <Layout 
@@ -87,9 +86,6 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
 
         <div class="flex flex-wrap gap-3">
           <Button href="#downloads">{content.downloadBtn}</Button>
-          <Button href={statsLink} variant="ghost">
-            <i class="fa-solid fa-chart-column mr-2"></i> {content.statsBtn}
-          </Button>
           <Button href={contactLink} variant="ghost">{content.askBtn}</Button>
         </div>
       </Card>

@@ -5,8 +5,9 @@ import Button from '@components/ui/Button.astro';
 interface Props {
     title: string;
     stats: string[];
-    link: string;
-    linkText: string;
+    /** Optional: the "full report" page was never built, so the callers pass none. */
+    link?: string;
+    linkText?: string;
 }
 
 const { title, stats, link, linkText } = Astro.props;
@@ -43,8 +44,10 @@ const { title, stats, link, linkText } = Astro.props;
             ))}
         </ul>
 
-        <Button href={link} variant="ghost" class="w-full text-sm">
-            {linkText}
-        </Button>
+        {link && linkText && (
+            <Button href={link} variant="ghost" class="w-full text-sm">
+                {linkText}
+            </Button>
+        )}
     </div>
 </Card>

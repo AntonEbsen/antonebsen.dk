@@ -42,13 +42,9 @@ const t_obj = {
 const t = (t_obj as any)[lang] || t_obj.da;
 ---
 
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script is:inline>
-    // Initialize PDF.js worker if not already done
-    if (window.pdfjsLib && !window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
-</script>
+{/* pdf.js is fetched on demand by src/lib/pdfjs-loader.ts, the first time a visitor
+    picks a PDF. It used to be a blocking <script src> here — on every page, since
+    this widget sits in BaseLayout. */}
 
 <!-- The client script cannot see the frontmatter `t`, so strings it needs at runtime
      are handed over as data attributes (the same arrangement as CommandPalette). -->
@@ -176,6 +172,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
   import { CHAT_THEME, CHAT_ACTION_THEME } from '../../lib/ai/chat-theme';
   import { toApiMessages } from '../../lib/ai/history';
   import { createVoiceInput } from '../../lib/ai/voice-input';
+  import { extractPdfText } from '../../lib/pdfjs-loader';
 
   try {
 
@@ -289,14 +286,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
           try {
               let text = "";
               if (file.type === 'application/pdf') {
-                  if(!window.pdfjsLib) throw new Error("PDF.js not loaded");
-                  const arrayBuffer = await file.arrayBuffer();
-                  const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                  for (let i = 1; i <= pdf.numPages; i++) {
-                      const page = await pdf.getPage(i);
-                      const content = await page.getTextContent();
-                      text += content.items.map(item => item.str).join(' ') + "\n";
-                  }
+                  text = await extractPdfText(file);
                   currentFileContent = `\n\n<<<FILE_CONTENT Start: ${file.name}>>>\n${text}\n<<<FILE_CONTENT End>>>\n`;
               
               } else if (file.type.startsWith('image/')) {

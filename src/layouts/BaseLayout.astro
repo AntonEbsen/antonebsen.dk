@@ -9,7 +9,7 @@ import LedgerModal from '../components/game/LedgerModal.astro';
 import Chameleon from '@components/core/Chameleon.astro';
 import Scriptorium from '@components/core/Scriptorium.astro';
 import Anathema from '@components/core/Anathema.astro';
-import { getLangFromUrl } from '@i18n/utils';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import '@styles/styles.css';
 // After styles.css, not inside it. styles.css pulls in Tailwind's Preflight,
 // which resets headings to `font-size: inherit; font-weight: inherit`; anything
@@ -33,7 +33,9 @@ import '@fontsource-variable/inter/wght-italic.css';
 // 80 KB here, and at display sizes the weight axis carries the character.
 import '@fontsource-variable/fraunces/wght.css';
 import '@fontsource-variable/fraunces/wght-italic.css';
-import 'katex/dist/katex.min.css';
+// KaTeX's stylesheet used to be imported here, on every page. The only thing that
+// renders math is src/utils/markdown.ts, used by the two blog post routes, and both
+// import the stylesheet themselves.
 // Inlined verbatim below for first paint. Imported as a string rather than
 // retyped, because the hand-copied version that used to live in this file had
 // already drifted from the original.
@@ -53,6 +55,7 @@ interface Props {
 
 const { title, description, image, article, bodyClass = "", showChatWidget = true, alternates } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!DOCTYPE html>
@@ -152,10 +155,14 @@ const lang = getLangFromUrl(Astro.url);
   <!-- Replaced with @fontsource-variable/inter -->
   
   <!-- 4. Non-critical CSS and scripts (deferred) -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <!-- Font Awesome: load asynchronously so it doesn't block first paint -->
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
+  <!-- Font Awesome, served from here (scripts/vendor-fontawesome.mjs copies it into
+       public/vendor before dev and build). It came from cdnjs: a third-party host
+       in front of every icon on every page. Still loaded asynchronously so it does
+       not block first paint; the solid face is preloaded because nearly every icon
+       on the site is in it. -->
+  <link rel="preload" as="font" type="font/woff2" href="/vendor/fontawesome/webfonts/fa-solid-900.woff2" crossorigin>
+  <link rel="preload" as="style" href="/vendor/fontawesome/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css"></noscript>
 
   <script is:inline>
     /* Arms the scroll reveal. animations.css hides .animate-on-scroll only under
@@ -176,11 +183,12 @@ const lang = getLangFromUrl(Astro.url);
 <body class={bodyClass}>
   <Chameleon />
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] bg-gold-500 text-black px-4 py-2 font-bold rounded">
-    Skip to Content
+    {t('nav.skip')}
   </a>
   <Navbar />
 
-  <div id="main-content">
+  {/* tabindex="-1" so the skip link actually moves focus here, not just the scroll. */}
+  <div id="main-content" tabindex="-1">
     <slot />
   </div>
 

@@ -1,26 +1,43 @@
 ---
+import { getLangFromUrl } from '@i18n/utils';
+
 interface Props {
   spotifyId: string;
+  /** Accessible name for the player frame once it is loaded. */
+  title?: string;
 }
 
-const { spotifyId } = Astro.props;
+const { spotifyId, title } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const copy = {
+  da: { load: 'Indlæs afspilningsliste fra Spotify', note: 'Spotify sætter først cookies, når du trykker her.', frame: 'Spotify-afspiller' },
+  en: { load: 'Load playlist from Spotify', note: 'Spotify sets cookies only once you press this.', frame: 'Spotify player' },
+  de: { load: 'Playlist von Spotify laden', note: 'Spotify setzt erst Cookies, wenn Sie hier drücken.', frame: 'Spotify-Player' },
+}[lang] ?? { load: 'Load playlist from Spotify', note: 'Spotify sets cookies only once you press this.', frame: 'Spotify player' };
 ---
 
-<div class="spotify-container relative w-full aspect-[4/3] min-h-[352px] rounded-xl overflow-hidden bg-black/40 border border-white/5 shadow-2xl group transition-all duration-500 hover:border-accent/40">
-  <iframe 
-    style="border-radius:12px" 
-    src={`https://open.spotify.com/embed/playlist/${spotifyId}?utm_source=generator&theme=0`} 
-    width="100%" 
-    height="100%" 
-    frameBorder="0" 
-    allowfullscreen="" 
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-    loading="lazy"
-    class="opacity-90 group-hover:opacity-100 transition-opacity duration-500"
-  ></iframe>
-  
-  <!-- Subtle Gradient Overlay -->
-  <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"></div>
+{/*
+  Click to load. The iframe used to be in the markup, so open.spotify.com set its
+  cookies the moment the page scrolled it into view, before the visitor had done
+  anything — the one embed on the site that worked that way (the YouTube embed has
+  always been click-to-play). The frame also had no title, which axe flagged on
+  every visit to /soundtrack.
+*/}
+<div
+  class="spotify-container relative w-full aspect-[4/3] min-h-[352px] rounded-xl overflow-hidden bg-black/40 border border-white/5 shadow-2xl transition-all duration-500 hover:border-accent/40"
+  data-spotify-embed
+  data-spotify-id={spotifyId}
+  data-frame-title={title ?? copy.frame}
+>
+  <button
+    type="button"
+    class="spotify-load absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-6 text-text hover:text-white transition-colors"
+  >
+    <i class="fa-brands fa-spotify text-5xl text-[#1DB954]" aria-hidden="true"></i>
+    <span class="font-semibold">{copy.load}</span>
+    <span class="text-xs text-muted max-w-[32ch]">{copy.note}</span>
+  </button>
 </div>
 
 <style>
@@ -28,3 +45,22 @@ const { spotifyId } = Astro.props;
     mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
   }
 </style>
+
+<script>
+  for (const box of document.querySelectorAll<HTMLElement>('[data-spotify-embed]')) {
+    box.querySelector<HTMLButtonElement>('.spotify-load')?.addEventListener('click', () => {
+      const id = box.dataset.spotifyId;
+      if (!id) return;
+      const frame = document.createElement('iframe');
+      frame.src = `https://open.spotify.com/embed/playlist/${encodeURIComponent(id)}?utm_source=generator&theme=0`;
+      frame.title = box.dataset.frameTitle || 'Spotify player';
+      frame.width = '100%';
+      frame.height = '100%';
+      frame.style.borderRadius = '12px';
+      frame.setAttribute('frameborder', '0');
+      frame.setAttribute('allowfullscreen', '');
+      frame.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+      box.replaceChildren(frame);
+    });
+  }
+</script>

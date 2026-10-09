@@ -31,7 +31,6 @@ if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
 const cv = cvEntry.data;
 const experience = cv.experience || [];
 
-const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
 const contactLink = isDa ? '/contact' : '/en/contact';
 
 ---
@@ -102,7 +101,6 @@ const contactLink = isDa ? '/contact' : '/en/contact';
   
           <div class="flex flex-wrap gap-3">
             <Button href="#roles"><i class="fa-solid fa-briefcase mr-2"></i> {content.hero.buttons.role}</Button>
-            <Button href={statsLink} variant="ghost"><i class="fa-solid fa-chart-column mr-2"></i> {content.hero.buttons.stats}</Button>
             <Button href={contactLink} variant="ghost"><i class="fa-solid fa-envelope mr-2"></i> {content.hero.buttons.contact}</Button>
           </div>
         </Card>

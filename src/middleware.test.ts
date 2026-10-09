@@ -102,6 +102,7 @@ describe('public visitor routes', () => {
         '/api/subscribe',
         '/api/text-to-sql',
         '/api/reactions',
+        '/api/qa',
         '/api/views/some-post-slug',
         '/api/auth/login',
     ])('lets an anonymous POST to %s reach the handler', async (path) => {

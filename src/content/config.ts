@@ -10,6 +10,11 @@ const blogCollection = defineCollection({
         description: z.string(),
         description_da: z.string().optional(), // Localized Description
         category: z.enum(['academic', 'analysis', 'tech']),
+        // ISO date (YYYY-MM-DD). The listing sorts on it, the citation box and the
+        // BlogPosting data cite it, and the feeds carry it. The listing used to stamp
+        // every post with the build time, so every post was "published today".
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        updated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
         links: z.array(z.object({
             label: z.string(),
             url: z.string(),

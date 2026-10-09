@@ -6,7 +6,14 @@ import { StatusSchema } from '../../lib/schemas';
 export const GET: APIRoute = async () => {
     if (!supabase) return new Response("null");
     const { data } = await supabase.from('status').select('*').order('created_at', { ascending: false }).limit(1).single();
-    return new Response(JSON.stringify(data || null));
+    // The navbar fetches this on every page view, so without a cache header every
+    // visit was a Supabase round trip for a value that changes a few times a week.
+    return new Response(JSON.stringify(data || null), {
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600',
+        },
+    });
 }
 
 // POST: Set new status

@@ -1,35 +1,14 @@
 import type { APIContext, MiddlewareNext } from "astro";
 import { verifySession } from "./lib/session";
+import { SECURITY_HEADERS } from "./lib/security-headers";
 
-// Content Security Policy (CSP)
-// - script-src: 'unsafe-inline' allowed for Astro hydration/ViewTransitions. Restricted to trusted domains.
-// - connect-src: expanded for Supabase and FontAwesome.
-const CSP = [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://va.vercel-scripts.com https://cdn.vercel-insights.com https://cdnjs.cloudflare.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
-    "font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com",
-    "img-src 'self' data: https: blob:",
-    // api.open-meteo.com powers the weather cards on /camino/route.
-    "connect-src 'self' https://ka-f.fontawesome.com https://*.supabase.co https://vitals.vercel-insights.com https://cdn.vercel-insights.com https://*.sentry.io https://*.ingest.de.sentry.io https://api.open-meteo.com",
-    "media-src 'self' https:",
-    "worker-src 'self' blob:",
-    // frame-src: third-party embeds. Without this, iframes fall back to default-src 'self'
-    // and are blocked outright (this silently broke the Spotify embeds on /soundtrack).
-    "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://open.spotify.com",
-    "frame-ancestors 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-    "object-src 'none'"
-].join("; ");
-
+// The policy and the other headers live in src/lib/security-headers.ts, shared with
+// vercel.json (which Vercel applies to the prerendered pages this middleware never
+// sees). A unit test keeps the two identical.
 function withSecurityHeaders(response: Response): Response {
-    const headers = response.headers;
-    headers.set("Content-Security-Policy", CSP);
-    headers.set("X-Frame-Options", "DENY");
-    headers.set("X-Content-Type-Options", "nosniff");
-    headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-    headers.set("Permissions-Policy", "camera=(), microphone=(self), geolocation=()");
+    for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+        response.headers.set(key, value);
+    }
     return response;
 }
 
@@ -56,6 +35,9 @@ const PUBLIC_POST_ROUTES = new Set([
     // inserted anyway while the visitor was shown a 401 — so the omission never
     // surfaced. Now that the gate holds, the route has to be public to keep working.
     "/api/reactions",
+    // The /qa page's "ask a question" form. It POSTed here for as long as the form
+    // has existed, and the route had no POST handler, so every question was lost.
+    "/api/qa",
 ]);
 // The blog view counter: POST /api/views/<slug>, same story as /api/reactions.
 const PUBLIC_POST_PREFIXES = ["/api/views/"];

@@ -1269,7 +1269,6 @@ const tocItems = [
 </Layout>
 
 <script>
-    import Chart from 'chart.js/auto';
     import { unlockAchievement } from '@lib/gamification';
 
     // Copy buttons in the citation dialog. These were inline onclick attributes
@@ -1293,58 +1292,63 @@ const tocItems = [
     if (chartData) {
         const ctx = document.getElementById('projectChart') as HTMLCanvasElement;
         if (ctx) {
-            new Chart(ctx, {
-                type: chartData.type,
-                data: {
-                    labels: chartData.labels,
-                    datasets: chartData.datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                color: '#8E938B',
-                                font: {
-                                    family: "'Inter', sans-serif",
-                                    size: 11
+            // chart.js was a static import at the top of this script, so every project
+            // page carried it whether or not it had a chart. Fetched here instead, only
+            // on the pages that reach this line.
+            import('chart.js/auto').then(({ default: Chart }) => {
+                new Chart(ctx, {
+                    type: chartData.type,
+                    data: {
+                        labels: chartData.labels,
+                        datasets: chartData.datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    color: '#8E938B',
+                                    font: {
+                                        family: "'Inter', sans-serif",
+                                        size: 11
+                                    }
                                 }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(30, 33, 34, 0.9)',
+                                padding: 12,
+                                titleFont: { size: 13, weight: 'bold' },
+                                bodyFont: { size: 12 },
+                                cornerRadius: 8,
+                                displayColors: false
                             }
                         },
-                        tooltip: {
-                            backgroundColor: 'rgba(30, 33, 34, 0.9)',
-                            padding: 12,
-                            titleFont: { size: 13, weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            cornerRadius: 8,
-                            displayColors: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                color: 'rgba(255,255,255,0.05)'
+                        scales: {
+                            y: {
+                                grid: {
+                                    color: 'rgba(255,255,255,0.05)'
+                                },
+                                ticks: {
+                                    color: '#8E938B',
+                                    font: { size: 10 }
+                                },
+                                border: { dash: [4, 4] }
                             },
-                            ticks: {
-                                color: '#8E938B',
-                                font: { size: 10 }
-                            },
-                            border: { dash: [4, 4] }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#8E938B',
-                                font: { size: 10 }
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#8E938B',
+                                    font: { size: 10 }
+                                }
                             }
                         }
                     }
-                }
+                });
             });
         }
     }

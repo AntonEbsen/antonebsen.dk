@@ -129,10 +129,10 @@ import BlogCard from '@components/blog/BlogCard.astro';
 import HeroCarousel from '@components/blog/HeroCarousel';
 import NewsletterSignup from '@components/blog/NewsletterSignup';
 import EcosystemGraph from '../visuals/EcosystemGraph.tsx';
-import { getCollection } from 'astro:content';
+import { publishedPosts } from '@lib/blog';
 
-// Fetch Local Content
-const localPosts = await getCollection('blog');
+// Posts with a body, newest first. The bodiless link-collection entries are left out.
+const localPosts = await publishedPosts();
 
 // Helper for reading time
 const getReadingTime = (post: any) => {
@@ -150,7 +150,7 @@ const getReadingTime = (post: any) => {
 const formattedLocalPosts = localPosts.map(p => ({
   title: isDa ? (p.data.title_da || p.data.title) : p.data.title, // Prefer localized title
   category: p.data.category,
-  created_at: new Date().toISOString(), // Or add date to frontmatter
+  created_at: p.data.date,
   excerpt: isDa ? (p.data.description_da || p.data.description) : p.data.description, // Prefer localized desc
   slug: p.id,
   series: p.data.series,

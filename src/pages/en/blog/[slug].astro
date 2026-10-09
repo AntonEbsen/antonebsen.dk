@@ -17,25 +17,20 @@ import SignalBrief from '../../../components/blog/SignalBrief.astro';
 import SmartSuggestions from '../../../components/blog/SmartSuggestions.astro';
 import SmartFootnote from '../../../components/blog/SmartFootnote.tsx';
 import { renderMarkdown } from '../../../utils/markdown';
-import { getCollection } from 'astro:content';
+import { publishedPosts, postJsonLd, type Post } from '../../../lib/blog';
 
-export const prerender = false; 
+// Built once, like the rest of the site. getStaticPaths was already here but
+// `prerender = false` made Astro ignore it (the build warned so on every run), so
+// the page rendered on every request, was missing from the sitemap, and answered a
+// wrong slug with a 302 to /404 rather than a 404.
+export const prerender = true;
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map(post => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  const posts = await publishedPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
 }
 
-const { slug } = Astro.params;
-if (!slug) return Astro.redirect('/404');
-
-const posts = await getCollection('blog');
-const post = posts.find(p => p.id === slug);
-
-if (!post) return Astro.redirect('/404');
-
+const { post, posts } = Astro.props as { post: Post; posts: Post[] };
+const slug = post.id;
 const lang = 'en';
 const { title, description, meta, category, content, relatedProjectId } = post.data;
 
@@ -54,6 +49,11 @@ const seriesTotal = post.data.series
 ---
 
 <Layout title={title} description={description} article={true}>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={post.data.date} />
+    <meta property="article:modified_time" content={post.data.updated ?? post.data.date} />
+    <script type="application/ld+json" set:html={JSON.stringify(postJsonLd(post, lang))} />
+  </Fragment>
   <ReadingProgress client:load />
   <ReadingRecord slug={slug} lang={lang} series={post.data.series} seriesTotal={seriesTotal} />
   <ReadTimer />
@@ -146,7 +146,7 @@ const seriesTotal = post.data.series
                     title={title} 
                     author="Anton Meier Ebsen Jørgensen" 
                     url={`https://antonebsen.dk/en/blog/${slug}`} 
-                    date={new Date().toISOString()}
+                    date={post.data.date}
                 />
             </div>
 

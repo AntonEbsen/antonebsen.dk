@@ -130,6 +130,12 @@ export const CvExperienceSchema = z.object({
     })).max(10).optional(),
 });
 
+/** A visitor's question from the /qa form. Table: qa (status starts as 'pending'). */
+export const QaQuestionSchema = z.object({
+    question: z.string().trim().min(5).max(500),
+    asker_name: z.string().trim().max(80).optional().or(z.literal('')),
+});
+
 /** Answering or hiding a visitor's question. Table: qa. */
 export const QaUpdateSchema = z.object({
     id: z.coerce.number().int().positive(),

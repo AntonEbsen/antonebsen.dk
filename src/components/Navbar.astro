@@ -3,86 +3,122 @@ import LanguageSwitcher from './common/LanguageSwitcher.astro';
 import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const navItems = useNav(lang);
 const pathname = new URL(Astro.request.url).pathname;
+
+const idFor = (label: string) => `nav-sub-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+const homes = new Set(['/', '/en', '/de']);
+const isCurrent = (url: string) => pathname === url || (!homes.has(url) && pathname.startsWith(url + '/'));
+const isSection = (url: string) => !homes.has(url) && pathname.startsWith(url);
+
+const linkClass = (active: boolean) =>
+  `inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 text-dim hover:text-white hover:bg-white/5 ${active ? '!text-accent-light !bg-accent-soft font-semibold' : ''}`;
 ---
 
-<nav class="navbar sticky top-0 z-[1000] bg-[#17191A]/80 backdrop-blur-[16px] px-6 py-4 border-b border-[var(--accent)]/15 shadow-[0_4px_30px_rgba(0,0,0,0.4)]" aria-label="Primær navigation">
-  <div class="max-w-[1300px] mx-auto flex items-center justify-between gap-4 flex-col md:flex-row md:gap-4">
-    <div class="flex items-center gap-1 flex-wrap justify-center md:justify-start">
-      {navItems.map(item => (
-        item.children && item.children.length > 0 ? (
-          <div class="relative inline-flex items-center group">
-            <a 
-              href={item.url} 
-              class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-dim hover:text-white hover:bg-white/5 ${pathname.startsWith(item.url) ? "!text-accent-light !bg-accent-soft font-semibold" : ""}`}
-              aria-haspopup="true"
-              aria-expanded="false"
-              aria-controls={`nav-dropdown-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-            >
-              {item.label} 
-              <i class="fa-solid fa-chevron-down text-[10px] ml-1.5 opacity-90" aria-hidden="true"></i>
-            </a>
-            {/* Dropdown */}
-            <div 
-              id={`nav-dropdown-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-              role="menu"
-              aria-label={item.label}
-              class="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 min-w-[220px] bg-[#1E2122] border border-glass-border border-t-[2px] border-t-accent rounded-xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[9999] opacity-0 invisible pointer-events-none translate-y-[10px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:translate-y-0 hidden md:block before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
-            >
-               {item.children.map(child => (
-                 <a 
-                   href={child.url} 
-                   role="menuitem"
-                   class="block px-3.5 py-2.5 rounded-lg text-dim no-underline font-medium text-[13.5px] transition-all duration-200 hover:bg-white/[0.03] hover:text-white hover:pl-[18px]"
-                   target={child.external ? "_blank" : "_self"}
-                   rel={child.external ? "noopener noreferrer" : ""}
-                 >
-                   {child.label}
-                   {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-80" aria-hidden="true"></i>}
-                 </a>
-               ))}
-            </div>
-            {/* Mobile Dropdown (controlled by JS) */}
-             <div class="dropdown-mobile hidden w-full relative top-0 left-0 bg-transparent border-none shadow-none pl-3 md:hidden">
-               {item.children.map(child => (
-                 <a 
-                   href={child.url} 
-                   class="block px-3.5 py-2.5 rounded-lg text-dim no-underline font-medium text-[13.5px] "
-                 >
-                   {child.label}
-                 </a>
-               ))}
-             </div>
-          </div>
-        ) : (
-          <a class={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-dim hover:text-white hover:bg-white/5 ${pathname === item.url || (pathname.startsWith(item.url + '/') && item.url !== '/' && item.url !== '/en') ? "!text-accent-light !bg-accent-soft font-semibold" : ""}`} href={item.url}>
-            {item.label}
-          </a>
-        )
-      ))}
+{/*
+  One nav for every width.
+
+  What was here before had no mobile menu at all — below `md` the links stacked
+  under the bar and the sticky header took about 38% of a 375×667 screen — and
+  its dropdowns opened on hover only, with aria-expanded hard-coded "false", so a
+  keyboard user could not reach the ~19 child pages. The tap handler also checked
+  `max-width: 980px` while the CSS switched at `md` (768px), so between the two a
+  tap on CV/Portfolio called preventDefault() and toggled a list that stayed hidden.
+
+  Now: a menu button toggles a panel below `md`; each section with children has a
+  real <button> that toggles its submenu (aria-expanded kept in sync), the submenu
+  also opens on hover and on focus-within at `md` and up, and Escape closes it.
+  The breakpoint lives in one place — the `md` media query in the style block —
+  and the script never asks the viewport anything.
+*/}
+<nav class="navbar sticky top-0 z-nav bg-[#17191A]/80 backdrop-blur-[16px] px-4 md:px-6 py-3 md:py-4 border-b border-[var(--accent)]/15 shadow-[0_4px_30px_rgba(0,0,0,0.4)]" aria-label={t('nav.primary')}>
+  <div class="relative max-w-[1300px] mx-auto flex items-center justify-between gap-4">
+
+    <button
+      id="nav-toggle"
+      type="button"
+      class="md:hidden inline-flex items-center justify-center w-11 h-11 -ml-2 rounded-lg text-dim hover:text-white hover:bg-white/5 transition-colors"
+      aria-controls="nav-panel"
+      aria-expanded="false"
+    >
+      <i class="fa-solid fa-bars text-lg nav-toggle-open" aria-hidden="true"></i>
+      <i class="fa-solid fa-xmark text-lg nav-toggle-close" aria-hidden="true"></i>
+      <span class="sr-only">{t('nav.menu')}</span>
+    </button>
+
+    <div id="nav-panel" class="nav-panel">
+      <ul class="nav-list flex flex-col md:flex-row md:items-center md:flex-wrap gap-1 list-none m-0 p-0">
+        {navItems.map((item) => (
+          item.children && item.children.length > 0 ? (
+            <li class="nav-item relative">
+              <div class="flex items-center">
+                <a
+                  href={item.url}
+                  class={linkClass(isSection(item.url))}
+                  aria-current={isCurrent(item.url) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+                <button
+                  type="button"
+                  class="nav-sub-toggle inline-flex items-center justify-center w-9 h-9 md:w-7 md:h-7 -ml-2 rounded-lg text-dim hover:text-white hover:bg-white/5 transition-colors"
+                  aria-expanded="false"
+                  aria-controls={idFor(item.label)}
+                  aria-label={`${t('nav.submenu')} ${item.label}`}
+                >
+                  <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200" aria-hidden="true"></i>
+                </button>
+              </div>
+              <ul id={idFor(item.label)} class="nav-sub list-none m-0" aria-label={item.label}>
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.url}
+                      class="block px-3.5 py-2.5 rounded-lg text-dim no-underline font-medium text-[13.5px] transition-all duration-200 hover:bg-white/[0.03] hover:text-white md:hover:pl-[18px]"
+                      aria-current={pathname === child.url ? 'page' : undefined}
+                      target={child.external ? '_blank' : undefined}
+                      rel={child.external ? 'noopener noreferrer' : undefined}
+                    >
+                      {child.label}
+                      {child.external && <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-80" aria-hidden="true"></i>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li class="nav-item">
+              <a class={linkClass(isCurrent(item.url))} href={item.url} aria-current={isCurrent(item.url) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          )
+        ))}
+      </ul>
+
+      <div class="relative w-full md:w-[clamp(220px,28vw,420px)] md:min-w-[220px] md:max-w-[420px] group/search" role="search">
+        <label class="sr-only" for="navbarSearchInput">{t('search.label')}</label>
+        <input
+          id="navbarSearchInput"
+          class="w-full px-4 py-2.5 rounded-[14px] border border-glass-border bg-white/5 text-text outline-none font-medium transition-all duration-300 focus:border-accent focus:bg-white/10 focus:shadow-[var(--accent-glow)]"
+          type="search"
+          placeholder={t('search.placeholder')}
+          autocomplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="searchResults"
+          data-see-all={t('search.all')}
+        />
+        <div class="absolute bottom-0 left-[10%] w-[80%] h-[1px] bg-accent scale-x-0 transition-transform duration-300 group-focus-within/search:scale-x-100 group-focus-within/search:animate-[scanBar_2s_infinite]"></div>
+        <div id="searchResults" class="absolute top-[calc(100%+10px)] left-0 right-0 bg-[#1E2122]/95 backdrop-blur-2xl rounded-[14px] shadow-card border border-glass-border p-2 z-dropdown opacity-0 invisible pointer-events-none -translate-y-[2px] transition-all duration-150 [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto [&.is-open]:translate-y-0" role="listbox" aria-label={t('search.results')}></div>
+      </div>
     </div>
 
-    <div class="relative inline-flex items-center min-w-[220px] max-w-[420px] w-[clamp(220px,28vw,420px)] group/search" role="search">
-      <label class="sr-only" for="navbarSearchInput">Søg på siden</label>
-      <input
-        id="navbarSearchInput"
-        class="w-full px-4 py-2.5 rounded-[14px] border border-glass-border bg-white/5 text-text outline-none font-medium transition-all duration-300 focus:border-accent focus:bg-white/10 focus:shadow-[var(--accent-glow)]"
-        type="search"
-        placeholder="Søg..."
-        autocomplete="off"
-        role="combobox"
-        aria-autocomplete="list"
-        aria-expanded="false"
-        aria-haspopup="listbox"
-        aria-controls="searchResults"
-      />
-      <div class="absolute bottom-0 left-[10%] w-[80%] h-[1px] bg-accent scale-x-0 transition-transform duration-300 group-focus-within/search:scale-x-100 group-focus-within/search:animate-[scanBar_2s_infinite]"></div>
-      <div id="searchResults" class="absolute top-[calc(100%+10px)] left-0 right-0 bg-[#1E2122]/95 backdrop-blur-2xl rounded-[14px] shadow-card border border-glass-border p-2 z-[9999] opacity-0 invisible pointer-events-none -translate-y-[2px] transition-all duration-150 [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto [&.is-open]:translate-y-0" role="listbox" aria-label="Søgeresultater"></div>
-    </div>
-    
     <div class="flex items-center gap-3">
-      <a href="/dashboard" id="now-status" class="no-underline hidden items-center gap-2 mr-3 bg-gray-900/50 px-2 py-1.5 text-dim hover:text-white transition-colors rounded-full border border-gold-500/20 shadow-[0_0_10px_rgba(212,121,79,0.1)] group" title="Live Status">
+      <a href="/dashboard" id="now-status" class="no-underline hidden items-center gap-2 mr-1 md:mr-3 bg-gray-900/50 px-2 py-1.5 text-dim hover:text-white transition-colors rounded-full border border-gold-500/20 shadow-[0_0_10px_rgba(212,121,79,0.1)] group" title="Live Status">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -91,6 +127,107 @@ const pathname = new URL(Astro.request.url).pathname;
       </a>
       <LanguageSwitcher />
     </div>
+  </div>
+</nav>
+
+<style>
+  /* The panel: a drawer under the bar below md, a row inside it from md up. */
+  .nav-panel {
+    display: none;
+  }
+  .nav-panel.is-open {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: -1rem;
+    right: -1rem;
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+    padding: 1rem;
+    background: rgba(23, 25, 26, 0.97);
+    border-bottom: 1px solid rgba(212, 121, 79, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+  .nav-toggle-close { display: none; }
+  #nav-toggle[aria-expanded="true"] .nav-toggle-open { display: none; }
+  #nav-toggle[aria-expanded="true"] .nav-toggle-close { display: inline-block; }
+
+  /* Submenus: an inline list below md, toggled by the button. */
+  .nav-sub {
+    display: none;
+    padding: 0.25rem 0 0.5rem 0.75rem;
+  }
+  .nav-item.is-open > .nav-sub {
+    display: block;
+  }
+  .nav-item.is-open .nav-sub-toggle i {
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 768px) {
+    .nav-panel,
+    .nav-panel.is-open {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+    }
+
+    /* From md up the submenu is a dropdown. It opens on hover (mouse), on
+       focus-within (keyboard: Tab onto the section link or its button), and on the
+       button's toggle; the three states share one rule so they cannot drift. */
+    .nav-sub,
+    .nav-item.is-open > .nav-sub {
+      display: block;
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      min-width: 220px;
+      padding: 0.5rem;
+      background: #1E2122;
+      border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+      border-top: 2px solid var(--accent);
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate(-50%, 10px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+    /* Bridges the 12px gap so the pointer can travel from the link to the menu. */
+    .nav-sub::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 0;
+      right: 0;
+      height: 12px;
+    }
+    .nav-item:hover > .nav-sub,
+    .nav-item:focus-within > .nav-sub,
+    .nav-item.is-open > .nav-sub {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-sub, .nav-sub-toggle i { transition: none; }
+  }
+</style>
 
 <script>
   fetch('/api/now')
@@ -109,34 +246,72 @@ const pathname = new URL(Astro.request.url).pathname;
     })
     .catch(err => console.error('Status fetch failed', err));
 </script>
-  </div>
-</nav>
 
 <script>
-  // Mobile dropdown logic
-  document.addEventListener("DOMContentLoaded", () => {
-    const mobileLinks = document.querySelectorAll(".navbar .group > a .fa-chevron-down");
-    
-    mobileLinks.forEach(icon => {
-        const link = icon.closest('a');
-        if(!link) return;
-        
-        link.addEventListener("click", (e) => {
-            if (window.matchMedia("(max-width: 980px)").matches) {
-                e.preventDefault();
-                const dropdown = link.nextElementSibling?.nextElementSibling; // Get mobile dropdown
-                if(dropdown) {
-                    dropdown.classList.toggle("hidden");
-                }
-            }
-        });
+  // --- MENU: the panel below md, the submenus everywhere ---
+  const nav = document.querySelector<HTMLElement>('.navbar');
+  const toggle = document.getElementById('nav-toggle') as HTMLButtonElement | null;
+  const panel = document.getElementById('nav-panel');
+
+  const setPanel = (open: boolean) => {
+    if (!toggle || !panel) return;
+    panel.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  };
+
+  toggle?.addEventListener('click', () => setPanel(!panel?.classList.contains('is-open')));
+
+  const items = Array.from(document.querySelectorAll<HTMLElement>('.navbar .nav-item'));
+  const setItem = (item: HTMLElement, open: boolean) => {
+    item.classList.toggle('is-open', open);
+    item.querySelector<HTMLButtonElement>('.nav-sub-toggle')?.setAttribute('aria-expanded', String(open));
+  };
+  const closeAll = (except?: HTMLElement) => {
+    for (const item of items) if (item !== except) setItem(item, false);
+  };
+
+  for (const item of items) {
+    const button = item.querySelector<HTMLButtonElement>('.nav-sub-toggle');
+    if (!button) continue;
+    button.addEventListener('click', () => {
+      const open = !item.classList.contains('is-open');
+      closeAll(item);
+      setItem(item, open);
     });
+    // Leaving the item by keyboard (Tab past its last child) closes a toggled
+    // submenu, so aria-expanded does not stay "true" on a menu nobody can see.
+    item.addEventListener('focusout', (e) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && item.contains(next)) return;
+      setItem(item, false);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const open = items.find((item) => item.classList.contains('is-open'));
+    if (open) {
+      setItem(open, false);
+      open.querySelector<HTMLButtonElement>('.nav-sub-toggle')?.focus();
+      return;
+    }
+    if (panel?.classList.contains('is-open')) {
+      setPanel(false);
+      toggle?.focus();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!nav || nav.contains(e.target as Node)) return;
+    closeAll();
+    setPanel(false);
   });
 
   // --- COMMAND MODE / GLOBAL SEARCH ---
-  const searchInput = document.getElementById('navbarSearchInput');
+  const searchInput = document.getElementById('navbarSearchInput') as HTMLInputElement | null;
   const searchResults = document.getElementById('searchResults');
-  let searchIndex = [];
+  const seeAllLabel = searchInput?.dataset.seeAll || 'See all results';
+  let searchIndex: any[] = [];
   let isIndexLoaded = false;
 
   async function loadSearchIndex() {
@@ -156,36 +331,37 @@ const pathname = new URL(Astro.request.url).pathname;
       if (e.key === 'Escape') {
           searchInput?.blur();
           searchResults?.classList.remove('is-open');
+          searchInput?.setAttribute('aria-expanded', 'false');
       }
   });
 
   // Get current language from HTML tag
   const currentLang = document.documentElement.lang || 'en';
 
-
   if (searchInput && searchResults) {
       searchInput.addEventListener('focus', loadSearchIndex);
-      
+
       searchInput.addEventListener('input', (e) => {
           const query = (e.target as HTMLInputElement).value.toLowerCase();
-          
+
           if (!query || query.length === 0) {
               searchResults.classList.remove('is-open');
+              searchInput.setAttribute('aria-expanded', 'false');
               return;
           }
 
           if (!isIndexLoaded) return; // Wait for load
 
           // Filter Logic
-          const matches = searchIndex.filter((item: any) => 
+          const matches = searchIndex.filter((item: any) =>
                (item.lang === currentLang) && // Strict Filter
-               (item.title.toLowerCase().includes(query) || 
+               (item.title.toLowerCase().includes(query) ||
                (item.tags && item.tags.some((t: string) => t.toLowerCase().includes(query))))
           ).slice(0, 6);
 
           // Render
           const html = matches.map((item: any) => `
-              <a href="${item.url}" class="block p-3 hover:bg-white/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-white/5">
+              <a href="${item.url}" role="option" class="block p-3 hover:bg-white/10 rounded-lg flex items-center gap-3 group transition-all duration-200 border border-transparent hover:border-white/5">
                   <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-dim group-hover:text-accent group-hover:bg-accent/10 transition-colors">
                       <i class="${item.icon}"></i>
                   </div>
@@ -199,11 +375,11 @@ const pathname = new URL(Astro.request.url).pathname;
               </a>
           `).join('');
 
-          // "Ask AI" Footer
+          // "See all" footer
           const aiFooter = `
               <div class="border-t border-white/10 mt-2 pt-2">
                    <a href="/search?q=${encodeURIComponent(query)}" class="block p-2 text-center text-xs font-bold text-accent uppercase tracking-widest hover:text-white transition-colors">
-                      Se alle resultater <i class="fa-solid fa-arrow-right ml-1"></i>
+                      ${seeAllLabel} <i class="fa-solid fa-arrow-right ml-1"></i>
                    </a>
               </div>
           `;
@@ -222,4 +398,3 @@ const pathname = new URL(Astro.request.url).pathname;
       });
   }
 </script>
-

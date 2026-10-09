@@ -15,7 +15,7 @@ const sections = [
       <li><strong>Kontaktformular:</strong> navn, email og din besked, hvis du skriver til mig.</li>
       <li><strong>Nyhedsbrev ("The Signal"):</strong> din email-adresse, hvis du tilmelder dig.</li>
       <li><strong>Gæstebog:</strong> det navn og den besked, du selv vælger at offentliggøre.</li>
-      <li><strong>AI-chat:</strong> de beskeder, du skriver til chatbotten, sendes til Google for at generere svar.</li>
+      <li><strong>AI-chat:</strong> de beskeder, du skriver til chatbotten (og filer, du selv vedhæfter), sendes til Anthropic for at generere svar. Samtalen gemmes desuden i din egen browser (<em>localStorage</em>), så du kan fortsætte den på tværs af sider.</li>
       <li><strong>Tekniske oplysninger:</strong> fx browser, enhed, tidspunkt og IP-adresse kan blive registreret automatisk til drift, statistik og sikkerhed.</li>
     </ul>
     <p>Der indsamles ikke følsomme personoplysninger via hjemmesiden.</p>`,
@@ -37,14 +37,22 @@ const sections = [
       <li><strong>Supabase</strong> – database (EU), hvor kontakt-, nyhedsbrevs- og gæstebogsdata gemmes.</li>
       <li><strong>Upstash</strong> – rate-limiting (midlertidig lagring af IP for at forhindre spam).</li>
       <li><strong>Sentry</strong> – fejlovervågning, så jeg kan opdage og rette tekniske fejl.</li>
-      <li><strong>Google (Gemini)</strong> – behandler beskeder sendt til AI-chatbotten.</li>
+      <li><strong>Anthropic (Claude)</strong> – behandler beskeder sendt til AI-chatbotten.</li>
+    </ul>
+    <p>Enkelte sider henter desuden indhold fra tredjeparter, som så kan se din IP-adresse:</p>
+    <ul>
+      <li><strong>Cloudflare (cdnjs)</strong> – leverer PDF-læseren til chatten, og kun i det øjeblik du selv vedhæfter en PDF.</li>
+      <li><strong>YouTube</strong> – videoer indlejres i privatlivsvenlig tilstand (youtube-nocookie) og afspilles først, når du trykker på dem; selve forhåndsbilledet hentes fra YouTube, når siden vises.</li>
+      <li><strong>Spotify</strong> – afspilningslister på soundtrack-siden indlæses først, når du trykker på dem, og Spotify sætter da sine egne cookies.</li>
+      <li><strong>OpenStreetMap og CARTO</strong> – kortfliser på kortsiderne.</li>
+      <li><strong>Open-Meteo</strong> – vejrdata på Camino-rutesiden.</li>
     </ul>
     <p>Følger du links til tredjeparter (fx LinkedIn eller GitHub), gælder deres egne privatlivspolitikker.</p>`,
   },
   {
     id: 'cookies',
     heading: '5. Cookies og tracking',
-    html: `<p>Webstatistikken fra Vercel er som udgangspunkt cookiefri og bruger ikke målrettet tracking. Hjemmesiden anvender browserens <em>localStorage</em> til at huske dine præferencer (fx tema og oplåste "achievements"). Det er ikke tracking og deles ikke med tredjepart.</p>`,
+    html: `<p>Webstatistikken fra Vercel er som udgangspunkt cookiefri og bruger ikke målrettet tracking. Hjemmesiden anvender browserens <em>localStorage</em> til at huske dine præferencer (fx oplåste "achievements") og din samtale med AI-chatten. Det ligger kun i din browser, er ikke tracking og deles ikke med tredjepart.</p>`,
   },
   {
     id: 'security',
@@ -77,7 +85,7 @@ const sections = [
   eyebrow="Juridisk"
   heading="Privatlivspolitik"
   lead="Hvilke oplysninger der kan blive behandlet, når du besøger antonebsen.dk, og hvordan de bruges."
-  updated="Senest opdateret: 3. juni 2026"
+  updated="Senest opdateret: 9. oktober 2026"
   tocLabel="Indhold"
   intro="Kort fortalt: Jeg indsamler så lidt som muligt. Kontakter du mig, behandler jeg kun de oplysninger, du selv sender."
   sections={sections}

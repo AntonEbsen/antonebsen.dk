@@ -57,9 +57,8 @@ export default defineConfig({
     })
   ],
 
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true
-    }
-  }),
+  // No `webAnalytics` option: it injects an inline analytics script into <head>, and
+  // BaseLayout already mounts <Analytics /> from @vercel/analytics/astro, so every
+  // page was loading the tracker twice.
+  adapter: vercel(),
 });

@@ -57,12 +57,14 @@ const { lang, content } = Astro.props;
                             <h3 class="text-2xl font-bold">{p.title}</h3>
                             <p class="text-accent text-sm font-medium">{p.event}</p>
                         </div>
-                        <div class="flex-shrink-0">
+                        {p.link && p.link !== '#' && (
+                          <div class="flex-shrink-0">
                              <a href={p.link} class="text-sm font-bold text-white uppercase tracking-wider hover:text-accent transition-colors flex items-center gap-2">
-                                <i class="fa-solid fa-file-pdf"></i>
+                                <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
                                 {p.linkText}
                              </a>
-                        </div>
+                          </div>
+                        )}
                     </div>
                     <p class="text-dim leading-relaxed max-w-3xl">
                         {p.summary}
