@@ -29,7 +29,10 @@ function posts(): Post[] {
                 // name actually in the source?" check below.
                 body: [...(raw.content ?? []), ...(raw.content_da ?? [])].join('\n')
             };
-        });
+        })
+        // Only posts with a body have a page. The five link-collection stubs are not
+        // built (see src/lib/blog.ts), so /blog/<stub> is a 404 with no <article>.
+        .filter((p) => p.body.length > 0);
 }
 
 const ALL = posts();
