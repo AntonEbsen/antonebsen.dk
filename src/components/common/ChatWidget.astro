@@ -43,8 +43,9 @@ const t = (t_obj as any)[lang] || t_obj.da;
 ---
 
 {/* pdf.js is fetched on demand by src/lib/pdfjs-loader.ts, the first time a visitor
-    picks a PDF. It used to be a blocking <script src> here — on every page, since
-    this widget sits in BaseLayout. */}
+    picks a PDF. It used to be a blocking script tag from cdnjs here, on every page,
+    since this widget sits in BaseLayout. (No literal tag names in this comment: the
+    Astro compiler's script-hoisting pass reads them even inside a comment.) */}
 
 <!-- The client script cannot see the frontmatter `t`, so strings it needs at runtime
      are handed over as data attributes (the same arrangement as CommandPalette). -->

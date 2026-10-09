@@ -27,7 +27,7 @@ const linkClass = (active: boolean) =>
   tap on CV/Portfolio called preventDefault() and toggled a list that stayed hidden.
 
   Now: a menu button toggles a panel below `md`; each section with children has a
-  real <button> that toggles its submenu (aria-expanded kept in sync), the submenu
+  real button element that toggles its submenu (aria-expanded kept in sync), the submenu
   also opens on hover and on focus-within at `md` and up, and Escape closes it.
   The breakpoint lives in one place — the `md` media query in the style block —
   and the script never asks the viewport anything.
