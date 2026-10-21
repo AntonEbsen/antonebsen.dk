@@ -204,8 +204,10 @@ const skillsData = {
           <!-- Static Fallback Content -->
           <TechStack skills={skillsData.programming} />
           <div class="flex flex-wrap justify-center gap-2 mt-8 opacity-90">
-            {skillsData.professional.map(skill => (
-              <Pill variant="default" class="text-sm">{skill.name}</Pill>
+            {(isDa
+              ? ['Historiske paneldata', 'Difference-in-differences', 'Identifikation og robusthed', 'Konstruktion af historiske data', 'Undervisning og formidling']
+              : ['Historical panel data', 'Difference-in-differences', 'Identification and robustness', 'Historical data construction', 'Teaching and communication']).map(skill => (
+              <Pill variant="default" class="text-sm">{skill}</Pill>
             ))}
           </div>
         </div>

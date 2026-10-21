@@ -1,10 +1,11 @@
 ---
 import LanguageSwitcher from './common/LanguageSwitcher.astro';
 import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
+import { academicNavigation, isAcademicPath } from '@i18n/academic-navigation';
 
 const lang = getLangFromUrl(Astro.url);
-const navItems = useNav(lang);
 const pathname = new URL(Astro.request.url).pathname;
+const navItems = isAcademicPath(pathname) ? academicNavigation(lang) : useNav(lang);
 const labels = lang === 'en'
   ? { nav: 'Main navigation', search: 'Search the site', placeholder: 'Search...', results: 'Search results' }
   : lang === 'de'

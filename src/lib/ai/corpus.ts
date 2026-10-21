@@ -22,6 +22,7 @@
 import { resolveTranscript } from '../video-transcript';
 import { formatTimestamp } from '../transcript';
 import { ORCID_URI, record as orcidRecord } from '../orcid';
+import academicCv from '../../data/academic-cv.json';
 
 export type Lang = 'en' | 'da' | 'de';
 
@@ -183,6 +184,16 @@ export function buildCorpus(lang: Lang): Corpus {
     const skills = byLang(skillsByLang, lang);
     const qa = byLang(qaByLang, lang);
     const sources: Source[] = [];
+    // The concise CV is maintained alongside the downloadable PDF. Keep current
+    // student status, project stages and individual contributions explicit even
+    // when older coursework or personal writing discusses future ambitions.
+    const academic = academicCv[lang === 'da' ? 'da' : 'en'];
+    sources.push({ id: 'academic:profile', title: academic.title, url: lang === 'da' ? '/cv' : '/en/cv' });
+    const academicProfile = [
+        `- (academic:profile) ${academic.status}. ${academic.profile}`,
+        '- Current status is an MSc student, not a PhD candidate or doctoral student. Do not turn aspirations into current qualifications.',
+        ...academic.sections.flatMap(s => s.items.map(item => `- (academic:profile) ${item.title}: ${'meta' in item ? item.meta + '. ' : ''}${item.text}`)),
+    ];
 
     // ── Education ───────────────────────────────────────────────────────────────
     const education = (cv.education ?? []).map((e: Json, i: number) => {
@@ -200,7 +211,7 @@ export function buildCorpus(lang: Lang): Corpus {
     // ── Skills ──────────────────────────────────────────────────────────────────
     const skillLines: string[] = [];
     if (skills.programming?.length) {
-        skillLines.push(`- Programming: ${skills.programming.map((s: Json) => `${s.name} (${s.level ?? 'n/a'})`).join(', ')}`);
+        skillLines.push(`- Software used in coursework or teaching (not independently assessed proficiency): ${skills.programming.map((s: Json) => s.name).join(', ')}`);
     }
     if (skills.professional?.length) {
         skillLines.push(`- Professional: ${skills.professional.map((s: Json) => s.name).join(', ')}`);
@@ -381,8 +392,9 @@ export function buildCorpus(lang: Lang): Corpus {
 
     const text = [
         'FACTS ABOUT ANTON (SOURCE OF TRUTH)',
-        'Everything below is verified. Do not state anything about Anton that is not here.',
+        'These are the site owner’s records and writing, not independently verified credentials. Do not state anything about Anton that is not here.',
         'Parenthesised ids such as (blog:ecb-part-1) identify a source you may cite.',
+        section('Current academic profile and research stages', academicProfile),
         section('Education', education),
         section('Work Experience', experience),
         section('Public Record (ORCID) — verifiable by a third party', orcid),

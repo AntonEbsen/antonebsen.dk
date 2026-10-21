@@ -5,10 +5,12 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import ResearchCards from '@components/research/ResearchCards.astro';
 import StructuralTransformation from '@components/ui/StructuralTransformation.astro';
+import academicCv from '@data/academic-cv.json';
 interface Props { lang: 'da' | 'en' }
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 const prefix = isDa ? '' : '/en';
+const welfare = academicCv[lang].sections.find(section => section.id === 'projects')!.items.find(item => 'url' in item && item.url === '/projects/welfare-state-seminar')!;
 const title = isDa ? 'Forskning og økonomisk historie' : 'Research and economic history';
 const description = isDa
   ? 'Kursusopgaver, igangværende speciale og forskningsdesign af Anton Meier Ebsen Jørgensen. Historiske data, demografi og anvendt økonometri.'
@@ -41,6 +43,15 @@ const approach = isDa ? [
       <ResearchCards lang={lang} />
     </Section>
     <Section>
+      <h2 class="text-title-lg mb-lg">{isDa ? 'Yderligere afsluttet kursusarbejde' : 'Further completed coursework'}</h2>
+      <Card variant="glass" class="p-6">
+        <h3 class="text-title-sm mb-2"><a href={prefix + '/projects/welfare-state-seminar'}>{welfare.title}</a></h3>
+        {'meta' in welfare && <p class="text-muted text-sm mb-4">{welfare.meta}</p>}
+        <p class="text-dim leading-relaxed mb-4">{welfare.text}</p>
+        <a class="text-accent underline underline-offset-4" href={prefix + '/projects/welfare-state-seminar'}>{isDa ? 'Læs om seminaropgaven' : 'Read about the seminar paper'}</a>
+      </Card>
+    </Section>
+    <Section>
       <h2 class="text-title-lg mb-lg">{isDa ? 'Min tilgang' : 'My approach'}</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
         {approach.map(([heading, text]) => <Card variant="glass" class="p-6"><h3 class="text-title-sm mb-4">{heading}</h3><p class="text-dim leading-relaxed">{text}</p></Card>)}
@@ -53,7 +64,10 @@ const approach = isDa ? [
         : 'I would like to pursue research on institutions, health inequality and the diffusion of new technology in historical settings. These are future research interests, not claims of completed studies. My background also includes macroeconomics and monetary policy.'}</p>
     </Section>
     <Section id="family-history">
-      <StructuralTransformation lang={lang} />
+      <details>
+        <summary class="text-muted cursor-pointer underline underline-offset-4">{isDa ? 'Personlig baggrund: familiehistorie' : 'Personal context: family history'}</summary>
+        <StructuralTransformation lang={lang} />
+      </details>
     </Section>
   </main>
 </Layout>
