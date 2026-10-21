@@ -13,3 +13,11 @@ test('links in running text retain their non-colour distinction', async ({ page 
   const link = page.locator('p a.text-blue-400').first();
   await expect(link).toHaveCSS('text-decoration-line', 'underline');
 });
+
+for (const [prefix, title] of [['', 'Downloads & templates'], ['/en', 'Downloads & Templates'], ['/de', 'Downloads & Vorlagen']]) {
+  test(`resources headings render from both nested and legacy UI data: ${prefix || 'da'}`, async ({ page }) => {
+    await page.goto(`${prefix}/resources`);
+    await expect(page.locator('main h1')).toHaveText(title);
+    await expect(page.locator('main h1')).toBeVisible();
+  });
+}

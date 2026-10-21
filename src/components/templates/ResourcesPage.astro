@@ -19,7 +19,32 @@ const entry = await getEntry('pages', `${lang}/resources`);
 if (!entry) {
   throw new Error(`Could not find content for ${lang}/resources`);
 }
-const content = entry.data;
+// Danish/English use nested UI blocks; German still uses the earlier flat keys.
+// Reading only flat keys left the nested pages with an empty, invisible h1.
+const raw = entry.data;
+const hero = raw.hero;
+const buttons = hero?.btns as Record<string, string> | undefined;
+const sections = raw.sections as Record<string, Record<string, string>> | undefined;
+const field = (key: string, fallback: unknown = '') =>
+  typeof raw[key] === 'string' ? raw[key] as string : typeof fallback === 'string' ? fallback : '';
+const content = {
+  title: raw.title,
+  desc: raw.description,
+  eyebrow: field('eyebrow', hero?.eyebrow),
+  heroTitle: field('heroTitle', hero?.title),
+  heroText: field('heroText', hero?.text),
+  downloadBtn: field('downloadBtn', buttons?.download),
+  statsBtn: field('statsBtn', buttons?.stats),
+  askBtn: field('askBtn', buttons?.ask),
+  noteTitle: field('noteTitle', sections?.note?.title),
+  noteText: [field('noteText1', sections?.note?.text1), field('noteText2', sections?.note?.text2)].filter(Boolean).join(' '),
+  catTitle: field('catTitle', sections?.downloads?.title),
+  catText: field('catText', sections?.downloads?.text),
+  ctaTitle: field('ctaTitle', sections?.cta?.title),
+  ctaText: field('ctaText', sections?.cta?.text),
+  ctaContact: field('ctaContact', sections?.cta?.contact),
+  ctaServices: field('ctaServices', sections?.cta?.services),
+};
 
 // 2. Fetch Resources Data (Items)
 const resEntry = await getEntry('resources', lang);

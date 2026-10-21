@@ -90,15 +90,31 @@ test.describe('opacity modifiers', () => {
             probe.className = 'bg-accent/10 border-accent/20';
             document.body.appendChild(probe);
             const cs = getComputedStyle(probe);
-            const out = { bg: cs.backgroundColor, border: cs.borderTopColor };
+            // Tailwind 4 serializes alpha colours as color-mix()/OKLab. Compare
+            // rendered sRGB pixels, not equivalent CSS string representations.
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 1;
+            const ctx = canvas.getContext('2d')!;
+            const pixels = (colour: string) => {
+                ctx.clearRect(0, 0, 1, 1);
+                ctx.fillStyle = colour;
+                ctx.fillRect(0, 0, 1, 1);
+                return Array.from(ctx.getImageData(0, 0, 1, 1).data);
+            };
+            const out = {
+                bg: pixels(cs.backgroundColor),
+                border: pixels(cs.borderTopColor),
+                expectedBg: pixels('rgba(212, 121, 79, 0.1)'),
+                expectedBorder: pixels('rgba(212, 121, 79, 0.2)'),
+            };
             probe.remove();
             return out;
         });
 
-        // A working alpha modifier yields rgba() with the terracotta channels.
+        // A working alpha modifier renders the terracotta channels and opacity.
         // Before the fix these were 'rgba(0, 0, 0, 0)' and Tailwind's default grey.
-        expect(computed.bg, 'bg-accent/10').toBe('rgba(212, 121, 79, 0.1)');
-        expect(computed.border, 'border-accent/20').toBe('rgba(212, 121, 79, 0.2)');
+        expect(computed.bg, 'bg-accent/10').toEqual(computed.expectedBg);
+        expect(computed.border, 'border-accent/20').toEqual(computed.expectedBorder);
     });
 
     test('the channel tokens agree with the hex tokens', async ({ page }) => {
