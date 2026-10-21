@@ -100,7 +100,7 @@ export default function HeroCarousel({ items, lang }: Props) {
                         {item.title}
                     </h2>
 
-                    <p className="text-dim text-lg leading-relaxed max-w-2xl mb-8 line-clamp-2 md:line-clamp-none opacity-80">
+                    <p className="text-dim text-lg leading-relaxed max-w-(--container-2xl) mb-8 line-clamp-2 md:line-clamp-none opacity-80">
                         {item.description}
                     </p>
 

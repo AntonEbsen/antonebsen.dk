@@ -95,7 +95,7 @@ export default function NewsletterSignup({ lang }: Props) {
                         <h2 className="text-3xl md:text-4xl text-text mb-4 tracking-tight">
                             {t.title}
                         </h2>
-                        <p className="text-dim text-lg opacity-70 max-w-md mx-auto md:mx-0">
+                        <p className="text-dim text-lg opacity-70 max-w-(--container-md) mx-auto md:mx-0">
                             {t.subtitle}
                         </p>
                     </div>

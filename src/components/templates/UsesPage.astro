@@ -93,7 +93,7 @@ const t = isDa ? content.da : content.en;
 <Layout title={t.title} description={t.description}>
   <main class="container mx-auto px-4 py-20">
     <Section class="mb-20 animate-on-scroll">
-      <div class="max-w-3xl">
+      <div class="max-w-(--container-3xl)">
         <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">{t.eyebrow}</p>
         <h1 class="text-5xl mb-6 bg-linear-to-r from-white to-dim bg-clip-text text-transparent">
           {t.heroTitle}
@@ -127,7 +127,7 @@ const t = isDa ? content.da : content.en;
 
     <Section class="text-center py-20 bg-accent/5 rounded-3xl border border-accent/10 animate-on-scroll">
       <h2 class="text-3xl font-bold mb-6">{isDa ? 'Har du spørgsmål?' : 'Have any questions?'}</h2>
-      <p class="text-dim mb-10 max-w-xl mx-auto">
+      <p class="text-dim mb-10 max-w-(--container-xl) mx-auto">
         {isDa ? 'Hvis du vil vide mere om mit setup, er du velkommen til at række ud.' : 'If you want to know more about my setup, feel free to reach out.'}
       </p>
       <div class="flex justify-center gap-4">

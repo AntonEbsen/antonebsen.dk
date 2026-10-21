@@ -132,7 +132,7 @@ const t = uiStrings[lang] || uiStrings.en;
                     {content.hero.eyebrow}
                 </p>
                 <h1 class="text-4xl md:text-5xl leading-[1.1] mb-6 font-bold tracking-tight">{content.hero.title}</h1>
-                <p class="text-[17px] leading-relaxed text-dim mb-8 opacity-90 max-w-lg">
+                <p class="text-[17px] leading-relaxed text-dim mb-8 opacity-90 max-w-(--container-lg)">
                   {content.hero.text}
                 </p>
         
@@ -185,7 +185,7 @@ const t = uiStrings[lang] || uiStrings.en;
                          <div class="flex-1">
                             <Pill variant="accent" class="mb-6 shadow-md shadow-accent/20">{cvProjects[0].tag}</Pill>
                             <h2 class="text-4xl font-bold mb-6 tracking-tight">{cvProjects[0].title}</h2>
-                            <p class="text-lg text-dim leading-relaxed mb-8 max-w-xl">
+                            <p class="text-lg text-dim leading-relaxed mb-8 max-w-(--container-xl)">
                                 {cvProjects[0].description}
                             </p>
                             
@@ -210,7 +210,7 @@ const t = uiStrings[lang] || uiStrings.en;
                          
                          {/* The Blueprint (Spotlight Version) - Now on the right for better balance */}
                          {assetExists(cvProjects[0].blueprint) && (
-                            <div class="flex-1 w-full max-w-lg perspective-1000">
+                            <div class="flex-1 w-full max-w-(--container-lg) perspective-1000">
                                 <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl transform rotate-y-[-5deg] rotate-x-[5deg] hover:rotate-0 transition-transform duration-700 bg-bg">
                                     <div class="bg-black/60 backdrop-blur-sm p-3 text-[10px] text-dim font-mono border-b border-white/10 flex justify-between items-center">
                                         <span><i class="fa-solid fa-diagram-project mr-2 text-accent"></i>{t.architecture}</span>

@@ -258,7 +258,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 <div className="p-6 text-center">
                     <i className="fa-solid fa-database text-dim text-2xl mb-3"></i>
                     <p className="text-sm font-bold text-muted mb-1">The replication data isn't published yet</p>
-                    <p className="text-xs text-muted max-w-md mx-auto">
+                    <p className="text-xs text-muted max-w-(--container-md) mx-auto">
                         This playground runs SQL against the project's own dataset in your browser.
                         It will light up as soon as <code className="font-mono text-muted">{dataUrl.split('/').pop()}</code> is available.
                     </p>

@@ -125,7 +125,7 @@ const groupJsonLd = {
                     <h1 class="text-4xl md:text-6xl font-serif font-medium mb-6 tracking-tight">
                         Research Group
                     </h1>
-                    <p class="text-lg md:text-xl text-muted font-serif italic max-w-2xl mx-auto leading-relaxed">
+                    <p class="text-lg md:text-xl text-muted font-serif italic max-w-(--container-2xl) mx-auto leading-relaxed">
                         A collaborative effort to advance the understanding of macroeconomic dynamics through rigorous data analysis and economic theory.
                     </p>
                     {/* The group is also on ResearchGate, under its formal name.
@@ -163,7 +163,7 @@ const groupJsonLd = {
         </section>
 
         {/* Timeline */}
-        <section class="container mx-auto max-w-3xl px-4 py-16 relative">
+        <section class="container mx-auto max-w-(--container-3xl) px-4 py-16 relative">
             <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-muted mb-16">Collaboration History</h2>
             
             <div class="absolute left-1/2 top-32 bottom-0 w-px bg-white/10 -translate-x-1/2"></div>
@@ -301,17 +301,17 @@ const groupJsonLd = {
                     <div>
                         <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-linear-to-b from-white to-muted mb-2">32 countries</span>
                         <span class="text-sm font-bold text-blue-400 uppercase tracking-widest">OECD panel, 1980–2023</span>
-                        <p class="text-muted text-sm mt-2 max-w-xs mx-auto">CPDS, KOF, OECD and the World Bank harmonised into one panel. N = 996 in the fully specified models. <a href="/en/projects/welfare-state-seminar" class="text-blue-400 hover:underline">Globalization and the Welfare State</a>.</p>
+                        <p class="text-muted text-sm mt-2 max-w-(--container-xs) mx-auto">CPDS, KOF, OECD and the World Bank harmonised into one panel. N = 996 in the fully specified models. <a href="/en/projects/welfare-state-seminar" class="text-blue-400 hover:underline">Globalization and the Welfare State</a>.</p>
                     </div>
                     <div>
                         <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-linear-to-b from-white to-muted mb-2">1999–2024</span>
                         <span class="text-sm font-bold text-purple-400 uppercase tracking-widest">Quarterly, euro area</span>
-                        <p class="text-muted text-sm mt-2 max-w-xs mx-auto">Eurostat, OECD Economic Outlook and the ECB Statistical Data Warehouse. <a href="/en/projects/ecb-taylor-rules" class="text-purple-400 underline decoration-purple-400/40 underline-offset-2 hover:decoration-purple-400">ECB Taylor Rules</a>.</p>
+                        <p class="text-muted text-sm mt-2 max-w-(--container-xs) mx-auto">Eurostat, OECD Economic Outlook and the ECB Statistical Data Warehouse. <a href="/en/projects/ecb-taylor-rules" class="text-purple-400 underline decoration-purple-400/40 underline-offset-2 hover:decoration-purple-400">ECB Taylor Rules</a>.</p>
                     </div>
                     <div>
                         <span class="block text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-linear-to-b from-white to-muted mb-2">20,000+</span>
                         <span class="text-sm font-bold text-emerald-400 uppercase tracking-widest">Data points, high-frequency financial data</span>
-                        <p class="text-muted text-sm mt-2 max-w-xs mx-auto">Structured and processed for SVAR estimation. <a href="/en/projects/global-financial-cycle" class="text-emerald-400 underline decoration-emerald-400/40 underline-offset-2 hover:decoration-emerald-400">Global Financial Cycle</a> (bachelor's thesis).</p>
+                        <p class="text-muted text-sm mt-2 max-w-(--container-xs) mx-auto">Structured and processed for SVAR estimation. <a href="/en/projects/global-financial-cycle" class="text-emerald-400 underline decoration-emerald-400/40 underline-offset-2 hover:decoration-emerald-400">Global Financial Cycle</a> (bachelor's thesis).</p>
                     </div>
                 </div>
 
@@ -505,7 +505,7 @@ const groupJsonLd = {
         </section>
 
         {/* 8. Research Changelog */}
-        <section class="container mx-auto max-w-3xl px-4 py-16 border-t border-white/5">
+        <section class="container mx-auto max-w-(--container-3xl) px-4 py-16 border-t border-white/5">
              <h2 class="text-center text-xs uppercase tracking-[0.2em] font-bold text-muted mb-12">Research Log</h2>
              <div class="space-y-6">
                  {[
@@ -522,7 +522,7 @@ const groupJsonLd = {
                          <div class="w-px h-12 bg-white/10 group-hover:bg-blue-500/50 transition-colors"></div>
                          <div class="pb-6">
                              <h4 class="text-sm font-bold text-text mb-1 group-hover:text-blue-400 transition-colors">{l.title}</h4>
-                             <p class="text-xs text-muted max-w-md">{l.desc}</p>
+                             <p class="text-xs text-muted max-w-(--container-md)">{l.desc}</p>
                          </div>
                      </div>
                  ))}

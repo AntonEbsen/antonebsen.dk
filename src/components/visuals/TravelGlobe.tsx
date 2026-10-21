@@ -162,7 +162,7 @@ export default function TravelGlobe({ nodes, labels }: Props) {
                    
                    <div>
                       <h4 className="text-[10px] uppercase tracking-widest text-muted mb-3">{labels.context}</h4>
-                      <p className="text-lg text-white/60 leading-relaxed max-w-xl">
+                      <p className="text-lg text-white/60 leading-relaxed max-w-(--container-xl)">
                         {activeNode.description}
                       </p>
                    </div>

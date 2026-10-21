@@ -102,7 +102,7 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                             </div>
                         </div>
 
-                        <div className="hidden md:block bg-white/5 px-4 py-2 rounded-lg border border-white/5 max-w-md">
+                        <div className="hidden md:block bg-white/5 px-4 py-2 rounded-lg border border-white/5 max-w-(--container-md)">
                             <p className="text-[10px] text-muted font-serif italic leading-tight">
                                 {t.hint}
                             </p>

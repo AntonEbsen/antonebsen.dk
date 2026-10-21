@@ -176,7 +176,7 @@ const t = content[lang];
         <h1 class="text-6xl md:text-8xl leading-[0.9] mb-12 uppercase italic">
           {t.heading}
         </h1>
-        <p class="text-xl md:text-2xl text-muted leading-relaxed font-serif italic max-w-2xl mb-12">
+        <p class="text-xl md:text-2xl text-muted leading-relaxed font-serif italic max-w-(--container-2xl) mb-12">
           {t.lead}
         </p>
         
@@ -229,7 +229,7 @@ const t = content[lang];
                 {t.categories.map(cat => (
                     <div class="category-block border-l border-accent/20 pl-8 lg:pl-12">
                         <h2 class="text-3xl mb-4 uppercase tracking-tight">{cat.title}</h2>
-                        <p class="text-muted mb-12 max-w-xl font-serif italic">{cat.desc}</p>
+                        <p class="text-muted mb-12 max-w-(--container-xl) font-serif italic">{cat.desc}</p>
                         
                         <div class="grid grid-cols-1 gap-4">
                             {cat.projects.map(p => (

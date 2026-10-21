@@ -157,13 +157,13 @@ const t = isDa ? content.da : content.en;
             {t.heroTitle}<span class="text-accent">.</span>
           </h1>
           <div class="text-3xl font-mono text-muted mb-8">{t.heroType}</div>
-          <p class="text-xl text-dim leading-relaxed max-w-xl">
+          <p class="text-xl text-dim leading-relaxed max-w-(--container-xl)">
              {t.heroText}
           </p>
 
           <!-- META BADGES (Section 4 & 5) -->
           <div class="mt-12 flex flex-wrap gap-4">
-             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-xs transition-transform hover:scale-105">
+             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-(--container-xs) transition-transform hover:scale-105">
                 <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
                    <i class="fa-solid fa-users"></i>
                 </div>
@@ -172,7 +172,7 @@ const t = isDa ? content.da : content.en;
                    <p class="text-xs text-dim">{t.meta.compatibility.text}</p>
                 </div>
              </div>
-             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-xs transition-transform hover:scale-105">
+             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 max-w-(--container-xs) transition-transform hover:scale-105">
                 <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
                    <i class="fa-solid fa-brain"></i>
                 </div>
@@ -183,7 +183,7 @@ const t = isDa ? content.da : content.en;
              </div>
           </div>
         </div>
-        <div class="flex-1 w-full max-w-md">
+        <div class="flex-1 w-full max-w-(--container-md)">
            <!-- Traits Visual -->
            <Card variant="glass" class="p-8 border-accent/20 bg-accent/2">
               <div class="space-y-8">
@@ -220,7 +220,7 @@ const t = isDa ? content.da : content.en;
                 </Pill>
              </div>
              
-             <p class="text-lg text-white/80 leading-relaxed mb-4 max-w-2xl">
+             <p class="text-lg text-white/80 leading-relaxed mb-4 max-w-(--container-2xl)">
                 {t.tt38.desc}
              </p>
              <p class="text-sm text-accent italic mb-10">

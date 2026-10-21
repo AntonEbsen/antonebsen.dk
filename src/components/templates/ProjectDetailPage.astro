@@ -569,7 +569,7 @@ const tocItems = [
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.1] mb-8 font-medium tracking-tight">
             {project.title}
             </h1>
-            <p class="text-xl md:text-2xl text-muted font-serif italic max-w-3xl mx-auto mb-12 leading-relaxed">
+            <p class="text-xl md:text-2xl text-muted font-serif italic max-w-(--container-3xl) mx-auto mb-12 leading-relaxed">
             {project.subtitle}
             </p>
 
@@ -659,7 +659,7 @@ const tocItems = [
       </aside>
 
       <!-- CENTER: Main Content -->
-      <article class="grow max-w-3xl">
+      <article class="grow max-w-(--container-3xl)">
           
         <!-- Context Note -->
         {project.contextNote && (
@@ -1124,7 +1124,7 @@ const tocItems = [
                 <div class="absolute top-0 right-0 -m-12 w-96 h-96 bg-accent/10 rounded-full blur-[100px] group-hover:bg-accent/20 transition-all duration-700"></div>
                 
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-                    <div class="max-w-xl">
+                    <div class="max-w-(--container-xl)">
                         <div class="flex items-center gap-3 mb-6">
                             <div class="w-12 h-12 rounded-2xl bg-accent text-white flex items-center justify-center text-xl shadow-lg shadow-accent/40">
                                 <i class="fa-solid fa-gauge-high"></i>
@@ -1230,7 +1230,7 @@ const tocItems = [
   </script>
 
   <!-- Citation Modal -->
-  <dialog id="citation-modal" class="bg-bg border border-white/10 rounded-2xl p-0 backdrop:bg-black/80 w-full max-w-lg shadow-2xl">
+  <dialog id="citation-modal" class="bg-bg border border-white/10 rounded-2xl p-0 backdrop:bg-black/80 w-full max-w-(--container-lg) shadow-2xl">
       <div class="p-6">
           <h3 class="text-lg font-bold text-text mb-4">{t.citeThis}</h3>
           

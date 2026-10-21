@@ -95,7 +95,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                         initial={{ opacity: 0, y: -10, height: 0 }}
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         exit={{ opacity: 0, y: -10, height: 0 }}
-                        className="overflow-hidden w-full max-w-md"
+                        className="overflow-hidden w-full max-w-(--container-md)"
                     >
                         <div className="mt-4 bg-bg/80 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl relative">
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 w-4 h-4 bg-bg border-t border-l border-white/10 rotate-45"></div>

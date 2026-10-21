@@ -64,7 +64,7 @@ const projectHref = lang === 'da' ? '/projects/welfare-state-seminar' : '/en/pro
                     <h1 class="text-4xl md:text-6xl tracking-tighter mb-6">
                         {t.heading}
                     </h1>
-                    <p class="text-lg text-muted max-w-2xl leading-relaxed font-serif italic">{t.lead}</p>
+                    <p class="text-lg text-muted max-w-(--container-2xl) leading-relaxed font-serif italic">{t.lead}</p>
                 </div>
 
                 <RollingWindowForge client:visible lang={lang as 'da' | 'en'} />

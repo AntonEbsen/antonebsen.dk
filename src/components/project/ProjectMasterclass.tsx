@@ -267,7 +267,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                         <h2 className="text-3xl md:text-5xl font-serif text-text mb-4">
                             {title || (lang === 'da' ? 'Video-serien: Fra Intuition til Metode' : 'Video Series: From Intuition to Method')}
                         </h2>
-                        <p className="text-muted max-w-2xl text-lg font-serif italic">
+                        <p className="text-muted max-w-(--container-2xl) text-lg font-serif italic">
                             {description || (lang === 'da' ? 'En 7-delt serie der dissekerer de økonomiske mekanismer, SVAR-metodologi og resultaterne af min forskning.' : 'A 7-part series dissecting the economic mechanisms, SVAR methodology, and the results of my research.')}
                         </p>
                     </div>
@@ -370,7 +370,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-3">
                                                 {t.comingSoon}
                                             </p>
-                                            <p className="text-muted text-sm max-w-xs mb-6">{t.comingSoonSub}</p>
+                                            <p className="text-muted text-sm max-w-(--container-xs) mb-6">{t.comingSoonSub}</p>
                                             <a
                                                 href={CHANNEL_URL}
                                                 target="_blank"

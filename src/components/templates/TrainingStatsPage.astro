@@ -226,7 +226,7 @@ const homeLink = isDa ? '/' : '/en';
       <Card variant="glass" class="p-12 text-center">
         <SectionHeading class="mb-6">Training (Live Data)</SectionHeading>
         <h1 class="text-4xl font-bold mb-6">{content.heroTitle}</h1>
-        <p class="text-xl text-dim mb-8 max-w-2xl mx-auto">
+        <p class="text-xl text-dim mb-8 max-w-(--container-2xl) mx-auto">
           {content.heroText}
         </p>
 
@@ -249,7 +249,7 @@ const homeLink = isDa ? '/' : '/en';
                     </div>
                     <div class="flex-1 space-y-2">
                         <h4 id="readiness-title" class="text-xl font-bold uppercase italic">{content.readiness.calc}</h4>
-                        <p id="readiness-desc" class="text-sm text-dim max-w-lg">
+                        <p id="readiness-desc" class="text-sm text-dim max-w-(--container-lg)">
                             {content.readiness.desc}
                         </p>
                     </div>
@@ -296,7 +296,7 @@ const homeLink = isDa ? '/' : '/en';
                         {content.milestones.text_prefix} <span class="text-accent" id="milestone-count">...</span> 
                         <span id="milestone-name">...</span> {content.milestones.text_suffix}
                     </p>
-                    <p class="text-sm text-dim max-w-lg">
+                    <p class="text-sm text-dim max-w-(--container-lg)">
                         {content.milestones.desc}
                     </p>
                 </div>

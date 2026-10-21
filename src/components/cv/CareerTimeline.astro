@@ -41,7 +41,7 @@ const { items } = Astro.props;
             </p>
             
             {!Array.isArray(item.description) ? (
-                 <p class="text-sm text-dim leading-relaxed max-w-2xl">{item.description}</p>
+                 <p class="text-sm text-dim leading-relaxed max-w-(--container-2xl)">{item.description}</p>
             ) : (
                 <ul class="list-disc list-outside ml-4 space-y-1">
                     {item.description.map((d: string) => (
