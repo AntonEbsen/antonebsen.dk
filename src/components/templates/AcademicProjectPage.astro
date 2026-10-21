@@ -5,12 +5,30 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import { getAcademicProjects, type ResearchId } from '@data/academic-research';
+import { demographyPaper, demographyScholarTags } from '@data/demography-paper';
+import { assetExists } from '@lib/public-asset';
+import { ORCID_URI } from '@lib/orcid';
 interface Props { lang: 'da' | 'en'; id: ResearchId }
 const { lang, id } = Astro.props;
 const project = getAcademicProjects(lang).find(item => item.id === id);
 if (!project) throw new Error(`Unknown academic project: ${id}`);
 const isDa = lang === 'da';
 const prefix = isDa ? '' : '/en';
+const paper = id === 'demography-project' && assetExists(project.pdfUrl) ? demographyPaper(lang) : undefined;
+const scholarTags = paper ? demographyScholarTags(lang) : [];
+const scholarlyJsonLd = paper ? {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  '@id': `${paper.pageUrl}#paper`,
+  headline: paper.title,
+  author: { '@type': 'Person', '@id': ORCID_URI, name: paper.author },
+  dateCreated: paper.versionDate,
+  inLanguage: paper.language,
+  creativeWorkStatus: 'Unpublished demography course paper; not peer reviewed',
+  abstract: demographyPaper('en').summary,
+  url: paper.pageUrl,
+  encoding: { '@type': 'MediaObject', contentUrl: paper.pdfUrl, encodingFormat: 'application/pdf' },
+} : undefined;
 const sections = [
   [isDa ? 'Forskningsspørgsmål' : 'Research question', project.question],
   [isDa ? 'Data og tilgængelighed' : 'Data and availability', project.data],
@@ -19,14 +37,33 @@ const sections = [
   [isDa ? 'Begrænsninger' : 'Limitations', project.limitations]
 ];
 ---
-<Layout title={`${project.title} — Anton Meier Ebsen Jørgensen`} description={project.description}>
+<Layout title={`${project.title} — Anton Meier Ebsen Jørgensen`} description={project.description} article={Boolean(paper)}>
+  <Fragment slot="head">
+    {scholarTags.map(tag => <meta name={tag.name} content={tag.content} />)}
+    {scholarlyJsonLd && <script type="application/ld+json" set:html={JSON.stringify(scholarlyJsonLd).replace(/</g, '\\u003c')} />}
+  </Fragment>
   <main class="mx-auto max-w-content px-md py-xl">
     <Section reveal={false} class="max-w-prose">
       <a class="text-accent underline underline-offset-4" href={`${prefix}/cliometrics`}>{isDa ? '← Forskning' : '← Research'}</a>
       <p class="eyebrow text-accent mt-xl mb-md" data-research-status={project.kind}>{project.status}</p>
       <h1 class="font-serif text-display-sm mb-md">{project.title}</h1>
       <p class="text-lead text-dim mb-lg">{project.subtitle}</p>
-      <p class="text-sm text-muted mb-lg">{project.credits}</p>
+      {paper ? (
+        <div class="mb-lg">
+          <p class="citation_author text-body text-text mb-2">{paper.author}</p>
+          <p class="text-sm text-dim mb-2">{paper.institution} · {paper.dateLabel}</p>
+          <p class="text-sm text-muted">{paper.status}</p>
+          <div class="flex flex-wrap gap-3 mt-lg">
+            <Button href={paper.pdfPath} download="Ebsen_Jorgensen_2026_Bismarcks_Lost_Battle.pdf">{isDa ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</Button>
+            <Button href="#citation" variant="ghost">{isDa ? 'Sådan citeres opgaven' : 'How to cite'}</Button>
+          </div>
+          <section aria-labelledby="paper-summary-heading" class="mt-xl" data-paper-summary>
+            <h2 id="paper-summary-heading" class="text-title-sm mb-4">{isDa ? 'Forskningsresumé' : 'Research summary'}</h2>
+            <p class="text-dim leading-relaxed">{paper.summary}</p>
+            <p class="text-sm text-muted mt-4">{paper.summaryNote}</p>
+          </section>
+        </div>
+      ) : <p class="text-sm text-muted mb-lg">{project.credits}</p>}
       <div class="flex flex-wrap gap-2">{project.technologies.map(tool => <Pill>{tool}</Pill>)}</div>
       {project.grade && <p class="text-sm text-dim mt-lg">{project.meta} {isDa ? '(dansk 7-trinsskala)' : '(Danish seven-point scale)'}</p>}
     </Section>
@@ -44,9 +81,12 @@ const sections = [
           <h2 class="text-title-sm mb-4">{isDa ? 'Materiale' : 'Materials'}</h2>
           {project.pdfUrl ? (
             <div class="space-y-5">
-              <p class="text-dim leading-relaxed">{isDa ? 'Den afsluttede kursusopgave kan downloades som PDF. GitHub-repositoriet indeholder kode og relateret analyse, herunder eksplorativt arbejde.' : 'Download the completed course paper as a PDF. The GitHub repository contains code and related analysis, including exploratory work.'}</p>
-              <Button href={project.pdfUrl} download>{isDa ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</Button>
+              <p class="text-dim leading-relaxed">{paper
+                ? (isDa ? 'PDF-linket øverst på siden åbner den uændrede, afleverede opgave. Kode og relateret analyse findes i GitHub-repositoriet.' : 'The PDF link at the top of this page provides the unchanged submitted paper. Code and related analysis are available in the GitHub repository.')
+                : (isDa ? 'Den afsluttede kursusopgave kan downloades som PDF. GitHub-repositoriet indeholder kode og relateret analyse, herunder eksplorativt arbejde.' : 'Download the completed course paper as a PDF. The GitHub repository contains code and related analysis, including exploratory work.')}</p>
+              {!paper && <Button href={project.pdfUrl} download>{isDa ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</Button>}
               {project.codeUrl && <a class="block text-accent underline underline-offset-4" href={project.codeUrl} target="_blank" rel="noopener noreferrer">{isDa ? 'Kode og relateret analyse på GitHub' : 'Code and related analysis on GitHub'}</a>}
+              {paper && <p class="text-sm text-dim leading-relaxed">{paper.codeNote}</p>}
               <p class="text-sm text-muted">{isDa ? 'Kursusopgave; ikke en fagfællebedømt publikation.' : 'Course paper; not a peer-reviewed publication.'}</p>
             </div>
           ) : <p class="text-dim leading-relaxed mb-6">{isDa
@@ -59,5 +99,18 @@ const sections = [
         </Card>
       </aside>
     </div>
+    {paper && (
+      <Section reveal={false} id="citation" class="mt-xl">
+        <Card variant="glass" class="p-6 md:p-8">
+          <h2 class="text-title-sm mb-4">{isDa ? 'Citation og version' : 'Citation and version'}</h2>
+          <p class="text-dim leading-relaxed max-w-prose" data-paper-citation>{paper.citation}</p>
+          <p class="text-sm text-muted mt-4 max-w-prose">{paper.versionNote}</p>
+          <div class="flex flex-wrap gap-4 items-center mt-lg">
+            <Button href={paper.bibPath} download>Download BibTeX</Button>
+            <a href={paper.pageUrl} class="text-accent underline underline-offset-4">{isDa ? 'Permanent link til denne side' : 'Permanent link to this page'}</a>
+          </div>
+        </Card>
+      </Section>
+    )}
   </main>
 </Layout>
