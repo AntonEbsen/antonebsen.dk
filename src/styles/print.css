@@ -16,6 +16,7 @@
     }
     html:has(body.cv-page) { background: white !important; }
     body.cv-page::before { display: none !important; }
+    .cv-print-orcid::after { content: none !important; }
     /* Screen-only muted colours and nested opacity utilities must not wash out
        the printed CV. Keep all actual content at full contrast on white. */
     .cv-page .cv-wrap * {

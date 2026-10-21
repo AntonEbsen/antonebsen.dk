@@ -9,6 +9,7 @@ import CertificationList from '@components/cv/CertificationList.astro';
 import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 import CareerTimeline from '@components/cv/CareerTimeline.astro';
 import { withAcademicProjects } from '@data/academic-research';
+import { ORCID_URI } from '@lib/orcid';
 
 import { getEntry } from 'astro:content';
 import '@styles/cv.css';
@@ -51,6 +52,7 @@ const skillsData = skillsEntry.data;
       <h1>Anton Meier Ebsen Jørgensen</h1>
       <p>{content.ui.sidebar.subtitle}</p>
       <p>anton.ebsen@gmail.com · antonebsen.com · Copenhagen, Denmark</p>
+      <p>ORCID iD: <a class="cv-print-orcid" href={ORCID_URI} rel="me">{ORCID_URI}</a></p>
     </div>
     <!-- Filter bar (Hidden in Print) -->
     <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none print:hidden">
