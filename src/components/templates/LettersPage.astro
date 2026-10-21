@@ -98,11 +98,11 @@ const t = isDa ? content.da : content.en;
          <Section id={letter.id} class="animate-on-scroll">
             <div class="relative group">
                 <!-- Decorative Archive Number -->
-                <div class="absolute -top-10 -left-10 text-9xl font-black text-white/[0.02] pointer-events-none group-hover:text-accent/[0.05] transition-colors">
+                <div class="absolute -top-10 -left-10 text-9xl font-black text-white/2 pointer-events-none group-hover:text-accent/5 transition-colors">
                    {idx + 1}
                 </div>
                 
-                <Card variant="default" class="p-12 md:p-20 bg-white/[0.01] border-white/5 relative overflow-hidden font-serif">
+                <Card variant="default" class="p-12 md:p-20 bg-white/1 border-white/5 relative overflow-hidden font-serif">
                    <!-- Subtle Paper Texture Mockup -->
                    <div class="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
                    
@@ -125,7 +125,7 @@ const t = isDa ? content.da : content.en;
                       
                       <div class="mt-20 flex justify-end">
                          <div class="text-right">
-                            <div class="w-24 h-[1px] bg-accent/40 mb-4 ml-auto"></div>
+                            <div class="w-24 h-px bg-accent/40 mb-4 ml-auto"></div>
                             <span class="font-serif italic text-accent text-xl">Anton Meier Ebsen Jørgensen</span>
                          </div>
                       </div>
@@ -138,7 +138,7 @@ const t = isDa ? content.da : content.en;
 
     <!-- Slower Reading CTA -->
     <Section class="mt-40 text-center animate-on-scroll">
-       <div class="h-[1px] w-20 bg-accent/30 mx-auto mb-12"></div>
+       <div class="h-px w-20 bg-accent/30 mx-auto mb-12"></div>
        <p class="text-xs font-mono text-muted tracking-[0.5em] uppercase">
           - Finis -
        </p>

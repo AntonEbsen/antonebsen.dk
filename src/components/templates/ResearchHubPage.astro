@@ -192,7 +192,7 @@ const t = content[lang];
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32">
             <!-- Left: Lab Note & Competencies -->
             <div class="lg:col-span-4 space-y-8">
-                <div class="p-8 bg-white/[0.02] border border-white/10 rounded-2xl">
+                <div class="p-8 bg-white/2 border border-white/10 rounded-2xl">
                     <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
                         <i class="fa-solid fa-flask-vial text-accent text-xl"></i>
                     </div>
@@ -233,7 +233,7 @@ const t = content[lang];
                         
                         <div class="grid grid-cols-1 gap-4">
                             {cat.projects.map(p => (
-                                <a href={p.link} class="group block p-6 bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-accent/30 rounded-xl transition-all duration-300">
+                                <a href={p.link} class="group block p-6 bg-white/1 hover:bg-white/3 border border-white/5 hover:border-accent/30 rounded-xl transition-all duration-300">
                                     <div class="flex justify-between items-start mb-2">
                                         <h4 class="text-lg font-bold group-hover:text-accent transition-colors">{p.title}</h4>
                                         <span class={`text-[8px] uppercase tracking-widest border px-2 py-1 rounded-full ${p.status === 'Færdig' || p.status === 'Completed' ? 'border-green-500/30 text-green-500' : 'border-accent/30 text-accent'}`}>
@@ -258,7 +258,7 @@ const t = content[lang];
 
             <div class="grid grid-cols-1 gap-4">
               {works.map(w => (
-                <article class="p-6 bg-white/[0.01] border border-white/5 rounded-xl">
+                <article class="p-6 bg-white/1 border border-white/5 rounded-xl">
                   <h3 class="text-lg font-bold mb-2">
                     {w.url
                       ? <a href={w.url} target="_blank" rel="noopener" class="hover:text-accent transition-colors">{w.title}</a>

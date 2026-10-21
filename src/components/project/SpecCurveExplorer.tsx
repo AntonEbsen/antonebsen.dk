@@ -86,7 +86,7 @@ const copy = {
         sig: 'Significant',
         notSig: 'Not significant',
         legendSig: 'Outlined bar = significant',
-        legendNotSig: 'No outline = not significant',
+        legendNotSig: 'No outline-solid = not significant',
         legendFilled: 'Filled dot = significant',
         legendHollow: 'Hollow dot = not significant',
         hint: 'Click a bar to see which controls that specification includes.',
@@ -291,14 +291,14 @@ export default function SpecCurveExplorer({ lang = 'en' }: { lang?: 'da' | 'en' 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-4 text-[11px] text-muted">
                 <span className="inline-flex items-center gap-2">
                     <span
-                        className="inline-block w-3 h-3 rounded-sm bg-emerald-500/55 border-[1.5px] border-emerald-500"
+                        className="inline-block w-3 h-3 rounded-xs bg-emerald-500/55 border-[1.5px] border-emerald-500"
                         aria-hidden="true"
                     ></span>
                     {t.legendSig}
                 </span>
                 <span className="inline-flex items-center gap-2">
                     <span
-                        className="inline-block w-3 h-3 rounded-sm bg-muted/30"
+                        className="inline-block w-3 h-3 rounded-xs bg-muted/30"
                         aria-hidden="true"
                     ></span>
                     {t.legendNotSig}

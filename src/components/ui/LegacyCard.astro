@@ -34,7 +34,7 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in "/src/
             alt={title} 
             class="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
         
         <!-- Texture Overlay -->
         <div class="absolute inset-0 opacity-20 group-hover:opacity-10 mix-blend-overlay transition-opacity pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
@@ -63,7 +63,7 @@ if (!images[imagePath]) throw new Error(`"${imagePath}" does not exist in "/src/
             </div>
 
             {historicalContext && (
-                <div class="historical-context mt-8 p-6 bg-white/[0.02] border border-white/10 rounded-xl relative overflow-hidden group/context">
+                <div class="historical-context mt-8 p-6 bg-white/2 border border-white/10 rounded-xl relative overflow-hidden group/context">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover/context:opacity-20 transition-opacity">
                         <i class="fa-solid fa-monument text-4xl text-accent"></i>
                     </div>

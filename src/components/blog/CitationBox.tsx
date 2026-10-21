@@ -63,7 +63,7 @@ export default function CitationBox({ title, author, url, date }: CitationBoxPro
                     {/* BibTeX lines run long and scroll sideways on a phone; tabindex
                         is what lets a keyboard user reach the overflow. */}
                     <pre
-                        className="p-4 text-xs text-dim font-mono overflow-x-auto selection:bg-accent/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+                        className="p-4 text-xs text-dim font-mono overflow-x-auto selection:bg-accent/20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-accent"
                         tabIndex={0}
                         role="region"
                         aria-label="BibTeX entry"

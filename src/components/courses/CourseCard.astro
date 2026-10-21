@@ -116,7 +116,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
                                             <div class={`w-2 h-2 rounded-full border border-white/20 ${freshness.class} animate-pulse shadow-lg`}></div>
                                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/fresh:opacity-100 transition-all pointer-events-none translate-y-1 group-hover/fresh:translate-y-0 z-50">
                                                 <div class="bg-black/95 backdrop-blur-md border border-white/20 px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter text-white whitespace-nowrap flex flex-col gap-0.5 shadow-2xl">
-                                                    <span class="text-muted text-[7px] tracking-[0.1em]">{isDa ? 'FRISKHEID' : 'FRESHNESS'}</span>
+                                                    <span class="text-muted text-[7px] tracking-widest">{isDa ? 'FRISKHEID' : 'FRESHNESS'}</span>
                                                     <div class="flex items-center gap-1.5">
                                                         <i class={`fa-solid ${freshness.icon} text-[8px]`} style={`color: ${freshness.class.split(' ')[0].replace('bg-', '')}`}></i>
                                                         {freshness.label}
@@ -133,7 +133,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
                     </div>
                 </div>
 
-                <p class="text-sm text-dim/90 leading-relaxed mb-4 flex-grow">
+                <p class="text-sm text-dim/90 leading-relaxed mb-4 grow">
                     {description}
                 </p>
 
@@ -175,7 +175,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
         }
         
         {/* Expanded Content */}
-        <div class="mt-2 pl-4 pr-2 py-2 border-l-2 border-accent/20 animate-fade-in bg-white/[0.02] rounded-r-xl">
+        <div class="mt-2 pl-4 pr-2 py-2 border-l-2 border-accent/20 animate-fade-in bg-white/2 rounded-r-xl">
             {/* Syllabus */}
             {syllabus && syllabus.length > 0 && (
                 <div class="mb-4">
@@ -214,7 +214,7 @@ const getIcon = (type?: string, defaultIcon?: string) => {
                         {relatedProjects.map(proj => (
                             <a href={proj.href} class="flex items-center gap-3 group/proj p-1.5 rounded-lg hover:bg-white/5 transition-colors">
                                 {assetExists(proj.previewImage) && (
-                                    <div class="w-12 h-12 rounded bg-white/5 border border-white/10 overflow-hidden flex-shrink-0">
+                                    <div class="w-12 h-12 rounded bg-white/5 border border-white/10 overflow-hidden shrink-0">
                                         <img src={proj.previewImage} alt={proj.title} loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover/proj:opacity-100 transition-opacity" />
                                     </div>
                                 )}

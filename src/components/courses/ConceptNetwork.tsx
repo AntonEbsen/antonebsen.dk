@@ -132,7 +132,7 @@ const ConceptNetwork: React.FC<ConceptNetworkProps> = ({ courses, lang }) => {
     }, [hoveredNode, highlightedSkill, activeNodes, links]);
 
     return (
-        <div className="relative w-full overflow-x-auto py-12 px-4 no-scrollbar bg-black/20 rounded-3xl border border-white/5 backdrop-blur-sm mb-16">
+        <div className="relative w-full overflow-x-auto py-12 px-4 no-scrollbar bg-black/20 rounded-3xl border border-white/5 backdrop-blur-xs mb-16">
             <div className="min-w-[800px] h-[600px] relative mx-auto">
                 <svg className="w-full h-full pointer-events-none overflow-visible">
                     {/* Defs for gradients/shadows */}

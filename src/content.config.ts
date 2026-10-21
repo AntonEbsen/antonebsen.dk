@@ -1,7 +1,16 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
+
+// Keep the exact legacy JSON IDs (including language folders and case).
+const jsonLoader = (collection: string) => glob({
+    pattern: '**/[^_]*.json',
+    base: `./src/content/${collection}`,
+    generateId: ({ entry }) => entry.replace(/\.json$/, ''),
+});
 
 const blogCollection = defineCollection({
-    type: 'data',
+    loader: jsonLoader('blog'),
     schema: z.object({
         title: z.string(),
         title_da: z.string().optional(), // Localized Title
@@ -34,7 +43,7 @@ const blogCollection = defineCollection({
 });
 
 const portfolioCollection = defineCollection({
-    type: 'data',
+    loader: jsonLoader('portfolio'),
     schema: z.object({
         title: z.string(),
         // Route slug under /projects/. The entry ids are "project-01" style, which
@@ -54,7 +63,7 @@ const portfolioCollection = defineCollection({
 });
 
 const booksCollection = defineCollection({
-    type: 'data',
+    loader: jsonLoader('books'),
     schema: z.object({
         title: z.string(),
         author: z.string(),
@@ -78,7 +87,7 @@ const booksCollection = defineCollection({
 // per-language folders: the YouTube id, chapters and stats are language-neutral facts
 // and duplicating them across da/ and en/ would invite drift.
 const videosCollection = defineCollection({
-    type: 'data',
+    loader: jsonLoader('videos'),
     schema: z.object({
         youtubeId: z.string(),
         // The videos are in English. Danish gets hand-written titles; German falls
@@ -157,7 +166,7 @@ export const collections = {
     'portfolio': portfolioCollection,
     'books': booksCollection,
     'pages': defineCollection({
-        type: 'data',
+        loader: jsonLoader('pages'),
         schema: z.object({
             title: z.string(),
             description: z.string(),
@@ -169,7 +178,7 @@ export const collections = {
                 text: z.string().optional(),
                 tag: z.string().optional(), // Added for home.json
                 pills: z.array(z.string()).optional(),
-                buttons: z.record(z.string()).optional(),
+                buttons: z.record(z.string(), z.string()).optional(),
                 // Flat buttons for home.json compatibility
                 btnPort: z.string().optional(),
                 btnCV: z.string().optional(),
@@ -185,7 +194,7 @@ export const collections = {
                     alt: z.string()
                 }).optional()
             }).passthrough().optional(),
-            sections: z.union([z.record(z.any()), z.array(z.any())]).optional(),
+            sections: z.union([z.record(z.string(), z.any()), z.array(z.any())]).optional(),
             roles: z.any().optional(),
             contact: z.any().optional(),
             ui: z.any().optional(),
@@ -198,7 +207,7 @@ export const collections = {
                 caption: z.string().optional()
 
             })).optional(),
-            cards: z.record(z.object({
+            cards: z.record(z.string(), z.object({
                 title: z.string(),
                 text: z.string()
             })).optional(),
@@ -226,7 +235,7 @@ export const collections = {
         }).passthrough(),
     }),
     'timeline': defineCollection({
-        type: 'data',
+        loader: jsonLoader('timeline'),
         schema: z.object({
             title: z.string(),
             items: z.array(z.object({
@@ -251,7 +260,7 @@ export const collections = {
     }),
 
     'qa': defineCollection({
-        type: 'data',
+        loader: jsonLoader('qa'),
         schema: z.object({
             title: z.string(),
             subtitle: z.string().optional(),
@@ -262,7 +271,7 @@ export const collections = {
         })
     }),
     'cv': defineCollection({
-        type: 'data',
+        loader: jsonLoader('cv'),
         schema: z.object({
             experience: z.array(z.object({
                 title: z.string(),
@@ -369,7 +378,7 @@ export const collections = {
         })
     }),
     'skills': defineCollection({
-        type: 'data',
+        loader: jsonLoader('skills'),
         schema: z.object({
             professional: z.array(z.object({
                 id: z.string().optional(),
@@ -399,7 +408,7 @@ export const collections = {
         })
     }),
     'resources': defineCollection({
-        type: 'data',
+        loader: jsonLoader('resources'),
         schema: z.object({
             title: z.string(),
             items: z.array(z.object({
@@ -420,7 +429,7 @@ export const collections = {
         })
     }),
     'certifications': defineCollection({
-        type: 'data',
+        loader: jsonLoader('certifications'),
         schema: z.object({
             title: z.string(),
             desc: z.string(),
@@ -435,7 +444,7 @@ export const collections = {
             empty: z.string(),
             emptyDash: z.string(),
             dashLink: z.string(),
-            cats: z.record(z.object({
+            cats: z.record(z.string(), z.object({
                 title: z.string().optional(), // For "other" it's just a string in the old object, will normalize
                 text: z.string().optional(),
                 empty: z.string().optional()
@@ -449,14 +458,14 @@ export const collections = {
         })
     }),
     'website-history': defineCollection({
-        type: 'data',
+        loader: jsonLoader('website-history'),
         schema: z.object({
             title: z.string(),
             desc: z.string(),
             eyebrow: z.string(),
             h1: z.string(),
             lead: z.string(),
-            btns: z.record(z.string()),
+            btns: z.record(z.string(), z.string()),
             meta: z.object({
                 title: z.string(),
                 updated: z.string(),
@@ -494,7 +503,7 @@ export const collections = {
             next: z.object({
                 title: z.string(),
                 text: z.string(),
-                btns: z.record(z.string())
+                btns: z.record(z.string(), z.string())
             }),
             feedback: z.object({
                 title: z.string(),
@@ -505,7 +514,7 @@ export const collections = {
         })
     }),
     'adversity': defineCollection({
-        type: 'data',
+        loader: jsonLoader('adversity'),
         schema: z.object({
             title: z.string(),
             desc: z.string(),
@@ -524,7 +533,7 @@ export const collections = {
                 outro: z.string().optional(),
                 cards: z.boolean().optional()
             })),
-            cards: z.record(z.object({
+            cards: z.record(z.string(), z.object({
                 label: z.string(),
                 text: z.string()
             })).optional(),
@@ -537,7 +546,7 @@ export const collections = {
         })
     }),
     'influences': defineCollection({
-        type: 'data',
+        loader: jsonLoader('influences'),
         schema: z.object({
             name: z.string(),
             role: z.string(),
@@ -552,7 +561,7 @@ export const collections = {
         })
     }),
     'travel': defineCollection({
-        type: 'data',
+        loader: jsonLoader('travel'),
         schema: z.object({
             city: z.string(),
             country: z.string(),
@@ -565,7 +574,7 @@ export const collections = {
         })
     }),
     'legacy': defineCollection({
-        type: 'data',
+        loader: jsonLoader('legacy'),
         schema: z.object({
             title: z.string(),
             role: z.string(),
@@ -585,7 +594,7 @@ export const collections = {
         })
     }),
     'soundtrack': defineCollection({
-        type: 'data',
+        loader: jsonLoader('soundtrack'),
         schema: z.object({
             title: z.string(),
             vibe: z.string(),
@@ -601,7 +610,7 @@ export const collections = {
     // templates read; entries are keyed `{lang}/{slug}`, e.g. da/goblet-squat.json,
     // which is how ExercisesPage filters them.
     'exercises': defineCollection({
-        type: 'data',
+        loader: jsonLoader('exercises'),
         schema: z.object({
             title: z.string(),
             muscles: z.array(z.string()).optional(),

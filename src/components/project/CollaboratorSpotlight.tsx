@@ -52,7 +52,7 @@ export default function CollaboratorSpotlight({ collaborators, label = "Collabor
                             transition-colors duration-300
                             ${selected?.name === collab.name
                                 ? 'bg-accent text-bg border-accent'
-                                : 'bg-gradient-to-br from-rule-strong to-muted text-white border-white/20 group-hover:border-white/40'
+                                : 'bg-linear-to-br from-rule-strong to-muted text-white border-white/20 group-hover:border-white/40'
                             }
                         `}>
                             {collab.image ? (

@@ -58,7 +58,7 @@ const {
   <div class="flex justify-between items-start mb-4 gap-3">
     <div class="flex items-start gap-4">
         {logo && (
-            <div class="w-12 h-12 rounded-lg bg-white/10 p-2 border border-white/5 flex-shrink-0">
+            <div class="w-12 h-12 rounded-lg bg-white/10 p-2 border border-white/5 shrink-0">
                 <img src={logo} alt={organization} loading="lazy" decoding="async" class="w-full h-full object-contain grayscale opacity-80" />
             </div>
         )}
@@ -75,7 +75,7 @@ const {
     {type && <Pill variant="accent">{type}</Pill>}
   </div>
 
-  <ul class="list-none p-0 m-0 pl-1 space-y-2 text-[14.5px] mb-6 flex-grow">
+  <ul class="list-none p-0 m-0 pl-1 space-y-2 text-[14.5px] mb-6 grow">
     {description.map((item) => (
       <li class="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-accent opacity-90">{item}</li>
     ))}

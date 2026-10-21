@@ -111,7 +111,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
         <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-[40px] p-8 md:p-12 mb-20 overflow-hidden relative">
             {/* Decorative Grid Layer */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
+            <div className="absolute inset-0 bg-linear-to-br from-accent/5 to-transparent pointer-events-none"></div>
 
             <div className="relative z-10">
                 {/* Header */}
@@ -148,7 +148,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                 {/* Widgets Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Policy Deviation */}
-                    <div className="p-6 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-accent/30 transition-all group">
+                    <div className="p-6 bg-white/3 border border-white/10 rounded-3xl hover:border-accent/30 transition-all group">
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <p className="text-[10px] font-black uppercase text-muted tracking-widest mb-1">{t.signals[0]}</p>
@@ -162,7 +162,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                     </div>
 
                     {/* Inflation Pulse */}
-                    <div className="p-6 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-accent/30 transition-all group">
+                    <div className="p-6 bg-white/3 border border-white/10 rounded-3xl hover:border-accent/30 transition-all group">
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <p className="text-[10px] font-black uppercase text-muted tracking-widest mb-1">{t.signals[1]}</p>
@@ -176,7 +176,7 @@ const MacroDashboard: React.FC<MacroDashboardProps> = ({ lang }) => {
                     </div>
 
                     {/* Activity Radar / Status */}
-                    <div className="p-6 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-accent/30 transition-all group overflow-hidden">
+                    <div className="p-6 bg-white/3 border border-white/10 rounded-3xl hover:border-accent/30 transition-all group overflow-hidden">
                         <p className="text-[10px] font-black uppercase text-muted tracking-widest mb-4">SYSTEM TRANSMISSION</p>
                         <div className="space-y-4">
                             {[

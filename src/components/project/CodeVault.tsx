@@ -65,7 +65,7 @@ export default function CodeVault({ title, lang, code }: CodeVaultProps) {
             {/* Long lines scroll sideways on a phone. Without tabindex a keyboard user
                 cannot reach the overflow at all — nothing inside is focusable. */}
             <div
-                className="p-6 md:p-8 overflow-x-auto bg-[#0d1117] relative min-h-[200px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+                className="p-6 md:p-8 overflow-x-auto bg-[#0d1117] relative min-h-[200px] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-accent"
                 tabIndex={0}
                 role="region"
                 aria-label={`${lang} source`}

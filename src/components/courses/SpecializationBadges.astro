@@ -83,7 +83,7 @@ const achievements = specializations.map(spec => {
       class="badge-container group relative"
       style={`--delay: ${index * 0.1}s; --badge-color: ${badge.color === 'accent' ? 'var(--accent)' : badge.color}`}
     >
-      <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 hover:border-white/10 transition-all duration-300 hover:bg-white/[0.05] cursor-default">
+      <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/3 border border-white/5 hover:border-white/10 transition-all duration-300 hover:bg-white/5 cursor-default">
         <div class="w-2 h-2 rounded-full" style={`background-color: var(--badge-color); box-shadow: 0 0 10px var(--badge-color);`}></div>
         <i class={`fa-solid ${badge.icon} text-[10px] opacity-40 group-hover:opacity-100 transition-opacity`} style={`color: var(--badge-color)`}></i>
         <span class="text-[10px] font-black uppercase tracking-widest text-white/70 group-hover:text-white transition-colors">

@@ -30,12 +30,12 @@ const { title, author, year, genre, tag, note, links } = Astro.props;
   <p class="text-[13px] text-dim mb-3 opacity-90">
     {author} {year && `· (${year})`} {genre && `· ${genre}`}
   </p>
-  <p class="text-[14px] text-dim flex-grow mb-4 leading-relaxed">
+  <p class="text-[14px] text-dim grow mb-4 leading-relaxed">
     <strong class="text-accent text-xs uppercase tracking-wide block mb-1">Min note:</strong>
     {note}
   </p>
   {links && (
-    <div class="flex flex-wrap gap-2 mt-auto pt-3 border-t border-[var(--glass-border)]">
+    <div class="flex flex-wrap gap-2 mt-auto pt-3 border-t border-(--glass-border)">
       {links.map(link => (
         <a 
           href={link.url}

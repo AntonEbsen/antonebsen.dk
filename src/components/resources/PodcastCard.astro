@@ -27,23 +27,23 @@ const { title, tag, reason, description, links } = Astro.props;
   </div>
   
   <div class="mb-3">
-    <strong class="text-[var(--accent)] text-xs uppercase tracking-wide block mb-1">Hvorfor jeg hører den:</strong>
-    <p class="text-[14px] text-[var(--text-dim)] m-0 leading-relaxed">{reason}</p>
+    <strong class="text-(--accent) text-xs uppercase tracking-wide block mb-1">Hvorfor jeg hører den:</strong>
+    <p class="text-[14px] text-(--text-dim) m-0 leading-relaxed">{reason}</p>
   </div>
 
-  <div class="mb-4 flex-grow">
-    <strong class="text-[var(--text-dim)] text-xs uppercase tracking-wide block mb-1 opacity-70">Beskrivelse:</strong>
-    <p class="text-[13px] text-[var(--text-dim)] m-0 opacity-80 leading-relaxed">{description}</p>
+  <div class="mb-4 grow">
+    <strong class="text-(--text-dim) text-xs uppercase tracking-wide block mb-1 opacity-70">Beskrivelse:</strong>
+    <p class="text-[13px] text-(--text-dim) m-0 opacity-80 leading-relaxed">{description}</p>
   </div>
 
   {links && (
-    <div class="flex flex-wrap gap-2 mt-auto pt-3 border-t border-[var(--glass-border)]">
+    <div class="flex flex-wrap gap-2 mt-auto pt-3 border-t border-(--glass-border)">
       {links.map(link => (
         <a 
           href={link.url}
           class:list={[
             "text-xs font-bold transition-colors inline-flex items-center",
-            link.disabled ? " cursor-not-allowed text-[var(--text-muted)]" : "text-[var(--accent)] hover:text-white"
+            link.disabled ? " cursor-not-allowed text-(--text-muted)" : "text-(--accent) hover:text-white"
           ]}
           aria-disabled={link.disabled}
         >

@@ -118,7 +118,7 @@ export default function TravelGlobe({ nodes, labels }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12"
+            className="fixed inset-0 z-100 flex items-center justify-center p-6 md:p-12"
           >
             {/* Backdrop Blur */}
             <div 
@@ -170,7 +170,7 @@ export default function TravelGlobe({ nodes, labels }: Props) {
               </div>
 
               {/* Decorative Accent */}
-              <div className="hidden md:block w-1/3 bg-gradient-to-br from-accent/20 to-purple-500/20 relative">
+              <div className="hidden md:block w-1/3 bg-linear-to-br from-accent/20 to-purple-500/20 relative">
                   <div className="absolute inset-0 flex items-center justify-center opacity-10 grayscale mix-blend-overlay">
                      <i className="fa-solid fa-earth-americas text-[200px]"></i>
                   </div>

@@ -36,10 +36,10 @@ interface Props {
 const { title, tag, meta, readingTime, description, seed, numeral, tone = 'accent', links } = Astro.props;
 ---
 
-<Card variant="glass" elevation={1} class="flex flex-col h-full mb-4 group relative overflow-hidden !p-0">
+<Card variant="glass" elevation={1} class="flex flex-col h-full mb-4 group relative overflow-hidden p-0!">
   <ContourPlate seed={seed ?? title} numeral={numeral} tone={tone} class="h-28 shrink-0" />
 
-  <div class="flex flex-col flex-grow p-6">
+  <div class="flex flex-col grow p-6">
     <div class="flex justify-between items-start mb-2xs gap-2">
       <h3 class="text-title-sm leading-tight m-0 group-hover:text-accent transition-colors">{title}</h3>
       <Pill variant="accent" class="shrink-0">{tag}</Pill>
@@ -58,7 +58,7 @@ const { title, tag, meta, readingTime, description, seed, numeral, tone = 'accen
       )}
     </div>
 
-    <p class="text-sm text-dim flex-grow mb-sm leading-relaxed">
+    <p class="text-sm text-dim grow mb-sm leading-relaxed">
       {description}
     </p>
 

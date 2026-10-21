@@ -73,7 +73,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
       <div class="flex gap-2 items-center">
         <!-- Persona Selector -->
         <div class="relative group mr-1">
-            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-text text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-none">
+            <select id="widget-persona-select" aria-label={lang==="da" ? "Vælg assistentens stil" : "Choose the assistant style"} class="appearance-none bg-card border border-accent/20 text-text text-[10px] rounded-md py-1 pl-2 pr-6 cursor-pointer hover:bg-card transition-colors focus:outline-hidden">
                 <option value="default" class="bg-card text-text">Standard</option>
                 <option value="recruiter" class="bg-card text-text">💼 Recruiter</option>
                 <option value="tech" class="bg-card text-text">💻 Tech Lead</option>
@@ -103,7 +103,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
     <canvas id="widget-visualizer" class="absolute bottom-0 left-0 w-full h-32 pointer-events-none opacity-0 transition-opacity duration-300 z-0"></canvas>
     
     <div class="flex gap-3 text-sm text-muted border-b border-white/5 pb-4 mb-4">
-        <div class="w-6 h-6 rounded-full bg-accent/20 flex-shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
+        <div class="w-6 h-6 rounded-full bg-accent/20 shrink-0 flex items-center justify-center text-[10px] text-accent mt-1">
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-glass-border/50 p-3 rounded-lg rounded-tl-none max-w-[85%] border border-accent">
@@ -832,7 +832,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
         if (role === 'ai') {
           div.innerHTML = `
-            <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 mt-1 border border-accent/20">
+            <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0 mt-1 border border-accent/20">
               <i class="fa-solid fa-robot text-lg"></i>
             </div>
             <div class="flex flex-col max-w-[85%] ai-content-wrapper">
@@ -857,7 +857,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
 
         } else {
           const bubble = document.createElement('div');
-          bubble.className = "bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent";
+          bubble.className = "bg-accent p-4 md:p-5 rounded-xs rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent";
           const p = document.createElement('p');
           p.className = "text-bg font-semibold";
           p.textContent = text;
@@ -882,7 +882,7 @@ const t = (t_obj as any)[lang] || t_obj.da;
         div.className = 'flex gap-4';
         
         div.innerHTML = `
-           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1 animate-pulse">
+           <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center shrink-0 mt-1 animate-pulse">
               <i class="fa-solid fa-microchip text-lg"></i>
             </div>
             <div class="bg-[rgba(255,255,255,0.05)] border border-accent/20 p-4 rounded-2xl rounded-tl-none flex items-center">

@@ -59,9 +59,29 @@ cd antonebsen.dk
 ```
 
 ### 2. Installer dependencies
+
+Brug Node.js 24 (se `.nvmrc`), og installer med `npm ci` for en reproducerbar installation.
 ```bash
-npm install
+npm ci
 ```
+
+### Dependency maintenance
+
+The site uses Astro 7, its matching Vercel/React integrations, and Tailwind 4's
+Vite plugin. JSON collections live in `src/content.config.ts`; explicit IDs keep
+existing language folders and URLs unchanged. The original token configuration
+is retained in `tailwind.config.mjs`.
+
+Two targeted npm overrides patch transitive integrations:
+
+- `@vercel/routing-utils > path-to-regexp@6.3.0` fixes the upstream dependency's
+  pinned 6.1.0 version. Domain redirects are tested with Vercel's route converter.
+- All math integrations use the direct patched `katex` version; inline/display
+  math has regression coverage.
+
+Recheck these overrides when their parent packages adopt the patched versions.
+Run `npm audit`, `npm run test:unit`, `npm run build`,
+`npm run test:e2e`, and `npm run check:ratchet` before deployment.
 
 ### 3. Sæt miljøvariabler (.env)
 Opret en `.env` fil i roden med følgende:

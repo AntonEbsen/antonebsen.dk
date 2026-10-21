@@ -185,7 +185,7 @@ const t = isDa ? content.da : content.en;
         </div>
         <div class="flex-1 w-full max-w-md">
            <!-- Traits Visual -->
-           <Card variant="glass" class="p-8 border-accent/20 bg-accent/[0.02]">
+           <Card variant="glass" class="p-8 border-accent/20 bg-accent/2">
               <div class="space-y-8">
                 {t.traits.map((trait, idx) => (
                   <div class={`animate-on-scroll delay-${idx * 100}`}>
@@ -207,7 +207,7 @@ const t = isDa ? content.da : content.en;
 
     <!-- TT38 Talent Profile Section -->
     <Section class="mb-32 animate-on-scroll">
-       <Card variant="bordered" class="p-8 md:p-12 border-accent/20 bg-accent/[0.01] relative overflow-hidden">
+       <Card variant="bordered" class="p-8 md:p-12 border-accent/20 bg-accent/1 relative overflow-hidden">
           <div class="absolute top-0 right-0 p-8 text-accent/5 pointer-events-none">
              <i class="fa-solid fa-microscope text-[160px] transform rotate-12"></i>
           </div>
@@ -242,8 +242,8 @@ const t = isDa ? content.da : content.en;
                 {t.tt38.talents.map((talent: any) => (
                   <div class={`group relative p-6 rounded-2xl border transition-all duration-300 hover:scale-[1.01] ${
                     talent.rank <= 3 
-                      ? 'bg-white/[0.04] border-white/15 hover:border-white/25' 
-                      : 'bg-white/[0.02] border-white/8 hover:border-white/15'
+                      ? 'bg-white/4 border-white/15 hover:border-white/25'
+                      : 'bg-white/2 border-white/8 hover:border-white/15'
                   }`}>
                      <div class="flex items-start gap-5">
                         <!-- Rank Badge -->
@@ -290,7 +290,7 @@ const t = isDa ? content.da : content.en;
       <SectionHeading class="mb-12">{isDa ? 'Kerne-styrker' : 'Core Strengths'}</SectionHeading>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {t.strengths.map(s => (
-          <Card variant="bordered" class="p-8 hover:bg-white/[0.02] transition-colors border-white/5">
+          <Card variant="bordered" class="p-8 hover:bg-white/2 transition-colors border-white/5">
              <i class="fa-solid fa-bolt text-accent mb-6 text-2xl"></i>
              <h3 class="text-xl font-bold mb-4">{s.title}</h3>
              <p class="text-dim text-sm leading-relaxed">{s.desc}</p>

@@ -42,7 +42,7 @@ const contourSeed = seedFrom(seed ?? title);
   class:list={[
     'page-header relative isolate overflow-hidden',
     variant === 'panel' &&
-      'rounded-panel border border-[var(--glass-border)] bg-[var(--glass)] backdrop-blur-md shadow-2 px-6 py-xl sm:px-xl',
+      'rounded-panel border border-(--glass-border) bg-(--glass) backdrop-blur-md shadow-2 px-6 py-xl sm:px-xl',
     variant === 'bare' && 'py-xl border-b border-rule',
     className,
   ]}

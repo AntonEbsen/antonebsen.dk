@@ -22,7 +22,7 @@ const isLoggedIn = verifySession(Astro.cookies.get("auth_token")?.value);
                 <p class="text-sm text-gray-400 mb-6">Restricted Area. Authorized Personnel Only.</p>
                 
                 <input type="password" id="password-input" placeholder="Enter Access Code" 
-                    class="w-full bg-black border border-gray-700 rounded p-3 text-yellow-100 focus:border-yellow-500 focus:outline-none mb-4 transition-colors" />
+                    class="w-full bg-black border border-gray-700 rounded p-3 text-yellow-100 focus:border-yellow-500 focus:outline-hidden mb-4 transition-colors" />
                 
                 <button id="login-btn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-3 rounded transition-all hover:shadow-[0_0_15px_rgba(212,121,79,0.4)]">
                     Unlock Dashboard

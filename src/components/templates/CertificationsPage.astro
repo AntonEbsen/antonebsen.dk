@@ -186,7 +186,7 @@ const badges = [
 
         <div class="relative w-full md:w-64">
             <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-            <input type="text" id="search-input" placeholder="Search skills, issuers..." class="w-full bg-black/50 border border-gray-700 rounded-full py-1.5 pl-8 pr-4 text-sm focus:border-yellow-500 focus:outline-none transition-colors" />
+            <input type="text" id="search-input" placeholder="Search skills, issuers..." class="w-full bg-black/50 border border-gray-700 rounded-full py-1.5 pl-8 pr-4 text-sm focus:border-yellow-500 focus:outline-hidden transition-colors" />
         </div>
     </div>
 
@@ -220,7 +220,7 @@ const badges = [
     <!-- VERIFICATION MODAL -->
     <div id="cert-modal" class="fixed inset-0 z-50 hidden">
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="modal-backdrop"></div>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-xs" id="modal-backdrop"></div>
         
         <!-- Modal Content -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[80vh] bg-gray-900 border border-yellow-500/30 rounded-xl shadow-2xl flex flex-col overflow-hidden">

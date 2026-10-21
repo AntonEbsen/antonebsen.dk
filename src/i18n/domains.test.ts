@@ -5,7 +5,7 @@ import { getLangFromUrl } from './utils';
 import { languageSwitcherUrl, publicLanguageUrl } from './domains';
 
 const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
-// Use the routing converter already installed by the Vercel adapter, rather
+// Use Vercel's routing converter (an explicit test dependency), rather
 // than a hand-written approximation of Vercel's source-pattern syntax.
 const converted = getTransformedRoutes({ redirects: config.redirects });
 function redirect(input: string): string | null {

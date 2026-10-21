@@ -55,7 +55,7 @@ const skillsData = skillsEntry.data;
       <p>ORCID iD: <a class="cv-print-orcid" href={ORCID_URI} rel="me">{ORCID_URI}</a></p>
     </div>
     <!-- Filter bar (Hidden in Print) -->
-    <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none print:hidden">
+    <div class="sticky top-[80px] z-90 mb-8 flex justify-center px-4 pointer-events-none print:hidden">
       <div class="inline-flex items-center gap-2 p-1.5 bg-[#1E2122]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
         <button class="cv-filter-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">{content.ui.filter?.all || 'All'}</button>
         <button class="cv-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all text-dim hover:text-white" data-filter="tech">{content.ui.filter?.tech || 'Tech'}</button>

@@ -69,7 +69,7 @@ export default function ReadingProgress() {
                 against the palette this site replaced; both already resolve to
                 the accent. Named directly now. */}
             <div
-                className="h-full bg-gradient-to-r from-accent to-accent-light transition-all duration-100 ease-out"
+                className="h-full bg-linear-to-r from-accent to-accent-light transition-all duration-100 ease-out"
                 style={{ width: `${progress}%` }}
             />
         </div>

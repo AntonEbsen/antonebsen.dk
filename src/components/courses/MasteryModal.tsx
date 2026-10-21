@@ -41,7 +41,7 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+                <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -81,7 +81,7 @@ const MasteryModal: React.FC<{ lang: 'da' | 'en' }> = ({ lang }) => {
                         </div>
 
                         {/* Content Scroll Area */}
-                        <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
+                        <div className="grow overflow-y-auto p-8 custom-scrollbar">
                             <div className="space-y-10">
                                 {/* Description */}
                                 <section>

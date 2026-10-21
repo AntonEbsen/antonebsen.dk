@@ -90,9 +90,9 @@ const skillsData = {
         {/* display-lg tops out at 76px, which broke the name across three lines
             in a half-width hero column. This step down keeps it to two. */}
         <h1 class="font-serif text-display-sm">
-          Anton Meier <span class="text-accent underline decoration-2 underline-offset-[10px] decoration-accent/60">Ebsen</span> Jørgensen
+          Anton Meier <span class="text-accent underline decoration-2 underline-offset-10 decoration-accent/60">Ebsen</span> Jørgensen
         </h1>
-        <p class="eyebrow mt-md mb-sm !text-lead">
+        <p class="eyebrow mt-md mb-sm text-lead!">
           {content.hero.tag}
         </p>
         <p class="text-lead text-dim leading-relaxed max-w-prose">
@@ -108,7 +108,7 @@ const skillsData = {
       <a href={isDa ? '/about' : '/en/about'} class="relative group block">
         {/* Was accent -> purple-500. The palette is terracotta and moss; purple
             was the only place that gradient appeared on the whole site. */}
-        <div class="absolute -inset-4 bg-gradient-to-br from-accent/25 to-accent-2/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
+        <div class="absolute -inset-4 bg-linear-to-br from-accent/25 to-accent-2/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
         <div class="relative aspect-square overflow-hidden rounded-panel border border-accent/30 shadow-2 group-hover:border-accent/60 transition-all duration-300">
           <Image 
             src={myImageSrc} 
@@ -121,8 +121,8 @@ const skillsData = {
           {/* Moss, not Tailwind's green-500 — the site already has a green and
               this was not it. Text is --bg rather than white so the pill still
               clears AA against the lighter moss. */}
-          <div class="absolute top-4 right-4 px-3 py-1.5 bg-accent-2 backdrop-blur-sm text-[var(--bg)] text-xs font-bold rounded-full shadow-1 flex items-center gap-1.5">
-            <span class="w-2 h-2 bg-[var(--bg)] rounded-full animate-pulse"></span>
+          <div class="absolute top-4 right-4 px-3 py-1.5 bg-accent-2 backdrop-blur-xs text-(--bg) text-xs font-bold rounded-full shadow-1 flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-(--bg) rounded-full animate-pulse"></span>
             {isDa ? 'Kandidatstuderende' : 'MSc student'}
           </div>
         </div>
@@ -140,7 +140,7 @@ const skillsData = {
       {[
         { n: '01', icon: 'fa-solid fa-code', tint: 'bg-accent/10 group-hover:bg-accent/20', fg: 'text-accent', c: content.cards.model },
         { n: '02', icon: 'fa-solid fa-graduation-cap', tint: 'bg-accent-2/10 group-hover:bg-accent-2/20', fg: 'text-accent-2', c: content.cards.focus },
-        { n: '03', icon: 'fa-solid fa-chalkboard-user', tint: 'bg-text/[0.06] group-hover:bg-text/10', fg: 'text-dim', c: content.cards.teach },
+        { n: '03', icon: 'fa-solid fa-chalkboard-user', tint: 'bg-text/6 group-hover:bg-text/10', fg: 'text-dim', c: content.cards.teach },
       ].map((card) => (
         <Card variant="glass" elevation={1} class="p-8 group">
           <div class="flex items-center justify-between mb-6">

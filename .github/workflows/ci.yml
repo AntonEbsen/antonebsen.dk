@@ -12,6 +12,8 @@ env:
   # workflows that do commit (eval.yml, sync-orcid.yml) need them off. Same setting
   # everywhere, so nobody has to remember which workflow is which.
   HUSKY: 0
+  # Astro 7's development compiler caches the whole-site browser sweep.
+  NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
   build-and-test:

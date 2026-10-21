@@ -64,7 +64,7 @@ export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
     if (!isMounted) {
         return (
             <div className="w-full h-[300px] rounded-card overflow-hidden border border-rule">
-                <Skeleton className="w-full h-full !rounded-none" label="Indlæser videnskort" />
+                <Skeleton className="w-full h-full rounded-none!" label="Indlæser videnskort" />
             </div>
         );
     }
@@ -79,7 +79,7 @@ export default function RelatedGraph({ currentSlug }: RelatedGraphProps) {
             </div>
 
             {data && (
-                <Suspense fallback={<Skeleton className="w-full h-full !rounded-none" label="Indlæser videnskort" />}>
+                <Suspense fallback={<Skeleton className="w-full h-full rounded-none!" label="Indlæser videnskort" />}>
                     <ForceGraph2D
                         ref={fgRef}
                         width={dimensions.width}

@@ -58,7 +58,7 @@ export default function CertHeatmap({ certifications }: Props) {
                                     return (
                                         <div
                                             key={i}
-                                            className={`w-3 h-3 rounded-sm ${bgClass}`}
+                                            className={`w-3 h-3 rounded-xs ${bgClass}`}
                                             title={`${months[i]} ${year}: ${count} certs`}
                                         ></div>
                                     );
@@ -71,10 +71,10 @@ export default function CertHeatmap({ certifications }: Props) {
             <div className="mt-2 text-[10px] text-dim flex gap-2 items-center">
                 <span>Less</span>
                 <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-sm bg-white/5"></div>
-                    <div className="w-2 h-2 rounded-sm bg-yellow-900/40"></div>
-                    <div className="w-2 h-2 rounded-sm bg-yellow-700/60"></div>
-                    <div className="w-2 h-2 rounded-sm bg-yellow-500"></div>
+                    <div className="w-2 h-2 rounded-xs bg-white/5"></div>
+                    <div className="w-2 h-2 rounded-xs bg-yellow-900/40"></div>
+                    <div className="w-2 h-2 rounded-xs bg-yellow-700/60"></div>
+                    <div className="w-2 h-2 rounded-xs bg-yellow-500"></div>
                 </div>
                 <span>More</span>
             </div>

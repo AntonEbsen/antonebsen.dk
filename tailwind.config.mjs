@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 /* Every value here points at a token in src/styles/tokens.css. Nothing in this
    file should carry a literal colour, size or shadow — if a value is worth
@@ -85,6 +86,9 @@ export default {
                 '3xl': 'var(--space-3xl)',
             },
             maxWidth: {
+                // v4 also derives max-width from spacing. Keep container sizes
+                // distinct from our sm/lg/2xl spacing tokens (e.g. 42rem vs 72px).
+                ...defaultTheme.maxWidth({ theme: () => ({}) }),
                 // Replaces fifteen hand-picked container widths that had no
                 // relationship to one another. `prose` overrides Tailwind's 65ch.
                 prose: 'var(--width-prose)',
