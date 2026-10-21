@@ -7,10 +7,11 @@ test.describe('UI Stability & Navigation', () => {
         await page.goto('/en');
         await expect(page).toHaveTitle(/Anton.*Ebsen/);
 
-        // Check English Nav
-        const portfolioLink = page.locator('.navbar a').filter({ hasText: /Portfolio/i }).first();
-        await portfolioLink.hover();
-        const projectsLink = page.locator('.navbar a').filter({ hasText: /Projects/i }).first();
+        // The academic homepage keeps broader projects under More, leaving CV
+        // and Research directly reachable rather than inside dropdowns.
+        const moreLink = page.locator('.navbar').getByRole('link', { name: 'More', exact: true });
+        await moreLink.hover();
+        const projectsLink = page.locator('.navbar').getByRole('menuitem', { name: 'All projects', exact: true });
         await expect(projectsLink).toBeVisible();
 
         // 2. Switch to Danish
@@ -19,9 +20,9 @@ test.describe('UI Stability & Navigation', () => {
 
         // 3. Verify URL and Danish Content
         await expect(page).toHaveURL(/\/$/); 
-        const portefoljeLink = page.locator('.navbar a').filter({ hasText: /Portefølje/i }).first();
-        await portefoljeLink.hover();
-        const projekterLink = page.locator('.navbar a').filter({ hasText: /Projekter/i }).first();
+        const mereLink = page.locator('.navbar').getByRole('link', { name: 'Mere', exact: true });
+        await mereLink.hover();
+        const projekterLink = page.locator('.navbar').getByRole('menuitem', { name: 'Alle projekter', exact: true });
         await expect(projekterLink).toBeVisible();
     });
 

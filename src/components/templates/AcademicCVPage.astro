@@ -1,0 +1,82 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
+import OrcidId from '@components/ui/OrcidId.astro';
+import cv from '@data/academic-cv.json';
+import { GOOGLE_SCHOLAR_PROFILE, RESEARCHGATE_PROFILE } from '@lib/profiles';
+import '@styles/print.css';
+interface Props { lang: 'en' | 'da' }
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const prefix = isDa ? '' : '/en';
+const content = cv[lang];
+---
+<Layout title={`${cv.name} — ${content.title}`} description={`${content.status}. ${content.profile}`} bodyClass="cv-page">
+  <main class="cv-main cv-wrap academic-cv">
+    <div class="no-print academic-actions">
+      <Button href={cv.pdfPath} download="Anton_Ebsen_Academic_CV.pdf">{isDa ? 'Download akademisk CV (PDF, engelsk)' : 'Download academic CV (PDF)'}</Button>
+      <button type="button" class="print-button" onclick="window.print()">{isDa ? 'Udskriv denne side' : 'Print this page'}</button>
+    </div>
+    <div class="cv-print-heading academic-heading">
+      <p class="eyebrow">{content.title}</p>
+      <h1>{cv.name}</h1>
+      <p class="academic-status">{content.status}</p>
+      <p>{content.location} · <a href={`mailto:${cv.email}`}>{cv.email}</a></p>
+      <OrcidId variant="full" class="cv-print-orcid" />
+      <div class="academic-profiles no-print">
+        <a href={GOOGLE_SCHOLAR_PROFILE}>Google Scholar</a>
+        <a href="https://github.com/AntonEbsen">GitHub</a>
+        <a href={RESEARCHGATE_PROFILE}>ResearchGate</a>
+      </div>
+    </div>
+    <section id="profile" aria-label={isDa ? 'Profil' : 'Profile'}><p>{content.profile}</p></section>
+    {content.sections.map(section => (
+      <section id={section.id} aria-labelledby={`cv-${section.id}`}>
+        <h2 id={`cv-${section.id}`}>{section.title}</h2>
+        {section.items.map(item => (
+          <article>
+            <h3>{'url' in item ? <a href={prefix + item.url}>{item.title}</a> : item.title}</h3>
+            {'meta' in item && <p class="academic-meta">{item.meta}</p>}
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </section>
+    ))}
+    <div class="no-print academic-more">
+      <p>{isDa ? 'Dette CV fremhæver uddannelse og forskning. Den bredere profil er stadig tilgængelig.' : 'This CV highlights education and research. The broader profile remains available.'}</p>
+      <a href={prefix + '/cv/full'}>{isDa ? 'Se den udvidede profil' : 'View extended profile'}</a>
+      <span aria-hidden="true"> · </span><a href={prefix + '/cliometrics'}>{isDa ? 'Forskningsprojekter' : 'Research projects'}</a>
+    </div>
+  </main>
+</Layout>
+<style>
+  .academic-cv { max-width: 860px; margin: 3rem auto; padding: 0 1.5rem; overflow-wrap: anywhere; }
+  .academic-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
+  .print-button { color: var(--text-dim); padding: .75rem; text-decoration: underline; cursor: pointer; }
+  .academic-heading h1 { font-family: var(--font-serif); font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.2; margin: .6rem 0 1rem; }
+  .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; }
+  .academic-status { font-weight: 600; }
+  .academic-cv p { color: var(--text-dim); line-height: 1.65; margin: .4rem 0; }
+  .academic-heading :global(.orcid-full) { margin-top: .6rem; }
+  .academic-profiles { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 1rem; }
+  .academic-cv a { text-decoration: underline; text-underline-offset: .2em; }
+  .academic-cv a[download] { text-decoration: none; }
+  .academic-cv a:hover { color: var(--accent); }
+  section { margin-top: 2rem; }
+  h2 { font-size: 1.15rem; font-weight: 700; border-bottom: 1px solid var(--glass-border); padding-bottom: .5rem; margin-bottom: 1rem; }
+  article { margin: 0 0 1.25rem; }
+  h3 { font-size: 1rem; font-weight: 600; }
+  .academic-cv .academic-meta { color: var(--text-muted); font-size: .9rem; }
+  .academic-more { margin-top: 2.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; font-size: .9rem; }
+  @media print {
+    .academic-cv { max-width: none; margin: 0; font-size: 10pt; }
+    .academic-heading h1 { font-size: 21pt; }
+    .academic-cv p { color: #222 !important; opacity: 1 !important; line-height: 1.35; }
+    section { margin-top: 12pt; }
+    article { break-inside: avoid; margin-bottom: 8pt; }
+    h2 { font-size: 12pt; break-after: avoid; }
+    h3 { font-size: 10.5pt; }
+    .academic-cv a::after { content: none !important; }
+    @page { size: A4; margin: 15mm; }
+  }
+</style>
