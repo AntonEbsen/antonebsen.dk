@@ -6,7 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionTitle from '@components/ui/SectionTitle.astro';
 import ContourField from '@components/ui/ContourField.astro';
-import FeatureCard from '@components/ui/FeatureCard.astro';
+import ResearchCards from '@components/research/ResearchCards.astro';
 import TechStack from '@components/ui/TechStack.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import { Image } from 'astro:assets';
@@ -22,7 +22,7 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const portLink = isDa ? '/portfolio' : '/en/portfolio';
+const portLink = isDa ? '/cliometrics' : '/en/cliometrics';
 const cvLink = isDa ? '/cv' : '/en/cv';
 const guestbookLink = isDa ? '/guestbook' : '/en/guestbook';
 const contactLink = isDa ? '/contact' : '/en/contact';
@@ -123,7 +123,7 @@ const skillsData = {
               clears AA against the lighter moss. */}
           <div class="absolute top-4 right-4 px-3 py-1.5 bg-accent-2 backdrop-blur-sm text-[var(--bg)] text-xs font-bold rounded-full shadow-1 flex items-center gap-1.5">
             <span class="w-2 h-2 bg-[var(--bg)] rounded-full animate-pulse"></span>
-            {isDa ? 'Tilgaengelig' : 'Available'}
+            {isDa ? 'Kandidatstuderende' : 'MSc student'}
           </div>
         </div>
       </a>
@@ -161,16 +161,13 @@ const skillsData = {
     </Section>
 
     <Section class="animate-on-scroll delay-200">
-      <FeatureCard
-        badge={content.feature.badge}
-        title={content.feature.title}
-        description={content.feature.desc}
-        tagString={content.feature.tags}
-        url={portLink}
-      />
+      <SectionTitle eyebrow={isDa ? 'Økonomisk historie · Økonometri · Ulighed' : 'Economic history · Econometrics · Inequality'}>
+        {isDa ? 'Udvalgte forskningsprojekter' : 'Selected research projects'}
+      </SectionTitle>
+      <div class="mt-lg"><ResearchCards lang={lang} /></div>
     </Section>
 
-    {featuredVideo && (
+    {featuredVideo && featuredVideo.track === 'economics' && (
       <Section class="animate-on-scroll delay-200">
         <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-10 items-center">
           <YouTubeEmbed

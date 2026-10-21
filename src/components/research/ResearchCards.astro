@@ -1,0 +1,22 @@
+---
+import Card from '@components/ui/Card.astro';
+import Pill from '@components/ui/Pill.astro';
+import { getAcademicProjects, type ResearchLanguage } from '@data/academic-research';
+interface Props { lang: ResearchLanguage }
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+---
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md" data-research-projects>
+  {getAcademicProjects(lang).map(project => (
+    <Card variant="glass" class="p-6 flex flex-col h-full min-w-0">
+      <p class="eyebrow text-accent mb-4" data-research-status={project.kind}>{project.status}</p>
+      <h3 class="text-title-sm mb-2"><a class="hover:text-accent" href={project.url}>{project.title}</a></h3>
+      <p class="text-sm text-muted mb-4">{project.subtitle}</p>
+      <p class="text-dim leading-relaxed mb-6 flex-1">{project.description}</p>
+      <div class="flex flex-wrap gap-2 mb-6">{project.technologies.map(tool => <Pill>{tool}</Pill>)}</div>
+      <a href={project.url} class="font-semibold text-accent underline underline-offset-4">
+        {isDa ? 'Spørgsmål, data og metode' : 'Question, data and method'} <span aria-hidden="true">→</span>
+      </a>
+    </Card>
+  ))}
+</div>

@@ -11,6 +11,7 @@ import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 import { assetExists } from '@lib/public-asset';
 import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
+import { withAcademicProjects } from '@data/academic-research';
 
 export const prerender = true;
 
@@ -28,7 +29,7 @@ if (!entry) {
 const content: any = entry.data;
 
 const cvEntry = await getEntry('cv', lang);
-const cvProjects = cvEntry?.data.projects || [];
+const cvProjects = withAcademicProjects(cvEntry?.data.projects || [], lang);
 
 const cvLink = lang === 'en' ? '/en/cv' : lang === 'de' ? '/de/cv' : '/cv';
 

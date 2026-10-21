@@ -8,7 +8,7 @@ import Sidebar from '@components/cv/Sidebar.astro';
 import CertificationList from '@components/cv/CertificationList.astro';
 import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 import CareerTimeline from '@components/cv/CareerTimeline.astro';
-import SkillRadar from '@components/cv/SkillRadar';
+import { withAcademicProjects } from '@data/academic-research';
 
 import { getEntry } from 'astro:content';
 import '@styles/cv.css';
@@ -31,16 +31,14 @@ const content = pageEntry.data;
 const cvEntry = await getEntry('cv', lang);
 if (!cvEntry) throw new Error(`Missing cv entry for ${lang}`);
 const cvData: any = cvEntry.data; 
+// Keep the academic CV selective; the full coursework list remains in Portfolio.
+const projects = withAcademicProjects(cvData.projects || [], lang).slice(0, 5);
 
 // 3. Skills Data
 const skillsEntry = await getEntry('skills', lang);
 if (!skillsEntry) throw new Error(`Missing skills entry for ${lang}`);
 const skillsData = skillsEntry.data;
 
-// Prepare Radar Data (Professional Skills)
-// We assign high values to these core competencies for the visual
-const radarLabels = (skillsData.professional || []).map((s: any) => s.name.split(' ')[0]); // Shorten labels
-const radarValues = (skillsData.professional || []).map(() => 9); // Default high proficiency
 ---
 
 <Layout 
@@ -49,6 +47,11 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
   bodyClass={content.bodyClass}
 >
   <div class="cv-wrap">
+    <div class="cv-print-heading">
+      <h1>Anton Meier Ebsen Jørgensen</h1>
+      <p>{content.ui.sidebar.subtitle}</p>
+      <p>anton.ebsen@gmail.com · antonebsen.com · Copenhagen, Denmark</p>
+    </div>
     <!-- Filter bar (Hidden in Print) -->
     <div class="sticky top-[80px] z-[90] mb-8 flex justify-center px-4 pointer-events-none print:hidden">
       <div class="inline-flex items-center gap-2 p-1.5 bg-[#1E2122]/80 backdrop-blur-xl border border-glass-border rounded-2xl shadow-2xl pointer-events-auto">
@@ -72,8 +75,8 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
       <div class="cv-main">
         <!-- PROFILE ROW: Overview + Radar -->
         <Section id="profile">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card variant="glass" class="p-6 reveal reveal-fade md:col-span-2">
+          <div>
+              <Card variant="glass" class="p-6 reveal reveal-fade">
                 <SectionHeading>{content.ui.headings.profile}</SectionHeading>
                 {content.profile.text.map((p: string, i: number) => (
                     <p class={`text-[15px] leading-relaxed opacity-90 ${i < content.profile.text.length - 1 ? 'mb-4' : ''}`}>
@@ -88,11 +91,6 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
                 </div>
               </Card>
 
-              <!-- SKILL RADAR (New) -->
-              <Card variant="glass" class="p-4 reveal reveal-fade flex flex-col items-center justify-center min-h-[300px]">
-                  <h3 class="text-xs font-bold uppercase tracking-widest text-dim mb-4">Core Competencies</h3>
-                  <SkillRadar client:visible labels={radarLabels} data={radarValues} label="Proficiency" />
-              </Card>
           </div>
         </Section>
 
@@ -135,7 +133,7 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
           <Card variant="glass" class="p-6 reveal reveal-slide-up">
             <SectionHeading>{content.ui.headings.projects}</SectionHeading>
             <div class="space-y-0 project-list">
-              {cvData.projects?.map((project: any) => (
+              {projects.map((project: any) => (
                 <article class="item cv-item transition-all duration-300" data-categories={JSON.stringify(project.categories || [])}>
                   <div class="item-head">
                     <h3 class="text-[18px] font-bold m-0 mb-1">
@@ -348,3 +346,10 @@ const radarValues = (skillsData.professional || []).map(() => 9); // Default hig
     });
   </script>
 </Layout>
+
+<style>
+  .cv-print-heading { display: none; }
+  @media print {
+    .cv-print-heading { display: block; margin-bottom: 1.5rem; }
+  }
+</style>

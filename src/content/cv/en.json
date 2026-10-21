@@ -17,10 +17,6 @@
             ],
             "highlights": [
                 {
-                    "label": "Result",
-                    "value": "High evaluations / X+ students"
-                },
-                {
                     "label": "Tools",
                     "value": "Excel · VBA · PowerPoint"
                 }
@@ -92,8 +88,9 @@
                 "tech",
                 "core"
             ],
-            "description": "Economics with a focus on macroeconomics, monetary policy, time series, and modeling. High emphasis on practical data work and programming.",
+            "description": "Economics with a focus on macroeconomics, monetary policy, time series, and modeling. High emphasis on practical data work and programming. Expected MSc completion: January 2027.",
             "bullets": [
+                "Economic history and demography",
                 "Macro & monetary policy (ECB/central banks)",
                 "Econometrics & time series (forecasting, SVAR, etc.)",
                 "Economic models (RBC/CGE)",
@@ -120,6 +117,30 @@
         }
     ],
     "courses": [
+        {
+            "title": "Master Thesis",
+            "tag": "Project",
+            "institution": "UCPH",
+            "description": "Ongoing joint thesis on the economic history of slavery on St. Croix in the Danish West Indies. Expected completion: January 2027.",
+            "level": "master",
+            "grade": "In Progress",
+            "ects": "30",
+            "period": "E26",
+            "milestone": true,
+            "focusShift": "The culmination of my Master's degree – an in-depth, quantitative analysis of the economic history of the Danish West Indies.",
+            "verifiedSkills": [
+                "Python",
+                "Economic History",
+                "Data Analysis",
+                "Archival Research"
+            ],
+            "links": [
+                {
+                    "text": "View project",
+                    "href": "/en/projects/master-thesis"
+                }
+            ]
+        },
         {
             "title": "Advanced Macroeconomics - Structural Vector Autoregressive (VAR) Analysis (F)",
             "tag": "Macro",
@@ -268,9 +289,8 @@
             ],
             "relatedProjects": [
                 {
-                    "title": "Algorithmic Fairness in Credit Scoring",
-                    "href": "/projects/algorithmic-fairness",
-                    "previewImage": "/assets/img/fairness-demo.png"
+                    "title": "Does GenAI Help Those Who Need It Most?",
+                    "href": "/en/projects/genai-inequality"
                 }
             ]
         },
@@ -344,9 +364,15 @@
             "title": "Demography",
             "tag": "Society",
             "institution": "UCPH",
-            "description": "Population development, modeling fertility, mortality, and migration.",
+            "description": "Historical demography, fertility and marriage. Individual paper on Prussia’s Kulturkampf.",
             "level": "master",
-            "grade": "10"
+            "grade": "12",
+            "relatedProjects": [
+                {
+                    "title": "Bismarck’s Lost Battle",
+                    "href": "/en/projects/demography-project"
+                }
+            ]
         },
         {
             "title": "Seminar - Economics of the Welfare State",
@@ -798,27 +824,56 @@
     ],
     "projects": [
         {
-            "title": "Monetary Policy & Economic Relations",
-            "description": "Master's Thesis (Aug 2026 - Jan 2027). A comprehensive empirical analysis of the role of monetary policy in a post-COVID world. This 'living' project documents the process from ideation to defense.",
-            "technologies": [
-                "Python",
-                "Stata",
-                "LaTeX",
-                "Monetary Economics"
+            "title": "Bismarck’s Lost Battle",
+            "url": "/en/projects/demography-project",
+            "tag": "Completed course paper · May 2026",
+            "categories": [
+                "tech",
+                "core"
             ],
-            "tag": "Upcoming",
-            "url": "/projects/master-thesis",
-            "links": [
-                {
-                    "text": "View Project",
-                    "href": "/projects/master-thesis",
-                    "icon": "arrow-right"
-                }
-            ]
+            "technologies": [
+                "Historical demography",
+                "Panel data",
+                "Difference-in-differences"
+            ],
+            "meta": "Demography · University of Copenhagen · Grade: 12",
+            "description": "An individual empirical paper using Prussian county data to examine religious repression, marriage and fertility. The analysis distinguishes religious exposure from overlapping ethnic policies and finds no robust marital-fertility response."
+        },
+        {
+            "title": "The Danish West Indies",
+            "url": "/en/projects/master-thesis",
+            "tag": "Joint MSc thesis · In progress · Expected January 2027",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Economic history",
+                "Historical data",
+                "Handwriting recognition"
+            ],
+            "meta": "MSc Economics · University of Copenhagen · Supervisor: Paul Sharp",
+            "description": "An ongoing joint thesis on the economic history of slavery in the Danish West Indies, combining historical records, archival data construction and quantitative analysis. The draft is not a completed or published paper."
+        },
+        {
+            "title": "Does GenAI Help Those Who Need It Most?",
+            "url": "/en/projects/genai-inequality",
+            "tag": "Group course research proposal · January 2026",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Research design",
+                "Causal forests (proposed)",
+                "AI and inequality"
+            ],
+            "meta": "AI for Humanity · University of Copenhagen · Course grade: 10",
+            "description": "A group research proposal on socioeconomic differences in the relationship between GenAI use and student performance. It proposes causal forests and discusses why voluntary adoption limits causal interpretation. No data collection or empirical results are claimed."
         },
         {
             "title": "Globalization and the Welfare State",
-            "url": "/projects/welfare-state-seminar",
+            "url": "/en/projects/welfare-state-seminar",
             "tag": "Seminar",
             "categories": [
                 "tech",
@@ -850,7 +905,7 @@
         },
         {
             "title": "Bachelor's Thesis: Global Financial Cycle & Spillovers",
-            "url": "/projects/global-financial-cycle",
+            "url": "/en/projects/global-financial-cycle",
             "tag": "Empirical",
             "categories": [
                 "tech",
@@ -878,20 +933,11 @@
             "blueprint": "/assets/img/blueprint-demo.png",
             "meta": "Theme: US Monetary Policy → Global Economy",
             "description": "An econometric analysis of the spillovers from US monetary policy.",
-            "links": [
-                {
-                    "text": "PDF",
-                    "href": "#"
-                },
-                {
-                    "text": "Code",
-                    "href": "#"
-                }
-            ]
+            "links": []
         },
         {
             "title": "Project: Exchange Rate Dynamics",
-            "url": "/projects/exchange-rate-dynamics",
+            "url": "/en/projects/exchange-rate-dynamics",
             "tag": "Data Analysis",
             "categories": [
                 "tech"
@@ -906,13 +952,13 @@
             "links": [
                 {
                     "text": "Read More",
-                    "href": "/projects/exchange-rate-dynamics"
+                    "href": "/en/projects/exchange-rate-dynamics"
                 }
             ]
         },
         {
             "title": "ECB Project: Heterogeneous Effects Across Countries",
-            "url": "/projects/ecb-taylor-rules",
+            "url": "/en/projects/ecb-taylor-rules",
             "tag": "Monetary Policy",
             "meta": "Theme: Taylor rules / synthetic rates",
             "technologies": [
@@ -920,38 +966,11 @@
                 "Monetary Policy"
             ],
             "description": "Analyzing the divergence of interest rate rules in the Eurozone.",
-            "links": [
-                {
-                    "text": "Slides",
-                    "href": "#"
-                }
-            ]
-        },
-        {
-            "title": "Does GenAI Help Those Who Need It Most?",
-            "url": "/projects/genai-inequality",
-            "tag": "Research Proposal",
-            "categories": [
-                "tech",
-                "core"
-            ],
-            "technologies": [
-                "LaTeX",
-                "Causal Forest",
-                "Machine Learning"
-            ],
-            "meta": "Theme: Heterogeneous Treatment Effects (CATE)",
-            "description": "Research proposal investigating the asymmetric impact of Generative AI on student performance across socioeconomic backgrounds.",
-            "links": [
-                {
-                    "text": "View Proposal",
-                    "href": "/projects/genai-inequality"
-                }
-            ]
+            "links": []
         },
         {
             "title": "Globalization's Impact on Austerity Policy",
-            "url": "/projects/austerity-globalization",
+            "url": "/en/projects/austerity-globalization",
             "tag": "HHX Project",
             "categories": [
                 "tech",
@@ -966,13 +985,13 @@
             "links": [
                 {
                     "text": "View Project",
-                    "href": "/projects/austerity-globalization"
+                    "href": "/en/projects/austerity-globalization"
                 }
             ]
         },
         {
             "title": "The Single Market's Impact on the Irish Tiger Economy",
-            "url": "/projects/irish-tiger",
+            "url": "/en/projects/irish-tiger",
             "tag": "HHX Project",
             "categories": [
                 "tech",
@@ -987,13 +1006,13 @@
             "links": [
                 {
                     "text": "View Project",
-                    "href": "/projects/irish-tiger"
+                    "href": "/en/projects/irish-tiger"
                 }
             ]
         },
         {
             "title": "Competitiveness and Welfare Model",
-            "url": "/projects/competitiveness-welfare",
+            "url": "/en/projects/competitiveness-welfare",
             "tag": "HHX Project",
             "categories": [
                 "tech",
@@ -1008,13 +1027,13 @@
             "links": [
                 {
                     "text": "View Project",
-                    "href": "/projects/competitiveness-welfare"
+                    "href": "/en/projects/competitiveness-welfare"
                 }
             ]
         },
         {
             "title": "The Single Market's Role in the Green Transition",
-            "url": "/projects/green-transition",
+            "url": "/en/projects/green-transition",
             "tag": "HHX Project",
             "categories": [
                 "tech",
@@ -1029,28 +1048,7 @@
             "links": [
                 {
                     "text": "View Project",
-                    "href": "/projects/green-transition"
-                }
-            ]
-        },
-        {
-            "title": "Demographic Analysis (TBD)",
-            "url": "/projects/demography-project",
-            "tag": "Upcoming",
-            "categories": [
-                "tech",
-                "core"
-            ],
-            "technologies": [
-                "Demography",
-                "Data Science"
-            ],
-            "meta": "Status: Planned",
-            "description": "Upcoming project in the Demography course. Topic and research questions are under development.",
-            "links": [
-                {
-                    "text": "View Placeholder",
-                    "href": "/projects/demography-project"
+                    "href": "/en/projects/green-transition"
                 }
             ]
         }
