@@ -13,8 +13,9 @@ describe('academic application profile', () => {
       expect(JSON.stringify(value)).not.toMatch(/PhD candidate|doctoral student|expert|DOI|Casper Worm Hansen/);
       expect(value.sections.map(s => s.id)).toEqual(['education', 'projects', 'experience', 'skills', 'service']);
       expect(value.sections[0].items).toHaveLength(2);
-      expect(value.sections[0].items[0].meta).toContain('2024');
-      expect(value.sections[0].items[1].meta).toContain(lang === 'en' ? 'May 2024' : 'maj 2024');
+      const [masters, bachelors] = value.sections[0].items;
+      expect('meta' in masters ? masters.meta : '').toContain('2024');
+      expect('meta' in bachelors ? bachelors.meta : '').toContain(lang === 'en' ? 'May 2024' : 'maj 2024');
       expect(value.sections[1].items).toHaveLength(4);
       const thesis = value.sections[1].items[1];
       expect('meta' in thesis ? thesis.meta : '').toContain(lang === 'en' ? 'In progress' : 'I gang');
