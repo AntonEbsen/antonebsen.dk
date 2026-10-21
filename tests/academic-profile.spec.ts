@@ -75,3 +75,14 @@ test('English homepage preview and printable CV identity', async ({ page }) => {
   await expect(page.locator('#projects article p').first()).toHaveCSS('opacity', '1');
   await page.screenshot({ path: 'test-results/academic-cv-print.png', fullPage: true });
 });
+
+test('English and Danish canonical links use their respective domains', async ({ page }) => {
+  await page.goto('/en/projects/demography-project');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.antonebsen.com/en/projects/demography-project');
+  await expect(page.locator('link[hreflang="da"]:not([type])')).toHaveAttribute('href', 'https://antonebsen.dk/projects/demography-project');
+  await page.goto('/projects/demography-project');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'da');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://antonebsen.dk/projects/demography-project');
+  await expect(page.locator('link[hreflang="en"]:not([type])')).toHaveAttribute('href', 'https://www.antonebsen.com/en/projects/demography-project');
+});

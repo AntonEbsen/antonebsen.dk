@@ -51,6 +51,14 @@ export default defineConfig({
         !page.includes('/debug') &&
         !page.includes('/api/') &&
         !/\/test-[^/]+\/?$/.test(page),
+      serialize(item) {
+        if (new URL(item.url).pathname.match(/^\/en(?:\/|$)/)) {
+          const url = new URL(item.url);
+          url.hostname = 'www.antonebsen.com';
+          item.url = url.href;
+        }
+        return item;
+      },
     }),
     tailwind({
       applyBaseStyles: false,

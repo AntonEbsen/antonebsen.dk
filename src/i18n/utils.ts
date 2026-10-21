@@ -2,7 +2,8 @@ import { ui, defaultLang, navigation } from './ui';
 
 export function getLangFromUrl(url: URL) {
     const [, lang] = url.pathname.split('/');
-    if (lang in ui) return lang as keyof typeof ui;
+    if (lang === 'da' || lang === 'en' || lang === 'de') return lang;
+    if (/^(www\.)?antonebsen\.com$/.test(url.hostname)) return 'en';
     return defaultLang;
 }
 
