@@ -51,7 +51,9 @@ for section in content["sections"]:
         block = [Paragraph(heading, title_style)]
         if item.get("meta"):
             block.append(Paragraph(text(item["meta"]), meta_style))
-        block.extend([Paragraph(text(item["text"]), body), Spacer(1, 5)])
+        if item["text"]:
+            block.append(Paragraph(text(item["text"]), body))
+        block.append(Spacer(1, 5))
         story.append(KeepTogether(block))
 
 

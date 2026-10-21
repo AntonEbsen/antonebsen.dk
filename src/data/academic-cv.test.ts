@@ -12,6 +12,9 @@ describe('academic application profile', () => {
       expect(value.profile).toContain(lang === 'en' ? 'January 2027' : 'januar 2027');
       expect(JSON.stringify(value)).not.toMatch(/PhD candidate|doctoral student|expert|DOI|Casper Worm Hansen/);
       expect(value.sections.map(s => s.id)).toEqual(['education', 'projects', 'experience', 'skills', 'service']);
+      expect(value.sections[0].items).toHaveLength(2);
+      expect(value.sections[0].items[0].meta).toContain('2024');
+      expect(value.sections[0].items[1].meta).toContain(lang === 'en' ? 'May 2024' : 'maj 2024');
       expect(value.sections[1].items).toHaveLength(4);
       const thesis = value.sections[1].items[1];
       expect('meta' in thesis ? thesis.meta : '').toContain(lang === 'en' ? 'In progress' : 'I gang');
@@ -27,6 +30,8 @@ describe('academic application profile', () => {
       expect(result.total).toBe(1);
       expect(result.text).toContain(cv.name);
       expect(result.text).toContain('January 2027');
+      expect(result.text).toContain('Awarded May 2024');
+      expect(result.text).toContain('September 2024-present');
       for (const section of cv.en.sections) {
         expect(result.text).toContain(section.title);
         for (const item of section.items) {

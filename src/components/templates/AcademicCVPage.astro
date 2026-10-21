@@ -37,7 +37,7 @@ const content = cv[lang];
           <article>
             <h3>{'url' in item ? <a href={prefix + item.url}>{item.title}</a> : item.title}</h3>
             {'meta' in item && <p class="academic-meta">{item.meta}</p>}
-            <p>{item.text}</p>
+            {item.text && <p>{item.text}</p>}
           </article>
         ))}
       </section>
