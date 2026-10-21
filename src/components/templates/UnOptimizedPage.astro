@@ -53,7 +53,7 @@ const { lang, content } = Astro.props;
       <Card variant="glass" class="hero-card">
         <p class="text-xs font-bold uppercase tracking-widest text-[#eab308] opacity-80 mb-3">{content.hero.eyebrow}</p>
         <h1 class="text-4xl font-bold mb-4">{content.hero.title}</h1>
-        <p class="text-lg text-dim leading-relaxed max-w-2xl">{content.hero.text}</p>
+        <p class="text-lg text-dim leading-relaxed max-w-(--container-2xl)">{content.hero.text}</p>
       </Card>
     </Section>
 
@@ -77,7 +77,7 @@ const { lang, content } = Astro.props;
     <Section>
         <Card variant="glass" class="philosophy-banner">
             <h2 class="text-2xl font-bold mb-4 text-[#eab308]">{content.philosophy.title}</h2>
-            <p class="text-dim italic leading-relaxed max-w-xl mx-auto">{content.philosophy.text}</p>
+            <p class="text-dim italic leading-relaxed max-w-(--container-xl) mx-auto">{content.philosophy.text}</p>
         </Card>
     </Section>
   </main>

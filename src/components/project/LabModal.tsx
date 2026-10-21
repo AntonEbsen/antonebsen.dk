@@ -88,7 +88,7 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex flex-col"
+                    className="fixed inset-0 z-100 bg-black/90 backdrop-blur-md flex flex-col"
                 >
                     {/* Header */}
                     <div className="bg-bg/50 border-b border-white/10 p-4 flex items-center justify-between px-8">
@@ -102,7 +102,7 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                             </div>
                         </div>
 
-                        <div className="hidden md:block bg-white/5 px-4 py-2 rounded-lg border border-white/5 max-w-md">
+                        <div className="hidden md:block bg-white/5 px-4 py-2 rounded-lg border border-white/5 max-w-(--container-md)">
                             <p className="text-[10px] text-muted font-serif italic leading-tight">
                                 {t.hint}
                             </p>
@@ -127,7 +127,7 @@ const LabModal: React.FC<LabModalProps> = ({ notebookPath, isOpen: initialIsOpen
                     </div>
 
                     {/* Iframe Area */}
-                    <div className="flex-grow relative bg-[#1e1e1e]">
+                    <div className="grow relative bg-[#1e1e1e]">
                         {loading && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center bg-bg z-10">
                                 <div className="w-16 h-16 border-4 border-accent/20 border-t-accent rounded-full animate-spin mb-4"></div>

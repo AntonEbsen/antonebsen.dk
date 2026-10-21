@@ -1,5 +1,54 @@
 @media print {
 
+    /* The CV uses design-system utilities rather than the old .card-glass class.
+       Keep every section readable even if it has not been scrolled into view. */
+    .cv-page {
+        background: white !important;
+        --bg: white;
+        --depth-bg: white;
+        --glass: transparent;
+        --text: #111;
+        --text-dim: #333;
+        --text-muted: #444;
+        --muted: #444;
+        --accent: #222;
+        --accent-2: #333;
+    }
+    html:has(body.cv-page) { background: white !important; }
+    body.cv-page::before { display: none !important; }
+    .cv-print-orcid::after { content: none !important; }
+    /* Screen-only muted colours and nested opacity utilities must not wash out
+       the printed CV. Keep all actual content at full contrast on white. */
+    .cv-page .cv-wrap * {
+        color: #222 !important;
+        opacity: 1 !important;
+        text-shadow: none !important;
+    }
+    .cv-page .cv-side,
+    .cv-page #certifications img,
+    .cv-page #chat-widget,
+    .cv-page #ledger-toast,
+    .cv-page #ledger-modal,
+    .cv-page #command-palette,
+    .cv-page #scriptorium-bar,
+    .cv-page #anathema {
+        display: none !important;
+    }
+    .cv-wrap .animate-on-scroll,
+    .cv-wrap .reveal,
+    .cv-wrap .is-dimmed {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+    .cv-main .backdrop-blur-md {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+    }
+
     /* Hide non-essential UI */
     header,
     footer,

@@ -34,7 +34,7 @@ async function hreflangsOf(page: import('@playwright/test').Page, path: string) 
             }))
             // Skip the RSS <link rel="alternate">s, which also carry hreflang.
             .filter((l) => !l.type)
-            .map((l) => ({ lang: l.lang, path: l.href.replace('https://antonebsen.dk', '') || '/' }))
+            .map((l) => ({ lang: l.lang, path: new URL(l.href).pathname }))
     );
 }
 

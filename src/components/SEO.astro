@@ -1,5 +1,7 @@
 ---
 import { availableAlternates } from '@lib/routes';
+import { getLangFromUrl } from '@i18n/utils';
+import { publicLanguageUrl } from '@i18n/domains';
 import { getEntry } from 'astro:content';
 import { ORCID_URI, UCPH_ROR, sameAsProfiles, record as orcidRecord } from '@lib/orcid';
 import { GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '@lib/profiles';
@@ -43,7 +45,7 @@ const societies = (cvForSocieties?.data.organizations ?? [])
 
 const siteTitle = "Anton Meier Ebsen Jørgensen";
 const pageTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://antonebsen.dk");
+const canonicalURL = publicLanguageUrl(Astro.url.pathname, getLangFromUrl(Astro.url));
 
 // Image Logic: Use provided prop OR fallback to Dynamic OG
 let socialImageURL;
@@ -92,17 +94,16 @@ const breadcrumbItems = [
 //
 // availableAlternates consults the actual page files, so a language only appears
 // once its route exists, and adding one makes the alternate show up by itself.
-const SITE = 'https://antonebsen.dk';
 
 const paths = alternates ?? availableAlternates(Astro.url.pathname);
 
 const hreflangs = [
   ...(['da', 'en', 'de'] as const)
     .filter((lang) => paths[lang])
-    .map((lang) => ({ lang, href: SITE + paths[lang]! })),
+    .map((lang) => ({ lang, href: publicLanguageUrl(paths[lang]!, lang) })),
   // x-default goes to Danish when it exists, else whichever version does.
   ...(Object.keys(paths).length
-    ? [{ lang: 'x-default', href: SITE + (paths.da ?? paths.en ?? paths.de)! }]
+    ? [{ lang: 'x-default', href: paths.da ? publicLanguageUrl(paths.da, 'da') : paths.en ? publicLanguageUrl(paths.en, 'en') : publicLanguageUrl(paths.de!, 'de') }]
     : [])
 ];
 ---
@@ -133,7 +134,7 @@ const hreflangs = [
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={article ? 'article' : 'website'} />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={socialImageURL} />

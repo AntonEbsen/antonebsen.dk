@@ -18,11 +18,11 @@ export const ui = {
         'nav.insights': 'Indsigter',
         'nav.more': 'Mere',
         'nav.lab': 'Forsknings-lab',
-        'nav.cliometrics': 'Cliometrics',
+        'nav.cliometrics': 'Forskning',
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
-        'footer.brand.text': 'Økonom og kvantitativ forsker med fokus på makroøkonomi, pengepolitik og økonomiske modeller. Jeg bygger analyser og templates, der kan bruges i praksis.',
+        'footer.brand.text': 'Kandidatstuderende i økonomi ved Københavns Universitet. Interesseret i økonomisk historie, demografi, ulighed og anvendt økonometri.',
 
         'footer.col.links': 'Links',
         'footer.col.selected': 'Udvalgt',
@@ -39,11 +39,11 @@ export const ui = {
         'nav.insights': 'Insights',
         'nav.more': 'More',
         'nav.lab': 'Research Lab',
-        'nav.cliometrics': 'Cliometrics',
+        'nav.cliometrics': 'Research',
         'nav.contact': 'Contact',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
-        'footer.brand.text': 'Economist and quantitative researcher focusing on macroeconomics, monetary policy, and economic modeling. I build analyses and templates for practical use.',
+        'footer.brand.text': 'MSc Economics student at the University of Copenhagen. Interested in economic history, demography, inequality and applied econometrics.',
 
         'footer.col.links': 'Links',
         'footer.col.selected': 'Selected',
@@ -64,7 +64,7 @@ export const ui = {
         'nav.contact': 'Kontakt',
 
         'footer.brand.title': 'Anton Meier Ebsen Jørgensen',
-        'footer.brand.text': 'Ökonom und quantitativer Forscher mit Fokus auf Makroökonomie, Geldpolitik und ökonomische Modelle. Ich erstelle Analysen und Vorlagen für die Praxis.',
+        'footer.brand.text': 'Masterstudent der Volkswirtschaftslehre an der Universität Kopenhagen. Interessen: Wirtschaftsgeschichte, Demografie, Ungleichheit und angewandte Ökonometrie.',
 
         'footer.col.links': 'Links',
         'footer.col.selected': 'Ausgewählt',
@@ -106,7 +106,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        { label: 'Cliometrics', url: '/cliometrics' },
+        { label: 'Forskning', url: '/cliometrics' },
         { label: 'Blog', url: '/blog' },
         { label: 'Samarbejde', url: '/services' },
         {
@@ -151,7 +151,7 @@ export const navigation: { [key: string]: { label: string; url: string; children
                 { label: 'GitHub', url: 'https://github.com/AntonEbsen', external: true }
             ]
         },
-        { label: 'Cliometrics', url: '/en/cliometrics' },
+        { label: 'Research', url: '/en/cliometrics' },
         { label: 'Blog', url: '/en/blog' },
         { label: 'Work with me', url: '/en/services' },
         {

@@ -88,7 +88,7 @@ export default function KnowledgeGraphPanel({ nodes, links, height = 500, lang =
                     <i className="fa-solid fa-circle-nodes"></i> {t.show}
                 </button>
 
-                <p className="text-[10px] text-muted mt-5 max-w-xs mx-auto leading-relaxed">{t.note}</p>
+                <p className="text-[10px] text-muted mt-5 max-w-(--container-xs) mx-auto leading-relaxed">{t.note}</p>
             </div>
         </div>
     );

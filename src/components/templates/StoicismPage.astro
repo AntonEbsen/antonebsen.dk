@@ -72,7 +72,7 @@ const t = isDa ? content.da : content.en;
         <h1 class="text-5xl md:text-7xl mb-8 leading-tight tracking-tighter">
           {t.heroTitle}
         </h1>
-        <p class="text-xl md:text-2xl text-dim leading-relaxed max-w-2xl mx-auto px-4 italic opacity-80">
+        <p class="text-xl md:text-2xl text-dim leading-relaxed max-w-(--container-2xl) mx-auto px-4 italic opacity-80">
           "{t.heroText}"
         </p>
       </div>
@@ -99,8 +99,8 @@ const t = isDa ? content.da : content.en;
 
     <!-- Final Quote -->
     <Section class="mt-40 animate-on-scroll">
-       <div class="max-w-3xl mx-auto p-12 rounded-2xl border border-accent/10 bg-accent/[0.01] text-center relative overflow-hidden">
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
+       <div class="max-w-(--container-3xl) mx-auto p-12 rounded-2xl border border-accent/10 bg-accent/1 text-center relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-accent to-transparent opacity-50"></div>
           <i class="fa-solid fa-cross text-4xl text-accent mb-6 opacity-80"></i>
           <blockquote class="text-2xl md:text-3xl font-serif italic leading-relaxed mb-6">
              "{isDa ? 'Giv mig sinnsro til at acceptere de ting, jeg ikke kan ændre, mod til at ændre de ting, jeg kan, og visdom til at se forskellen.' : 'Grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.'}"

@@ -31,7 +31,7 @@ export default function AvailabilityStatus() {
     if (!status) return null;
 
     return (
-        <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+        <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-xs">
             <div className="relative flex h-3 w-3">
                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${status.color}`}></span>
                 <span className={`relative inline-flex rounded-full h-3 w-3 ${status.color}`}></span>

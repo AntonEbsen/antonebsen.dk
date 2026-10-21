@@ -10,10 +10,10 @@ export const prerender = true;
         
         <!-- Controls / Overlay -->
         <div class="absolute top-24 left-8 z-10 pointer-events-none">
-            <h1 class="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-white mb-2">
+            <h1 class="text-4xl md:text-6xl text-transparent bg-clip-text bg-linear-to-r from-gold-400 to-white mb-2">
                 The Knowledge Web
             </h1>
-            <p class="text-dim text-sm md:text-base max-w-sm">
+            <p class="text-dim text-sm md:text-base max-w-(--container-sm)">
                 Explore the connections between the books I've read, the thinkers who influenced me, and central concepts.
                 <br>
                 <span class="text-accent mt-2 block"><i class="fa-solid fa-mouse pointer-events-auto"></i> Drag to rotate · Scroll to zoom · Click to focus</span>
@@ -28,7 +28,7 @@ export const prerender = true;
         <!-- Legend -->
         <div class="absolute bottom-8 right-8 z-10 bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10 text-xs text-dim space-y-2 pointer-events-auto">
             <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-[var(--accent)]"></span>
+                <span class="w-3 h-3 rounded-full bg-(--accent)"></span>
                 <span>Books</span>
             </div>
             <div class="flex items-center gap-2">

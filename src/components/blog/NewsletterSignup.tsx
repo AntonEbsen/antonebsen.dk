@@ -78,7 +78,7 @@ export default function NewsletterSignup({ lang }: Props) {
 
     return (
         <div className="w-full relative py-12 px-4 md:px-0">
-            <div className="relative max-w-4xl mx-auto overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-bg via-sunken to-black p-1 shadow-2xl">
+            <div className="relative max-w-4xl mx-auto overflow-hidden rounded-4xl border border-white/10 bg-linear-to-br from-bg via-sunken to-black p-1 shadow-2xl">
                 <div className="absolute inset-0 bg-[url('/assets/images/grid.svg')] opacity-5 pointer-events-none"></div>
                 <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -95,7 +95,7 @@ export default function NewsletterSignup({ lang }: Props) {
                         <h2 className="text-3xl md:text-4xl text-text mb-4 tracking-tight">
                             {t.title}
                         </h2>
-                        <p className="text-dim text-lg opacity-70 max-w-md mx-auto md:mx-0">
+                        <p className="text-dim text-lg opacity-70 max-w-(--container-md) mx-auto md:mx-0">
                             {t.subtitle}
                         </p>
                     </div>
@@ -128,7 +128,7 @@ export default function NewsletterSignup({ lang }: Props) {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder={t.placeholder}
-                                            className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all group-hover:border-white/20"
+                                            className="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-muted focus:outline-hidden focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all group-hover:border-white/20"
                                             required
                                         />
                                         <div className="absolute inset-0 rounded-xl bg-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>

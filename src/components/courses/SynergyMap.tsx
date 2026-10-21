@@ -110,7 +110,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
     }, [relevantCourses, uniqueProjects, hoveredNode]);
 
     return (
-        <div className="synergy-map-container relative py-12 px-4 sm:px-8 bg-white/[0.02] rounded-3xl border border-white/5 overflow-hidden" ref={containerRef}>
+        <div className="synergy-map-container relative py-12 px-4 sm:px-8 bg-white/2 rounded-3xl border border-white/5 overflow-hidden" ref={containerRef}>
             {/* Decorative Background */}
             <div className="absolute inset-0 opacity-20 pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-64 h-64 bg-accent/20 blur-[100px] rounded-full" />
@@ -121,7 +121,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                 <h3 className="text-2xl text-text mb-2 tracking-tight">
                     {lang === 'da' ? 'Synergi: Fra Teori til Praksis' : 'Synergy: Theory to Practice'}
                 </h3>
-                <p className="text-muted text-sm max-w-lg mx-auto leading-relaxed">
+                <p className="text-muted text-sm max-w-(--container-lg) mx-auto leading-relaxed">
                     {lang === 'da'
                         ? 'Visualisering af hvordan akademiske kurser flyder ind i mine professionelle projekter.'
                         : 'Visualizing how academic foundations flow into applied professional projects.'}
@@ -168,7 +168,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                             }}
                             className={`p-4 rounded-2xl border transition-colors cursor-crosshair ${hoveredNode?.id === course.title
                                     ? 'bg-accent/10 border-accent/40 shadow-xl shadow-accent/5'
-                                    : 'bg-white/5 border-white/5 hover:border-white/10 shadow-sm'
+                                    : 'bg-white/5 border-white/5 hover:border-white/10 shadow-xs'
                                 }`}
                         >
                             <div className="flex items-center gap-3">
@@ -202,7 +202,7 @@ const SynergyMap: React.FC<SynergyMapProps> = ({ courses, lang }) => {
                             }}
                             className={`p-4 rounded-2xl border transition-colors cursor-pointer block group ${hoveredNode?.id === project.title
                                     ? 'bg-indigo-500/10 border-indigo-500/40 shadow-xl shadow-indigo-500/5'
-                                    : 'bg-white/5 border-white/5 hover:border-white/10 shadow-sm'
+                                    : 'bg-white/5 border-white/5 hover:border-white/10 shadow-xs'
                                 }`}
                         >
                             <div className="flex items-center gap-3 justify-between">

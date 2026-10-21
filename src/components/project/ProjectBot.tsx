@@ -253,7 +253,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
             {/* Toggle Button - Now at Footer Level for visibility */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 z-[2147483647] w-14 h-14 bg-accent text-bg rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group border-2 border-transparent hover:border-black/10"
+                className="fixed bottom-6 right-6 z-2147483647 w-14 h-14 bg-accent text-bg rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group border-2 border-transparent hover:border-black/10"
                 style={{ boxShadow: '0 0 30px rgba(255,255,255,0.3)' }}
                 title="AI Project Reviewer"
             >
@@ -263,7 +263,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
             {/* Chat Window */}
             {isOpen && (
                 <div
-                    className="fixed bottom-24 right-6 w-[90vw] md:w-[450px] h-[600px] max-h-[70vh] bg-[#1E2122] border border-white/10 rounded-2xl shadow-2xl flex flex-col z-[2147483647] overflow-hidden backdrop-blur-xl"
+                    className="fixed bottom-24 right-6 w-[90vw] md:w-[450px] h-[600px] max-h-[70vh] bg-[#1E2122] border border-white/10 rounded-2xl shadow-2xl flex flex-col z-2147483647 overflow-hidden backdrop-blur-xl"
                     style={{ boxShadow: '0 0 50px rgba(0,0,0,0.8)' }}
                 >
                     {/* Header */}
@@ -307,7 +307,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                     >
                         {/* Initial Greeting */}
                         <div className="flex gap-4">
-                            <div className="w-8 h-8 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center mt-1">
+                            <div className="w-8 h-8 rounded-full bg-white/10 shrink-0 flex items-center justify-center mt-1">
                                 <i className="fa-solid fa-robot text-xs text-text"></i>
                             </div>
                             <div className="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-sm text-dim shadow-lg">
@@ -317,7 +317,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
 
                         {messages.map((m) => (
                             <div key={m.id} className={`flex gap-4 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                                <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mt-1 ${m.role === 'user' ? 'bg-accent/20 text-accent' : 'bg-rule text-dim'}`}>
+                                <div className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center mt-1 ${m.role === 'user' ? 'bg-accent/20 text-accent' : 'bg-rule text-dim'}`}>
                                     <i className={`fa-solid ${m.role === 'user' ? 'fa-user' : 'fa-robot'} text-xs`}></i>
                                 </div>
                                 {m.role === 'assistant' ? (
@@ -346,7 +346,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                         ))}
                         {isStreaming && (
                             <div className="flex gap-4">
-                                <div className="w-8 h-8 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center mt-1 animate-pulse">
+                                <div className="w-8 h-8 rounded-full bg-white/10 shrink-0 flex items-center justify-center mt-1 animate-pulse">
                                     <i className="fa-solid fa-microchip text-xs text-text"></i>
                                 </div>
                                 <div className="bg-white/5 p-3 rounded-2xl rounded-tl-none text-xs text-muted italic">
@@ -380,7 +380,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder="Ask about the stack, scalability, or code..."
-                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-text focus:outline-none focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-muted"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-text focus:outline-hidden focus:border-white/30 focus:bg-white/10 transition-colors placeholder:text-muted"
                             />
                             <button
                                 type={isStreaming ? 'button' : 'submit'}
@@ -388,7 +388,7 @@ export default function ProjectBot({ projectTitle, codeSnippet }: ProjectBotProp
                                 disabled={!isStreaming && !input.trim()}
                                 aria-label={isStreaming ? 'Stop generating' : 'Send message'}
                                 title={isStreaming ? 'Stop generating' : 'Send message'}
-                                className="absolute right-2 top-1.5 w-9 h-9 bg-accent text-bg rounded-lg flex items-center justify-center hover:bg-accent-light disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-[100]"
+                                className="absolute right-2 top-1.5 w-9 h-9 bg-accent text-bg rounded-lg flex items-center justify-center hover:bg-accent-light disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer z-100"
                             >
                                 <i className={`fa-solid ${isStreaming ? 'fa-stop' : 'fa-arrow-up'} text-sm`}></i>
                             </button>

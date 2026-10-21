@@ -516,15 +516,15 @@ test.describe('the printed CV', () => {
         expect(rendered.after, 'no appended href').not.toContain('orcid.org');
     });
 
-    test('still prints the sidebar the iD lives in', async ({ page }) => {
-        // print.css:69 hides `.sidebar`, but the element is `.cv-side` — the rule has
-        // matched nothing since someone renamed it, and that is the only reason the
-        // iD reaches paper at all. Asserted so the dead rule is not "fixed" without
-        // someone first deciding what the printed CV should contain.
+    test('retains the ORCID iD in the compact printable heading', async ({ page }) => {
+        // The academic print layout intentionally omits the photo/skills sidebar.
+        // Keep its verification link in the print heading rather than losing the iD.
         await page.goto('/cv');
         await page.emulateMedia({ media: 'print' });
 
-        await expect(page.locator('.cv-side')).toBeVisible();
-        await expect(page.locator('.cv-side .orcid-full')).toBeVisible();
+        await expect(page.locator('.cv-side')).toBeHidden();
+        await expect(page.locator('.cv-print-heading')).toBeVisible();
+        await expect(page.locator('.cv-print-orcid')).toBeVisible();
+        await expect(page.locator('.cv-print-orcid')).toHaveAttribute('href', RECORD.uri);
     });
 });

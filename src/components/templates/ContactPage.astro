@@ -67,7 +67,7 @@ const email = "anton@antonebsen.dk";
           <div class="space-y-12 animate-fade-in-left">
               <div>
                   <h1 class="text-5xl md:text-6xl mb-6 tracking-tight">{content.heading}</h1>
-                  <p class="text-dim text-lg leading-relaxed max-w-md" set:html={content.text} />
+                  <p class="text-dim text-lg leading-relaxed max-w-(--container-md)" set:html={content.text} />
               </div>
 
 
@@ -141,14 +141,14 @@ const email = "anton@antonebsen.dk";
                         <div class="group">
                             <label class="block text-dim text-xs font-bold uppercase tracking-wider mb-2 group-focus-within:text-white transition-colors">{content.form?.name}</label>
                             <input type="text" id="c-name" name="name" required 
-                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300" 
+                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-hidden transition-all duration-300"
                                    placeholder={content.form?.namePlaceholder} />
                         </div>
                         
                         <div class="group">
                             <label class="block text-dim text-xs font-bold uppercase tracking-wider mb-2 group-focus-within:text-white transition-colors">{content.form?.email}</label>
                             <input type="email" id="c-email" name="email" required 
-                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300" 
+                                   class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-hidden transition-all duration-300"
                                    placeholder={content.form?.emailPlaceholder} />
                         </div>
                     </div>
@@ -172,7 +172,7 @@ const email = "anton@antonebsen.dk";
                             </div>
                         </div>
                         <textarea id="c-message" name="message" required rows="6" 
-                                  class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-none transition-all duration-300 resize-none" 
+                                  class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white placeholder-white/20 focus:border-accent focus:bg-white/5 focus:outline-hidden transition-all duration-300 resize-none"
                                   placeholder={content.form?.messagePlaceholder}></textarea>
                     </div>
 

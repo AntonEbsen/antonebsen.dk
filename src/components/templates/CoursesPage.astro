@@ -15,7 +15,6 @@ import SynergyMap from '../courses/SynergyMap';
 import SpecializationBadges from '../courses/SpecializationBadges.astro';
 import MasteryModal from '../courses/MasteryModal';
 import AcademicDNA from '@components/courses/AcademicDNA';
-import type { Course } from '@content/config';
 
 interface Props {
   lang: 'da' | 'en';
@@ -323,7 +322,7 @@ const others = cv.courses?.filter(c => !c.level) || [];
                     type="text" 
                     id="course-search" 
                     placeholder={isDa ? 'Eks: DSGE, Python...' : 'Ex: DSGE, Python...'}
-                    class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white placeholder:text-muted focus:border-accent/50 focus:outline-none transition-colors"
+                    class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white placeholder:text-muted focus:border-accent/50 focus:outline-hidden transition-colors"
                   />
                   <i class="fa-solid fa-search absolute right-3 top-1/2 -translate-y-1/2 text-muted text-[10px]"></i>
                 </div>
@@ -399,7 +398,7 @@ const others = cv.courses?.filter(c => !c.level) || [];
     <Section>
       <div class="mb-12">
         <SectionHeading>{isDa ? 'Den Røde Tråd' : 'The Red Thread'}</SectionHeading>
-        <p class="text-dim text-sm mb-8 max-w-2xl">
+        <p class="text-dim text-sm mb-8 max-w-(--container-2xl)">
           {isDa 
             ? 'Interaktiv visualisering af hvordan mine fag bygger ovenpå hinanden. Hold musen over et fag for at se den faglige sammenhæng.' 
             : 'Interactive visualization of how my courses build upon each other. Hover over a course to see the conceptual thread.'}
@@ -432,7 +431,7 @@ const others = cv.courses?.filter(c => !c.level) || [];
                 </div>
 
                 {/* Card Content */}
-                <div class="flex-grow pb-4 border-b border-white/5">
+                <div class="grow pb-4 border-b border-white/5">
                     <div class="mb-2">
                          <span class="text-[10px] font-mono text-accent opacity-60 uppercase tracking-widest">{course.level || 'Course'} • {course.period}</span>
                     </div>
@@ -592,6 +591,6 @@ const others = cv.courses?.filter(c => !c.level) || [];
    });
  </script>
 
- <div class="fixed bottom-0 left-0 w-0 h-0 z-[100]">
+ <div class="fixed bottom-0 left-0 w-0 h-0 z-100">
    <MasteryModal client:load lang={lang} />
  </div>

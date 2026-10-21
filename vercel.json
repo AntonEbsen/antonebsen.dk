@@ -1,4 +1,54 @@
 {
+    "redirects": [
+        {
+            "source": "/",
+            "has": [{ "type": "host", "value": "www.antonebsen.com" }],
+            "destination": "https://www.antonebsen.com/en",
+            "permanent": true
+        },
+        {
+            "source": "/",
+            "has": [{ "type": "host", "value": "www.antonebsen.dk" }],
+            "destination": "https://antonebsen.dk/",
+            "permanent": true
+        },
+        {
+            "source": "/:path((?!en(?:/|$)|de(?:/|$)|api(?:/|$)|assets(?:/|$)|_astro(?:/|$)|research(?:/|$)|_vercel(?:/|$)|.*\\.[^/]+$).+)",
+            "has": [{ "type": "host", "value": "www.antonebsen.com" }],
+            "destination": "https://www.antonebsen.com/en/:path",
+            "permanent": true
+        },
+        {
+            "source": "/:path*",
+            "has": [{ "type": "host", "value": "www.antonebsen.dk" }],
+            "destination": "https://antonebsen.dk/:path*",
+            "permanent": true
+        },
+        {
+            "source": "/",
+            "has": [{ "type": "host", "value": "antonebsen.com" }],
+            "destination": "https://www.antonebsen.com/en",
+            "permanent": true
+        },
+        {
+            "source": "/:path((?!en(?:/|$)|de(?:/|$)|api(?:/|$)|assets(?:/|$)|_astro(?:/|$)|research(?:/|$)|_vercel(?:/|$)|.*\\.[^/]+$).+)",
+            "has": [{ "type": "host", "value": "antonebsen.com" }],
+            "destination": "https://www.antonebsen.com/en/:path",
+            "permanent": true
+        },
+        {
+            "source": "/en",
+            "has": [{ "type": "host", "value": "antonebsen.dk" }],
+            "destination": "https://www.antonebsen.com/en",
+            "permanent": true
+        },
+        {
+            "source": "/en/:path+",
+            "has": [{ "type": "host", "value": "antonebsen.dk" }],
+            "destination": "https://www.antonebsen.com/en/:path+",
+            "permanent": true
+        }
+    ],
     "headers": [
         {
             "source": "/(.*)",

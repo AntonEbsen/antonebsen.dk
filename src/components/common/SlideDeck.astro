@@ -16,16 +16,16 @@ const { slides } = Astro.props;
   </div>
 
   <!-- Controls -->
-  <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 backdrop-blur hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0" id="prev-slide">
+  <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0" id="prev-slide">
     <i class="fa-solid fa-chevron-left"></i>
   </button>
   
-  <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 backdrop-blur hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0" id="next-slide">
+  <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0" id="next-slide">
     <i class="fa-solid fa-chevron-right"></i>
   </button>
 
   <!-- Counter -->
-  <div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur px-3 py-1 rounded-full text-xs font-mono text-white/80">
+  <div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-mono text-white/80">
     <span id="current-slide">1</span> / <span id="total-slides">{slides.length}</span>
   </div>
 </div>

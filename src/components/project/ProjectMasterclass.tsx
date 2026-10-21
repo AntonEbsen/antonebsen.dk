@@ -237,7 +237,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
         <section className="my-24 bg-bg border border-white/10 rounded-[40px] overflow-hidden shadow-2xl relative group/masterclass">
             {/* Vanguard Series Badge - The "Perfectionist" Signal */}
             <div className="absolute top-0 left-0 z-20 pointer-events-none">
-                <div className="bg-gradient-to-br from-card to-bg border-b border-r border-white/10 px-6 py-4 rounded-br-3xl shadow-2xl flex items-center gap-4 transition-transform group-hover/masterclass:scale-[1.02] duration-500 origin-top-left">
+                <div className="bg-linear-to-br from-card to-bg border-b border-r border-white/10 px-6 py-4 rounded-br-3xl shadow-2xl flex items-center gap-4 transition-transform group-hover/masterclass:scale-[1.02] duration-500 origin-top-left">
                     <div className="relative">
                         <div className="w-10 h-10 border-2 border-accent/40 rounded-full flex items-center justify-center">
                             <i className="fa-solid fa-shield-halved text-accent text-sm"></i>
@@ -260,14 +260,14 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
 
             <div className="p-8 md:p-12 relative z-10">
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-                    <div className="flex-grow">
+                    <div className="grow">
                         <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-accent mb-4 block">
                             {t.masterclass}
                         </span>
                         <h2 className="text-3xl md:text-5xl font-serif text-text mb-4">
                             {title || (lang === 'da' ? 'Video-serien: Fra Intuition til Metode' : 'Video Series: From Intuition to Method')}
                         </h2>
-                        <p className="text-muted max-w-2xl text-lg font-serif italic">
+                        <p className="text-muted max-w-(--container-2xl) text-lg font-serif italic">
                             {description || (lang === 'da' ? 'En 7-delt serie der dissekerer de økonomiske mekanismer, SVAR-metodologi og resultaterne af min forskning.' : 'A 7-part series dissecting the economic mechanisms, SVAR methodology, and the results of my research.')}
                         </p>
                     </div>
@@ -276,7 +276,7 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                             href={briefingUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full border border-white/10 hover:border-white/20 transition-all flex items-center gap-3 backdrop-blur-sm group whitespace-nowrap"
+                            className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full border border-white/10 hover:border-white/20 transition-all flex items-center gap-3 backdrop-blur-xs group whitespace-nowrap"
                         >
                             <i className="fa-solid fa-file-pdf text-red-400 group-hover:scale-110 transition-transform"></i>
                             <span className="text-sm font-bold uppercase tracking-widest">{t.downloadBriefing}</span>
@@ -363,14 +363,14 @@ const ProjectMasterclass: React.FC<Props> = ({ series, robustness, title, descri
                                             allowFullScreen
                                         ></iframe>
                                     ) : (
-                                        <div className="w-full h-full flex flex-col items-center justify-center text-center px-8 bg-gradient-to-br from-bg to-black">
+                                        <div className="w-full h-full flex flex-col items-center justify-center text-center px-8 bg-linear-to-br from-bg to-black">
                                             <div className="w-14 h-14 rounded-full border border-accent/30 flex items-center justify-center mb-6">
                                                 <i className="fa-solid fa-clapperboard text-accent"></i>
                                             </div>
                                             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-3">
                                                 {t.comingSoon}
                                             </p>
-                                            <p className="text-muted text-sm max-w-xs mb-6">{t.comingSoonSub}</p>
+                                            <p className="text-muted text-sm max-w-(--container-xs) mb-6">{t.comingSoonSub}</p>
                                             <a
                                                 href={CHANNEL_URL}
                                                 target="_blank"

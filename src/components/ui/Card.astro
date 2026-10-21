@@ -28,9 +28,9 @@ const {
 } = Astro.props;
 
 const variants = {
-  default: 'bg-[var(--card)] border border-rule',
-  glass: 'bg-[var(--glass)] backdrop-blur-md border border-[var(--glass-border)]',
-  gradient: 'bg-[var(--depth-bg)] border border-rule',
+  default: 'bg-(--card) border border-rule',
+  glass: 'bg-(--glass) backdrop-blur-md border border-(--glass-border)',
+  gradient: 'bg-(--depth-bg) border border-rule',
   // Was bg-[rgba(17,24,39,0.02)] — a near-black tint left over from when this
   // site had a light theme. On a dark background it did nothing but sit there.
   bordered: 'bg-transparent border border-rule',
@@ -43,7 +43,7 @@ const base = 'p-6 transition-[transform,border-color,box-shadow] duration-300 ea
 // Every variant carries a border now, so the accent hover finally has something
 // to change. It used to be set on all four while only two had a border to change.
 const hover = interactive
-  ? 'hover:-translate-y-0.5 hover:border-[var(--glass-border-hover)] hover:shadow-2'
+  ? 'hover:-translate-y-0.5 hover:border-(--glass-border-hover) hover:shadow-2'
   : '';
 ---
 

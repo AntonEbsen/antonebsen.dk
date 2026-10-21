@@ -17,7 +17,7 @@ const { tiles, class: className = '' } = Astro.props;
 {tiles.length > 0 && (
   <dl class:list={['grid grid-cols-2 md:grid-cols-4 gap-4 m-0', className]}>
     {tiles.map((tile) => (
-      <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-5">
+      <div class="bg-(--glass) border border-(--glass-border) rounded-(--radius) p-5">
         <dt class="text-[10px] uppercase tracking-widest text-muted mb-2">
           {tile.icon && <i class={`${tile.icon} mr-1.5 text-accent`} aria-hidden="true"></i>}{tile.label}
         </dt>

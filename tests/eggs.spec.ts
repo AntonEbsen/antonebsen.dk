@@ -405,6 +405,8 @@ test.describe('The Contra Entry', () => {
 
         const canvas = page.locator('canvas[role="img"]');
         await expect(canvas).toBeVisible();
+        // The island is client:visible: entering the viewport triggers hydration.
+        await canvas.scrollIntoViewIfNeeded();
         // Chart.js sizes the canvas to its container once it has initialised.
         await expect.poll(async () => (await canvas.boundingBox())!.width).toBeGreaterThan(400);
 

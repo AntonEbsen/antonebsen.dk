@@ -126,7 +126,7 @@ const publications: Publication[] = [
                 <h1 class="text-5xl md:text-7xl font-bold mb-8 tracking-tighter animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
                     {t.heroTitle}
                 </h1>
-                <p class="text-xl text-muted leading-relaxed max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+                <p class="text-xl text-muted leading-relaxed max-w-(--container-2xl) mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
                     {t.heroText}
                 </p>
             </div>
@@ -147,7 +147,7 @@ const publications: Publication[] = [
             <!-- Publications Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto" id="pub-grid">
                 {publications.map((pub, i) => (
-                    <div class="pub-card group bg-white/[0.03] border border-white/10 rounded-[32px] p-8 flex flex-col transition-all duration-500 hover:bg-white/[0.06] hover:border-accent/40 hover:-translate-y-2 relative overflow-hidden academic-section" data-type={pub.type}>
+                    <div class="pub-card group bg-white/3 border border-white/10 rounded-[32px] p-8 flex flex-col transition-all duration-500 hover:bg-white/6 hover:border-accent/40 hover:-translate-y-2 relative overflow-hidden academic-section" data-type={pub.type}>
                         <div class="absolute top-0 right-0 -m-8 w-48 h-48 bg-accent/5 rounded-full blur-[60px] group-hover:bg-accent/10 transition-colors"></div>
                         
                         <div class="flex items-start justify-between mb-8 relative z-10">
@@ -185,11 +185,11 @@ const publications: Publication[] = [
                                 really in public/; otherwise say so plainly. */}
                             <div class="flex items-center gap-4">
                                 {assetExists(pub.pdfUrl) ? (
-                                    <Button href={pub.pdfUrl} class="flex-grow shadow-lg shadow-accent/10" target="_blank">
+                                    <Button href={pub.pdfUrl} class="grow shadow-lg shadow-accent/10" target="_blank">
                                         <i class="fa-solid fa-file-pdf mr-2"></i> {t.download}
                                     </Button>
                                 ) : (
-                                    <span class="flex-grow text-xs font-bold uppercase tracking-widest text-muted flex items-center gap-2">
+                                    <span class="grow text-xs font-bold uppercase tracking-widest text-muted flex items-center gap-2">
                                         <i class="fa-solid fa-clock" aria-hidden="true"></i> {t.unpublished}
                                     </span>
                                 )}

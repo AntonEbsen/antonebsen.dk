@@ -64,7 +64,7 @@ const projectHref = lang === 'da' ? '/projects/welfare-state-seminar' : '/en/pro
                     <h1 class="text-4xl md:text-6xl tracking-tighter mb-6">
                         {t.heading}
                     </h1>
-                    <p class="text-lg text-muted max-w-2xl leading-relaxed font-serif italic">{t.lead}</p>
+                    <p class="text-lg text-muted max-w-(--container-2xl) leading-relaxed font-serif italic">{t.lead}</p>
                 </div>
 
                 <RollingWindowForge client:visible lang={lang as 'da' | 'en'} />
@@ -79,19 +79,19 @@ const projectHref = lang === 'da' ? '/projects/welfare-state-seminar' : '/en/pro
                     </Card>
                     <div class="flex flex-col justify-center">
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                            <div class="p-6 bg-white/3 border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.method}</p>
                                 <p class="text-sm font-bold text-white">{t.methodValue}</p>
                             </div>
-                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                            <div class="p-6 bg-white/3 border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.data}</p>
                                 <p class="text-sm font-bold text-white">{t.dataValue}</p>
                             </div>
-                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                            <div class="p-6 bg-white/3 border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.source}</p>
                                 <p class="text-sm font-bold text-white">{t.sourceValue}</p>
                             </div>
-                            <div class="p-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                            <div class="p-6 bg-white/3 border border-white/10 rounded-2xl">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-accent mb-1">{t.errors}</p>
                                 <p class="text-sm font-bold text-white">{t.errorsValue}</p>
                             </div>

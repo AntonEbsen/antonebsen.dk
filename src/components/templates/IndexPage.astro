@@ -6,7 +6,7 @@ import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import SectionTitle from '@components/ui/SectionTitle.astro';
 import ContourField from '@components/ui/ContourField.astro';
-import FeatureCard from '@components/ui/FeatureCard.astro';
+import ResearchCards from '@components/research/ResearchCards.astro';
 import TechStack from '@components/ui/TechStack.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import { Image } from 'astro:assets';
@@ -22,7 +22,7 @@ interface Props {
 const { lang } = Astro.props;
 const isDa = lang === 'da';
 
-const portLink = isDa ? '/portfolio' : '/en/portfolio';
+const portLink = isDa ? '/cliometrics' : '/en/cliometrics';
 const cvLink = isDa ? '/cv' : '/en/cv';
 const guestbookLink = isDa ? '/guestbook' : '/en/guestbook';
 const contactLink = isDa ? '/contact' : '/en/contact';
@@ -90,9 +90,9 @@ const skillsData = {
         {/* display-lg tops out at 76px, which broke the name across three lines
             in a half-width hero column. This step down keeps it to two. */}
         <h1 class="font-serif text-display-sm">
-          Anton Meier <span class="text-accent underline decoration-2 underline-offset-[10px] decoration-accent/60">Ebsen</span> Jørgensen
+          Anton Meier <span class="text-accent underline decoration-2 underline-offset-10 decoration-accent/60">Ebsen</span> Jørgensen
         </h1>
-        <p class="eyebrow mt-md mb-sm !text-lead">
+        <p class="eyebrow mt-md mb-sm text-lead!">
           {content.hero.tag}
         </p>
         <p class="text-lead text-dim leading-relaxed max-w-prose">
@@ -108,7 +108,7 @@ const skillsData = {
       <a href={isDa ? '/about' : '/en/about'} class="relative group block">
         {/* Was accent -> purple-500. The palette is terracotta and moss; purple
             was the only place that gradient appeared on the whole site. */}
-        <div class="absolute -inset-4 bg-gradient-to-br from-accent/25 to-accent-2/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
+        <div class="absolute -inset-4 bg-linear-to-br from-accent/25 to-accent-2/20 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-[pulseGlow_3s_ease-in-out_infinite]"></div>
         <div class="relative aspect-square overflow-hidden rounded-panel border border-accent/30 shadow-2 group-hover:border-accent/60 transition-all duration-300">
           <Image 
             src={myImageSrc} 
@@ -121,9 +121,9 @@ const skillsData = {
           {/* Moss, not Tailwind's green-500 — the site already has a green and
               this was not it. Text is --bg rather than white so the pill still
               clears AA against the lighter moss. */}
-          <div class="absolute top-4 right-4 px-3 py-1.5 bg-accent-2 backdrop-blur-sm text-[var(--bg)] text-xs font-bold rounded-full shadow-1 flex items-center gap-1.5">
-            <span class="w-2 h-2 bg-[var(--bg)] rounded-full animate-pulse"></span>
-            {isDa ? 'Tilgaengelig' : 'Available'}
+          <div class="absolute top-4 right-4 px-3 py-1.5 bg-accent-2 backdrop-blur-xs text-(--bg) text-xs font-bold rounded-full shadow-1 flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-(--bg) rounded-full animate-pulse"></span>
+            {isDa ? 'Kandidatstuderende' : 'MSc student'}
           </div>
         </div>
       </a>
@@ -140,7 +140,7 @@ const skillsData = {
       {[
         { n: '01', icon: 'fa-solid fa-code', tint: 'bg-accent/10 group-hover:bg-accent/20', fg: 'text-accent', c: content.cards.model },
         { n: '02', icon: 'fa-solid fa-graduation-cap', tint: 'bg-accent-2/10 group-hover:bg-accent-2/20', fg: 'text-accent-2', c: content.cards.focus },
-        { n: '03', icon: 'fa-solid fa-chalkboard-user', tint: 'bg-text/[0.06] group-hover:bg-text/10', fg: 'text-dim', c: content.cards.teach },
+        { n: '03', icon: 'fa-solid fa-chalkboard-user', tint: 'bg-text/6 group-hover:bg-text/10', fg: 'text-dim', c: content.cards.teach },
       ].map((card) => (
         <Card variant="glass" elevation={1} class="p-8 group">
           <div class="flex items-center justify-between mb-6">
@@ -161,16 +161,13 @@ const skillsData = {
     </Section>
 
     <Section class="animate-on-scroll delay-200">
-      <FeatureCard
-        badge={content.feature.badge}
-        title={content.feature.title}
-        description={content.feature.desc}
-        tagString={content.feature.tags}
-        url={portLink}
-      />
+      <SectionTitle eyebrow={isDa ? 'Økonomisk historie · Økonometri · Ulighed' : 'Economic history · Econometrics · Inequality'}>
+        {isDa ? 'Udvalgte forskningsprojekter' : 'Selected research projects'}
+      </SectionTitle>
+      <div class="mt-lg"><ResearchCards lang={lang} /></div>
     </Section>
 
-    {featuredVideo && (
+    {featuredVideo && featuredVideo.track === 'economics' && (
       <Section class="animate-on-scroll delay-200">
         <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-10 items-center">
           <YouTubeEmbed

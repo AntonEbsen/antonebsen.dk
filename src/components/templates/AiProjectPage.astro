@@ -234,7 +234,7 @@ const chatLink = '/ai-chat';
         </div>
       </PageHeader>
 
-      <div class="max-w-3xl mb-2xl">
+      <div class="max-w-(--container-3xl) mb-2xl">
 
         {evalStatus && (
           <p class="inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-dim">
@@ -279,7 +279,7 @@ const chatLink = '/ai-chat';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
            {content.tech.stack.map((item: any) => (
              <div class="flex gap-4">
-               <div class="w-1 h-full bg-accent/30 rounded-full flex-shrink-0"></div>
+               <div class="w-1 h-full bg-accent/30 rounded-full shrink-0"></div>
                <div>
                  <h3 class="font-bold text-lg text-text mb-1">{item.name}</h3>
                  <p class="text-sm text-dim">{item.desc}</p>

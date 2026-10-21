@@ -19,7 +19,33 @@ const entry = await getEntry('pages', `${lang}/resources`);
 if (!entry) {
   throw new Error(`Could not find content for ${lang}/resources`);
 }
-const content = entry.data;
+// Danish/English use nested UI blocks; German still uses the earlier flat keys.
+// Reading only flat keys left the nested pages with an empty, invisible h1.
+const raw = entry.data;
+const hero = raw.hero;
+const buttons = hero?.btns as Record<string, string> | undefined;
+const sections = raw.sections as Record<string, Record<string, string>> | undefined;
+const field = (key: string, fallback: unknown = '') =>
+  typeof raw[key] === 'string' ? raw[key] as string : typeof fallback === 'string' ? fallback : '';
+const content = {
+  title: raw.title,
+  desc: raw.description,
+  eyebrow: field('eyebrow', hero?.eyebrow),
+  heroTitle: field('heroTitle', hero?.title),
+  heroText: field('heroText', hero?.text),
+  downloadBtn: field('downloadBtn', buttons?.download),
+  statsBtn: field('statsBtn', buttons?.stats),
+  askBtn: field('askBtn', buttons?.ask),
+  noteTitle: field('noteTitle', sections?.note?.title),
+  noteText1: field('noteText1', sections?.note?.text1),
+  noteText2: field('noteText2', sections?.note?.text2),
+  catTitle: field('catTitle', sections?.downloads?.title),
+  catText: field('catText', sections?.downloads?.text),
+  ctaTitle: field('ctaTitle', sections?.cta?.title),
+  ctaText: field('ctaText', sections?.cta?.text),
+  ctaContact: field('ctaContact', sections?.cta?.contact),
+  ctaServices: field('ctaServices', sections?.cta?.services),
+};
 
 // 2. Fetch Resources Data (Items)
 const resEntry = await getEntry('resources', lang);
@@ -71,9 +97,9 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
     <!-- HERO -->
     <Section class="hero">
       <Card variant="glass" class="p-6">
-        <p class="text-xs font-extrabold uppercase tracking-wider text-[var(--text-dim)] mb-3">{content.eyebrow}</p>
+        <p class="text-xs font-extrabold uppercase tracking-wider text-(--text-dim) mb-3">{content.eyebrow}</p>
         <h1 class="text-[clamp(26px,4vw,40px)] leading-tight mb-4 font-bold">{content.heroTitle}</h1>
-        <p class="text-lg leading-relaxed text-[var(--text-dim)] mb-6">
+        <p class="text-lg leading-relaxed text-(--text-dim) mb-6">
           {content.heroText}
         </p>
 
@@ -96,11 +122,11 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
 
       <div class="hidden md:block">
         <Card variant="glass" class="p-4">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-4">{content.noteTitle}</h2>
-          <p class="text-[13px] text-[var(--text-dim)] mb-4 opacity-70">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-(--accent) mb-4">{content.noteTitle}</h2>
+          <p class="text-[13px] text-(--text-dim) mb-4 opacity-70">
             {content.noteText1}
           </p>
-          <p class="text-[13px] text-[var(--text-dim)] opacity-70">
+          <p class="text-[13px] text-(--text-dim) opacity-70">
             {content.noteText2}
           </p>
         </Card>
@@ -110,8 +136,8 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
     <!-- DOWNLOADS -->
     <Section id="downloads">
       <Card variant="bordered" class="bg-[rgba(255,255,255,0.01)]!">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-2">{content.catTitle}</h2>
-        <p class="text-[var(--text-dim)] opacity-70 mb-6">{content.catText}</p>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-(--accent) mb-2">{content.catTitle}</h2>
+        <p class="text-(--text-dim) opacity-70 mb-6">{content.catText}</p>
 
         <div class="dl-grid">
           {resourcesData.map(res => (
@@ -120,8 +146,8 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
                   <h3 class="text-[16px] font-bold leading-tight m-0">{res.title}</h3>
                   <Pill variant="accent" class="shrink-0">{res.pill}</Pill>
                 </div>
-                <p class="text-[13px] text-[var(--text-dim)] mb-3 opacity-90">{res.meta}</p>
-                <p class="text-[14px] text-[var(--text-dim)] flex-grow mb-4 leading-relaxed opacity-90">
+                <p class="text-[13px] text-(--text-dim) mb-3 opacity-90">{res.meta}</p>
+                <p class="text-[14px] text-(--text-dim) grow mb-4 leading-relaxed opacity-90">
                   {res.desc}
                 </p>
                 {/* None of the four files under /assets/downloads/ were ever produced,
@@ -133,7 +159,7 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
                     {res.links.map(l => (
                         l.disabled || !assetExists(l.url) ? (
                             <span
-                                class="inline-flex items-center px-4 py-2 text-xs font-bold rounded-lg border border-white/10 text-[var(--text-dim)] opacity-50 cursor-not-allowed"
+                                class="inline-flex items-center px-4 py-2 text-xs font-bold rounded-lg border border-white/10 text-(--text-dim) opacity-50 cursor-not-allowed"
                                 title={lang === 'da' ? 'Ikke klar endnu' : 'Not ready yet'}
                             >
                                 {l.icon && <i class={`${l.icon} mr-2`}></i>} {l.text}
@@ -161,8 +187,8 @@ const statsLink = isDa ? '/kursusstatistik' : '/en/course-stats';
     <!-- CTA -->
     <Section>
       <Card variant="default">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">{content.ctaTitle}</h2>
-        <p class="text-[var(--text-dim)] opacity-70 mb-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-(--accent) mb-3">{content.ctaTitle}</h2>
+        <p class="text-(--text-dim) opacity-70 mb-6">
           {content.ctaText}
         </p>
         <div class="flex flex-wrap gap-3">

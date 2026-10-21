@@ -137,14 +137,14 @@ const t = isDa ? content.da : content.en;
         <h1 class="text-6xl md:text-8xl mb-8 leading-none tracking-tighter uppercase">
           {t.heroTitle}<span class="text-accent">.</span>
         </h1>
-        <p class="text-xl md:text-2xl text-dim max-w-2xl leading-relaxed border-l-4 border-accent pl-8">
+        <p class="text-xl md:text-2xl text-dim max-w-(--container-2xl) leading-relaxed border-l-4 border-accent pl-8">
           {t.heroText}
         </p>
       </div>
     </Section>
 
     <!-- SWOT Matrix -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden rounded-[40px] border border-white/5 bg-white/[0.01]">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden rounded-[40px] border border-white/5 bg-white/1">
        <!-- STRENGTHS -->
        <div class={`p-10 md:p-16 border-b md:border-r border-white/5 ${t.swot.s.bg} animate-on-scroll`}>
           <div class="flex flex-col h-full">
@@ -219,7 +219,7 @@ const t = isDa ? content.da : content.en;
     </div>
 
     <!-- Summary / Conclusion -->
-    <Section class="mt-32 max-w-2xl mx-auto text-center animate-on-scroll">
+    <Section class="mt-32 max-w-(--container-2xl) mx-auto text-center animate-on-scroll">
        <div class="h-[2px] w-20 bg-accent/20 mx-auto mb-8"></div>
        <p class="text-dim italic leading-relaxed">
           {isDa 

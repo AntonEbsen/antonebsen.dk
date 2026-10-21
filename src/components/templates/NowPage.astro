@@ -123,7 +123,7 @@ const t = content[lang] ?? content.da;
   <main class="container mx-auto px-4 py-20">
     <!-- Hero -->
     <Section class="mb-16 animate-on-scroll">
-      <div class="max-w-3xl">
+      <div class="max-w-(--container-3xl)">
         <h1 class="text-6xl mb-6 tracking-tighter">
           {t.heroTitle}<span class="text-accent">.</span>
         </h1>
@@ -145,7 +145,7 @@ const t = content[lang] ?? content.da;
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             {section.items.map(item => (
               <div class="relative group">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-accent/20 to-transparent rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div class="absolute -inset-0.5 bg-linear-to-r from-accent/20 to-transparent rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
                 <Card variant="glass" class="relative p-8 h-full">
                   <div class="flex justify-between items-start mb-4">
                     <h3 class="text-xl font-bold text-text group-hover:text-accent transition-colors">{item.title}</h3>
@@ -166,7 +166,7 @@ const t = content[lang] ?? content.da;
 
     <!-- Footer Quote/CTA -->
     <Section class="mt-32 text-center animate-on-scroll">
-       <div class="max-w-xl mx-auto border-t border-white/5 pt-12">
+       <div class="max-w-(--container-xl) mx-auto border-t border-white/5 pt-12">
           <p class="text-sm text-dim italic mb-6">
             {t.quote}
           </p>

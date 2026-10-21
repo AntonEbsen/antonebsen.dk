@@ -98,7 +98,7 @@ const tiles = [
   trail.durationMin && { label: t.duration, value: hhmm(trail.durationMin), icon: 'fa-solid fa-clock' },
   trail.steps && { label: t.steps, value: trail.steps.toLocaleString(locale), icon: 'fa-solid fa-shoe-prints' },
   trail.avgSpeedKmh && { label: t.pace, value: `${trail.avgSpeedKmh} ${isDa ? 'km/t' : 'km/h'}`, icon: 'fa-solid fa-gauge-high' },
-  // Free-form badges (see the `stats` note in src/content/config.ts). These used to
+  // Free-form badges (see the `stats` note in src/content.config.ts). These used to
   // render on the card and then silently vanish here.
   ...(video.stats ?? []).map((stat) => ({
     label: (isDa && stat.label_da) || (lang === 'de' && stat.label_de) || stat.label,
@@ -157,7 +157,7 @@ const jsonLd = {
       <i class="fa-solid fa-arrow-left text-[10px]" aria-hidden="true"></i>{t.back}
     </a>
 
-    <Section class="!mb-10">
+    <Section class="mb-10!">
       <div class="flex flex-wrap items-center gap-2 mb-5">
         <Pill variant={trackPillVariant(video.track)}>
           <i class={`${trackIcon(video.track)} mr-1.5`} aria-hidden="true"></i>{trackLabel}
@@ -175,7 +175,7 @@ const jsonLd = {
       </div>
 
       <h1 class="text-4xl md:text-5xl leading-tight mb-5">{title}</h1>
-      <p class="text-lg text-muted leading-relaxed max-w-3xl mb-8">{description}</p>
+      <p class="text-lg text-muted leading-relaxed max-w-(--container-3xl) mb-8">{description}</p>
 
       {(trail.startPlace || trail.endPlace) && (
         <p class="text-sm text-muted mb-8">
@@ -207,7 +207,7 @@ const jsonLd = {
           {trail.hasPath && <RouteMap paths={[trail.path]} label={t.route} />}
 
           {trail.hasProfile && (
-            <div class="bg-[var(--glass)] border border-[var(--glass-border)] rounded-[var(--radius)] p-6">
+            <div class="bg-(--glass) border border-(--glass-border) rounded-(--radius) p-6">
               <h3 class="text-[10px] uppercase tracking-widest text-muted mb-4">{t.profile}</h3>
               <div class="relative h-[280px]">
                 <canvas
@@ -274,7 +274,7 @@ const jsonLd = {
             {transcript.paragraphs.map((para) => (
               <button
                 type="button"
-                class="chapter-seek flex w-full gap-5 border-b border-white/5 py-4 text-left transition-colors hover:bg-white/[0.02]"
+                class="chapter-seek flex w-full gap-5 border-b border-white/5 py-4 text-left transition-colors hover:bg-white/2"
                 data-seek={para.t}
                 data-youtube-id={video.youtubeId}
                 aria-label={`${t.watch} ${formatTimestamp(para.t)}`}

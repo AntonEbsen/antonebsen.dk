@@ -212,10 +212,10 @@ const t = {
       <div id="fp-chat-messages" tabindex="0" aria-label={lang === "da" ? "Samtale" : "Conversation"} class="flex-1 p-6 overflow-y-auto space-y-6 scrollbar-hide text-text">
         <!-- Intro Message -->
         <div class="flex gap-4">
-          <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 mt-1 border border-accent/20">
+          <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0 mt-1 border border-accent/20">
             <i class="fa-solid fa-robot text-lg"></i>
           </div>
-          <div class="bg-white/5 border border-white/10 p-5 rounded-sm border-l-2 border-l-accent max-w-[85%] leading-relaxed">
+          <div class="bg-white/5 border border-white/10 p-5 rounded-xs border-l-2 border-l-accent max-w-[85%] leading-relaxed">
             <p class="font-mono text-xs text-accent mb-2 uppercase tracking-wide">System Message</p>
             <p set:html={t.intro} />
           </div>
@@ -223,7 +223,7 @@ const t = {
       </div>
 
       <!-- Input Area -->
-      <div class="p-4 border-t border-[var(--rule)] bg-[var(--glass)] backdrop-blur-md relative">
+      <div class="p-4 border-t border-(--rule) bg-(--glass) backdrop-blur-md relative">
         <!-- Audio Visualizer -->
         <canvas id="audio-visualizer" class="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-20 pointer-events-none opacity-0 transition-opacity duration-300 z-10"></canvas>
         <!-- Quick Prompts -->
@@ -247,7 +247,7 @@ const t = {
 
           <input type="file" id="fp-chat-file" hidden accept=".pdf,.txt,.md,.csv,.jpg,.jpeg,.png,.webp" />
           <!-- Button Spacing: Send(2) <-[8px]-> Voice(16) <-[8px]-> File(30) -->
-          <button type="button" id="fp-file-btn" aria-label={lang === "da" ? "Vedhæft dokument" : "Attach a document"} class="absolute right-[7.5rem] top-2 bottom-2 chat-input-btn w-12 group" title="Upload Document (PDF/Text)">
+          <button type="button" id="fp-file-btn" aria-label={lang === "da" ? "Vedhæft dokument" : "Attach a document"} class="absolute right-30 top-2 bottom-2 chat-input-btn w-12 group" title="Upload Document (PDF/Text)">
             <i class="fa-solid fa-paperclip text-lg group-hover:scale-110 transition-transform"></i>
           </button>
           <button type="button" id="fp-voice-btn" aria-label={lang === "da" ? "Tal til assistenten" : "Speak to the assistant"} class="absolute right-16 top-2 bottom-2 chat-input-btn w-12 group" title="Speak to Anton">
@@ -267,9 +267,6 @@ const t = {
             <button type="button" id="fp-remove-file" class="ml-2 hover:text-text" aria-label={lang === "da" ? "Fjern vedhæftning" : "Remove attachment"}><i class="fa-solid fa-times"></i></button>
         </div>
       </div>
-
-
-    </div>
   </main>
 
   <script>
@@ -762,7 +759,7 @@ const t = {
 
       if (role === 'ai') {
         div.innerHTML = `
-          <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center flex-shrink-0 mt-1 border border-accent/20">
+          <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0 mt-1 border border-accent/20">
             <i class="fa-solid fa-robot text-lg"></i>
           </div>
           <div class="flex flex-col max-w-[85%] ai-content-wrapper">
@@ -787,7 +784,7 @@ const t = {
 
       } else {
         const bubble = document.createElement('div');
-        bubble.className = "bg-accent p-4 md:p-5 rounded-sm rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent text-text";
+        bubble.className = "bg-accent p-4 md:p-5 rounded-xs rounded-tr-none max-w-[85%] text-left shadow-lg font-medium text-sm md:text-base border border-accent text-text";
         const p = document.createElement('p');
         p.className = "text-bg font-semibold";
         p.textContent = text;
@@ -810,10 +807,10 @@ const t = {
       div.className = 'flex gap-4';
       
       div.innerHTML = `
-         <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center flex-shrink-0 mt-1 animate-pulse">
+         <div class="w-10 h-10 rounded-full bg-accent text-bg flex items-center justify-center shrink-0 mt-1 animate-pulse">
             <i class="fa-solid fa-microchip text-lg"></i>
           </div>
-          <div class="bg-[var(--rule)] border border-accent/20 p-4 rounded-2xl rounded-tl-none flex items-center">
+          <div class="bg-(--rule) border border-accent/20 p-4 rounded-2xl rounded-tl-none flex items-center">
             <span id="typing-text" class="text-xs font-mono text-accent tracking-wider">⚡ Initializing Quantum Core...</span>
           </div>
       `;

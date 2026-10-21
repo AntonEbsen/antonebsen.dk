@@ -102,7 +102,7 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 my-16">
-            <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.subtitle}>
+            <div className="p-8 bg-white/2 border border-white/10 rounded-3xl backdrop-blur-xs" aria-label={t.subtitle}>
                 <div className="mb-6">
                     <h3 className="text-xl text-text uppercase italic tracking-tight mb-1">{t.title}</h3>
                     <p className="text-[10px] uppercase font-bold text-accent tracking-[0.2em]">{t.subtitle}</p>
@@ -113,7 +113,7 @@ const HistoricalIndicators: React.FC<Props> = ({ lang }) => {
                 <p className="mt-6 text-[9px] text-muted italic uppercase tracking-widest">{t.source}</p>
             </div>
 
-            <div className="p-8 bg-white/[0.02] border border-white/10 rounded-3xl backdrop-blur-sm" aria-label={t.tfrSubtitle}>
+            <div className="p-8 bg-white/2 border border-white/10 rounded-3xl backdrop-blur-xs" aria-label={t.tfrSubtitle}>
                 <div className="mb-6">
                     <h3 className="text-xl text-text uppercase italic tracking-tight mb-1">{t.tfrTitle}</h3>
                     <p className="text-[10px] uppercase font-bold text-accent tracking-[0.2em]">{t.tfrSubtitle}</p>

@@ -17,10 +17,6 @@
             ],
             "highlights": [
                 {
-                    "label": "Ergebnis",
-                    "value": "Ausgezeichnete Bewertungen / X+ Studenten"
-                },
-                {
                     "label": "Werkzeuge",
                     "value": "Excel · VBA · PowerPoint"
                 }
@@ -86,8 +82,9 @@
                 "tech",
                 "core"
             ],
-            "description": "Wirtschaftswissenschaften mit Schwerpunkt Makroökonomie, Geldpolitik, Zeitreihenanalyse und Modellierung. Großer Fokus auf praktischer Datenarbeit und Programmierung.",
+            "description": "Wirtschaftswissenschaften mit Schwerpunkt Makroökonomie, Geldpolitik, Zeitreihenanalyse und Modellierung. Großer Fokus auf praktischer Datenarbeit und Programmierung. Voraussichtlicher Masterabschluss: Januar 2027.",
             "bullets": [
+                "Wirtschaftsgeschichte und Demografie",
                 "Makro- & Geldpolitik (EZB/Zentralbanken)",
                 "Ökonometrie & Zeitreihenanalyse (Forecasting, SVAR, etc.)",
                 "Ökonomische Modelle (RBC/CGE)",
@@ -170,7 +167,13 @@
             "institution": "Universität Kopenhagen",
             "description": "Gesellschaftliche Folgen und ethische Aspekte der KI-Technologie.",
             "level": "master",
-            "grade": "10"
+            "grade": "10",
+            "relatedProjects": [
+                {
+                    "title": "Does GenAI Help Those Who Need It Most?",
+                    "href": "/en/projects/genai-inequality"
+                }
+            ]
         },
         {
             "title": "Angewandte ökonomische Modellierung",
@@ -542,6 +545,54 @@
     ],
     "projects": [
         {
+            "title": "Bismarck’s Lost Battle",
+            "url": "/en/projects/demography-project",
+            "tag": "Completed course paper · May 2026",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Historical demography",
+                "Panel data",
+                "Difference-in-differences"
+            ],
+            "meta": "Demography · University of Copenhagen · Grade: 12",
+            "description": "An individual empirical paper using Prussian county data to examine religious repression, marriage and fertility. The analysis distinguishes religious exposure from overlapping ethnic policies and finds no robust marital-fertility response."
+        },
+        {
+            "title": "The Danish West Indies",
+            "url": "/en/projects/master-thesis",
+            "tag": "Joint MSc thesis · In progress · Expected January 2027",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Economic history",
+                "Historical data",
+                "Handwriting recognition"
+            ],
+            "meta": "MSc Economics · University of Copenhagen · Supervisor: Paul Sharp",
+            "description": "An ongoing joint thesis on the economic history of slavery in the Danish West Indies, combining historical records, archival data construction and quantitative analysis. The draft is not a completed or published paper."
+        },
+        {
+            "title": "Does GenAI Help Those Who Need It Most?",
+            "url": "/en/projects/genai-inequality",
+            "tag": "Group course research proposal · January 2026",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Research design",
+                "Causal forests (proposed)",
+                "AI and inequality"
+            ],
+            "meta": "AI for Humanity · University of Copenhagen · Course grade: 10",
+            "description": "A group research proposal on socioeconomic differences in the relationship between GenAI use and student performance. It proposes causal forests and discusses why voluntary adoption limits causal interpretation. No data collection or empirical results are claimed."
+        },
+        {
             "title": "Bachelorarbeit: Globaler Finanzzyklus & Spillovers",
             "tag": "Empirisch",
             "categories": [
@@ -550,20 +601,11 @@
             ],
             "meta": "Thema: US-Geldpolitik → Weltwirtschaft",
             "description": "Eine ökonometrische Analyse der Spillovers der US-Geldpolitik.",
-            "links": [
-                {
-                    "text": "PDF",
-                    "href": "#"
-                },
-                {
-                    "text": "Code",
-                    "href": "#"
-                }
-            ]
+            "links": []
         },
         {
             "title": "Globalization and the Welfare State",
-            "url": "/projects/welfare-state-seminar",
+            "url": "/en/projects/welfare-state-seminar",
             "tag": "Seminar",
             "categories": [
                 "tech",
@@ -601,24 +643,14 @@
             ],
             "meta": "Thema: Numerik & Modell-Setup",
             "description": "Implementierung und Simulation eines Real-Business-Cycle-Modells.",
-            "links": [
-                {
-                    "text": "Notizen",
-                    "href": "#"
-                }
-            ]
+            "links": []
         },
         {
             "title": "EZB-Projekt: Heterogene Effekte über Länder hinweg",
             "tag": "Geldpolitik",
             "meta": "Thema: Taylor-Regeln / synthetische Zinssätze",
             "description": "Analyse der Divergenz von Zinssatzregeln in der Eurozone.",
-            "links": [
-                {
-                    "text": "Folien",
-                    "href": "#"
-                }
-            ]
+            "links": []
         }
     ],
     "certifications": [

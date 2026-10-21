@@ -78,7 +78,7 @@ const t = isDa ? content.da : content.en;
         <h1 class="text-4xl md:text-6xl mb-8 leading-tight">
           {t.heroTitle}
         </h1>
-        <p class="text-xl text-dim leading-relaxed max-w-2xl border-l-2 border-accent/30 pl-8">
+        <p class="text-xl text-dim leading-relaxed max-w-(--container-2xl) border-l-2 border-accent/30 pl-8">
           {t.heroText}
         </p>
       </div>
@@ -110,7 +110,7 @@ const t = isDa ? content.da : content.en;
                 <span class="text-xs font-bold uppercase tracking-widest text-accent mb-1 block">{asset.status}</span>
                 <h4 class="text-xl font-bold text-text">{asset.name}</h4>
               </div>
-              <p class="text-dim text-sm md:max-w-md text-left md:text-right">
+              <p class="text-dim text-sm md:max-w-(--container-md) text-left md:text-right">
                 {asset.desc}
               </p>
             </div>

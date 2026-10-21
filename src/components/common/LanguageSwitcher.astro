@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl } from '@i18n/utils';
 import { switchTo } from '@lib/routes';
+import { languageSwitcherUrl } from '@i18n/domains';
 
 const lang = getLangFromUrl(Astro.url);
 const label = lang === 'en' ? 'Language' : (lang === 'de' ? 'Sprache' : 'Sprog');
@@ -22,15 +23,15 @@ const path = Astro.url.pathname;
   </button>
 
   <div id="lang-dropdown" class="dropdown" role="menu" aria-label="Sprogvalg">
-    <a href={switchTo(path, 'da')} role="menuitem" class="lang-link" aria-current={lang === 'da' ? 'true' : undefined}>
+    <a href={languageSwitcherUrl(Astro.url, switchTo(path, 'da'), 'da')} role="menuitem" class="lang-link" aria-current={lang === 'da' ? 'true' : undefined}>
       <span class="lang-text">Dansk</span>
     </a>
 
-    <a href={switchTo(path, 'en')} role="menuitem" class="lang-link" aria-current={lang === 'en' ? 'true' : undefined}>
+    <a href={languageSwitcherUrl(Astro.url, switchTo(path, 'en'), 'en')} role="menuitem" class="lang-link" aria-current={lang === 'en' ? 'true' : undefined}>
       <span class="lang-text">English</span>
     </a>
 
-    <a href={switchTo(path, 'de')} role="menuitem" class="lang-link" aria-current={lang === 'de' ? 'true' : undefined}>
+    <a href={languageSwitcherUrl(Astro.url, switchTo(path, 'de'), 'de')} role="menuitem" class="lang-link" aria-current={lang === 'de' ? 'true' : undefined}>
       <span class="lang-text">Deutsch</span>
     </a>
   </div>

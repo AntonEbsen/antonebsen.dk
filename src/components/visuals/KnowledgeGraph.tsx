@@ -37,7 +37,7 @@ const KnowledgeGraph: React.FC = () => {
     return (
         <div className="w-full h-full">
             {isMounted && (
-                <React.Suspense fallback={<Skeleton className="w-full h-full !rounded-none" label="Indlæser vidensnettet" />}>
+                <React.Suspense fallback={<Skeleton className="w-full h-full rounded-none!" label="Indlæser vidensnettet" />}>
                     <ForceGraph3D
                         ref={fgRef}
                         graphData={graphData}

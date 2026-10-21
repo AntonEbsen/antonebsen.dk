@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import tailwind from '@tailwindcss/vite';
+import { unified } from '@astrojs/markdown-remark';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
@@ -10,6 +11,8 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   output: 'server',
+  // Preserve the existing spacing between inline elements across the v7 upgrade.
+  compressHTML: true,
   trailingSlash: 'never',
 
   site: 'https://antonebsen.dk',
@@ -25,8 +28,7 @@ export default defineConfig({
   },
 
   markdown: {
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex]
+    processor: unified({ remarkPlugins: [remarkMath], rehypePlugins: [rehypeKatex] }),
   },
 
   integrations: [
@@ -51,15 +53,21 @@ export default defineConfig({
         !page.includes('/debug') &&
         !page.includes('/api/') &&
         !/\/test-[^/]+\/?$/.test(page),
+      serialize(item) {
+        if (new URL(item.url).pathname.match(/^\/en(?:\/|$)/)) {
+          const url = new URL(item.url);
+          url.hostname = 'www.antonebsen.com';
+          item.url = url.href;
+        }
+        return item;
+      },
     }),
-    tailwind({
-      applyBaseStyles: false,
-    })
   ],
 
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true
-    }
-  }),
+  // Analytics is already loaded by BaseLayout; newer adapters no longer inject it.
+  adapter: vercel(),
+  // Tailwind's maintained Vite integration replaces the obsolete Astro plugin.
+  vite: {
+    plugins: [tailwind()],
+  },
 });

@@ -241,7 +241,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
     };
 
     return (
-        <div className="rounded-xl border border-rule bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <div className="rounded-xl border border-rule bg-white overflow-hidden shadow-xs hover:shadow-md transition-shadow">
             <div className="bg-card border-b border-rule px-4 py-2 flex justify-between items-center">
                 <span className="font-mono text-xs font-bold text-muted flex items-center gap-2">
                     <i className="fa-solid fa-database text-blue-500"></i>
@@ -258,7 +258,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                 <div className="p-6 text-center">
                     <i className="fa-solid fa-database text-dim text-2xl mb-3"></i>
                     <p className="text-sm font-bold text-muted mb-1">The replication data isn't published yet</p>
-                    <p className="text-xs text-muted max-w-md mx-auto">
+                    <p className="text-xs text-muted max-w-(--container-md) mx-auto">
                         This playground runs SQL against the project's own dataset in your browser.
                         It will light up as soon as <code className="font-mono text-muted">{dataUrl.split('/').pop()}</code> is available.
                     </p>
@@ -271,7 +271,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
                     <input
                         type="text"
                         placeholder="✨ Ask the data in plain English…"
-                        className="flex-1 bg-card border border-rule-strong rounded-lg px-3 py-1.5 text-xs text-text placeholder-muted focus:outline-none focus:border-blue-500 transition-colors"
+                        className="flex-1 bg-card border border-rule-strong rounded-lg px-3 py-1.5 text-xs text-text placeholder-muted focus:outline-hidden focus:border-blue-500 transition-colors"
                         value={nlQuery}
                         onChange={(e) => setNlQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && askData()}
@@ -291,7 +291,7 @@ export default function DataPlayground({ dataUrl }: DataPlaygroundProps) {
 
             <div className="p-0" hidden={dataAvailable === false}>
                 <textarea
-                    className="w-full h-24 p-4 font-mono text-sm bg-sunken text-green-400 focus:outline-none resize-none"
+                    className="w-full h-24 p-4 font-mono text-sm bg-sunken text-green-400 focus:outline-hidden resize-none"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     spellCheck={false}

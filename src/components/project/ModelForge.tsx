@@ -172,7 +172,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 {/* Chart Area */}
-                <div className="lg:col-span-2 bg-white/[0.03] border border-white/10 rounded-[32px] p-8 min-h-[400px] relative overflow-hidden group">
+                <div className="lg:col-span-2 bg-white/3 border border-white/10 rounded-[32px] p-8 min-h-[400px] relative overflow-hidden group">
                     <div className="absolute top-0 right-0 -m-8 w-64 h-64 bg-accent/5 rounded-full blur-[80px]"></div>
 
                     <div className="flex justify-between items-start mb-6 relative z-10">
@@ -191,7 +191,7 @@ const ModelForge: React.FC<ModelForgeProps> = ({ lang }) => {
                 </div>
 
                 {/* Controls Area */}
-                <div className="bg-white/[0.05] border border-white/15 rounded-[32px] p-8 flex flex-col justify-between">
+                <div className="bg-white/5 border border-white/15 rounded-[32px] p-8 flex flex-col justify-between">
                     <div className="space-y-8">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">

@@ -17,7 +17,7 @@ const { title, subtitle, description, tags, downloadLink, codeLink, image } = As
 ---
 
 <div class="thesis-spotlight relative group">
-    <div class="absolute -inset-1 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-2xl blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+    <div class="absolute -inset-1 bg-linear-to-r from-accent/20 to-purple-500/20 rounded-2xl blur-sm opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
     
     <Card variant="default" class="relative p-0 overflow-hidden flex flex-col md:flex-row">
         <div class="p-8 flex-1 flex flex-col justify-center relative z-10">
@@ -33,7 +33,7 @@ const { title, subtitle, description, tags, downloadLink, codeLink, image } = As
                 {tags.map(tag => <Pill variant="default" class="bg-white/5 border-white/10">{tag}</Pill>)}
             </div>
 
-            <p class="text-dim leading-relaxed mb-8 max-w-xl">
+            <p class="text-dim leading-relaxed mb-8 max-w-(--container-xl)">
                 {description}
             </p>
 
@@ -52,7 +52,7 @@ const { title, subtitle, description, tags, downloadLink, codeLink, image } = As
                     alt="Thesis Visualization" 
                     class="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-overlay hover:scale-105 transition-transform duration-700" 
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent md:bg-gradient-to-l"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent md:bg-linear-to-l"></div>
             </div>
         )}
     </Card>

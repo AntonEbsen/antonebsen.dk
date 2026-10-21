@@ -17,10 +17,6 @@
             ],
             "highlights": [
                 {
-                    "label": "Resultat",
-                    "value": "Flotte evalueringer / X+ kursister"
-                },
-                {
                     "label": "Værktøjer",
                     "value": "Excel · VBA · PowerPoint"
                 }
@@ -92,8 +88,9 @@
                 "tech",
                 "core"
             ],
-            "description": "Økonomi med fokus på makroøkonomi, pengepolitik, tidsrækker og modellering. Stor vægt på praktisk dataarbejde og programmering.",
+            "description": "Økonomi med fokus på makroøkonomi, pengepolitik, tidsrækker og modellering. Stor vægt på praktisk dataarbejde og programmering. Kandidatuddannelsen forventes afsluttet i januar 2027.",
             "bullets": [
+                "Økonomisk historie og demografi",
                 "Makro & pengepolitik (ECB/centralbanker)",
                 "Økonometri & tidsrækker (forecasting, SVAR, etc.)",
                 "Økonomiske modeller (RBC/CGE)",
@@ -120,6 +117,30 @@
         }
     ],
     "courses": [
+        {
+            "title": "Kandidatafhandling (Speciale)",
+            "tag": "Projekt",
+            "institution": "KU",
+            "description": "Igangværende fælles speciale om slaveriets økonomiske historie på St. Croix i Dansk Vestindien. Forventet afslutning: januar 2027.",
+            "level": "master",
+            "grade": "Igangværende",
+            "ects": "30",
+            "period": "E26",
+            "milestone": true,
+            "focusShift": "Kulminationen på min kandidat – en dybdegående, kvantitativ analyse af den økonomiske historie i Dansk Vestindien.",
+            "verifiedSkills": [
+                "Python",
+                "Økonomisk Historie",
+                "Dataanalyse",
+                "Arkivforskning"
+            ],
+            "links": [
+                {
+                    "text": "Se projekt",
+                    "href": "/projects/master-thesis"
+                }
+            ]
+        },
         {
             "title": "Advanced Macroeconomics - Structural Vector Autoregressive (VAR) Analysis (F)",
             "tag": "Makro",
@@ -257,9 +278,8 @@
             ],
             "relatedProjects": [
                 {
-                    "title": "Algoritmisk Fairness i Kreditvurdering",
-                    "href": "/projects/algorithmic-fairness",
-                    "previewImage": "/assets/img/fairness-demo.png"
+                    "title": "Does GenAI Help Those Who Need It Most?",
+                    "href": "/projects/genai-inequality"
                 }
             ]
         },
@@ -329,9 +349,15 @@
             "title": "Demography",
             "tag": "Samfund",
             "institution": "KU",
-            "description": "Befolkningsudvikling, modellering af fertilitet, mortalitet og migration.",
+            "description": "Historisk demografi, fertilitet og ægteskab. Individuel opgave om Kulturkampfen i Preussen.",
             "level": "master",
-            "grade": "10"
+            "grade": "12",
+            "relatedProjects": [
+                {
+                    "title": "Bismarck’s Lost Battle",
+                    "href": "/projects/demography-project"
+                }
+            ]
         },
         {
             "title": "Seminar - Economics of the Welfare State",
@@ -806,23 +832,52 @@
     ],
     "projects": [
         {
-            "title": "Monetary Policy & Economic Relations",
-            "description": "Kandidatspeciale (aug. 2026 - jan. 2027). En omfattende empirisk analyse af pengepolitikkens rolle i en post-COVID verden. Dette 'levende' projekt dokumenterer processen fra idé til forsvar.",
-            "technologies": [
-                "Python",
-                "Stata",
-                "LaTeX",
-                "Monetary Economics"
+            "title": "Bismarck’s Lost Battle",
+            "url": "/projects/demography-project",
+            "tag": "Afsluttet kursusopgave · maj 2026",
+            "categories": [
+                "tech",
+                "core"
             ],
-            "tag": "Kommende",
+            "technologies": [
+                "Historisk demografi",
+                "Paneldata",
+                "Difference-in-differences"
+            ],
+            "meta": "Demografi · Københavns Universitet · Karakter: 12",
+            "description": "En individuel empirisk opgave om religiøs undertrykkelse, ægteskab og fertilitet i preussiske amter. Analysen adskiller religiøs eksponering fra overlappende etniske politikker og finder ingen robust ændring i den ægteskabelige fertilitet."
+        },
+        {
+            "title": "Dansk Vestindien",
             "url": "/projects/master-thesis",
-            "links": [
-                {
-                    "text": "Se Projekt",
-                    "href": "/projects/master-thesis",
-                    "icon": "arrow-right"
-                }
-            ]
+            "tag": "Fælles kandidatspeciale · I gang · Forventet januar 2027",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Økonomisk historie",
+                "Historiske data",
+                "Håndskriftsgenkendelse"
+            ],
+            "meta": "Cand.polit. · Københavns Universitet · Vejleder: Paul Sharp",
+            "description": "Et igangværende fælles speciale om slaveriets økonomiske historie i Dansk Vestindien med historiske kilder, konstruktion af arkivdata og kvantitativ analyse. Udkastet er ikke en afsluttet eller publiceret artikel."
+        },
+        {
+            "title": "Does GenAI Help Those Who Need It Most?",
+            "url": "/projects/genai-inequality",
+            "tag": "Forskningsforslag i gruppe · januar 2026",
+            "categories": [
+                "tech",
+                "core"
+            ],
+            "technologies": [
+                "Forskningsdesign",
+                "Causal forests (foreslået)",
+                "AI og ulighed"
+            ],
+            "meta": "AI for Humanity · Københavns Universitet · Kursuskarakter: 10",
+            "description": "Et forskningsforslag i gruppe om socioøkonomiske forskelle i sammenhængen mellem GenAI-brug og elevers præstationer. Forslaget anvender causal forests som mulig metode og diskuterer begrænsninger ved frivillig anvendelse. Der påstås ikke indsamlede data eller empiriske resultater."
         },
         {
             "title": "Globalization and the Welfare State",
@@ -885,17 +940,8 @@
             ],
             "blueprint": "/assets/img/blueprint-demo.png",
             "meta": "Tema: USA pengepolitik → global økonomi",
-            "description": "1–2 linjer: metode, data, og hvad du bidrog med.",
-            "links": [
-                {
-                    "text": "PDF",
-                    "href": "#"
-                },
-                {
-                    "text": "Kode",
-                    "href": "#"
-                }
-            ]
+            "description": "En økonometrisk analyse af spillover-effekter fra amerikansk pengepolitik.",
+            "links": []
         },
         {
             "title": "Projekt: Valutakursdynamik",
@@ -927,35 +973,8 @@
                 "Python",
                 "Pengepolitik"
             ],
-            "description": "1–2 linjer: metode og output (plots/tables).",
-            "links": [
-                {
-                    "text": "Slides",
-                    "href": "#"
-                }
-            ]
-        },
-        {
-            "title": "Does GenAI Help Those Who Need It Most?",
-            "url": "/projects/genai-inequality",
-            "tag": "Forskningsforslag",
-            "categories": [
-                "tech",
-                "core"
-            ],
-            "technologies": [
-                "LaTeX",
-                "Causal Forest",
-                "Machine Learning"
-            ],
-            "meta": "Tema: Heterogene Behandlingseffekter (CATE)",
-            "description": "Et forskningsforslag, der undersøger den asymmetriske effekt af Generativ AI på præstationer på tværs af socioøkonomisk baggrund.",
-            "links": [
-                {
-                    "text": "Se Forslag",
-                    "href": "/projects/genai-inequality"
-                }
-            ]
+            "description": "En analyse af forskelle i renteregler i euroområdet.",
+            "links": []
         },
         {
             "title": "Globaliseringens påvirkning på austerity-politikken",
@@ -1038,27 +1057,6 @@
                 {
                     "text": "Se Projekt",
                     "href": "/projects/green-transition"
-                }
-            ]
-        },
-        {
-            "title": "Demografisk Analyse (TBD)",
-            "url": "/projects/demography-project",
-            "tag": "Kommende",
-            "categories": [
-                "tech",
-                "core"
-            ],
-            "technologies": [
-                "Demografi",
-                "Data Science"
-            ],
-            "meta": "Status: Planlagt",
-            "description": "Kommende projekt i faget Demografi. Emne og problemstilling er under udarbejdelse.",
-            "links": [
-                {
-                    "text": "Se foreløbig side",
-                    "href": "/projects/demography-project"
                 }
             ]
         }

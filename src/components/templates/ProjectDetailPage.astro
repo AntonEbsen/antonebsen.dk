@@ -542,8 +542,8 @@ const tocItems = [
     <header class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         {heroImage && (
             <div class="absolute inset-0 z-0">
-                <img src={heroImage} alt="" class="w-full h-full object-cover opacity-20 filter blur-sm scale-105 animate-slow-zoom" />
-                <div class="absolute inset-0 bg-gradient-to-b from-sunken/80 via-sunken/60 to-sunken"></div>
+                <img src={heroImage} alt="" class="w-full h-full object-cover opacity-20 filter blur-xs scale-105 animate-slow-zoom" />
+                <div class="absolute inset-0 bg-linear-to-b from-sunken/80 via-sunken/60 to-sunken"></div>
             </div>
         )}
 
@@ -557,8 +557,8 @@ const tocItems = [
         <!-- Recruiter Mode Toggle (Top Right) -->
         <div class="absolute top-24 right-8 z-50 flex items-center gap-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 animate-fade-in">
              <span class="text-[10px] font-bold uppercase tracking-wider text-muted" id="mode-label">{t.academicMode}</span>
-             <button id="recruiter-toggle" class="w-12 h-6 bg-rule-strong rounded-full relative transition-colors focus:outline-none" aria-label="Toggle Recruiter Mode">
-                 <div class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 shadow-sm"></div>
+             <button id="recruiter-toggle" class="w-12 h-6 bg-rule-strong rounded-full relative transition-colors focus:outline-hidden" aria-label="Toggle Recruiter Mode">
+                 <div class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 shadow-xs"></div>
              </button>
         </div>
 
@@ -569,7 +569,7 @@ const tocItems = [
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.1] mb-8 font-medium tracking-tight">
             {project.title}
             </h1>
-            <p class="text-xl md:text-2xl text-muted font-serif italic max-w-3xl mx-auto mb-12 leading-relaxed">
+            <p class="text-xl md:text-2xl text-muted font-serif italic max-w-(--container-3xl) mx-auto mb-12 leading-relaxed">
             {project.subtitle}
             </p>
 
@@ -607,7 +607,7 @@ const tocItems = [
                        if (label === 'Focus' || label === 'FOCUS') label = 'Fokus';
                    }
                    return (
-                   <div class="bg-white/5 backdrop-blur-sm border border-white/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                   <div class="bg-white/5 backdrop-blur-xs border border-white/10 px-8 py-4 rounded-2xl shadow-xs hover:shadow-md transition-all hover:-translate-y-1">
                        <p class="text-[10px] uppercase font-bold text-muted tracking-wider mb-1">{label}</p>
                        <p class="text-2xl md:text-3xl font-bold text-white tabular-nums">{h.value}</p>
                    </div>
@@ -645,9 +645,9 @@ const tocItems = [
       <!-- LEFT: Floating TOC -->
       <aside class="hidden lg:block w-64 shrink-0 relative academic-section transition-opacity duration-500">
           <div class="sticky top-24 space-y-8">
-              <SectionNav title={t.contents} items={tocItems} variant="bare" class="!static" />
+              <SectionNav title={t.contents} items={tocItems} variant="bare" class="static!" />
               
-              <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-sm">
+              <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-xs">
                   <p class="text-xs text-muted uppercase font-bold mb-2">{t.projectStatus}</p>
                   <div class="flex items-center gap-2 mb-4">
                       <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
@@ -659,7 +659,7 @@ const tocItems = [
       </aside>
 
       <!-- CENTER: Main Content -->
-      <article class="flex-grow max-w-3xl">
+      <article class="grow max-w-(--container-3xl)">
           
         <!-- Context Note -->
         {project.contextNote && (
@@ -677,13 +677,13 @@ const tocItems = [
         <section id="executive-summary" class="mb-24 scroll-mt-24 group">
             <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-6 flex items-center gap-4 group-hover:text-accent transition-colors">
             {project.ui.execSummary}
-            <div class="h-[1px] flex-grow bg-white/10 group-hover:bg-accent/20 transition-colors"></div>
+            <div class="h-px grow bg-white/10 group-hover:bg-accent/20 transition-colors"></div>
              <!-- Play/Stop Button -->
              <button id="tts-button" class="w-8 h-8 rounded-full bg-white/10 hover:bg-accent text-white flex items-center justify-center transition-all ml-2" aria-label={t.listen} title={t.listen}>
                  <i class="fa-solid fa-volume-high text-xs"></i>
              </button>
             </h2>
-            <div class="bg-white/5 p-8 md:p-12 rounded-3xl shadow-lg border border-white/5 relative overflow-hidden backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 duration-700 view-animate">
+            <div class="bg-white/5 p-8 md:p-12 rounded-3xl shadow-lg border border-white/5 relative overflow-hidden backdrop-blur-xs animate-in fade-in slide-in-from-bottom-4 duration-700 view-animate">
                 <div class="absolute top-0 left-0 w-1 h-full bg-accent"></div>
                 <p id="executive-summary-text" class="text-text leading-relaxed text-lg md:text-xl font-serif">
                     {project.executiveSummary}
@@ -694,7 +694,7 @@ const tocItems = [
         {/* Popular Science Section */}
         {project.popScience && (
             <section class="mb-24 academic-section">
-                <div class="bg-gradient-to-br from-emerald-900/20 to-bg/50 border border-emerald-500/20 p-8 rounded-3xl relative overflow-hidden">
+                <div class="bg-linear-to-br from-emerald-900/20 to-bg/50 border border-emerald-500/20 p-8 rounded-3xl relative overflow-hidden">
                      <div class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl"></div>
                      
                      <h2 class="text-lg font-bold text-emerald-400 mb-4 flex items-center gap-2">
@@ -719,7 +719,7 @@ const tocItems = [
             <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-8">{project.ui.researchQuestions}</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {project.researchQuestions.map((q, i) => (
-                    <div class="border border-white/5 p-6 rounded-2xl bg-white/5 shadow-sm flex items-start gap-4 hover:border-accent/20 hover:shadow-md transition-all duration-300 view-animate">
+                    <div class="border border-white/5 p-6 rounded-2xl bg-white/5 shadow-xs flex items-start gap-4 hover:border-accent/20 hover:shadow-md transition-all duration-300 view-animate">
                         {/* Watermark numeral. It duplicates the list order, so it is
                             decoration — rendered through .deco-numeral's ::before so
                             there is no text node holding a 1.12:1 contrast ratio. */}
@@ -790,10 +790,10 @@ const tocItems = [
             <ul class="space-y-4">
                 {project.keyFindings.map(finding => (
                     <li class="flex gap-6 group view-animate">
-                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent font-bold text-lg shrink-0 shadow-sm group-hover:scale-110 group-hover:border-accent/30 transition-all duration-300">
+                        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent font-bold text-lg shrink-0 shadow-xs group-hover:scale-110 group-hover:border-accent/30 transition-all duration-300">
                             <i class="fa-solid fa-check"></i>
                         </div>
-                        <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-sm flex-grow group-hover:shadow-md transition-all duration-300">
+                        <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-xs grow group-hover:shadow-md transition-all duration-300">
                             <p class="text-dim leading-relaxed font-serif">{finding}</p>
                         </div>
                     </li>
@@ -811,7 +811,7 @@ const tocItems = [
         <!-- Popular Science Section -->
         {project.popularScienceResult && (
             <section class="mb-24 view-animate">
-                <div class="bg-gradient-to-br from-accent/10 to-transparent border border-accent/20 p-8 rounded-[32px] relative overflow-hidden">
+                <div class="bg-linear-to-br from-accent/10 to-transparent border border-accent/20 p-8 rounded-[32px] relative overflow-hidden">
                     <div class="absolute top-0 right-0 -m-8 w-64 h-64 bg-accent/10 rounded-full blur-[80px]"></div>
                     <div class="relative z-10">
                         <h3 class="flex items-center gap-3 text-accent font-bold text-lg mb-4">
@@ -887,7 +887,7 @@ const tocItems = [
         {project.bibliography && (
             <section class="mb-24 academic-section">
                 <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-8">{t.bibliography}</h2>
-                <div class="bg-white/5 border border-white/10 rounded-3xl p-8 shadow-sm view-animate">
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-8 shadow-xs view-animate">
                     <ul class="space-y-4 font-serif text-dim">
                         {project.bibliography.map((ref, i) => (
                             <li class="pl-8 -indent-8">
@@ -941,7 +941,7 @@ const tocItems = [
         {project.interactiveChart && (
             <section class="mb-24">
                 <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-8">{project.ui.liveData || 'Live Data'}</h2>
-                <div class="bg-white/5 border border-white/10 p-8 rounded-[32px] shadow-sm view-animate">
+                <div class="bg-white/5 border border-white/10 p-8 rounded-[32px] shadow-xs view-animate">
                     <div class="mb-6">
                         <h3 class="text-lg font-bold text-text mb-2">{project.interactiveChart.title}</h3>
                         <p class="text-sm text-muted italic">{project.interactiveChart.description}</p>
@@ -959,7 +959,7 @@ const tocItems = [
                 <h2 class="text-xs uppercase tracking-widest font-bold text-muted mb-8">{project.ui.techStack || 'Tech Stack'}</h2>
                 <div class="flex flex-wrap gap-4">
                     {project.techStack.map(tech => (
-                        <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3 rounded-xl shadow-sm hover:shadow-md hover:border-accent/30 transition-all cursor-default view-animate">
+                        <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3 rounded-xl shadow-xs hover:shadow-md hover:border-accent/30 transition-all cursor-default view-animate">
                             <i class={`${tech.icon} text-xl text-muted`}></i>
                             <div class="flex flex-col">
                                 <span class="text-sm font-bold text-white leading-none">{tech.name}</span>
@@ -1000,7 +1000,7 @@ const tocItems = [
                             <div class="space-y-3 mb-8">
                                 {hasPdf && (
                                     <a href={project.citation.pdfUrl} class="flex items-center gap-4 text-dim font-bold hover:text-accent hover:border-accent transition-all p-4 bg-white/5 rounded-xl border border-white/10 group">
-                                        <div class="w-10 h-10 rounded-lg bg-white/10 shadow-sm text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-pdf"></i></div>
+                                        <div class="w-10 h-10 rounded-lg bg-white/10 shadow-xs text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-pdf"></i></div>
                                         <div class="flex flex-col">
                                             <span class="text-sm">{t.downloadThesis}</span>
                                             {project.pdfMeta && <span class="text-[10px] text-muted font-normal">{project.pdfMeta}</span>}
@@ -1009,7 +1009,7 @@ const tocItems = [
                                 )}
                                 {dataLinks?.map(link => (
                                     <a href={link.url} class="flex items-center gap-4 text-dim font-bold hover:text-accent hover:border-accent transition-all p-4 bg-white/5 rounded-xl border border-white/10 group">
-                                        <div class="w-10 h-10 rounded-lg bg-white/10 shadow-sm text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class={link.icon}></i></div>
+                                        <div class="w-10 h-10 rounded-lg bg-white/10 shadow-xs text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform"><i class={link.icon}></i></div>
                                         <span class="text-sm">{link.label}</span>
                                     </a>
                                 ))}
@@ -1047,7 +1047,7 @@ const tocItems = [
              <div class="relative z-10">
                 <h2 class="text-xs uppercase tracking-widest font-bold text-accent mb-12 flex items-center gap-4">
                     {project.ui.relevance}
-                    <div class="h-px bg-white/10 flex-grow"></div>
+                    <div class="h-px bg-white/10 grow"></div>
                 </h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div class="space-y-8">
@@ -1070,7 +1070,7 @@ const tocItems = [
         <!-- Interactive Glossary -->
         {project.glossary && (
             <div class="fixed bottom-8 left-8 z-50 hidden md:block group academic-section">
-                <div class="bg-bg/90 backdrop-blur border border-rule-strong shadow-xl rounded-2xl p-4 w-64 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
+                <div class="bg-bg/90 backdrop-blur-sm border border-rule-strong shadow-xl rounded-2xl p-4 w-64 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
                     <h4 class="text-xs font-bold uppercase text-muted mb-2 border-b border-card pb-1">{t.keyTerms}</h4>
                     <ul class="space-y-2">
                         {project.glossary.map(term => (
@@ -1120,11 +1120,11 @@ const tocItems = [
     {/* NEW: Model Forge / Simulator CTA */}
     {project.simulatorUrl && (
         <section class="max-w-6xl mx-auto px-4 mb-32 view-animate">
-            <div class="bg-gradient-to-r from-accent/20 to-blue-500/10 border border-accent/30 rounded-[40px] p-12 relative overflow-hidden group">
+            <div class="bg-linear-to-r from-accent/20 to-blue-500/10 border border-accent/30 rounded-[40px] p-12 relative overflow-hidden group">
                 <div class="absolute top-0 right-0 -m-12 w-96 h-96 bg-accent/10 rounded-full blur-[100px] group-hover:bg-accent/20 transition-all duration-700"></div>
                 
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-                    <div class="max-w-xl">
+                    <div class="max-w-(--container-xl)">
                         <div class="flex items-center gap-3 mb-6">
                             <div class="w-12 h-12 rounded-2xl bg-accent text-white flex items-center justify-center text-xl shadow-lg shadow-accent/40">
                                 <i class="fa-solid fa-gauge-high"></i>
@@ -1158,7 +1158,7 @@ const tocItems = [
     )}
 
     <!-- Smart Recommendation Navigation -->
-    <nav class="border-t border-white/10 bg-bg/50 backdrop-blur-sm">
+    <nav class="border-t border-white/10 bg-bg/50 backdrop-blur-xs">
         <div class="container mx-auto max-w-6xl px-4 py-12 flex justify-between items-center">
              {/* Left side empty for now to focus on forward flow, or use prevProject for legacy */}
              <div>
@@ -1230,7 +1230,7 @@ const tocItems = [
   </script>
 
   <!-- Citation Modal -->
-  <dialog id="citation-modal" class="bg-bg border border-white/10 rounded-2xl p-0 backdrop:bg-black/80 w-full max-w-lg shadow-2xl">
+  <dialog id="citation-modal" class="bg-bg border border-white/10 rounded-2xl p-0 backdrop:bg-black/80 w-full max-w-(--container-lg) shadow-2xl">
       <div class="p-6">
           <h3 class="text-lg font-bold text-text mb-4">{t.citeThis}</h3>
           

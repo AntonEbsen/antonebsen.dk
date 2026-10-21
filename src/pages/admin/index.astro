@@ -120,7 +120,7 @@ if (!verifySession(Astro.cookies.get('auth_token')?.value)) {
                             'bg-card text-muted'
                         }">${log.bot_mode}</span>
                     </td>
-                    <td class="px-6 py-4 max-w-md truncate" title="${log.user_message}">${log.user_message}</td>
+                    <td class="px-6 py-4 max-w-(--container-md) truncate" title="${log.user_message}">${log.user_message}</td>
                 </tr>
             `).join('');
         }

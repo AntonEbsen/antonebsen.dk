@@ -82,7 +82,7 @@ export default function GalaxyGraph({ nodes, links, height = 600 }: GalaxyGraphP
 
     return (
         <div ref={containerRef} className="relative w-full h-full bg-black overflow-hidden rounded-3xl border border-white/10 shadow-2xl" style={{ minHeight: height }}>
-            <div className="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur px-4 py-2 rounded-lg border border-white/10 pointer-events-none">
+            <div className="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/10 pointer-events-none">
                 <h3 className="text-amber-400 font-bold text-xs uppercase tracking-widest">Citation Galaxy</h3>
                 <p className="text-[10px] text-muted">Interactive 3D Network</p>
             </div>

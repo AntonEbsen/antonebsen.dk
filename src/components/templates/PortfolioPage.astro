@@ -11,6 +11,7 @@ import DiscoveryGrid from '@components/common/DiscoveryGrid.astro';
 import { assetExists } from '@lib/public-asset';
 import { supabase } from '@lib/supabase';
 import { getEntry } from 'astro:content';
+import { withAcademicProjects } from '@data/academic-research';
 
 export const prerender = true;
 
@@ -28,7 +29,7 @@ if (!entry) {
 const content: any = entry.data;
 
 const cvEntry = await getEntry('cv', lang);
-const cvProjects = cvEntry?.data.projects || [];
+const cvProjects = withAcademicProjects(cvEntry?.data.projects || [], lang);
 
 const cvLink = lang === 'en' ? '/en/cv' : lang === 'de' ? '/de/cv' : '/cv';
 
@@ -123,7 +124,7 @@ const t = uiStrings[lang] || uiStrings.en;
            <div class="absolute -top-20 -left-20 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
 
           <Card variant="glass" class="p-8 relative overflow-hidden backdrop-blur-md border-white/20 shadow-xl z-10">
-            <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/0 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-linear-to-br from-white/40 to-white/0 pointer-events-none"></div>
             
             <div class="relative z-10">
                 <p class="text-xs font-extrabold uppercase tracking-widest text-dim mb-3 flex items-center gap-2">
@@ -131,7 +132,7 @@ const t = uiStrings[lang] || uiStrings.en;
                     {content.hero.eyebrow}
                 </p>
                 <h1 class="text-4xl md:text-5xl leading-[1.1] mb-6 font-bold tracking-tight">{content.hero.title}</h1>
-                <p class="text-[17px] leading-relaxed text-dim mb-8 opacity-90 max-w-lg">
+                <p class="text-[17px] leading-relaxed text-dim mb-8 opacity-90 max-w-(--container-lg)">
                   {content.hero.text}
                 </p>
         
@@ -175,7 +176,7 @@ const t = uiStrings[lang] || uiStrings.en;
                  </div>
                  
                 <Card variant="default" class="relative overflow-hidden group border-accent/20 shadow-2xl hover:shadow-accent/10 transition-shadow duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-50"></div>
+                    <div class="absolute inset-0 bg-linear-to-r from-accent/5 to-transparent opacity-50"></div>
                     
                     {/* Spotlight Background Image (Optional) */}
                     <div class="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-[0.03]"></div>
@@ -184,7 +185,7 @@ const t = uiStrings[lang] || uiStrings.en;
                          <div class="flex-1">
                             <Pill variant="accent" class="mb-6 shadow-md shadow-accent/20">{cvProjects[0].tag}</Pill>
                             <h2 class="text-4xl font-bold mb-6 tracking-tight">{cvProjects[0].title}</h2>
-                            <p class="text-lg text-dim leading-relaxed mb-8 max-w-xl">
+                            <p class="text-lg text-dim leading-relaxed mb-8 max-w-(--container-xl)">
                                 {cvProjects[0].description}
                             </p>
                             
@@ -209,9 +210,9 @@ const t = uiStrings[lang] || uiStrings.en;
                          
                          {/* The Blueprint (Spotlight Version) - Now on the right for better balance */}
                          {assetExists(cvProjects[0].blueprint) && (
-                            <div class="flex-1 w-full max-w-lg perspective-1000">
+                            <div class="flex-1 w-full max-w-(--container-lg) perspective-1000">
                                 <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl transform rotate-y-[-5deg] rotate-x-[5deg] hover:rotate-0 transition-transform duration-700 bg-bg">
-                                    <div class="bg-black/60 backdrop-blur p-3 text-[10px] text-dim font-mono border-b border-white/10 flex justify-between items-center">
+                                    <div class="bg-black/60 backdrop-blur-sm p-3 text-[10px] text-dim font-mono border-b border-white/10 flex justify-between items-center">
                                         <span><i class="fa-solid fa-diagram-project mr-2 text-accent"></i>{t.architecture}</span>
                                         <div class="flex gap-1.5">
                                             <div class="w-2 h-2 rounded-full bg-red-500/50"></div>

@@ -52,15 +52,15 @@ const t = localizedContent[lang];
             <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-6">{t.heroEyebrow}</p>
             <h1 class="text-6xl md:text-[100px] leading-[0.8] mb-12 uppercase italic relative inline-block">
                 {t.heroTitle}
-                <span class="absolute -bottom-4 right-0 w-32 h-[1px] bg-accent/20"></span>
+                <span class="absolute -bottom-4 right-0 w-32 h-px bg-accent/20"></span>
             </h1>
-            <p class="text-xl md:text-2xl text-muted leading-relaxed font-serif italic max-w-2xl mx-auto">
+            <p class="text-xl md:text-2xl text-muted leading-relaxed font-serif italic max-w-(--container-2xl) mx-auto">
                 {t.heroLead}
             </p>
         </div>
         
         <!-- Abstract Background Aura -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl aspect-video bg-accent/5 blur-[120px] rounded-full pointer-events-none -z-0"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl aspect-video bg-accent/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
     </Section>
 
     <!-- Content Grid -->

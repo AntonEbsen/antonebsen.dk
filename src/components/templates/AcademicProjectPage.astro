@@ -1,0 +1,63 @@
+---
+import Layout from '@layouts/BaseLayout.astro';
+import Section from '@components/ui/Section.astro';
+import Card from '@components/ui/Card.astro';
+import Button from '@components/ui/Button.astro';
+import Pill from '@components/ui/Pill.astro';
+import { getAcademicProjects, type ResearchId } from '@data/academic-research';
+interface Props { lang: 'da' | 'en'; id: ResearchId }
+const { lang, id } = Astro.props;
+const project = getAcademicProjects(lang).find(item => item.id === id);
+if (!project) throw new Error(`Unknown academic project: ${id}`);
+const isDa = lang === 'da';
+const prefix = isDa ? '' : '/en';
+const sections = [
+  [isDa ? 'Forskningsspørgsmål' : 'Research question', project.question],
+  [isDa ? 'Data og tilgængelighed' : 'Data and availability', project.data],
+  [isDa ? 'Metode og identifikation' : 'Method and identification', project.method],
+  [project.kind === 'completed' ? (isDa ? 'Hovedresultat' : 'Main finding') : (isDa ? 'Projektets status' : 'Research stage'), project.findings],
+  [isDa ? 'Begrænsninger' : 'Limitations', project.limitations]
+];
+---
+<Layout title={`${project.title} — Anton Meier Ebsen Jørgensen`} description={project.description}>
+  <main class="mx-auto max-w-content px-md py-xl">
+    <Section reveal={false} class="max-w-prose">
+      <a class="text-accent underline underline-offset-4" href={`${prefix}/cliometrics`}>{isDa ? '← Forskning' : '← Research'}</a>
+      <p class="eyebrow text-accent mt-xl mb-md" data-research-status={project.kind}>{project.status}</p>
+      <h1 class="font-serif text-display-sm mb-md">{project.title}</h1>
+      <p class="text-lead text-dim mb-lg">{project.subtitle}</p>
+      <p class="text-sm text-muted mb-lg">{project.credits}</p>
+      <div class="flex flex-wrap gap-2">{project.technologies.map(tool => <Pill>{tool}</Pill>)}</div>
+      {project.grade && <p class="text-sm text-dim mt-lg">{project.meta} {isDa ? '(dansk 7-trinsskala)' : '(Danish seven-point scale)'}</p>}
+    </Section>
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-xl items-start">
+      <div class="space-y-lg">
+        {sections.map(([heading, text]) => (
+          <Card variant="glass" class="p-6 md:p-8">
+            <h2 class="text-title-sm mb-4">{heading}</h2>
+            <p class="text-dim leading-relaxed">{text}</p>
+          </Card>
+        ))}
+      </div>
+      <aside class="lg:sticky lg:top-28">
+        <Card variant="glass" class="p-6">
+          <h2 class="text-title-sm mb-4">{isDa ? 'Materiale' : 'Materials'}</h2>
+          {project.pdfUrl ? (
+            <div class="space-y-5">
+              <p class="text-dim leading-relaxed">{isDa ? 'Den afsluttede kursusopgave kan downloades som PDF. GitHub-repositoriet indeholder kode og relateret analyse, herunder eksplorativt arbejde.' : 'Download the completed course paper as a PDF. The GitHub repository contains code and related analysis, including exploratory work.'}</p>
+              <Button href={project.pdfUrl} download>{isDa ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</Button>
+              {project.codeUrl && <a class="block text-accent underline underline-offset-4" href={project.codeUrl} target="_blank" rel="noopener noreferrer">{isDa ? 'Kode og relateret analyse på GitHub' : 'Code and related analysis on GitHub'}</a>}
+              <p class="text-sm text-muted">{isDa ? 'Kursusopgave; ikke en fagfællebedømt publikation.' : 'Course paper; not a peer-reviewed publication.'}</p>
+            </div>
+          ) : <p class="text-dim leading-relaxed mb-6">{isDa
+            ? 'Denne side er en faglig projektbeskrivelse. Der er endnu ikke offentliggjort en PDF eller en replikationspakke her. Kontakt mig gerne om materialet.'
+            : 'This page is a research summary. A PDF and replication package have not been published here. Please contact me about the materials.'}</p>}
+          <div class="mt-6">
+          <Button href={`${prefix}/contact`}>{isDa ? 'Kontakt mig' : 'Contact me'}</Button>
+          </div>
+          <a class="block text-accent underline underline-offset-4 mt-6" href={`${prefix}/cv`}>{isDa ? 'Se akademisk CV' : 'View academic CV'}</a>
+        </Card>
+      </aside>
+    </div>
+  </main>
+</Layout>
