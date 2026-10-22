@@ -1,0 +1,17 @@
+---
+import Card from '@components/ui/Card.astro';
+import { researchContribution, type ContributionId, type ContributionLanguage } from '@data/research-contributions';
+interface Props { id: ContributionId; lang: ContributionLanguage }
+const { id, lang } = Astro.props;
+const contribution = researchContribution(id, lang);
+---
+<Card variant="glass" interactive={false} class="p-6 md:p-8 min-w-0 mb-6">
+  <section aria-labelledby="research-contribution-heading" data-research-contribution>
+    <h2 id="research-contribution-heading" class="text-title-sm mb-4">{lang === 'da' ? 'Mit bidrag' : 'My contribution'}</h2>
+    <p class="text-dim leading-relaxed">{contribution.summary}</p>
+    <ul class="list-disc pl-5 space-y-3 mt-5 text-dim leading-relaxed">
+      {contribution.tasks.map(task => <li>{task}</li>)}
+    </ul>
+    <p class="text-sm text-dim leading-relaxed mt-5" data-contribution-attribution>{contribution.attribution}</p>
+  </section>
+</Card>

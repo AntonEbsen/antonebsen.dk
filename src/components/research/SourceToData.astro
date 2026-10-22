@@ -1,0 +1,35 @@
+---
+import Card from '@components/ui/Card.astro';
+import { SOURCE_TO_DATA as example } from '@data/source-to-data';
+interface Props { lang: 'en' | 'da' }
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+---
+<Card variant="glass" interactive={false} class="p-6 md:p-8 min-w-0">
+  <section id="source-to-data" aria-labelledby="source-to-data-heading" class="scroll-mt-28" data-source-to-data>
+    <h2 id="source-to-data-heading" class="text-title-sm mb-4">{isDa ? 'Fra kilde til data: et konkret kontroltrin' : 'From source to data: one concrete check'}</h2>
+    <p class="text-dim leading-relaxed">{isDa
+      ? 'Et faktisk eksempel fra reproducerbarhedskontrollen i oktober 2026: en post i VIT1867.XLS har årsfeltet 1866. Uddraget viser kun de kildefelter, som kontrollen dokumenterer, ikke et helt regneark eller et originalt arkivbillede.'
+      : 'An actual example from the October 2026 reproducibility check: a record in VIT1867.XLS has a Year field of 1866. This excerpt shows only the source fields documented by the check, not a complete worksheet or an original archival image.'}</p>
+    <table class="w-full text-sm my-5 border-collapse">
+      <caption class="text-left font-semibold text-text mb-3">{isDa ? 'Uddrag af de kontrollerede kildefelter' : 'Excerpt of the audited source fields'}</caption>
+      <tbody>
+        {[[isDa ? 'Kildefil' : 'Source file', example.source._source_file], ['Code', example.source.Code], ['Year', example.source.Year]].map(([field, value]) => (
+          <tr class="border-b border-(--glass-border)"><th scope="row" class="text-left font-normal text-dim py-2 pr-4">{field}</th><td class="text-right text-text py-2 tabular-nums">{value}</td></tr>
+        ))}
+      </tbody>
+    </table>
+    <h3 class="font-semibold text-text mb-3">{isDa ? 'Struktureret repræsentation' : 'Structured representation'}</h3>
+    <pre class="text-xs text-dim bg-(--bg) rounded-plate p-4 whitespace-pre-wrap break-all" data-structured-record><code>{JSON.stringify(example.record, null, 2)}</code></pre>
+    <p class="text-dim leading-relaxed mt-5">{isDa
+      ? 'Kontrollen bruger det faktiske Year-felt til at afgrænse 1867–1890, bevarer både amtskode og kildefil og udelader posten uden at omdøbe 1866 til 1867. Den samlede validering kontrollerer også entydige amt-år-nøgler og uændrede råfiler med SHA-256-hashværdier.'
+      : 'The check uses the actual Year field to select 1867–1890, retains the county code and source filename, and excludes the record without relabeling 1866 as 1867. The wider validation also checks unique county-year keys and unchanged raw files using SHA-256 hashes.'}</p>
+    <p class="text-sm text-dim leading-relaxed mt-4">{isDa
+      ? 'Dette er kontrol af allerede digitaliserede historiske data, udarbejdet senere med AI-kodningsassistance. Det demonstrerer ikke en ny manuel arkivtransskription eller validering af alle felter og regressionsresultater.'
+      : 'This is a check of already-digitized historical data, prepared later with AI coding assistance. It does not demonstrate a new manual archival transcription or validate every field and regression result.'}</p>
+    <p class="text-sm text-dim leading-relaxed mt-4">{isDa ? 'Kilde: ' : 'Source: '}Galloway, Patrick R. (2007), <a href={example.providerUrl} class="text-accent underline underline-offset-4">Galloway Prussia Database 1861 to 1914</a>. {isDa
+      ? 'Databasen er ikke genudgivet her; udbyderens vilkår kræver tilladelse til kommerciel brug.'
+      : 'The database is not redistributed here; the provider’s conditions require permission for commercial use.'}</p>
+    <a href={example.reportUrl} class="inline-block text-sm text-accent underline underline-offset-4 mt-4">{isDa ? 'Se kontrolmetode og fuldt revisionsspor' : 'See the check and full audit trail'}</a>
+  </section>
+</Card>

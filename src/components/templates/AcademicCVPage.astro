@@ -69,13 +69,19 @@ const content = cv[lang];
   .academic-cv .academic-meta { color: var(--text-muted); font-size: .9rem; }
   .academic-more { margin-top: 2.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; font-size: .9rem; }
   @media print {
+    /* Use a widely supported print face rather than variable-font Type 3 glyphs. */
+    .academic-cv, .academic-cv :global(*) { font-family: Arial, Helvetica, sans-serif !important; }
     .academic-cv { max-width: none; margin: 0; font-size: 10pt; }
     .academic-heading h1 { font-size: 21pt; }
-    .academic-cv p { color: #222 !important; opacity: 1 !important; line-height: 1.35; }
-    section { margin-top: 12pt; }
-    article { break-inside: avoid; margin-bottom: 8pt; }
-    h2 { font-size: 12pt; break-after: avoid; }
-    h3 { font-size: 10.5pt; }
+    .academic-cv p { color: #222 !important; opacity: 1 !important; font-size: 9.5pt; line-height: 1.25; margin: 1.5pt 0; }
+    .academic-cv .academic-meta { font-size: 8.5pt; line-height: 1.2; margin: 1pt 0; }
+    .academic-heading h1 { margin: 4pt 0 7pt; }
+    section { margin-top: 8pt; }
+    /* The legacy print stylesheet adds a padded border to every article.
+       Remove that screen-card spacing from the compact academic CV only. */
+    .academic-cv article { break-inside: avoid; margin-bottom: 5pt; padding: 0; border: 0; }
+    h2 { font-size: 11pt; break-after: avoid; padding-bottom: 3pt; margin-bottom: 5pt; }
+    h3 { font-size: 10pt; }
     .academic-cv a::after { content: none !important; }
     @page { size: A4; margin: 15mm; }
   }
