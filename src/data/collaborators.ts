@@ -74,7 +74,7 @@ export const sheng: Person = {
 };
 
 export const jonas: Person = {
-    name: "Jonas Amasa Skov Nielsen",
+    name: "Jonas Amassa Skov Nielsen",
     image: "/assets/collaborators/jonas.jpg",
     links: {
         linkedin: "https://www.linkedin.com/in/jonas-amasa-skov-nielsen-aa0431357/",

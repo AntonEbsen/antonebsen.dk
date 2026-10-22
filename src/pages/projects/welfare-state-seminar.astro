@@ -1,5 +1,6 @@
 ---
 import ProjectDetailPage from '@components/templates/ProjectDetailPage.astro';
+import ResearchContribution from '@components/research/ResearchContribution.astro';
 import SpecCurveExplorer from '@components/project/SpecCurveExplorer';
 import { sheng, jonas } from '@data/collaborators';
 export const prerender = true;
@@ -338,6 +339,7 @@ for end in range(1989, 2024):
 };
 ---
 <ProjectDetailPage lang="da" project={projectContent}>
+  <ResearchContribution slot="contribution" id="welfare-state-seminar" lang="da" />
 
   {/* ---- Analyser ud over den afleverede opgave ------------------------- */}
   <div class="mb-8 flex items-center gap-3">

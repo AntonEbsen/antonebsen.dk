@@ -29,6 +29,11 @@ accessibility, no-JavaScript access and retained extended profiles.
 
 ## Scope
 
+See [the application-reader audit](application-reader-audit.md) for verified
+contribution statements, the actual source-to-data example, repaired Danish
+anchors, and bilingual one-page print checks. Group roles must be confirmed by
+the author rather than inferred from a coauthored paper.
+
 The demography paper itself is unchanged. The thesis and group AI proposal
 remain private. A link to code is not a claim of validated replication: a
 separate data-access and execution-order audit is needed before claiming that.
