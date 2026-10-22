@@ -1,6 +1,7 @@
 ---
 import Card from '@components/ui/Card.astro';
 import { demographyValidation } from '@data/demography-validation';
+import { FIGURE_REPRODUCTION as reproduction } from '@data/demography-reproduction';
 interface Props { lang: 'da' | 'en' }
 const { lang } = Astro.props;
 const isDa = lang === 'da';
@@ -28,6 +29,22 @@ const validation = demographyValidation(lang);
     </table>
     <p class="text-dim leading-relaxed mt-6" data-validation-discrepancy>{validation.discrepancy}</p>
     <p class="text-sm text-muted leading-relaxed mt-4" data-validation-scope>{validation.scope}</p>
+    <details id="reproduce-figure" class="mt-6 border border-(--glass-border) rounded-plate p-4" data-figure-reproduction>
+      <summary class="cursor-pointer font-semibold text-accent">{isDa ? 'Genskab denne figur' : 'Reproduce this figure'}</summary>
+      <div class="mt-4 space-y-4 text-sm text-dim leading-relaxed">
+        <p>{isDa
+          ? 'Den afgrænsede pakke opretter et separat Python 3.12-miljø, installerer 17 fastlåste pakkeversioner og genskaber figur 4.1 fra de registrerede kildefiler. Kommandoen er testet fra en ren lokal checkout på Windows.'
+          : 'The narrow package creates an isolated Python 3.12 environment, installs 17 pinned package versions and reconstructs Figure 4.1 from the recorded source files. The command was tested from a clean local checkout on Windows.'}</p>
+        <pre class="bg-(--bg) rounded-plate p-4 text-xs whitespace-pre-wrap break-all"><code>{reproduction.commands}</code></pre>
+        <p>{isDa
+          ? 'På Windows kan du erstatte python med py -3.12. Første kørsel kræver internet til installationen. Kildefilerne skal matche de 29 registrerede SHA-256-værdier; manglende eller ændrede filer giver en fejl. Hver kørsel gemmer nye resultater uden at ændre rådata.'
+          : 'On Windows, replace python with py -3.12 if needed. Initial setup needs internet for installation. Source files must match the 29 recorded SHA-256 values; missing or changed inputs fail explicitly. Each run writes fresh outputs without changing raw data.'}</p>
+        <p>{isDa
+          ? 'Et godkendt resultat betyder match af alle rapportfelter, herunder de 30 histogramintervaller og den dokumenterede tekstafvigelse. Det betyder ikke fuld replikation af opgaven, kausal validering eller et pixel-identisk billede.'
+          : 'A verified run matches every report field, including all 30 histogram bins and the documented prose discrepancy. It does not mean full-paper replication, causal validation or a pixel-identical image.'}</p>
+        <a href={reproduction.readmeUrl} class="inline-block text-accent underline underline-offset-4">{isDa ? 'Fast version: adgang til data, forventede resultater og fejlkontrol' : 'Fixed version: data access, expected outputs and failure checks'}</a>
+      </div>
+    </details>
     <div class="flex flex-wrap gap-x-6 gap-y-3 mt-6 text-sm">
       <a href={validation.reportUrl} class="text-accent underline underline-offset-4">{isDa ? 'Metode, kildefiler og udeladelser' : 'Method, source files and exclusions'}</a>
       <a href={validation.codeUrl} class="text-accent underline underline-offset-4">{isDa ? 'Valideringskode' : 'Validation code'}</a>

@@ -15,7 +15,8 @@ test.describe('The Reviewer', () => {
         const errors: string[] = [];
         page.on('pageerror', (e) => errors.push(String(e).slice(0, 140)));
 
-        await page.goto('/projects/welfare-state-seminar');
+        // Academic pages deliberately omit AI chat; it remains on wider projects.
+        await page.goto('/projects/ecb-taylor-rules');
 
         const toggle = page.locator('button[title="AI Project Reviewer"]');
         await expect(toggle, 'the client:only island hydrated').toBeVisible({ timeout: 30_000 });

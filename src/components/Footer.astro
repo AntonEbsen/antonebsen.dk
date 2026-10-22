@@ -2,8 +2,10 @@
 import { getLangFromUrl, useTranslations, useNav } from '@i18n/utils';
 import OrcidId from '@components/ui/OrcidId.astro';
 import { RESEARCHGATE_PROFILE, GOOGLE_SCHOLAR_PROFILE, ACADEMIA_PROFILE, SSRN_PROFILE } from '@lib/profiles';
+import { isAcademicPath } from '@i18n/academic-navigation';
 
 const lang = getLangFromUrl(Astro.url);
+const academicReader = isAcademicPath(Astro.url.pathname);
 const t = useTranslations(lang);
 const navItems = useNav(lang);
 const isEn = lang === 'en';
@@ -57,7 +59,7 @@ const year = new Date().getFullYear();
             {/* Was hardcoded Danish for everyone, though /en/changelog exists and
                 was linked from nowhere. */}
             <li class="my-2"><a href={isEn || isDe ? "/en/changelog" : "/changelog"} class="text-text no-underline hover:underline">{isEn ? "Changelog" : isDe ? "Änderungsprotokoll" : "Versionshistorik"} 📜</a></li>
-            <li class="my-2"><a href={isEn ? "/en/ledger" : isDe ? "/de/ledger" : "/ledger"} class="text-text no-underline hover:underline">{isEn ? "The Ledger" : isDe ? "Das Hauptbuch" : "Hovedbogen"}</a></li>
+            {!academicReader && <li class="my-2"><a href={isEn ? "/en/ledger" : isDe ? "/de/ledger" : "/ledger"} class="text-text no-underline hover:underline">{isEn ? "The Ledger" : isDe ? "Das Hauptbuch" : "Hovedbogen"}</a></li>}
         </ul>
       </nav>
 

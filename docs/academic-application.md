@@ -29,6 +29,12 @@ accessibility, no-JavaScript access and retained extended profiles.
 
 ## Scope
 
+The application routes use a quiet reading layout: no AI chat, ledger, command
+palette or persistent personal display modes. Navbar search remains available;
+personal pages retain their existing features. Project briefs lead with the
+question, data, method and finding/status; full explanations remain available
+in native disclosures. See [reader/reproduction verification](academic-reader-reproduction.md).
+
 See [the application-reader audit](application-reader-audit.md) for verified
 contribution statements, the actual source-to-data example, repaired Danish
 anchors, and bilingual one-page print checks. Group roles must be confirmed by

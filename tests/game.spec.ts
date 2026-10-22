@@ -47,7 +47,7 @@ async function unlockedIds(page: import('@playwright/test').Page): Promise<strin
 
 test.describe('Seal toast', () => {
     test('appears on unlock and auto-dismisses', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         const toast = page.locator('#ledger-toast');
         await expect(toast).toBeHidden();
@@ -65,7 +65,7 @@ test.describe('Seal toast', () => {
     });
 
     test('speaks the language of the page it appears on', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
 
         await page.evaluate((a) => {
             window.dispatchEvent(new CustomEvent('achievement_unlock', { detail: a }));
@@ -79,7 +79,7 @@ test.describe('Seal toast', () => {
         const errors: string[] = [];
         page.on('pageerror', (e) => errors.push(e.message));
 
-        await page.goto('/');
+        await page.goto('/notes');
         await page.evaluate(() => {
             window.dispatchEvent(new CustomEvent('achievement_unlock', { detail: null }));
             // The AI chat can emit an arbitrary id through its <<<UNLOCK>>> directive.
@@ -98,7 +98,7 @@ test.describe('Ledger modal', () => {
         const errors: string[] = [];
         page.on('pageerror', (e) => errors.push(e.message));
 
-        await page.goto('/');
+        await page.goto('/notes');
 
         const modal = page.locator('#ledger-modal');
         await expect(modal).toBeHidden();
@@ -115,7 +115,7 @@ test.describe('Ledger modal', () => {
     });
 
     test('toggles shut on the same event', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
         const modal = page.locator('#ledger-modal');
 
         await page.evaluate(() => window.dispatchEvent(new CustomEvent('toggle-ledger')));
@@ -129,7 +129,7 @@ test.describe('Ledger modal', () => {
         // The rows must exist before any script runs — they are no longer built
         // client-side.
         await page.route('**/*.js', (route) => route.abort());
-        await page.goto('/');
+        await page.goto('/notes');
 
         const rows = page.locator('#ledger-modal [data-ledger-entry]');
         expect(await rows.count()).toBeGreaterThan(3);
@@ -137,7 +137,7 @@ test.describe('Ledger modal', () => {
     });
 
     test('reflects enrolled state and updates live while open', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await seed(page, 50, ['explorer']);
 
         await page.evaluate(() => window.dispatchEvent(new CustomEvent('toggle-ledger')));
@@ -199,7 +199,7 @@ test.describe('Ledger page', () => {
     });
 
     test('dates enrolled rows, and leaves older entries undated', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         const when = new Date(2026, 7, 13).getTime(); // 13 August 2026
         // 'watermark' is enrolled but carries no date — the shape a save written
@@ -226,7 +226,7 @@ test.describe('Ledger page', () => {
         const errors: string[] = [];
         page.on('pageerror', (e) => errors.push(e.message));
 
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await page.evaluate((key) => {
             // No enrolledAt key at all — exactly what an existing visitor has.
             localStorage.setItem(key, JSON.stringify({
@@ -244,7 +244,7 @@ test.describe('Ledger page', () => {
 
     test('paints saved progress before hydration, with no flash of zero', async ({ page }) => {
         // Seed on a page that shares the origin, then come back.
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await seed(page, 1900, ['explorer', 'void_walker', 'easter_egg']);
 
         // Blocking scripts leaves only the is:inline pre-paint pass running.
@@ -291,7 +291,7 @@ test.describe('Guild ranks', () => {
 
     for (const [marks, rank] of LADDER) {
         test(`${marks} marks reads as ${rank}`, async ({ page }) => {
-            await page.goto('/en');
+            await page.goto('/en/notes');
             await seed(page, marks, []);
             await page.goto('/en/ledger');
 
@@ -300,7 +300,7 @@ test.describe('Guild ranks', () => {
     }
 
     test('the top rank is reachable by completing the book', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         const totalMarks = await page.evaluate(() =>
             Number(document.querySelector('#ledger-modal [data-ledger-progress]')?.getAttribute('aria-valuemax'))
@@ -315,7 +315,7 @@ test.describe('Guild ranks', () => {
         const errors: string[] = [];
         page.on('pageerror', (e) => errors.push(e.message));
 
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await page.evaluate((key) => localStorage.setItem(key, '{not json'), STORAGE_KEY);
         await page.goto('/en/ledger');
 
@@ -329,7 +329,7 @@ test.describe('Guild ranks', () => {
 
 test.describe('Ways in', () => {
     test('the nav links to the ledger', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         const link = page.locator('nav a[href="/en/ledger"]').first();
         await expect(link).toHaveAttribute('href', '/en/ledger');
@@ -339,12 +339,12 @@ test.describe('Ways in', () => {
     });
 
     test('the footer links to the ledger', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await expect(page.locator('footer a[href="/en/ledger"]')).toHaveCount(1);
     });
 
     test('clicking the palette quick action opens the modal', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         await page.keyboard.press('ControlOrMeta+k');
         const tile = page.locator('.palette-item[data-event="toggle-ledger"]');
@@ -359,7 +359,7 @@ test.describe('Ways in', () => {
     });
 
     test('the first Enter press opens the highlighted search result', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         await page.keyboard.press('ControlOrMeta+k');
         await page.locator('#palette-input').fill('ledger');
@@ -373,7 +373,7 @@ test.describe('Ways in', () => {
     });
 
     test('the navbar search dropdown reaches the ledger', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         // These rows render straight from the search index. They pointed at
         // #trophy-room, so every one of them was a dead link.
@@ -395,13 +395,13 @@ test.describe('Entries that could not be earned', () => {
     test('walking five pages enrolls the perambulation', async ({ page }) => {
         // checkPageVisitAchievement was exported and never called, so this entry
         // was unobtainable except by the AI chat handing it out.
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await page.evaluate(() => {
             localStorage.clear();
             sessionStorage.clear();
         });
 
-        for (const path of ['/en/about', '/en/portfolio', '/en/blog', '/en/cv', '/en/contact']) {
+        for (const path of ['/en/notes', '/en/portfolio', '/en/blog', '/en/services', '/en/guestbook']) {
             await page.goto(path);
         }
 
@@ -466,17 +466,17 @@ test.describe('Entries that could not be earned', () => {
         // ?company= is linked from nowhere, which is the point of the entry.
         // Chameleon renders before BaseLayout assigns window.unlockAchievement,
         // so this also proves it imports rather than reading the global.
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await page.evaluate(() => localStorage.clear());
 
-        await page.goto('/en?company=Lego');
+        await page.goto('/en/notes?company=Lego');
         await expect.poll(() => unlockedIds(page)).toContain('watermark');
     });
 
     test('a plain visit does not enrol the watermark', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await page.evaluate(() => localStorage.clear());
-        await page.goto('/en/about');
+        await page.goto('/en/notes');
 
         expect(await unlockedIds(page)).not.toContain('watermark');
     });

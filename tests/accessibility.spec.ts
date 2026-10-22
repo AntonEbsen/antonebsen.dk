@@ -29,6 +29,8 @@ const pages = [
 // once scrolled into view. Scanning without this audits the server-rendered
 // placeholder and reports a clean run for markup no visitor sees.
 async function hydrateIslands(page: import('@playwright/test').Page) {
+    // The full paper is intentionally secondary to the compact research brief.
+    await page.locator('details[data-project-details]').evaluateAll(nodes => nodes.forEach(node => (node as HTMLDetailsElement).open = true));
     await page.evaluate(async () => {
         const step = window.innerHeight;
         // Re-measure every iteration. Each island that mounts makes the document
@@ -78,6 +80,7 @@ test.describe('Accessibility Tests', () => {
 // scan above to have scrolled far enough.
 test('every chart canvas has a description with real numbers in it', async ({ page }) => {
     await page.goto('/projects/welfare-state-seminar');
+    await page.locator('[data-project-details] > summary').click();
 
     // Bring each chart into view on its own rather than sweeping the whole 20,000px
     // document. The specification curve fetches its 64 estimates on mount, and on the

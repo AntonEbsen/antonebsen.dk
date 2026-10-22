@@ -12,6 +12,7 @@
     import { unlockAchievement } from '@lib/gamification';
 
     function initChameleon() {
+        if (document.body.hasAttribute('data-academic-reader')) return;
         const urlParams = new URLSearchParams(window.location.search);
         const company = urlParams.get('company');
 
