@@ -3,7 +3,10 @@ import { test, expect } from '@playwright/test';
 test('container width aliases remain independent of spacing tokens on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/en/cliometrics');
+  // Family history is intentionally optional; measure the panel only when open.
+  await page.locator('#family-history details > summary').click();
   const subtitle = page.locator('#family-history .structural-transformation-galaxy > div > p').first();
+  await expect(subtitle).toBeVisible();
   await expect(subtitle).toHaveCSS('max-width', '672px');
   expect((await subtitle.boundingBox())?.width).toBeGreaterThan(240);
 });
