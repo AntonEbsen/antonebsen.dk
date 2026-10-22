@@ -10,6 +10,7 @@ import Chameleon from '@components/core/Chameleon.astro';
 import Scriptorium from '@components/core/Scriptorium.astro';
 import Anathema from '@components/core/Anathema.astro';
 import { getLangFromUrl } from '@i18n/utils';
+import { isAcademicPath } from '@i18n/academic-navigation';
 import '@styles/styles.css';
 // After styles.css, not inside it. styles.css pulls in Tailwind's Preflight,
 // which resets headings to `font-size: inherit; font-weight: inherit`; anything
@@ -53,6 +54,7 @@ interface Props {
 
 const { title, description, image, article, bodyClass = "", showChatWidget = true, alternates } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const academicReader = isAcademicPath(Astro.url.pathname);
 ---
 
 <!DOCTYPE html>
@@ -173,8 +175,8 @@ const lang = getLangFromUrl(Astro.url);
     third-party SVG it used to fetch.
   */}
 </head>
-<body class={bodyClass}>
-  <Chameleon />
+<body class={bodyClass} data-academic-reader={academicReader ? '' : undefined}>
+  {!academicReader && <Chameleon />}
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-9999 bg-gold-500 text-black px-4 py-2 font-bold rounded">
     Skip to Content
   </a>
@@ -187,12 +189,9 @@ const lang = getLangFromUrl(Astro.url);
   <Footer />
 
   
-  {showChatWidget && <ChatWidget />}
-  <CommandPalette />
-  <LedgerToast />
-  <LedgerModal />
-  <Scriptorium />
-  <Anathema />
+  {showChatWidget && !academicReader && <ChatWidget />}
+  {!academicReader && <CommandPalette />}
+  {!academicReader && <><LedgerToast /><LedgerModal /><Scriptorium /><Anathema /></>}
 
   <script>
     /*
@@ -212,7 +211,25 @@ const lang = getLangFromUrl(Astro.url);
     const targets = document.querySelectorAll('.animate-on-scroll');
     const show = (el: Element) => el.classList.add('in-view');
 
-    if (!('IntersectionObserver' in window)) {
+    // Preserve links to figures/method sections now placed in native disclosures.
+    if (document.body.hasAttribute('data-academic-reader')) {
+      const revealHashTarget = () => {
+        let target: HTMLElement | null;
+        try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); }
+        catch { return; }
+        if (!target) return;
+        let disclosure = target.closest('details');
+        while (disclosure) {
+          disclosure.open = true;
+          disclosure = disclosure.parentElement?.closest('details') ?? null;
+        }
+        requestAnimationFrame(() => target.scrollIntoView());
+      };
+      revealHashTarget();
+      window.addEventListener('hashchange', revealHashTarget);
+    }
+
+    if (document.body.hasAttribute('data-academic-reader') || !('IntersectionObserver' in window)) {
       targets.forEach(show);
     } else {
       const reveal = new IntersectionObserver((entries) => {
@@ -252,6 +269,10 @@ const lang = getLangFromUrl(Astro.url);
   */}
   <script>
     import { unlockAchievement, checkPolyglotAchievement, checkPageVisitAchievement, checkBroughtForwardAchievement, checkCompoundAchievements } from '../lib/gamification';
+
+    // Academic visits neither display games nor alter the visitor's game progress.
+    function initialisePersonalFeatures() {
+    if (document.body.hasAttribute('data-academic-reader')) return;
 
     // Counts this page towards 'explorer'. The function has existed since the
     // system was written and was never called anywhere, so that entry could only
@@ -343,7 +364,22 @@ const lang = getLangFromUrl(Astro.url);
             }
         }
     });
+    }
+    initialisePersonalFeatures();
   </script>
 </body>
 </html>
+
+<style is:global>
+  /* Keep the research reading route still, including persistent personal modes. */
+  [data-academic-reader] *, [data-academic-reader] *::before, [data-academic-reader] *::after {
+    animation: none !important;
+  }
+  [data-academic-reader] .animate-on-scroll, [data-academic-reader] .reveal {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    transition: none !important;
+  }
+</style>
 

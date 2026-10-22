@@ -26,7 +26,7 @@ const search = async (page: import('@playwright/test').Page, q: string) => {
 
 test.describe('command palette', () => {
     test('Cmd-K opens it and Escape closes it', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
 
         const palette = page.locator('#command-palette');
         await open(page);
@@ -38,7 +38,7 @@ test.describe('command palette', () => {
     });
 
     test('a broad query renders results', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
         await open(page);
         await search(page, 'en');
 
@@ -48,7 +48,7 @@ test.describe('command palette', () => {
     });
 
     test('8+ results render the see-all link carrying the query', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
         await open(page);
         await search(page, 'en');
 
@@ -60,7 +60,7 @@ test.describe('command palette', () => {
     });
 
     test('the empty state quotes the query back, escaped', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
         await open(page);
         await search(page, '<img src=x onerror=alert(1)>');
 
@@ -71,7 +71,7 @@ test.describe('command palette', () => {
     });
 
     test('English pages get English palette strings', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await open(page);
         await search(page, 'zzzznothing');
 
@@ -81,7 +81,7 @@ test.describe('command palette', () => {
     });
 
     test('opening moves focus to the input', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
         await open(page);
 
         // `visibility` was caught up in `transition-all duration-200`, and discrete
@@ -92,7 +92,7 @@ test.describe('command palette', () => {
     });
 
     test('focus stays inside the dialog when tabbing', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/notes');
         await open(page);
         await expect(page.locator('#palette-input')).toBeFocused();
 

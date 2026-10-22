@@ -130,7 +130,7 @@ const { ui } = getLedgerCopy(lang);
 
   // Restore on load, before anything else writes to the DOM.
   try {
-    if (localStorage.getItem(KEY)) apply();
+    if (bar && localStorage.getItem(KEY)) apply();
   } catch {
     /* private mode — the egg simply doesn't persist */
   }
@@ -140,6 +140,7 @@ const { ui } = getLedgerCopy(lang);
   let cursor = 0;
 
   document.addEventListener('keydown', (event) => {
+    if (!bar) return;
     const target = event.target as HTMLElement | null;
     if (target) {
       const tag = target.tagName?.toLowerCase();

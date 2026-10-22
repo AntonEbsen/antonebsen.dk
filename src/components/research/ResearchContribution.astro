@@ -9,9 +9,12 @@ const contribution = researchContribution(id, lang);
   <section aria-labelledby="research-contribution-heading" data-research-contribution>
     <h2 id="research-contribution-heading" class="text-title-sm mb-4">{lang === 'da' ? 'Mit bidrag' : 'My contribution'}</h2>
     <p class="text-dim leading-relaxed">{contribution.summary}</p>
+    <details class="mt-4">
+    <summary class="cursor-pointer text-accent underline underline-offset-4">{lang === 'da' ? 'Opgaver og empiriske valg' : 'Tasks and empirical decisions'}</summary>
     <ul class="list-disc pl-5 space-y-3 mt-5 text-dim leading-relaxed">
       {contribution.tasks.map(task => <li>{task}</li>)}
     </ul>
+    </details>
     <p class="text-sm text-dim leading-relaxed mt-5" data-contribution-attribution>{contribution.attribution}</p>
   </section>
 </Card>

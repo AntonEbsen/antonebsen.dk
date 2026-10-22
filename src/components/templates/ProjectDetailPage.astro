@@ -19,6 +19,8 @@ import RelatedVideos from '@components/ui/RelatedVideos.astro';
 import { getEntry } from 'astro:content';
 import { assetExists } from '@lib/public-asset';
 import { ORCID_URI, PUBLISHED_NAME } from '@lib/orcid';
+import { isAcademicPath } from '@i18n/academic-navigation';
+import ResearchBrief from '@components/research/ResearchBrief.astro';
 
 interface Props {
   lang: 'da' | 'en';
@@ -183,6 +185,9 @@ interface Props {
 }
 
 const { lang, project } = Astro.props;
+const academicReader = isAcademicPath(Astro.url.pathname);
+const HeroHeading = academicReader ? 'h2' : 'h1';
+const DetailContainer = academicReader ? 'details' : 'div';
 
 // Most of these pages were written before their figures, slide decks and PDFs
 // existed, and 22 of the 28 referenced files still do not. Drop what is missing
@@ -537,7 +542,16 @@ const tocItems = [
   </Fragment>
 
   <main class="bg-sunken min-h-screen text-text pb-32 selection:bg-accent/20">
-    
+    {academicReader && <section class="mx-auto max-w-prose px-md py-xl" data-compact-project>
+      <p class="text-sm text-muted mb-4">{project.status}</p>
+      <h1 class="font-serif text-display-sm mb-4">{project.title}</h1>
+      <p class="text-dim mb-6">{project.subtitle}</p>
+      {hasPdf && <a class="inline-block text-accent underline underline-offset-4 mb-6" href={project.citation.pdfUrl} download>{lang === 'da' ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</a>}
+      <ResearchBrief id="welfare-state-seminar" lang={lang} />
+      <slot name="contribution" />
+    </section>}
+    <DetailContainer class:list={{ 'mx-auto max-w-6xl px-md': academicReader }} data-project-details={academicReader ? '' : undefined}>
+    {academicReader && <summary class="cursor-pointer text-accent font-semibold mb-8">{lang === 'da' ? 'Læs den fulde analyse, figurer og begrænsninger' : 'Read the full analysis, figures and limitations'}</summary>}
     <!-- IMMERSIVE HERO -->
     <header class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         {heroImage && (
@@ -566,9 +580,9 @@ const tocItems = [
         <div class="animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <Pill variant="accent" class="mb-8 uppercase tracking-[0.2em] font-bold text-[10px] mx-auto shadow-lg shadow-accent/20">{t.researchBrief}</Pill>
             
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.1] mb-8 font-medium tracking-tight">
+            <HeroHeading class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.1] mb-8 font-medium tracking-tight">
             {project.title}
-            </h1>
+            </HeroHeading>
             <p class="text-xl md:text-2xl text-muted font-serif italic max-w-(--container-3xl) mx-auto mb-12 leading-relaxed">
             {project.subtitle}
             </p>
@@ -673,7 +687,7 @@ const tocItems = [
             </section>
         )}
 
-        <slot name="contribution" />
+        {!academicReader && <slot name="contribution" />}
 
         <!-- Executive Summary -->
         <section id="executive-summary" class="mb-24 scroll-mt-24 group">
@@ -1194,13 +1208,14 @@ const tocItems = [
         </div>
     </nav>
 
+    </DetailContainer>
   </main>
   
-  <ProjectBot 
+  {!academicReader && <ProjectBot
       client:only="react"
       projectTitle={project.title}
       codeSnippet={project.codeSnippet}
-  />
+  />}
 
   {project.notebookPath && (
     <LabModal 

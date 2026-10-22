@@ -7,6 +7,7 @@ import Pill from '@components/ui/Pill.astro';
 import DemographyValidation from '@components/research/DemographyValidation.astro';
 import ResearchContribution from '@components/research/ResearchContribution.astro';
 import SourceToData from '@components/research/SourceToData.astro';
+import ResearchBrief from '@components/research/ResearchBrief.astro';
 import { getAcademicProjects, type ResearchId } from '@data/academic-research';
 import { demographyPaper, demographyScholarTags } from '@data/demography-paper';
 import { assetExists } from '@lib/public-asset';
@@ -60,11 +61,6 @@ const sections = [
             <Button href={paper.pdfPath} download="Ebsen_Jorgensen_2026_Bismarcks_Lost_Battle.pdf">{isDa ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</Button>
             <Button href="#citation" variant="ghost">{isDa ? 'Sådan citeres opgaven' : 'How to cite'}</Button>
           </div>
-          <section aria-labelledby="paper-summary-heading" class="mt-xl" data-paper-summary>
-            <h2 id="paper-summary-heading" class="text-title-sm mb-4">{isDa ? 'Forskningsresumé' : 'Research summary'}</h2>
-            <p class="text-dim leading-relaxed">{paper.summary}</p>
-            <p class="text-sm text-muted mt-4">{paper.summaryNote}</p>
-          </section>
         </div>
       ) : <p class="text-sm text-muted mb-lg">{project.credits}</p>}
       <div class="flex flex-wrap gap-2">{project.technologies.map(tool => <Pill>{tool}</Pill>)}</div>
@@ -72,13 +68,24 @@ const sections = [
     </Section>
     <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-xl items-start">
       <div class="space-y-lg">
+        <ResearchBrief id={id} lang={lang} />
         <ResearchContribution id={id} lang={lang} />
-        {sections.map(([heading, text]) => (
+        <Card variant="glass" interactive={false} class="p-6 md:p-8">
+          <h2 class="text-title-sm mb-4">{isDa ? 'Begrænsninger' : 'Limitations'}</h2>
+          <p class="text-dim leading-relaxed">{project.limitations}</p>
+        </Card>
+        <details class="rounded-plate border border-(--glass-border) p-6" data-research-details>
+          <summary class="cursor-pointer font-semibold text-accent">{isDa ? 'Læs om data og identifikation' : 'Read the data and identification detail'}</summary>
+          <div class="space-y-6 mt-6">
+          {paper && <p class="text-dim leading-relaxed">{paper.summary}</p>}
+        {sections.slice(0, -1).map(([heading, text]) => (
           <Card variant="glass" class="p-6 md:p-8">
             <h2 class="text-title-sm mb-4">{heading}</h2>
             <p class="text-dim leading-relaxed">{text}</p>
           </Card>
         ))}
+          </div>
+        </details>
         {paper && <DemographyValidation lang={lang} />}
         {paper && <SourceToData lang={lang} />}
       </div>

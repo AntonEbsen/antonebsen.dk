@@ -113,7 +113,7 @@ test.describe('Scriptorium mode', () => {
         await typeWord(page, 'fraktur');
         await expect(page.locator('body')).toHaveClass(/scriptorium-active/);
 
-        await page.goto('/en/about');
+        await page.goto('/en/notes');
         await expect(page.locator('body')).toHaveClass(/scriptorium-active/);
     });
 
@@ -212,13 +212,13 @@ test.describe('The Manicule', () => {
 
 test.describe('Sortes', () => {
     test('opens a real page, in the language you were reading', async ({ page }) => {
-        await page.goto('/en/about');
+        await page.goto('/en/notes');
         await page.evaluate(() => localStorage.clear());
 
         await page.keyboard.press('ControlOrMeta+k');
         await page.locator('.palette-item[data-event="ledger:sortes"]').click();
 
-        await page.waitForURL((url) => url.pathname !== '/en/about');
+        await page.waitForURL((url) => url.pathname !== '/en/notes');
 
         // Stays in English rather than dropping the reader into another language.
         expect(page.url()).toContain('/en/');
@@ -462,7 +462,7 @@ test.describe('Brought Forward', () => {
         const day = 24 * 60 * 60 * 1000;
         const now = Date.now();
 
-        await page.goto('/en');
+        await page.goto('/en/notes');
 
         // Six days is not a week.
         await seed(page, 50, ['explorer'], { explorer: now - 6 * day });
@@ -481,7 +481,7 @@ test.describe('Brought Forward', () => {
     });
 
     test('is not granted to a visitor with an empty book', async ({ page }) => {
-        await page.goto('/en');
+        await page.goto('/en/notes');
         await page.evaluate(() => localStorage.clear());
         await page.reload();
         await page.waitForTimeout(1600);

@@ -1,0 +1,22 @@
+---
+import Card from '@components/ui/Card.astro';
+import { researchBrief } from '@data/research-briefs';
+import type { ContributionId } from '@data/research-contributions';
+interface Props { id: ContributionId; lang: 'en' | 'da' }
+const { id, lang } = Astro.props;
+const brief = researchBrief(id, lang);
+const labels = lang === 'da'
+  ? ['Forskningsspørgsmål', 'Data', 'Metode', 'Resultat / status']
+  : ['Research question', 'Data', 'Method', 'Finding / status'];
+---
+<Card variant="glass" interactive={false} class="p-6 md:p-8 min-w-0 mb-6">
+  <section data-research-brief data-paper-summary={id === 'demography-project' ? '' : undefined} aria-labelledby="brief-heading">
+    <h2 id="brief-heading" class="text-title-sm mb-5">{lang === 'da' ? 'Projektet kort' : 'At a glance'}</h2>
+    <dl class="space-y-4">
+      {[brief.question, brief.data, brief.method, brief.result].map((text, index) => <div>
+        <dt class="font-semibold text-text mb-1">{labels[index]}</dt>
+        <dd class="text-dim leading-relaxed m-0">{text}</dd>
+      </div>)}
+    </dl>
+  </section>
+</Card>
