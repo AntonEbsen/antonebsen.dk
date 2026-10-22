@@ -7,6 +7,7 @@ import Pill from '@components/ui/Pill.astro';
 import SectionTitle from '@components/ui/SectionTitle.astro';
 import ContourField from '@components/ui/ContourField.astro';
 import ResearchCards from '@components/research/ResearchCards.astro';
+import { demographyPaper } from '@data/demography-paper';
 import TechStack from '@components/ui/TechStack.astro';
 import YouTubeEmbed from '@components/ui/YouTubeEmbed.astro';
 import { Image } from 'astro:assets';
@@ -21,6 +22,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const isDa = lang === 'da';
+const writingSample = demographyPaper(lang);
 
 const portLink = isDa ? '/cliometrics' : '/en/cliometrics';
 const cvLink = isDa ? '/cv' : '/en/cv';
@@ -98,10 +100,14 @@ const skillsData = {
         <p class="text-lead text-dim leading-relaxed max-w-prose">
           {content.hero.text}
         </p>
-        <div class="flex flex-col sm:flex-row gap-sm pt-md">
-          <Button href={portLink} size="lg">{content.hero.btnPort}</Button>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-sm pt-md" data-application-links>
+          <Button href={writingSample.pdfPath} size="lg">{isDa ? 'Læs min skriftlige opgave (PDF)' : 'Read my writing sample (PDF)'}</Button>
           <Button href={cvLink} variant="ghost" size="lg">{content.hero.btnCV}</Button>
+          <Button href={portLink} variant="ghost" size="lg">{content.hero.btnPort}</Button>
         </div>
+        <p class="text-sm text-dim mt-sm">{isDa
+          ? 'Bismarck’s Lost Battle · afsluttet kursusopgave · engelsk PDF'
+          : 'Bismarck’s Lost Battle · completed course paper · English PDF'}</p>
 
       </div>
       

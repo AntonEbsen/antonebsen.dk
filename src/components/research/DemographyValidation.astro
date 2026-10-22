@@ -1,0 +1,37 @@
+---
+import Card from '@components/ui/Card.astro';
+import { demographyValidation } from '@data/demography-validation';
+interface Props { lang: 'da' | 'en' }
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const validation = demographyValidation(lang);
+---
+<Card variant="glass" interactive={false} class="p-6 md:p-8 min-w-0">
+  <section id="reproducibility" aria-labelledby="figure-validation-heading" data-figure-validation class="scroll-mt-28">
+    <h2 id="figure-validation-heading" class="text-title-sm mb-4">{validation.heading}</h2>
+    <p class="text-sm text-muted mb-4">{isDa ? 'Kontrolleret' : 'Checked'} <time datetime={validation.date}>{validation.dateLabel}</time></p>
+    <p class="text-dim leading-relaxed">{validation.intro}</p>
+    <figure class="my-6">
+      <img src={validation.figurePath} width="1423" height="919" loading="lazy" decoding="async"
+        alt={isDa ? 'Rekonstrueret histogram over 1871-andelene: 262 amter ved eller under 50% katolsk befolkning og 130 over.' : 'Reconstructed histogram of 1871 shares: 262 counties at or below 50% Catholic and 130 above.'}
+        class="w-full h-auto rounded-plate border border-(--glass-border) bg-white" />
+      <figcaption class="text-sm text-muted mt-3">{isDa ? 'Rekonstrueret figur 4.1. De katolske befolkningsandele er fra 1871; hvert amt vægter lige meget.' : 'Reconstructed Figure 4.1. Catholic population shares are from 1871; each county receives equal weight.'}</figcaption>
+    </figure>
+    <table class="w-full text-sm border-collapse">
+      <caption class="text-left font-semibold text-text mb-3">{isDa ? 'Genberegnede beskrivende mål' : 'Recomputed descriptive statistics'}</caption>
+      <tbody>
+        {validation.rows.map(([label, value]) => <tr class="border-b border-(--glass-border)">
+          <th scope="row" class="text-left font-normal text-dim py-3 pr-4">{label}</th>
+          <td class="text-right tabular-nums text-text py-3 whitespace-nowrap">{value}</td>
+        </tr>)}
+      </tbody>
+    </table>
+    <p class="text-dim leading-relaxed mt-6" data-validation-discrepancy>{validation.discrepancy}</p>
+    <p class="text-sm text-muted leading-relaxed mt-4" data-validation-scope>{validation.scope}</p>
+    <div class="flex flex-wrap gap-x-6 gap-y-3 mt-6 text-sm">
+      <a href={validation.reportUrl} class="text-accent underline underline-offset-4">{isDa ? 'Metode, kildefiler og udeladelser' : 'Method, source files and exclusions'}</a>
+      <a href={validation.codeUrl} class="text-accent underline underline-offset-4">{isDa ? 'Valideringskode' : 'Validation code'}</a>
+      <a href={validation.resultsPath} download class="text-accent underline underline-offset-4">{isDa ? 'Download kontrolresultater (JSON)' : 'Download check results (JSON)'}</a>
+    </div>
+  </section>
+</Card>

@@ -1,5 +1,4 @@
 ---
-import ResearchHubPage from '@components/templates/ResearchHubPage.astro';
-export const prerender = true;
+export const prerender = false;
+return Astro.redirect('/en/cliometrics', 301);
 ---
-<ResearchHubPage lang="en" />

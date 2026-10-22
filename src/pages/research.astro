@@ -1,5 +1,7 @@
 ---
-import ResearchHubPage from '@components/templates/ResearchHubPage.astro';
-export const prerender = true;
+import { getLangFromUrl } from '../i18n/utils';
+export const prerender = false;
+// Keep legacy links working without serving a conflicting second research page.
+// Only this exact route redirects; /research/lab/ assets remain untouched.
+return Astro.redirect(getLangFromUrl(Astro.url) === 'en' ? '/en/cliometrics' : '/cliometrics', 301);
 ---
-<ResearchHubPage lang="da" />
