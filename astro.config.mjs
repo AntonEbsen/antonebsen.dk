@@ -52,6 +52,7 @@ export default defineConfig({
         !page.includes('/dashboard') &&
         !page.includes('/debug') &&
         !page.includes('/api/') &&
+        !/\/(?:en\/)?research\/?$/.test(new URL(page).pathname) &&
         !/\/test-[^/]+\/?$/.test(page),
       serialize(item) {
         if (new URL(item.url).pathname.match(/^\/en(?:\/|$)/)) {

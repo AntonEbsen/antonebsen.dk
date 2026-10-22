@@ -4,6 +4,7 @@ import Section from '@components/ui/Section.astro';
 import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
+import DemographyValidation from '@components/research/DemographyValidation.astro';
 import { getAcademicProjects, type ResearchId } from '@data/academic-research';
 import { demographyPaper, demographyScholarTags } from '@data/demography-paper';
 import { assetExists } from '@lib/public-asset';
@@ -75,6 +76,7 @@ const sections = [
             <p class="text-dim leading-relaxed">{text}</p>
           </Card>
         ))}
+        {paper && <DemographyValidation lang={lang} />}
       </div>
       <aside class="lg:sticky lg:top-28">
         <Card variant="glass" class="p-6">
@@ -87,6 +89,7 @@ const sections = [
               {!paper && <Button href={project.pdfUrl} download>{isDa ? 'Download opgave (PDF)' : 'Download paper (PDF)'}</Button>}
               {project.codeUrl && <a class="block text-accent underline underline-offset-4" href={project.codeUrl} target="_blank" rel="noopener noreferrer">{isDa ? 'Kode og relateret analyse på GitHub' : 'Code and related analysis on GitHub'}</a>}
               {paper && <p class="text-sm text-dim leading-relaxed">{paper.codeNote}</p>}
+              {paper && <a href="#reproducibility" class="block text-accent underline underline-offset-4">{isDa ? 'Se kontrollen af figur 4.1' : 'See the Figure 4.1 reproducibility check'}</a>}
               <p class="text-sm text-muted">{isDa ? 'Kursusopgave; ikke en fagfællebedømt publikation.' : 'Course paper; not a peer-reviewed publication.'}</p>
             </div>
           ) : <p class="text-dim leading-relaxed mb-6">{isDa

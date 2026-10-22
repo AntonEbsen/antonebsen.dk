@@ -1,0 +1,117 @@
+{
+  "target": "Submitted paper, Figure 4.1, PDF page 9; related prose pages 8-10",
+  "reference_pdf_sha256": "086a7d333c7a9b85f6476e90de30f4f3cfd76d1720996ca0aebfb532803d5e41",
+  "actual_year_window": [
+    1867,
+    1890
+  ],
+  "status": "figure_reproduced_with_prose_discrepancy",
+  "metrics": {
+    "counties": 392,
+    "low_catholic_le_50": 262,
+    "high_catholic_gt_50": 130,
+    "unweighted_mean_percent": 34.00905013507342,
+    "unweighted_median_percent": 13.332377751826364,
+    "counties_between_20_and_80_inclusive": 92,
+    "percent_counties_between_20_and_80_inclusive": 23.46938775510204,
+    "counties_exactly_at_20_or_80": 0,
+    "histogram_counts": [
+      167,
+      11,
+      11,
+      7,
+      7,
+      10,
+      4,
+      4,
+      6,
+      0,
+      11,
+      8,
+      8,
+      4,
+      4,
+      6,
+      3,
+      6,
+      2,
+      6,
+      5,
+      4,
+      6,
+      5,
+      6,
+      4,
+      12,
+      10,
+      26,
+      29
+    ],
+    "histogram_edges_percent": [
+      0.03592814371257485,
+      3.359197295503403,
+      6.682466447294231,
+      10.005735599085058,
+      13.329004750875887,
+      16.652273902666714,
+      19.975543054457543,
+      23.29881220624837,
+      26.6220813580392,
+      29.94535050983003,
+      33.26861966162085,
+      36.591888813411686,
+      39.91515796520251,
+      43.23842711699334,
+      46.56169626878417,
+      49.884965420575,
+      53.208234572365825,
+      56.53150372415665,
+      59.85477287594748,
+      63.17804202773831,
+      66.50131117952914,
+      69.82458033131998,
+      73.1478494831108,
+      76.47111863490163,
+      79.79438778669245,
+      83.11765693848328,
+      86.44092609027412,
+      89.76419524206494,
+      93.08746439385577,
+      96.4107335456466,
+      99.73400269743743
+    ]
+  },
+  "sample_diagnostics": {
+    "religion_counties_before_matching": 393,
+    "matched_county_years": 9261,
+    "counties_without_all_24_years": 33,
+    "excluded_religion_counties": [
+      {
+        "Code": 98,
+        "Kreis": "BRANDENBURG"
+      }
+    ],
+    "excluded_out_of_window_records": [
+      {
+        "Code": 545,
+        "Year": 1866,
+        "_source_file": "VIT1867.XLS"
+      }
+    ]
+  },
+  "matched_manuscript_checks": {
+    "figure_counties_392": true,
+    "figure_low_counties_262": true,
+    "figure_high_counties_130": true,
+    "prose_mean_rounds_to_34_percent": true,
+    "prose_median_rounds_to_13_3_percent": true,
+    "section_4_1_county_years_9261": true,
+    "section_4_1_incomplete_counties_33": true
+  },
+  "known_prose_discrepancy": {
+    "manuscript_approximate_percent": 22,
+    "recomputed_percent": 23.46938775510204,
+    "note": "92/392 = 23.47%, about 1.47 percentage points above the prose approximation. No observations are exactly at either endpoint. PDF unchanged."
+  },
+  "scope": "County membership, distribution and stated sample counts only. Not a validation of regression estimates, causal identification, or every later repository output."
+}
