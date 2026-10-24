@@ -29,7 +29,7 @@
     "@astrojs/markdown-remark": "^7.3.4",
     "@astrojs/react": "^7.1.1",
     "@astrojs/rss": "^4.0.15",
-    "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.16",
     "@axe-core/playwright": "^4.11.0",
     "@duckdb/duckdb-wasm": "^1.28.0",
@@ -76,13 +76,16 @@
     "three-spritetext": "^1.10.0",
     "tippy.js": "^6.3.7",
     "typescript": "^5.7.2",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "engines": {
     "node": ">=24.0.0 <25.0.0"
   },
   "overrides": {
     "katex": "$katex",
+    "@vercel/cli-config": {
+      "zod": "$zod"
+    },
     "@vercel/routing-utils": {
       "path-to-regexp": "6.3.0"
     }

@@ -45,15 +45,16 @@ Website/CV degree dates already match the user's confirmed dates.
 
 ## Verification and release handover
 
-Local production build passes; 462 unit and 290 standard browser tests pass
+Baseline research-evidence verification: local production build passed; 462 unit and 290 standard browser tests passed
 (two existing skips), including the five new evidence checks and three visual
 comparisons. The 45-test application-reader subset also passes. The type-error
 ratchet remains at the existing 419; missing assets are 47 against baseline 49.
 Dedicated Table 6.1 CI passes on both Windows and Linux.
 
-Do not interpret the hosting preview as production publication. The unchanged
-website lockfile's production audit fails on Zod advisory GHSA-mrhx-c7xc-m3w5,
-updated 23 October 2026 (six dependency-tree alerts). No security rule was
-relaxed and no forced major dependency upgrade was applied. Resolve this
-separately before merging. Broader Demography CI still has legacy lint/DVC
-failures unrelated to its passing dedicated table/figure checks.
+Do not interpret the hosting preview as production publication. The initial
+unchanged lockfile failed on Zod advisory GHSA-mrhx-c7xc-m3w5 (six dependency-tree
+alerts). After Anton approved the compatibility-tested fix, the narrow upgrade
+recorded in [the security note](zod-security-upgrade-2026-10-24.md) cleared the
+dependency audit. No security gate was relaxed. Check the updated build/test
+and hosting results before merging. Broader Demography CI still has legacy
+lint/DVC failures unrelated to its passing dedicated table/figure checks.
