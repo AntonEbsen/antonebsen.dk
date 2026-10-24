@@ -1,0 +1,50 @@
+---
+import Card from '@components/ui/Card.astro';
+import report from '../../../public/assets/research/table-6-1-audit.json';
+interface Props { lang: 'en' | 'da' }
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const titles = isDa
+  ? ['Rå fødselsrate', 'Ægteskabelig fertilitet (fast 1871-andel)', 'Ikke-ægteskabelig fertilitet (tidsvarierende nævner)', 'Generel ægteskabsrate']
+  : ['Crude birth rate', 'Marital fertility (fixed 1871 prevalence)', 'Non-marital fertility (time-varying denominator)', 'General marriage rate'];
+const number = (n: number) => n.toFixed(3);
+---
+<Card variant="glass" interactive={false} class="p-6 md:p-8 min-w-0">
+  <section id="table-6-1-audit" aria-labelledby="table-audit-heading" data-table-audit class="scroll-mt-28">
+    <h2 id="table-audit-heading" class="text-title-sm mb-4">{isDa ? 'Tabel 6.1: otte regressioner kontrolleret' : 'Table 6.1: eight regressions checked'}</h2>
+    <p class="text-sm text-muted mb-4"><time datetime="2026-10-24">{isDa ? '24. oktober 2026' : '24 October 2026'}</time></p>
+    <p class="text-dim leading-relaxed" data-table-audit-result>{isDa
+      ? 'Genberegnet fra historiske kildefiler: alle otte koefficienter, klyngestandardfejl, stikprøveantal, within-R² og pre-trends-p-værdier matcher den afleverede tabel ved dens trykte præcision (40 felter).'
+      : 'Recomputed from historical source files: all eight coefficients, clustered standard errors, sample sizes, within-R² and pre-trends p-values match the submitted table at its printed precision (40 fields).'}</p>
+    <details class="mt-5 border border-(--glass-border) rounded-plate p-4" data-table-audit-detail>
+      <summary class="cursor-pointer font-semibold text-accent">{isDa ? 'Se estimater, specifikationer og forbehold' : 'See estimates, specifications and caveats'}</summary>
+      <div class="mt-5 space-y-6">
+        {titles.map((title, i) => (
+          <div class="border-b border-(--glass-border) pb-5" data-audited-outcome>
+            <h3 class="font-semibold text-text mb-3">{title}</h3>
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+              {['twfe', 'year_x_rb'].map((design, panel) => {
+                const row = report.rows[panel * 4 + i];
+                return <div><dt class="text-dim">{design === 'twfe' ? (isDa ? 'A: Amt + år' : 'A: County + year') : (isDa ? 'B: Amt + år × region' : 'B: County + year × region')}</dt>
+                  <dd class="text-text tabular-nums mt-1">{number(row.recomputed.coef)} ({number(row.recomputed.se)}) · N = {row.recomputed.n.toLocaleString('en-US')}</dd></div>;
+              })}
+            </dl>
+          </div>
+        ))}
+        <p class="text-sm text-dim leading-relaxed">{isDa
+          ? 'Uvægtede modeller, 1867–1890; katolsk andel i procentpoint × indikator for år fra 1873. Ingen ekstra kontrolvariable. Standardfejl er klynget på amtsniveau. Separate event studies bruger 1872 som reference og en fælles Wald-test af 1867–1871 under hvert af de to fixed-effects-design.'
+          : 'Unweighted models, 1867–1890; Catholic share in percentage points × an indicator for years from 1873. No additional controls. Standard errors are county clustered. Separate event studies use 1872 as the reference and jointly Wald-test 1867–1871 under each fixed-effects design.'}</p>
+        <p class="text-sm text-dim leading-relaxed">{isDa
+          ? 'Kontrollen afgrænser faktiske årsværdier og udelader en post med Year = 1866 i VIT1867. Ikke-ægteskabelig fertilitet følger den tidsvarierende nævner i ligning B.5 og samme seks markerede fødselsobservationer som CBR; den senere kodes fast-1871-alternativ er ikke den afleverede specifikation. 146 data- og kodefiler kontrolleres med SHA-256 før og efter kørslen. Koefficienterne er desuden kontrolleret med en separat residualisering.'
+          : 'The check filters actual year values, excluding a Year = 1866 record in VIT1867. Non-marital fertility follows the time-varying denominator in equation B.5 and the same six flagged birth observations as CBR; the later code’s fixed-1871 alternative is not the submitted specification. SHA-256 checks cover 146 data and code files before and after the run. Coefficients are also checked by separate residualization.'}</p>
+        <p class="text-sm text-muted leading-relaxed" data-table-audit-scope>{isDa
+          ? 'Dette er en senere AI-assisteret kontrol af én tabel, ikke fuld replikation, uafhængig menneskelig validering af alle kilder eller bevis for kausal identifikation. Match gælder tabellens tre decimaler (N matcher præcist); p = 0.000 er afrunding, ikke en sandsynlighed på nul. Problemerne med parallelle trends består. PDF og rådata er uændrede.'
+          : 'This is a later, AI-assisted check of one table, not full-paper replication, independent human validation of every source, or proof of causal identification. Matches are at three printed decimals (N matches exactly); p = 0.000 is rounding, not a zero probability. The parallel-trends problems remain. The PDF and raw data are unchanged.'}</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+          <a href="https://github.com/AntonEbsen/Demography/blob/c059b019c988bc3a454fc24fdd8c47a0515d0c97/reproducibility/table-6-1/README.md" class="text-accent underline underline-offset-4">{isDa ? 'Fast version: metode og kørselsvejledning' : 'Fixed version: method and run instructions'}</a>
+          <a href="/assets/research/table-6-1-audit.json" download class="text-accent underline underline-offset-4">{isDa ? 'Download fulde kontrolresultater (JSON)' : 'Download full check results (JSON)'}</a>
+        </div>
+      </div>
+    </details>
+  </section>
+</Card>

@@ -36,8 +36,8 @@ export function demographyPaper(lang: ResearchLanguage) {
       ? 'Kort webresumé af den afleverede opgave. Det oprindelige abstract og den fulde analyse findes i PDF’en.'
       : 'Concise web summary of the submitted paper. The original abstract and full analysis are in the PDF.',
     codeNote: isDa
-      ? 'Figur 4.1 og relaterede stikprøveantal er kontrolleret særskilt; se kontrollen og tekstafvigelsen nedenfor. Repositoriet indeholder også senere eksplorative analyser og er ikke en fuldt valideret replikationspakke til den afleverede opgave.'
-      : 'Figure 4.1 and related sample counts have been checked separately; see the check and prose discrepancy below. The repository also contains later exploratory analyses and is not a fully validated replication package for the submitted paper.',
+      ? 'Figur 4.1, relaterede stikprøveantal og tabel 6.1 er kontrolleret særskilt; se kontrollerne og tekstafvigelsen nedenfor. Repositoriet indeholder også senere eksplorative analyser og er ikke en fuldt valideret replikationspakke til den afleverede opgave.'
+      : 'Figure 4.1, related sample counts and Table 6.1 have been checked separately; see the checks and prose discrepancy below. The repository also contains later exploratory analyses and is not a fully validated replication package for the submitted paper.',
     citation: `Jørgensen, Anton Meier Ebsen (2026). ${DEMOGRAPHY_PAPER.title}. Unpublished demography course paper, University of Copenhagen. Submitted 29 May 2026.`,
     versionNote: isDa
       ? 'PDF’en er den afleverede version fra 29. maj 2026, ikke en senere revideret working paper. Der er ikke angivet en DOI, tidsskriftstitel eller et serienummer.'

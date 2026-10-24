@@ -5,6 +5,8 @@ import Card from '@components/ui/Card.astro';
 import Button from '@components/ui/Button.astro';
 import Pill from '@components/ui/Pill.astro';
 import DemographyValidation from '@components/research/DemographyValidation.astro';
+import DemographyTableAudit from '@components/research/DemographyTableAudit.astro';
+import ThesisExcerpt from '@components/research/ThesisExcerpt.astro';
 import ResearchContribution from '@components/research/ResearchContribution.astro';
 import SourceToData from '@components/research/SourceToData.astro';
 import ResearchBrief from '@components/research/ResearchBrief.astro';
@@ -87,7 +89,9 @@ const sections = [
           </div>
         </details>
         {paper && <DemographyValidation lang={lang} />}
+        {paper && <DemographyTableAudit lang={lang} />}
         {paper && <SourceToData lang={lang} />}
+        {id === 'master-thesis' && <ThesisExcerpt lang={lang} />}
       </div>
       <aside class="lg:sticky lg:top-28">
         <Card variant="glass" class="p-6">
@@ -101,11 +105,13 @@ const sections = [
               {project.codeUrl && <a class="block text-accent underline underline-offset-4" href={project.codeUrl} target="_blank" rel="noopener noreferrer">{isDa ? 'Kode og relateret analyse på GitHub' : 'Code and related analysis on GitHub'}</a>}
               {paper && <p class="text-sm text-dim leading-relaxed">{paper.codeNote}</p>}
               {paper && <a href="#reproducibility" class="block text-accent underline underline-offset-4">{isDa ? 'Se kontrollen af figur 4.1' : 'See the Figure 4.1 reproducibility check'}</a>}
+              {paper && <a href="#table-6-1-audit" class="block text-accent underline underline-offset-4">{isDa ? 'Se kontrollen af tabel 6.1' : 'See the Table 6.1 check'}</a>}
               <p class="text-sm text-muted">{isDa ? 'Kursusopgave; ikke en fagfællebedømt publikation.' : 'Course paper; not a peer-reviewed publication.'}</p>
             </div>
           ) : <p class="text-dim leading-relaxed mb-6">{isDa
             ? 'Denne side er en faglig projektbeskrivelse. Der er endnu ikke offentliggjort en PDF eller en replikationspakke her. Kontakt mig gerne om materialet.'
             : 'This page is a research summary. A PDF and replication package have not been published here. Please contact me about the materials.'}</p>}
+          {id === 'master-thesis' && <a href="#transcription-example" class="block text-accent underline underline-offset-4 mb-6">{isDa ? 'Se et kontrolleret transskriptionsuddrag' : 'See a checked transcription excerpt'}</a>}
           <div class="mt-6">
           <Button href={`${prefix}/contact`}>{isDa ? 'Kontakt mig' : 'Contact me'}</Button>
           </div>

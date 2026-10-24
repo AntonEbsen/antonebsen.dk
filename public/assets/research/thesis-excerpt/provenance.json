@@ -1,0 +1,51 @@
+{
+  "source": {
+    "institution": "Rigsarkivet",
+    "title": "St. Croix General Tabell, 31 December 1792",
+    "epid": 20201795,
+    "bsid": 292226,
+    "image": 207,
+    "imageId": 58788329,
+    "quarter": 2,
+    "row": 3,
+    "unit": "persons recorded as enslaved",
+    "url": "https://arkivalieronline.rigsarkivet.dk/da/billedviser?epid=20201795#292226,58788329"
+  },
+  "record": {
+    "creoles": 54,
+    "africans": 32,
+    "total": 86
+  },
+  "reading": {
+    "method": "claude-opus-5, by eye",
+    "date": "2026-09-19"
+  },
+  "checks": {
+    "reviewDate": "2026-10-24",
+    "visualReview": "AI-assisted visual comparison of these three cells and headings only",
+    "rowIdentity": "54 + 32 = 86",
+    "selectedCellsFlaggedOrCorrected": false,
+    "scope": "Not independent human ground truth; not a linkage or full-sheet accuracy test"
+  },
+  "sourceSha256": "bb1c3765259d76159a6de30a0d6f8dd13ad79452ee59c5603acd630e7c44fba4",
+  "readingsSha256": "501daae6c3d2c2c26b155f9e7a3b67d9edcb8554d4c3093abb5331fa7307d633",
+  "sourceDimensions": [
+    4033,
+    3331
+  ],
+  "cropBoxes": {
+    "headings": [
+      1730,
+      365,
+      2025,
+      645
+    ],
+    "row": [
+      1730,
+      775,
+      2025,
+      845
+    ]
+  },
+  "reuse": "Public image reproduction permission confirmed by Anton on 2026-10-24; no general licence is granted here."
+}

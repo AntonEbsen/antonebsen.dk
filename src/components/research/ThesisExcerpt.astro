@@ -1,0 +1,52 @@
+---
+import Card from '@components/ui/Card.astro';
+import example from '../../../public/assets/research/thesis-excerpt/provenance.json';
+interface Props { lang: 'en' | 'da' }
+const { lang } = Astro.props;
+const isDa = lang === 'da';
+const base = '/assets/research/thesis-excerpt';
+---
+<Card variant="glass" interactive={false} class="p-6 md:p-8 min-w-0">
+  <section id="transcription-example" aria-labelledby="thesis-excerpt-heading" data-thesis-excerpt class="scroll-mt-28">
+    <h2 id="thesis-excerpt-heading" class="text-title-sm mb-4">{isDa ? 'Fra håndskrift til tre kontrollerede felter' : 'From handwriting to three checked fields'}</h2>
+    <p class="text-dim leading-relaxed">{isDa
+      ? 'Et lille eksempel fra specialets eksisterende dataarbejde: St. Croix General Tabell, 31. december 1792, Dronningens Quarteer, tredje gods-række. Uddraget viser tre optællinger af mennesker, som kilden registrerede som slaver. Navne er udeladt.'
+      : 'A small example from the thesis’s existing data work: the St. Croix General Tabell, 31 December 1792, Dronningens Quarteer, third estate row. It shows three counts of people recorded as enslaved. Names are omitted.'}</p>
+    <details class="mt-5 border border-(--glass-border) rounded-plate p-4" data-thesis-excerpt-detail>
+      <summary class="cursor-pointer font-semibold text-accent">{isDa ? 'Se kildeuddrag, data og kontroller' : 'See the source excerpt, data and checks'}</summary>
+      <div class="mt-5 space-y-5">
+        <figure>
+          <img src={`${base}/1792-origin-headings.png`} width="295" height="280" loading="lazy" decoding="async"
+            class="max-w-full h-auto border border-(--glass-border) rounded-plate"
+            alt={isDa ? 'Udsnit af kildens kolonneoverskrifter for koloniale oprindelseskategorier og samlet antal.' : 'Cropped source headings for colonial origin categories and the total count.'} />
+          <figcaption class="text-sm text-muted mt-2">{isDa ? 'Kolonneoverskrifter; særskilt udsnit af samme side.' : 'Column headings; separate crop from the same page.'}</figcaption>
+        </figure>
+        <figure>
+          <img src={`${base}/1792-origin-row.png`} width="295" height="70" loading="lazy" decoding="async"
+            class="max-w-full h-auto border border-(--glass-border) rounded-plate"
+            alt={isDa ? 'Tredje gods-række i kildeblokken: 54, 32 og 86.' : 'Third estate row in the source block: 54, 32 and 86.'} />
+          <figcaption class="text-sm text-muted mt-2">{isDa ? 'Tredje gods-række; kun de tre relevante tællefelter.' : 'Third estate row; only the three relevant count fields.'}</figcaption>
+        </figure>
+        <p class="text-sm text-dim leading-relaxed">{isDa
+          ? '“Creoler” og “Africaner” er kildens koloniale kategorier, ikke nutidige identitetsbetegnelser. Udsnittene er ikke sat sammen til et nyt kildebillede; de oprindelige pixels er kun beskåret.'
+          : '“Creoler” and “Africaner” are the source’s colonial categories, not present-day identity labels. The two crops are shown separately; the original pixels have only been cropped.'}</p>
+        <h3 class="font-semibold text-text">{isDa ? 'Struktureret repræsentation' : 'Structured representation'}</h3>
+        <pre class="text-xs text-dim bg-(--bg) rounded-plate p-4 whitespace-pre-wrap break-all" data-thesis-record><code>{JSON.stringify({ source_image: 207, source_row: 3, ...example.record }, null, 2)}</code></pre>
+        <h3 class="font-semibold text-text">{isDa ? 'Hvad er kontrolleret?' : 'What was checked?'}</h3>
+        <ul class="list-disc pl-5 text-dim leading-relaxed space-y-2">
+          <li>{isDa ? 'De tre tal og deres kolonneplacering er visuelt sammenholdt med originalen med AI-assistance den 24. oktober 2026.' : 'The three numerals and their column positions were visually compared with the original with AI assistance on 24 October 2026.'}</li>
+          <li>{isDa ? 'Rækkens identitet holder: 54 + 32 = 86. Kontrollen bevarer kildeside og rækkenummer.' : 'The row identity holds: 54 + 32 = 86. The record retains the source image and row number.'}</li>
+          <li>{isDa ? 'Ingen af de tre valgte felter er markeret som afgjort ved hjælp af totaler eller senere rettet i projektets log.' : 'None of these three cells is marked as decided by totals or subsequently corrected in the project log.'}</li>
+        </ul>
+        <p class="text-sm text-dim leading-relaxed" data-thesis-excerpt-scope>{isDa
+          ? 'Den eksisterende aflæsning er modelassisteret (loggen angiver claude-opus-5, 19. september 2026). Dette er ikke uafhængig menneskelig ground truth, en måling af hele sidens nøjagtighed eller en valideret sammenkobling mellem registre. Korrekt addition beviser ikke i sig selv en korrekt læsning eller historisk fortolkning. Specialet er fortsat fælles arbejde under udarbejdelse.'
+          : 'The existing reading is model-assisted (the log records claude-opus-5, 19 September 2026). This is not independent human ground truth, a full-page accuracy measurement or a validated link between registers. Correct addition alone cannot establish a correct reading or historical interpretation. The joint thesis remains work in progress.'}</p>
+        <p class="text-sm text-muted leading-relaxed">{isDa ? 'Kilde: ' : 'Source: '}Rigsarkivet, <em>Dokumenter vedr. Kommissionen for Negerhandelens bedre indretning</em> (1783–1806), {isDa ? 'pakke' : 'box'} 424, Arkivalieronline epid 20201795, bsid 292226, {isDa ? 'billede' : 'image'} 207 (ID 58788329). {isDa ? 'Offentlig gengivelse og medforfatternes godkendelse er bekræftet af Anton; der gives ikke en generel genbrugslicens her.' : 'Public reproduction permission and coauthor approval confirmed by Anton; no general reuse licence is granted here.'}</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+          <a href={example.source.url} class="text-accent underline underline-offset-4">{isDa ? 'Se siden hos Rigsarkivet' : 'View the page at Rigsarkivet'}</a>
+          <a href={`${base}/provenance.json`} download class="text-accent underline underline-offset-4">{isDa ? 'Download data og proveniens (JSON)' : 'Download data and provenance (JSON)'}</a>
+        </div>
+      </div>
+    </details>
+  </section>
+</Card>

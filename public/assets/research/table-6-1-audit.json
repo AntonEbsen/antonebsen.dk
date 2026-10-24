@@ -1,0 +1,315 @@
+{
+  "date": "2026-10-24",
+  "table": "Submitted Table 6.1 (printed page 15)",
+  "scope": "Eight regressions and their pre-trends tests; not full-paper replication or causal validation",
+  "paperSha256": "086a7d333c7a9b85f6476e90de30f4f3cfd76d1720996ca0aebfb532803d5e41",
+  "specification": {
+    "years": [
+      1867,
+      1890
+    ],
+    "post": "Year >= 1873",
+    "treatment": "1871 Catholic share, percentage points",
+    "controls": [],
+    "weights": "none",
+    "covariance": "county clustered, linearmodels default debiasing",
+    "eventStudyReference": 1872,
+    "pretrendYears": [
+      1867,
+      1868,
+      1869,
+      1870,
+      1871
+    ],
+    "pretrendDistribution": "Wald chi-square with 5 degrees of freedom; separate FE designs"
+  },
+  "sample": {
+    "observations": 9261,
+    "counties": 392,
+    "birthFlaggedRows": [
+      {
+        "Code": 112,
+        "Year": 1871
+      },
+      {
+        "Code": 150,
+        "Year": 1871
+      },
+      {
+        "Code": 278,
+        "Year": 1872
+      },
+      {
+        "Code": 279,
+        "Year": 1869
+      },
+      {
+        "Code": 279,
+        "Year": 1870
+      },
+      {
+        "Code": 279,
+        "Year": 1871
+      }
+    ]
+  },
+  "rows": [
+    {
+      "design": "twfe",
+      "outcome": "cbr",
+      "printed": {
+        "coef": -0.011,
+        "se": 0.003,
+        "n": 9255,
+        "r2": -0.013,
+        "pretrends_p": 0.0
+      },
+      "recomputed": {
+        "coef": -0.010924639120696175,
+        "se": 0.0031017772639974337,
+        "n": 9255,
+        "r2": -0.01307827925475813,
+        "pretrends_p": 5.0428568626576115e-05
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": -0.010924639120696175,
+      "partial_out_abs_difference": 0.0,
+      "pretrends_wald": 27.27469437717702,
+      "pretrends_df": 5
+    },
+    {
+      "design": "twfe",
+      "outcome": "gmfr_static_1871",
+      "printed": {
+        "coef": -0.023,
+        "se": 0.026,
+        "n": 9254,
+        "r2": -0.009,
+        "pretrends_p": 0.0
+      },
+      "recomputed": {
+        "coef": -0.023422355598693368,
+        "se": 0.02616701392539806,
+        "n": 9254,
+        "r2": -0.009496644686194822,
+        "pretrends_p": 8.814088558781037e-06
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": -0.023422355598693375,
+      "partial_out_abs_difference": 6.938893903907228e-18,
+      "pretrends_wald": 31.133858799435522,
+      "pretrends_df": 5
+    },
+    {
+      "design": "twfe",
+      "outcome": "nonmarital_paper_b5",
+      "printed": {
+        "coef": -0.036,
+        "se": 0.006,
+        "n": 9255,
+        "r2": -0.036,
+        "pretrends_p": 0.051
+      },
+      "recomputed": {
+        "coef": -0.035654667671947526,
+        "se": 0.005820007202566219,
+        "n": 9255,
+        "r2": -0.036425603688222674,
+        "pretrends_p": 0.051470566592659125
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": -0.03565466767194739,
+      "partial_out_abs_difference": 1.3877787807814457e-16,
+      "pretrends_wald": 10.995435128555032,
+      "pretrends_df": 5
+    },
+    {
+      "design": "twfe",
+      "outcome": "general_marriage_rate",
+      "printed": {
+        "coef": -0.011,
+        "se": 0.003,
+        "n": 9261,
+        "r2": 0.036,
+        "pretrends_p": 0.0
+      },
+      "recomputed": {
+        "coef": -0.011000695707226215,
+        "se": 0.0026517496659513,
+        "n": 9261,
+        "r2": 0.03584993210801046,
+        "pretrends_p": 0.00034756222339105147
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": -0.011000695707226197,
+      "partial_out_abs_difference": 1.734723475976807e-17,
+      "pretrends_wald": 22.933692134308483,
+      "pretrends_df": 5
+    },
+    {
+      "design": "year_x_rb",
+      "outcome": "cbr",
+      "printed": {
+        "coef": 0.001,
+        "se": 0.005,
+        "n": 9255,
+        "r2": 0.0,
+        "pretrends_p": 0.001
+      },
+      "recomputed": {
+        "coef": 0.0006367888550837023,
+        "se": 0.004666898260993443,
+        "n": 9255,
+        "r2": 0.00028286063053684085,
+        "pretrends_p": 0.0011944295055429475
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": 0.0006367888550837007,
+      "partial_out_abs_difference": 1.6263032587282567e-18,
+      "pretrends_wald": 20.104706751104395,
+      "pretrends_df": 5
+    },
+    {
+      "design": "year_x_rb",
+      "outcome": "gmfr_static_1871",
+      "printed": {
+        "coef": 0.043,
+        "se": 0.041,
+        "n": 9254,
+        "r2": 0.014,
+        "pretrends_p": 0.002
+      },
+      "recomputed": {
+        "coef": 0.04339845248336191,
+        "se": 0.041136564791897694,
+        "n": 9254,
+        "r2": 0.014446087539783714,
+        "pretrends_p": 0.001935796912137956
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": 0.04339845248336171,
+      "partial_out_abs_difference": 2.0122792321330962e-16,
+      "pretrends_wald": 18.983487174285372,
+      "pretrends_df": 5
+    },
+    {
+      "design": "year_x_rb",
+      "outcome": "nonmarital_paper_b5",
+      "printed": {
+        "coef": -0.021,
+        "se": 0.008,
+        "n": 9255,
+        "r2": -0.012,
+        "pretrends_p": 0.712
+      },
+      "recomputed": {
+        "coef": -0.02106302386279528,
+        "se": 0.008014746819310315,
+        "n": 9255,
+        "r2": -0.012303098717979966,
+        "pretrends_p": 0.7117428791107948
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": -0.02106302386279524,
+      "partial_out_abs_difference": 3.8163916471489756e-17,
+      "pretrends_wald": 2.9237323758462415,
+      "pretrends_df": 5
+    },
+    {
+      "design": "year_x_rb",
+      "outcome": "general_marriage_rate",
+      "printed": {
+        "coef": -0.003,
+        "se": 0.002,
+        "n": 9261,
+        "r2": 0.014,
+        "pretrends_p": 0.842
+      },
+      "recomputed": {
+        "coef": -0.003126295492206152,
+        "se": 0.0024673722315020075,
+        "n": 9261,
+        "r2": 0.013575202800699904,
+        "pretrends_p": 0.8418921937923586
+      },
+      "matches": {
+        "coef": true,
+        "se": true,
+        "n": true,
+        "r2": true,
+        "pretrends_p": true
+      },
+      "counties": 392,
+      "partial_out_coef": -0.003126295492206135,
+      "partial_out_abs_difference": 1.691355389077387e-17,
+      "pretrends_wald": 2.052084829481114,
+      "pretrends_df": 5
+    }
+  ],
+  "allPrintedFieldsMatch": true,
+  "packages": {
+    "numpy": "2.4.1",
+    "pandas": "2.3.3",
+    "linearmodels": "7.0",
+    "scipy": "1.18.1",
+    "openpyxl": "3.1.5",
+    "xlrd": "2.0.2"
+  },
+  "excludedOutOfWindow": [
+    {
+      "Code": 545,
+      "Year": 1866
+    }
+  ],
+  "inputCount": 146,
+  "hashPolicy": "Manifest normalizes CRLF to LF for .py/.csv; binary inputs exact. Before/after preservation also checks all original bytes."
+}
