@@ -1,0 +1,23 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props { lang: 'da' | 'en' | 'de' }
+const { lang } = Astro.props;
+// Keep the role and its upcoming status identical wherever it is mentioned.
+const entry = await getEntry('pages', `${lang}/cv`);
+const volunteer = entry?.data.volunteer?.items.find(item => item.id === 'dwi-archives');
+if (!volunteer) throw new Error(`Missing DWI Archives volunteering content for ${lang}`);
+const headings = {
+  da: 'Frivilligt arkivarbejde',
+  en: 'Volunteer archival work',
+  de: 'Ehrenamtliche Archivarbeit',
+};
+---
+<div data-volunteer-project="dwi-archives">
+  <h2 class="text-title-sm mb-4">{headings[lang]}</h2>
+  <p class="text-sm text-accent mb-3">{volunteer.meta}</p>
+  <h3 class="text-lg font-bold mb-4">
+    <a href={volunteer.url} class="underline underline-offset-4 hover:text-accent transition-colors">{volunteer.title}</a>
+  </h3>
+  <p class="text-dim leading-relaxed">{volunteer.description}</p>
+</div>

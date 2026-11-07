@@ -6,6 +6,7 @@ import Button from '@components/ui/Button.astro';
 import ResearchCards from '@components/research/ResearchCards.astro';
 import StructuralTransformation from '@components/ui/StructuralTransformation.astro';
 import academicCv from '@data/academic-cv.json';
+import DwiArchivesNote from '@components/cv/DwiArchivesNote.astro';
 interface Props { lang: 'da' | 'en' }
 const { lang } = Astro.props;
 const isDa = lang === 'da';
@@ -62,6 +63,11 @@ const approach = isDa ? [
       <p class="text-dim leading-relaxed">{isDa
         ? 'Jeg vil gerne arbejde videre med institutioner, sundhedsulighed og udbredelsen af ny teknologi i et historisk perspektiv. Det er interesser for fremtidig forskning, ikke påstande om allerede gennemførte studier. Min baggrund omfatter også makroøkonomi og pengepolitik.'
         : 'I would like to pursue research on institutions, health inequality and the diffusion of new technology in historical settings. These are future research interests, not claims of completed studies. My background also includes macroeconomics and monetary policy.'}</p>
+    </Section>
+    <Section id="volunteer">
+      <Card variant="glass" class="p-6 md:p-8 max-w-prose">
+        <DwiArchivesNote lang={lang} />
+      </Card>
     </Section>
     <Section id="family-history">
       <details>

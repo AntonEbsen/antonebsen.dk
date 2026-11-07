@@ -34,8 +34,8 @@ const content = cv[lang];
       <section id={section.id} aria-labelledby={`cv-${section.id}`}>
         <h2 id={`cv-${section.id}`}>{section.title}</h2>
         {section.items.map(item => (
-          <article>
-            <h3>{'url' in item ? <a href={prefix + item.url}>{item.title}</a> : item.title}</h3>
+          <article id={'id' in item ? item.id : undefined}>
+            <h3>{'url' in item && item.url ? <a href={item.url.startsWith('/') ? prefix + item.url : item.url}>{item.title}</a> : item.title}</h3>
             {'meta' in item && <p class="academic-meta">{item.meta}</p>}
             {item.text && <p>{item.text}</p>}
           </article>

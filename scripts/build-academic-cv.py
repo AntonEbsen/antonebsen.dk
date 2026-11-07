@@ -47,7 +47,8 @@ for section in content["sections"]:
     for item in section["items"]:
         heading = text(item["title"])
         if item.get("url"):
-            heading = f'<link href="https://www.antonebsen.com/en{item["url"]}">{heading}</link>'
+            url = "https://www.antonebsen.com/en" + item["url"] if item["url"].startswith("/") else item["url"]
+            heading = f'<link href="{escape(url, quote=True)}">{heading}</link>'
         block = [Paragraph(heading, title_style)]
         if item.get("meta"):
             block.append(Paragraph(text(item["meta"]), meta_style))

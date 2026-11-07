@@ -171,6 +171,19 @@ export async function GET() {
         const [pageLang, ...rest] = page.id.split('/');
         const name = rest.join('/');
         if (!name || !['da', 'en', 'de'].includes(pageLang)) continue;
+        if (name === 'cv') {
+            for (const item of page.data.volunteer?.items ?? []) {
+                index.push({
+                    title: item.title,
+                    url: `${pageLang === 'da' ? '' : `/${pageLang}`}/cv#volunteer`,
+                    content: `${item.meta}. ${item.description}`,
+                    tags: ['volunteer', item.id].filter(Boolean),
+                    type: 'page',
+                    icon: 'fa-solid fa-handshake-angle',
+                    lang: pageLang
+                });
+            }
+        }
         index.push({
             title: page.data.title,
             url: pageLang === 'da' ? `/${name}` : `/${pageLang}/${name}`,

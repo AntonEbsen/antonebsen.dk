@@ -67,6 +67,7 @@ export interface Corpus {
 type Json = Record<string, any>;
 
 const cvByLang = import.meta.glob<Json>('../../content/cv/*.json', { eager: true, import: 'default' });
+const cvPages = import.meta.glob<Json>('../../content/pages/*/cv.json', { eager: true, import: 'default' });
 const skillsByLang = import.meta.glob<Json>('../../content/skills/*.json', { eager: true, import: 'default' });
 const qaByLang = import.meta.glob<Json>('../../content/qa/*.json', { eager: true, import: 'default' });
 const blogFiles = import.meta.glob<Json>('../../content/blog/*.json', { eager: true, import: 'default' });
@@ -194,6 +195,13 @@ export function buildCorpus(lang: Lang): Corpus {
         '- Current status is an MSc student, not a PhD candidate or doctoral student. Do not turn aspirations into current qualifications.',
         ...academic.sections.flatMap(s => s.items.map(item => `- (academic:profile) ${item.title}: ${'meta' in item ? item.meta + '. ' : ''}${item.text}`)),
     ];
+
+    const cvPage = Object.entries(cvPages).find(([path]) => langOf(path) === lang)?.[1];
+    const volunteering = (cvPage?.volunteer?.items ?? []).map((item: Json, i: number) => {
+        const id = `cv:volunteer:${item.id ?? i}`;
+        sources.push({ id, title: item.title, url: `${lang === 'da' ? '' : `/${lang}`}/cv#volunteer` });
+        return `- (${id}) ${item.title} (${item.meta}): ${item.description}`;
+    });
 
     // ── Education ───────────────────────────────────────────────────────────────
     const education = (cv.education ?? []).map((e: Json, i: number) => {
@@ -397,6 +405,7 @@ export function buildCorpus(lang: Lang): Corpus {
         section('Current academic profile and research stages', academicProfile),
         section('Education', education),
         section('Work Experience', experience),
+        section('Volunteering — respect upcoming status', volunteering),
         section('Public Record (ORCID) — verifiable by a third party', orcid),
         section('Technical Skills', skillLines),
         section('Coursework', courses),
