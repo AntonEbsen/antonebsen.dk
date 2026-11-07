@@ -196,6 +196,15 @@ export const collections = {
             }).passthrough().optional(),
             sections: z.union([z.record(z.string(), z.any()), z.array(z.any())]).optional(),
             roles: z.any().optional(),
+            volunteer: z.object({
+                items: z.array(z.object({
+                    id: z.string().optional(),
+                    title: z.string(),
+                    meta: z.string(),
+                    description: z.string(),
+                    url: z.string().url().optional(),
+                })),
+            }).optional(),
             contact: z.any().optional(),
             ui: z.any().optional(),
             items: z.array(z.object({

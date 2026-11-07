@@ -2,6 +2,7 @@
 import Layout from '@layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
 import OrcidId from '@components/ui/OrcidId.astro';
+import DwiArchivesNote from '@components/cv/DwiArchivesNote.astro';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -272,6 +273,10 @@ try {
             </a>
           )}
         </div>
+      </section>
+
+      <section class="card" id="volunteer">
+        <DwiArchivesNote lang={lang} />
       </section>
 
       <!-- Focus -->

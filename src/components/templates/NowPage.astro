@@ -5,6 +5,7 @@ import Card from '@components/ui/Card.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Pill from '@components/ui/Pill.astro';
 import { localizedPath } from '@lib/routes';
+import DwiArchivesNote from '@components/cv/DwiArchivesNote.astro';
 
 interface Props {
   lang: 'da' | 'en' | 'de';
@@ -46,7 +47,7 @@ const content = {
         ]
       }
     ],
-    lastUpdated: "Sidst opdateret: Januar 2026",
+    lastUpdated: "Sidst opdateret: 7. november 2026",
     quote: '"Fokus er nøglen til at mestre komplekse emner."',
     cta: "Lad os netværke →"
   },
@@ -78,7 +79,7 @@ const content = {
         ]
       }
     ],
-    lastUpdated: "Last updated: January 2026",
+    lastUpdated: "Last updated: 7 November 2026",
     quote: '"Focus is the key to mastering complex topics."',
     cta: "Let's connect →"
   },
@@ -110,7 +111,7 @@ const content = {
         ]
       }
     ],
-    lastUpdated: "Zuletzt aktualisiert: Januar 2026",
+    lastUpdated: "Zuletzt aktualisiert: 7. November 2026",
     quote: '"Konzentration ist der Schlüssel zu komplexen Themen."',
     cta: "Lassen Sie uns vernetzen →"
   }
@@ -139,6 +140,11 @@ const t = content[lang] ?? content.da;
 
     <!-- Content Blocks -->
     <div class="space-y-24">
+      <Section id="volunteer">
+        <Card variant="glass" class="p-6 md:p-8 max-w-3xl">
+          <DwiArchivesNote lang={lang} />
+        </Card>
+      </Section>
       {t.sections.map((section, sIdx) => (
         <Section class={`animate-on-scroll delay-${(sIdx + 1) * 100}`}>
           <SectionHeading class="mb-10 text-accent">{section.title}</SectionHeading>

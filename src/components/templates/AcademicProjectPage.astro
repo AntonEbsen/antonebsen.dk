@@ -14,6 +14,7 @@ import { getAcademicProjects, type ResearchId } from '@data/academic-research';
 import { demographyPaper, demographyScholarTags } from '@data/demography-paper';
 import { assetExists } from '@lib/public-asset';
 import { ORCID_URI } from '@lib/orcid';
+import DwiArchivesNote from '@components/cv/DwiArchivesNote.astro';
 interface Props { lang: 'da' | 'en'; id: ResearchId }
 const { lang, id } = Astro.props;
 const project = getAcademicProjects(lang).find(item => item.id === id);
@@ -92,6 +93,11 @@ const sections = [
         {paper && <DemographyTableAudit lang={lang} />}
         {paper && <SourceToData lang={lang} />}
         {id === 'master-thesis' && <ThesisExcerpt lang={lang} />}
+        {id === 'master-thesis' && (
+          <Card variant="glass" interactive={false} class="p-6 md:p-8">
+            <DwiArchivesNote lang={lang} />
+          </Card>
+        )}
       </div>
       <aside class="lg:sticky lg:top-28">
         <Card variant="glass" class="p-6">

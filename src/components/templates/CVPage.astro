@@ -163,10 +163,14 @@ const skillsData = skillsEntry.data;
         <Section id="volunteer">
           <Card variant="glass" class="p-6 reveal reveal-fade">
             <SectionHeading>{content.ui.headings.volunteer}</SectionHeading>
-            {content.volunteer.items.map((item: any) => (
+            {content.volunteer?.items.map(item => (
                 <article class="item border-none pt-0">
                 <div class="item-head">
-                    <h3 class="text-[18px] font-bold m-0 mb-1">{item.title}</h3>
+                    <h3 class="text-[18px] font-bold m-0 mb-1">
+                      {item.url
+                        ? <a href={item.url} class="underline underline-offset-4 hover:text-accent transition-colors">{item.title}</a>
+                        : item.title}
+                    </h3>
                     <span class="text-[13px] text-dim">{item.meta}</span>
                 </div>
                 <p class="text-[14px] text-dim mt-2 opacity-80">{item.description}</p>
